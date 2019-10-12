@@ -4,5 +4,3 @@
 - The various modules will here cover the account chart, tax rules, payroll rules and reports according to the Indian Accounting Standard.
 
 We invite everyone to do the needful.
-
-
