@@ -1,0 +1,30 @@
+#searchInput {
+  background-image: url('/pms_pwa/static/img/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#reservationListTable {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#reservationListTable th, #reservationListTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#reservationListTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#reservationListTable tr.header, #reservationListTable tr:hover {
+  background-color: #f1f1f1;
+}

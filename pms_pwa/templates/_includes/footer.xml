@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <template id="website_footer_custom" inherit_id="website.footer_custom" name="Footer Roomdoo">
+        <xpath expr="//div[@id='footer']" position="replace">
+            <div id="footer" class="oe_structure oe_structure_solo" t-ignore="true">
+                <section class="s_text_block pt48 pb48">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 footer-company">
+                                <div class="footer-company-logo mb8">
+                                    <a href="/" rel="noindex, nofollow">
+                                        <span role="img" aria-label="Logo Roomdoo" title="Roomdoo"><img src="/pms_pwa/static/img/logo_footer.png" class="img img-responsive logo" alt="Logo Roomdoo" title="Roomdoo"/></span>
+                                    </a>
+                                </div>
+                                <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+                                    <ul class="list-unstyled mt32">
+                                        <li><div t-field="res_company.partner_id" t-options='{"widget": "contact", "fields": ["address"]}'/></li>
+                                        <li><i class="fa fa-phone"/> <a t-field="res_company.partner_id.phone" t-att-href="'tel:%s' % res_company.partner_id.phone" rel="noindex, nofollow"/></li>
+                                        <li t-if="res_company.partner_id.mobile"> <i class="fa fa-phone"/><a t-field="res_company.partner_id.mobile" t-att-href="'tel:%s' % res_company.partner_id.mobile" rel="noindex, nofollow"/></li>
+                                        <li><i class="fa fa-envelope"/> <a t-field="res_company.partner_id.email" t-att-href="'mailto:%s' % res_company.partner_id.email" rel="noindex, nofollow"/></li>
+                                    </ul>
+                                </address>
+                            </div>
+                            <div class="col-lg-4 footer-legal">
+                                <h5 class="text-uppercase">Menu</h5>
+                                <ul class="list-unstyled">
+                                    <li><a href="#avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">Avisos Legales</a></li>
+                                    <li><a href="#politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">Política de Cookies</a></li>
+                                    <li><a href="#politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">Política de Privacidad</a></li>
+                                    <li><a href="#condiciones-del-servicio" alt="Enlace Condiciones del Servicio" title="Condiciones del Servicio" rel="noindex, nofollow" target="_blank">Condiciones del Servicio</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-lg-4 footer-social">
+                                <h5 class="text-uppercase" t-if="website.social_facebook or website.social_twitter or website.social_linkedin or website.social_youtube or website.social_instagram or website.social_github">
+                                    Síganos
+                                </h5>
+                                <ul class="list-unstyled">
+                                    <li t-if="website.social_linkedin"><a t-att-href="website.social_linkedin" rel="noindex, nofollow" target="_blank">Linkedin</a></li>
+                                    <li t-if="website.social_facebook"><a t-att-href="website.social_facebook" rel="noindex, nofollow" target="_blank">Facebook</a></li>
+                                    <li t-if="website.social_youtube"><a t-att-href="website.social_youtube" rel="noindex, nofollow" target="_blank">Youtube</a></li>
+                                    <li t-if="website.social_twitter"><a t-att-href="website.social_twitter" rel="noindex, nofollow" target="_blank">Twitter</a></li>
+                                    <li t-if="website.social_instagram"><a t-att-href="website.social_instagram" rel="noindex, nofollow" target="_blank">Instagram</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="website_layout_footer_copyright" inherit_id="website.layout_footer_copyright" name="Footer Copyright Roomdoo">
+        <xpath expr="//div[hasclass('o_footer_copyright')]" position="replace">
+            <div class="o_footer_copyright">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 text-muted text-center text-md-left">
+                            <span>&amp;copy; </span><span t-esc="time.strftime('%Y')"/><span class="text-uppercase"> Roomdoo. Todos los derechos reservados.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
