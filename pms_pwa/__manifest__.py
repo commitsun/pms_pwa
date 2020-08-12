@@ -12,12 +12,12 @@
     "website": "https://github.com/commitsun/pms_pwa",
     "depends": [
         'base',
-    #    'website',
+        'website',
     ],
     'data': [
-    #    'templates/_includes/head.xml',
-    #    'templates/_includes/footer.xml',
-    #    'templates/reservation_list.xml',
+        'templates/_includes/head.xml',
+        'templates/_includes/footer.xml',
+        'templates/reservation_list.xml',
         'security/pms_pwa_security.xml',
     ],
     "data": [""],

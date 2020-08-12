@@ -25,10 +25,15 @@ class Home(Home):
         return super(Home, self)._login_redirect(uid, redirect=redirect)
 
 
-#   @http.route(['/pms_panel'], type='http', auth="user", website=True)
-#   def reservation_list(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
-#        values = {}
-#        values.update({
-#            'test': True
-#        })
-#        return request.render("pms_pwa.reservation_list", values)
+
+# Creo unha nova clase pras probas de FrontEnd
+class Reservation(http.Controller):
+    @http.route('/pms_panel', auth='public', website=True)
+    def reservation_list(self, **kw):
+        return http.request.render('pms_pwa.reservation_list', {
+            'clients': [
+                "Diana Padilla", 
+                "Jody Caroll", 
+                "Lester Vaughn"
+            ],
+        })
