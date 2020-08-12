@@ -23,3 +23,12 @@ class Home(Home):
         ):
             return "/pms_panel"
         return super(Home, self)._login_redirect(uid, redirect=redirect)
+
+
+#   @http.route(['/pms_panel'], type='http', auth="user", website=True)
+#   def reservation_list(self, page=1, date_begin=None, date_end=None, sortby=None, **kw):
+#        values = {}
+#        values.update({
+#            'test': True
+#        })
+#        return request.render("pms_pwa.reservation_list", values)
