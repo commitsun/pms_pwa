@@ -1,5 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+# -*- coding: utf-8 -*-
+
 from odoo import http
 from odoo.http import request
 
@@ -25,15 +27,13 @@ class Home(Home):
         return super(Home, self)._login_redirect(uid, redirect=redirect)
 
 
-
-# Creo unha nova clase pras probas de FrontEnd
-class Reservation(http.Controller):
+    # Creo unha nova ruta pras probas de FrontEnd
     @http.route('/pms_panel', auth='public', website=True)
     def reservation_list(self, **kw):
-        return http.request.render('pms_pwa.reservation_list', {
-            'clients': [
-                "Diana Padilla", 
-                "Jody Caroll", 
-                "Lester Vaughn"
+        return http.request.render('pms_pwa.roomdoo_reservation_list', {
+            'object_list': [
+                "Alejandro Núñez", 
+                "Pepe da Zoca", 
+                "Lucía Novoa"
             ],
         })
