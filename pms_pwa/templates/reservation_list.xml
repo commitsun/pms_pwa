@@ -1,66 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <template id="pms_reservation_list" name="Lista de reservas" inherit_id="website.layout">
-        <h2>Mis reservas</h2>
-
-        <input type="text" id="searchInput" onkeyup="searchingFunction()" placeholder="Buscador" title="Buscador...">
-
-        <table id="reservationListTable">
-            <tr class="header">
-                <th>Huesped</th>
-                <th>ID</th>
-                <th>Tipo habitación</th>
-                <th>nº hab</th>
-                <th>check in</th>
-                <th>check out</th>
-                <th>canal venta</th>
-                <th>total (€)</th>
-                <th>pend (€)</th>
-                <th>Observ/Extras</th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>Alfredo Kempes</td>
-                <td>254</td>
-                <td>HVM hb vistas al mar</td>
-                <td>2</td>
-                <td>10/07/2020 20:00</td>
-                <td>11/07/2020 12:00</td>
-                <td>Booking</td>
-                <td>120</td>
-                <td>120 Cobrar</td>
-                <td>Desayuno incluido</td>
-                <td>Check in</td>
-            </tr>
-            <tr>
-                <td>Marisa López</td>
-                <td>250</td>
-                <td>APT vistas al mar</td>
-                <td>Asignar</td>
-                <td>15/08/2020 20:00</td>
-                <td>18/08/2020 12:00</td>
-                <td>Teléfono</td>
-                <td>80</td>
-                <td>0</td>
-                <td>Cama supletoria</td>
-                <td>Check in</td>
-            </tr>
-            <tr>
-                <td>Tito Narváez</td>
-                <td>5854</td>
-                <td>HVM hb vistas al mar</td>
-                <td>2</td>
-                <td>10/07/2020 20:00</td>
-                <td>11/07/2020 12:00</td>
-                <td>Booking</td>
-                <td>120</td>
-                <td>120 Cobrar</td>
-                <td>Desayuno incluido</td>
-                <td>Check in</td>
-            </tr>
-           
-        </table>
+    <template id="roomdoo_reservation_list" name="Lista de reservas">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <div class="container">
+                    <h2>Mis reservas</h2>
+                    <input type="text" id="searchInput" onkeyup="searchingFunction()" placeholder="Buscador" title="Buscador..." />
+                    <table id="reservationListTable">
+                        <tr class="header">
+                            <th>Huesped</th>
+                            <th>ID</th>
+                            <th>Tipo habitación</th>
+                            <th>nº hab</th>
+                            <th>check in</th>
+                            <th>check out</th>
+                            <th>canal venta</th>
+                            <th>total (€)</th>
+                            <th>pend (€)</th>
+                            <th>Observ/Extras</th>
+                            <th></th>
+                        </tr>
+                        <t t-foreach="object_list" t-as="obj">
+                            <tr>
+                                <td><span t-esc="obj"/></td>
+                                <td>254</td>
+                                <td>HVM hb vistas al mar</td>
+                                <td>2</td>
+                                <td>10/07/2020 20:00</td>
+                                <td>11/07/2020 12:00</td>
+                                <td>Booking</td>
+                                <td>120</td>
+                                <td>120 Cobrar</td>
+                                <td>Desayuno incluido</td>
+                                <td>Check in</td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </div>
+        </t>
     </template>
-
 </odoo>
