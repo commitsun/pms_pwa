@@ -1,42 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="roomdoo_reservation_list" name="Lista de reservas">
+    <template id="roomdoo_reservation_list" name="Reservation list">
         <t t-call="website.layout">
+            <div id="roomdoo_reservation_modal"/>
             <div class="oe_structure">
-                <div class="container">
-                    <h2>Mis reservas</h2>
-                    <input type="text" id="searchInput" onkeyup="searchingFunction()" placeholder="Buscador" title="Buscador..." />
-                    <table id="reservationListTable">
-                        <tr class="header">
-                            <th>Huesped</th>
-                            <th>ID</th>
-                            <th>Tipo habitación</th>
-                            <th>nº hab</th>
-                            <th>check in</th>
-                            <th>check out</th>
-                            <th>canal venta</th>
-                            <th>total (€)</th>
-                            <th>pend (€)</th>
-                            <th>Observ/Extras</th>
-                            <th></th>
-                        </tr>
+                <section class="container">
+                    <h2>My bookings</h2>
+                    <input type="text" id="searchInput" placeholder="Search" title="Search..." />
+                    <div class="table container" id="reservationListTable">
+                        <div class="row m-0 header d-none d-lg-flex">
+                            <div class="col">Guest</div>
+                            <div class="col">ID</div>
+                            <div class="col">Room type</div>
+                            <div class="col">Room nº</div>
+                            <div class="col">Check in</div>
+                            <div class="col">Check out</div>
+                            <div class="col">Sales channel</div>
+                            <div class="col">Total (€)</div>
+                            <div class="col">Outstanding (€)</div>
+                            <div class="col">Observ/Extras</div>
+                            <div class="col"></div>
+                        </div>
+                        
                         <t t-foreach="object_list" t-as="obj">
-                            <tr>
-                                <td><span t-esc="obj"/></td>
-                                <td>254</td>
-                                <td>HVM hb vistas al mar</td>
-                                <td>2</td>
-                                <td>10/07/2020 20:00</td>
-                                <td>11/07/2020 12:00</td>
-                                <td>Booking</td>
-                                <td>120</td>
-                                <td>120 Cobrar</td>
-                                <td>Desayuno incluido</td>
-                                <td>Check in</td>
-                            </tr>
+                            <div class="row m-0 item">
+                                <div class="order-sm-1 order-md-1 col-6 col-sm-6 col-md-6 col-lg">
+                                    <button type="button" class="btn btn-demo reservation-modal" data-id="254">
+                                        <span t-esc="obj"/><br/><span class="d-none d-lg-flex">652362452</span>
+                                    </button>
+                                </div>
+                                <div class="order-2 order-sm-2 order-md-2 col-3 col-sm-3 col-md-3 col-lg">254</div>
+                                <div class="order-5 order-sm-5 order-md-5 order-lg-3 d-sm-flex d-md-flex d-lg-none col-5">652362452</div>
+                                <div class="order-6 order-sm-6 order-md-6 order-lg-4 col-5 col-sm-5 col-md-5 col-lg">HVM hb vistas al mar</div>
+                                <div class="order-7 order-sm-7 order-md-7 order-lg-5 col-1 col-sm-1 col-md-1 col-lg">2</div>
+                                <div class="order-8 order-sm-8 order-md-8 order-lg-6 col-6 col-sm-6 col-md-6 col-lg">10/07/2020 20:00</div>
+                                <div class="order-9 order-sm-9 order-md-9 order-lg-7 col-6 col-sm-6 col-md-6 col-lg">11/07/2020 12:00</div>
+                                <div class="order-lg-8 d-none d-lg-flex">Booking</div>
+                                <div class="order-3 order-sm-3 order-md-3 order-lg-9 col-2 col-sm-2 col-md-2 col-lg">120</div>
+                                <div class="order-4 order-sm-4 order-md-4 d-sm-flex d-md-flex d-lg-none col-1">
+                                    <span class="dropdown">
+                                        <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                                        <div class="dropdown-menu" aria-labelledby="dLabel">
+                                            <button class="dropdown-item" type="button">Check in</button>
+                                            <button class="dropdown-item" type="button">Pay</button>
+                                            <button class="dropdown-item" type="button">Asign</button>
+                                        </div>
+                                    </span>
+                                </div>
+                                <div class="order-lg-10 d-none d-lg-flex">120 Cobrar</div>
+                                <div class="order-9 order-sm-9 order-md-9 order-lg-11 col-12 col-sm-12 col-md-12 col-lg">Desayuno incluido</div>
+                                <div class="order-lg-12 d-none d-lg-flex">Check in</div>
+                            </div>
                         </t>
-                    </table>
-                </div>
+                    </div>
+                </section>
             </div>
         </t>
     </template>

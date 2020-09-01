@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates id="pms_pwa" xml:space="preserve">
+    <t t-name="pms_pwa.roomdoo_reservation_modal">
+        <!-- Modal -->
+        <t t-if="reservation">
+            <div class="modal right fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="reservationModal">Reservation <span t-esc="reservation.id"/></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"/></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="col-12">
+                                <span t-esc="reservation.name"/>
+                                <span t-esc="reservation.phone"/>
+                            </div>
+                            <div t-if="reservation.unread_msg and reservation.unread_msg > 0" class="col-12">
+                                <span t-esc="reservation.unread_msg"/> <span>unread message(s)</span>
+                            </div>
+                            <!-- Form action needs to be updated with the real action -->
+                            <form target="_self" action="/my/reservations/update" method="post">
+                                <sheet>
+                                    <div class="form-group form-field">
+                                        <label class="control-label" for="room_type">Room type</label>
+                                        <div>
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input"  name="room_type">
+                                                <option name="room_type" t-foreach="room_types"
+                                                    t-as="key" t-att-value="key"
+                                                    t-att-selected="reservation.room_type === key ? 'selected' : None">
+                                                    <t t-esc="key"/>
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group form-field">
+                                        <label for="room_number">
+                                            Room nº
+                                        </label>
+                                        <input type="text" name="room_number" t-att-value="reservation.room_number" />
+
+                                        <label for="nights_number">
+                                            Nights nº
+                                        </label>
+                                        <input type="text" name="nights_number" t-att-value="reservation.nights_number" />
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="check_in_date">
+                                            Check in
+                                        </label>
+                                        <input type="date" name="check_in_date" t-att-value="reservation.check_in_date" />
+
+                                        <label for="check_in_hour">
+                                            Check in time
+                                        </label>
+                                        <input type="time" name="check_in_hour" t-att-value="reservation.check_in_hour" />
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="check_out_date">
+                                            Check out
+                                        </label>
+                                        <input type="date" name="check_out_date" t-att-value="reservation.check_out_date" />
+
+                                        <label for="check_out_hour">
+                                            Check out time
+                                        </label>
+                                        <input type="time" name="check_out_hour" t-att-value="reservation.check_out_hour" />
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="room_price">
+                                            Room price
+                                        </label>
+                                        <input type="text" name="room_price" t-att-value="reservation.room_price" />
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="check_ince">
+                                            Check in
+                                        </label>
+                                        <input type="checkbox" name="check_in" t-att-value="reservation.check_in" />
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="sales_channel">
+                                            Sales channel
+                                        </label>
+                                        <input type="text" name="sales_channel" t-att-value="reservation.sales_channel" />
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <h3>Extras</h3>
+                                        <t t-foreach="extras" t-as="key">
+                                            <input type="checkbox" t-att-value="reservation.extra.includes(key) ? true : false"
+                                                t-att-id="key"/>
+                                            <label t-att-for="key">
+                                                <span t-esc="key"/>
+                                            </label>
+                                        </t>
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="card_number">
+                                            Reservation card number
+                                        </label>
+                                        <input type="text" name="card_number" t-att-value="reservation.card_number" />
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="total">
+                                            Total
+                                        </label>
+                                        <input type="number" name="total" t-att-value="reservation.total" />
+
+                                        <label for="outstanding">
+                                            Outstanding
+                                        </label>
+                                        <input type="number" name="outstanding" t-att-value="reservation.outstanding" />
+                                    </div>
+
+                                    <div class="form-group form-field" t-if="reservation.outstanding and reservation.outstanding > 0 and payment_methods">
+                                        <t t-foreach="payment_methods" t-as="key">
+                                            <input type="radio" t-att-value="key" name="payment_methods" t-att-id="key"/>
+                                            <label t-att-for="key">
+                                                <span t-esc="key"/>
+                                            </label>
+                                        </t>
+                                    </div>
+
+                                    <div class="form-group form-field">
+                                        <label for="notes">
+                                            Notes
+                                        </label>
+                                        <textarea class="form-control o_website_form_input" name="notes">
+                                            <t t-esc="reservation.notes"/>
+                                        </textarea>
+                                    </div>
+
+                                    <div class="form-group mt32">
+                                        <div class="col-12 text-center">
+                                            <button class="btn btn-secondary btn-lg o_website_form_send"
+                                                confirm="Current reservation will be cancelled, are you sure about that?"
+                                                special="cancel">
+                                                Cancel
+                                            </button>
+                                            <button type="submit"
+                                                class="btn btn-primary btn-lg o_website_form_send">
+                                                Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </sheet>
+                            </form>
+                        </div>
+
+                    </div><!-- modal-content -->
+                </div><!-- modal-dialog -->
+            </div><!-- modal -->
+        </t>
+    </t>
+
+</templates>
