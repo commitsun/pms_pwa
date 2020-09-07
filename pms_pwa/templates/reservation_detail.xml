@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="roomdoo_reservation_detail" name="Reservation detail">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <section class="container-fluid o_pms_pwa_roomdoo">
+                    <h1>Detalle reserva</h1>
+                    <div class="border">
+                        <div class="row">
+                            <div class="col-12 bg-light py-5">
+                                <span class="display-3">Reserva 2512315  </span>
+                                <a href="#" class="btn btn-outline-secondary">Cancelar reserva?</a>
+                                <a href="#" class="btn btn-outline-secondary">Check in</a>
+                                <a href="#" class="btn btn-outline-secondary disable">Check out</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4 border">
+                                <div class="card my-3">
+                                    <div class="container-fluid">
+                                        <div class="row bg-info py-5">
+                                            <div class="col-3 mx-auto">
+                                                <img class="rounded-circle img-fluid" src="//api.randomuser.me/portraits/men/73.jpg" alt="person">
+                                            </div>
+                                            <div class="col-12 text-center">
+                                                <h3>Sabela Gonzalez García</h3>
+                                                <span>652362523</span>
+                                                <a href="mailto:sabelagonzalez@gmail.com">sabelagonzalez@gmail.com</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h4>fecha</h4>
+                                            <p>mensaje, esto es mejor esperar, a ver como lo hacen</p>
+
+                                            <p>mensaje, esto es mejor esperar, a ver como lo hacen</p>
+                                            <hr />
+                                            <form>
+                                                <textarea></textarea>
+                                                <p>Me espero a ver que pasa con los adjuntos</p>
+                                                <input type="submit" class="btn btn-black" value="Enviar"/>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 border">
+
+                            </div>
+                            <div class="col-sm-4 border">
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

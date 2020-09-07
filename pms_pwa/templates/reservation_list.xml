@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-2 align-self-end">Observ/Extras</div>
                         </div>
-                        
+
                         <t t-foreach="object_list" t-as="obj">
                             <div class="row mb-4 mb-lg-0 m-0 item">
                                 <div class="col-6 col-md-6 col-lg-2">
@@ -117,7 +117,7 @@
                                             <input type="checkbox"/> 11/07/2020 12:00
                                         </div>
                                     </div>
-                                </div>                                    
+                                </div>
                                 <div class="col-12 col-md-6 col-lg-2 align-self-center">
                                     <div class="row">
                                         <div class="col-12 col-md-6 col-lg-6 mb-2 mb-lg-0 o_pmw_pwa_ellipsis">Desayuno incluido</div>

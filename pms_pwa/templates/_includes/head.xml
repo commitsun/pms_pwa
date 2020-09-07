@@ -10,7 +10,5 @@
         <xpath expr="script[last()]" position="after">
             <script type="text/javascript" src="/pms_pwa/static/src/js/reservation_table_filter.js" />
         </xpath>
-        
     </template>
-    
 </odoo>

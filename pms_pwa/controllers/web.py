@@ -27,13 +27,21 @@ class Home(Home):
         return super(Home, self)._login_redirect(uid, redirect=redirect)
 
 
-    # Creo unha nova ruta pras probas de FrontEnd
+    # Frontend test routes
     @http.route('/pms_panel', auth='public', website=True)
     def reservation_list(self, **kw):
         return http.request.render('pms_pwa.roomdoo_reservation_list', {
             'object_list': [
-                "Alejandro Núñez", 
-                "Pepe da Zoca", 
+                "Alejandro Núñez",
+                "Pepe da Zoca",
                 "Lucía Novoa"
+            ],
+        })
+
+    @http.route('/pms_panel/detail', auth='public', website=True)
+    def reservation_list(self, **kw):
+        return http.request.render('pms_pwa.roomdoo_reservation_detail', {
+            'object_list': [
+                "Datos reserva",
             ],
         })
