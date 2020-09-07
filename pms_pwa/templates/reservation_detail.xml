@@ -44,7 +44,89 @@
                                 </div>
                             </div>
                             <div class="col-sm-4 border">
+                                <!--Accordion wrapper-->
+                                <div class="accordion md-accordion accordion-blocks" id="accordionRoomdoo" role="tablist"
+                                aria-multiselectable="true">
+                                    <!-- Accordion card -->
+                                    <div class="card">
+                                        <!-- Card header -->
+                                        <div class="card-header" role="tab" id="headingUnfiled">
+                                            <a data-toggle="collapse" data-parent="#accordionRoomdoo" href="#collapseUnfiled" aria-expanded="true"
+                                                aria-controls="collapseUnfiled">
+                                                <h5 class="mt-1 mb-0">
+                                                <span>Unfiled items</span>
+                                                <i class="fas fa-angle-down rotate-icon"></i>
+                                                </h5>
+                                            </a>
+                                        </div>
 
+                                        <!-- Card body -->
+                                        <div id="collapseUnfiled" class="collapse" role="tabpanel" aria-labelledby="headingUnfiled"
+                                        data-parent="#accordionRoomdoo">
+                                            <div class="card-body">
+                                                <h5 class="card-header info-color white-text text-center py-4">
+                                                    <strong>Habitación</strong>
+                                                </h5>
+
+                                                <!--Card content-->
+                                                <div class="card-body px-lg-5 pt-0">
+                                                    <!-- Form -->
+                                                    <form class="text-center" action="#!">
+                                                        <button class="btn btn-outline-info btn-rounded btn-block my-4 waves-effect z-depth-0" type="submit">Guardar cambios</button>
+
+                                                    </form>
+                                                    <!-- Form -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Accordion card -->
+                                    <div class="card">
+
+                                        <!-- Card header -->
+                                        <div class="card-header" role="tab" id="heading">
+                                            <a data-toggle="collapse" data-parent="#accordionRoomdoo" href="#collapse81" aria-expanded="true"
+                                                aria-controls="collapse81">
+                                                <h5 class="mt-1 mb-0">
+                                                <span>Detalles tarifa</span>
+                                                <i class="fas fa-angle-down rotate-icon"></i>
+                                                </h5>
+                                            </a>
+                                        </div>
+
+                                        <!-- Card body -->
+                                        <div id="collapse81" class="collapse" role="tabpanel" aria-labelledby="heading"
+                                        data-parent="#accordionRoomdoo">
+                                            <div class="card-body">
+                                                Aquí lo que toque
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Accordion card -->
+                                    <div class="card">
+
+                                        <!-- Card header -->
+                                        <div class="card-header" role="tab" id="heading">
+                                            <a data-toggle="collapse" data-parent="#accordionRoomdoo" href="#collapse81" aria-expanded="true"
+                                                aria-controls="collapse81">
+                                                <h5 class="mt-1 mb-0">
+                                                <span>Datos personales huésped (es)</span>
+                                                <i class="fas fa-angle-down rotate-icon"></i>
+                                                </h5>
+                                            </a>
+                                        </div>
+
+                                        <!-- Card body -->
+                                        <div id="collapse81" class="collapse" role="tabpanel" aria-labelledby="heading"
+                                        data-parent="#accordionRoomdoo">
+                                            <div class="card-body">
+                                                Aquí lo que toque
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Accordion card -->
+                                </div>
+                                <!--/.Accordion wrapper-->
                             </div>
                             <div class="col-sm-4 border">
 
