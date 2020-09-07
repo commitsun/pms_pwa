@@ -210,8 +210,8 @@
                                                             <div class="row">
                                                                 <strong class="col-12"><t t-esc="texts.total_text || _t('Total')"/></strong>
                                                                 <span class="col-12">
-                                                                    <strong t-esc="reservation.total+'€'"/>
-                                                                    <small t-esc="'('+reservation.total_vat+'€ vat)'"/>
+                                                                    <strong t-esc="reservation.total"/>€
+                                                                    (<span t-esc="reservation.total_vat"/>€ vat)
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -219,8 +219,8 @@
                                                             <div class="row">
                                                                 <strong class="col-12"><t t-esc="texts.outstading_text || _t('Outstanding')"/></strong>
                                                                 <span class="col-12">
-                                                                    <strong t-esc="reservation.outstanding+'€'"/>
-                                                                    <small t-esc="'('+reservation.outstanding_vat+'€ vat)'"/>
+                                                                    <strong t-esc="reservation.outstanding"/>€
+                                                                    (<span t-esc="reservation.outstanding_vat"/>€ vat)
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -230,7 +230,7 @@
                                         </div>
 
                                         <div class="form-group form-field"
-                                            t-if="reservation.outstanding and reservation.outstanding > 0 and payment_methods">
+                                            t-if="reservation.outstanding and reservation.outstanding &gt; 0 and payment_methods">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <t t-foreach="payment_methods" t-as="key">
@@ -244,7 +244,7 @@
                                                         </div>
                                                     </t>
                                                 </div>
-                                                <div class="col-6">
+                                                <div class="col-6 mt4">
                                                     <button class="btn btn-outline-dark btn-block"
                                                         special="cancel">
                                                         <t t-esc="texts.pay_text || _t('Pay')"/>
