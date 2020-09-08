@@ -59,9 +59,257 @@
                                         </div>
 
                                         <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-                                        <div class="card-body">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                        </div>
+                                            <div class="card-body">
+                                                <form action="#" method="post">
+                                                    <div class="form-group form-field mt8">
+                                                        <label class="control-label col-12" for="room_type">Room type</label>
+                                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
+                                                                <option name="room_type" value="HVM hb vistas al mar" selected="selected">
+                                                                    HVM hb vistas al mar
+                                                                </option><option name="room_type" value="AVM vistas mar">
+                                                                    AVM vistas mar
+                                                                </option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <label class="control-label col-12" for="room_number">
+                                                                        Room nº
+                                                                    </label>
+                                                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
+                                                                        <option name="room_number" value="1">
+                                                                            1
+                                                                        </option><option name="room_number" value="2">
+                                                                            2
+                                                                        </option><option name="room_number" value="3">
+                                                                            3
+                                                                        </option><option name="room_number" value="4">
+                                                                            4
+                                                                        </option><option name="room_number" value="5">
+                                                                            5
+                                                                        </option><option name="room_number" value="6">
+                                                                            6
+                                                                        </option><option name="room_number" value="7">
+                                                                            7
+                                                                        </option><option name="room_number" value="8">
+                                                                            8
+                                                                        </option><option name="room_number" value="9">
+                                                                            9
+                                                                        </option><option name="room_number" value="10">
+                                                                            10
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <label class="control-label col-12" for="nights_number">
+                                                                        Nights nº
+                                                                    </label>
+                                                                    <input class="form-control" type="text" name="nights_number" value="2" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <label class="control-label col-12" for="check_in_date">
+                                                                        Check in
+                                                                    </label>
+                                                                    <input class="form-control" type="date" name="check_in_date" value="2020-07-10" />
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <label class="control-label col-12" for="check_in_hour">
+                                                                        Check in time
+                                                                    </label>
+                                                                    <input class="form-control" type="time" name="check_in_hour" value="20:00" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <label class="control-label col-12" for="check_out_date">
+                                                                        Check out
+                                                                    </label>
+                                                                    <input class="form-control" type="date" name="check_out_date" value="2020-07-11" />
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <label class="control-label col-12" for="check_out_hour">
+                                                                        Check out time
+                                                                    </label>
+                                                                    <input class="form-control" type="time" name="check_out_hour" value="12:00" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label class="control-label col-12" for="room_price">
+                                                                        Room price
+                                                                    </label>
+                                                                    <input class="form-control" type="text" name="room_price" value="100" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <button class="btn btn-outline-dark btn-block">
+                                                                        Check in
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <button disabled="true" class="btn btn-outline-dark btn-block">
+                                                                        Check out
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label class="control-label col-12" for="sales_channel">
+                                                                        Sales channel
+                                                                    </label>
+                                                                    <input class="form-control" type="text" name="sales_channel" value="Booking" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <h4>Extras</h4>
+
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <input type="checkbox" checked="checked" value="Breakfast" id="Breakfast" />
+                                                                        <label class="control-label o_pms_pwa_checkbox_label" for="Breakfast">
+                                                                            <span>Breakfast</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <input type="checkbox" value="Additional bed" id="Additional bed" />
+                                                                        <label class="control-label o_pms_pwa_checkbox_label" for="Additional bed">
+                                                                            <span>Additional bed</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <input type="checkbox" checked="checked" value="Cradle" id="Cradle" />
+                                                                        <label class="control-label o_pms_pwa_checkbox_label" for="Cradle">
+                                                                            <span>Cradle</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label class="control-label col-12" for="card_number">
+                                                                        Reservation card number
+                                                                    </label>
+                                                                    <input class="form-control" type="text" name="card_number" value="1253 5212 5214 1256 2145" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="row">
+                                                                                <strong class="col-12">Total</strong>
+                                                                                <span class="col-12">
+                                                                                    <strong>120</strong>€
+                                                                                    (<span>25.2</span>€ vat)
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="row">
+                                                                                <strong class="col-12">Outstanding</strong>
+                                                                                <span class="col-12">
+                                                                                    <strong>80</strong>€
+                                                                                    (<span>16.8</span>€ vat)
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-12">
+
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <input type="radio" value="Credit card" name="payment_methods" id="Credit card" />
+                                                                                <label class="control-label o_pms_pwa_checkbox_label" for="Credit card">
+                                                                                    <span>Credit card</span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <input type="radio" value="Cash" name="payment_methods" id="Cash" />
+                                                                                <label class="control-label o_pms_pwa_checkbox_label" for="Cash">
+                                                                                    <span>Cash</span>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+
+                                                                </div>
+                                                                <div class="col-6 mt4">
+                                                                    <button class="btn btn-outline-dark btn-block" special="cancel">
+                                                                        Pay
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group form-field">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label class="control-label col-12" for="notes">
+                                                                        Notes
+                                                                    </label>
+                                                                    <textarea class="form-control o_website_form_input" name="notes">                                          Lorem ipsum.
+                                                                    </textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group mt32">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <button class="btn btn-outline-dark btn-block o_website_form_send" confirm="Current reservation will be cancelled, are you sure about that?" special="cancel">
+                                                                        Cancel
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col-6">
+                                                                    <button type="submit" class="btn btn-dark btn-block o_website_form_send">
+                                                                        Save
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card">
@@ -73,9 +321,9 @@
                                         </h5>
                                         </div>
                                         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                                        <div class="card-body">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                        </div>
+                                            <div class="card-body">
+                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card">
@@ -95,17 +343,17 @@
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                 <div id="accordion">
+                                 <div id="accordion-left">
                                     <div class="card">
                                         <div class="card-header bg-white" id="heading2One">
                                         <h5 class="mb-0">
-                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
                                             Reservas asociadas
                                             </button>
                                         </h5>
                                         </div>
 
-                                        <div id="collapseOne" class="collapse show" aria-labelledby="heading2One" data-parent="#accordion">
+                                        <div id="collapseTwo" class="collapse show" aria-labelledby="heading2One" data-parent="#accordion-left">
                                         <div class="card-body">
                                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                                         </div>
@@ -114,13 +362,13 @@
                                     <div class="card">
                                         <div class="card-header bg-white" id="heading2Two">
                                         <h5 class="mb-0">
-                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse2Two" aria-expanded="true" aria-controls="collapse2Two">
                                             Detalles de pago
                                             </button>
                                         </h5>
                                         </div>
 
-                                        <div id="collapseOne" class="collapse show" aria-labelledby="heading2Two" data-parent="#accordion">
+                                        <div id="collapse2Two" class="collapse show" aria-labelledby="heading2Two" data-parent="#accordion-left">
                                         <div class="card-body">
                                             Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
                                         </div>

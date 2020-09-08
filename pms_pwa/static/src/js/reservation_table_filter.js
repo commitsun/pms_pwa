@@ -14,7 +14,6 @@ odoo.define('pms_pwa.reservation_table', function(require) {
     filter = input.value.toUpperCase();
     table = document.getElementsByClassName("o_pms_pwa_reservation_list_table")[0];
     tr = table.getElementsByClassName("item");
-    
     for (i = 0; i < tr.length; i++) {
       td = tr[i].getElementsByTagName("div")[0];
       if (td) {
@@ -24,10 +23,10 @@ odoo.define('pms_pwa.reservation_table', function(require) {
         } else {
           tr[i].style.display = "none";
         }
-      }       
+      }
     }
   });
-       
+
   publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
     selector: 'div.o_pms_pwa_reservation_list_table',
     xmlDependencies: ['/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml'],
@@ -133,5 +132,4 @@ odoo.define('pms_pwa.reservation_table', function(require) {
   });
 
   return publicWidget.registry.ReservationTableWidget;
-  
 });

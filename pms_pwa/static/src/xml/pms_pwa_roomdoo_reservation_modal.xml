@@ -14,9 +14,9 @@
                                 </div>
                                 <div class="row o_pms_pwa_modal_header_pad">
                                     <h4 class="col-8 modal-title"><t t-esc="texts.reservation_text || _t('Reservation')"/> <span t-esc="reservation.id"/></h4>
-                                    <button type="button" class="col-4 btn btn-outline-dark float-right" data-id="254">
+                                    <a t-attf-href="/reservation-detail/{{ id }}" class="col-4 btn btn-outline-dark float-right" data-id="254">
                                         <t t-esc="texts.info_text || _t('More info')"/>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
