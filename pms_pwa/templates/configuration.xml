@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="roomdoo_configuration_page" name="Configuration">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <section class="container">
+                    <h2>Configuration</h2>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>

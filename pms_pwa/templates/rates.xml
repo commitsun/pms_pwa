@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="roomdoo_rates_page" name="Rates">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <section class="container">
+                    <h2>Rates</h2>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>
