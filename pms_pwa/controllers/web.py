@@ -2,10 +2,16 @@
 
 # -*- coding: utf-8 -*-
 
+import base64
+import json
+import logging
+
 from odoo import http
 from odoo.http import request
+
 from odoo.addons.web.controllers.main import Home
 
+_logger = logging.getLogger(__name__)
 
 class Home(Home):
     @http.route()
@@ -28,7 +34,19 @@ class Home(Home):
 
 # Frontend controllers to test
 class TestFrontEnd(http.Controller):
-    @http.route('/', auth='public', website=True)
+    '''
+        Temporal method to charge data demo
+    '''
+    def _prepare_demo_data_json(self):
+        obj_id = http.request.env.user.company_id.partner_id.id
+        attachment = http.request.env["ir.attachment"].search([
+                ("res_id", "=", obj_id),
+                ("name", "=", "reservation_list.json")
+            ],limit=1)
+        datas = base64.b64decode(attachment.datas)
+        json_data = json.loads(datas)
+        return json_data
+
     '''
         Está ruta está destinada inicialmente al dashboard, pero ahora
         se usa para la lista de reservas, que luego se moverá a /reservation/
@@ -41,27 +59,33 @@ class TestFrontEnd(http.Controller):
         parámetros dependerán del creador del controller, desde front nos adaptamos
         sin problema.)
     '''
+    @http.route('/', auth='public', website=True)
     def reservation_list(self, **kw):
+        data = self._prepare_demo_data_json()
+        object_list = data[:20]
         return http.request.render('pms_pwa.roomdoo_reservation_list', {
-            'object_list': [
-                "Alejandro",
-                "Pepe da Zoca",
-                "Luca Novoa"
-            ],
+            'object_list': object_list,
         })
 
     @http.route('/reservation/<int:id>', auth='public', website=True)
-    def reservation_detail(self, **kw):
+    def reservation_detail(self, reservation_id=None, **kw):
         '''
         Ruta que debe devolver todos los datos de la reserva en un json
         indicando que campos del formulario son modificables y visibles
         y aceptar envío post para guardar las modificaciones en el formulario
         '''
+        data = self._prepare_demo_data_json()
+        reservation = next(d for d in data if d['id'] == reservation_id)
+        object = []
+        for field, value in reservation.items():
+            object[field] = {
+                "value": value,
+                "readonly": False,
+                "visible": True,
+            }
         return http.request.render('pms_pwa.roomdoo_reservation_detail', {
-            'object': [
-                "Datos reserva",
-            ],
-        })
+            'object': object,
+            })
 
     """
 
