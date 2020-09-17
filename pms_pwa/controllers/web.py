@@ -67,7 +67,7 @@ class TestFrontEnd(http.Controller):
             'object_list': object_list,
         })
 
-    @http.route('/reservation/<int:id>', auth='public', website=True)
+    @http.route('/reservation/<int:reservation_id>', type='http', auth='public', website=True)
     def reservation_detail(self, reservation_id=None, **kw):
         '''
         Ruta que debe devolver todos los datos de la reserva en un json
@@ -75,16 +75,16 @@ class TestFrontEnd(http.Controller):
         y aceptar envío post para guardar las modificaciones en el formulario
         '''
         data = self._prepare_demo_data_json()
-        reservation = next(d for d in data if d['id'] == reservation_id)
-        object = []
-        for field, value in reservation.items():
-            object[field] = {
+        reservation = [x for x in data if x['id'] == reservation_id]
+        reservation_obj = []
+        for field, value in reservation[0].items():
+            reservation_obj.append({
                 "value": value,
                 "readonly": False,
                 "visible": True,
-            }
+            })
         return http.request.render('pms_pwa.roomdoo_reservation_detail', {
-            'object': object,
+            'object': reservation_obj,
             })
 
     """
