@@ -76,16 +76,30 @@ class TestFrontEnd(http.Controller):
         '''
         data = self._prepare_demo_data_json()
         reservation = [x for x in data if x['id'] == reservation_id]
-        reservation_obj = []
+        reservation_obj = {}
         for field, value in reservation[0].items():
-            reservation_obj.append({
+            reservation_obj[field] = {
                 "value": value,
                 "readonly": False,
                 "visible": True,
-            })
+            }
         return http.request.render('pms_pwa.roomdoo_reservation_detail', {
             'object': reservation_obj,
             })
+
+    @http.route(['/reservation/json_data'], type='json', auth="public", methods=['POST'], website=True)
+    def reservation_detail_json(self, reservation_id=None, **kw):
+        """This route is called to get the reservation info via a json call."""
+        data = self._prepare_demo_data_json()
+        reservation = [x for x in data if x['id'] == int(reservation_id)]
+        reservation_obj = {}
+        for field, value in reservation[0].items():            
+            reservation_obj[field] = {
+                "value": value,
+                "readonly": False,
+                "visible": True,
+            }
+        return reservation_obj
 
     """
 

@@ -47,16 +47,18 @@
                             <div class="row mb-4 mb-lg-0 m-0 item">
                                 <div class="col-6 col-md-6 col-lg-2">
                                     <div class="row">
-                                        <div class="col-5 col-sm-3 col-md-3 col-lg-3 d-lg-none d-xl-block align-self-center o_pms_pwa_profile_image_container"><img src="/web/static/src/img/placeholder.png" class="img-thumbnail"/></div>
+                                        <div class="col-5 col-sm-3 col-md-3 col-lg-3 d-lg-none d-xl-block align-self-center o_pms_pwa_profile_image_container">
+                                            <img src="/web/static/src/img/placeholder.png" class="img-thumbnail"/>
+                                        </div>
                                         <div class="col-7 col-sm-7 col-md-9 col-lg-12 col-xl-9">
-                                            <div class="row">
+                                            <div class="row o_pms_pwa_min_client_min_height">
                                                 <div class="col-12 align-self-center">
-                                                    <a href="#" type="button" class="o_pms_pwa_reservation_modal" data-id="254">
-                                                        <span t-esc="obj"/>
+                                                    <a href="#" type="button" class="o_pms_pwa_reservation_modal" t-att-data-id="obj['id']">
+                                                        <t t-esc="obj['partner_id/firstname']"/>
                                                     </a>
                                                 </div>
                                                 <div class="col-12 col-md-8 col-lg-8 align-self-center">
-                                                    <a t-att-href="'tel:' + '652362452'">652362452</a>
+                                                    <a t-att-href="'tel:' + str(obj['partner_id/mobile'])"><t t-esc="obj['partner_id/mobile']"/></a>
                                                 </div>
                                                 <div class="col-4 d-none d-lg-flex align-self-center">
                                                     <a class="fa fa-envelope-o fa-lg" href="#"/>
@@ -69,28 +71,33 @@
                                 <div class="col-6 col-md-6 col-lg-8">
                                     <div class="row">
                                         <div class="order-1 col-5 col-md-8 col-lg-1 align-self-center">
-                                            <a href="#" type="button" class="o_pms_pwa_reservation_modal" data-id="254">254</a>
+                                            <a href="#" type="button" class="o_pms_pwa_reservation_modal" t-att-data-id="obj['id']">
+                                                <t t-esc="obj['id']"/>
+                                            </a>
                                         </div>
                                         <div
                                             class="order-4 order-sm-4 order-md-4 order-lg-2 col-9 col-md-9 col-lg-2 col-xl-3 align-self-center o_pmw_pwa_ellipsis">
-                                            HVM hab vistas al mar
+                                            <t t-esc="obj['room_type_id/name']"/>
                                         </div>
                                         <div class="order-5 order-sm-5 order-md-5 order-lg-3 col-3 col-md-3 col-lg-1 align-self-center">2</div>
                                         <div class="order-6 order-sm-6 order-md-6 order-lg-4 col-1 col-lg-2 col-xl-1 d-none d-lg-flex align-self-center">
-                                            10/07/2020 20:00
+                                            <t t-esc="obj['checkin']"/> <t t-esc="obj['arrival_hour']"/>
                                         </div>
                                         <div class="order-7 order-sm-7 order-md-7 order-lg-5 col-1 col-lg-2 col-xl-1 d-none d-lg-flex align-self-center">
-                                            11/07/2020 12:00
+                                            <t t-esc="obj['checkout']"/> <t t-esc="obj['departure_hour']"/>
                                         </div>
                                         <div class="order-8 order-sm-8 order-md-8 order-lg-6 col-2 col-lg-1 col-xl-2 d-none d-lg-flex align-self-center">
-                                            Booking
+                                            <t t-if="obj['ota_id/name']" t-esc="obj['ota_id/name']"/>
+                                            <t t-else="" t-esc="obj['create_uid/firstname']"/>
                                         </div>
-                                        <div class="order-2 order-sm-2 order-md-2 order-lg-7 col-4 col-md-3 col-lg-1 align-self-center">120,00</div>
+                                        <div class="order-2 order-sm-2 order-md-2 order-lg-7 col-4 col-md-3 col-lg-1 align-self-center">
+                                            <t t-esc="obj['price_total']"/>
+                                        </div>
                                         <div class="order-9 order-sm-9 order-md-9 order-lg-8 col-1 d-none d-lg-flex align-self-center">
-                                            120,00
+                                            <t t-esc="obj['folio_pending_amount']"/>
                                         </div>
                                         <div class="order-10 order-sm-10 order-md-10 order-lg-9 col-1 d-none d-lg-flex align-self-center">
-                                            <button type="button" class="btn btn-outline-dark" data-id="254">
+                                            <button t-if="obj['folio_pending_amount']" type="button" class="btn btn-outline-dark" data-id="254">
                                                 Pay
                                             </button>
                                         </div>
@@ -99,7 +106,10 @@
                                                 <span class="dropdown">
                                                     <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
                                                     <div class="dropdown-menu" aria-labelledby="dLabel">
-                                                        <button class="dropdown-item" type="button">Check in</button>
+                                                        <button
+                                                            t-if="obj['state'] == 'Por entrar'"
+                                                            class="dropdown-item"
+                                                            type="button">Check in</button>
                                                         <button class="dropdown-item" type="button">Pay</button>
                                                         <button class="dropdown-item" type="button">Asign</button>
                                                     </div>
@@ -111,10 +121,22 @@
                                 <div class="col-12 d-lg-none">
                                     <div class="row">
                                         <div class="col-6 align-self-center">
-                                            <input type="checkbox" checked="checked"/> 10/07/2020 20:00
+                                            <input
+                                                t-if="obj['state'] == 'Por entrar'"
+                                                type="checkbox"
+                                                checked="checked"/>
+                                            <input
+                                                t-else=""
+                                                type="checkbox"/> <t t-esc="obj['checkin']"/> <t t-esc="obj['arrival_hour']"/>
                                         </div>
                                         <div class="col-6 align-self-center">
-                                            <input type="checkbox"/> 11/07/2020 12:00
+                                            <input
+                                                t-if="obj['state'] == 'Fuera'"
+                                                type="checkbox"
+                                                checked="checked"/>
+                                            <input
+                                                t-else=""
+                                                type="checkbox"/> <t t-esc="obj['checkout']"/> <t t-esc="obj['departure_hour']"/>
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +144,11 @@
                                     <div class="row">
                                         <div class="col-12 col-md-6 col-lg-6 mb-2 mb-lg-0 o_pmw_pwa_ellipsis">Desayuno incluido</div>
                                         <div class="col-6 d-none d-lg-inline align-self-center">
-                                            <button type="button" class="btn btn-dark float-right" data-id="254">
+                                            <button
+                                                t-if="obj['state'] == 'Por entrar'"
+                                                type="button"
+                                                class="btn btn-dark float-right"
+                                                t-att-data-id="obj['id']">
                                                 Check in
                                             </button>
                                         </div>
