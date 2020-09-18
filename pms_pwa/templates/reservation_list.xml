@@ -159,6 +159,9 @@
                     </div>
                 </section>
             </div>
+            <div t-if="pager" class="o_portal_pager text-center">
+              <t t-call="website.pager"/>
+          </div>
         </t>
     </template>
 </odoo>

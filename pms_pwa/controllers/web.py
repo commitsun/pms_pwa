@@ -59,12 +59,14 @@ class TestFrontEnd(http.Controller):
         parámetros dependerán del creador del controller, desde front nos adaptamos
         sin problema.)
     '''
-    @http.route('/', auth='public', website=True)
-    def reservation_list(self, **kw):
+    @http.route(['/', '/page/<int:page>'], type='http', auth='public',website=True)
+    def reservation_list(self, page=0, **kw):
         data = self._prepare_demo_data_json()
-        object_list = data[:20]
+        pager = request.website.pager(url='', total=len(data), page=page, step=20, scope=7, url_args=kw)
+        object_list = data[page*20:(page+1)*20]
         return http.request.render('pms_pwa.roomdoo_reservation_list', {
             'object_list': object_list,
+            'pager': pager
         })
 
     @http.route('/reservation/<int:reservation_id>', type='http', auth='public', website=True)

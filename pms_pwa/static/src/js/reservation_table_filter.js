@@ -75,7 +75,6 @@ odoo.define('pms_pwa.reservation_table', function(require) {
           setTimeout(function(){
               if(data){
                 reservation_data = data;
-                console.log(reservation_data);
                 /* Adding missing data */
                 reservation_data['image'] = '/web/static/src/img/placeholder.png';
                 reservation_data['unread_msg'] = 2;
