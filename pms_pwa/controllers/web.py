@@ -37,6 +37,7 @@ class TestFrontEnd(http.Controller):
     '''
         Temporal method to charge data demo
     '''
+
     def _prepare_demo_data_json(self):
         obj_id = http.request.env.user.company_id.partner_id.id
         attachment = http.request.env["ir.attachment"].search([
@@ -59,11 +60,12 @@ class TestFrontEnd(http.Controller):
         parámetros dependerán del creador del controller, desde front nos adaptamos
         sin problema.)
     '''
-    @http.route(['/', '/page/<int:page>'], type='http', auth='public',website=True)
+    @http.route(['/', '/page/<int:page>'], type='http', auth='public', methods=['GET'], website=True)
     def reservation_list(self, page=0, **kw):
+        paginate_by = 10
         data = self._prepare_demo_data_json()
-        pager = request.website.pager(url='', total=len(data), page=page, step=20, scope=7, url_args=kw)
-        object_list = data[page*20:(page+1)*20]
+        pager = request.website.pager(url='', total=len(data), page=page, step=paginate_by, scope=7, url_args=kw)
+        object_list = data[page*paginate_by:(page+1)*paginate_by]
         return http.request.render('pms_pwa.roomdoo_reservation_list', {
             'object_list': object_list,
             'pager': pager
@@ -95,7 +97,7 @@ class TestFrontEnd(http.Controller):
         data = self._prepare_demo_data_json()
         reservation = [x for x in data if x['id'] == int(reservation_id)]
         reservation_obj = {}
-        for field, value in reservation[0].items():            
+        for field, value in reservation[0].items():
             reservation_obj[field] = {
                 "value": value,
                 "readonly": False,
