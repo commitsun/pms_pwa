@@ -36,5 +36,10 @@ $(document).ready(function(){
         var elts = $(new_elts).css('opacity', 0);
         elts.animate({opacity: 1});
         grid.masonry('appended', elts);
+        // Add new records to the cont
+        var cont = $('section.o_pms_pwa_roomdoo > h2 > strong > span');
+        var qty = parseInt(cont.text().replace("(", "").replace(")", ""));
+        qty = qty + new_elts.length;
+        cont.text("("+ qty +")");
     });
 })
