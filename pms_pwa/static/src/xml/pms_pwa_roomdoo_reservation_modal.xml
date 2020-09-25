@@ -13,8 +13,8 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="fa fa-times"/></button>
                                 </div>
                                 <div class="row o_pms_pwa_modal_header_pad">
-                                    <h4 class="col-8 modal-title"><t t-esc="texts.reservation_text || _t('Reservation')"/> <span t-esc="reservation.id"/></h4>
-                                    <a href="/reservation-detail/1" class="col-4 btn btn-outline-dark float-right" data-id="254">
+                                    <h4 class="col-8 modal-title"><t t-esc="texts.reservation_text || _t('Reservation')"/> <span t-esc="reservation.id.value"/></h4>
+                                    <a t-att-href="'/reservation/' + reservation.id.value" class="col-4 btn btn-outline-dark float-right" data-id="254">
                                         <t t-esc="texts.info_text || _t('More info')"/>
                                     </a>
                                 </div>
@@ -29,11 +29,11 @@
                                         <div class="row">
                                             <div class="col-12 align-self-center">
                                                 <strong>
-                                                    <span class="o_pms_pwa_reservation_name" t-esc="reservation.name"/>
+                                                    <span class="o_pms_pwa_reservation_name." t-esc="reservation['partner_id/firstname'].value"/>
                                                 </strong>
                                             </div>
                                             <div class="col-12 align-self-center">
-                                                <a t-att-href="'tel:' + reservation.phone_number"><span t-esc="reservation.phone_number"/></a>
+                                                <a t-att-href="'tel:' + reservation['partner_id/mobile'].value"><span t-esc="reservation['partner_id/mobile'].value"/></a>
                                             </div>
                                         </div>
                                     </div>
@@ -61,7 +61,7 @@
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input"  name="room_type">
                                                 <option name="room_type" t-foreach="room_types"
                                                     t-as="key" t-att-value="key"
-                                                    t-att-selected="reservation.room_type === key ? 'selected' : None">
+                                                    t-att-selected="reservation['room_id/name'] === key ? 'selected' : None">
                                                     <t t-esc="key"/>
                                                 </option>
                                             </select>
@@ -98,14 +98,14 @@
                                                         <t t-esc="texts.check_in_text || _t('Check in')"/>
                                                     </label>
                                                     <input class="form-control"
-                                                        type="date" name="check_in_date" t-att-value="reservation.check_in_date" />
+                                                        type="date" name="check_in_date" t-att-value="reservation.checkin.value" />
                                                 </div>
                                                 <div class="col-6">
                                                     <label class="control-label col-12" for="check_in_hour">
                                                         <t t-esc="texts.check_in_time_text || _t('Check in time')"/>
                                                     </label>
                                                     <input class="form-control"
-                                                        type="time" name="check_in_hour" t-att-value="reservation.check_in_hour" />
+                                                        type="time" name="check_in_hour" t-att-value="reservation.arrival_hour.value" />
                                                 </div>
                                             </div>
                                         </div>
@@ -117,14 +117,14 @@
                                                         <t t-esc="texts.check_out_text || _t('Check out')"/>
                                                     </label>
                                                     <input class="form-control"
-                                                        type="date" name="check_out_date" t-att-value="reservation.check_out_date" />
+                                                        type="date" name="check_out_date" t-att-value="reservation.checkout.value" />
                                                 </div>
                                                 <div class="col-6">
                                                     <label class="control-label col-12" for="check_out_hour">
                                                         <t t-esc="texts.check_out_time_text || _t('Check out time')"/>
                                                     </label>
                                                     <input class="form-control"
-                                                        type="time" name="check_out_hour" t-att-value="reservation.check_out_hour" />
+                                                        type="time" name="check_out_hour" t-att-value="reservation.departure_hour.value" />
                                                 </div>
                                             </div>
                                         </div>
@@ -136,7 +136,7 @@
                                                         <t t-esc="texts.room_price_text || _t('Room price')"/>
                                                     </label>
                                                     <input class="form-control"
-                                                        type="text" name="room_price" t-att-value="reservation.room_price" />
+                                                        type="text" name="room_price" t-att-value="reservation.price_total.value" />
                                                 </div>
                                             </div>
                                         </div>
@@ -145,14 +145,14 @@
                                             <div class="row">
                                                 <div class="col-6">
                                                     <button
-                                                        t-att-disabled="!reservation.need_check_in or None"
+                                                        t-att-disabled="reservation.state.value != 'Por entrar' ? 'disabled' : undefined"
                                                         class="btn btn-outline-dark btn-block">
                                                         <t t-esc="texts.check_in_text || _t('Check in')"/>
                                                     </button>
                                                 </div>
                                                 <div class="col-6">
                                                     <button
-                                                        t-att-disabled="!reservation.need_check_out or None"
+                                                        t-att-disabled="reservation.state.value != 'Dentro' ? 'disabled' : undefined"
                                                         class="btn btn-outline-dark btn-block">
                                                         <t t-esc="texts.check_out_text || _t('Check out')"/>
                                                     </button>
@@ -166,8 +166,11 @@
                                                     <label class="control-label col-12" for="sales_channel">
                                                         <t t-esc="texts.sales_channel_text || _t('Sales channel')"/>
                                                     </label>
-                                                    <input class="form-control"
-                                                        type="text" name="sales_channel" t-att-value="reservation.sales_channel" />
+                                                    <input
+                                                        class="form-control"
+                                                        type="text"
+                                                        name="sales_channel"
+                                                        t-att-value="reservation['ota_id/name'] ? reservation['ota_id/name'].value : reservation['create_uid/firstname'].value" />
                                                 </div>
                                             </div>
                                         </div>
@@ -217,8 +220,8 @@
                                                         <div class="col-6">
                                                             <div class="row">
                                                                 <strong class="col-12"><t t-esc="texts.outstading_text || _t('Outstanding')"/></strong>
-                                                                <span class="col-12">
-                                                                    <strong t-esc="reservation.outstanding"/>€
+                                                                <span class="col-12" t-if="reservation.folio_pending_amount.value">
+                                                                    <strong t-esc="reservation.folio_pending_amount.value"/>€
                                                                     (<span t-esc="reservation.outstanding_vat"/>€ vat)
                                                                 </span>
                                                             </div>
@@ -229,7 +232,7 @@
                                         </div>
 
                                         <div class="form-group form-field"
-                                            t-if="reservation.outstanding and reservation.outstanding &gt; 0 and payment_methods">
+                                            t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <t t-foreach="payment_methods" t-as="key">
@@ -268,14 +271,18 @@
                                         <div class="form-group mt32">
                                             <div class="row">
                                                 <div class="col-6">
-                                                    <button class="btn btn-outline-dark btn-block o_website_form_send"
+                                                    <button
+                                                        t-att-disabled="reservation.state.value == 'Cancelado' ? 'disabled' : undefined"
+                                                        class="btn btn-outline-dark btn-block o_website_form_send"
                                                         confirm="Current reservation will be cancelled, are you sure about that?"
                                                         special="cancel">
                                                         <t t-esc="_t('Cancel')"/>
                                                     </button>
                                                 </div>
                                                 <div class="col-6">
-                                                    <button type="submit"
+                                                    <button
+                                                        t-att-disabled="reservation.state.value == 'Cancelado' ? 'disabled' : undefined"
+                                                        type="submit"
                                                         class="btn btn-dark btn-block o_website_form_send">
                                                         <t t-esc="_t('Save')"/>
                                                     </button>

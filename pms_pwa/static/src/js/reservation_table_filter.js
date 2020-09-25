@@ -67,66 +67,65 @@ odoo.define('pms_pwa.reservation_table', function(require) {
       event.preventDefault();
       var self = this;
       var reservation_id = event.currentTarget.getAttribute("data-id");
-      /* RPC call or whatever to get the reservation data */
-      reservation_data = {
-        'id': reservation_id,
-        'image': '/web/static/src/img/placeholder.png',
-        'name': 'Alejandro Núñez',
-        'phone_number': '698745895',
-        'unread_msg': 2,
-        'messages': [
-          'Lorem ipsum',
-          'Unread short message',
-        ],
-        'room_type': 'HVM hb vistas al mar',
-        'room_number': '2',
-        'nights_number': '2',
-        'check_in_date': '2020-07-10',
-        'check_in_hour': '20:00',
-        'check_out_date': '2020-07-11',
-        'check_out_hour': '12:00',
-        'need_check_in': true,
-        'need_check_out': false,
-        'sales_channel': 'Booking',
-        'room_price': 100.00,
-        'total': 120.00,
-        'total_vat': 25.20,
-        'outstanding': 80.00,
-        'outstanding_vat': 16.80,
-        'extra': ['Breakfast', 'Cradle'],
-        'card_number': '1253 5212 5214 1256 2145',
-        'notes': 'Lorem ipsum.'
-      }
-      room_types =  ['HVM hb vistas al mar', 'AVM vistas mar'];
-      room_numbers =  [1,2,3,4,5,6,7,8,9,10];
-      extras =  ['Breakfast', 'Additional bed', 'Cradle'];
-      payment_methods =  ['Credit card', 'Cash'];
-      self.displayContent("pms_pwa.roomdoo_reservation_modal", {
-        reservation: reservation_data,
-        room_types: room_types,
-        extras: extras,
-        payment_methods: payment_methods,
-        room_numbers: room_numbers,
-        texts: {
-          reservation_text: this.reservation_text,
-          info_text: this.info_text,
-          unread_text: this.unread_text,
-          room_type_text: this.room_type_text,
-          room_number_text: this.room_number_text,
-          nights_number_text: this.nights_number_text,
-          check_in_text: this.check_in_text,
-          check_in_time_text: this.check_in_time_text,
-          check_out_text: this.check_out_text,
-          check_out_time_text: this.check_out_time_text,
-          room_price_text: this.room_price_text,
-          sales_channel_text: this.sales_channel_text,
-          extras_text: this.extras_text,
-          card_text: this.card_text,
-          total_text: this.total_text,
-          outstanding_text: this.outstanding_text,
-          pay_text: this.pay_text,
-          notes_text: this.notes_text,
-        },
+
+      /* RPC call to get the reservation data */
+      ajax.jsonRpc('/reservation/json_data', 'call', {
+        'reservation_id': reservation_id
+      }).then(function (data) {
+          setTimeout(function(){
+              if(data){
+                reservation_data = data;
+                /* Adding missing data */
+                reservation_data['image'] = '/web/static/src/img/placeholder.png';
+                reservation_data['unread_msg'] = 2;
+                reservation_data['messages'] = [
+                  'Lorem ipsum',
+                  'Unread short message',
+                ];
+                reservation_data['extra'] = ['Breakfast', 'Cradle'];
+                reservation_data['notes'] = 'Lorem ipsum.';
+                reservation_data['card_number'] = '1253 5212 5214 1256 2145';
+                reservation_data['room_number'] = 2;
+                reservation_data['nights_number'] = 2;
+                reservation_data['total'] = reservation_data['price_total'].value;
+                reservation_data['total_vat'] = (reservation_data['price_total'].value*21)/100;
+                reservation_data['outstanding_vat'] = (reservation_data['folio_pending_amount'].value*21)/100;
+                /* End missin data */
+                room_types =  ['Triple', 'Económica', 'Estándar', 'Individual', 'Premium', 'Superior'];
+                room_numbers =  [1,2,3,4,5,6,7,8,9,10];
+                extras =  ['Breakfast', 'Additional bed', 'Cradle'];
+                payment_methods =  ['Credit card', 'Cash'];
+                self.displayContent("pms_pwa.roomdoo_reservation_modal", {
+                  reservation: reservation_data,
+                  room_types: room_types,
+                  extras: extras,
+                  payment_methods: payment_methods,
+                  room_numbers: room_numbers,
+                  texts: {
+                    reservation_text: this.reservation_text,
+                    info_text: this.info_text,
+                    unread_text: this.unread_text,
+                    room_type_text: this.room_type_text,
+                    room_number_text: this.room_number_text,
+                    nights_number_text: this.nights_number_text,
+                    check_in_text: this.check_in_text,
+                    check_in_time_text: this.check_in_time_text,
+                    check_out_text: this.check_out_text,
+                    check_out_time_text: this.check_out_time_text,
+                    room_price_text: this.room_price_text,
+                    sales_channel_text: this.sales_channel_text,
+                    extras_text: this.extras_text,
+                    card_text: this.card_text,
+                    total_text: this.total_text,
+                    outstanding_text: this.outstanding_text,
+                    pay_text: this.pay_text,
+                    notes_text: this.notes_text,
+                  },
+                });
+              } else {
+                reservation_data = false;
+              }
+          }, 500);
       });
     },
   });
