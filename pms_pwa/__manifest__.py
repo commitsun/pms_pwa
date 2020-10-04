@@ -17,6 +17,7 @@
     "depends": [
         "base",
         "website",
+        "pms",
     ],
     "data": [
         "templates/_includes/head.xml",
