@@ -6,17 +6,18 @@ import base64
 import json
 import logging
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 
 from odoo.addons.web.controllers.main import Home
+from odoo.osv import expression
 
 _logger = logging.getLogger(__name__)
 
 class Home(Home):
     @http.route()
     def index(self, *args, **kw):
-        if request.session.uid and not request.env["res.users"].sudo().browse(
+        if request.session.uid and request.env["res.users"].sudo().browse(
             request.session.uid
         ).has_group("pms_pwa.group_pms_property_user"):
             return http.local_redirect(
@@ -25,7 +26,7 @@ class Home(Home):
         return super(Home, self).index(*args, **kw)
 
     def _login_redirect(self, uid, redirect=None):
-        if not redirect and not request.env["res.users"].sudo().browse(uid).has_group(
+        if not redirect and request.env["res.users"].sudo().browse(uid).has_group(
             "pms_pwa.group_pms_property_user"
         ):
             return "/"
@@ -34,81 +35,70 @@ class Home(Home):
 
 # Frontend controllers to test
 class TestFrontEnd(http.Controller):
-    '''
-        Temporal method to charge data demo
-    '''
-
-    def _prepare_demo_data_json(self):
-        obj_id = http.request.env.user.company_id.partner_id.id
-        attachment = http.request.env["ir.attachment"].search([
-                ("res_id", "=", obj_id),
-                ("name", "=", "reservation_list.json")
-            ],limit=1)
-        datas = base64.b64decode(attachment.datas)
-        json_data = json.loads(datas)
-        return json_data
-
-    '''
-        Está ruta está destinada inicialmente al dashboard, pero ahora
-        se usa para la lista de reservas, que luego se moverá a /reservation/
-        La lista de reservas, debe enviar incialmente 20-50 reservas y el número
-        páginas posibles y los filtros que se están aplicando o se pueden aplicar.
-
-        Debe poder aceptar al menos el parámetro "page" para la paginación,
-        de forma que podamos llamar desde front /reservation/?page=2
-        y los parámetros necesarios para los filtros y la busqueda ( estos
-        parámetros dependerán del creador del controller, desde front nos adaptamos
-        sin problema.)
-    '''
     @http.route(['/', '/page/<int:page>'], type='http', auth='public', methods=['GET'], website=True)
-    def reservation_list(self, page=0, **kw):
+    def reservation_list(self, page=0, search="", sortby=None, **post):
         paginate_by = 10
-        data = self._prepare_demo_data_json()
-        pager = request.website.pager(url='', total=len(data), page=page, step=paginate_by, scope=7, url_args=kw)
-        object_list = data[page*paginate_by:(page+1)*paginate_by]
-        return http.request.render('pms_pwa.roomdoo_reservation_list', {
-            'object_list': object_list,
-            'pager': pager
+        Reservation = request.env['pms.reservation']
+        values = {}
+
+        domain = self._get_search_domain(search, **post)
+
+        partner = request.env.user.partner_id
+        searchbar_sortings = {
+            'priority': {'label': _('Priority'), 'order': 'priority desc'},
+        }
+
+        # default sortby order
+        if not sortby:
+            sortby = 'priority'
+        sort_reservation = searchbar_sortings[sortby]['order']
+
+        reservation_count = Reservation.search_count(domain)
+        pager = request.website.pager(
+            url='',
+            total=reservation_count,
+            page=page,
+            step=paginate_by,
+            scope=7,
+            url_args=post)
+        offset = pager['offset']
+
+        reservations = Reservation.search(
+            domain,
+            order=sort_reservation,
+            limit=paginate_by,
+            offset=pager['offset'])
+
+        values.update({
+            'reservations': reservations,
+            'page_name': 'Reservations',
+            'pager': pager,
+            'default_url': '',
+            'searchbar_sortings': searchbar_sortings,
+            'sortby': sortby,
         })
 
+        return http.request.render('pms_pwa.roomdoo_reservation_list', values)
+
     @http.route('/reservation/<int:reservation_id>', type='http', auth='public', website=True)
-    def reservation_detail(self, reservation_id=None, **kw):
-        '''
-        Ruta que debe devolver todos los datos de la reserva en un json
-        indicando que campos del formulario son modificables y visibles
-        y aceptar envío post para guardar las modificaciones en el formulario
-        '''
-        data = self._prepare_demo_data_json()
-        reservation = [x for x in data if x['id'] == reservation_id]
-        reservation_obj = {}
-        for field, value in reservation[0].items():
-            reservation_obj[field] = {
-                "value": value,
-                "readonly": False,
-                "visible": True,
-            }
-        return http.request.render('pms_pwa.roomdoo_reservation_detail', {
-            'object': reservation_obj,
-            })
-
-    @http.route(['/reservation/json_data'], type='json', auth="public", methods=['POST'], website=True)
-    def reservation_detail_json(self, reservation_id=None, **kw):
-        """This route is called to get the reservation info via a json call."""
-        data = self._prepare_demo_data_json()
-        reservation = [x for x in data if x['id'] == int(reservation_id)]
-        reservation_obj = {}
-        for field, value in reservation[0].items():
-            reservation_obj[field] = {
-                "value": value,
-                "readonly": False,
-                "visible": True,
-            }
-        return reservation_obj
-
-    """
+    def reservation_detail(self, reservation_id, **kw):
+        reservation = request.env["pms.reseration"].browse([reservation_id])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
+        values = {
+            'page_name': 'Reservation',
+            'invoice': reservation,
+        }
+        return http.request.render(
+            'pms_pwa.roomdoo_reservation_detail',
+            values,
+            )
 
     @http.route('/reservation/<int:id>/check-in', auth='public', website=True)
     def reservation_check_in(self, **kw):
+        reservation = request.env["pms.reseration"].browse([reservation_id])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
         '''
             Ruta para realizar el checkin de la reserva 'id'
         '''
@@ -116,6 +106,9 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:id>/check-out', auth='public', website=True)
     def reservation_check_out(self, **kw):
+        reservation = request.env["pms.reseration"].browse([reservation_id])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
         '''
             Ruta para realizar el checkout de la reserva 'id'
         '''
@@ -123,17 +116,60 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:id>/pay', auth='public', website=True)
     def reservation_pay(self, **kw):
+        reservation = request.env["pms.reseration"].browse([reservation_id])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
         '''
             Ruta para realizar pago de la reserva 'id',
             ¿puede aceptar pagos parciales?
         '''
         pass
 
-    @http.route('/reservation/<int:id>/cancel', auth='public', website=True)
+    @http.route('/reservation/<int:id>/assign', auth='public', website=True)
     def reservation_cancel(self, **kw):
+        reservation = request.env["pms.reseration"].browse([reservation_id])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
         '''
             Ruta para realizar la cancelación de la reserva 'id'
         '''
         pass
 
-    """
+    @http.route('/reservation/<int:id>/invoice', auth='public', website=True)
+    def reservation_cancel(self, **kw):
+        reservation = request.env["pms.reseration"].browse([reservation_id])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
+        '''
+            Ruta para realizar la cancelación de la reserva 'id'
+        '''
+        pass
+
+    @http.route('/reservation/<int:id>/cancel', auth='public', website=True)
+    def reservation_cancel(self, **kw):
+        reservation = request.env["pms.reseration"].browse([reservation_id])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
+        '''
+            Ruta para realizar la cancelación de la reserva 'id'
+        '''
+        pass
+
+    def _get_search_domain(self, search, **post):
+        domains = []
+        if search:
+            for srch in search.split(" "):
+                subdomains = [
+                    [('localizator', 'ilike', srch)],
+                    [('partner_id.phone', 'ilike', srch)],
+                    [('partner_id.mobile', 'ilike', srch)],
+                    [('partner_id.name', 'ilike', srch)],
+                    [('partner_id.vat', 'ilike', srch)],
+                    [('partner_id.email', 'ilike', srch)]
+                ]
+                domains.append(expression.OR(subdomains))
+        #post send a filters with key: "operator&field"
+        #to build a odoo domain:
+        for k, v in post:
+            domain.append((k[v.index('&'):],k[:v.index('&'),v]))
+        return expression.AND(domains)

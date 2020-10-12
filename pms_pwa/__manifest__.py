@@ -11,14 +11,10 @@
     "contributors": [
         "Comunitea ",
         "Manuel Alejandro Núñez Liz <alejandro@zeleiro.com>",
-        "Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>"
+        "Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>",
     ],
     "website": "https://github.com/commitsun/pms_pwa",
-    "depends": [
-        "base",
-        "website",
-        "pms",
-    ],
+    "depends": ["base", "website", "pms",],
     "data": [
         "templates/_includes/head.xml",
         "templates/reservation_list.xml",
