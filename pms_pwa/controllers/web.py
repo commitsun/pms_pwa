@@ -82,7 +82,7 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:reservation_id>', type='http', auth='public', website=True)
     def reservation_detail(self, reservation_id, **kw):
-        reservation = request.env["pms.reseration"].browse([reservation_id])
+        reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
         values = {
@@ -94,9 +94,60 @@ class TestFrontEnd(http.Controller):
             values,
             )
 
+    @http.route(['/reservation/json_data'], type='json', auth="public", methods=['POST'], website=True)
+    def reservation_detail_json(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = request.env['pms.reservation'].sudo().search([('id', '=', int(reservation_id))])
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
+        
+        reservation_values = {
+            'id': reservation.id,
+            'partner_id': {
+                'id': reservation.partner_id.id,
+                'name': reservation.partner_id.name,
+                'mobile': reservation.partner_id.mobile,
+            },
+            'unread_msg': 2,
+            'messages': [
+                'Lorem ipsum',
+                'Unread short message',
+            ],
+            'room_type_id': {
+                'id': reservation.room_type_id.id,
+                'room_type': reservation.room_type_id.code_type,
+            },
+            'room_number': 5,
+            'extra': ['Breakfast', 'Cradle'],
+            'nights': reservation.nights,
+            'checkin': reservation.checkin,
+            'arrival_hour': reservation.arrival_hour,
+            'checkout': reservation.checkout,
+            'departure_hour': reservation.departure_hour,
+            'folio_id': {
+                'id': reservation.folio_id.id,
+                'amount_total': reservation.folio_id.amount_total,
+                'outstanding_vat': 15.69,
+            },
+            'state': reservation.state,
+            'origin': reservation.origin,
+            'detail_origin': reservation.detail_origin,
+            'credit_card_details': reservation.credit_card_details,
+            'price_total': reservation.price_total,
+            'price_tax': reservation.price_tax,
+            'folio_pending_amount': reservation.folio_pending_amount,
+            'folio_internal_comment': reservation.folio_internal_comment,
+            'room_types': ['TRP', 'ECO', 'SNG', 'CFR'],
+            'room_numbers': [1,2,3,4,5,6,7,8,9,10],
+            'extras': ['Breakfast', 'Additional bed', 'Cradle'],
+            'payment_methods': ['Credit card', 'Cash'],
+        }
+        
+        return reservation_values
+
     @http.route('/reservation/<int:id>/check-in', auth='public', website=True)
     def reservation_check_in(self, **kw):
-        reservation = request.env["pms.reseration"].browse([reservation_id])
+        reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
         '''
@@ -106,7 +157,7 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:id>/check-out', auth='public', website=True)
     def reservation_check_out(self, **kw):
-        reservation = request.env["pms.reseration"].browse([reservation_id])
+        reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
         '''
@@ -116,7 +167,7 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:id>/pay', auth='public', website=True)
     def reservation_pay(self, **kw):
-        reservation = request.env["pms.reseration"].browse([reservation_id])
+        reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
         '''
@@ -127,7 +178,7 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:id>/assign', auth='public', website=True)
     def reservation_cancel(self, **kw):
-        reservation = request.env["pms.reseration"].browse([reservation_id])
+        reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
         '''
@@ -137,7 +188,7 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:id>/invoice', auth='public', website=True)
     def reservation_cancel(self, **kw):
-        reservation = request.env["pms.reseration"].browse([reservation_id])
+        reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
         '''
@@ -147,7 +198,7 @@ class TestFrontEnd(http.Controller):
 
     @http.route('/reservation/<int:id>/cancel', auth='public', website=True)
     def reservation_cancel(self, **kw):
-        reservation = request.env["pms.reseration"].browse([reservation_id])
+        reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
         '''
