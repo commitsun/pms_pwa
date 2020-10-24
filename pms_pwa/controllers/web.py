@@ -100,7 +100,17 @@ class TestFrontEnd(http.Controller):
             reservation = request.env['pms.reservation'].sudo().search([('id', '=', int(reservation_id))])
         if not reservation:
             raise MissingError(_("This document does not exist."))
-        
+        allowed_rooms, allowed_room_types = reservation._get_allowed_rooms(
+                checkin=reservation.checkin,
+                checkout=reservation.checkout,
+                state=reservation.state,
+                overbooking=reservation.overbooking,
+                line_ids=reservation.reservation_line_ids.ids
+            )
+        extras = reservation._get_allowed_extras(
+                partner=reservation.partner_id,
+                pricelist=reservation.pricelist_id
+            )
         reservation_values = {
             'id': reservation.id,
             'partner_id': {
@@ -115,11 +125,15 @@ class TestFrontEnd(http.Controller):
             ],
             'room_type_id': {
                 'id': reservation.room_type_id.id,
-                'room_type': reservation.room_type_id.code_type,
+                'name': reservation.room_type_id.name,
             },
-            'room_number': 5,
-            'extra': ['Breakfast', 'Cradle'],
+            'room_id': {
+                'id': reservation.room_id.id,
+                'name': reservation.room_id.name,
+            },
+            'extras': reservation._get_reservation_services(),
             'nights': reservation.nights,
+            'reservation_line_ids': reservation._get_reservation_line_ids(),
             'checkin': reservation.checkin,
             'arrival_hour': reservation.arrival_hour,
             'checkout': reservation.checkout,
@@ -137,12 +151,12 @@ class TestFrontEnd(http.Controller):
             'price_tax': reservation.price_tax,
             'folio_pending_amount': reservation.folio_pending_amount,
             'folio_internal_comment': reservation.folio_internal_comment,
-            'room_types': ['TRP', 'ECO', 'SNG', 'CFR'],
-            'room_numbers': [1,2,3,4,5,6,7,8,9,10],
-            'extras': ['Breakfast', 'Additional bed', 'Cradle'],
-            'payment_methods': ['Credit card', 'Cash'],
+            'allowed_room_type_ids': allowed_room_types,
+            'allowed_room_ids': allowed_rooms,
+            'extras': extras,
+            'payment_methods': self._get_allowed_payments_journals(),
         }
-        
+
         return reservation_values
 
     @http.route('/reservation/<int:id>/check-in', auth='public', website=True)
@@ -224,3 +238,25 @@ class TestFrontEnd(http.Controller):
         for k, v in post:
             domain.append((k[v.index('&'):],k[:v.index('&'),v]))
         return expression.AND(domains)
+
+    def _get_allowed_payments_journals(self):
+        """
+        @return: Return dict with journals
+         [
+          {"id": id, "name": name},
+          {"id": id, "name": name},
+          ...
+          {"id": id, "name": name},
+         ]
+        """
+        payment_methods = request.env['account.journal'].sudo().search([
+            ('type', 'in', ['bank','cash'])
+            ])
+        allowed_journals = []
+        for journal in payment_methods:
+            allowed_journals.append({
+                'id': journal.id,
+                'name': journal.name,
+            })
+        return allowed_journals
+
