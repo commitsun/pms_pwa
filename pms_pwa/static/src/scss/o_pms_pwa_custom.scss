@@ -1,0 +1,17 @@
+form > div.form-group {
+    & label:not(.o_pms_pwa_checkbox_label),
+    & input,
+    & select,
+    & textarea {
+        background-color: #dcdcdc75;
+    }
+    & select,
+    & input {
+        border: unset;
+        border-bottom: 2px solid #000;
+    }
+    & label {
+        font-weight: unset;
+        font-size: small;
+    }
+}
