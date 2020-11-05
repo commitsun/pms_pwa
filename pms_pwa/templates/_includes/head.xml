@@ -2,8 +2,8 @@
 <odoo>
     <template id="website_roomdoo_scss" inherit_id="website.assets_frontend" priority="1">
         <xpath expr="//link[last()]" position="after">
-            <link rel="stylesheet" type="text/scss" href="/pms_pwa/static/src/scss/o_pms_pma_reservation_list.scss"/>
-            <link rel="stylesheet" type="text/scss" href="/pms_pwa/static/src/scss/o_pms_pma_calendar.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/pms_pwa/static/src/scss/o_pms_pwa_reservation_list.scss"/>
+            <link rel="stylesheet" type="text/scss" href="/pms_pwa/static/src/scss/o_pms_pwa_calendar.scss"/>
         </xpath>
     </template>
     <template id="website_roomdoo_js" inherit_id="website.assets_frontend">
@@ -11,8 +11,8 @@
         <xpath expr="script[last()]" position="after">
             <script type="text/javascript" src="/pms_pwa/static/src/js/vendor/infinite.scroll.js" />
             <script type="text/javascript" src="/pms_pwa/static/src/js/vendor/jquery.masonry.js" />
-            <script type="text/javascript" src="/pms_pwa/static/src/js/o_pms_pma_reservation_list_paginator.js" />
-            <script type="text/javascript" src="/pms_pwa/static/src/js/o_pms_pma_reservation_table_filter.js" />
+            <script type="text/javascript" src="/pms_pwa/static/src/js/o_pms_pwa_reservation_list_paginator.js" />
+            <script type="text/javascript" src="/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js" />
 
         </xpath>
     </template>
