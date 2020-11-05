@@ -1,0 +1,62 @@
+section.o_pms_pwa_roomdoo {
+
+    /* ================
+    Calendar Styling */
+    .calendar {
+        border-radius: 10px;
+    }
+
+    .month {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    @media (min-width: 992px) {
+        .month {
+            font-size: 3.5rem;
+        }
+    }
+
+    .calendar .day-names {
+        border-bottom: 1px solid #eee;
+        text-transform: uppercase;
+        border: 1px solid #eee;
+        min-height: 3rem;
+        margin: 0.5rem 0;
+    }
+
+    .calendar .days {
+        border: 1px solid #eee;
+        margin: 0.5rem 0;
+    }
+
+    .calendar .days .event {
+        font-size: 0.75rem;
+        color: white;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-radius: 1rem;
+    }
+
+    .calendar .days .event.span-2 {
+        width: 200%;
+    }
+
+    .calendar .days .event.begin {
+        border-radius: 1rem 0 0 1rem;
+    }
+
+    .calendar .days .event.end {
+        border-radius: 0 1rem 1rem 0;
+    }
+
+    .calendar .days .event.clear {
+        background: none;
+    }
+
+    .calendar .days .price {
+        color: #ddd;
+        text-align: right;
+    }
+}

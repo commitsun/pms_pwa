@@ -3,8 +3,51 @@
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
             <div class="oe_structure">
-                <section class="container">
-                    <h2>Calendar</h2>
+                <section class="container-fluid o_pms_pwa_roomdoo">
+                    <!-- Calendar -->
+                    <div class="calendar shadow bg-white p-5">
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-calendar fa-3x mr-3"></i>
+                            <h2 class="month font-weight-bold mb-0 text-uppercase">Noviembre 2020</h2>
+                        </div>
+                        <p class="font-italic text-muted mb-5">No events for this day.</p>
+                        <div class="row  day-names">
+                            <div class="col align-self-end">Habitaciones</div>
+                            <div class="col">Lunes</div>
+                            <div class="col">Martes</div>
+                            <div class="col">Miércoles</div>
+                            <div class="col">Jueves</div>
+                            <div class="col">Viernes</div>
+                            <div class="col">Sábado</div>
+                            <div class="col">Domingo</div>
+                        </div>
+                        <div class="row days">
+                            <div class="col align-self-end">Tipo</div>
+                            <div class="col">
+                                <div class="price">40€</div>
+                                <div class="event bg-success">Event with Long Name</div>
+                            </div>
+                            <div class="col">
+                                <div class="price">40€</div>
+                            </div>
+                            <div class="col">
+                                <div class="price">40€</div>
+                            </div>
+                            <div class="col">
+                                <div class="price">40€</div>
+                            </div>
+                            <div class="col">
+                                <div class="price">40€</div>
+                            </div>
+                            <div class="col">
+                                <div class="price">40€</div>
+                            </div>
+                            <div class="col">
+                                <div class="price">40€</div>
+                            </div>
+                        </div>
+
+                    </div>
                 </section>
             </div>
         </t>

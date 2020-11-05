@@ -260,3 +260,12 @@ class TestFrontEnd(http.Controller):
             })
         return allowed_journals
 
+    @http.route('/calendar', auth='public', website=True)
+    def calendar(self, **kw):
+        values = {
+            'page_name': 'Calendar',
+        }
+        return http.request.render(
+            'pms_pwa.roomdoo_calendar_page',
+            values,
+        )
