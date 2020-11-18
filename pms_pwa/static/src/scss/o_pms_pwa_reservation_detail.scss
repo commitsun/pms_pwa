@@ -250,7 +250,7 @@ section.o_pms_pwa_roomdoo {
         width: 90%;
         margin-top: 1rem;
         border-radius: 1.5rem;
-        background-image: linear-gradient(to right, $theme-color, $bg-theme-color);
+        background-image: linear-gradient(to right, $theme-color 50%, $bg-theme-color);
         color: #fff;
     }
     .btn-link {
