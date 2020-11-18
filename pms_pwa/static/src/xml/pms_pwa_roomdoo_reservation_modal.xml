@@ -45,8 +45,8 @@
                                 <div class="row">
                                     <div class="col-3 align-self-center">
                                         <img
-                                            t-attf-src="website.image_url(reservation.partner_id, 'image_128')"
-                                            class="img-thumbnail"
+                                            t-att-src="website.image_url(reservation.partner_id, 'image_128')"
+                                            class="img-thumbnail rounded-circle"
                                             t-att-title="reservation.partner_id.name"
                                             t-att-alt="reservation.partner_id.name"
                                         />
