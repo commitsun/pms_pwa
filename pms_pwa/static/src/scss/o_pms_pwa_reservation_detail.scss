@@ -1,14 +1,4 @@
 section.o_pms_pwa_roomdoo {
-    .stretch-card > .card {
-        width: 100%;
-        min-width: 100%;
-    }
-    .flex {
-        -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
-        flex: 1 1 auto;
-    }
-
     @media (max-width: 991.98px) {
         .padding {
             padding: 1.5rem;
@@ -87,56 +77,17 @@ section.o_pms_pwa_roomdoo {
         position: relative;
     }
 
-    .bg-yellow,
-    .callout.callout-warning,
-    .alert-warning,
-    .label-warning,
-    .modal-warning .modal-body {
-        background-color: $theme-color !important;
+    .bg-blue {
+        color: $white;
+        background-color: $theme-color;
     }
 
-    .bg-yellow {
-        color: #fff !important;
-    }
-
-    .btn {
-        border-radius: 3px;
-        -webkit-box-shadow: none;
-        box-shadow: none;
-        border: 1px solid transparent;
-    }
-
-    .btn-box-tool {
-        padding: 5px;
-        font-size: 12px;
-        background: transparent;
-        color: #97a0b3;
-    }
-
-    .direct-chat .box-body {
+    .direct-chat {
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
         position: relative;
         overflow-x: hidden;
         padding: 0;
-    }
-
-    .box-body {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 3px;
-        border-bottom-left-radius: 3px;
-        padding: 10px;
-    }
-
-    .box-header:before,
-    .box-body:before,
-    .box-footer:before,
-    .box-header:after,
-    .box-body:after,
-    .box-footer:after {
-        content: "";
-        display: table;
     }
 
     .direct-chat-messages {
@@ -174,42 +125,6 @@ section.o_pms_pwa_roomdoo {
 
     .direct-chat-timestamp {
         color: #999;
-    }
-
-    .btn-group-vertical > .btn-group:after,
-    .btn-group-vertical > .btn-group:before,
-    .btn-toolbar:after,
-    .btn-toolbar:before,
-    .clearfix:after,
-    .clearfix:before,
-    .container-fluid:after,
-    .container-fluid:before,
-    .container:after,
-    .container:before,
-    .dl-horizontal dd:after,
-    .dl-horizontal dd:before,
-    .form-horizontal .form-group:after,
-    .form-horizontal .form-group:before,
-    .modal-footer:after,
-    .modal-footer:before,
-    .modal-header:after,
-    .modal-header:before,
-    .nav:after,
-    .nav:before,
-    .navbar-collapse:after,
-    .navbar-collapse:before,
-    .navbar-header:after,
-    .navbar-header:before,
-    .navbar:after,
-    .navbar:before,
-    .pager:after,
-    .pager:before,
-    .panel-body:after,
-    .panel-body:before,
-    .row:after,
-    .row:before {
-        display: table;
-        content: "";
     }
 
     .direct-chat-img {
@@ -338,8 +253,66 @@ section.o_pms_pwa_roomdoo {
         background-image: linear-gradient(to right, $theme-color, $bg-theme-color);
         color: #fff;
     }
-    h5 > .btn-link {
+    .btn-link {
         color: $theme-color;
-        font-weight: 600;
+        font-weight: bold;
+    }
+
+    .btn-persona-info {
+        width: 100%;
+        background-color: $bg-theme-color;
+        color: $black;
+        border: 1px $theme-color solid;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        text-align: left;
+    }
+    .bg-red {
+        color: $white;
+        background-color: $red;
+    }
+    .pago-header {
+        color: $theme-color;
+        border-bottom: 1px $theme-color solid;
+    }
+    .right {
+        text-align: right;
+    }
+    .pago-badge {
+        background-color: $white;
+        border-radius: 0.5rem;
+        color: $theme-color;
+        font-size: small;
+        font-weight: bold;
+        line-height: 0.8rem;
+        min-height: 3rem;
+        .price {
+            color: $black;
+            font-size: medium;
+            line-height: 1.5rem;
+        }
+        .price2 {
+            color: $red;
+            font-size: medium;
+            line-height: 1.5rem;
+        }
+        .pt {
+            color: $black;
+            font-size: x-large;
+            margin-top: 2rem;
+            font-weight: bold;
+            line-height: 2.5rem;
+        }
+        .num {
+            color: $black;
+            font-weight: 400;
+            font-size: large;
+        }
+    }
+    hr {
+        height: 1px;
+        background-color: $theme-color;
+        border: none;
+        width: 100%;
     }
 }

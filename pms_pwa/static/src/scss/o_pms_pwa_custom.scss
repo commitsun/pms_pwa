@@ -11,3 +11,12 @@ form > div.form-group {
         font-size: small;
     }
 }
+.bg-dark {
+    color: $white;
+    background-color: #3b4140 !important;
+}
+h5 {
+    color: $theme-color !important;
+    font-size: large;
+    text-transform: uppercase;
+}

@@ -74,7 +74,7 @@
                                                     <span
                                                         data-toggle="tooltip"
                                                         title="New Messages"
-                                                        class="badge bg-yellow"
+                                                        class="badge bg-blue"
                                                         data-original-title="New Messages"
                                                     >20</span>
                                                 </div>
@@ -590,164 +590,81 @@
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div id="accordion-left">
-                                    <div class="card">
-                                        <div
-                                            class="card-header bg-white"
-                                            id="heading2One"
-                                        >
-                                            <h5 class="mb-0">
-                                                <button
-                                                    class="btn btn-link"
-                                                    data-toggle="collapse"
-                                                    data-target="#collapse2One"
-                                                    aria-expanded="true"
-                                                    aria-controls="collapse2One"
-                                                >
-                                            Reservas asociadas
+                                <div class="bg-dark">
+                                    <div class="card-header">
+                                        <div class="dropdown">
+                                            <button
+                                                class="btn btn-persona-info dropdown-toggle"
+                                                type="button"
+                                                id="dropdownMenuButton"
+                                                data-toggle="dropdown"
+                                                aria-haspopup="true"
+                                                aria-expanded="false"
+                                            >
+                                                <span
+                                                    data-toggle="tooltip"
+                                                    title="Huéspedes"
+                                                    class="badge bg-red"
+                                                    data-original-title="Huéspedes"
+                                                >20</span> Datos personales huéspedes
                                             </button>
-                                            </h5>
-                                        </div>
-                                        <div
-                                            id="collapse2One"
-                                            class="collapse show"
-                                            aria-labelledby="heading2One"
-                                            data-parent="#accordion-left"
-                                        >
-                                            <div class="card-body">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div
-                                            class="card-header bg-white"
-                                            id="heading2Two"
-                                        >
-                                            <h5 class="mb-0">
-                                                <button
-                                                    class="btn btn-link"
-                                                    data-toggle="collapse"
-                                                    data-target="#collapse2Two"
-                                                    aria-expanded="true"
-                                                    aria-controls="collapse2Two"
-                                                >
-                                              Detalles de pago
-                                             </button>
-                                            </h5>
-                                        </div>
-                                        <div
-                                            id="collapse2Two"
-                                            class="collapse show"
-                                            aria-labelledby="heading2Two"
-                                            data-parent="#accordion-left"
-                                        >
-                                            <div class="card-body">
-                                                <div class="form-group form-field">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <label
-                                                                class="control-label col-12"
-                                                                for="card_number"
-                                                            >
-                                                            Reservation card number
-                                                        </label>
-                                                            <input
-                                                                class="form-control"
-                                                                type="text"
-                                                                name="card_number"
-                                                                value="1253 5212 5214 1256 2145"
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group form-field">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                                <div class="col-6">
-                                                                    <div class="row">
-                                                                        <strong
-                                                                            class="col-12"
-                                                                        >Total</strong>
-                                                                        <span
-                                                                            class="col-12"
-                                                                        >
-                                                                        <strong
-                                                                            >120</strong>€
-                                                                        (<span
-                                                                            >25.2</span>€ vat)
-                                                                    </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-6">
-                                                                    <div class="row">
-                                                                        <strong
-                                                                            class="col-12"
-                                                                        >Outstanding</strong>
-                                                                        <span
-                                                                            class="col-12"
-                                                                        >
-                                                                        <strong
-                                                                            >80</strong>€
-                                                                        (<span
-                                                                            >16.8</span>€ vat)
-                                                                    </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group form-field">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <input
-                                                                        type="radio"
-                                                                        value="Credit card"
-                                                                        name="payment_methods"
-                                                                        id="Credit card"
-                                                                    />
-                                                                    <label
-                                                                        class="control-label o_pms_pwa_checkbox_label"
-                                                                        for="Credit card"
-                                                                    >
-                                                                        <span
-                                                                        >Credit card</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-12">
-                                                                    <input
-                                                                        type="radio"
-                                                                        value="Cash"
-                                                                        name="payment_methods"
-                                                                        id="Cash"
-                                                                    />
-                                                                    <label
-                                                                        class="control-label o_pms_pwa_checkbox_label"
-                                                                        for="Cash"
-                                                                    >
-                                                                        <span
-                                                                        >Cash</span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6 mt4">
-                                                            <button
-                                                                class="btn btn-outline-dark btn-block"
-                                                                special="cancel"
-                                                            >
-                                                                Pay
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                            <div
+                                                class="dropdown-menu btn-persona-info"
+                                                aria-labelledby="dropdownMenuButton"
+                                            >
+                                                <a
+                                                    class="dropdown-item"
+                                                    href="#"
+                                                >Pepito grillo</a>
+                                                <a
+                                                    class="dropdown-item"
+                                                    href="#"
+                                                >Maniloto gafotas</a>
                                             </div>
+                                        </div>
+                                        <h5 class="mb-0">
+                                              Detalles de pago
+                                        </h5>
+                                    </div>
+                                    <div class="card-body bg-dark">
+                                        <div class="row m-1 pago-header">
+                                            <div class="col-6"> </div>
+                                            <div class="col-2 right">noches</div>
+                                            <div class="col-4 right">importe(€)</div>
+                                        </div>
+                                        <div class="row m-2">
+                                            <div class="col-6">
+                                                Habitación con vistas al mar<br />
+                                                <small
+                                                >Tarifa estándar 40,00€/noche</small>
+                                            </div>
+                                            <div class="col-2 right">3</div>
+                                            <div class="col-4 right">120,00</div>
+                                        </div>
+                                        <div class="row m-2">
+                                            <div class="col-6">Desayuno 2 personas</div>
+                                            <div class="col-2 right">1</div>
+                                            <div class="col-4 right">10,00</div>
+                                        </div>
+                                        <div class="row pago-badge m-4 p-2">
+                                            <div class="col-4">Total<br /><span
+                                                    class="pt"
+                                                >130,00</span> </div>
+                                            <div class="col-4">Pago<br /> en reserva<br
+                                                /><span
+                                                    class="price"
+                                                >-32,00</span> </div>
+                                            <div class="col-4">Pendiente<br
+                                                /> de pago<br /><span
+                                                    class="price2"
+                                                >98,00</span> </div>
+                                        </div>
+                                        <hr class="m-1" />
+                                        <div class="row pago-badge m-4 p-2">
+                                            <div class="col-12">Nº tarjeta reserva</div>
+                                            <div
+                                                class="col-12 num"
+                                            >1253 2512 5214 1256 2145</div>
                                         </div>
                                     </div>
                                 </div>
