@@ -4,9 +4,8 @@
         <t t-call="website.layout">
             <div class="oe_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
-                    <h1 class="p-4">Detalle reserva</h1>
-                    <div class="border justify-content-center">
-                        <div class="row m-4">
+                    <div class="justify-content-center">
+                        <div class="row m-2">
                             <div class="col-6">
                                 <span class="display-5">Reserva 2512315</span>
                                 <span>Booking</span>
@@ -35,7 +34,8 @@
                                                 <img
                                                     class="rounded-circle img-fluid"
                                                     t-att-src="website.image_url(invoice.partner_id, 'image_128')"
-                                                    alt="person"
+                                                    t-att-title="invoice.partner_id.name"
+                                                    t-att-alt="invoice.partner_id.name"
                                                 />
                                             </div>
                                             <div class="col-12 ml-4">
@@ -45,9 +45,13 @@
                                                     />
                                                 </h3>
                                                 <p>
-                                                    <t
-                                                        t-esc="invoice.partner_id.phone"
-                                                    />
+                                                    <a
+                                                        t-att-href="'tel:' + str(invoice.partner_id.mobile)"
+                                                    >
+                                                        <t
+                                                            t-esc="invoice.partner_id.mobile"
+                                                        />
+                                                    </a>
                                                 </p>
                                                 <p>
                                                     <a
@@ -61,23 +65,110 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="card-body">
-                                            <h4>fecha</h4>
-                                            <p
-                                            >mensaje, esto es mejor esperar, a ver como lo hacen</p>
-                                            <p
-                                            >mensaje, esto es mejor esperar, a ver como lo hacen</p>
-                                            <hr />
-                                            <form>
-                                                <textarea />
-                                                <p
-                                                >Me espero a ver que pasa con los adjuntos</p>
-                                                <input
-                                                    type="submit"
-                                                    class="btn btn-black"
-                                                    value="Enviar"
-                                                />
-                                            </form>
+                                        <div
+                                            class="box direct-chat direct-chat-warning"
+                                        >
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">Chat Messages</h3>
+                                                <div class="box-tools pull-right">
+                                                    <span
+                                                        data-toggle="tooltip"
+                                                        title="New Messages"
+                                                        class="badge bg-yellow"
+                                                        data-original-title="New Messages"
+                                                    >20</span>
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                                <div class="direct-chat-messages">
+                                                    <div class="direct-chat-msg">
+                                                        <div
+                                                            class="direct-chat-info clearfix"
+                                                        >
+                                                            <span
+                                                                class="direct-chat-name pull-left"
+                                                            >
+                                                                <t
+                                                                    t-esc="invoice.partner_id.name"
+                                                                />
+                                                            </span>
+                                                            <span
+                                                                class="direct-chat-timestamp pull-right"
+                                                            >23 Jan 2:00 pm</span>
+                                                        </div>
+                                                        <img
+                                                            class="direct-chat-img rounded-circle img-fluid"
+                                                            t-att-src="website.image_url(invoice.partner_id, 'image_128')"
+                                                            t-att-title="invoice.partner_id.name"
+                                                            t-att-alt="invoice.partner_id.name"
+                                                        />
+                                                        <div class="direct-chat-text">
+                                                            For what reason would it be advisable for me to think about business content?
+                                                        </div>
+                                                    </div>
+                                                    <div class="direct-chat-msg right">
+                                                        <div
+                                                            class="direct-chat-info clearfix"
+                                                        >
+                                                            <span
+                                                                class="direct-chat-name pull-right"
+                                                            >HOTEL</span>
+                                                            <span
+                                                                class="direct-chat-timestamp pull-left"
+                                                            >23 Jan 2:05 pm</span>
+                                                        </div>
+                                                        <img
+                                                            class="direct-chat-img"
+                                                            src="https://cdn.onlinewebfonts.com/svg/img_406828.png"
+                                                            alt="hotel image"
+                                                        />
+                                                        <div class="direct-chat-text">
+                                                            Thank you for your believe in our supports
+                                                        </div>
+                                                    </div>
+                                                    <div class="direct-chat-msg">
+                                                        <div
+                                                            class="direct-chat-info clearfix"
+                                                        >
+                                                            <span
+                                                                class="direct-chat-name pull-left"
+                                                            >
+                                                                <t
+                                                                    t-esc="invoice.partner_id.name"
+                                                                />
+                                                            </span>
+                                                            <span
+                                                                class="direct-chat-timestamp pull-right"
+                                                            >23 Jan 5:37 pm</span>
+                                                        </div>
+                                                        <img
+                                                            class="direct-chat-img rounded-circle img-fluid"
+                                                            t-att-src="website.image_url(invoice.partner_id, 'image_128')"
+                                                            t-att-title="invoice.partner_id.name"
+                                                            t-att-alt="invoice.partner_id.name"
+                                                        />
+                                                        <div class="direct-chat-text">
+                                                            For what reason would it be advisable for me to think about business content?
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="box-footer text-center">
+                                                <form action="#" method="post">
+                                                    <div class="form-group">
+                                                        <input
+                                                            type="text"
+                                                            name="message"
+                                                            placeholder="Escribe..."
+                                                            class="form-control message-input"
+                                                        />
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-message"
+                                                        >ENVIAR</button>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -98,7 +189,7 @@
                                                     aria-expanded="true"
                                                     aria-controls="collapseOne"
                                                 >
-                                            Habitación
+                                            HABITACIÓN
                                             </button>
                                             </h5>
                                         </div>
