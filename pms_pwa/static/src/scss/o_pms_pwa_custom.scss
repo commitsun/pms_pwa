@@ -1,5 +1,7 @@
 $theme-color: #01b6e3;
 $bg-theme-color: #daf7fc;
+$grey-900: #394240;
+$grey-300: #dadada;
 form > div.form-group {
     & input,
     & select,
@@ -13,10 +15,59 @@ form > div.form-group {
 }
 .bg-dark {
     color: $white;
-    background-color: #3b4140 !important;
+    background-color: $grey-900 !important;
 }
 h5 {
     color: $theme-color !important;
     font-size: large;
     text-transform: uppercase;
+}
+.btn-radius {
+    border-radius: 1.5rem;
+}
+.btn-grey-900 {
+    background-color: $grey-900;
+    color: $white;
+    text-transform: uppercase;
+    font-weight: 600;
+    &:hover {
+        background-color: $theme-color;
+        color: $white;
+    }
+}
+.btn-grey-300 {
+    background-color: $grey-300;
+    color: $white;
+    text-transform: uppercase;
+    font-weight: 600;
+    &:hover {
+        color: $white;
+    }
+}
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Some browsers will not display the caret when using calc, so we put the fallback first */
+    background: url("/pms_pwa/static/img//br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
+    background: url("/pms_pwa/static/img//br_down.png") white no-repeat
+        calc(100% - 10px) !important; /* Better placement regardless of input width */
+}
+/*For IE*/
+select::-ms-expand {
+    display: none;
+}
+.open-calendar {
+    position: absolute;
+    top: 2.3rem;
+    right: 1.3rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: $white;
+    pointer-events: none;
+    color: $theme-color;
+}
+.open-calendar span {
+    border: none;
+    background: transparent;
 }

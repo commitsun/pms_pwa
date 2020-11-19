@@ -221,7 +221,6 @@ section.o_pms_pwa_roomdoo {
         margin-right: 50px;
         margin-left: 0;
     }
-
     .box-footer {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
@@ -258,15 +257,6 @@ section.o_pms_pwa_roomdoo {
         font-weight: bold;
     }
 
-    .btn-persona-info {
-        width: 100%;
-        background-color: $bg-theme-color;
-        color: $black;
-        border: 1px $theme-color solid;
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-        text-align: left;
-    }
     .bg-red {
         color: $white;
         background-color: $red;
@@ -315,5 +305,31 @@ section.o_pms_pwa_roomdoo {
         background-color: $theme-color;
         border: none;
         width: 100%;
+    }
+    .btn-persona-info::before {
+        display: none;
+    }
+    .btn-persona-info::after {
+        display: none;
+    }
+    .btn-persona-info {
+        width: 100%;
+        background-color: $bg-theme-color;
+        color: $black;
+        border: 1px $theme-color solid;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        text-align: left;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: url("/pms_pwa/static/img//br_down.png") $bg-theme-color no-repeat
+            98.5% !important;
+        background: url("/pms_pwa/static/img//br_down.png") $bg-theme-color no-repeat
+            calc(100% - 10px) !important;
+    }
+    /*For IE*/
+    .btn-persona-info::-ms-expand {
+        display: none;
     }
 }
