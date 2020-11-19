@@ -7,8 +7,12 @@
                     <div class="justify-content-center">
                         <div class="row m-2">
                             <div class="col-6">
-                                <span class="display-5">Reserva 2512315</span>
-                                <span>Booking</span>
+                                <h1>
+                                    <span class="title-header">Reserva</span>
+                                    <span class="blue-header"> 2512315</span>
+                                    <span class="moreinfo-header"> Booking</span>
+                                    <span class="status-header"> ESTADO</span>
+                                </h1>
                             </div>
                             <div class="col-6 text-right">
                                 <a
@@ -475,7 +479,7 @@
                                                                 <input
                                                                     type="checkbox"
                                                                     value="Additional bed"
-                                                                    id="Additional bed"
+                                                                    id="additional-bed"
                                                                 />
                                                                 <label
                                                                     class="control-label o_pms_pwa_checkbox_label"

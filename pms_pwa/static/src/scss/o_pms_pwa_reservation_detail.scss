@@ -332,4 +332,28 @@ section.o_pms_pwa_roomdoo {
     .btn-persona-info::-ms-expand {
         display: none;
     }
+    .title-header {
+        color: $black;
+        font-weight: 900;
+        font-size: large;
+        text-transform: uppercase;
+    }
+    .blue-header {
+        color: $theme-color;
+        font-weight: 900;
+        font-size: large;
+        margin-left: 2rem;
+    }
+    .moreinfo-header {
+        color: $black;
+        font-weight: 600;
+        font-size: medium;
+        margin-left: 4rem;
+    }
+    .status-header {
+        color: $red;
+        font-weight: 900;
+        font-size: large;
+        margin-left: 2rem;
+    }
 }

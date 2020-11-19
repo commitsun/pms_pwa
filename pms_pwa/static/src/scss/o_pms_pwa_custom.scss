@@ -13,6 +13,17 @@ form > div.form-group {
         font-size: small;
     }
 }
+form > sheet > div.form-group {
+    & input,
+    & select,
+    & textarea {
+        border: 2px solid $theme-color;
+    }
+    & label {
+        font-weight: unset;
+        font-size: small;
+    }
+}
 .bg-dark {
     color: $white;
     background-color: $grey-900 !important;
