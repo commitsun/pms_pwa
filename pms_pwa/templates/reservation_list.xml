@@ -5,290 +5,132 @@
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="oe_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
-                    <h2>
-                        <strong>My bookings <span
-                                t-esc="'('+str(len(reservations))+')'"
-                            /></strong>
-                    </h2>
+                    <h2><strong>My bookings <span t-esc="'('+str(len(reservations))+')'"/></strong></h2>
                     <div class="row">
                         <div class="col-8 col-md-8 col-lg-5">
-                            <input
-                                type="text"
-                                class="form-control o_pmw_pwa_search_input"
-                                placeholder="Search"
-                                title="Search..."
-                            />
+                            <input type="text" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
                         </div>
                         <div class="col-4 col-md-4 col-lg-7">
                             <span class="dropdown">
-                                <a
-                                    role="button"
-                                    class="btn btn-outline-dark o_pms_pwa_float_right"
-                                    data-toggle="dropdown"
-                                    href="#"
-                                >
-                                    <i
-                                        class="fa fa-bars d-sm-block d-md-block d-lg-none"
-                                    />
-                                    <span
-                                        class="d-none d-lg-flex align-self-center"
-                                    >FILTERS</span>
+                                <a role="button" class="btn btn-outline-dark o_pms_pwa_float_right" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-bars d-sm-block d-md-block d-lg-none"/>
+                                    <span class="d-none d-lg-flex align-self-center">FILTERS</span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dLabel">
-                                    <button
-                                        class="dropdown-item"
-                                        type="button"
-                                    >Check in</button>
-                                    <button
-                                        class="dropdown-item"
-                                        type="button"
-                                    >Check out</button>
-                                    <button
-                                        class="dropdown-item"
-                                        type="button"
-                                    >Cancelled</button>
+                                    <button class="dropdown-item" type="button">Check in</button>
+                                    <button class="dropdown-item" type="button">Check out</button>
+                                    <button class="dropdown-item" type="button">Cancelled</button>
                                 </div>
                             </span>
                         </div>
                     </div>
-                    <div
-                        class="table-sm o_pms_pwa_reservation_list_table"
-                        id="o_pms_pwa_reservation_list_table"
-                    >
-                        <div class="row m-0 d-none d-lg-flex">
-                            <div class="col-2 align-self-end">Guest</div>
-                            <div class="col-8">
-                                <div class="row">
-                                    <div class="col-1 align-self-end">ID</div>
-                                    <div
-                                        class="col-3 col-lg-2 col-xl-3 align-self-end"
-                                    >Room type</div>
-                                    <div class="col-1 align-self-end">Room nº</div>
-                                    <div
-                                        class="col-1 col-lg-2 col-xl-1 align-self-end"
-                                    >Check in</div>
-                                    <div
-                                        class="col-1 col-lg-2 col-xl-1 align-self-end"
-                                    >Check out</div>
-                                    <div
-                                        class="col-2 col-lg-1 col-xl-2 align-self-end"
-                                    >Sales channel</div>
-                                    <div class="col-1 align-self-end">Total (€)</div>
-                                    <div
-                                        class="col-1 align-self-end"
-                                    >Outstanding (€)</div>
-                                    <div class="col-1" />
-                                </div>
-                            </div>
-                            <div class="col-2 align-self-end">Observ/Extras</div>
-                        </div>
-                        <t t-foreach="reservations" t-as="obj">
-                            <div class="row mb-4 mb-lg-0 m-0 item">
-                                <div class="col-6 col-md-6 col-lg-2">
-                                    <div class="row">
-                                        <div
-                                            class="col-5 col-sm-3 col-md-3 col-lg-3 d-lg-none d-xl-block align-self-center o_pms_pwa_profile_image_container"
-                                        >
-                                            <img
-                                                t-att-src="website.image_url(obj.partner_id, 'image_128')"
-                                                class="img-thumbnail rounded-circle"
-                                                t-att-title="obj.partner_id.name"
-                                                t-att-alt="obj.partner_id.name"
-                                            />
-                                        </div>
-                                        <div
-                                            class="col-7 col-sm-7 col-md-9 col-lg-12 col-xl-9"
-                                        >
-                                            <div
-                                                class="row o_pms_pwa_min_client_min_height"
-                                            >
-                                                <div class="col-12 align-self-center">
-                                                    <a
-                                                        href="#"
-                                                        type="button"
-                                                        class="o_pms_pwa_reservation_modal"
-                                                        t-att-data-id="obj.id"
-                                                    >
-                                                        <t
-                                                            t-esc="obj.partner_id.name"
-                                                        />
-                                                    </a>
-                                                </div>
-                                                <div
-                                                    class="col-12 col-md-8 col-lg-8 align-self-center"
-                                                >
-                                                    <a
-                                                        t-att-href="'tel:' + str(obj.partner_id.mobile)"
-                                                    >
-                                                        <t
-                                                            t-esc="obj.partner_id.mobile"
-                                                        />
-                                                    </a>
-                                                </div>
-                                                <div
-                                                    class="col-4 d-none d-lg-flex align-self-center"
-                                                >
-                                                    <a
-                                                        class="fa fa-envelope-o fa-lg"
-                                                        href="#"
-                                                    />
-                                                    <span
-                                                        class="badge badge-pill badge-dark o_pms_pwa_badge_position"
-                                                    >0</span>
-                                                </div>
+
+                    <div class="tags_holder"/>
+
+                    <div class="table-wrapper">
+                        <table class="table table-hover o_pms_pwa_reservation_list_table">
+                            <thead>
+                                <tr>
+                                    <th>Guest</th>
+                                    <th>ID</th>
+                                    <th>Room type</th>
+                                    <th class="text-center">Room nº</th>
+                                    <th>Check in</th>
+                                    <th>Check out</th>
+                                    <th class="text-center">Sales channel</th>
+                                    <th class="text-center">Total(€)</th>
+                                    <th class="text-center">Outstanding(€)</th>
+                                    <th class="text-center">Room qty</th>
+                                    <th>Requests</th>
+                                    <th>Services</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="reservations" t-as="obj">
+                                    <tr class="o_pms_pwa_reservation" t-att-data-id="obj.id">
+                                        <td class="first-col">
+                                            <span class="float-left">
+                                                <img t-att-src="website.image_url(obj.partner_id, 'image_128')"
+                                                    width="50"
+                                                    class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                                                    t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
+                                                <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
+                                            </span>
+                                            <div class="float-left">
+                                                <t t-esc="obj.partner_id.name"/>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-6 col-lg-8">
-                                    <div class="row">
-                                        <div
-                                            class="order-1 col-5 col-md-8 col-lg-1 align-self-center"
-                                        >
-                                            <a
-                                                href="#"
-                                                type="button"
-                                                class="o_pms_pwa_reservation_modal"
-                                                t-att-data-id="obj.id"
-                                            >
-                                                <t t-esc="obj.localizator" />
+                                            <br/>
+                                            <a class="float-left" t-att-href="'tel:' + str(obj.partner_id.mobile or obj.partner_id.phone)">
+                                                <t t-esc="obj.partner_id.mobile or obj.partner_id.phone"/>
                                             </a>
-                                        </div>
-                                        <div
-                                            class="order-4 order-sm-4 order-md-4 order-lg-2 col-9 col-md-9 col-lg-2 col-xl-3 align-self-center o_pmw_pwa_ellipsis"
-                                        >
-                                            <t t-esc="obj.room_type_id.code_type" />
-                                        </div>
-                                        <div
-                                            class="order-5 order-sm-5 order-md-5 order-lg-3 col-3 col-md-3 col-lg-1 align-self-center"
-                                        >2</div>
-                                        <div
-                                            class="order-6 order-sm-6 order-md-6 order-lg-4 col-1 col-lg-2 col-xl-1 d-none d-lg-flex align-self-center"
-                                        >
-                                            <t t-esc="obj.checkin" />
-                                            <t t-esc="obj.arrival_hour" />
-                                        </div>
-                                        <div
-                                            class="order-7 order-sm-7 order-md-7 order-lg-5 col-1 col-lg-2 col-xl-1 d-none d-lg-flex align-self-center"
-                                        >
-                                            <t t-esc="obj.checkout" />
-                                            <t t-esc="obj.departure_hour" />
-                                        </div>
-                                        <div
-                                            class="order-8 order-sm-8 order-md-8 order-lg-6 col-2 col-lg-1 col-xl-2 d-none d-lg-flex align-self-center"
-                                        >
-                                            <t t-if="obj.origin" t-esc="obj.origin" />
-                                            <t
-                                                t-if="obj.detail_origin"
-                                                t-esc="obj.detail_origin"
-                                            />
-                                        </div>
-                                        <div
-                                            class="order-2 order-sm-2 order-md-2 order-lg-7 col-4 col-md-3 col-lg-1 align-self-center"
-                                        >
-                                            <t t-esc="obj.folio_id.amount_total" />
-                                        </div>
-                                        <div
-                                            class="order-9 order-sm-9 order-md-9 order-lg-8 col-1 d-none d-lg-flex align-self-center"
-                                        >
-                                            <t t-esc="obj.folio_id.pending_amount" />
-                                        </div>
-                                        <div
-                                            class="order-10 order-sm-10 order-md-10 order-lg-9 col-1 d-none d-lg-flex align-self-center"
-                                        >
-                                            <button
-                                                t-if="obj.folio_id.pending_amount"
-                                                type="button"
-                                                class="btn btn-outline-dark"
-                                                data-id="254"
-                                            >
-                                                Pay
-                                            </button>
-                                        </div>
-                                        <div
-                                            class="order-3 order-sm-3 order-md-3 order-sm-3 order-md-3 col-3 col-md-1 d-sm-block d-md-block d-lg-none"
-                                        >
-                                            <div class="row float-right">
-                                                <span class="dropdown">
-                                                    <a
-                                                        role="button"
-                                                        class="btn fa fa-ellipsis-v"
-                                                        data-toggle="dropdown"
-                                                        href="#"
-                                                    />
-                                                    <div
-                                                        class="dropdown-menu"
-                                                        aria-labelledby="dLabel"
-                                                    >
-                                                        <button
-                                                            t-if="obj.state == 'confirm'"
-                                                            class="dropdown-item"
-                                                            type="button"
-                                                        >Check in</button>
-                                                        <button
-                                                            class="dropdown-item"
-                                                            type="button"
-                                                        >Pay</button>
-                                                        <button
-                                                            class="dropdown-item"
-                                                            type="button"
-                                                        >Asign</button>
-                                                    </div>
-                                                </span>
+                                            <span class="float-right "><i class="fa fa-user"/>3</span>
+                                            <br/>
+                                            <div class="progress mt-4">
+                                                <div t-att-class="'progress-bar '
+                                                    + ('bg-success ' if obj.partner_id.profile_completition &gt; 75 else ' ')
+                                                    + ('bg-warning ' if 75 &gt; obj.partner_id.profile_completition &gt; 50 else ' ')
+                                                    + ('bg-danger ' if obj.partner_id.profile_completition &lt; 50 else ' ')"
+                                                    role="progressbar" t-att-style="'width:'+ str(obj.partner_id.profile_completition) + '%'"
+                                                    t-att-aria-valuenow="obj.partner_id.profile_completition" aria-valuemin="0"
+                                                    aria-valuemax="100"></div>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-lg-none">
-                                    <div class="row">
-                                        <div class="col-6 align-self-center">
-                                            <input
-                                                t-if="obj.state == 'confirm'"
-                                                type="checkbox"
-                                                checked="checked"
-                                            />
-                                            <input t-else="" type="checkbox" />
-                                            <t t-esc="obj.checkin" />
-                                            <t t-esc="obj.arrival_hour" />
-                                        </div>
-                                        <div class="col-6 align-self-center">
-                                            <input
-                                                t-if="obj.state == 'done'"
-                                                type="checkbox"
-                                                checked="checked"
-                                            />
-                                            <input t-else="" type="checkbox" />
-                                            <t t-esc="obj.checkout" />
-                                            <t t-esc="obj.departure_hour" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-2 align-self-center">
-                                    <div class="row">
-                                        <div
-                                            class="col-12 col-md-6 col-lg-6 mb-2 mb-lg-0 o_pmw_pwa_ellipsis"
-                                        >
-                                            <t
-                                                t-if="obj.folio_internal_comment"
-                                                t-esc="obj.folio_internal_comment"
-                                            />
-                                        </div>
-                                        <div
-                                            class="col-6 d-none d-lg-inline align-self-center"
-                                        >
-                                            <button
-                                                t-if="obj.state == 'confirm'"
-                                                type="button"
-                                                class="btn btn-dark float-right"
-                                                t-att-data-id="obj.id"
-                                            >
-                                                Check in
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </t>
+                                        </td>
+                                        <td class="o_pms_pwa_lh45">
+                                            <t t-esc="obj.localizator"/>
+                                        </td>
+                                        <td class="o_pms_pwa_lh45">
+                                            <t t-esc="obj.room_type_id.code_type"/>
+                                        </td>
+                                        <td class="o_pms_pwa_lh45 text-center">
+                                            2
+                                        </td>
+                                        <td>
+                                            <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
+                                        </td>
+                                        <td>
+                                            <t t-esc="obj.checkout"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <t t-if="obj.origin" t-esc="obj.origin"/>
+                                            <span class="o_pms_pwa_wler" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
+                                        </td>
+                                        <td class="o_pms_pwa_lh45 text-center">
+                                            <t t-esc="obj.folio_id.amount_total"/>
+                                        </td>
+                                        <td class="o_pms_pwa_lh45 text-center">
+                                            <t t-esc="obj.folio_id.pending_amount"/>
+                                        </td>
+                                        <td class="o_pms_pwa_lh45 text-center">
+                                            3
+                                        </td>
+                                        <td class="o_pms_pwa_lh45">
+                                            <t t-if="obj.folio_internal_comment" t-esc="obj.folio_internal_comment"/>
+                                        </td>
+                                        <td class="o_pms_pwa_lh45">
+                                            Desayuno
+                                        </td>
+                                        <td>
+                                            <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
+                                            <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
+                                            <button t-att-url="pwa_action_buttons[keys[0]]" class="btn" type="button"><t t-esc="keys[0]"/></button>
+                                            <span class="dropdown">
+                                                <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                                                <div class="dropdown-menu" aria-labelledby="dLabel">
+                                                    <t t-foreach="pwa_action_buttons" t-as="button">
+                                                        <button 
+                                                            t-if="button != keys[0]"
+                                                            t-att-url="pwa_action_buttons[button]"
+                                                            class="dropdown-item"
+                                                            type="button"><t t-esc="button"/></button>
+                                                    </t>
+                                                </div>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
                     </div>
                 </section>
             </div>

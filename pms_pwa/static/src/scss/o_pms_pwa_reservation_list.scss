@@ -14,41 +14,80 @@ section.o_pms_pwa_roomdoo {
     button.btn-outline-dark {
         border-width: 1px;
     }
-    div.o_pms_pwa_reservation_list_table {
-        & > div {
-            text-align: left;
+    .table-hover {
+        font-family: 'Barlow Condensed', sans-serif;
+        letter-spacing: 1px;
+        font-size: 16px;
+        color: $table-text-color;
+        line-height: 16px;
+        & > thead {
+            color: $theme-color;
+            & > tr {
+                & > th {
+                    border-top: none;
+                    border-bottom-color: $theme-color;
+                    font-weight: normal;
+                    line-height: 15px;
+                }
+            }
         }
-        & > div:first-of-type {
-            text-transform: uppercase;
+        & > tbody {
+            & > tr {
+                & > td {
+                    border-top: none;
+                    & > span.o_pms_pwa_wler {
+                        font-weight: lighter;
+                        color: $table-text-color-lighter;
+                    }
+                    & > span.dropdown {
+                        & a.btn {
+                            color: $theme-color; 
+                        }
+                    }
+                    & > button.btn {
+                        color: $theme-color;
+                    }
+                }
+                & > td.first-col {
+                    div:first-of-type {
+                        font-weight: bold;
+                    }
+                    a:first-of-type {
+                        color: $table-text-color;
+                    }
+                    .o_pms_pwa_badge_position {
+                        position: relative;
+                        top: -20px;
+                        right: 25px;
+                        font-size: 12px;
+                        font-family: 'Barlow', sans-serif;
+                        font-weight: bold;
+                        color: #FFFFFF;
+                        background-color: $badge-color;
+                        line-height: 14px;
+                    }
+                    .o_pms_pwa_img_rounded_bg {
+                        background-color: $theme-color;
+                    }
+                    .progress {
+                        height: 0.2rem;
+                    }
+                    i {
+                        margin-right: 5px;
+                        color: $theme-color; 
+                    }
+                }
+                & > td.o_pms_pwa_lh45 {
+                    line-height: 45px;
+                }
+                & > td:last-of-type {
+                    border-left: 5px solid $bg-theme-color;
+                }
+            }
+            & > tr:hover {
+                background-color: $bg-theme-color;
+            }
         }
-        & > div:not(:first-of-type) {
-            border-left: 1px solid #000000;
-            border-right: 1px solid #000000;
-        }
-        & > div:nth-child(even) {
-            border-top: 1px solid #000000;
-            border-bottom: 1px solid #000000;
-        }
-        & > div:not(:first-of-type):hover {
-            background-color: #f1f1f1;
-        }
-        & > .row.item > div:first-of-type {
-            border-right: 1px solid #000000;
-        }
-        div.o_pmw_pwa_ellipsis {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        div.o_pms_pwa_min_client_min_height {
-            min-height: 40px;
-        }
-    }
-    .o_pms_pwa_badge_position {
-        position: relative;
-        top: -10px;
-        right: 12px;
-        font-size: 10px;
     }
 }
 

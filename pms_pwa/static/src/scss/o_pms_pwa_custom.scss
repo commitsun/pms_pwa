@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&display=swap');
 $theme-color: #01b6e3;
 $bg-theme-color: #daf7fc;
 $grey-900: #394240;
 $grey-300: #dadada;
+$badge-color: #FF3B00;
+$table-text-color: #3F4443;
+$table-text-color-lighter: #B5BFBD;
 form > div.form-group {
     & input,
     & select,

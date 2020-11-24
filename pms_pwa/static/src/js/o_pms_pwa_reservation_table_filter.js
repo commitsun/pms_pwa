@@ -27,12 +27,12 @@ odoo.define("pms_pwa.reservation_table", function(require) {
     });
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
-        selector: "div.o_pms_pwa_reservation_list_table",
+        selector: "table.o_pms_pwa_reservation_list_table",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
         ],
         events: {
-            "click a.o_pms_pwa_reservation_modal": "_onClickReservationButton",
+            "click tr.o_pms_pwa_reservation": "_onClickReservationButton",
         },
         /**
          * @override
