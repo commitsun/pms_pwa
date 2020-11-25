@@ -1,21 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Barlow&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed&display=swap");
+
 $theme-color: #01b6e3;
 $bg-theme-color: #daf7fc;
 $grey-900: #394240;
 $grey-300: #dadada;
-$badge-color: #FF3B00;
-$table-text-color: #3F4443;
-$table-text-color-lighter: #B5BFBD;
+$badge-color: #ff3b00;
+$table-text-color: #3f4443;
+$table-text-color-lighter: #b5bfbd;
+
 form > div.form-group {
     & input,
     & select,
     & textarea {
-        border: 2px solid $theme-color;
+        min-height: 3rem;
+        border: 1px $theme-color solid;
+        font-weight: unset;
+        font-size: medium;
+        padding-top: 0.5rem;
     }
     & label {
         font-weight: unset;
         font-size: small;
+        position: absolute;
+        color: $theme-color;
+    }
+    .o_pms_pwa_checkbox {
+        min-height: 1rem;
+        border: 1px solid;
+        margin-left: -3rem;
+        border-color: $theme-color !important;
+    }
+    .o_pms_pwa_checkbox_label {
+        font-weight: unset;
+        font-size: medium;
+        position: absolute;
+        color: $black;
+        padding-left: 0.5rem;
     }
 }
 form > sheet > div.form-group {
@@ -33,13 +54,19 @@ form > sheet > div.form-group {
     color: $white;
     background-color: $grey-900 !important;
 }
-h5 {
+h3 {
     color: $theme-color !important;
-    font-size: large;
     text-transform: uppercase;
+}
+h4 {
+    color: $theme-color !important;
+    font-weight: 900 !important;
+    font-size: large !important;
 }
 .btn-radius {
     border-radius: 1.5rem;
+    font-weight: 600;
+    font-size: medium;
 }
 .btn-grey-900 {
     background-color: $grey-900;
@@ -73,9 +100,9 @@ select {
 select::-ms-expand {
     display: none;
 }
-.open-calendar {
+.o_pms_pwa_calendar_icon {
     position: absolute;
-    top: 2.3rem;
+    top: 0.7rem;
     right: 1.3rem;
     width: 1.5rem;
     height: 1.5rem;
@@ -83,7 +110,7 @@ select::-ms-expand {
     pointer-events: none;
     color: $theme-color;
 }
-.open-calendar span {
+.o_pms_pwa_calendar_icon span {
     border: none;
     background: transparent;
 }

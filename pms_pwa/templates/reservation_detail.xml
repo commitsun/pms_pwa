@@ -30,13 +30,13 @@
                             </div>
                         </div>
                         <div class="row m-2">
-                            <div class="col-sm">
-                                <div class="card">
+                            <div class="col-md-12 col-lg-4">
+                                <div class="card shadow">
                                     <div class="container-fluid">
                                         <div class="row bg-dark">
                                             <div class="col-12 ml-4 my-4">
                                                 <img
-                                                    class="rounded-circle img-fluid"
+                                                    class="rounded-circle img-fluid o_pms_pwa_img_rounded"
                                                     t-att-src="website.image_url(invoice.partner_id, 'image_128')"
                                                     t-att-title="invoice.partner_id.name"
                                                     t-att-alt="invoice.partner_id.name"
@@ -101,7 +101,7 @@
                                                             >23 Jan 2:00 pm</span>
                                                         </div>
                                                         <img
-                                                            class="direct-chat-img rounded-circle img-fluid"
+                                                            class="o_pms_pwa_direct_chat_img rounded-circle img-fluid"
                                                             t-att-src="website.image_url(invoice.partner_id, 'image_128')"
                                                             t-att-title="invoice.partner_id.name"
                                                             t-att-alt="invoice.partner_id.name"
@@ -122,7 +122,7 @@
                                                             >23 Jan 2:05 pm</span>
                                                         </div>
                                                         <img
-                                                            class="direct-chat-img"
+                                                            class="o_pms_pwa_direct_chat_img right"
                                                             src="https://cdn.onlinewebfonts.com/svg/img_406828.png"
                                                             alt="hotel image"
                                                         />
@@ -146,7 +146,7 @@
                                                             >23 Jan 5:37 pm</span>
                                                         </div>
                                                         <img
-                                                            class="direct-chat-img rounded-circle img-fluid"
+                                                            class="o_pms_pwa_direct_chat_img rounded-circle img-fluid"
                                                             t-att-src="website.image_url(invoice.partner_id, 'image_128')"
                                                             t-att-title="invoice.partner_id.name"
                                                             t-att-alt="invoice.partner_id.name"
@@ -177,41 +177,30 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm">
-                                <!--Accordion-->
-                                <div id="accordion">
-                                    <div class="card">
-                                        <div
-                                            class="card-header bg-white"
-                                            id="headingOne"
-                                        >
-                                            <h5 class="mb-0">
-                                                <button
-                                                    class="btn btn-link"
-                                                    data-toggle="collapse"
-                                                    data-target="#collapseOne"
-                                                    aria-expanded="true"
-                                                    aria-controls="collapseOne"
-                                                >
+                            <div class="col-md-12 col-lg-4">
+                                <div class="card shadow">
+                                    <div
+                                        class="card-header bg-white o_pms_pwa_card_header"
+                                    >
+                                        <h3 class="mb-0">
                                             HABITACIÓN
-                                            </button>
-                                            </h5>
-                                        </div>
-                                        <div
-                                            id="collapseOne"
-                                            class="collapse show"
-                                            aria-labelledby="headingOne"
-                                            data-parent="#accordion"
+                                        </h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form
+                                            action="#"
+                                            method="post"
+                                            class="form-horizontal"
                                         >
-                                            <div class="card-body">
-                                                <form action="#" method="post">
-                                                    <div
-                                                        class="form-group form-field mt8"
-                                                    >
+                                            <div class="form-group form-field mt8">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
                                                         <label
                                                             class="control-label col-12"
                                                             for="room_type"
-                                                        >Room type</label>
+                                                        >
+                                                            Tipo de habitación
+                                                        </label>
                                                         <select
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
                                                             name="room_type"
@@ -221,394 +210,488 @@
                                                                 value="HVM hb vistas al mar"
                                                                 selected="selected"
                                                             >
-                                                                    HVM hb vistas al mar
-                                                                </option>
+                                                                HVM hb vistas al mar
+                                                            </option>
                                                             <option
                                                                 name="room_type"
                                                                 value="AVM vistas mar"
                                                             >
-                                                                    AVM vistas mar
-                                                                </option>
+                                                                AVM vistas mar
+                                                            </option>
                                                         </select>
                                                     </div>
-                                                    <div class="form-group form-field">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="room_number"
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="room_number"
+                                                        >
+                                                            Nº de habitaciones
+                                                        </label>
+                                                        <select
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                            name="room_number"
+                                                        >
+                                                            <option
+                                                                name="room_number"
+                                                                value="1"
+                                                            >
+                                                                1
+                                                            </option>
+                                                            <option
+                                                                name="room_number"
+                                                                value="2"
+                                                            >
+                                                                2
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-confirm"
+                                                        >Confirmar</button>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="nights_number"
+                                                        >
+                                                            Nº de personas
+                                                        </label>
+                                                        <input
+                                                            class="form-control"
+                                                            type="text"
+                                                            name="nights_number"
+                                                            value="3"
+                                                        />
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="nights_number"
+                                                        >
+                                                            Nº de noches
+                                                        </label>
+                                                        <input
+                                                            class="form-control"
+                                                            type="text"
+                                                            name="nights_number"
+                                                            value="2"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="check_in_date"
+                                                        >
+                                                            Check in
+                                                        </label>
+                                                        <input
+                                                            class="form-control"
+                                                            type="date"
+                                                            name="check_in_date"
+                                                            value="2020-07-10"
+                                                        />
+                                                        <span
+                                                            class="o_pms_pwa_calendar_icon"
+                                                        >
+                                                            <span
+                                                                class="fa fa-calendar"
+                                                            />
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="check_in_hour"
+                                                        >
+                                                            Hora Check in
+                                                        </label>
+                                                        <input
+                                                            class="form-control"
+                                                            type="time"
+                                                            name="check_in_hour"
+                                                            value="20:00"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="check_out_date"
+                                                        >
+                                                            Check out
+                                                        </label>
+                                                        <input
+                                                            class="form-control"
+                                                            type="date"
+                                                            name="check_out_date"
+                                                            value="2020-07-11"
+                                                        />
+                                                        <span
+                                                            class="o_pms_pwa_calendar_icon"
+                                                        >
+                                                            <span
+                                                                class="fa fa-calendar"
+                                                            />
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="check_out_hour"
+                                                        >
+                                                            Hora Check out
+                                                        </label>
+                                                        <input
+                                                            class="form-control"
+                                                            type="time"
+                                                            name="check_out_hour"
+                                                            value="12:00"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="row m-3">
+                                                    <div class="col-12">
+                                                        <div class="form-check">
+                                                            <input
+                                                                class="o_pms_pwa_checkbox"
+                                                                type="checkbox"
+                                                                checked="checked"
+                                                                id="defaultCheck1"
+                                                                data-toggle='collapse'
+                                                                data-target='#collapsediv1'
+                                                                aria-expanded="true"
+                                                                aria-controls="collapsediv1"
+                                                            />
+                                                            <label
+                                                                class="o_pms_pwa_checkbox_label"
+                                                                for="defaultCheck1"
+                                                            >
+                                                                Desayuno (5€/persona)
+                                                            </label>
+                                                            <div
+                                                                id='collapsediv1'
+                                                                class='o_pms_pwa_collapse collapse show'
+                                                            >
+                                                                <div
+                                                                    class="o_pms_pwa_collapse_content"
                                                                 >
-                                                                        Room nº
-                                                                    </label>
-                                                                <select
-                                                                    class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                                    name="room_number"
-                                                                >
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="1"
-                                                                    >
-                                                                            1
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="2"
-                                                                    >
-                                                                            2
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="3"
-                                                                    >
-                                                                            3
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="4"
-                                                                    >
-                                                                            4
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="5"
-                                                                    >
-                                                                            5
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="6"
-                                                                    >
-                                                                            6
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="7"
-                                                                    >
-                                                                            7
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="8"
-                                                                    >
-                                                                            8
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="9"
-                                                                    >
-                                                                            9
-                                                                        </option>
-                                                                    <option
-                                                                        name="room_number"
-                                                                        value="10"
-                                                                    >
-                                                                            10
-                                                                        </option>
-                                                                </select>
+                                                                    <br />
+                                                                    <table>
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th
+                                                                                >Fecha</th>
+                                                                                <th
+                                                                                >Cantidad</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <span
+                                                                                    >
+                                                                                        11/07/2020
+                                                                                    </span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="o_pms_pwa_rb_box"
+                                                                                    >
+                                                                                        <div
+                                                                                            id="o_pms_pwa_rb_1"
+                                                                                            class="o_pms_pwa_rb"
+                                                                                        >
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab"
+                                                                                                data-value="0"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >0</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab"
+                                                                                                data-value="1"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >1</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab  o_pms_pwa_rb_tab_active"
+                                                                                                data-value="2"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >2</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab"
+                                                                                                data-value="3"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >3</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <span
+                                                                                        class="o_pms_pwa_disabled"
+                                                                                    >
+                                                                                        12/07/2020
+                                                                                    </span>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <div
+                                                                                        class="o_pms_pwa_rb_box"
+                                                                                    >
+                                                                                        <div
+                                                                                            id="o_pms_pwa_rb_2"
+                                                                                            class="o_pms_pwa_rb"
+                                                                                        >
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab o_pms_pwa_rb_tab_active"
+                                                                                                data-value="0"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >0</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab"
+                                                                                                data-value="1"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >1</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab"
+                                                                                                data-value="2"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >2</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div
+                                                                                                class="o_pms_pwa_rb_tab"
+                                                                                                data-value="3"
+                                                                                            >
+                                                                                                <div
+                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                >
+                                                                                                    <span
+                                                                                                        class="o_pms_pwa_rb_txt"
+                                                                                                    >3</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <br />
+                                                                </div>
                                                             </div>
-                                                            <div class="col-6">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="nights_number"
-                                                                >
-                                                                        Nights nº
-                                                                    </label>
-                                                                <input
-                                                                    class="form-control"
-                                                                    type="text"
-                                                                    name="nights_number"
-                                                                    value="2"
-                                                                />
-                                                            </div>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <input
+                                                                class="o_pms_pwa_checkbox"
+                                                                type="checkbox"
+                                                                id="defaultCheck2"
+                                                            />
+                                                            <label
+                                                                class="o_pms_pwa_checkbox_label"
+                                                                for="defaultCheck2"
+                                                            >
+                                                                Cama supletoria (5€/noche)
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <input
+                                                                class="o_pms_pwa_checkbox"
+                                                                type="checkbox"
+                                                                id="defaultCheck3"
+                                                            />
+                                                            <label
+                                                                class="o_pms_pwa_checkbox_label"
+                                                                for="defaultCheck3"
+                                                            >
+                                                                Cuna (5€/noche)
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check mt-2">
+                                                            <a
+                                                                class="o_pms_pwa_extras"
+                                                                href="#"
+                                                            >Más extras</a>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group form-field">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="check_in_date"
-                                                                >
-                                                                        Check in
-                                                                    </label>
-                                                                <input
-                                                                    class="form-control"
-                                                                    type="date"
-                                                                    name="check_in_date"
-                                                                    value="2020-07-10"
-                                                                />
-                                                                <span
-                                                                    class="open-calendar"
-                                                                >
-                                                                    <span
-                                                                        class="fa fa-calendar"
-                                                                    />
-                                                                </span>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="check_in_hour"
-                                                                >
-                                                                        Check in time
-                                                                    </label>
-                                                                <input
-                                                                    class="form-control"
-                                                                    type="time"
-                                                                    name="check_in_hour"
-                                                                    value="20:00"
-                                                                />
-                                                            </div>
+                                                </div>
+                                                <hr class="o_pms_pwa_black_hr" />
+                                                <div class="row mt-3">
+                                                    <div class="col-12">
+                                                        <h4>Observaciones</h4>
+                                                        <div>
+                                                            <p
+                                                            >Aut possimus enim molestiae eaque. Dicta suscipit ea ut. Enim qui dolor ut voluptatem odio corporis. Occaecati occaecati rerum aliquid. Eligendi expedita eligendi illo nisi ipsum a qui. Et aut est ut.…</p>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group form-field">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="check_out_date"
-                                                                >
-                                                                        Check out
-                                                                    </label>
-                                                                <input
-                                                                    class="form-control"
-                                                                    type="date"
-                                                                    name="check_out_date"
-                                                                    value="2020-07-11"
-                                                                />
-                                                                <span
-                                                                    class="open-calendar"
-                                                                >
-                                                                    <span
-                                                                        class="fa fa-calendar"
-                                                                    />
-                                                                </span>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="check_out_hour"
-                                                                >
-                                                                        Check out time
-                                                                    </label>
-                                                                <input
-                                                                    class="form-control"
-                                                                    type="time"
-                                                                    name="check_out_hour"
-                                                                    value="12:00"
-                                                                />
-                                                            </div>
+                                                    <div class="col-12">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="travel_reason"
+                                                        >
+                                                            Motivo del viaje
+                                                        </label>
+                                                        <select
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                            name="travel_reason"
+                                                        >
+                                                            <option
+                                                                name="travel_reason"
+                                                                value="1"
+                                                            >
+                                                                Turismo
+                                                            </option>
+                                                            <option
+                                                                name="travel_reason"
+                                                                value="2"
+                                                            >
+                                                                Trabajo
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                <div class="row mt-3">
+                                                    <div class="col-12">
+                                                        <div
+                                                            class="form-group text-center"
+                                                        >
+                                                            <input
+                                                                type="submit"
+                                                                class="btn btn-message"
+                                                                value="GUARDAR CAMBIOS"
+                                                            />
                                                         </div>
                                                     </div>
-                                                    <div class="form-group form-field">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="room_price"
-                                                                >
-                                                                        Room price
-                                                                    </label>
-                                                                <input
-                                                                    class="form-control"
-                                                                    type="text"
-                                                                    name="room_price"
-                                                                    value="100"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group form-field">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <button
-                                                                    class="btn btn-outline-dark btn-block"
-                                                                >
-                                                                        Check in
-                                                                    </button>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <button
-                                                                    disabled="true"
-                                                                    class="btn btn-outline-dark btn-block"
-                                                                >
-                                                                        Check out
-                                                                    </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group form-field">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="sales_channel"
-                                                                >
-                                                                        Sales channel
-                                                                    </label>
-                                                                <input
-                                                                    class="form-control"
-                                                                    type="text"
-                                                                    name="sales_channel"
-                                                                    value="Booking"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group form-field">
-                                                        <h4>Extras</h4>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked="checked"
-                                                                    value="Breakfast"
-                                                                    id="Breakfast"
-                                                                />
-                                                                <label
-                                                                    class="control-label o_pms_pwa_checkbox_label"
-                                                                    for="Breakfast"
-                                                                >
-                                                                    <span
-                                                                    >Breakfast</span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    value="Additional bed"
-                                                                    id="additional-bed"
-                                                                />
-                                                                <label
-                                                                    class="control-label o_pms_pwa_checkbox_label"
-                                                                    for="Additional bed"
-                                                                >
-                                                                    <span
-                                                                    >Additional bed</span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    checked="checked"
-                                                                    value="Cradle"
-                                                                    id="Cradle"
-                                                                />
-                                                                <label
-                                                                    class="control-label o_pms_pwa_checkbox_label"
-                                                                    for="Cradle"
-                                                                >
-                                                                    <span>Cradle</span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group form-field">
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <label
-                                                                    class="control-label col-12"
-                                                                    for="notes"
-                                                                >
-                                                                        Notes
-                                                                    </label>
-                                                                <textarea
-                                                                    class="form-control o_website_form_input"
-                                                                    name="notes"
-                                                                >Lorem ipsum.
-                                                                    </textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group mt32">
-                                                        <div class="row">
-                                                            <div class="col-6">
-                                                                <button
-                                                                    class="btn btn-outline-dark btn-block o_website_form_send"
-                                                                    confirm="Current reservation will be cancelled, are you sure about that?"
-                                                                    special="cancel"
-                                                                >
-                                                                        Cancel
-                                                                    </button>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <button
-                                                                    type="submit"
-                                                                    class="btn btn-dark btn-block o_website_form_send"
-                                                                >
-                                                                        Save
-                                                                    </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        </div>
+                                        </form>
                                     </div>
-                                    <div class="card">
-                                        <div
-                                            class="card-header bg-white"
-                                            id="headingTwo"
+                                </div>
+                                <div class="card shadow mt-4">
+                                    <div
+                                        class="card-header bg-white o_pms_pwa_card_header"
+                                    >
+                                        <h3 class="mb-0">
+                                            DETALLES DE LA TARIFA
+                                        </h3>
+                                    </div>
+                                    <div clas="card-body">
+                                        <form
+                                            action="#"
+                                            method="post"
+                                            class="form-horizontal"
                                         >
-                                            <h5 class="mb-0">
-                                                <button
-                                                    class="btn btn-link collapsed"
-                                                    data-toggle="collapse"
-                                                    data-target="#collapseTwo"
-                                                    aria-expanded="false"
-                                                    aria-controls="collapseTwo"
-                                                >
-                                            Detalles tarifa
-                                            </button>
-                                            </h5>
-                                        </div>
-                                        <div
-                                            id="collapseTwo"
-                                            class="collapse"
-                                            aria-labelledby="headingTwo"
-                                            data-parent="#accordion"
-                                        >
-                                            <div class="card-body">
-                                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                                            <div class="form-group form-field mt8">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="rate_type"
+                                                        >
+                                                            Tipo de tarifa
+                                                        </label>
+                                                        <select
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                            name="rate_type"
+                                                        >
+                                                            <option
+                                                                name="rate_type"
+                                                                value="1"
+                                                                selected="selected"
+                                                            >
+                                                                No reembolsable
+                                                            </option>
+                                                            <option
+                                                                name="rate_type"
+                                                                value="2"
+                                                            >
+                                                                Reembolsable
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <label
+                                                            class="control-label col-12"
+                                                            for="total_price"
+                                                        >
+                                                            Precio total noches
+                                                        </label>
+                                                        <input
+                                                            class="form-control"
+                                                            type="text"
+                                                            name="total_price"
+                                                            value="120"
+                                                        />
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a href="">Precio / Noche</a>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div
-                                            class="card-header bg-white"
-                                            id="headingThree"
-                                        >
-                                            <h5 class="mb-0">
-                                                <button
-                                                    class="btn btn-link collapsed"
-                                                    data-toggle="collapse"
-                                                    data-target="#collapseThree"
-                                                    aria-expanded="false"
-                                                    aria-controls="collapseThree"
-                                                >
-                                            Datos personales huesped (es)
-                                            </button>
-                                            </h5>
-                                        </div>
-                                        <div
-                                            id="collapseThree"
-                                            class="collapse"
-                                            aria-labelledby="headingThree"
-                                            data-parent="#accordion"
-                                        >
-                                            <div class="card-body">
-                                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-                                        </div>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm">
-                                <div class="bg-dark">
+                            <div class="col-md-12 col-lg-4">
+                                <div class="card bg-dark shadow">
                                     <div class="card-header">
                                         <div class="dropdown">
                                             <button
@@ -640,9 +723,9 @@
                                                 >Maniloto gafotas</a>
                                             </div>
                                         </div>
-                                        <h5 class="mb-0">
+                                        <h3 class="mb-0">
                                               Detalles de pago
-                                        </h5>
+                                        </h3>
                                     </div>
                                     <div class="card-body bg-dark">
                                         <div class="row m-1 pago-header">
@@ -650,7 +733,7 @@
                                             <div class="col-2 right">noches</div>
                                             <div class="col-4 right">importe(€)</div>
                                         </div>
-                                        <div class="row m-2">
+                                        <div class="row m-1">
                                             <div class="col-6">
                                                 Habitación con vistas al mar<br />
                                                 <small
@@ -659,12 +742,12 @@
                                             <div class="col-2 right">3</div>
                                             <div class="col-4 right">120,00</div>
                                         </div>
-                                        <div class="row m-2">
+                                        <div class="row m-1">
                                             <div class="col-6">Desayuno 2 personas</div>
                                             <div class="col-2 right">1</div>
                                             <div class="col-4 right">10,00</div>
                                         </div>
-                                        <div class="row pago-badge m-4 p-2">
+                                        <div class="row pago-badge">
                                             <div class="col-4">Total<br /><span
                                                     class="pt"
                                                 >130,00</span> </div>
@@ -678,11 +761,64 @@
                                                 >98,00</span> </div>
                                         </div>
                                         <hr class="m-1" />
-                                        <div class="row pago-badge m-4 p-2">
+                                        <div class="row pago-badge">
                                             <div class="col-12">Nº tarjeta reserva</div>
                                             <div
                                                 class="col-12 num"
                                             >1253 2512 5214 1256 2145</div>
+                                        </div>
+                                        <div class="row m-1">
+                                            <div class="col-12">
+                                                <h4>Datos de facturación</h4>
+                                            </div>
+                                        </div>
+                                        <div class="row m-1">
+                                            <div class="col-12">
+                                                <h4>Métodos de pago</h4>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-check mt-2">
+                                                    <input
+                                                        class="o_pms_pwa_checkbox"
+                                                        type="checkbox"
+                                                        id="payment_method1"
+                                                        checked="checked"
+                                                    />
+                                                    <label
+                                                        class="o_pms_pwa_checkbox_label"
+                                                        for="payment_method1"
+                                                    >
+                                                        Tarjeta de crédito
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mt-2">
+                                                    <input
+                                                        class="o_pms_pwa_checkbox"
+                                                        type="checkbox"
+                                                        id="payment_method2"
+                                                    />
+                                                    <label
+                                                        class="o_pms_pwa_checkbox_label"
+                                                        for="payment_method2"
+                                                    >
+                                                        Efectivo
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="m-1" />
+                                        <div class="col-12">
+                                            <div class="form-group text-center">
+                                                <button class="btn btn-print"><i
+                                                        class="fa fa-print"
+                                                        aria-hidden="false"
+                                                    /> IMPRIMIR</button>
+                                                <input
+                                                    type="submit"
+                                                    class="btn btn-message"
+                                                    value="COBRAR"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
