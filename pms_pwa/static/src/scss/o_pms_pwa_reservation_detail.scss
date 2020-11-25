@@ -468,4 +468,11 @@ section.o_pms_pwa_roomdoo {
         height: 1px;
         border: 0;
     }
+    .o_pms_pwa_price_link {
+        color: $theme-color;
+        text-decoration: underline;
+        font-size: medium;
+        font-weight: 600;
+        text-align: center;
+    }
 }

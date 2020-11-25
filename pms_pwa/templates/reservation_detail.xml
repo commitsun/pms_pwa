@@ -631,7 +631,7 @@
                                             DETALLES DE LA TARIFA
                                         </h3>
                                     </div>
-                                    <div clas="card-body">
+                                    <div class="card-body">
                                         <form
                                             action="#"
                                             method="post"
@@ -666,7 +666,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row mt-2">
                                                     <div class="col-sm-6">
                                                         <label
                                                             class="control-label col-12"
@@ -681,8 +681,17 @@
                                                             value="120"
                                                         />
                                                     </div>
-                                                    <div class="col-sm-6">
-                                                        <a href="">Precio / Noche</a>
+                                                    <div class="col-sm-6 mt-3">
+                                                        <a
+                                                            href=""
+                                                            class="o_pms_pwa_price_link"
+                                                        >
+                                                            <i
+                                                                class="fa fa-pencil-square-o"
+                                                                aria-hidden="false"
+                                                            />
+                                                            Precio / Noche
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
