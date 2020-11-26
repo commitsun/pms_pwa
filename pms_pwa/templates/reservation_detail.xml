@@ -6,7 +6,7 @@
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <div class="justify-content-center">
                         <div class="row m-2">
-                            <div class="col-6">
+                            <div class="col-sm-12 col-lg-6">
                                 <h1>
                                     <span class="title-header">Reserva</span>
                                     <span class="blue-header"> 2512315</span>
@@ -14,18 +14,20 @@
                                     <span class="status-header"> ESTADO</span>
                                 </h1>
                             </div>
-                            <div class="col-6 text-right">
+                            <div
+                                class="col-sm-12 col-lg-6 text-right o_pms_pwa_keypad_footer"
+                            >
                                 <a
                                     href="#"
-                                    class="btn btn-grey-900 btn-radius"
+                                    class="btn btn-grey-900 btn-radius o_pms_pwa_btn_principal"
                                 >Cancelar reserva</a>
                                 <a
                                     href="#"
-                                    class="btn btn-grey-300 btn-radius disable"
+                                    class="btn btn-grey-300 btn-radius o_pms_pwa_disabled"
                                 >Check in</a>
                                 <a
                                     href="#"
-                                    class="btn btn-grey-300 btn-radius disable"
+                                    class="btn btn-grey-300 btn-radius o_pms_pwa_disabled"
                                 >Check out</a>
                             </div>
                         </div>
@@ -701,7 +703,7 @@
                             </div>
                             <div class="col-md-12 col-lg-4">
                                 <div class="card bg-dark shadow">
-                                    <div class="card-header">
+                                    <div class="card-header o_pms_pwa_card_header">
                                         <div class="dropdown">
                                             <button
                                                 class="btn btn-persona-info dropdown-toggle"

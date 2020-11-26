@@ -9,8 +9,52 @@ section.o_pms_pwa_roomdoo {
         .padding {
             padding: 1rem;
         }
+        .o_pms_pwa_keypad_footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            min-height: 5rem;
+            background-image: linear-gradient(
+                to top,
+                $theme-color 50%,
+                $bg-theme-color
+            );
+            color: $white;
+            text-align: center;
+            z-index: 9999;
+            .btn-radius {
+                text-align: center;
+                border: 1px solid $white;
+                color: $white;
+                background-color: transparent;
+                //width: 80%;
+            }
+            .o_pms_pwa_disabled {
+                text-align: center;
+                color: $grey-300;
+                border: 1px solid $grey-300;
+                background-color: transparent;
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+                float: left;
+                width: 40%;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+            .o_pms_pwa_btn_principal {
+                text-align: center;
+                width: 90%;
+                margin-top: 1rem;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
+        }
+        .o_pms_pwa_rb_spot {
+            width: 1rem !important;
+            height: 1rem !important;
+        }
     }
-
     .padding {
         padding: 3rem;
     }
@@ -454,7 +498,8 @@ section.o_pms_pwa_roomdoo {
         color: $white;
     }
     .o_pms_pwa_disabled {
-        color: $grey-300;
+        color: $white;
+        background-color: $grey-300;
     }
     .o_pms_pwa_extras {
         color: $theme-color;

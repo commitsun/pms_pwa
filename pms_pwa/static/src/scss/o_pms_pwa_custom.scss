@@ -9,6 +9,27 @@ $badge-color: #ff3b00;
 $table-text-color: #3f4443;
 $table-text-color-lighter: #b5bfbd;
 
+body {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+    margin-bottom: 0.5rem;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 600;
+    line-height: 1.2;
+}
 form > div.form-group {
     & input,
     & select,
@@ -92,9 +113,8 @@ select {
     -moz-appearance: none;
     appearance: none;
     /* Some browsers will not display the caret when using calc, so we put the fallback first */
-    background: url("/pms_pwa/static/img//br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
-    background: url("/pms_pwa/static/img//br_down.png") white no-repeat
-        calc(100% - 10px) !important; /* Better placement regardless of input width */
+    background: url("/pms_pwa/static/img/br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
+    background: url("/pms_pwa/static/img/br_down.png") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
 }
 /*For IE*/
 select::-ms-expand {
