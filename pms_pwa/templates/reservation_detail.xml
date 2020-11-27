@@ -434,57 +434,32 @@
                                                                                                 class="o_pms_pwa_rb_box"
                                                                                             >
                                                                                                 <div
-                                                                                                    id="o_pms_pwa_rb_1"
+                                                                                                    t-attf-id='o_pms_pwa_rb_{{i.id}}'
                                                                                                     class="o_pms_pwa_rb"
                                                                                                 >
-                                                                                                    <div
-                                                                                                        class="o_pms_pwa_rb_tab"
-                                                                                                        data-value="0"
+                                                                                                    <t
+                                                                                                        t-foreach="range(invoice.adults+1)"
+                                                                                                        t-as="x"
                                                                                                     >
                                                                                                         <div
-                                                                                                            class="o_pms_pwa_rb_spot"
+                                                                                                            t-att-class="'o_pms_pwa_rb_tab '
+                                                                                                            + ('o_pms_pwa_rb_tab_active ' if x==s.day_qty else ' ')"
+                                                                                                            class=""
+                                                                                                            t-att-data-value="x"
                                                                                                         >
-                                                                                                            <span
-                                                                                                                class="o_pms_pwa_rb_txt"
-                                                                                                            >0</span>
+                                                                                                            <div
+                                                                                                                class="o_pms_pwa_rb_spot"
+                                                                                                            >
+                                                                                                                <span
+                                                                                                                    class="o_pms_pwa_rb_txt"
+                                                                                                                >
+                                                                                                                    <t
+                                                                                                                        t-esc="x"
+                                                                                                                    />
+                                                                                                                </span>
+                                                                                                            </div>
                                                                                                         </div>
-                                                                                                    </div>
-                                                                                                    <div
-                                                                                                        class="o_pms_pwa_rb_tab"
-                                                                                                        data-value="1"
-                                                                                                    >
-                                                                                                        <div
-                                                                                                            class="o_pms_pwa_rb_spot"
-                                                                                                        >
-                                                                                                            <span
-                                                                                                                class="o_pms_pwa_rb_txt"
-                                                                                                            >1</span>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div
-                                                                                                        class="o_pms_pwa_rb_tab  o_pms_pwa_rb_tab_active"
-                                                                                                        data-value="2"
-                                                                                                    >
-                                                                                                        <div
-                                                                                                            class="o_pms_pwa_rb_spot"
-                                                                                                        >
-                                                                                                            <span
-                                                                                                                class="o_pms_pwa_rb_txt"
-                                                                                                            >2</span>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div
-                                                                                                        class="o_pms_pwa_rb_tab"
-                                                                                                        data-value="3"
-                                                                                                    >
-                                                                                                        <div
-                                                                                                            class="o_pms_pwa_rb_spot"
-                                                                                                        >
-                                                                                                            <span
-                                                                                                                class="o_pms_pwa_rb_txt"
-                                                                                                            >3</span>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                                    </t>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </td>
