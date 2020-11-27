@@ -9,9 +9,15 @@
                             <div class="col-sm-12 col-lg-6">
                                 <h1>
                                     <span class="title-header">Reserva</span>
-                                    <span class="blue-header"> 2512315</span>
-                                    <span class="moreinfo-header"> Booking</span>
-                                    <span class="status-header"> ESTADO</span>
+                                    <span class="blue-header">
+                                        <t t-esc="invoice.localizator" />
+                                    </span>
+                                    <span class="moreinfo-header">
+                                        <t t-esc="invoice.agency_id.name" />
+                                    </span>
+                                    <span class="status-header">
+                                        <t t-esc="invoice.state" />
+                                    </span>
                                 </h1>
                             </div>
                             <div
@@ -209,16 +215,12 @@
                                                         >
                                                             <option
                                                                 name="room_type"
-                                                                value="HVM hb vistas al mar"
+                                                                t-att-value="invoice.room_type_id.id"
                                                                 selected="selected"
                                                             >
-                                                                HVM hb vistas al mar
-                                                            </option>
-                                                            <option
-                                                                name="room_type"
-                                                                value="AVM vistas mar"
-                                                            >
-                                                                AVM vistas mar
+                                                                <t
+                                                                    t-esc="invoice.room_type_id.name"
+                                                                />
                                                             </option>
                                                         </select>
                                                     </div>
@@ -235,18 +237,26 @@
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
                                                             name="room_number"
                                                         >
-                                                            <option
-                                                                name="room_number"
-                                                                value="1"
+                                                            <t
+                                                                t-foreach="invoice.allowed_room_ids"
+                                                                t-as="i"
                                                             >
-                                                                1
-                                                            </option>
-                                                            <option
-                                                                name="room_number"
-                                                                value="2"
-                                                            >
-                                                                2
-                                                            </option>
+                                                                <option
+                                                                    name="room_number"
+                                                                    t-att-value="i.id"
+                                                                    selected="selected"
+                                                                    t-if="invoice.preferred_room_id.id == i.id"
+                                                                >
+                                                                    <t t-esc="i.name" />
+                                                                </option>
+                                                                <option
+                                                                    name="room_number"
+                                                                    t-att-value="i.id"
+                                                                    t-if="invoice.preferred_room_id.id != i.id"
+                                                                >
+                                                                    <t t-esc="i.name" />
+                                                                </option>
+                                                            </t>
                                                         </select>
                                                     </div>
                                                     <div class="col-6">
@@ -268,7 +278,7 @@
                                                             class="form-control"
                                                             type="text"
                                                             name="nights_number"
-                                                            value="3"
+                                                            t-att-value="invoice.adults"
                                                         />
                                                     </div>
                                                     <div class="col-6">
@@ -282,7 +292,7 @@
                                                             class="form-control"
                                                             type="text"
                                                             name="nights_number"
-                                                            value="2"
+                                                            t-att-value="invoice.nights"
                                                         />
                                                     </div>
                                                 </div>
@@ -298,7 +308,7 @@
                                                             class="form-control"
                                                             type="date"
                                                             name="check_in_date"
-                                                            value="2020-07-10"
+                                                            t-att-value="invoice.checkin"
                                                         />
                                                         <span
                                                             class="o_pms_pwa_calendar_icon"
@@ -319,7 +329,7 @@
                                                             class="form-control"
                                                             type="time"
                                                             name="check_in_hour"
-                                                            value="20:00"
+                                                            t-att-value="invoice.arrival_hour"
                                                         />
                                                     </div>
                                                 </div>
@@ -335,7 +345,7 @@
                                                             class="form-control"
                                                             type="date"
                                                             name="check_out_date"
-                                                            value="2020-07-11"
+                                                            t-att-value="invoice.checkout"
                                                         />
                                                         <span
                                                             class="o_pms_pwa_calendar_icon"
@@ -356,214 +366,156 @@
                                                             class="form-control"
                                                             type="time"
                                                             name="check_out_hour"
-                                                            value="12:00"
+                                                            t-att-value="invoice.departure_hour"
                                                         />
                                                     </div>
                                                 </div>
                                                 <div class="row m-3">
                                                     <div class="col-12">
-                                                        <div class="form-check">
-                                                            <input
-                                                                class="o_pms_pwa_checkbox"
-                                                                type="checkbox"
-                                                                checked="checked"
-                                                                id="defaultCheck1"
-                                                                data-toggle='collapse'
-                                                                data-target='#collapsediv1'
-                                                                aria-expanded="true"
-                                                                aria-controls="collapsediv1"
-                                                            />
-                                                            <label
-                                                                class="o_pms_pwa_checkbox_label"
-                                                                for="defaultCheck1"
-                                                            >
-                                                                Desayuno (5€/persona)
-                                                            </label>
+                                                        <t
+                                                            t-foreach="invoice.service_ids"
+                                                            t-as="i"
+                                                        >
                                                             <div
-                                                                id='collapsediv1'
-                                                                class='o_pms_pwa_collapse collapse show'
+                                                                class="form-check"
+                                                                t-if="i.service_line_ids"
                                                             >
-                                                                <div
-                                                                    class="o_pms_pwa_collapse_content"
+                                                                <input
+                                                                    class="o_pms_pwa_checkbox"
+                                                                    type="checkbox"
+                                                                    checked="checked"
+                                                                    id="defaultCheck"
+                                                                    data-toggle='collapse'
+                                                                    t-attf-data-target='#collapsediv{{i.id}}'
+                                                                    aria-expanded="true"
+                                                                    t-attf-aria-controls="collapsediv{{i.id}}"
+                                                                />
+                                                                <label
+                                                                    class="o_pms_pwa_checkbox_label"
+                                                                    t-attf-for="defaultCheck{{i.id}}"
                                                                 >
-                                                                    <br />
-                                                                    <table>
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th
-                                                                                >Fecha</th>
-                                                                                <th
-                                                                                >Cantidad</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <span
-                                                                                    >
-                                                                                        11/07/2020
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div
-                                                                                        class="o_pms_pwa_rb_box"
-                                                                                    >
-                                                                                        <div
-                                                                                            id="o_pms_pwa_rb_1"
-                                                                                            class="o_pms_pwa_rb"
+                                                                    <t
+                                                                        t-esc="i.product_id.name"
+                                                                    />
+                                                                </label>
+                                                                <div
+                                                                    t-attf-id='collapsediv{{i.id}}'
+                                                                    class='o_pms_pwa_collapse collapse show'
+                                                                >
+                                                                    <div
+                                                                        class="o_pms_pwa_collapse_content"
+                                                                    >
+                                                                        <br />
+                                                                        <table>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th
+                                                                                    >Fecha</th>
+                                                                                    <th
+                                                                                    >Cantidad</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <t
+                                                                                    t-foreach="i.service_line_ids"
+                                                                                    t-as="s"
+                                                                                >
+                                                                                    <tr>
+                                                                                        <td
+                                                                                        >
+                                                                                            <span
+                                                                                                t-field="s.date"
+                                                                                                t-options='{"format": "dd/MM/yyyy"}'
+                                                                                            />
+                                                                                        </td>
+                                                                                        <td
                                                                                         >
                                                                                             <div
-                                                                                                class="o_pms_pwa_rb_tab"
-                                                                                                data-value="0"
+                                                                                                class="o_pms_pwa_rb_box"
                                                                                             >
                                                                                                 <div
-                                                                                                    class="o_pms_pwa_rb_spot"
+                                                                                                    id="o_pms_pwa_rb_1"
+                                                                                                    class="o_pms_pwa_rb"
                                                                                                 >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >0</span>
+                                                                                                    <div
+                                                                                                        class="o_pms_pwa_rb_tab"
+                                                                                                        data-value="0"
+                                                                                                    >
+                                                                                                        <div
+                                                                                                            class="o_pms_pwa_rb_spot"
+                                                                                                        >
+                                                                                                            <span
+                                                                                                                class="o_pms_pwa_rb_txt"
+                                                                                                            >0</span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="o_pms_pwa_rb_tab"
+                                                                                                        data-value="1"
+                                                                                                    >
+                                                                                                        <div
+                                                                                                            class="o_pms_pwa_rb_spot"
+                                                                                                        >
+                                                                                                            <span
+                                                                                                                class="o_pms_pwa_rb_txt"
+                                                                                                            >1</span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="o_pms_pwa_rb_tab  o_pms_pwa_rb_tab_active"
+                                                                                                        data-value="2"
+                                                                                                    >
+                                                                                                        <div
+                                                                                                            class="o_pms_pwa_rb_spot"
+                                                                                                        >
+                                                                                                            <span
+                                                                                                                class="o_pms_pwa_rb_txt"
+                                                                                                            >2</span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div
+                                                                                                        class="o_pms_pwa_rb_tab"
+                                                                                                        data-value="3"
+                                                                                                    >
+                                                                                                        <div
+                                                                                                            class="o_pms_pwa_rb_spot"
+                                                                                                        >
+                                                                                                            <span
+                                                                                                                class="o_pms_pwa_rb_txt"
+                                                                                                            >3</span>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_tab"
-                                                                                                data-value="1"
-                                                                                            >
-                                                                                                <div
-                                                                                                    class="o_pms_pwa_rb_spot"
-                                                                                                >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >1</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_tab  o_pms_pwa_rb_tab_active"
-                                                                                                data-value="2"
-                                                                                            >
-                                                                                                <div
-                                                                                                    class="o_pms_pwa_rb_spot"
-                                                                                                >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >2</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_tab"
-                                                                                                data-value="3"
-                                                                                            >
-                                                                                                <div
-                                                                                                    class="o_pms_pwa_rb_spot"
-                                                                                                >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >3</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <span
-                                                                                        class="o_pms_pwa_disabled"
-                                                                                    >
-                                                                                        12/07/2020
-                                                                                    </span>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <div
-                                                                                        class="o_pms_pwa_rb_box"
-                                                                                    >
-                                                                                        <div
-                                                                                            id="o_pms_pwa_rb_2"
-                                                                                            class="o_pms_pwa_rb"
-                                                                                        >
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_tab o_pms_pwa_rb_tab_active"
-                                                                                                data-value="0"
-                                                                                            >
-                                                                                                <div
-                                                                                                    class="o_pms_pwa_rb_spot"
-                                                                                                >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >0</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_tab"
-                                                                                                data-value="1"
-                                                                                            >
-                                                                                                <div
-                                                                                                    class="o_pms_pwa_rb_spot"
-                                                                                                >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >1</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_tab"
-                                                                                                data-value="2"
-                                                                                            >
-                                                                                                <div
-                                                                                                    class="o_pms_pwa_rb_spot"
-                                                                                                >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >2</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_tab"
-                                                                                                data-value="3"
-                                                                                            >
-                                                                                                <div
-                                                                                                    class="o_pms_pwa_rb_spot"
-                                                                                                >
-                                                                                                    <span
-                                                                                                        class="o_pms_pwa_rb_txt"
-                                                                                                    >3</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                    <br />
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </t>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <br />
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-check mt-2">
-                                                            <input
-                                                                class="o_pms_pwa_checkbox"
-                                                                type="checkbox"
-                                                                id="defaultCheck2"
-                                                            />
-                                                            <label
-                                                                class="o_pms_pwa_checkbox_label"
-                                                                for="defaultCheck2"
+                                                            <div
+                                                                class="form-check mt-2"
+                                                                t-if="i.service_line_ids==''"
                                                             >
-                                                                Cama supletoria (5€/noche)
-                                                            </label>
-                                                        </div>
-                                                        <div class="form-check mt-2">
-                                                            <input
-                                                                class="o_pms_pwa_checkbox"
-                                                                type="checkbox"
-                                                                id="defaultCheck3"
-                                                            />
-                                                            <label
-                                                                class="o_pms_pwa_checkbox_label"
-                                                                for="defaultCheck3"
-                                                            >
-                                                                Cuna (5€/noche)
-                                                            </label>
-                                                        </div>
+                                                                <input
+                                                                    class="o_pms_pwa_checkbox"
+                                                                    type="checkbox"
+                                                                    id="defaultCheck2"
+                                                                    checked="checked"
+                                                                />
+                                                                <label
+                                                                    class="o_pms_pwa_checkbox_label"
+                                                                    for="defaultCheck2"
+                                                                >
+                                                                    <t
+                                                                        t-esc="i.product_id.name"
+                                                                    />
+                                                                </label>
+                                                            </div>
+                                                        </t>
                                                         <div class="form-check mt-2">
                                                             <a
                                                                 class="o_pms_pwa_extras"
@@ -654,16 +606,12 @@
                                                         >
                                                             <option
                                                                 name="rate_type"
-                                                                value="1"
+                                                                t-att-value="invoice.reservation_type"
                                                                 selected="selected"
                                                             >
-                                                                No reembolsable
-                                                            </option>
-                                                            <option
-                                                                name="rate_type"
-                                                                value="2"
-                                                            >
-                                                                Reembolsable
+                                                                <t
+                                                                    t-esc="invoice.reservation_type"
+                                                                />
                                                             </option>
                                                         </select>
                                                     </div>
@@ -672,15 +620,15 @@
                                                     <div class="col-sm-6">
                                                         <label
                                                             class="control-label col-12"
-                                                            for="total_price"
+                                                            for="price_total"
                                                         >
                                                             Precio total noches
                                                         </label>
                                                         <input
                                                             class="form-control"
                                                             type="text"
-                                                            name="total_price"
-                                                            value="120"
+                                                            name="price_total"
+                                                            t-att-value="invoice.price_total"
                                                         />
                                                     </div>
                                                     <div class="col-sm-6 mt-3">
@@ -718,20 +666,19 @@
                                                     title="Huéspedes"
                                                     class="badge bg-red mr-2"
                                                     data-original-title="Huéspedes"
-                                                >20</span> Datos personales huéspedes
+                                                >
+                                                    <t t-esc="invoice.adults" />
+                                                </span> Datos personales huéspedes
                                             </button>
                                             <div
                                                 class="dropdown-menu btn-persona-info"
                                                 aria-labelledby="dropdownMenuButton"
                                             >
-                                                <a
-                                                    class="dropdown-item"
-                                                    href="#"
-                                                >Pepito grillo</a>
-                                                <a
-                                                    class="dropdown-item"
-                                                    href="#"
-                                                >Maniloto gafotas</a>
+                                                <a class="dropdown-item" href="#">
+                                                    <t
+                                                        t-esc="invoice.partner_id.name"
+                                                    />
+                                                </a>
                                             </div>
                                         </div>
                                         <h3 class="mb-0">
@@ -746,37 +693,66 @@
                                         </div>
                                         <div class="row m-1">
                                             <div class="col-6">
-                                                Habitación con vistas al mar<br />
-                                                <small
-                                                >Tarifa estándar 40,00€/noche</small>
+                                                <t t-esc="invoice.room_type_id.name" />
+                                                <br />
+                                                <small>
+                                                    <t
+                                                        t-esc="invoice.preferred_room_id.name"
+                                                    />
+                                                </small>
                                             </div>
-                                            <div class="col-2 right">3</div>
-                                            <div class="col-4 right">120,00</div>
+                                            <div class="col-2 right">
+                                                <t t-esc="invoice.nights" />
+                                            </div>
+                                            <div class="col-4 right">
+                                                <t t-esc="invoice.price_total" />
+                                            </div>
                                         </div>
-                                        <div class="row m-1">
-                                            <div class="col-6">Desayuno 2 personas</div>
-                                            <div class="col-2 right">1</div>
-                                            <div class="col-4 right">10,00</div>
-                                        </div>
+                                        <t t-foreach="invoice.service_ids" t-as="i">
+                                            <div class="row m-1">
+                                                <div class="col-6">
+                                                    <t t-esc="i.product_id.name" />
+                                                </div>
+                                                <div class="col-2 right">
+                                                    <t t-esc="i.product_qty" />
+                                                </div>
+                                                <div class="col-4 right">
+                                                    <t t-esc="i.price_total" />
+                                                </div>
+                                            </div>
+                                        </t>
                                         <div class="row pago-badge">
                                             <div class="col-4">Total<br /><span
                                                     class="pt"
-                                                >130,00</span> </div>
-                                            <div class="col-4">Pago<br /> en reserva<br
-                                                /><span
+                                                >
+                                                    <t
+                                                        t-esc="invoice.folio_id.amount_total"
+                                                    />
+                                                </span> </div>
+                                            <div class="col-4">Pago<br
+                                                /> en reserva??<br /><span
                                                     class="price"
-                                                >-32,00</span> </div>
+                                                >
+                                                    <t
+                                                        t-esc="invoice.folio_id.amount_tax"
+                                                    />
+                                                </span> </div>
                                             <div class="col-4">Pendiente<br
-                                                /> de pago<br /><span
-                                                    class="price2"
-                                                >98,00</span> </div>
+                                                /> de pago<br /><span class="price2">
+                                                    <t
+                                                        t-esc="invoice.folio_id.pending_amount"
+                                                    />
+                                                </span> </div>
                                         </div>
                                         <hr class="m-1" />
                                         <div class="row pago-badge">
                                             <div class="col-12">Nº tarjeta reserva</div>
-                                            <div
-                                                class="col-12 num"
-                                            >1253 2512 5214 1256 2145</div>
+                                            <div class="col-12 num">
+                                                <t
+                                                    t-esc="invoice.folio_id.credit_card_details"
+                                                />
+                                                ¿?invoice.folio_id.credit_card_details¿?
+                                            </div>
                                         </div>
                                         <div class="row m-1">
                                             <div class="col-12">
