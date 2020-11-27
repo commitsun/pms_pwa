@@ -164,13 +164,14 @@ section.o_pms_pwa_roomdoo {
         margin-bottom: 2px;
         font-size: 12px;
         & strong {
-            font-size: 16px !important;
+            font-size: 1.1rem !important;
             font-weight: 900;
         }
     }
 
     .o_pms_pwa_direct_chat_timestamp {
-        color: #999;
+        color: $theme-color;
+        font-size: 1rem;
     }
 
     .o_pms_pwa_direct_chat_img {

@@ -60,13 +60,15 @@
                                             <div class="box-body">
                                                 <div class="o_pms_pwa_direct_chat_messages">
                                                     <t t-foreach="invoice.message_ids" t-as="msg">
-                                                    <div class="o_pms_pwa_direct_chat_msg">
+                                                    <div class="o_pms_pwa_direct_chat_msg m-2">
                                                         <div class="o_pms_pwa_direct_direct_chat_info clearfix">
                                                             <span class="pull-left">
                                                                 <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
                                                                 <strong class="ml-2"><t t-esc="msg.author_id.name"></t></strong>
                                                             </span>
-                                                            <span class="o_pms_pwa_direct_chat_timestamp pull-right">23 Jan 2:00 pm</span>
+                                                            <span class="o_pms_pwa_direct_chat_timestamp pull-right">
+                                                                <span t-field="msg.date" t-options='{"format": "dd/MM/yyyy H:s"}' />
+                                                            </span>
                                                         </div>
 
                                                         <div class="o_pms_pwa_direct_chat_text">
