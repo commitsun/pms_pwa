@@ -643,7 +643,8 @@
                                                     data-original-title="Huéspedes"
                                                 >
                                                     <t t-esc="invoice.adults" />
-                                                </span> Datos personales huéspedes
+                                                </span>
+                                                Datos personales huéspedes
                                             </button>
                                             <div
                                                 class="dropdown-menu btn-persona-info"
@@ -662,7 +663,7 @@
                                     </div>
                                     <div class="card-body bg-dark">
                                         <div class="row m-1 pago-header">
-                                            <div class="col-6"> </div>
+                                            <div class="col-6" />
                                             <div class="col-2 right">noches</div>
                                             <div class="col-4 right">importe(€)</div>
                                         </div>
@@ -697,27 +698,37 @@
                                             </div>
                                         </t>
                                         <div class="row pago-badge">
-                                            <div class="col-4">Total<br /><span
-                                                    class="pt"
-                                                >
+                                            <div class="col-4">
+                                                Total
+                                                <br />
+                                                <span class="pt">
                                                     <t
                                                         t-esc="invoice.folio_id.amount_total"
                                                     />
-                                                </span> </div>
-                                            <div class="col-4">Pago<br
-                                                /> en reserva??<br /><span
-                                                    class="price"
-                                                >
+                                                </span>
+                                            </div>
+                                            <div class="col-4">
+                                                Pago
+                                                <br />
+                                                en reserva??
+                                                <br />
+                                                <span class="price">
                                                     <t
                                                         t-esc="invoice.folio_id.amount_tax"
                                                     />
-                                                </span> </div>
-                                            <div class="col-4">Pendiente<br
-                                                /> de pago<br /><span class="price2">
+                                                </span>
+                                            </div>
+                                            <div class="col-4">
+                                                Pendiente
+                                                <br />
+                                                de pago
+                                                <br />
+                                                <span class="price2">
                                                     <t
                                                         t-esc="invoice.folio_id.pending_amount"
                                                     />
-                                                </span> </div>
+                                                </span>
+                                            </div>
                                         </div>
                                         <hr class="m-1" />
                                         <div class="row pago-badge">
@@ -771,10 +782,13 @@
                                         <hr class="m-1" />
                                         <div class="col-12">
                                             <div class="form-group text-center">
-                                                <button class="btn btn-print"><i
+                                                <button class="btn btn-print">
+                                                    <i
                                                         class="fa fa-print"
                                                         aria-hidden="false"
-                                                    /> IMPRIMIR</button>
+                                                    />
+                                                    IMPRIMIR
+                                                </button>
                                                 <input
                                                     type="submit"
                                                     class="btn btn-message"
