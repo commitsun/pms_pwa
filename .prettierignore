@@ -1,2 +1,5 @@
-<!-- prettier-ignore -->
-<div         class="x"       >hello world</div            >
+# Ignore artifacts:
+build
+coverage
+# Ignore all HTML files:
+*.html
