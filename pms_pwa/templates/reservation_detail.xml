@@ -35,17 +35,17 @@
                                                 <img class="rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
                                             </div>
                                             <div class="col-12 ml-4">
-                                                <h3>
+                                                <h3 class="text-white">
                                                     <t t-esc="invoice.partner_id.name" />
                                                 </h3>
-                                                <p>
-                                                    <a t-att-href="'tel:' + str(invoice.partner_id.mobile)">
-                                                        <t t-esc="invoice.partner_id.mobile" />
+                                                <p class=" mb-0">
+                                                    <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
+                                                        <t t-esc="invoice.phone" />
                                                     </a>
                                                 </p>
                                                 <p>
-                                                    <a t-att-href="'mailto:%s' % invoice.partner_id.email" class="text-white font-italic">
-                                                        <t t-esc="invoice.partner_id.email" />
+                                                    <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
+                                                        <t t-esc="invoice.email" />
                                                     </a>
                                                 </p>
                                             </div>
