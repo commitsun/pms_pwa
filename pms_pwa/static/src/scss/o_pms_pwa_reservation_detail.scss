@@ -126,7 +126,7 @@ section.o_pms_pwa_roomdoo {
         background-color: $theme-color;
     }
 
-    .direct-chat {
+    .o_pms_pwa_direct_chat {
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
         position: relative;
@@ -134,7 +134,7 @@ section.o_pms_pwa_roomdoo {
         padding: 0;
     }
 
-    .direct-chat-messages {
+    .o_pms_pwa_direct_chat_messages {
         -webkit-transform: translate(0, 0);
         -ms-transform: translate(0, 0);
         -o-transform: translate(0, 0);
@@ -143,31 +143,33 @@ section.o_pms_pwa_roomdoo {
         height: 250px;
         overflow: auto;
     }
-
-    .direct-chat-messages,
-    .direct-chat-contacts {
+    .o_pms_pwa_direct_chat_messages {
         -webkit-transition: -webkit-transform 0.5s ease-in-out;
         -moz-transition: -moz-transform 0.5s ease-in-out;
         -o-transition: -o-transform 0.5s ease-in-out;
         transition: transform 0.5s ease-in-out;
     }
 
-    .direct-chat-msg {
+    .o_pms_pwa_direct_chat_msg {
         margin-bottom: 10px;
     }
 
-    .direct-chat-msg,
-    .direct-chat-text {
+    .o_pms_pwa_direct_chat_msg,
+    .o_pms_pwa_direct_chat_text {
         display: block;
     }
 
-    .direct-chat-info {
+    .o_pms_pwa_direct_direct_chat_info {
         display: block;
         margin-bottom: 2px;
         font-size: 12px;
+        & strong {
+            font-size: 16px !important;
+            font-weight: 900;
+        }
     }
 
-    .direct-chat-timestamp {
+    .o_pms_pwa_direct_chat_timestamp {
         color: #999;
     }
 
@@ -178,7 +180,7 @@ section.o_pms_pwa_roomdoo {
         border: 1px solid $theme-color;
     }
 
-    .direct-chat-text {
+    .o_pms_pwa_direct_chat_text {
         border-radius: 5px;
         position: relative;
         padding: 5px 10px;
@@ -188,18 +190,18 @@ section.o_pms_pwa_roomdoo {
         margin: 5px 0 0 50px;
     }
 
-    .direct-chat-msg,
-    .direct-chat-text {
+    .o_pms_pwa_direct_chat_msg,
+    .o_pms_pwa_direct_chat_text {
         display: block;
     }
 
-    .direct-chat-text:before {
+    .o_pms_pwa_direct_chat_text:before {
         border-width: 6px;
         margin-top: -6px;
     }
 
-    .direct-chat-text:after,
-    .direct-chat-text:before {
+    .o_pms_pwa_direct_chat_text:after,
+    .o_pms_pwa_direct_chat_text:before {
         position: absolute;
         right: 100%;
         top: 15px;
@@ -211,13 +213,13 @@ section.o_pms_pwa_roomdoo {
         pointer-events: none;
     }
 
-    .direct-chat-text:after {
+    .o_pms_pwa_direct_chat_text:after {
         border-width: 5px;
         margin-top: -5px;
     }
 
-    .direct-chat-text:after,
-    .direct-chat-text:before {
+    .o_pms_pwa_direct_chat_text:after,
+    .o_pms_pwa_direct_chat_text:before {
         position: absolute;
         right: 100%;
         top: 15px;
@@ -236,32 +238,27 @@ section.o_pms_pwa_roomdoo {
         box-sizing: border-box;
     }
 
-    .direct-chat-msg:after {
+    .o_pms_pwa_direct_chat_msg:after {
         clear: both;
     }
 
-    .direct-chat-msg:after {
+    .o_pms_pwa_direct_chat_msg:after {
         content: "";
         display: table;
     }
 
-    .direct-chat-info {
+    .o_pms_pwa_direct_direct_chat_info {
         display: block;
         margin-bottom: 2px;
         font-size: 12px;
     }
-
-    .right .direct-chat-img {
-        float: right;
-    }
-
-    .direct-chat-warning .right > .direct-chat-text {
+    .o_pms_pwa_direct_chat_warning .right > .o_pms_pwa_direct_chat_text {
         background: $bg-theme-color;
         border-color: $bg-theme-color;
         color: $black;
     }
 
-    .right .direct-chat-text {
+    .right .o_pms_pwa_direct_chat_text {
         margin-right: 50px;
         margin-left: 0;
     }

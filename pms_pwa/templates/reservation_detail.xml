@@ -50,49 +50,30 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <div class="box direct-chat direct-chat-warning">
+                                        <div class="box o_pms_pwa_direct_chat o_pms_pwa_direct_chat_warning">
                                             <div class="box-header with-border">
                                                 <h3 class="box-title">Chat Messages</h3>
                                                 <div class="box-tools pull-right">
-                                                    <span data-toggle="tooltip" title="New Messages" class="badge bg-blue" data-original-title="New Messages">20</span>
+                                                    <span data-toggle="tooltip" title="New Messages" class="badge bg-blue" data-original-title="New Messages"><t t-esc="invoice.message_needaction_counter"></t></span>
                                                 </div>
                                             </div>
                                             <div class="box-body">
-                                                <div class="direct-chat-messages">
-                                                    <div class="direct-chat-msg">
-                                                        <div class="direct-chat-info clearfix">
-                                                            <span class="direct-chat-name pull-left">
-                                                                <t t-esc="invoice.partner_id.name" />
+                                                <div class="o_pms_pwa_direct_chat_messages">
+                                                    <t t-foreach="invoice.message_ids" t-as="msg">
+                                                    <div class="o_pms_pwa_direct_chat_msg">
+                                                        <div class="o_pms_pwa_direct_direct_chat_info clearfix">
+                                                            <span class="pull-left">
+                                                                <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
+                                                                <strong class="ml-2"><t t-esc="msg.author_id.name"></t></strong>
                                                             </span>
-                                                            <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+                                                            <span class="o_pms_pwa_direct_chat_timestamp pull-right">23 Jan 2:00 pm</span>
                                                         </div>
-                                                        <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
-                                                        <div class="direct-chat-text">
-                                                            For what reason would it be advisable for me to think about business content?
-                                                        </div>
-                                                    </div>
-                                                    <div class="direct-chat-msg right">
-                                                        <div class="direct-chat-info clearfix">
-                                                            <span class="direct-chat-name pull-right">HOTEL</span>
-                                                            <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
-                                                        </div>
-                                                        <img class="o_pms_pwa_direct_chat_img right" src="https://cdn.onlinewebfonts.com/svg/img_406828.png" alt="hotel image" />
-                                                        <div class="direct-chat-text">
-                                                            Thank you for your believe in our supports
+
+                                                        <div class="o_pms_pwa_direct_chat_text">
+                                                            <span t-field="msg.body" options="{'style-inline': true}" />
                                                         </div>
                                                     </div>
-                                                    <div class="direct-chat-msg">
-                                                        <div class="direct-chat-info clearfix">
-                                                            <span class="direct-chat-name pull-left">
-                                                                <t t-esc="invoice.partner_id.name" />
-                                                            </span>
-                                                            <span class="direct-chat-timestamp pull-right">23 Jan 5:37 pm</span>
-                                                        </div>
-                                                        <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
-                                                        <div class="direct-chat-text">
-                                                            For what reason would it be advisable for me to think about business content?
-                                                        </div>
-                                                    </div>
+                                                    </t>
                                                 </div>
                                             </div>
                                             <div class="box-footer text-center">
