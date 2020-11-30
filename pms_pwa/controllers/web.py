@@ -36,7 +36,7 @@ class Home(Home):
 # Frontend controllers to test
 class TestFrontEnd(http.Controller):
     @http.route(['/', '/page/<int:page>'], type='http', auth='public', methods=['GET'], website=True)
-    def reservation_list(self, page=0, search="", sortby=None, **post):
+    def reservation_list(self, page=0, search=False, sortby=None, **post):
         paginate_by = 10
         Reservation = request.env['pms.reservation']
         values = {}
@@ -220,7 +220,7 @@ class TestFrontEnd(http.Controller):
         '''
         pass
 
-    def _get_search_domain(self, search, **post):
+    def _get_search_domain(self, search=False, **post):
         domains = []
         if search:
             for srch in search.split(" "):
