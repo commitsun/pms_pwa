@@ -35,8 +35,18 @@ class Home(Home):
 
 # Frontend controllers to test
 class TestFrontEnd(http.Controller):
-    @http.route(['/', '/page/<int:page>'], type='http', auth='public', methods=['GET'], website=True)
+    @http.route(
+        ["/", "/page/<int:page>"],
+        type="http",
+        auth="user",
+        methods=["GET", "POST"],
+        website=True,
+    )
     def reservation_list(self, page=0, search=False, sortby=None, **post):
+        if post and post['original_search']:
+            if not search:
+                search = post['original_search']
+            post.pop('original_search')
         paginate_by = 10
         Reservation = request.env["pms.reservation"]
         values = {}
@@ -73,7 +83,9 @@ class TestFrontEnd(http.Controller):
                 "reservations": reservations,
                 "page_name": "Reservations",
                 "pager": pager,
+                "search": search if search else None,
                 "default_url": "",
+                "post": post if post else None,
                 "searchbar_sortings": searchbar_sortings,
                 "sortby": sortby,
             }
@@ -230,7 +242,7 @@ class TestFrontEnd(http.Controller):
         """
         pass
 
-    def _get_search_domain(self, search=False, **post):
+    def _get_search_domain(self, search, **post):
         domains = []
         if search:
             for srch in search.split(" "):
@@ -245,8 +257,8 @@ class TestFrontEnd(http.Controller):
                 domains.append(expression.OR(subdomains))
         # post send a filters with key: "operator&field"
         # to build a odoo domain:
-        for k, v in post:
-            domain.append((k[v.index("&") :], k[: v.index("&"), v]))
+        """ for k, v in post:
+            domain.append((k[v.index("&") :], k[: v.index("&"), v])) """
         return expression.AND(domains)
 
     def _get_allowed_payments_journals(self):

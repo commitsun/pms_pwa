@@ -3,6 +3,7 @@
 
 $theme-color: #01b6e3;
 $bg-theme-color: #daf7fc;
+$bg-theme-color-modal: #01b6e345;
 $grey-900: #394240;
 $grey-300: #dadada;
 $badge-color: #ff3b00;
@@ -30,7 +31,8 @@ h6,
     font-weight: 600;
     line-height: 1.2;
 }
-form > div.form-group {
+form > div.form-group, 
+div.o_pms_pwa_filters_modal {
     & input,
     & select,
     & textarea {
@@ -60,7 +62,7 @@ form > div.form-group {
         padding-left: 0.5rem;
     }
 }
-form > sheet > div.form-group {
+form > div.form-group {
     & input,
     & select,
     & textarea {

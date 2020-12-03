@@ -6,28 +6,51 @@
             <div class="oe_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <h2><strong>My bookings <span t-esc="'('+str(len(reservations))+')'"/></strong></h2>
-                    <div class="row">
-                        <div class="col-8 col-md-8 col-lg-5">
-                            <input type="text" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
+                    <form method="post" t-att-class="_classes">
+                        <div class="row">
+                            <div class="col-8 col-md-8 col-lg-5">
+                                <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            </div>
+                            <div class="col-4 col-md-4 col-lg-7">
+                                <span class="dropdown">
+                                    <a
+                                        class="btn o_pms_pwa_float_right"
+                                        href="#" data-toggle="modal" data-target="#o_pms_pwa_filters_modal"
+                                        rel="nofollow">
+                                        <span class="d-none d-lg-flex align-self-center">
+                                            FILTERS <i class="fa fa-angle-left"/>
+                                        </span>
+                                    </a>
+                                </span>
+                            </div>
+                            <t t-call="pms_pwa.roomdoo_filters_modal">
+                                <t t-set="post" t-value="post"/>
+                                <t t-set="search" t-value="search"/>
+                            </t>
                         </div>
-                        <div class="col-4 col-md-4 col-lg-7">
-                            <span class="dropdown">
-                                <a role="button" class="btn btn-outline-dark o_pms_pwa_float_right" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-bars d-sm-block d-md-block d-lg-none"/>
-                                    <span class="d-none d-lg-flex align-self-center">FILTERS</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dLabel">
-                                    <button class="dropdown-item" type="button">Check in</button>
-                                    <button class="dropdown-item" type="button">Check out</button>
-                                    <button class="dropdown-item" type="button">Cancelled</button>
-                                </div>
+                    </form>
+
+                    <div class="tags_holder">
+                        <span t-if="search and search != ''">
+                            Search<span t-esc="search"/>
+                            <button
+                                type="button" class="close"
+                                data-tag="search" data-dismiss="modal"
+                                aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
+                        </span>
+                        <t t-if="post" t-foreach="post" t-as="val">
+                            <span t-if="post[val] != ''">
+                                <span class="o_pms_tag_index" t-esc="val"/> <span t-esc="post[val]"/>
+                                <button
+                                    type="button" class="close"
+                                    t-att-data-tag="val" data-dismiss="modal"
+                                    aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
                             </span>
-                        </div>
+                        </t>
                     </div>
 
-                    <div class="tags_holder"/>
-
-                    <div class="table-wrapper">
+                    <div class="table-wrapper table-responsive">
                         <table class="table table-hover o_pms_pwa_reservation_list_table">
                             <thead>
                                 <tr>
@@ -153,5 +176,227 @@
                 </div>
             </div>
         </t>
+    </template>
+
+    <template id="roomdoo_filters_modal" name="Roomdoo filters modal">
+
+        <div class="modal fade o_pms_pwa_right o_pms_pwa_filters_modal"
+            tabindex="-1" role="dialog" id="o_pms_pwa_filters_modal" aria-labelledby="o_pms_pwa_filters_modal"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" id="modalLabel">Filtros</div>
+                        <button class="close" data-dismiss="modal"><span><span class="fa fa-times" /></span></button>
+                    </div>
+                    <div class="modal-body o_pms_pwa_modal_body">
+                        <div class="container-fluid">
+                            
+                            <form class="form-horizontal" method="post">
+                                <div class="form-group form-field">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="checkin">
+                                                Check in
+                                            </label>
+                                            <input class="form-control"
+                                                type="date" name="checkin"
+                                                t-att-value="post['checkin'] if post and post['checkin'] else None"/>
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <span class="fa fa-calendar"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="checkout">
+                                                Check in
+                                            </label>
+                                            <input class="form-control"
+                                                type="date" name="checkout"
+                                                t-att-value="post['checkout'] if post and post['checkout'] else None"/>
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <span class="fa fa-calendar"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" name="name" placeholder="Name"
+                                                t-att-value="post['name'] if post and post['name'] else None"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" name="vat" placeholder="VAT"
+                                                t-att-value="post['vat'] if post and post['vat'] else None"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" name="mail" placeholder="Mail"
+                                                t-att-value="post['mail'] if post and post['mail'] else None"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion md-accordion" id="advanced_filters" role="tablist" aria-multiselectable="true">
+                                    
+                                    
+                                    <a data-toggle="collapse" data-parent="#advanced_filters" href="#a_filters" aria-expanded="true"
+                                        aria-controls="a_filters">
+                                        <h5>
+                                            Advanced filters <i class="fa fa-angle-down rotate-icon float-right"></i>
+                                        </h5>
+                                    </a>
+
+                                    <!-- Card body -->
+                                    <div id="a_filters" class="collapse" role="tabpanel" aria-labelledby="headingOne1"
+                                        data-parent="#advanced_filters">
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Check in</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkin_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="checkin_from"
+                                                    t-att-value="post['checkin_from'] if post and post['checkin_from'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkin_to">
+                                                    To
+                                                </label>
+                                                <input class="form-control" type="date" name="checkin_to"
+                                                    t-att-value="post['checkin_to'] if post and post['checkin_to'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Check out</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkout_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="checkout_from"
+                                                    t-att-value="post['checkout_from'] if post and post['checkout_from'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkout_to">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="checkout_to"
+                                                    t-att-value="post['checkout_to'] if post and post['checkout_to'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Created at</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="created_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="created_from"
+                                                    t-att-value="post['created_from'] if post and post['created_from'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="created_to">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="created_to"
+                                                    t-att-value="post['created_to'] if post and post['created_to'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Last modification</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="modified_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="modified_from"
+                                                    t-att-value="post['modified_from'] if post and post['modified_from'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="modified_to">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="modified_to"
+                                                    t-att-value="post['modified_to'] if post and post['modified_to'] else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <input class="form-control" type="text" name="origin" placeholder="Origin"
+                                                    t-att-value="post['origin'] if post and post['origin'] else None"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <input class="form-control" type="text" name="text_dialog" placeholder="Text in dialogs"
+                                                    t-att-value="post['text_dialog'] if post and post['text_dialog'] else None"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-12 text-center">
+                                        <button class="btn o_pms_pwa_btn_border">
+                                            Delete all
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 mb-3">
+                                    <div class="col-12 text-center">
+                                        <input type="hidden" name="original_search" t-att-value="search if search else None"/>
+                                        <input class="btn btn-message" type="submit" value="Apply filters"/>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </template>
 </odoo>

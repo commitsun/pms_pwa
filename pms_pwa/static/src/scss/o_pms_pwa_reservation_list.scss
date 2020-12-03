@@ -1,18 +1,34 @@
+.modal:not([data-backdrop="false"]) {
+    background-color: $bg-theme-color-modal;
+}
+
 section.o_pms_pwa_roomdoo {
-    .o_pmw_pwa_search_input {
-        background-image: url("/pms_pwa/static/img/searchicon.png");
-        background-position: 10px 10px;
-        background-repeat: no-repeat;
-        background-color: #dcdcdc75;
-        width: 100%;
-        font-size: 16px;
-        padding: 12px 20px 12px 40px;
-        border: 1px solid #ddd;
-        margin-bottom: 12px;
-    }
-    a.btn-outline-dark,
-    button.btn-outline-dark {
-        border-width: 1px;
+    form {
+        input.o_pmw_pwa_search_input {
+            background-image: url("/pms_pwa/static/img/searchicon.png");
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            color: $table-text-color;
+            border: none;
+            border-bottom: 1px solid $theme-color;
+            margin-bottom: 12px;
+            border-radius: 0px;
+        }
+        a.o_pms_pwa_float_right {
+            color: $theme-color;
+            border-color: $theme-color;
+            background-color: $bg-theme-color;
+            & > span {
+                & > i {
+                    margin-left: 15px;
+                    line-height: 22px;
+                }
+            }
+        }
     }
     .table-hover {
         font-family: 'Barlow Condensed', sans-serif;
@@ -89,16 +105,45 @@ section.o_pms_pwa_roomdoo {
             }
         }
     }
+    .tags_holder {
+        display: inline-block;
+        & > span {
+                background-color: $bg-theme-color;
+                color: $theme-color;
+                font-size: 15px;
+                margin-left: 5px;
+            & > span {
+                color: $table-text-color;
+                margin-left: 5px;
+            }
+            & span.o_pms_tag_index {
+                color: $theme-color;
+                text-transform: capitalize;
+            }
+            & > button {
+                float: none;
+                color: $theme-color;
+                line-height: 18px;
+                & > span {
+                    font-size: 15px;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
 }
 
 /*******************************
 * MODAL
 *******************************/
 
-div.o_pmw_pwa_reservation_modal {
+div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_filters_modal {
     &.modal.o_pms_pwa_right .modal-dialog {
         position: fixed;
         margin: auto;
+        margin-top: 60px;
+        margin-right: 10px;
         width: 360px;
         height: 100%;
         -webkit-transform: translate3d(0%, 0, 0);
@@ -107,8 +152,37 @@ div.o_pmw_pwa_reservation_modal {
         transform: translate3d(0%, 0, 0);
     }
     &.modal.o_pms_pwa_right .modal-content {
-        height: 100%;
         overflow-y: auto;
+        max-height: 92%;
+        & > div.modal-header {
+                border-bottom: none;
+            & > button.close {
+                color: $theme-color;
+            }
+            & > div.modal-title {
+                color: $table-text-color;
+                font-size: 22px;
+                font-family: 'Barlow', sans-serif;
+                font-weight: bold;
+                letter-spacing: 0.02px;
+                text-transform: uppercase;
+            }
+        }
+        & > div.o_pms_pwa_modal_header {
+            .o_pms_pwa_modal_header_pad {
+                padding-right: 1rem;
+            }
+        }
+        & > div.o_pms_pwa_modal_body {
+            overflow-x: clip;
+            button.o_pms_pwa_btn_border {
+                width: 90%;
+                margin-top: 1rem;
+                border-radius: 1.5rem;
+                border: 1px solid $theme-color;
+                color: $theme-color;
+            }
+        }
     }
     &.modal.o_pms_pwa_right.fade .modal-dialog {
         padding: 0px;
@@ -121,44 +195,10 @@ div.o_pmw_pwa_reservation_modal {
     &.modal.o_pms_pwa_right.fade.in .modal-dialog {
         right: 0;
     }
-    div.modal-content {
-        & > div.o_pms_pwa_modal_header {
-            .o_pms_pwa_modal_header_pad {
-                padding-right: 1rem;
-            }
-        }
-        & > div.o_pms_pwa_modal_body {
-            & > div.container-fluid {
-                & > .row {
-                    padding-top: 5px;
-                    select.o_pms_pwa_messages {
-                        background-color: #000000c4;
-                        margin-top: 0.5rem;
-                        color: #ffffff;
-                    }
-                }
-                form > sheet > div.form-group {
-                    & label:not(.o_pms_pwa_checkbox_label),
-                    & input,
-                    & select,
-                    & textarea {
-                        background-color: #dcdcdc75;
-                    }
-                    & select,
-                    & input {
-                        border: unset;
-                        border-bottom: 2px solid #000;
-                    }
-                    & label {
-                        font-weight: unset;
-                        font-size: small;
-                    }
-                }
-                & .o_pms_pwa_reservation_name {
-                    font-size: large;
-                }
-            }
-        }
+    h5 {
+        color: $theme-color;
+        font-weight: bold; 
+        font-size: 18px;
     }
 }
 
@@ -167,7 +207,8 @@ div.o_pmw_pwa_reservation_modal {
 *******************************/
 
 section.o_pms_pwa_roomdoo_section,
-div.o_pmw_pwa_reservation_modal {
+div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_filters_modal {
     a.btn-outline-dark,
     button.btn-outline-dark {
         border-width: 1px;
@@ -177,53 +218,3 @@ div.o_pmw_pwa_reservation_modal {
 /*******************************
 * MEDIAS
 *******************************/
-@media (max-width: 342px) {
-    section.o_pms_pwa_roomdoo {
-        div.o_pms_pwa_reservation_list_table {
-            & .o_pms_pwa_profile_image_container {
-                display: none;
-            }
-        }
-    }
-}
-
-@media (max-width: 576px) {
-    div.o_pmw_pwa_reservation_modal {
-        &.modal.o_pms_pwa_right .modal-dialog {
-            width: 100%;
-        }
-    }
-}
-
-@media (max-width: 992px) {
-    section.o_pms_pwa_roomdoo {
-        div.o_pms_pwa_reservation_list_table {
-            & > div:not(:first-of-type) {
-                border: 1px solid #000000;
-            }
-            & > .row.item > div:first-of-type {
-                border-right: unset;
-            }
-            & > .row.item > div:nth-child(2),
-            & > .row.item > div:first-of-type {
-                background-color: #dcdcdc75;
-                border-bottom: 1px solid #dcdcdc;
-            }
-        }
-        & .o_pms_pwa_float_right {
-            float: right;
-        }
-    }
-}
-
-@media (min-width: 993px) {
-    section.o_pms_pwa_roomdoo {
-        div.o_pms_pwa_reservation_list_table {
-            & button {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-        }
-    }
-}

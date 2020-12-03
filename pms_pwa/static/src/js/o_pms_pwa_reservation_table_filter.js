@@ -7,23 +7,16 @@ odoo.define("pms_pwa.reservation_table", function(require) {
     var QWeb = core.qweb;
     var publicWidget = require("web.public.widget");
 
-    $("input.o_pmw_pwa_search_input").on("keyup", function(event) {
-        var input, filter, table, tr, td, i, txtValue;
-        input = document.getElementsByClassName("o_pmw_pwa_search_input")[0];
-        filter = input.value.toUpperCase();
-        table = document.getElementsByClassName("o_pms_pwa_reservation_list_table")[0];
-        tr = table.getElementsByClassName("item");
-        for (i = 0; i < tr.length; i++) {
-            td = tr[i].getElementsByTagName("div")[0];
-            if (td) {
-                txtValue = td.textContent || td.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    tr[i].style.display = "";
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
+    $("button.close > span.o_pms_pwa_tag_close").on("click", function(event) {
+        event.preventDefault();
+        var self = this;
+        var input = event.currentTarget.parentNode.getAttribute("data-tag")
+        if (input == 'search') {
+            $("input[name='original_search']").val('');
+        } else {
+            $("input[name='"+ input +"']").val('');
         }
+        $("form").submit();
     });
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
@@ -62,7 +55,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
         displayContent: function(xmlid, render_values) {
             var html = core.qweb.render(xmlid, render_values);
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
-            $("div.o_pmw_pwa_reservation_modal").modal();
+            $("div.o_pms_pwa_reservation_modal").modal();
         },
         _onClickReservationButton: function(event) {
             event.preventDefault();

@@ -4,10 +4,10 @@
         <!-- Modal -->
         <t t-if="reservation">
             <div
-                class="modal o_pms_pwa_right fade o_pmw_pwa_reservation_modal"
+                class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal"
                 tabindex="-1"
                 role="dialog"
-                aria-labelledby="o_pmw_pwa_reservation_modal"
+                aria-labelledby="o_pms_pwa_reservation_modal"
             >
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -45,7 +45,7 @@
                                 <div class="row">
                                     <div class="col-3 align-self-center">
                                         <img
-                                            t-att-src="website.image_url(reservation.partner_id, 'image_128')"
+                                            t-att-src="'/web/image/res.partner/'+reservation.partner_id.id+'/image_128'"
                                             class="img-thumbnail rounded-circle"
                                             t-att-title="reservation.partner_id.name"
                                             t-att-alt="reservation.partner_id.name"
@@ -57,16 +57,16 @@
                                                 <strong>
                                                     <span
                                                         class="o_pms_pwa_reservation_name"
-                                                        t-esc="reservation.partner_id.name.value"
+                                                        t-esc="reservation.partner_id.name"
                                                     />
                                                 </strong>
                                             </div>
                                             <div class="col-12 align-self-center">
                                                 <a
-                                                    t-att-href="'tel:' + reservation.partner_id.mobile.value"
+                                                    t-att-href="'tel:' + reservation.partner_id.mobile"
                                                 >
                                                     <span
-                                                        t-esc="reservation.partner_id.mobile.value"
+                                                        t-esc="reservation.partner_id.mobile"
                                                     />
                                                 </a>
                                             </div>
@@ -105,388 +105,386 @@
                                     action="/my/reservations/update"
                                     method="post"
                                 >
-                                    <sheet>
-                                        <div class="form-group form-field mt8">
-                                            <label
-                                                class="control-label col-12"
-                                                for="room_type"
-                                            >
-                                                <t
-                                                    t-esc="texts.room_type_text || _t('Room type')"
-                                                />
-                                            </label>
-                                            <select
-                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="room_type"
-                                            >
-                                                <option
-                                                    name="room_type"
-                                                    t-foreach="room_types"
-                                                    t-as="key"
-                                                    t-att-value="key"
-                                                    t-att-selected="reservation.room_type_id.room_type === key ? 'selected' : None"
-                                                >
-                                                    <t t-esc="key" />
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="room_number"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.room_number_text || _t('Room nº')"
-                                                        />
-                                                    </label>
-                                                    <select
-                                                        class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                        name="room_number"
-                                                    >
-                                                        <option
-                                                            name="room_number"
-                                                            t-foreach="room_numbers"
-                                                            t-as="key"
-                                                            t-att-value="key"
-                                                            t-att-selected="reservation.room_number === key ? 'selected' : None"
-                                                        >
-                                                            <t t-esc="key" />
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-6">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="nights_number"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.nights_number_text || _t('Nights nº')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="text"
-                                                        name="nights_number"
-                                                        t-att-value="reservation.nights"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="check_in_date"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.check_in_text || _t('Check in')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="date"
-                                                        name="check_in_date"
-                                                        t-att-value="reservation.checkin"
-                                                    />
-                                                </div>
-                                                <div class="col-6">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="check_in_hour"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.check_in_time_text || _t('Check in time')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="time"
-                                                        name="check_in_hour"
-                                                        t-att-value="reservation.arrival_hour"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="check_out_date"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.check_out_text || _t('Check out')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="date"
-                                                        name="check_out_date"
-                                                        t-att-value="reservation.checkout"
-                                                    />
-                                                </div>
-                                                <div class="col-6">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="check_out_hour"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.check_out_time_text || _t('Check out time')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="time"
-                                                        name="check_out_hour"
-                                                        t-att-value="reservation.departure_hour"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="room_price"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.room_price_text || _t('Room price')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="text"
-                                                        name="room_price"
-                                                        t-att-value="reservation.folio_id.amount_total.value"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <button
-                                                        t-att-disabled="reservation.state.value != 'confirm' ? 'disabled' : undefined"
-                                                        class="btn btn-outline-dark btn-block"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.check_in_text || _t('Check in')"
-                                                        />
-                                                    </button>
-                                                </div>
-                                                <div class="col-6">
-                                                    <button
-                                                        t-att-disabled="reservation.state.value != 'onboard' ? 'disabled' : undefined"
-                                                        class="btn btn-outline-dark btn-block"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.check_out_text || _t('Check out')"
-                                                        />
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="sales_channel"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.sales_channel_text || _t('Sales channel')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="text"
-                                                        name="sales_channel"
-                                                        t-att-value="reservation.origin ? reservation.origin.value : ''"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <h4>
-                                                <t
-                                                    t-esc="texts.extras_text || _t('Extras')"
-                                                />
-                                            </h4>
-                                            <t t-foreach="extras" t-as="key">
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <input
-                                                            type="checkbox"
-                                                            t-att-checked="reservation.extra.includes(key) ? 'checked' : undefined"
-                                                            t-att-value="key"
-                                                            t-att-id="key"
-                                                        />
-                                                        <label
-                                                            class="control-label o_pms_pwa_checkbox_label"
-                                                            t-att-for="key"
-                                                        >
-                                                            <span t-esc="key" />
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </t>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <label
-                                                        class="control-label col-12"
-                                                        for="card_number"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.card_text || _t('Reservation card number')"
-                                                        />
-                                                    </label>
-                                                    <input
-                                                        class="form-control"
-                                                        type="text"
-                                                        name="card_number"
-                                                        t-att-value="reservation.credit_card_details"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group form-field">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="row">
-                                                        <div class="col-6">
-                                                            <div class="row">
-                                                                <strong class="col-12">
-                                                                    <t
-                                                                        t-esc="texts.total_text || _t('Total')"
-                                                                    />
-                                                                </strong>
-                                                                <span class="col-12">
-                                                                    <strong
-                                                                        t-esc="reservation.price_total"
-                                                                    />€
-                                                                    (<span
-                                                                        t-esc="reservation.price_tax"
-                                                                    />€ vat)
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <div class="row">
-                                                                <strong class="col-12">
-                                                                    <t
-                                                                        t-esc="texts.outstading_text || _t('Outstanding')"
-                                                                    />
-                                                                </strong>
-                                                                <span
-                                                                    class="col-12"
-                                                                    t-if="reservation.folio_pending_amount.value"
-                                                                >
-                                                                    <strong
-                                                                        t-esc="reservation.folio_pending_amount.value"
-                                                                    />€
-                                                                    (<span
-                                                                        t-esc="reservation.folio_id.outstanding_vat"
-                                                                    />€ vat)
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div
-                                            class="form-group form-field"
-                                            t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods"
+                                    <div class="form-group form-field mt8">
+                                        <label
+                                            class="control-label col-12"
+                                            for="room_type"
                                         >
-                                            <div class="row">
-                                                <div class="col-12">
+                                            <t
+                                                t-esc="texts.room_type_text || _t('Room type')"
+                                            />
+                                        </label>
+                                        <select
+                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                            name="room_type"
+                                        >
+                                            <option
+                                                name="room_type"
+                                                t-foreach="room_types"
+                                                t-as="key"
+                                                t-att-value="key"
+                                                t-att-selected="reservation.room_type_id.room_type === key ? 'selected' : None"
+                                            >
+                                                <t t-esc="key" />
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="room_number"
+                                                >
                                                     <t
-                                                        t-foreach="payment_methods"
+                                                        t-esc="texts.room_number_text || _t('Room nº')"
+                                                    />
+                                                </label>
+                                                <select
+                                                    class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                    name="room_number"
+                                                >
+                                                    <option
+                                                        name="room_number"
+                                                        t-foreach="room_numbers"
                                                         t-as="key"
+                                                        t-att-value="key"
+                                                        t-att-selected="reservation.room_number === key ? 'selected' : None"
                                                     >
-                                                        <div class="row">
-                                                            <div class="col-12">
-                                                                <input
-                                                                    type="radio"
-                                                                    t-att-value="key"
-                                                                    name="payment_methods"
-                                                                    t-att-id="key"
-                                                                />
-                                                                <label
-                                                                    class="control-label o_pms_pwa_checkbox_label"
-                                                                    t-att-for="key"
-                                                                >
-                                                                    <span t-esc="key" />
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </t>
-                                                </div>
-                                                <div class="col-6 mt4">
-                                                    <button
-                                                        class="btn btn-outline-dark btn-block"
-                                                        special="cancel"
-                                                    >
-                                                        <t
-                                                            t-esc="texts.pay_text || _t('Pay')"
-                                                        />
-                                                    </button>
-                                                </div>
+                                                        <t t-esc="key" />
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="nights_number"
+                                                >
+                                                    <t
+                                                        t-esc="texts.nights_number_text || _t('Nights nº')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    name="nights_number"
+                                                    t-att-value="reservation.nights"
+                                                />
                                             </div>
                                         </div>
-                                        <div class="form-group form-field">
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="check_in_date"
+                                                >
+                                                    <t
+                                                        t-esc="texts.check_in_text || _t('Check in')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="date"
+                                                    name="check_in_date"
+                                                    t-att-value="reservation.checkin"
+                                                />
+                                            </div>
+                                            <div class="col-6">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="check_in_hour"
+                                                >
+                                                    <t
+                                                        t-esc="texts.check_in_time_text || _t('Check in time')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="time"
+                                                    name="check_in_hour"
+                                                    t-att-value="reservation.arrival_hour"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="check_out_date"
+                                                >
+                                                    <t
+                                                        t-esc="texts.check_out_text || _t('Check out')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="date"
+                                                    name="check_out_date"
+                                                    t-att-value="reservation.checkout"
+                                                />
+                                            </div>
+                                            <div class="col-6">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="check_out_hour"
+                                                >
+                                                    <t
+                                                        t-esc="texts.check_out_time_text || _t('Check out time')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="time"
+                                                    name="check_out_hour"
+                                                    t-att-value="reservation.departure_hour"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="room_price"
+                                                >
+                                                    <t
+                                                        t-esc="texts.room_price_text || _t('Room price')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    name="room_price"
+                                                    t-att-value="reservation.folio_id.amount_total.value"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <button
+                                                    t-att-disabled="reservation.state.value != 'confirm' ? 'disabled' : undefined"
+                                                    class="btn btn-outline-dark btn-block"
+                                                >
+                                                    <t
+                                                        t-esc="texts.check_in_text || _t('Check in')"
+                                                    />
+                                                </button>
+                                            </div>
+                                            <div class="col-6">
+                                                <button
+                                                    t-att-disabled="reservation.state.value != 'onboard' ? 'disabled' : undefined"
+                                                    class="btn btn-outline-dark btn-block"
+                                                >
+                                                    <t
+                                                        t-esc="texts.check_out_text || _t('Check out')"
+                                                    />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="sales_channel"
+                                                >
+                                                    <t
+                                                        t-esc="texts.sales_channel_text || _t('Sales channel')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    name="sales_channel"
+                                                    t-att-value="reservation.origin ? reservation.origin.value : ''"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <h4>
+                                            <t
+                                                t-esc="texts.extras_text || _t('Extras')"
+                                            />
+                                        </h4>
+                                        <t t-foreach="extras" t-as="key">
                                             <div class="row">
                                                 <div class="col-12">
+                                                    <input
+                                                        type="checkbox"
+                                                        t-att-checked="reservation.extra.includes(key) ? 'checked' : undefined"
+                                                        t-att-value="key"
+                                                        t-att-id="key"
+                                                    />
                                                     <label
-                                                        class="control-label col-12"
-                                                        for="notes"
+                                                        class="control-label o_pms_pwa_checkbox_label"
+                                                        t-att-for="key"
                                                     >
-                                                        <t
-                                                            t-esc="texts.notes_text || _t('Notes')"
-                                                        />
+                                                        <span t-esc="key" />
                                                     </label>
-                                                    <textarea
-                                                        class="form-control o_website_form_input"
-                                                        name="notes"
-                                                    >
-                                                        <t
-                                                            t-if="reservation.folio_internal_comment"
-                                                            t-esc="reservation.folio_internal_comment"
-                                                        />
-                                                    </textarea>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="card_number"
+                                                >
+                                                    <t
+                                                        t-esc="texts.card_text || _t('Reservation card number')"
+                                                    />
+                                                </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    name="card_number"
+                                                    t-att-value="reservation.credit_card_details"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="row">
+                                                            <strong class="col-12">
+                                                                <t
+                                                                    t-esc="texts.total_text || _t('Total')"
+                                                                />
+                                                            </strong>
+                                                            <span class="col-12">
+                                                                <strong
+                                                                    t-esc="reservation.price_total"
+                                                                />€
+                                                                (<span
+                                                                    t-esc="reservation.price_tax"
+                                                                />€ vat)
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row">
+                                                            <strong class="col-12">
+                                                                <t
+                                                                    t-esc="texts.outstading_text || _t('Outstanding')"
+                                                                />
+                                                            </strong>
+                                                            <span
+                                                                class="col-12"
+                                                                t-if="reservation.folio_pending_amount.value"
+                                                            >
+                                                                <strong
+                                                                    t-esc="reservation.folio_pending_amount.value"
+                                                                />€
+                                                                (<span
+                                                                    t-esc="reservation.folio_id.outstanding_vat"
+                                                                />€ vat)
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group mt32">
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <button
-                                                        t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
-                                                        class="btn btn-outline-dark btn-block o_website_form_send"
-                                                        confirm="Current reservation will be cancelled, are you sure about that?"
-                                                        special="cancel"
-                                                    >
-                                                        <t t-esc="_t('Cancel')" />
-                                                    </button>
-                                                </div>
-                                                <div class="col-6">
-                                                    <button
-                                                        t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
-                                                        type="submit"
-                                                        class="btn btn-dark btn-block o_website_form_send"
-                                                    >
-                                                        <t t-esc="_t('Save')" />
-                                                    </button>
-                                                </div>
+                                    </div>
+                                    <div
+                                        class="form-group form-field"
+                                        t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods"
+                                    >
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <t
+                                                    t-foreach="payment_methods"
+                                                    t-as="key"
+                                                >
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <input
+                                                                type="radio"
+                                                                t-att-value="key"
+                                                                name="payment_methods"
+                                                                t-att-id="key"
+                                                            />
+                                                            <label
+                                                                class="control-label o_pms_pwa_checkbox_label"
+                                                                t-att-for="key"
+                                                            >
+                                                                <span t-esc="key" />
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                            </div>
+                                            <div class="col-6 mt4">
+                                                <button
+                                                    class="btn btn-outline-dark btn-block"
+                                                    special="cancel"
+                                                >
+                                                    <t
+                                                        t-esc="texts.pay_text || _t('Pay')"
+                                                    />
+                                                </button>
                                             </div>
                                         </div>
-                                    </sheet>
+                                    </div>
+                                    <div class="form-group form-field">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label
+                                                    class="control-label col-12"
+                                                    for="notes"
+                                                >
+                                                    <t
+                                                        t-esc="texts.notes_text || _t('Notes')"
+                                                    />
+                                                </label>
+                                                <textarea
+                                                    class="form-control o_website_form_input"
+                                                    name="notes"
+                                                >
+                                                    <t
+                                                        t-if="reservation.folio_internal_comment"
+                                                        t-esc="reservation.folio_internal_comment"
+                                                    />
+                                                </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt32">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <button
+                                                    t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
+                                                    class="btn btn-outline-dark btn-block o_website_form_send"
+                                                    confirm="Current reservation will be cancelled, are you sure about that?"
+                                                    special="cancel"
+                                                >
+                                                    <t t-esc="_t('Cancel')" />
+                                                </button>
+                                            </div>
+                                            <div class="col-6">
+                                                <button
+                                                    t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
+                                                    type="submit"
+                                                    class="btn btn-dark btn-block o_website_form_send"
+                                                >
+                                                    <t t-esc="_t('Save')" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
