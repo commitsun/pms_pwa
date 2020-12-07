@@ -16,7 +16,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-condensed" >
+                            <table class="table table-condensed">
                                 <thead>
 
                                     <tr>
@@ -32,7 +32,7 @@
                                 </thead>
                                 <tbody>
                                     <t t-foreach="rooms_list" t-as="obj">
-                                        <tr>
+                                        <tr data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)">
                                             <td>
                                                 <p class="o_pms_pwa_room_name">
                                                     <t
@@ -59,6 +59,13 @@
                                                 </td>
                                             </t>
                                         </tr>
+                                        <tr>
+                                            <td colspan="8" class="o_pms_pwa_hiddenRow">
+                                                <div t-att-id="'collapse_accordion_'+str(obj.id)" class="collapse">
+                                                    Lo que tenga que ser, será....
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </t>
                                 </tbody>
                             </table>
@@ -68,5 +75,6 @@
                 </section>
             </div>
         </t>
+
     </template>
 </odoo>

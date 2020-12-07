@@ -136,21 +136,3 @@ select::-ms-expand {
     border: none;
     background: transparent;
 }
-/* Table movil */
-th:first-child,
-td:first-child {
-    position: sticky;
-    left: 0px;
-    z-index: 2;
-    min-width: 3rem;
-    border: none;
-}
-tr:nth-child(odd) > td {
-    background-color: $white;
-}
-tr:nth-child(even) > td {
-    background-color: $white;
-}
-tr:nth-child(odd) > th {
-    background-color: $white;
-}

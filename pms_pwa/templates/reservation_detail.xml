@@ -218,17 +218,17 @@
                                                                         <table>
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th>Fecha</th>
-                                                                                    <th>Cantidad</th>
+                                                                                    <th class="o_pms_pwa_detail_th">Fecha</th>
+                                                                                    <th class="o_pms_pwa_detail_th">Cantidad</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
                                                                                 <t t-foreach="i.service_line_ids" t-as="s">
                                                                                     <tr>
-                                                                                        <td>
+                                                                                        <td class="o_pms_pwa_detail_td">
                                                                                             <span t-field="s.date" t-options='{"format": "dd/MM/yyyy"}' />
                                                                                         </td>
-                                                                                        <td>
+                                                                                        <td class="o_pms_pwa_detail_td">
                                                                                             <div class="o_pms_pwa_rb_box">
                                                                                                 <div t-attf-id='o_pms_pwa_rb_{{i.id}}' class="o_pms_pwa_rb">
                                                                                                     <t t-foreach="range(invoice.adults+1)" t-as="x">

@@ -51,6 +51,10 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_reservation_detail_rb.js"
             />
+            <script
+                type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_calendar.js"
+            />
         </xpath>
     </template>
 </odoo>
