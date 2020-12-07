@@ -2,12 +2,11 @@
 
 # -*- coding: utf-8 -*-
 
-import base64
-import json
 import logging
 from datetime import datetime, timedelta
 
 from odoo import _, http
+from odoo.exceptions import MissingError
 from odoo.http import request
 from odoo.osv import expression
 
@@ -38,8 +37,8 @@ class TestFrontEnd(http.Controller):
     @http.route(
         ["/", "/page/<int:page>"],
         type="http",
-        auth="user",
-        methods=["GET", "POST"],
+        auth="public",
+        methods=["GET"],
         website=True,
     )
     def reservation_list(self, page=0, search=False, sortby=None, **post):
@@ -53,7 +52,6 @@ class TestFrontEnd(http.Controller):
 
         domain = self._get_search_domain(search, **post)
 
-        partner = request.env.user.partner_id
         searchbar_sortings = {
             "priority": {"label": _("Priority"), "order": "priority desc"},
         }
@@ -72,7 +70,6 @@ class TestFrontEnd(http.Controller):
             scope=7,
             url_args=post,
         )
-        offset = pager["offset"]
 
         reservations = Reservation.search(
             domain, order=sort_reservation, limit=paginate_by, offset=pager["offset"]
@@ -83,9 +80,7 @@ class TestFrontEnd(http.Controller):
                 "reservations": reservations,
                 "page_name": "Reservations",
                 "pager": pager,
-                "search": search if search else None,
                 "default_url": "",
-                "post": post if post else None,
                 "searchbar_sortings": searchbar_sortings,
                 "sortby": sortby,
             }
@@ -104,7 +99,7 @@ class TestFrontEnd(http.Controller):
             "page_name": "Reservation",
             "invoice": reservation,
         }
-        return http.request.render("pms_pwa.roomdoo_reservation_detail", values,)
+        return http.request.render("pms_pwa.roomdoo_reservation_detail", values)
 
     @http.route(
         ["/reservation/json_data"],
@@ -140,7 +135,7 @@ class TestFrontEnd(http.Controller):
                 "mobile": reservation.partner_id.mobile,
             },
             "unread_msg": 2,
-            "messages": ["Lorem ipsum", "Unread short message",],
+            "messages": ["Lorem ipsum", "Unread short message"],
             "room_type_id": {
                 "id": reservation.room_type_id.id,
                 "name": reservation.room_type_id.name,
@@ -175,72 +170,52 @@ class TestFrontEnd(http.Controller):
             "folio_internal_comment": reservation.folio_internal_comment,
             "allowed_room_type_ids": allowed_room_types,
             "allowed_room_ids": allowed_rooms,
-            "extras": extras,
+            "allowed_extras": extras,
             "payment_methods": self._get_allowed_payments_journals(),
         }
 
         return reservation_values
 
-    @http.route("/reservation/<int:id>/check-in", auth="public", website=True)
-    def reservation_check_in(self, **kw):
-        reservation = request.env["pms.reservation"].browse([reservation_id])
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        """
-            Ruta para realizar el checkin de la reserva 'id'
-        """
-        pass
+    # @http.route("/reservation/<int:id>/check-in", auth="public", website=True)
+    # def reservation_check_in(self, **kw):
+    #     reservation = request.env["pms.reservation"].browse([reservation_id])
+    #     if not reservation:
+    #         raise MissingError(_("This document does not exist."))
+    #     """
+    #         Ruta para realizar el checkin de la reserva 'id'
+    #     """
+    #     pass
 
-    @http.route("/reservation/<int:id>/check-out", auth="public", website=True)
-    def reservation_check_out(self, **kw):
-        reservation = request.env["pms.reservation"].browse([reservation_id])
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        """
-            Ruta para realizar el checkout de la reserva 'id'
-        """
-        pass
+    # @http.route("/reservation/<int:id>/check-out", auth="public", website=True)
+    # def reservation_check_out(self, **kw):
+    #     reservation = request.env["pms.reservation"].browse([reservation_id])
+    #     if not reservation:
+    #         raise MissingError(_("This document does not exist."))
+    #     """
+    #         Ruta para realizar el checkout de la reserva 'id'
+    #     """
+    #     pass
 
-    @http.route("/reservation/<int:id>/pay", auth="public", website=True)
-    def reservation_pay(self, **kw):
-        reservation = request.env["pms.reservation"].browse([reservation_id])
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        """
-            Ruta para realizar pago de la reserva 'id',
-            ¿puede aceptar pagos parciales?
-        """
-        pass
+    # @http.route("/reservation/<int:id>/pay", auth="public", website=True)
+    # def reservation_pay(self, **kw):
+    #     reservation = request.env["pms.reservation"].browse([reservation_id])
+    #     if not reservation:
+    #         raise MissingError(_("This document does not exist."))
+    #     """
+    #         Ruta para realizar pago de la reserva 'id',
+    #         ¿puede aceptar pagos parciales?
+    #     """
+    #     pass
 
-    @http.route("/reservation/<int:id>/assign", auth="public", website=True)
-    def reservation_cancel(self, **kw):
-        reservation = request.env["pms.reservation"].browse([reservation_id])
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        """
-            Ruta para realizar la cancelación de la reserva 'id'
-        """
-        pass
-
-    @http.route("/reservation/<int:id>/invoice", auth="public", website=True)
-    def reservation_cancel(self, **kw):
-        reservation = request.env["pms.reservation"].browse([reservation_id])
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        """
-            Ruta para realizar la cancelación de la reserva 'id'
-        """
-        pass
-
-    @http.route("/reservation/<int:id>/cancel", auth="public", website=True)
-    def reservation_cancel(self, **kw):
-        reservation = request.env["pms.reservation"].browse([reservation_id])
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        """
-            Ruta para realizar la cancelación de la reserva 'id'
-        """
-        pass
+    # @http.route("/reservation/<int:id>/cancel", auth="public", website=True)
+    # def reservation_cancel(self, **kw):
+    #     reservation = request.env["pms.reservation"].browse([reservation_id])
+    #     if not reservation:
+    #         raise MissingError(_("This document does not exist."))
+    #     """
+    #         Ruta para realizar la cancelación de la reserva 'id'
+    #     """
+    #     pass
 
     def _get_search_domain(self, search, **post):
         domains = []
@@ -255,10 +230,12 @@ class TestFrontEnd(http.Controller):
                     [("partner_id.email", "ilike", srch)],
                 ]
                 domains.append(expression.OR(subdomains))
+        # REVIEW: Use lib to this
         # post send a filters with key: "operator&field"
         # to build a odoo domain:
-        """ for k, v in post:
-            domain.append((k[v.index("&") :], k[: v.index("&"), v])) """
+        for k, v in post.items():
+            if "&" in v:
+                domains.append((k[v.index("&") :], k[: v.index("&"), v]))
         return expression.AND(domains)
 
     def _get_allowed_payments_journals(self):
@@ -278,40 +255,5 @@ class TestFrontEnd(http.Controller):
         )
         allowed_journals = []
         for journal in payment_methods:
-            allowed_journals.append(
-                {"id": journal.id, "name": journal.name,}
-            )
+            allowed_journals.append({"id": journal.id, "name": journal.name})
         return allowed_journals
-
-    @http.route("/calendar", auth="public", website=True)
-    def calendar(self, date=False, **kw):
-        if not date:
-            date = datetime.now()
-        date_end = date + timedelta(days=7)
-
-        Room = request.env["pms.room.type"]
-        rooms = Room.search([])
-        date_list = [date + timedelta(days=x) for x in range(7)]
-
-        values = {
-            "page_name": "Calendar",
-            # "reservations": reservations,
-            "rooms_list": rooms,
-            "date_list": date_list,
-        }
-        return http.request.render("pms_pwa.roomdoo_calendar_page", values,)
-
-    @http.route("/calendar/line", auth="public", website=True)
-    def calendar_list(self, date=False, search="", **post):
-        if not date:
-            date = datetime.now()
-        date_end = date + timedelta(days=7)
-        Reservation = request.env["pms.reservation"]
-        domain = self._get_search_domain(search, **post)
-
-        domain += [
-            ("checkin", ">=", date),
-            ("checkout", "<=", date_end),
-        ]
-        reservations = Reservation.search(domain)
-        return reservations
