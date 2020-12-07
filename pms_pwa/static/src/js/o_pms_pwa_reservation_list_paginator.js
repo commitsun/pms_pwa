@@ -7,7 +7,7 @@ $(document).ready(function() {
     }
 
     grid.masonry({
-        itemSelector: ".o_pms_pwa_reservation_list_table .item",
+        itemSelector: ".o_pms_pwa_reservation_list_table .o_pms_pwa_reservation",
     });
 
     grid.infinitescroll(
@@ -26,7 +26,7 @@ $(document).ready(function() {
             nextSelector: ".o_pms_pwa_reservation_list_pagination a",
 
             // Selector of items to retrieve
-            itemSelector: ".o_pms_pwa_reservation_list_table .item",
+            itemSelector: ".o_pms_pwa_reservation_list_table .o_pms_pwa_reservation",
 
             // Max Pagination
             maxPage: parseInt(

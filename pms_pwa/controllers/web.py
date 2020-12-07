@@ -2,11 +2,12 @@
 
 # -*- coding: utf-8 -*-
 
+import base64
+import json
 import logging
 from datetime import datetime, timedelta
 
 from odoo import _, http
-from odoo.exceptions import MissingError
 from odoo.http import request
 from odoo.osv import expression
 
@@ -37,8 +38,8 @@ class TestFrontEnd(http.Controller):
     @http.route(
         ["/", "/page/<int:page>"],
         type="http",
-        auth="public",
-        methods=["GET"],
+        auth="user",
+        methods=["GET", "POST"],
         website=True,
     )
     def reservation_list(self, page=0, search=False, sortby=None, **post):
@@ -47,40 +48,44 @@ class TestFrontEnd(http.Controller):
                 search = post['original_search']
             post.pop('original_search')
         paginate_by = 10
-        Reservation = request.env["pms.reservation"]
+        Folio = request.env["pms.folio"]
         values = {}
 
         domain = self._get_search_domain(search, **post)
 
+
         searchbar_sortings = {
-            "priority": {"label": _("Priority"), "order": "priority desc"},
+            "priority": {"label": _("Priority"), "order": "id desc"},
         }
 
         # default sortby order
         if not sortby:
             sortby = "priority"
-        sort_reservation = searchbar_sortings[sortby]["order"]
+        sort_folio = searchbar_sortings[sortby]["order"]
 
-        reservation_count = Reservation.search_count(domain)
+        folio_count = Folio.search_count(domain)
         pager = request.website.pager(
             url="",
-            total=reservation_count,
+            total=folio_count,
             page=page,
             step=paginate_by,
             scope=7,
             url_args=post,
         )
+        offset = pager["offset"]
 
-        reservations = Reservation.search(
-            domain, order=sort_reservation, limit=paginate_by, offset=pager["offset"]
+        folios = Folio.search(
+            domain, order=sort_folio, limit=paginate_by, offset=pager["offset"]
         )
 
         values.update(
             {
-                "reservations": reservations,
+                "folios": folios,
                 "page_name": "Reservations",
                 "pager": pager,
+                "search": search if search else None,
                 "default_url": "",
+                "post": post if post else None,
                 "searchbar_sortings": searchbar_sortings,
                 "sortby": sortby,
             }
@@ -217,12 +222,12 @@ class TestFrontEnd(http.Controller):
     #     """
     #     pass
 
-    def _get_search_domain(self, search, **post):
+    def _get_search_domain(self, search=False, **post):
         domains = []
         if search:
             for srch in search.split(" "):
                 subdomains = [
-                    [("localizator", "ilike", srch)],
+                    [("reservation_ids.localizator", "in", [srch])],
                     [("partner_id.phone", "ilike", srch)],
                     [("partner_id.mobile", "ilike", srch)],
                     [("partner_id.name", "ilike", srch)],
@@ -257,3 +262,36 @@ class TestFrontEnd(http.Controller):
         for journal in payment_methods:
             allowed_journals.append({"id": journal.id, "name": journal.name})
         return allowed_journals
+
+    @http.route("/calendar", auth="public", website=True)
+    def calendar(self, date=False, **kw):
+        if not date:
+            date = datetime.now()
+        date_end = date + timedelta(days=7)
+
+        Room = request.env["pms.room.type"]
+        rooms = Room.search([])
+        date_list = [date + timedelta(days=x) for x in range(7)]
+
+        values = {
+            "page_name": "Calendar",
+            # "reservations": reservations,
+            "rooms_list": rooms,
+            "date_list": date_list,
+        }
+        return http.request.render("pms_pwa.roomdoo_calendar_page", values,)
+
+    @http.route("/calendar/line", auth="public", website=True)
+    def calendar_list(self, date=False, search="", **post):
+        if not date:
+            date = datetime.now()
+        date_end = date + timedelta(days=7)
+        Reservation = request.env["pms.reservation"]
+        domain = self._get_search_domain(search, **post)
+
+        domain += [
+            ("checkin", ">=", date),
+            ("checkout", "<=", date_end),
+        ]
+        reservations = Reservation.search(domain)
+        return reservations

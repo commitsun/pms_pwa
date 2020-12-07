@@ -5,7 +5,7 @@
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="oe_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
-                    <h2><strong>My bookings <span t-esc="'('+str(len(reservations))+')'"/></strong></h2>
+                    <h2><strong>My bookings <span t-esc="'('+str(len(folios))+')'"/></strong></h2>
                     <form method="post" t-att-class="_classes">
                         <div class="row">
                             <div class="col-8 col-md-8 col-lg-5">
@@ -70,87 +70,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <t t-foreach="reservations" t-as="obj">
-                                    <tr class="o_pms_pwa_reservation" t-att-data-id="obj.id">
-                                        <td class="first-col">
-                                            <span class="float-left">
-                                                <img t-att-src="website.image_url(obj.partner_id, 'image_128')"
-                                                    width="50"
-                                                    class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
-                                                    t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
-                                                <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
-                                            </span>
-                                            <div class="float-left">
-                                                <t t-esc="obj.partner_id.name"/>
-                                            </div>
-                                            <br/>
-                                            <a class="float-left" t-att-href="'tel:' + str(obj.partner_id.mobile or obj.partner_id.phone)">
-                                                <t t-esc="obj.partner_id.mobile or obj.partner_id.phone"/>
-                                            </a>
-                                            <span class="float-right "><i class="fa fa-user"/>3</span>
-                                            <br/>
-                                            <div class="progress mt-4">
-                                                <div t-att-class="'progress-bar '
-                                                    + ('bg-success ' if obj.partner_id.profile_completition &gt; 75 else ' ')
-                                                    + ('bg-warning ' if 75 &gt; obj.partner_id.profile_completition &gt; 50 else ' ')
-                                                    + ('bg-danger ' if obj.partner_id.profile_completition &lt; 50 else ' ')"
-                                                    role="progressbar" t-att-style="'width:'+ str(obj.partner_id.profile_completition) + '%'"
-                                                    t-att-aria-valuenow="obj.partner_id.profile_completition" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </td>
-                                        <td class="o_pms_pwa_lh45">
-                                            <t t-esc="obj.localizator"/>
-                                        </td>
-                                        <td class="o_pms_pwa_lh45">
-                                            <t t-esc="obj.room_type_id.code_type"/>
-                                        </td>
-                                        <td class="o_pms_pwa_lh45 text-center">
-                                            2
-                                        </td>
-                                        <td>
-                                            <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
-                                        </td>
-                                        <td>
-                                            <t t-esc="obj.checkout"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
-                                        </td>
-                                        <td class="text-center">
-                                            <t t-if="obj.origin" t-esc="obj.origin"/>
-                                            <span class="o_pms_pwa_wler" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
-                                        </td>
-                                        <td class="o_pms_pwa_lh45 text-center">
-                                            <t t-esc="obj.folio_id.amount_total"/>
-                                        </td>
-                                        <td class="o_pms_pwa_lh45 text-center">
-                                            <t t-esc="obj.folio_id.pending_amount"/>
-                                        </td>
-                                        <td class="o_pms_pwa_lh45 text-center">
-                                            3
-                                        </td>
-                                        <td class="o_pms_pwa_lh45">
-                                            <t t-if="obj.folio_internal_comment" t-esc="obj.folio_internal_comment"/>
-                                        </td>
-                                        <td class="o_pms_pwa_lh45">
-                                            Desayuno
-                                        </td>
-                                        <td>
-                                            <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
-                                            <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
-                                            <button t-att-url="pwa_action_buttons[keys[0]]" class="btn" type="button"><t t-esc="keys[0]"/></button>
-                                            <span class="dropdown">
-                                                <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
-                                                <div class="dropdown-menu" aria-labelledby="dLabel">
-                                                    <t t-foreach="pwa_action_buttons" t-as="button">
-                                                        <button 
-                                                            t-if="button != keys[0]"
-                                                            t-att-url="pwa_action_buttons[button]"
-                                                            class="dropdown-item"
-                                                            type="button"><t t-esc="button"/></button>
-                                                    </t>
-                                                </div>
-                                            </span>
-                                        </td>
-                                    </tr>
+                                <t t-foreach="folios" t-as="folio">
+                                    <t t-set="reservations" t-value="folio.reservation_ids"/>
+                                    <t t-if="len(reservations) &gt; 1">
+                                        <t t-call="pms_pwa.roomdoo_reservation_accordion">
+                                            <t t-set="folio" t-value="folio"/>
+                                        </t>
+                                        <t t-foreach="reservations" t-as="obj">
+                                            <tr t-att-class="'o_pms_pwa_reservation collapse accordion_' + str(folio.id)"
+                                                t-att-data-id="obj.id"
+                                                role="tabpanel">
+                                                <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                    <t t-set="obj" t-value="obj"/>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-foreach="reservations" t-as="obj">
+                                            <tr class="o_pms_pwa_reservation" t-att-data-id="obj.id">
+                                                <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                    <t t-set="obj" t-value="obj"/>
+                                                </t>
+                                            </tr>
+                                        </t>
+                                    </t>
                                 </t>
                             </tbody>
                         </table>
@@ -176,6 +120,159 @@
                 </div>
             </div>
         </t>
+    </template>
+
+    <template id="roomdoo_reservation_accordion" name="Roomdoo reservation accordion">
+        <tr class="accordion md-accordion"
+            t-att-id="'accordion_'+str(folio.id)"
+            data-toggle="collapse" aria-expanded="true"
+            t-att-data-target="'.accordion_'+str(folio.id)"
+            role="tablist" aria-multiselectable="true">
+            <td class="first-col">
+                <span class="float-left">
+                    <img t-att-src="website.image_url(folio.partner_id, 'image_128')"
+                        width="50"
+                        class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                        t-att-title="folio.partner_id.name" t-att-alt="folio.partner_id.name"/>
+                    <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
+                </span>
+                <div class="float-left">
+                    <t t-esc="folio.partner_id.name"/>
+                </div>
+                <br/>
+                <a class="float-left" t-att-href="'tel:' + str(folio.partner_id.mobile or folio.partner_id.phone)">
+                    <t t-esc="folio.partner_id.mobile or folio.partner_id.phone"/>
+                </a>
+                <span class="float-right "><i class="fa fa-user"/>3</span>
+                <br/>
+                <div class="progress mt-4">
+                    <div t-att-class="'progress-bar '
+                        + ('bg-success ' if folio.partner_id.profile_completition &gt; 75 else ' ')
+                        + ('bg-warning ' if 75 &gt; folio.partner_id.profile_completition &gt; 50 else ' ')
+                        + ('bg-danger ' if folio.partner_id.profile_completition &lt; 50 else ' ')"
+                        role="progressbar" t-att-style="'width:'+ str(folio.partner_id.profile_completition) + '%'"
+                        t-att-aria-valuenow="folio.partner_id.profile_completition" aria-valuemin="0"
+                        aria-valuemax="100"></div>
+                </div>
+            </td>
+            <td class="o_pms_pwa_lh45">
+                <t t-esc="folio.id"/>
+            </td>
+            <td class="o_pms_pwa_lh45">
+                
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+                
+            </td>
+            <td>
+                
+            </td>
+            <td>
+                
+            </td>
+            <td class="text-center">
+                
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+                <t t-esc="folio.amount_total"/>
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+                <t t-esc="folio.pending_amount"/>
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+                <t t-esc="folio.number_of_rooms"/>
+            </td>
+            <td class="o_pms_pwa_lh45">
+                <t t-if="folio.internal_comment" t-esc="folio.internal_comment"/>
+            </td>
+            <td class="o_pms_pwa_lh45">
+                <t t-esc="folio.service_ids"/>
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    </template>
+
+    <template id="roomdoo_reservation_item" name="Roomdoo reservation item">
+        <td class="first-col">
+            <span class="float-left">
+                <img t-att-src="website.image_url(obj.partner_id, 'image_128')"
+                    width="50"
+                    class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                    t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
+                <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
+            </span>
+            <div class="float-left">
+                <t t-esc="obj.partner_id.name"/>
+            </div>
+            <br/>
+            <a class="float-left" t-att-href="'tel:' + str(obj.partner_id.mobile or obj.partner_id.phone)">
+                <t t-esc="obj.partner_id.mobile or obj.partner_id.phone"/>
+            </a>
+            <span class="float-right "><i class="fa fa-user"/>3</span>
+            <br/>
+            <div class="progress mt-4">
+                <div t-att-class="'progress-bar '
+                    + ('bg-success ' if obj.partner_id.profile_completition &gt; 75 else ' ')
+                    + ('bg-warning ' if 75 &gt; obj.partner_id.profile_completition &gt; 50 else ' ')
+                    + ('bg-danger ' if obj.partner_id.profile_completition &lt; 50 else ' ')"
+                    role="progressbar" t-att-style="'width:'+ str(obj.partner_id.profile_completition) + '%'"
+                    t-att-aria-valuenow="obj.partner_id.profile_completition" aria-valuemin="0"
+                    aria-valuemax="100"></div>
+            </div>
+        </td>
+        <td class="o_pms_pwa_lh45">
+            <t t-esc="obj.localizator"/>
+        </td>
+        <td class="o_pms_pwa_lh45">
+            <t t-esc="obj.room_type_id.code_type"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            2
+        </td>
+        <td>
+            <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
+        </td>
+        <td>
+            <t t-esc="obj.checkout"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
+        </td>
+        <td class="text-center">
+            <t t-if="obj.origin" t-esc="obj.origin"/>
+            <span class="o_pms_pwa_wler" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            <t t-esc="obj.folio_id.amount_total"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            <t t-esc="obj.folio_id.pending_amount"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            3
+        </td>
+        <td class="o_pms_pwa_lh45">
+            <t t-if="obj.folio_internal_comment" t-esc="obj.folio_internal_comment"/>
+        </td>
+        <td class="o_pms_pwa_lh45">
+            Desayuno
+        </td>
+        <td>
+            <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
+            <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
+            <button t-att-url="pwa_action_buttons[keys[0]]" class="btn" type="button"><t t-esc="keys[0]"/></button>
+            <span class="dropdown">
+                <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                <div class="dropdown-menu" aria-labelledby="dLabel">
+                    <t t-foreach="pwa_action_buttons" t-as="button">
+                        <button 
+                            t-if="button != keys[0]"
+                            t-att-url="pwa_action_buttons[button]"
+                            class="dropdown-item"
+                            type="button"><t t-esc="button"/></button>
+                    </t>
+                </div>
+            </span>
+        </td>
     </template>
 
     <template id="roomdoo_filters_modal" name="Roomdoo filters modal">
@@ -243,7 +340,6 @@
 
                                 <div class="accordion md-accordion" id="advanced_filters" role="tablist" aria-multiselectable="true">
                                     
-                                    
                                     <a data-toggle="collapse" data-parent="#advanced_filters" href="#a_filters" aria-expanded="true"
                                         aria-controls="a_filters">
                                         <h5>
@@ -251,9 +347,7 @@
                                         </h5>
                                     </a>
 
-                                    <!-- Card body -->
-                                    <div id="a_filters" class="collapse" role="tabpanel" aria-labelledby="headingOne1"
-                                        data-parent="#advanced_filters">
+                                    <div id="a_filters" class="collapse" role="tabpanel" data-parent="#advanced_filters">
                                         <div class="row mt-3">
                                             <div class="col-12">
                                                 <h4>Check in</h4>
