@@ -77,7 +77,7 @@
                                             <t t-set="folio" t-value="folio"/>
                                         </t>
                                         <t t-foreach="reservations" t-as="obj">
-                                            <tr t-att-class="'o_pms_pwa_reservation collapse accordion_' + str(folio.id)"
+                                            <tr t-att-class="'o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_' + str(folio.id)"
                                                 t-att-data-id="obj.id"
                                                 role="tabpanel">
                                                 <t t-call="pms_pwa.roomdoo_reservation_item">
@@ -123,6 +123,7 @@
     </template>
 
     <template id="roomdoo_reservation_accordion" name="Roomdoo reservation accordion">
+        <t t-set="folio_partner_id" t-value="folio.reservation_ids[0].partner_id"/>
         <tr class="accordion md-accordion"
             t-att-id="'accordion_'+str(folio.id)"
             data-toggle="collapse" aria-expanded="true"
@@ -130,30 +131,23 @@
             role="tablist" aria-multiselectable="true">
             <td class="first-col">
                 <span class="float-left">
-                    <img t-att-src="website.image_url(folio.partner_id, 'image_128')"
+                    <img t-att-src="website.image_url(folio.partner_id if folio.partner_id else folio_partner_id, 'image_128')"
                         width="50"
                         class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
-                        t-att-title="folio.partner_id.name" t-att-alt="folio.partner_id.name"/>
+                        t-att-title="folio.partner_id.name if folio.partner_id else folio_partner_id.name"
+                        t-att-alt="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
                     <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
                 </span>
                 <div class="float-left">
-                    <t t-esc="folio.partner_id.name"/>
+                    <t t-esc="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
                 </div>
                 <br/>
-                <a class="float-left" t-att-href="'tel:' + str(folio.partner_id.mobile or folio.partner_id.phone)">
-                    <t t-esc="folio.partner_id.mobile or folio.partner_id.phone"/>
+                <a class="float-left" t-att-href="'tel:' + str(folio.partner_id.mobile or folio.partner_id.phone)
+                    if folio.partner_id else str(folio_partner_id.mobile or folio_partner_id.phone)">
+                    <t t-esc="(folio.partner_id.mobile or folio.partner_id.phone)
+                        if folio.partner_id else (folio_partner_id.mobile or folio_partner_id.phone)"/>
                 </a>
                 <span class="float-right "><i class="fa fa-user"/>3</span>
-                <br/>
-                <div class="progress mt-4">
-                    <div t-att-class="'progress-bar '
-                        + ('bg-success ' if folio.partner_id.profile_completition &gt; 75 else ' ')
-                        + ('bg-warning ' if 75 &gt; folio.partner_id.profile_completition &gt; 50 else ' ')
-                        + ('bg-danger ' if folio.partner_id.profile_completition &lt; 50 else ' ')"
-                        role="progressbar" t-att-style="'width:'+ str(folio.partner_id.profile_completition) + '%'"
-                        t-att-aria-valuenow="folio.partner_id.profile_completition" aria-valuemin="0"
-                        aria-valuemax="100"></div>
-                </div>
             </td>
             <td class="o_pms_pwa_lh45">
                 <t t-esc="folio.id"/>
@@ -186,7 +180,6 @@
                 <t t-if="folio.internal_comment" t-esc="folio.internal_comment"/>
             </td>
             <td class="o_pms_pwa_lh45">
-                <t t-esc="folio.service_ids"/>
             </td>
             <td>
 
@@ -214,11 +207,13 @@
             <br/>
             <div class="progress mt-4">
                 <div t-att-class="'progress-bar '
-                    + ('bg-success ' if obj.partner_id.profile_completition &gt; 75 else ' ')
-                    + ('bg-warning ' if 75 &gt; obj.partner_id.profile_completition &gt; 50 else ' ')
-                    + ('bg-danger ' if obj.partner_id.profile_completition &lt; 50 else ' ')"
-                    role="progressbar" t-att-style="'width:'+ str(obj.partner_id.profile_completition) + '%'"
-                    t-att-aria-valuenow="obj.partner_id.profile_completition" aria-valuemin="0"
+                    + ('bg-success ' if obj.state in ('onboard') else ' ')
+                    + ('bg-secondary ' if obj.state in ('done', 'cancelled') else ' ')
+                    + ('bg-success ' if obj.state in ('confirm') and obj.ratio_checkin_data &gt; 75 else ' ')
+                    + ('bg-warning ' if obj.state in ('confirm') and  75 &gt; obj.ratio_checkin_data &gt; 50 else ' ')
+                    + ('bg-danger ' if obj.state in ('confirm') and  obj.ratio_checkin_data &lt; 50 else ' ')"
+                    role="progressbar" t-att-style="'width:'+ str(obj.checkins_ratio if obj.state in ('onboard') else obj.ratio_checkin_data) + '%'"
+                    t-att-aria-valuenow="obj.checkins_ratio if obj.state in ('onboard') else obj.ratio_checkin_data" aria-valuemin="0"
                     aria-valuemax="100"></div>
             </div>
         </td>
