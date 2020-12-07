@@ -43,16 +43,15 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def reservation_list(self, page=0, search=False, sortby=None, **post):
-        if post and post['original_search']:
+        if post and post["original_search"]:
             if not search:
-                search = post['original_search']
-            post.pop('original_search')
+                search = post["original_search"]
+            post.pop("original_search")
         paginate_by = 10
         Folio = request.env["pms.folio"]
         values = {}
 
         domain = self._get_search_domain(search, **post)
-
 
         searchbar_sortings = {
             "priority": {"label": _("Priority"), "order": "id desc"},
@@ -267,13 +266,13 @@ class TestFrontEnd(http.Controller):
     def calendar(self, date=False, **kw):
         if not date:
             date = datetime.now()
-        date_end = date + timedelta(days=7)
-
+        date_start = date + timedelta(days=-1)
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
-        date_list = [date + timedelta(days=x) for x in range(7)]
+        date_list = [date_start + timedelta(days=x) for x in range(7)]
 
         values = {
+            "date": date,
             "page_name": "Calendar",
             # "reservations": reservations,
             "rooms_list": rooms,

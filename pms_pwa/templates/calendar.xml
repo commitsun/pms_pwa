@@ -5,44 +5,65 @@
             <div class="oe_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <!-- Calendar -->
-                    <div class="calendar shadow bg-white p-5">
-                        <div class="d-flex align-items-center">
-                            <i class="fa fa-calendar fa-3x mr-3" />
-                            <h2
-                                class="month font-weight-bold mb-0 text-uppercase"
-                            >Noviembre 2020</h2>
-                        </div>
-                        <p
-                            class="font-italic text-muted mb-5"
-                        >No events for this day.</p>
-                        <div class="row  day-names">
-                            <div class="col align-self-end">Habitaciones</div>
-                            <t t-foreach="date_list" t-as="day">
-                                <div class="col">
-                                    <t t-esc="day.strftime('%A %d')" />
+                    <div class="o_pms_pwa_calendar shadow bg-white p-5">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <h2
+                                        class="font-weight-bold mb-0 text-uppercase"
+                                    ><t t-esc="date.strftime('%B %Y')" /></h2>
                                 </div>
-                            </t>
-                        </div>
-                        <t t-foreach="rooms_list" t-as="obj">
-                            <div class="row days">
-                                <div class="col align-self-end">
-                                    <t
-                                        t-if="obj.product_id.name"
-                                        t-esc="obj.product_id.name"
-                                    />
-                                </div>
-                                <!--<
-                                <t t-foreach="obj['list_days']" t-as="day">
-                                    <div class="col">
-                                        <div class="price">
-                                            <t t-if="day['day']" t-esc="day['day']"/>
-                                            <t t-if="day['precio']" t-esc="day['precio']"/>
-                                        </div>
-                                        <div class="event bg-success">Event with Long Name</div>
-                                    </div>
-                                </t>-->
                             </div>
-                        </t>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-condensed" >
+                                <thead>
+
+                                    <tr>
+                                        <th class="align-self-end o_pms_pwa_table_week"></th>
+                                        <t t-foreach="date_list" t-as="day">
+                                            <th t-att-class="'text-center o_pms_pwa_table_week '
+                                                    + ('o_pms_pwa_today vertical-line ' if date==day else ' ')" class="" t-att-data-value="x">
+                                                <t t-esc="day.strftime('%A %d')" />
+                                            </th>
+                                        </t>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rooms_list" t-as="obj">
+                                        <tr>
+                                            <td>
+                                                <p class="o_pms_pwa_room_name">
+                                                    <t
+                                                        t-if="obj.product_id.name"
+                                                        t-esc="obj.product_id.name"
+                                                    />
+                                                </p>
+                                                <p class="o_pms_pwa_extra_info">
+                                                    <span>2</span>
+                                                    <span>4 hab</span>
+                                                    <span class="o_pms_pwa_restr">Restricciones</span>
+
+                                                </p>
+                                            </td>
+                                            <t t-foreach="range(7)" t-as="l">
+                                                <td class="o_pms_pwa_table_cell">
+                                                    <p class="o_pms_pwa_title">1 disponible</p>
+                                                    <p class="o_pms_pwa_content">
+                                                        <span class="o_pms_pwa_type">Estandar</span>
+                                                        <span class="o_pms_pwa_price">40€</span>
+                                                        <span class="o_pms_pwa_info">?</span>
+                                                    </p>
+                                                    <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
+                                                </td>
+                                            </t>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </section>
             </div>

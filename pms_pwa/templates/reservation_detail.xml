@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="roomdoo_reservation_detail" name="Reservation detail">
         <t t-call="website.layout">
@@ -20,21 +20,10 @@
                                     </span>
                                 </h1>
                             </div>
-                            <div
-                                class="col-sm-12 col-lg-6 text-right o_pms_pwa_keypad_footer"
-                            >
-                                <a
-                                    href="#"
-                                    class="btn btn-grey-900 btn-radius o_pms_pwa_btn_principal"
-                                >Cancelar reserva</a>
-                                <a
-                                    href="#"
-                                    class="btn btn-grey-300 btn-radius o_pms_pwa_disabled"
-                                >Check in</a>
-                                <a
-                                    href="#"
-                                    class="btn btn-grey-300 btn-radius o_pms_pwa_disabled"
-                                >Check out</a>
+                            <div class="col-sm-12 col-lg-6 text-right o_pms_pwa_keypad_footer">
+                                <a href="#" class="btn btn-grey-900 btn-radius o_pms_pwa_btn_principal">Cancelar reserva</a>
+                                <a href="#" class="btn btn-grey-300 btn-radius o_pms_pwa_disabled">Check in</a>
+                                <a href="#" class="btn btn-grey-300 btn-radius o_pms_pwa_disabled">Check out</a>
                             </div>
                         </div>
                         <div class="row m-2">
@@ -43,141 +32,57 @@
                                     <div class="container-fluid">
                                         <div class="row bg-dark">
                                             <div class="col-12 ml-4 my-4">
-                                                <img
-                                                    class="rounded-circle img-fluid o_pms_pwa_img_rounded"
-                                                    t-att-src="website.image_url(invoice.partner_id, 'image_128')"
-                                                    t-att-title="invoice.partner_id.name"
-                                                    t-att-alt="invoice.partner_id.name"
-                                                />
+                                                <img class="rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
                                             </div>
                                             <div class="col-12 ml-4">
-                                                <h3>
-                                                    <t
-                                                        t-esc="invoice.partner_id.name"
-                                                    />
+                                                <h3 class="text-white">
+                                                    <t t-esc="invoice.partner_id.name" />
                                                 </h3>
-                                                <p>
-                                                    <a
-                                                        t-att-href="'tel:' + str(invoice.partner_id.mobile)"
-                                                    >
-                                                        <t
-                                                            t-esc="invoice.partner_id.mobile"
-                                                        />
+                                                <p class=" mb-0">
+                                                    <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
+                                                        <t t-esc="invoice.phone" />
                                                     </a>
                                                 </p>
                                                 <p>
-                                                    <a
-                                                        t-att-href="'mailto:%s' % invoice.partner_id.email"
-                                                        class="text-white font-italic"
-                                                    >
-                                                        <t
-                                                            t-esc="invoice.partner_id.email"
-                                                        />
+                                                    <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
+                                                        <t t-esc="invoice.email" />
                                                     </a>
                                                 </p>
                                             </div>
                                         </div>
-                                        <div
-                                            class="box direct-chat direct-chat-warning"
-                                        >
+                                        <div class="box o_pms_pwa_direct_chat o_pms_pwa_direct_chat_warning">
                                             <div class="box-header with-border">
-                                                <h3 class="box-title">Chat Messages</h3>
+                                                <h3 class="box-title">Mensajes</h3>
                                                 <div class="box-tools pull-right">
-                                                    <span
-                                                        data-toggle="tooltip"
-                                                        title="New Messages"
-                                                        class="badge bg-blue"
-                                                        data-original-title="New Messages"
-                                                    >20</span>
+                                                    <span data-toggle="tooltip" title="New Messages" class="badge o_pms_pwa_bg_blue" data-original-title="New Messages"><t t-esc="invoice.message_unread_counter"></t></span>
                                                 </div>
                                             </div>
                                             <div class="box-body">
-                                                <div class="direct-chat-messages">
-                                                    <div class="direct-chat-msg">
-                                                        <div
-                                                            class="direct-chat-info clearfix"
-                                                        >
-                                                            <span
-                                                                class="direct-chat-name pull-left"
-                                                            >
-                                                                <t
-                                                                    t-esc="invoice.partner_id.name"
-                                                                />
+                                                <div class="o_pms_pwa_direct_chat_messages">
+                                                    <t t-foreach="invoice.message_ids" t-as="msg">
+                                                    <div class="o_pms_pwa_direct_chat_msg m-2">
+                                                        <div class="o_pms_pwa_direct_direct_chat_info clearfix">
+                                                            <span class="pull-left">
+                                                                <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
+                                                                <strong class="ml-2"><t t-esc="msg.author_id.name"></t></strong>
                                                             </span>
-                                                            <span
-                                                                class="direct-chat-timestamp pull-right"
-                                                            >23 Jan 2:00 pm</span>
-                                                        </div>
-                                                        <img
-                                                            class="o_pms_pwa_direct_chat_img rounded-circle img-fluid"
-                                                            t-att-src="website.image_url(invoice.partner_id, 'image_128')"
-                                                            t-att-title="invoice.partner_id.name"
-                                                            t-att-alt="invoice.partner_id.name"
-                                                        />
-                                                        <div class="direct-chat-text">
-                                                            For what reason would it be advisable for me to think about business content?
-                                                        </div>
-                                                    </div>
-                                                    <div class="direct-chat-msg right">
-                                                        <div
-                                                            class="direct-chat-info clearfix"
-                                                        >
-                                                            <span
-                                                                class="direct-chat-name pull-right"
-                                                            >HOTEL</span>
-                                                            <span
-                                                                class="direct-chat-timestamp pull-left"
-                                                            >23 Jan 2:05 pm</span>
-                                                        </div>
-                                                        <img
-                                                            class="o_pms_pwa_direct_chat_img right"
-                                                            src="https://cdn.onlinewebfonts.com/svg/img_406828.png"
-                                                            alt="hotel image"
-                                                        />
-                                                        <div class="direct-chat-text">
-                                                            Thank you for your believe in our supports
-                                                        </div>
-                                                    </div>
-                                                    <div class="direct-chat-msg">
-                                                        <div
-                                                            class="direct-chat-info clearfix"
-                                                        >
-                                                            <span
-                                                                class="direct-chat-name pull-left"
-                                                            >
-                                                                <t
-                                                                    t-esc="invoice.partner_id.name"
-                                                                />
+                                                            <span class="o_pms_pwa_direct_chat_timestamp pull-right">
+                                                                <span t-field="msg.date" t-options='{"format": "dd/MM/yyyy H:s"}' />
                                                             </span>
-                                                            <span
-                                                                class="direct-chat-timestamp pull-right"
-                                                            >23 Jan 5:37 pm</span>
                                                         </div>
-                                                        <img
-                                                            class="o_pms_pwa_direct_chat_img rounded-circle img-fluid"
-                                                            t-att-src="website.image_url(invoice.partner_id, 'image_128')"
-                                                            t-att-title="invoice.partner_id.name"
-                                                            t-att-alt="invoice.partner_id.name"
-                                                        />
-                                                        <div class="direct-chat-text">
-                                                            For what reason would it be advisable for me to think about business content?
+
+                                                        <div class="o_pms_pwa_direct_chat_text">
+                                                            <span t-field="msg.body" options="{'style-inline': true}" />
                                                         </div>
                                                     </div>
+                                                    </t>
                                                 </div>
                                             </div>
                                             <div class="box-footer text-center">
                                                 <form action="#" method="post">
                                                     <div class="form-group">
-                                                        <input
-                                                            type="text"
-                                                            name="message"
-                                                            placeholder="Escribe..."
-                                                            class="form-control message-input"
-                                                        />
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-message"
-                                                        >ENVIAR</button>
+                                                        <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" />
+                                                        <button type="button" class="btn btn-message">ENVIAR</button>
                                                     </div>
                                                 </form>
                                             </div>
@@ -187,275 +92,127 @@
                             </div>
                             <div class="col-md-12 col-lg-4">
                                 <div class="card shadow">
-                                    <div
-                                        class="card-header bg-white o_pms_pwa_card_header"
-                                    >
+                                    <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
                                             HABITACIÓN
                                         </h3>
                                     </div>
                                     <div class="card-body">
-                                        <form
-                                            action="#"
-                                            method="post"
-                                            class="form-horizontal"
-                                        >
+                                        <form action="#" method="post" class="form-horizontal">
                                             <div class="form-group form-field mt8">
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="room_type"
-                                                        >
+                                                        <label class="control-label col-12" for="room_type">
                                                             Tipo de habitación
                                                         </label>
-                                                        <select
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                            name="room_type"
-                                                        >
-                                                            <option
-                                                                name="room_type"
-                                                                t-att-value="invoice.room_type_id.id"
-                                                                selected="selected"
-                                                            >
-                                                                <t
-                                                                    t-esc="invoice.room_type_id.name"
-                                                                />
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
+                                                            <option name="room_type" t-att-value="invoice.room_type_id.id" selected="selected">
+                                                                <t t-esc="invoice.room_type_id.name" />
                                                             </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="room_number"
-                                                        >
+                                                        <label class="control-label col-12" for="room_number">
                                                             Nº de habitaciones
                                                         </label>
-                                                        <select
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                            name="room_number"
-                                                        >
-                                                            <t
-                                                                t-foreach="invoice.allowed_room_ids"
-                                                                t-as="i"
-                                                            >
-                                                                <option
-                                                                    name="room_number"
-                                                                    t-att-value="i.id"
-                                                                    selected="selected"
-                                                                    t-if="invoice.preferred_room_id.id == i.id"
-                                                                >
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
+                                                            <t t-foreach="invoice.allowed_room_ids" t-as="i">
+                                                                <option name="room_number" t-att-value="i.id" selected="selected" t-if="invoice.preferred_room_id.id == i.id">
                                                                     <t t-esc="i.name" />
                                                                 </option>
-                                                                <option
-                                                                    name="room_number"
-                                                                    t-att-value="i.id"
-                                                                    t-if="invoice.preferred_room_id.id != i.id"
-                                                                >
+                                                                <option name="room_number" t-att-value="i.id" t-if="invoice.preferred_room_id.id != i.id">
                                                                     <t t-esc="i.name" />
                                                                 </option>
                                                             </t>
                                                         </select>
                                                     </div>
                                                     <div class="col-6">
-                                                        <button
-                                                            type="button"
-                                                            class="btn btn-confirm"
-                                                        >Confirmar</button>
+                                                        <button type="button" class="btn btn-confirm">Confirmar</button>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="nights_number"
-                                                        >
+                                                        <label class="control-label col-12" for="nights_number">
                                                             Nº de personas
                                                         </label>
-                                                        <input
-                                                            class="form-control"
-                                                            type="text"
-                                                            name="nights_number"
-                                                            t-att-value="invoice.adults"
-                                                        />
+                                                        <input class="form-control" type="text" name="nights_number" t-att-value="invoice.adults" />
                                                     </div>
                                                     <div class="col-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="nights_number"
-                                                        >
+                                                        <label class="control-label col-12" for="nights_number">
                                                             Nº de noches
                                                         </label>
-                                                        <input
-                                                            class="form-control"
-                                                            type="text"
-                                                            name="nights_number"
-                                                            t-att-value="invoice.nights"
-                                                        />
+                                                        <input class="form-control" type="text" name="nights_number" t-att-value="invoice.nights" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="check_in_date"
-                                                        >
+                                                        <label class="control-label col-12" for="check_in_date">
                                                             Check in
                                                         </label>
-                                                        <input
-                                                            class="form-control"
-                                                            type="date"
-                                                            name="check_in_date"
-                                                            t-att-value="invoice.checkin"
-                                                        />
-                                                        <span
-                                                            class="o_pms_pwa_calendar_icon"
-                                                        >
-                                                            <span
-                                                                class="fa fa-calendar"
-                                                            />
+                                                        <input class="form-control" type="date" name="check_in_date" t-att-value="invoice.checkin" />
+                                                        <span class="o_pms_pwa_calendar_icon">
+                                                            <span class="fa fa-calendar" />
                                                         </span>
                                                     </div>
                                                     <div class="col-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="check_in_hour"
-                                                        >
+                                                        <label class="control-label col-12" for="check_in_hour">
                                                             Hora Check in
                                                         </label>
-                                                        <input
-                                                            class="form-control"
-                                                            type="time"
-                                                            name="check_in_hour"
-                                                            t-att-value="invoice.arrival_hour"
-                                                        />
+                                                        <input class="form-control" type="time" name="check_in_hour" t-att-value="invoice.arrival_hour" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="check_out_date"
-                                                        >
+                                                        <label class="control-label col-12" for="check_out_date">
                                                             Check out
                                                         </label>
-                                                        <input
-                                                            class="form-control"
-                                                            type="date"
-                                                            name="check_out_date"
-                                                            t-att-value="invoice.checkout"
-                                                        />
-                                                        <span
-                                                            class="o_pms_pwa_calendar_icon"
-                                                        >
-                                                            <span
-                                                                class="fa fa-calendar"
-                                                            />
+                                                        <input class="form-control" type="date" name="check_out_date" t-att-value="invoice.checkout" />
+                                                        <span class="o_pms_pwa_calendar_icon">
+                                                            <span class="fa fa-calendar" />
                                                         </span>
                                                     </div>
                                                     <div class="col-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="check_out_hour"
-                                                        >
+                                                        <label class="control-label col-12" for="check_out_hour">
                                                             Hora Check out
                                                         </label>
-                                                        <input
-                                                            class="form-control"
-                                                            type="time"
-                                                            name="check_out_hour"
-                                                            t-att-value="invoice.departure_hour"
-                                                        />
+                                                        <input class="form-control" type="time" name="check_out_hour" t-att-value="invoice.departure_hour" />
                                                     </div>
                                                 </div>
                                                 <div class="row m-3">
                                                     <div class="col-12">
-                                                        <t
-                                                            t-foreach="invoice.service_ids"
-                                                            t-as="i"
-                                                        >
-                                                            <div
-                                                                class="form-check"
-                                                                t-if="i.service_line_ids"
-                                                            >
-                                                                <input
-                                                                    class="o_pms_pwa_checkbox"
-                                                                    type="checkbox"
-                                                                    checked="checked"
-                                                                    id="defaultCheck"
-                                                                    data-toggle='collapse'
-                                                                    t-attf-data-target='#collapsediv{{i.id}}'
-                                                                    aria-expanded="true"
-                                                                    t-attf-aria-controls="collapsediv{{i.id}}"
-                                                                />
-                                                                <label
-                                                                    class="o_pms_pwa_checkbox_label"
-                                                                    t-attf-for="defaultCheck{{i.id}}"
-                                                                >
-                                                                    <t
-                                                                        t-esc="i.product_id.name"
-                                                                    />
+                                                        <t t-foreach="invoice.service_ids" t-as="i">
+                                                            <div class="form-check" t-if="i.service_line_ids">
+                                                                <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" id="defaultCheck" data-toggle='collapse' t-attf-data-target='#collapsediv{{i.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{i.id}}" />
+                                                                <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{i.id}}">
+                                                                    <t t-esc="i.product_id.name" />
                                                                 </label>
-                                                                <div
-                                                                    t-attf-id='collapsediv{{i.id}}'
-                                                                    class='o_pms_pwa_collapse collapse show'
-                                                                >
-                                                                    <div
-                                                                        class="o_pms_pwa_collapse_content"
-                                                                    >
+                                                                <div t-attf-id='collapsediv{{i.id}}' class='o_pms_pwa_collapse collapse show'>
+                                                                    <div class="o_pms_pwa_collapse_content">
                                                                         <br />
                                                                         <table>
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th
-                                                                                    >Fecha</th>
-                                                                                    <th
-                                                                                    >Cantidad</th>
+                                                                                    <th>Fecha</th>
+                                                                                    <th>Cantidad</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                                <t
-                                                                                    t-foreach="i.service_line_ids"
-                                                                                    t-as="s"
-                                                                                >
+                                                                                <t t-foreach="i.service_line_ids" t-as="s">
                                                                                     <tr>
-                                                                                        <td
-                                                                                        >
-                                                                                            <span
-                                                                                                t-field="s.date"
-                                                                                                t-options='{"format": "dd/MM/yyyy"}'
-                                                                                            />
+                                                                                        <td>
+                                                                                            <span t-field="s.date" t-options='{"format": "dd/MM/yyyy"}' />
                                                                                         </td>
-                                                                                        <td
-                                                                                        >
-                                                                                            <div
-                                                                                                class="o_pms_pwa_rb_box"
-                                                                                            >
-                                                                                                <div
-                                                                                                    t-attf-id='o_pms_pwa_rb_{{i.id}}'
-                                                                                                    class="o_pms_pwa_rb"
-                                                                                                >
-                                                                                                    <t
-                                                                                                        t-foreach="range(invoice.adults+1)"
-                                                                                                        t-as="x"
-                                                                                                    >
-                                                                                                        <div
-                                                                                                            t-att-class="'o_pms_pwa_rb_tab '
-                                                                                                            + ('o_pms_pwa_rb_tab_active ' if x==s.day_qty else ' ')"
-                                                                                                            class=""
-                                                                                                            t-att-data-value="x"
-                                                                                                        >
-                                                                                                            <div
-                                                                                                                class="o_pms_pwa_rb_spot"
-                                                                                                            >
-                                                                                                                <span
-                                                                                                                    class="o_pms_pwa_rb_txt"
-                                                                                                                >
-                                                                                                                    <t
-                                                                                                                        t-esc="x"
-                                                                                                                    />
+                                                                                        <td>
+                                                                                            <div class="o_pms_pwa_rb_box">
+                                                                                                <div t-attf-id='o_pms_pwa_rb_{{i.id}}' class="o_pms_pwa_rb">
+                                                                                                    <t t-foreach="range(invoice.adults+1)" t-as="x">
+                                                                                                        <div t-att-class="'o_pms_pwa_rb_tab '
+                                                                                                            + ('o_pms_pwa_rb_tab_active ' if x==s.day_qty else ' ')" class="" t-att-data-value="x">
+                                                                                                            <div class="o_pms_pwa_rb_spot">
+                                                                                                                <span class="o_pms_pwa_rb_txt">
+                                                                                                                    <t t-esc="x" />
                                                                                                                 </span>
                                                                                                             </div>
                                                                                                         </div>
@@ -471,31 +228,15 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div
-                                                                class="form-check mt-2"
-                                                                t-if="i.service_line_ids==''"
-                                                            >
-                                                                <input
-                                                                    class="o_pms_pwa_checkbox"
-                                                                    type="checkbox"
-                                                                    id="defaultCheck2"
-                                                                    checked="checked"
-                                                                />
-                                                                <label
-                                                                    class="o_pms_pwa_checkbox_label"
-                                                                    for="defaultCheck2"
-                                                                >
-                                                                    <t
-                                                                        t-esc="i.product_id.name"
-                                                                    />
+                                                            <div class="form-check mt-2" t-if="i.service_line_ids==''">
+                                                                <input class="o_pms_pwa_checkbox" type="checkbox" id="defaultCheck2" checked="checked" />
+                                                                <label class="o_pms_pwa_checkbox_label" for="defaultCheck2">
+                                                                    <t t-esc="i.product_id.name" />
                                                                 </label>
                                                             </div>
                                                         </t>
                                                         <div class="form-check mt-2">
-                                                            <a
-                                                                class="o_pms_pwa_extras"
-                                                                href="#"
-                                                            >Más extras</a>
+                                                            <a class="o_pms_pwa_extras" href="#">Más extras</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -504,31 +245,18 @@
                                                     <div class="col-12">
                                                         <h4>Observaciones</h4>
                                                         <div>
-                                                            <p
-                                                            >Aut possimus enim molestiae eaque. Dicta suscipit ea ut. Enim qui dolor ut voluptatem odio corporis. Occaecati occaecati rerum aliquid. Eligendi expedita eligendi illo nisi ipsum a qui. Et aut est ut.…</p>
+                                                            <p>Aut possimus enim molestiae eaque. Dicta suscipit ea ut. Enim qui dolor ut voluptatem odio corporis. Occaecati occaecati rerum aliquid. Eligendi expedita eligendi illo nisi ipsum a qui. Et aut est ut.…</p>
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="travel_reason"
-                                                        >
+                                                        <label class="control-label col-12" for="travel_reason">
                                                             Motivo del viaje
                                                         </label>
-                                                        <select
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                            name="travel_reason"
-                                                        >
-                                                            <option
-                                                                name="travel_reason"
-                                                                value="1"
-                                                            >
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="travel_reason">
+                                                            <option name="travel_reason" value="1">
                                                                 Turismo
                                                             </option>
-                                                            <option
-                                                                name="travel_reason"
-                                                                value="2"
-                                                            >
+                                                            <option name="travel_reason" value="2">
                                                                 Trabajo
                                                             </option>
                                                         </select>
@@ -537,14 +265,8 @@
                                                 <hr />
                                                 <div class="row mt-3">
                                                     <div class="col-12">
-                                                        <div
-                                                            class="form-group text-center"
-                                                        >
-                                                            <input
-                                                                type="submit"
-                                                                class="btn btn-message"
-                                                                value="GUARDAR CAMBIOS"
-                                                            />
+                                                        <div class="form-group text-center">
+                                                            <input type="submit" class="btn btn-message" value="GUARDAR CAMBIOS" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -553,68 +275,36 @@
                                     </div>
                                 </div>
                                 <div class="card shadow mt-4">
-                                    <div
-                                        class="card-header bg-white o_pms_pwa_card_header"
-                                    >
+                                    <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
                                             DETALLES DE LA TARIFA
                                         </h3>
                                     </div>
                                     <div class="card-body">
-                                        <form
-                                            action="#"
-                                            method="post"
-                                            class="form-horizontal"
-                                        >
+                                        <form action="#" method="post" class="form-horizontal">
                                             <div class="form-group form-field mt8">
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="rate_type"
-                                                        >
+                                                        <label class="control-label col-12" for="rate_type">
                                                             Tipo de tarifa
                                                         </label>
-                                                        <select
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                            name="rate_type"
-                                                        >
-                                                            <option
-                                                                name="rate_type"
-                                                                t-att-value="invoice.reservation_type"
-                                                                selected="selected"
-                                                            >
-                                                                <t
-                                                                    t-esc="invoice.reservation_type"
-                                                                />
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="rate_type">
+                                                            <option name="rate_type" t-att-value="invoice.reservation_type" selected="selected">
+                                                                <t t-esc="invoice.reservation_type" />
                                                             </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
                                                     <div class="col-sm-6">
-                                                        <label
-                                                            class="control-label col-12"
-                                                            for="price_total"
-                                                        >
+                                                        <label class="control-label col-12" for="price_total">
                                                             Precio total noches
                                                         </label>
-                                                        <input
-                                                            class="form-control"
-                                                            type="text"
-                                                            name="price_total"
-                                                            t-att-value="invoice.price_total"
-                                                        />
+                                                        <input class="form-control" type="text" name="price_total" t-att-value="invoice.price_total" />
                                                     </div>
                                                     <div class="col-sm-6 mt-3">
-                                                        <a
-                                                            href=""
-                                                            class="o_pms_pwa_price_link"
-                                                        >
-                                                            <i
-                                                                class="fa fa-pencil-square-o"
-                                                                aria-hidden="false"
-                                                            />
+                                                        <a href="" class="o_pms_pwa_price_link">
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="false" />
                                                             Precio / Noche
                                                         </a>
                                                     </div>
@@ -628,31 +318,15 @@
                                 <div class="card bg-dark shadow">
                                     <div class="card-header o_pms_pwa_card_header">
                                         <div class="dropdown">
-                                            <button
-                                                class="btn btn-persona-info dropdown-toggle"
-                                                type="button"
-                                                id="dropdownMenuButton"
-                                                data-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false"
-                                            >
-                                                <span
-                                                    data-toggle="tooltip"
-                                                    title="Huéspedes"
-                                                    class="badge bg-red mr-2"
-                                                    data-original-title="Huéspedes"
-                                                >
+                                            <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
                                                     <t t-esc="invoice.adults" />
-                                                </span> Datos personales huéspedes
+                                                </span>
+                                                Datos personales huéspedes
                                             </button>
-                                            <div
-                                                class="dropdown-menu btn-persona-info"
-                                                aria-labelledby="dropdownMenuButton"
-                                            >
+                                            <div class="dropdown-menu btn-persona-info" aria-labelledby="dropdownMenuButton">
                                                 <a class="dropdown-item" href="#">
-                                                    <t
-                                                        t-esc="invoice.partner_id.name"
-                                                    />
+                                                    <t t-esc="invoice.partner_id.name" />
                                                 </a>
                                             </div>
                                         </div>
@@ -662,7 +336,7 @@
                                     </div>
                                     <div class="card-body bg-dark">
                                         <div class="row m-1 pago-header">
-                                            <div class="col-6"> </div>
+                                            <div class="col-6"></div>
                                             <div class="col-2 right">noches</div>
                                             <div class="col-4 right">importe(€)</div>
                                         </div>
@@ -671,9 +345,7 @@
                                                 <t t-esc="invoice.room_type_id.name" />
                                                 <br />
                                                 <small>
-                                                    <t
-                                                        t-esc="invoice.preferred_room_id.name"
-                                                    />
+                                                    <t t-esc="invoice.preferred_room_id.name" />
                                                 </small>
                                             </div>
                                             <div class="col-2 right">
@@ -697,35 +369,37 @@
                                             </div>
                                         </t>
                                         <div class="row pago-badge">
-                                            <div class="col-4">Total<br /><span
-                                                    class="pt"
-                                                >
-                                                    <t
-                                                        t-esc="invoice.folio_id.amount_total"
-                                                    />
-                                                </span> </div>
-                                            <div class="col-4">Pago<br
-                                                /> en reserva??<br /><span
-                                                    class="price"
-                                                >
-                                                    <t
-                                                        t-esc="invoice.folio_id.amount_tax"
-                                                    />
-                                                </span> </div>
-                                            <div class="col-4">Pendiente<br
-                                                /> de pago<br /><span class="price2">
-                                                    <t
-                                                        t-esc="invoice.folio_id.pending_amount"
-                                                    />
-                                                </span> </div>
+                                            <div class="col-4">
+                                                Total
+                                                <br />
+                                                <span class="pt">
+                                                    <t t-esc="invoice.folio_id.amount_total" />
+                                                </span>
+                                            </div>
+                                            <div class="col-4">
+                                                Pago
+                                                <br />
+                                                en reserva??
+                                                <br />
+                                                <span class="price">
+                                                    <t t-esc="invoice.folio_id.amount_tax" />
+                                                </span>
+                                            </div>
+                                            <div class="col-4">
+                                                Pendiente
+                                                <br />
+                                                de pago
+                                                <br />
+                                                <span class="price2">
+                                                    <t t-esc="invoice.folio_id.pending_amount" />
+                                                </span>
+                                            </div>
                                         </div>
                                         <hr class="m-1" />
                                         <div class="row pago-badge">
                                             <div class="col-12">Nº tarjeta reserva</div>
                                             <div class="col-12 num">
-                                                <t
-                                                    t-esc="invoice.folio_id.credit_card_details"
-                                                />
+                                                <t t-esc="invoice.folio_id.credit_card_details" />
                                                 ¿?invoice.folio_id.credit_card_details¿?
                                             </div>
                                         </div>
@@ -740,29 +414,14 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="form-check mt-2">
-                                                    <input
-                                                        class="o_pms_pwa_checkbox"
-                                                        type="checkbox"
-                                                        id="payment_method1"
-                                                        checked="checked"
-                                                    />
-                                                    <label
-                                                        class="o_pms_pwa_checkbox_label"
-                                                        for="payment_method1"
-                                                    >
+                                                    <input class="o_pms_pwa_checkbox" type="checkbox" id="payment_method1" checked="checked" />
+                                                    <label class="o_pms_pwa_checkbox_label" for="payment_method1">
                                                         Tarjeta de crédito
                                                     </label>
                                                 </div>
                                                 <div class="form-check mt-2">
-                                                    <input
-                                                        class="o_pms_pwa_checkbox"
-                                                        type="checkbox"
-                                                        id="payment_method2"
-                                                    />
-                                                    <label
-                                                        class="o_pms_pwa_checkbox_label"
-                                                        for="payment_method2"
-                                                    >
+                                                    <input class="o_pms_pwa_checkbox" type="checkbox" id="payment_method2" />
+                                                    <label class="o_pms_pwa_checkbox_label" for="payment_method2">
                                                         Efectivo
                                                     </label>
                                                 </div>
@@ -771,15 +430,11 @@
                                         <hr class="m-1" />
                                         <div class="col-12">
                                             <div class="form-group text-center">
-                                                <button class="btn btn-print"><i
-                                                        class="fa fa-print"
-                                                        aria-hidden="false"
-                                                    /> IMPRIMIR</button>
-                                                <input
-                                                    type="submit"
-                                                    class="btn btn-message"
-                                                    value="COBRAR"
-                                                />
+                                                <button class="btn btn-print">
+                                                    <i class="fa fa-print" aria-hidden="false" />
+                                                    IMPRIMIR
+                                                </button>
+                                                <input type="submit" class="btn btn-message" value="COBRAR" />
                                             </div>
                                         </div>
                                     </div>

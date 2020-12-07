@@ -1,62 +1,107 @@
 section.o_pms_pwa_roomdoo {
-
-    /* ================
-    Calendar Styling */
-    .calendar {
-        border-radius: 10px;
+    .table {
+        border-collapse: separate;
+        border-spacing: 10px;
     }
-
-    .month {
-        font-size: 1rem;
-        text-align: center;
+    .o_pms_pwa_arrow:before,
+    .o_pms_pwa_arrow:after {
+        content: "";
+        border: solid $theme-color;
+        border-width: 0 3px 3px 0;
+        display: inline-block;
+        padding: 3px;
+        position: relative;
     }
-
-    @media (min-width: 992px) {
-        .month {
-            font-size: 3.5rem;
+    .o_pms_pwa_arrow:after {
+        margin-top: -1px;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        float: right;
+    }
+    .o_pms_pwa_arrow:before {
+        margin-top: -1px;
+        transform: rotate(135deg);
+        -webkit-transform: rotate(135deg);
+    }
+    .o_pms_pwa_table_cell {
+        border: 1px solid $grey-300;
+        border-radius: 0.25rem;
+        min-height: 2rem;
+        position: sticky;
+        z-index: 1;
+        .o_pms_pwa_title {
+            color: $black;
+        }
+        .o_pms_pwa_content {
+            margin-top: -1rem;
+            text-align: right;
+            .o_pms_pwa_type {
+                color: $theme-color;
+                float: left;
+            }
+            .o_pms_pwa_price {
+                color: $black;
+                font-weight: bold;
+            }
+            .o_pms_pwa_info {
+                color: $theme-color;
+            }
         }
     }
-
-    .calendar .day-names {
-        border-bottom: 1px solid #eee;
-        text-transform: uppercase;
-        border: 1px solid #eee;
-        min-height: 3rem;
-        margin: 0.5rem 0;
+    .o_pms_pwa_table_week {
+        border-top: none;
+        border-bottom: 1px solid $theme-color;
+        border-collapse: collapse;
+        border-spacing: 0;
     }
-
-    .calendar .days {
-        border: 1px solid #eee;
-        margin: 0.5rem 0;
+    .o_pms_pwa_today {
+        border-bottom: 3px solid $theme-color;
+        vertical-align: middle;
     }
-
-    .calendar .days .event {
-        font-size: 0.75rem;
-        color: white;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        border-radius: 1rem;
+    .o_pms_pwa_today:after {
+        content: "";
+        position: absolute;
+        top: 16%;
+        height: 85%;
+        border-right: 2px solid $theme-color;
+        margin-left: -2rem;
     }
-
-    .calendar .days .event.span-2 {
-        width: 200%;
+    .o_pms_pwa_room_name {
+        color: $black;
+        font-weight: bold;
+        font-size: larger;
     }
-
-    .calendar .days .event.begin {
-        border-radius: 1rem 0 0 1rem;
+    .o_pms_pwa_extra_info {
+        font-size: small;
+        margin-top: -1rem;
+        span:nth-child(even) {
+            margin-left: 1rem;
+        }
+        span:nth-child(odd) {
+            margin-left: 1rem;
+        }
+        .o_pms_pwa_restr {
+            color: $theme-color;
+        }
     }
+}
 
-    .calendar .days .event.end {
-        border-radius: 0 1rem 1rem 0;
+@media (max-width: 992px) {
+    section.o_pms_pwa_roomdoo {
+        .o_pms_pwa_today:after {
+            content: "";
+            position: absolute;
+            top: 13%;
+            height: 85%;
+            border-right: 2px solid $theme-color;
+            margin-left: 0rem;
+        }
     }
-
-    .calendar .days .event.clear {
-        background: none;
-    }
-
-    .calendar .days .price {
-        color: #ddd;
-        text-align: right;
+}
+@media (max-width: 576px) {
+    section.o_pms_pwa_roomdoo {
+        .o_pms_pwa_today:after {
+            display: none;
+        }
     }
 }

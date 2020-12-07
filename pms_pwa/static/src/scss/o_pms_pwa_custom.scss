@@ -31,7 +31,7 @@ h6,
     font-weight: 600;
     line-height: 1.2;
 }
-form > div.form-group, 
+form > div.form-group,
 div.o_pms_pwa_filters_modal {
     & input,
     & select,
@@ -135,4 +135,22 @@ select::-ms-expand {
 .o_pms_pwa_calendar_icon span {
     border: none;
     background: transparent;
+}
+/* Table movil */
+th:first-child,
+td:first-child {
+    position: sticky;
+    left: 0px;
+    z-index: 2;
+    min-width: 3rem;
+    border: none;
+}
+tr:nth-child(odd) > td {
+    background-color: $white;
+}
+tr:nth-child(even) > td {
+    background-color: $white;
+}
+tr:nth-child(odd) > th {
+    background-color: $white;
 }

@@ -121,7 +121,7 @@ section.o_pms_pwa_roomdoo {
         position: relative;
     }
 
-    .bg-blue {
+    .o_pms_pwa_bg_blue {
         color: $white;
         background-color: $theme-color;
     }
@@ -231,14 +231,6 @@ section.o_pms_pwa_roomdoo {
         width: 0;
         pointer-events: none;
     }
-
-    :after,
-    :before {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-
     .o_pms_pwa_direct_chat_msg:after {
         clear: both;
     }

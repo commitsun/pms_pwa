@@ -159,19 +159,19 @@
                 <t t-esc="folio.id"/>
             </td>
             <td class="o_pms_pwa_lh45">
-                
+
             </td>
             <td class="o_pms_pwa_lh45 text-center">
-                
+
             </td>
             <td>
-                
+
             </td>
             <td>
-                
+
             </td>
             <td class="text-center">
-                
+
             </td>
             <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.amount_total"/>
@@ -264,7 +264,7 @@
                 <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
                 <div class="dropdown-menu" aria-labelledby="dLabel">
                     <t t-foreach="pwa_action_buttons" t-as="button">
-                        <button 
+                        <button
                             t-if="button != keys[0]"
                             t-att-url="pwa_action_buttons[button]"
                             class="dropdown-item"
@@ -288,7 +288,7 @@
                     </div>
                     <div class="modal-body o_pms_pwa_modal_body">
                         <div class="container-fluid">
-                            
+
                             <form class="form-horizontal" method="post">
                                 <div class="form-group form-field">
                                     <div class="row">
@@ -339,7 +339,7 @@
                                 </div>
 
                                 <div class="accordion md-accordion" id="advanced_filters" role="tablist" aria-multiselectable="true">
-                                    
+
                                     <a data-toggle="collapse" data-parent="#advanced_filters" href="#a_filters" aria-expanded="true"
                                         aria-controls="a_filters">
                                         <h5>
@@ -484,9 +484,9 @@
                                         <input class="btn btn-message" type="submit" value="Apply filters"/>
                                     </div>
                                 </div>
-                                
+
                             </form>
-                            
+
                         </div>
                     </div>
                 </div>
