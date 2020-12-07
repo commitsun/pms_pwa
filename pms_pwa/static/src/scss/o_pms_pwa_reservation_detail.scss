@@ -510,4 +510,16 @@ section.o_pms_pwa_roomdoo {
         font-weight: 600;
         text-align: center;
     }
+    .o_pms_pwa_progress {
+        height: 0.5rem;
+    }
+    tr:nth-child(odd) > td {
+        background-color: $bg-theme-color;
+    }
+    tr:nth-child(even) > td {
+        background-color: $bg-theme-color;
+    }
+    tr:nth-child(odd) > th {
+        background-color: $bg-theme-color;
+    }
 }
