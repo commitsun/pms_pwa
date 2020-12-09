@@ -135,27 +135,59 @@ section.o_pms_pwa_roomdoo {
             text-align: center;
             margin-top: 0.5rem;
         }
+        &_nigth_1 {
+            width: 12%;
+        }
         &_nigth_2 {
             width: 24%;
         }
-        &_nigth_1 {
-            width: 12%;
+        &_nigth_3 {
+            width: 36%;
+        }
+        &_nigth_4 {
+            width: 48%;
+        }
+        &_nigth_5 {
+            width: 60%;
+        }
+        &_nigth_6 {
+            width: 72%;
+        }
+        &_nigth_7 {
+            width: 84%;
         }
         &_img_bg {
             background-color: $theme-color;
             float: left;
+            margin-top: -0.2rem;
         }
-        &_success_hr {
-            width: 80%;
-            margin: auto;
-            margin-top: 0.5rem;
-            border-bottom: 3px solid var(--success);
+        &_hr {
+            &_success {
+                width: 80%;
+                margin: auto;
+                margin-top: 0.7rem;
+                border-bottom: 4px solid var(--success);
+            }
+            &_warning {
+                width: 80%;
+                margin: auto;
+                margin-top: 0.7rem;
+                border-bottom: 4px solid var(--warning);
+            }
+            &_info {
+                width: 80%;
+                margin: auto;
+                margin-top: 0.7rem;
+                border-bottom: 4px solid $theme-color;
+            }
         }
-        &_warning_hr {
-            width: 80%;
-            margin: auto;
-            margin-top: 0.5rem;
-            border-bottom: 3px solid var(--warning);
+
+        &_price {
+            font-weight: bolder;
+            margin-left: 0.2rem;
+        }
+        &_name {
+            margin-left: 0.2rem;
         }
     }
     .btn-add {
