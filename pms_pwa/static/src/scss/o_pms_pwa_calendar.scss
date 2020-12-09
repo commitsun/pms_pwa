@@ -105,6 +105,71 @@ section.o_pms_pwa_roomdoo {
     .o_pms_pwa_hiddenRow {
         padding: 0 !important;
         border: none;
+        z-index: 1;
+    }
+    .o_pms_pwa_calendar_line {
+        border-left: 3px solid $grey-900;
+        background-color: $bg-theme-color;
+        min-height: 3rem;
+        margin-left: 1rem;
+        z-index: 1;
+        margin-right: 0.2rem;
+        margin-top: 0.3rem;
+        &_room_type {
+            position: sticky;
+            left: 0px;
+            z-index: 2;
+            min-width: 2rem;
+            background-color: $bg-theme-color;
+        }
+        &_title {
+            color: $theme-color;
+            font-weight: bold;
+            padding-top: 0.5rem;
+        }
+        &_content {
+            color: $black;
+            margin-top: -1rem;
+        }
+        &_event {
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        &_nigth_2 {
+            width: 24%;
+        }
+        &_nigth_1 {
+            width: 12%;
+        }
+        &_img_bg {
+            background-color: $theme-color;
+            float: left;
+        }
+        &_success_hr {
+            width: 80%;
+            margin: auto;
+            margin-top: 0.5rem;
+            border-bottom: 3px solid var(--success);
+        }
+        &_warning_hr {
+            width: 80%;
+            margin: auto;
+            margin-top: 0.5rem;
+            border-bottom: 3px solid var(--warning);
+        }
+    }
+    .btn-add {
+        display: none;
+        margin-top: 0.5rem;
+        width: 90%;
+        border-radius: 1.5rem;
+        border: none;
+        background-image: linear-gradient(to right, $theme-color 80%, $bg-theme-color);
+        color: $white;
+        font-weight: bold;
+    }
+    .o_pms_pwa_calendar_line_event:hover .btn-add {
+        display: block;
     }
 }
 
