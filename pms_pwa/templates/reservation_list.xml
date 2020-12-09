@@ -208,7 +208,7 @@
             <div class="progress mt-4">
                 <div t-att-class="'progress-bar '
                     + ('bg-success ' if obj.state in ('onboard') else ' ')
-                    + ('bg-secondary ' if obj.state in ('done', 'cancelled') else ' ')
+                    + ('bg-secondary ' if obj.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
                     + ('bg-success ' if obj.state in ('confirm') and obj.ratio_checkin_data &gt; 75 else ' ')
                     + ('bg-warning ' if obj.state in ('confirm') and  75 &gt; obj.ratio_checkin_data &gt; 50 else ' ')
                     + ('bg-danger ' if obj.state in ('confirm') and  obj.ratio_checkin_data &lt; 50 else ' ')"
