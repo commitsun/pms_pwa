@@ -43,7 +43,7 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def reservation_list(self, page=0, search=False, sortby=None, **post):
-        if post and post["original_search"]:
+        if post and "original_search" in post:
             if not search:
                 search = post["original_search"]
             post.pop("original_search")
