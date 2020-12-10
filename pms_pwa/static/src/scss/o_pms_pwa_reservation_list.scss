@@ -31,7 +31,7 @@ section.o_pms_pwa_roomdoo {
         }
     }
     .table-hover {
-        font-family: 'Barlow Condensed', sans-serif;
+        font-family: "Barlow Condensed", sans-serif;
         letter-spacing: 1px;
         font-size: 16px;
         color: $table-text-color;
@@ -57,7 +57,7 @@ section.o_pms_pwa_roomdoo {
                     }
                     & > span.dropdown {
                         & a.btn {
-                            color: $theme-color; 
+                            color: $theme-color;
                         }
                         & div.dropdown-menu {
                             border: 1px solid $theme-color;
@@ -87,9 +87,9 @@ section.o_pms_pwa_roomdoo {
                         top: -20px;
                         right: 25px;
                         font-size: 12px;
-                        font-family: 'Barlow', sans-serif;
+                        font-family: "Barlow", sans-serif;
                         font-weight: bold;
-                        color: #FFFFFF;
+                        color: #ffffff;
                         background-color: $badge-color;
                         line-height: 14px;
                     }
@@ -101,7 +101,7 @@ section.o_pms_pwa_roomdoo {
                     }
                     i {
                         margin-right: 5px;
-                        color: $theme-color; 
+                        color: $theme-color;
                     }
                 }
                 & > td.o_pms_pwa_lh45 {
@@ -119,10 +119,10 @@ section.o_pms_pwa_roomdoo {
     .tags_holder {
         display: inline-block;
         & > span {
-                background-color: $bg-theme-color;
-                color: $theme-color;
-                font-size: 15px;
-                margin-left: 5px;
+            background-color: $bg-theme-color;
+            color: $theme-color;
+            font-size: 15px;
+            margin-left: 5px;
             & > span {
                 color: $table-text-color;
                 margin-left: 5px;
@@ -166,14 +166,14 @@ div.o_pms_pwa_filters_modal {
         overflow-y: auto;
         max-height: 92%;
         & > div.modal-header {
-                border-bottom: none;
+            border-bottom: none;
             & > button.close {
                 color: $theme-color;
             }
             & > div.modal-title {
                 color: $table-text-color;
                 font-size: 22px;
-                font-family: 'Barlow', sans-serif;
+                font-family: "Barlow", sans-serif;
                 font-weight: bold;
                 letter-spacing: 0.02px;
                 text-transform: uppercase;
@@ -208,7 +208,7 @@ div.o_pms_pwa_filters_modal {
     }
     h5 {
         color: $theme-color;
-        font-weight: bold; 
+        font-weight: bold;
         font-size: 18px;
     }
 }

@@ -75,7 +75,9 @@
                                                                 alt="image"/>
                                                             <span class="o_pms_pwa_calendar_line_price">240€</span>
                                                             <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
-
+                                                            <span class="badge o_pms_pwa_calendar_line_badge bg-success">
+                                                                OK
+                                                            </span>
                                                         </p>
                                                     </div>
 
@@ -92,6 +94,7 @@
                                                             <span class="o_pms_pwa_calendar_line_price">80€</span>
                                                             <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
                                                         </p>
+
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_event">
                                                         <button type="button" class="btn btn-add">+</button>

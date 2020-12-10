@@ -33,11 +33,7 @@
         <xpath expr="script[last()]" position="after">
             <script
                 type="text/javascript"
-                src="/pms_pwa/static/src/js/vendor/infinite.scroll.js"
-            />
-            <script
-                type="text/javascript"
-                src="/pms_pwa/static/src/js/vendor/jquery.masonry.js"
+                src="//unpkg.com/infinite-scroll@3/dist/infinite-scroll.pkgd.min.js"
             />
             <script
                 type="text/javascript"

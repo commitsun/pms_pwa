@@ -51,7 +51,7 @@
                     </div>
 
                     <div class="table-wrapper table-responsive">
-                        <table class="table table-hover o_pms_pwa_reservation_list_table">
+                        <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
                             <thead>
                                 <tr>
                                     <th>Guest</th>
@@ -69,7 +69,7 @@
                                     <th></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="o_pms_pwa_reservation_scroll">
                                 <t t-foreach="folios" t-as="folio">
                                     <t t-set="reservations" t-value="folio.reservation_ids"/>
                                     <t t-if="len(reservations) &gt; 1">
@@ -101,22 +101,26 @@
                     </div>
                 </section>
             </div>
+            <div class="page-load-status">
+                <p class="infinite-scroll-request">
+                    <div class="loader-ellips">
+                        <span class="loader-ellips__dot"></span>
+                        <span class="loader-ellips__dot"></span>
+                        <span class="loader-ellips__dot"></span>
+                        <span class="loader-ellips__dot"></span>
+                    </div>
+                </p>
+                <p class="infinite-scroll-last">End of content</p>
+                <p class="infinite-scroll-error">No more pages to load</p>
+            </div>
             <div t-if="pager" class="o_portal_pager text-center">
                 <div class="o_pms_pwa_reservation_list_pagination">
-                    <t
-                        t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])"
-                    >
-                        <a
-                            t-att-href="pager['page_next']['url']"
-                            style="display: none"
-                        >Page <span t-esc="int(pager['page']['num']) + 1" />
+                    <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
+                        <a class="o_pms_pwa_reservation_list_pagination_next" t-att-href="pager['page_next']['url']">
+                            Page <span t-esc="int(pager['page']['num']) + 1"/>
                         </a>
                     </t>
-                    <span
-                        class="max-page"
-                        t-esc="pager['page_count']"
-                        style="display: none"
-                    />
+                    <span id="max-page" class="max-page" t-esc="pager['page_count']" style="display: none"/>
                 </div>
             </div>
         </t>

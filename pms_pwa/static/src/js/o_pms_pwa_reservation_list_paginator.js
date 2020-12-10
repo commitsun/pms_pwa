@@ -1,54 +1,28 @@
-$(document).ready(function() {
-    var grid = $(".o_pms_pwa_reservation_list_table");
-    var isTable = false;
-    if ($("tbody", grid).length) {
-        grid = $("tbody", grid);
-        isTable = true;
-    }
+odoo.define("pms_pwa.reservation_list", function() {
+    "use strict";
+    $(document).ready(function() {
+        // -------------------------------------//
+        // init Infinite Scroll
+        var $container = $(".o_pms_pwa_reservation_scroll").infiniteScroll({
+            path: ".o_pms_pwa_reservation_list_pagination_next",
+            append: ".o_pms_pwa_reservation",
+            hideNav: ".o_pms_pwa_reservation_list_pagination",
+            loadOnScroll: false,
+            status: ".page-load-status",
+            debug: false,
+        });
 
-    grid.masonry({
-        itemSelector: ".o_pms_pwa_reservation_list_table .o_pms_pwa_reservation",
+        $("#wrapwrap").scroll(function() {
+            $(".o_pms_pwa_reservation_list_table").each(function() {
+                var bottom_of_object = $(this).offset().top + $(this).outerHeight();
+                var bottom_of_window =
+                    $("#wrapwrap").scrollTop() + $("#wrapwrap").height();
+                /* If the object is completely visible in the window, fade it it */
+                if (bottom_of_window > bottom_of_object) {
+                    $container.infiniteScroll("loadNextPage");
+                    // Console.log("New page");
+                }
+            });
+        });
     });
-
-    grid.infinitescroll(
-        {
-            // Loading Text
-            loading: {
-                finishedMsg: "<em>All bookings has been showed.</em>",
-                msgText: "<em>Load next bookings...</em>",
-                isTable: isTable,
-            },
-
-            // Pagination element that will be hidden
-            navSelector: ".o_pms_pwa_reservation_list_pagination",
-
-            // Next page link
-            nextSelector: ".o_pms_pwa_reservation_list_pagination a",
-
-            // Selector of items to retrieve
-            itemSelector: ".o_pms_pwa_reservation_list_table .o_pms_pwa_reservation",
-
-            // Max Pagination
-            maxPage: parseInt(
-                $(".o_pms_pwa_reservation_list_pagination span.max-page").text()
-            ),
-        },
-
-        // Function called once the elements are retrieved
-        function(new_elts) {
-            var elts = $(new_elts).css("opacity", 0);
-            elts.animate({opacity: 1});
-            grid.masonry("appended", elts);
-            // Add new records to the cont
-            var cont = $("section.o_pms_pwa_roomdoo > h2 > strong > span");
-            var qty = parseInt(
-                cont
-                    .text()
-                    .replace("(", "")
-                    .replace(")", "")
-            );
-            qty += new_elts.length;
-            cont.text("(" + qty + ")");
-        }
-    );
 });
