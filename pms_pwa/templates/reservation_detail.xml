@@ -13,7 +13,7 @@
                                         <t t-esc="invoice.localizator" />
                                     </span>
                                     <span class="moreinfo-header">
-                                        <t t-esc="invoice.agency_id.name" />
+                                        <t t-esc="invoice.origin" />
                                     </span>
                                     <span class="status-header">
                                         <t t-esc="invoice.state" />
@@ -30,8 +30,8 @@
                             <div class="col-md-12 col-lg-4">
                                 <div class="card shadow">
                                     <div class="container-fluid">
-                                        <div class="row bg-dark ml-4">
-                                            <div class="col-md-11 col-lg-3 my-4">
+                                        <div class="row bg-dark">
+                                            <div class="col-md-11 col-lg-3 ml-4 my-4">
                                                 <img class="rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
                                             </div>
                                             <div class="col-md-11 col-lg-8 my-4">
@@ -49,7 +49,7 @@
                                                     </a>
                                                 </p>
                                             </div>
-                                            <div class="col-md-10 col-lg-11 mb-4">
+                                            <div class="col-md-10 col-lg-11 ml-4 mb-4">
                                                 <div class="progress o_pms_pwa_progress">
                                                     <div t-att-class="'progress-bar '
                                                         + ('bg-success ' if invoice.ratio_checkin_data &gt; 75 else ' ')
