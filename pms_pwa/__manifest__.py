@@ -4,7 +4,7 @@
     "name": "pms_pwa",
     "summary": """
         Control panel Property on Progressive APP""",
-    "version": "13.0.1.0.6",
+    "version": "13.0.1.0.8",
     "license": "AGPL-3",
     "category": "PMS",
     "author": "Darío Lodeiros Vázquez, Odoo Community Association (OCA)",
