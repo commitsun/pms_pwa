@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="roomdoo_sidebar_menu" inherit_id="website.layout" name="Template sidebar roomdoo">
+        <xpath expr="//div[@id='wrapwrap']" position="before">
+            <!-- Sidebar -->
+            <div class="o_pms_pwa_bg_theme border-right" id="sidebar-wrapper">
+                <div class="sidebar-heading">
+                    <a href="/" class="o_offcanvas_logo logo">
+                        <span t-field="website.logo" t-options="{'widget': 'image', 'style': 'max-width: 200px'}" role="img" t-att-aria-label="'Logo of %s' % website.name" t-att-title="website.name" />
+                    </a>
+                </div>
+                <div class="list-group list-group-flush">
+                    <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                        <t t-call="website.submenu">
+                            <t t-set="item_class" t-value="'o_pms_pwa_nav_item'"/>
+                            <t t-set="link_class" t-value="'nav-link'"/>
+                        </t>
+                    </t>
+                </div>
+            </div>
+            <!-- /#sidebar-wrapper -->
+        </xpath>
+    </template>
+</odoo>

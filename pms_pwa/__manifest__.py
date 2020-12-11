@@ -14,9 +14,11 @@
         "Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>",
     ],
     "website": "https://github.com/commitsun/pms_pwa",
-    "depends": ["base", "website", "pms",],
+    "depends": ["base", "website", "pms"],
     "data": [
         "templates/_includes/head.xml",
+        "templates/menu/sidebar.xml",
+        "templates/menu/navbar.xml",
         "templates/reservation_list.xml",
         "templates/reservation_detail.xml",
         "templates/dashboard.xml",
