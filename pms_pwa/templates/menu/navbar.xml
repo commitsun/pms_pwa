@@ -5,6 +5,11 @@
             <nav data-name="Navbar" class="navbar navbar-expand-lg navbar-light o_colored_level o_cc shadow-sm">
                 <div id="top_menu_container" class="container justify-content-start justify-content-lg-between">
 
+                    <!-- Page Title -->
+                    <div t-if="page_title">
+                        <t t-esc="page_title"/> <span t-if="page_counter" t-esc="page_counter"/>
+                    </div>
+
                     <!-- Navbar Collapse -->
                     <div id="top_menu_collapse" class="collapse navbar-collapse order-last order-lg-0">
                         <button id="menu-toggle">

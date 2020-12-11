@@ -2,102 +2,105 @@
 <odoo>
     <template id="roomdoo_reservation_list" name="Reservation list">
         <t t-call="website.layout">
+            <t t-set="page_title" t-value="'My bookings'"/>
+            <t t-set="page_counter" t-value="str(len(folios))"/>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="oe_structure">
-                <section class="container-fluid o_pms_pwa_roomdoo">
-                    <h2><strong>My bookings <span t-esc="'('+str(len(folios))+')'"/></strong></h2>
-                    <form method="post" t-att-class="_classes">
-                        <div class="row">
-                            <div class="col-8 col-md-8 col-lg-5">
-                                <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
-                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <section class="container-fluid o_pms_pwa_roomdoo_list">
+                    <div class="shadow bg-white p-5">
+                        <form method="post" t-att-class="_classes">
+                            <div class="row">
+                                <div class="col-8 col-md-8 col-lg-5">
+                                    <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                </div>
+                                <div class="col-4 col-md-4 col-lg-7">
+                                    <span class="dropdown">
+                                        <a
+                                            class="btn o_pms_pwa_float_right"
+                                            href="#" data-toggle="modal" data-target="#o_pms_pwa_filters_modal"
+                                            rel="nofollow">
+                                            <span class="d-none d-lg-flex align-self-center">
+                                                FILTERS <i class="fa fa-angle-left"/>
+                                            </span>
+                                        </a>
+                                    </span>
+                                </div>
+                                <t t-call="pms_pwa.roomdoo_filters_modal">
+                                    <t t-set="post" t-value="post"/>
+                                    <t t-set="search" t-value="search"/>
+                                </t>
                             </div>
-                            <div class="col-4 col-md-4 col-lg-7">
-                                <span class="dropdown">
-                                    <a
-                                        class="btn o_pms_pwa_float_right"
-                                        href="#" data-toggle="modal" data-target="#o_pms_pwa_filters_modal"
-                                        rel="nofollow">
-                                        <span class="d-none d-lg-flex align-self-center">
-                                            FILTERS <i class="fa fa-angle-left"/>
-                                        </span>
-                                    </a>
-                                </span>
-                            </div>
-                            <t t-call="pms_pwa.roomdoo_filters_modal">
-                                <t t-set="post" t-value="post"/>
-                                <t t-set="search" t-value="search"/>
-                            </t>
-                        </div>
-                    </form>
+                        </form>
 
-                    <div class="tags_holder">
-                        <span t-if="search and search != ''">
-                            Search<span t-esc="search"/>
-                            <button
-                                type="button" class="close"
-                                data-tag="search" data-dismiss="modal"
-                                aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
-                        </span>
-                        <t t-if="post" t-foreach="post" t-as="val">
-                            <span t-if="post[val] != ''">
-                                <span class="o_pms_tag_index" t-esc="val"/> <span t-esc="post[val]"/>
+                        <div class="tags_holder">
+                            <span t-if="search and search != ''">
+                                Search<span t-esc="search"/>
                                 <button
                                     type="button" class="close"
-                                    t-att-data-tag="val" data-dismiss="modal"
+                                    data-tag="search" data-dismiss="modal"
                                     aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
                             </span>
-                        </t>
-                    </div>
+                            <t t-if="post" t-foreach="post" t-as="val">
+                                <span t-if="post[val] != ''">
+                                    <span class="o_pms_tag_index" t-esc="val"/> <span t-esc="post[val]"/>
+                                    <button
+                                        type="button" class="close"
+                                        t-att-data-tag="val" data-dismiss="modal"
+                                        aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
+                                </span>
+                            </t>
+                        </div>
 
-                    <div class="table-wrapper table-responsive">
-                        <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
-                            <thead>
-                                <tr>
-                                    <th>Guest</th>
-                                    <th>ID</th>
-                                    <th>Room type</th>
-                                    <th class="text-center">Room nº</th>
-                                    <th>Check in</th>
-                                    <th>Check out</th>
-                                    <th class="text-center">Sales channel</th>
-                                    <th class="text-center">Total(€)</th>
-                                    <th class="text-center">Outstanding(€)</th>
-                                    <th class="text-center">Room qty</th>
-                                    <th>Requests</th>
-                                    <th>Services</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody class="o_pms_pwa_reservation_scroll">
-                                <t t-foreach="folios" t-as="folio">
-                                    <t t-set="reservations" t-value="folio.reservation_ids"/>
-                                    <t t-if="len(reservations) &gt; 1">
-                                        <t t-call="pms_pwa.roomdoo_reservation_accordion">
-                                            <t t-set="folio" t-value="folio"/>
+                        <div class="table-wrapper table-responsive">
+                            <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
+                                <thead>
+                                    <tr>
+                                        <th>Guest</th>
+                                        <th>ID</th>
+                                        <th>Room type</th>
+                                        <th class="text-center">Room nº</th>
+                                        <th>Check in</th>
+                                        <th>Check out</th>
+                                        <th class="text-center">Sales channel</th>
+                                        <th class="text-center">Total(€)</th>
+                                        <th class="text-center">Outstanding(€)</th>
+                                        <th class="text-center">Room qty</th>
+                                        <th>Requests</th>
+                                        <th>Services</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="o_pms_pwa_reservation_scroll">
+                                    <t t-foreach="folios" t-as="folio">
+                                        <t t-set="reservations" t-value="folio.reservation_ids"/>
+                                        <t t-if="len(reservations) &gt; 1">
+                                            <t t-call="pms_pwa.roomdoo_reservation_accordion">
+                                                <t t-set="folio" t-value="folio"/>
+                                            </t>
+                                            <t t-foreach="reservations" t-as="obj">
+                                                <tr t-att-class="'o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_' + str(folio.id)"
+                                                    t-att-data-id="obj.id"
+                                                    role="tabpanel">
+                                                    <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                        <t t-set="obj" t-value="obj"/>
+                                                    </t>
+                                                </tr>
+                                            </t>
                                         </t>
-                                        <t t-foreach="reservations" t-as="obj">
-                                            <tr t-att-class="'o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_' + str(folio.id)"
-                                                t-att-data-id="obj.id"
-                                                role="tabpanel">
-                                                <t t-call="pms_pwa.roomdoo_reservation_item">
-                                                    <t t-set="obj" t-value="obj"/>
-                                                </t>
-                                            </tr>
+                                        <t t-else="">
+                                            <t t-foreach="reservations" t-as="obj">
+                                                <tr class="o_pms_pwa_reservation" t-att-data-id="obj.id">
+                                                    <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                        <t t-set="obj" t-value="obj"/>
+                                                    </t>
+                                                </tr>
+                                            </t>
                                         </t>
                                     </t>
-                                    <t t-else="">
-                                        <t t-foreach="reservations" t-as="obj">
-                                            <tr class="o_pms_pwa_reservation" t-att-data-id="obj.id">
-                                                <t t-call="pms_pwa.roomdoo_reservation_item">
-                                                    <t t-set="obj" t-value="obj"/>
-                                                </t>
-                                            </tr>
-                                        </t>
-                                    </t>
-                                </t>
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -128,7 +131,7 @@
 
     <template id="roomdoo_reservation_accordion" name="Roomdoo reservation accordion">
         <t t-set="folio_partner_id" t-value="folio.reservation_ids[0].partner_id"/>
-        <tr class="accordion md-accordion"
+        <tr class="o_pms_pwa_reservation accordion md-accordion"
             t-att-id="'accordion_'+str(folio.id)"
             data-toggle="collapse" aria-expanded="true"
             t-att-data-target="'.accordion_'+str(folio.id)"

@@ -19,13 +19,17 @@ odoo.define("pms_pwa.reservation_table", function(require) {
         $("form").submit();
     });
 
+    $('tbody > tr > td:not(:last-child) a').on("click", function(event) {
+        event.stopPropagation();
+    });
+
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
         selector: "table.o_pms_pwa_reservation_list_table",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
         ],
         events: {
-            "click tr.o_pms_pwa_reservation": "_onClickReservationButton",
+            "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)": "_onClickReservationButton",
         },
         /**
          * @override
@@ -60,7 +64,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
         _onClickReservationButton: function(event) {
             event.preventDefault();
             var self = this;
-            var reservation_id = event.currentTarget.getAttribute("data-id");
+            var reservation_id = event.currentTarget.parentNode.getAttribute("data-id");
 
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/reservation/json_data", "call", {
