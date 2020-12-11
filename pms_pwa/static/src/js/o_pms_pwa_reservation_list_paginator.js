@@ -12,6 +12,11 @@ odoo.define("pms_pwa.reservation_list", function() {
             debug: false,
         });
 
+        $container.on( 'append.infiniteScroll', function( event, response, path, items ) {
+            var current_items_length = parseInt($('.o_pms_pwa_navbar_counter').text());
+            $('.o_pms_pwa_navbar_counter').text(current_items_length + items.length);
+        });
+
         $("#wrapwrap").scroll(function() {
             $(".o_pms_pwa_reservation_list_table").each(function() {
                 var bottom_of_object = $(this).offset().top + $(this).outerHeight();
