@@ -72,7 +72,6 @@ class TestFrontEnd(http.Controller):
             url_args=post,
         )
         offset = pager["offset"]
-
         folios = Folio.search(
             domain, order=sort_folio, limit=paginate_by, offset=pager["offset"]
         )
@@ -227,11 +226,11 @@ class TestFrontEnd(http.Controller):
             for srch in search.split(" "):
                 subdomains = [
                     [("reservation_ids.localizator", "in", [srch])],
-                    [("partner_id.phone", "ilike", srch)],
-                    [("partner_id.mobile", "ilike", srch)],
-                    [("partner_id.name", "ilike", srch)],
-                    [("partner_id.vat", "ilike", srch)],
-                    [("partner_id.email", "ilike", srch)],
+                    [("reservation_ids.partner_id.phone", "ilike", srch)],
+                    [("reservation_ids.partner_id.mobile", "ilike", srch)],
+                    [("reservation_ids.partner_id.name", "ilike", srch)],
+                    [("reservation_ids.partner_id.vat", "ilike", srch)],
+                    [("reservation_ids.partner_id.email", "ilike", srch)],
                 ]
                 domains.append(expression.OR(subdomains))
         # REVIEW: Use lib to this

@@ -211,6 +211,14 @@ div.o_pms_pwa_filters_modal {
         font-weight: bold;
         font-size: 18px;
     }
+    .btn-message {
+        width: 90%;
+        margin-top: 1rem;
+        border-radius: 1.5rem;
+        border: none;
+        background-image: linear-gradient(to right, $theme-color 50%, $bg-theme-color);
+        color: $white;
+    }
 }
 
 /*******************************
