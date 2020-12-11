@@ -63,16 +63,18 @@ body.toggled #sidebar-wrapper {
         color: $theme-color;
         width: 110%;
     }
-    &:hover {
-        color: $theme-color;
+    & a {
+        color: $white;
+    }
+    & a:hover {
+        color: $black;
     }
 }
 
 /* UFF */
-/* .collapse:not(.show) {
+#top_menu_container > .collapse:not(.show) {
     display: block;
 }
- */
 #menu-toggle {
     display: block;
     float: left;
@@ -90,4 +92,11 @@ body.toggled #sidebar-wrapper {
     border-bottom-color: transparent;
     border-left-color: transparent;
     border-radius: 0.25rem;
+}
+.o_pms_pwa_page_title {
+    font-weight: bold;
+    font-size: large;
+    float: left;
+    margin-left: 2rem;
+    margin-top: 0.5rem;
 }

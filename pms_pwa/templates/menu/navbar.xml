@@ -6,15 +6,16 @@
                 <div id="top_menu_container" class="container justify-content-start justify-content-lg-between">
 
                     <!-- Page Title -->
-                    <div t-if="page_title">
-                        <t t-esc="page_title"/> <span t-if="page_counter" t-esc="page_counter"/>
-                    </div>
+
 
                     <!-- Navbar Collapse -->
                     <div id="top_menu_collapse" class="collapse navbar-collapse order-last order-lg-0">
                         <button id="menu-toggle">
                             <span class="navbar-toggler-icon"></span>
                         </button>
+                        <div t-if="page_title" class="o_pms_pwa_page_title">
+                            <t t-esc="page_title"/> <span t-if="page_counter" t-esc="page_counter"/>
+                        </div>
                         <t t-call="website.navbar_nav">
                             <t t-set="_nav_class" t-value="'flex-grow-1'"/>
 
