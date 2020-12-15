@@ -8,6 +8,7 @@ from odoo import _, http
 from odoo.exceptions import MissingError
 from odoo.http import request
 from odoo.osv import expression
+from odoo.exceptions import ValidationError
 
 from odoo.addons.web.controllers.main import Home
 
@@ -171,15 +172,19 @@ class TestFrontEnd(http.Controller):
 
         return reservation_values
 
-    # @http.route("/reservation/<int:id>/check-in", auth="public", website=True)
-    # def reservation_check_in(self, **kw):
-    #     reservation = request.env["pms.reservation"].browse([reservation_id])
-    #     if not reservation:
-    #         raise MissingError(_("This document does not exist."))
-    #     """
-    #         Ruta para realizar el checkin de la reserva 'id'
-    #     """
-    #     pass
+    @http.route('/reservation/<int:reservation_id>/check-in', auth='public', website=True)
+    def reservation_check_in(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = request.env['pms.reservation'].sudo().search([('id', '=', int(reservation_id))])
+            if reservation.ready_for_checkin:
+                checkin_partner =  reservation.checkin_partner_ids.filtered(lambda c: c.state in ("precheckin")
+                for checkin_partner in reservation:
+                    reservation.checkin_partner_ids.action_on_board()
+            else:
+                raise ValidationError('The reservation is not ready for checkin')
+                ##REVIEW: Need to call the template for pre-checkin
+        if not reservation_id:
+                raise ValidationError("Reservation id does not exist")
 
     # @http.route("/reservation/<int:id>/check-out", auth="public", website=True)
     # def reservation_check_out(self, **kw):
