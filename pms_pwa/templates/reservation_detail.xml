@@ -2,6 +2,7 @@
 <odoo>
     <template id="roomdoo_reservation_detail" name="Reservation detail">
         <t t-call="website.layout">
+            <t t-set="page_title" t-value="'Reservation detail'"/>
             <div class="oe_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <div class="justify-content-center">
@@ -115,10 +116,37 @@
                                 </div>
                             </div>
                             <div class="col-md-12 col-lg-4">
+                                <div t-if="invoice.folio_id.number_of_rooms > 1" class="card mb-4 shadow" >
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col o_pms_pwa_theme_color"></div>
+                                            <div class="col o_pms_pwa_theme_color">ID</div>
+                                            <div class="col o_pms_pwa_theme_color">Total(€)</div>
+                                            <div class="col o_pms_pwa_theme_color">Pen(€)</div>
+                                            <div class="col o_pms_pwa_theme_color">Nombre</div>
+                                            <div class="col o_pms_pwa_theme_color">Tipo</div>
+                                            <div class="col o_pms_pwa_theme_color">nº</div>
+                                        </div>
+                                        <t t-foreach="invoice.folio_id.reservation_ids" t-as="i">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="checkbox" checked="checked" disabled="disabled" t-if="invoice.id == i.id" />
+                                                    <input type="checkbox" t-if="invoice.id != i.id" />
+                                                </div>
+                                                <div class="col"><a t-att-href="'/reservation/' + str(i.id)"><t t-esc="i.localizator" /></a></div>
+                                                <div class="col"><t t-esc="i.price_total" /></div>
+                                                <div class="col"><t t-esc="i.folio_pending_amount" /></div>
+                                                <div class="col"><t t-esc="i.partner_id.name" /></div>
+                                                <div class="col"><t t-esc="i.room_type_id.product_id.name" /></div>
+                                                <div class="col"><t t-esc="i.preferred_room_id.name" /></div>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
                                 <div class="card shadow">
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
-                                            HABITACIÓN
+                                            HABITACIÓN <t t-esc="invoice.localizator" />
                                         </h3>
                                     </div>
                                     <div class="card-body">

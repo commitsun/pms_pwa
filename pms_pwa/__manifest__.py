@@ -23,6 +23,7 @@
         "templates/reservation_detail.xml",
         "templates/dashboard.xml",
         "templates/calendar.xml",
+        "templates/login.xml",
         "templates/rooms.xml",
         "templates/rates.xml",
         "templates/configuration.xml",

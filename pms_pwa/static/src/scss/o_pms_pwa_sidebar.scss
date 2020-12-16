@@ -28,6 +28,13 @@ body {
 body.toggled #sidebar-wrapper {
     margin-left: 0;
 }
+.o_pms_pwa_page_title {
+    font-weight: bold;
+    font-size: large;
+    float: left;
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+}
 
 @media (min-width: 768px) {
     #sidebar-wrapper {
@@ -44,6 +51,13 @@ body.toggled #sidebar-wrapper {
     }
     #menu-toggle {
         display: none !important;
+    }
+    .o_pms_pwa_page_title {
+        font-weight: bold;
+        font-size: xx-large;
+        float: left;
+        margin-left: -15rem;
+        margin-top: 0.5rem;
     }
 }
 
@@ -92,11 +106,4 @@ body.toggled #sidebar-wrapper {
     border-bottom-color: transparent;
     border-left-color: transparent;
     border-radius: 0.25rem;
-}
-.o_pms_pwa_page_title {
-    font-weight: bold;
-    font-size: large;
-    float: left;
-    margin-left: 2rem;
-    margin-top: 0.5rem;
 }

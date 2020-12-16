@@ -197,3 +197,9 @@ select::-ms-expand {
     animation-name: reveal;
     animation-direction: reverse;
 }
+footer {
+    visibility: hidden;
+}
+.o_pms_pwa_theme_color {
+    color: $theme-color;
+}

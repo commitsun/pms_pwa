@@ -2,6 +2,7 @@
 <odoo>
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
+            <t t-set="page_title" t-value="'Calendar'"/>
             <div class="oe_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <!-- Calendar -->

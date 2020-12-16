@@ -3,7 +3,8 @@
     <template id="roomdoo_sidebar_menu" inherit_id="website.layout" name="Template sidebar roomdoo">
         <xpath expr="//div[@id='wrapwrap']" position="before">
             <!-- Sidebar -->
-            <div class="o_pms_pwa_bg_theme border-right" id="sidebar-wrapper">
+            <t t-set="is_connected" t-value="not user_id._is_public()"/>
+            <div t-if="is_connected" class="o_pms_pwa_bg_theme border-right" id="sidebar-wrapper">
                 <div class="sidebar-heading">
                     <a href="/" class="o_offcanvas_logo logo">
                         <span t-field="website.logo" t-options="{'widget': 'image', 'style': 'max-width: 200px'}" role="img" t-att-aria-label="'Logo of %s' % website.name" t-att-title="website.name" />
