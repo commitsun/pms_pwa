@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="roomdoo_login_layout" inherit_id="web.login_layout" name="Roomdoo Login Layout" priority="20">
+        <xpath expr="t" position="replace">
+            <t t-call="website.layout">
+                <img src="/pms_pwa/static/img/logo_footer.png" alt="Roomdoo" title="Roomdoo" class="o_pms_pwa_login_logo" />
+                <div class="oe_website_login_container" t-raw="0"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>

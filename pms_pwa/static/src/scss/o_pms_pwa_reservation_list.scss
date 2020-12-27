@@ -1,0 +1,239 @@
+.modal:not([data-backdrop="false"]) {
+    background-color: $bg-theme-color-modal;
+}
+
+section.o_pms_pwa_roomdoo_list {
+    form {
+        input.o_pmw_pwa_search_input {
+            background-image: url("/pms_pwa/static/img/searchicon.png");
+            background-position: 10px 10px;
+            background-repeat: no-repeat;
+            background-color: transparent;
+            width: 100%;
+            font-size: 16px;
+            padding: 12px 20px 12px 40px;
+            color: $table-text-color;
+            border: none;
+            border-bottom: 1px solid $theme-color;
+            margin-bottom: 12px;
+            border-radius: 0px;
+        }
+        a.o_pms_pwa_float_right {
+            color: $theme-color;
+            border-color: $theme-color;
+            background-color: $bg-theme-color;
+            & > span {
+                & > i {
+                    margin-left: 15px;
+                    line-height: 22px;
+                }
+            }
+        }
+    }
+    .table-hover {
+        font-family: "Barlow Condensed", sans-serif;
+        letter-spacing: 1px;
+        font-size: 16px;
+        color: $table-text-color;
+        line-height: 16px;
+        & > thead {
+            color: $theme-color;
+            & > tr {
+                & > th {
+                    border-top: none;
+                    border-bottom-color: $theme-color;
+                    font-weight: normal;
+                    line-height: 15px;
+                }
+            }
+        }
+        & > tbody {
+            & > tr {
+                & > td {
+                    border-top: none;
+                    & > span.o_pms_pwa_wler {
+                        font-weight: lighter;
+                        color: $table-text-color-lighter;
+                    }
+                    & > span.dropdown {
+                        & a.btn {
+                            color: $theme-color;
+                        }
+                        & div.dropdown-menu {
+                            border: 1px solid $theme-color;
+                            & button.dropdown-item:hover {
+                                background-color: $bg-theme-color;
+                            }
+                        }
+                    }
+                    & > button.btn {
+                        color: $theme-color;
+                    }
+                }
+                &.o_pms_pwa_accordion_padding {
+                    & > td.first-col {
+                        padding-left: 20px;
+                    }
+                }
+                & > td.first-col {
+                    div:first-of-type {
+                        font-weight: bold;
+                    }
+                    a:first-of-type {
+                        color: $table-text-color;
+                    }
+                    .o_pms_pwa_badge_position {
+                        position: relative;
+                        top: -20px;
+                        right: 25px;
+                        font-size: 12px;
+                        font-family: "Barlow", sans-serif;
+                        font-weight: bold;
+                        color: #ffffff;
+                        background-color: $badge-color;
+                        line-height: 14px;
+                    }
+                    .o_pms_pwa_img_rounded_bg {
+                        background-color: $theme-color;
+                    }
+                    .progress {
+                        height: 0.2rem;
+                    }
+                    i {
+                        margin-right: 5px;
+                        color: $theme-color;
+                    }
+                }
+                & > td.o_pms_pwa_lh45 {
+                    line-height: 45px;
+                }
+                & > td:last-of-type {
+                    border-left: 5px solid $bg-theme-color;
+                }
+            }
+            & > tr:hover {
+                background-color: $bg-theme-color;
+            }
+        }
+    }
+    .tags_holder {
+        display: inline-block;
+        & > span {
+            background-color: $bg-theme-color;
+            color: $theme-color;
+            font-size: 15px;
+            margin-left: 5px;
+            & > span {
+                color: $table-text-color;
+                margin-left: 5px;
+            }
+            & span.o_pms_tag_index {
+                color: $theme-color;
+                text-transform: capitalize;
+            }
+            & > button {
+                float: none;
+                color: $theme-color;
+                line-height: 18px;
+                & > span {
+                    font-size: 15px;
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+}
+
+/*******************************
+* MODAL
+*******************************/
+
+div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_filters_modal {
+    &.modal.o_pms_pwa_right .modal-dialog {
+        position: fixed;
+        margin: auto;
+        margin-top: 60px;
+        margin-right: 10px;
+        width: 360px;
+        height: 100%;
+        -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+        -o-transform: translate3d(0%, 0, 0);
+        transform: translate3d(0%, 0, 0);
+    }
+    &.modal.o_pms_pwa_right .modal-content {
+        overflow-y: auto;
+        max-height: 92%;
+        & > div.modal-header {
+            border-bottom: none;
+            & > button.close {
+                color: $theme-color;
+            }
+            & > div.modal-title {
+                color: $table-text-color;
+                font-size: 22px;
+                font-family: "Barlow", sans-serif;
+                font-weight: bold;
+                letter-spacing: 0.02px;
+                text-transform: uppercase;
+            }
+        }
+        & > div.o_pms_pwa_modal_header {
+            .o_pms_pwa_modal_header_pad {
+                padding-right: 1rem;
+            }
+        }
+        & > div.o_pms_pwa_modal_body {
+            overflow-x: clip;
+            button.o_pms_pwa_btn_border {
+                width: 90%;
+                margin-top: 1rem;
+                border-radius: 1.5rem;
+                border: 1px solid $theme-color;
+                color: $theme-color;
+            }
+        }
+    }
+    &.modal.o_pms_pwa_right.fade .modal-dialog {
+        padding: 0px;
+        right: 0px;
+        -webkit-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -moz-transition: opacity 0.3s linear, right 0.3s ease-out;
+        -o-transition: opacity 0.3s linear, right 0.3s ease-out;
+        transition: opacity 0.3s linear, right 0.3s ease-out;
+    }
+    &.modal.o_pms_pwa_right.fade.in .modal-dialog {
+        right: 0;
+    }
+    h5 {
+        color: $theme-color;
+        font-weight: bold;
+        font-size: 18px;
+    }
+    .btn-message {
+        width: 90%;
+        margin-top: 1rem;
+        border-radius: 1.5rem;
+        border: none;
+        background-image: linear-gradient(to right, $theme-color 50%, $bg-theme-color);
+        color: $white;
+    }
+}
+
+/*******************************
+* SHARED
+*******************************/
+
+section.o_pms_pwa_roomdoo_section,
+div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_filters_modal {
+    a.btn-outline-dark,
+    button.btn-outline-dark {
+        border-width: 1px;
+    }
+}
+
+/*******************************
+* MEDIAS
+*******************************/

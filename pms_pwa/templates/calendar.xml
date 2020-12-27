@@ -1,12 +1,157 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
+            <t t-set="page_title" t-value="'Calendar'"/>
             <div class="oe_structure">
-                <section class="container">
-                    <h2>Calendar</h2>
+                <section class="container-fluid o_pms_pwa_roomdoo">
+                    <!-- Calendar -->
+                    <div class="o_pms_pwa_calendar shadow bg-white p-5">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <h2
+                                        class="font-weight-bold mb-0 text-uppercase"
+                                    ><t t-esc="date.strftime('%B %Y')" /></h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-condensed">
+                                <thead>
+
+                                    <tr>
+                                        <th class="align-self-end o_pms_pwa_table_week"></th>
+                                        <t t-foreach="date_list" t-as="day">
+                                            <th t-att-class="'text-center o_pms_pwa_table_week '
+                                                    + ('o_pms_pwa_today vertical-line ' if date==day else ' ')" class="" t-att-data-value="x">
+                                                <t t-esc="day.strftime('%A %d')" />
+                                            </th>
+                                        </t>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rooms_list" t-as="obj">
+                                        <tr data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)">
+                                            <td>
+                                                <p class="o_pms_pwa_room_name">
+                                                    <t
+                                                        t-if="obj.product_id.name"
+                                                        t-esc="obj.product_id.name"
+                                                    />
+                                                </p>
+                                                <p class="o_pms_pwa_extra_info">
+                                                    <span>2</span>
+                                                    <span>4 hab</span>
+                                                    <span class="o_pms_pwa_restr">Restricciones</span>
+
+                                                </p>
+                                            </td>
+                                            <t t-foreach="range(7)" t-as="l">
+                                                <td class="o_pms_pwa_table_cell">
+                                                    <p class="o_pms_pwa_title">1 disponible</p>
+                                                    <p class="o_pms_pwa_content">
+                                                        <span class="o_pms_pwa_type">Estandar</span>
+                                                        <span class="o_pms_pwa_price">40€</span>
+                                                        <span class="o_pms_pwa_info">?</span>
+                                                    </p>
+                                                    <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="8" class="o_pms_pwa_hiddenRow">
+                                                <div t-att-id="'collapse_accordion_'+str(obj.id)" class="collapse o_pms_pwa_calendar_line row">
+                                                    <div class="col-2 o_pms_pwa_calendar_line_room_type">
+                                                        <p class="o_pms_pwa_calendar_line_title">Habitación 1</p>
+                                                        <p class="o_pms_pwa_calendar_line_content">Estado ahora</p>
+                                                    </div>
+                                                    <div class="o_pms_pwa_calendar_line_nigth_3">
+                                                        <p class="o_pms_pwa_calendar_line_hr_success">
+                                                            <img src="https://www.zeleiro.gal/static/images/logo.webp"
+                                                                width="50"
+                                                                class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
+                                                                title="image"
+                                                                alt="image"/>
+                                                            <span class="o_pms_pwa_calendar_line_price">240€</span>
+                                                            <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
+                                                            <span class="badge o_pms_pwa_calendar_line_badge bg-success">
+                                                                OK
+                                                            </span>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="col o_pms_pwa_calendar_line_event">
+                                                        <button type="button" class="btn btn-add">+</button>
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_nigth_1">
+                                                        <p class="o_pms_pwa_calendar_line_hr_warning">
+                                                            <img src="https://www.zeleiro.gal/static/images/logo.webp"
+                                                                width="50"
+                                                                class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
+                                                                title="image"
+                                                                alt="image"/>
+                                                            <span class="o_pms_pwa_calendar_line_price">80€</span>
+                                                            <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
+                                                        </p>
+
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_event">
+                                                        <button type="button" class="btn btn-add">+</button>
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_event">
+                                                        <button type="button" class="btn btn-add">+</button>
+                                                    </div>
+                                                </div>
+                                                <div t-att-id="'collapse_accordion_'+str(obj.id)" class="collapse o_pms_pwa_calendar_line row">
+
+                                                    <div class="col-2 o_pms_pwa_calendar_line_room_type">
+                                                        <p class="o_pms_pwa_calendar_line_title">Habitación 2</p>
+                                                        <p class="o_pms_pwa_calendar_line_content">Limpia</p>
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_event">
+                                                        <button type="button" class="btn btn-add">+</button>
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_event">
+                                                        <button type="button" class="btn btn-add">+</button>
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_nigth_1">
+                                                        <p class="o_pms_pwa_calendar_line_hr_info">
+                                                            <span class="o_pms_pwa_calendar_line_name">Por asignar</span>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_event">
+                                                        <button type="button" class="btn btn-add">+</button>
+                                                    </div>
+                                                    <div class="col o_pms_pwa_calendar_line_event">
+                                                        <button type="button" class="btn btn-add">+</button>
+                                                    </div>
+
+                                                    <div class="o_pms_pwa_calendar_line_nigth_2">
+                                                        <p class="o_pms_pwa_calendar_line_hr_success">
+                                                            <img src="https://www.zeleiro.gal/static/images/logo.webp"
+                                                                width="50"
+                                                                class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
+                                                                title="image"
+                                                                alt="image"/>
+                                                            <span class="o_pms_pwa_calendar_line_price">120€</span>
+                                                            <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
                 </section>
             </div>
         </t>
+
     </template>
 </odoo>

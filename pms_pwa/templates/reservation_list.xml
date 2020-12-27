@@ -1,176 +1,498 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="roomdoo_reservation_list" name="Reservation list">
         <t t-call="website.layout">
-            <div class="o_pms_pwa_roomdoo_reservation_modal"/>
+            <t t-set="page_title" t-value="'My bookings'"/>
+            <t t-set="page_counter" t-value="str(len(folios))"/>
+            <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="oe_structure">
-                <section class="container-fluid o_pms_pwa_roomdoo">
-                    <h2><strong>My bookings <span t-esc="'('+str(len(reservations))+')'"/></strong></h2>
-                    <div class="row">
-                        <div class="col-8 col-md-8 col-lg-5">
-                            <input type="text" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
-                        </div>
-                        <div class="col-4 col-md-4 col-lg-7">
-                            <span class="dropdown">
-                                <a role="button" class="btn btn-outline-dark o_pms_pwa_float_right" data-toggle="dropdown" href="#">
-                                    <i class="fa fa-bars d-sm-block d-md-block d-lg-none"/>
-                                    <span class="d-none d-lg-flex align-self-center">FILTERS</span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dLabel">
-                                    <button class="dropdown-item" type="button">Check in</button>
-                                    <button class="dropdown-item" type="button">Check out</button>
-                                    <button class="dropdown-item" type="button">Cancelled</button>
+                <section class="container-fluid o_pms_pwa_roomdoo_list">
+                    <div class="shadow bg-white p-5">
+                        <form method="post" t-att-class="_classes">
+                            <div class="row">
+                                <div class="col-8 col-md-8 col-lg-5">
+                                    <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 </div>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="table-sm o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
-                        <div class="row m-0 d-none d-lg-flex">
-                            <div class="col-2 align-self-end">Guest</div>
-                            <div class="col-8">
-                                <div class="row">
-                                    <div class="col-1 align-self-end">ID</div>
-                                    <div class="col-3 col-lg-2 col-xl-3 align-self-end">Room type</div>
-                                    <div class="col-1 align-self-end">Room nº</div>
-                                    <div class="col-1 col-lg-2 col-xl-1 align-self-end">Check in</div>
-                                    <div class="col-1 col-lg-2 col-xl-1 align-self-end">Check out</div>
-                                    <div class="col-2 col-lg-1 col-xl-2 align-self-end">Sales channel</div>
-                                    <div class="col-1 align-self-end">Total (€)</div>
-                                    <div class="col-1 align-self-end">Outstanding (€)</div>
-                                    <div class="col-1"/>
+                                <div class="col-4 col-md-4 col-lg-7">
+                                    <span class="dropdown">
+                                        <a
+                                            class="btn o_pms_pwa_float_right"
+                                            href="#" data-toggle="modal" data-target="#o_pms_pwa_filters_modal"
+                                            rel="nofollow">
+                                            <span class="d-none d-lg-flex align-self-center">
+                                                FILTERS <i class="fa fa-angle-left"/>
+                                            </span>
+                                        </a>
+                                    </span>
                                 </div>
+                                <t t-call="pms_pwa.roomdoo_filters_modal">
+                                    <t t-set="post" t-value="post"/>
+                                    <t t-set="search" t-value="search"/>
+                                </t>
                             </div>
-                            <div class="col-2 align-self-end">Observ/Extras</div>
+                        </form>
+
+                        <div class="tags_holder">
+                            <span t-if="search and search != ''">
+                                Search<span t-esc="search"/>
+                                <button
+                                    type="button" class="close"
+                                    data-tag="search" data-dismiss="modal"
+                                    aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
+                            </span>
+                            <t t-if="post" t-foreach="post" t-as="val">
+                                <span t-if="post[val] != ''">
+                                    <span class="o_pms_tag_index" t-esc="val"/> <span t-esc="post[val]"/>
+                                    <button
+                                        type="button" class="close"
+                                        t-att-data-tag="val" data-dismiss="modal"
+                                        aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
+                                </span>
+                            </t>
                         </div>
 
-                        <t t-foreach="reservations" t-as="obj">
-                            <div class="row mb-4 mb-lg-0 m-0 item">
-                                <div class="col-6 col-md-6 col-lg-2">
-                                    <div class="row">
-                                        <div class="col-5 col-sm-3 col-md-3 col-lg-3 d-lg-none d-xl-block align-self-center o_pms_pwa_profile_image_container">
-                                            <img t-attf-src="/web/image/res.partner/#{obj.partner_id.id}/image_small" class="img-thumbnail" t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
-                                        </div>
-                                        <div class="col-7 col-sm-7 col-md-9 col-lg-12 col-xl-9">
-                                            <div class="row o_pms_pwa_min_client_min_height">
-                                                <div class="col-12 align-self-center">
-                                                    <a href="#" type="button" class="o_pms_pwa_reservation_modal" t-att-data-id="obj.id">
-                                                        <t t-esc="obj.partner_id.name"/>
-                                                    </a>
-                                                </div>
-                                                <div class="col-12 col-md-8 col-lg-8 align-self-center">
-                                                    <a t-att-href="'tel:' + str(obj.partner_id.mobile)"><t t-esc="obj.partner_id.mobile"/></a>
-                                                </div>
-                                                <div class="col-4 d-none d-lg-flex align-self-center">
-                                                    <a class="fa fa-envelope-o fa-lg" href="#"/>
-                                                    <span class="badge badge-pill badge-dark o_pms_pwa_badge_position">0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6 col-md-6 col-lg-8">
-                                    <div class="row">
-                                        <div class="order-1 col-5 col-md-8 col-lg-1 align-self-center">
-                                            <a href="#" type="button" class="o_pms_pwa_reservation_modal" t-att-data-id="obj.id">
-                                                <t t-esc="obj.localizator"/>
-                                            </a>
-                                        </div>
-                                        <div
-                                            class="order-4 order-sm-4 order-md-4 order-lg-2 col-9 col-md-9 col-lg-2 col-xl-3 align-self-center o_pmw_pwa_ellipsis">
-                                            <t t-esc="obj.room_type_id.code_type"/>
-                                        </div>
-                                        <div class="order-5 order-sm-5 order-md-5 order-lg-3 col-3 col-md-3 col-lg-1 align-self-center">2</div>
-                                        <div class="order-6 order-sm-6 order-md-6 order-lg-4 col-1 col-lg-2 col-xl-1 d-none d-lg-flex align-self-center">
-                                            <t t-esc="obj.checkin"/> <t t-esc="obj.arrival_hour"/>
-                                        </div>
-                                        <div class="order-7 order-sm-7 order-md-7 order-lg-5 col-1 col-lg-2 col-xl-1 d-none d-lg-flex align-self-center">
-                                            <t t-esc="obj.checkout"/> <t t-esc="obj.departure_hour"/>
-                                        </div>
-                                        <div class="order-8 order-sm-8 order-md-8 order-lg-6 col-2 col-lg-1 col-xl-2 d-none d-lg-flex align-self-center">
-                                            <t t-if="obj.origin" t-esc="obj.origin"/>
-                                            <t t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
-                                        </div>
-                                        <div class="order-2 order-sm-2 order-md-2 order-lg-7 col-4 col-md-3 col-lg-1 align-self-center">
-                                            <t t-esc="obj.folio_id.amount_total"/>
-                                        </div>
-                                        <div class="order-9 order-sm-9 order-md-9 order-lg-8 col-1 d-none d-lg-flex align-self-center">
-                                            <t t-esc="obj.folio_id.pending_amount"/>
-                                        </div>
-                                        <div class="order-10 order-sm-10 order-md-10 order-lg-9 col-1 d-none d-lg-flex align-self-center">
-                                            <button t-if="obj.folio_id.pending_amount" type="button" class="btn btn-outline-dark" data-id="254">
-                                                Pay
-                                            </button>
-                                        </div>
-                                        <div class="order-3 order-sm-3 order-md-3 order-sm-3 order-md-3 col-3 col-md-1 d-sm-block d-md-block d-lg-none">
-                                            <div class="row float-right">
-                                                <span class="dropdown">
-                                                    <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
-                                                    <div class="dropdown-menu" aria-labelledby="dLabel">
-                                                        <button
-                                                            t-if="obj.state == 'confirm'"
-                                                            class="dropdown-item"
-                                                            type="button">Check in</button>
-                                                        <button class="dropdown-item" type="button">Pay</button>
-                                                        <button class="dropdown-item" type="button">Asign</button>
-                                                    </div>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 d-lg-none">
-                                    <div class="row">
-                                        <div class="col-6 align-self-center">
-                                            <input
-                                                t-if="obj.state == 'confirm'"
-                                                type="checkbox"
-                                                checked="checked"/>
-                                            <input
-                                                t-else=""
-                                                type="checkbox"/> <t t-esc="obj.checkin"/> <t t-esc="obj.arrival_hour"/>
-                                        </div>
-                                        <div class="col-6 align-self-center">
-                                            <input
-                                                t-if="obj.state == 'done'"
-                                                type="checkbox"
-                                                checked="checked"/>
-                                            <input
-                                                t-else=""
-                                                type="checkbox"/> <t t-esc="obj.checkout"/> <t t-esc="obj.departure_hour"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-2 align-self-center">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6 col-lg-6 mb-2 mb-lg-0 o_pmw_pwa_ellipsis">
-                                            <t t-if="obj.folio_internal_comment" t-esc="obj.folio_internal_comment"/>
-                                        </div>
-                                        <div class="col-6 d-none d-lg-inline align-self-center">
-                                            <button
-                                                t-if="obj.state == 'confirm'"
-                                                type="button"
-                                                class="btn btn-dark float-right"
-                                                t-att-data-id="obj.id">
-                                                Check in
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </t>
+                        <div class="table-wrapper table-responsive">
+                            <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
+                                <thead>
+                                    <tr>
+                                        <th>Guest</th>
+                                        <th>ID</th>
+                                        <th>Room type</th>
+                                        <th class="text-center">Room nº</th>
+                                        <th>Check in</th>
+                                        <th>Check out</th>
+                                        <th class="text-center">Sales channel</th>
+                                        <th class="text-center">Total(€)</th>
+                                        <th class="text-center">Outstanding(€)</th>
+                                        <th class="text-center">Room qty</th>
+                                        <th>Requests</th>
+                                        <th>Services</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="o_pms_pwa_reservation_scroll">
+                                    <t t-foreach="folios" t-as="folio">
+                                        <t t-set="reservations" t-value="folio.reservation_ids"/>
+                                        <t t-if="len(reservations) &gt; 1">
+                                            <t t-call="pms_pwa.roomdoo_reservation_accordion">
+                                                <t t-set="folio" t-value="folio"/>
+                                            </t>
+                                            <t t-foreach="reservations" t-as="obj">
+                                                <tr t-att-class="'o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_' + str(folio.id)"
+                                                    t-att-data-id="obj.id"
+                                                    role="tabpanel">
+                                                    <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                        <t t-set="obj" t-value="obj"/>
+                                                    </t>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-foreach="reservations" t-as="obj">
+                                                <tr class="o_pms_pwa_reservation" t-att-data-id="obj.id">
+                                                    <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                        <t t-set="obj" t-value="obj"/>
+                                                    </t>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </section>
+            </div>
+            <div class="page-load-status">
+                <p class="infinite-scroll-request">
+                    <div class="loader-ellips">
+                        <span class="loader-ellips__dot"></span>
+                        <span class="loader-ellips__dot"></span>
+                        <span class="loader-ellips__dot"></span>
+                        <span class="loader-ellips__dot"></span>
+                    </div>
+                </p>
+                <p class="infinite-scroll-last">End of content</p>
+                <p class="infinite-scroll-error">No more pages to load</p>
             </div>
             <div t-if="pager" class="o_portal_pager text-center">
                 <div class="o_pms_pwa_reservation_list_pagination">
                     <t t-if="int(pager['page']['num']) + 1 &lt;= int(pager['page_count'])">
-                        <a t-att-href="pager['page_next']['url']" style="display: none">Page <span t-esc="int(pager['page']['num']) + 1"/>
+                        <a class="o_pms_pwa_reservation_list_pagination_next" t-att-href="pager['page_next']['url']">
+                            Page <span t-esc="int(pager['page']['num']) + 1"/>
                         </a>
                     </t>
-                    <span class="max-page" t-esc="pager['page_count']" style="display: none"/>
+                    <span id="max-page" class="max-page" t-esc="pager['page_count']" style="display: none"/>
                 </div>
             </div>
         </t>
     </template>
 
+    <template id="roomdoo_reservation_accordion" name="Roomdoo reservation accordion">
+        <t t-set="folio_partner_id" t-value="folio.reservation_ids[0].partner_id"/>
+        <tr class="o_pms_pwa_reservation accordion md-accordion"
+            t-att-id="'accordion_'+str(folio.id)"
+            data-toggle="collapse" aria-expanded="true"
+            t-att-data-target="'.accordion_'+str(folio.id)"
+            role="tablist" aria-multiselectable="true">
+            <td class="first-col">
+                <span class="float-left">
+                    <img t-att-src="website.image_url(folio.partner_id if folio.partner_id else folio_partner_id, 'image_128')"
+                        width="50"
+                        class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                        t-att-title="folio.partner_id.name if folio.partner_id else folio_partner_id.name"
+                        t-att-alt="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
+                    <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
+                </span>
+                <div class="float-left">
+                    <t t-esc="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
+                </div>
+                <br/>
+                <a class="float-left" t-att-href="'tel:' + str(folio.partner_id.mobile or folio.partner_id.phone)
+                    if folio.partner_id else str(folio_partner_id.mobile or folio_partner_id.phone)">
+                    <t t-esc="(folio.partner_id.mobile or folio.partner_id.phone)
+                        if folio.partner_id else (folio_partner_id.mobile or folio_partner_id.phone)"/>
+                </a>
+                <span class="float-right "><i class="fa fa-user"/>3</span>
+            </td>
+            <td class="o_pms_pwa_lh45">
+                <t t-esc="folio.id"/>
+            </td>
+            <td class="o_pms_pwa_lh45">
+
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+
+            </td>
+            <td>
+
+            </td>
+            <td>
+
+            </td>
+            <td class="text-center">
+
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+                <t t-esc="folio.amount_total"/>
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+                <t t-esc="folio.pending_amount"/>
+            </td>
+            <td class="o_pms_pwa_lh45 text-center">
+                <t t-esc="folio.number_of_rooms"/>
+            </td>
+            <td class="o_pms_pwa_lh45">
+                <t t-if="folio.internal_comment" t-esc="folio.internal_comment"/>
+            </td>
+            <td class="o_pms_pwa_lh45">
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    </template>
+
+    <template id="roomdoo_reservation_item" name="Roomdoo reservation item">
+        <td class="first-col">
+            <span class="float-left">
+                <img t-att-src="website.image_url(obj.partner_id, 'image_128')"
+                    width="50"
+                    class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                    t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
+                <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
+            </span>
+            <div class="float-left">
+                <t t-esc="obj.partner_id.name"/>
+            </div>
+            <br/>
+            <a class="float-left" t-att-href="'tel:' + str(obj.partner_id.mobile or obj.partner_id.phone)">
+                <t t-esc="obj.partner_id.mobile or obj.partner_id.phone"/>
+            </a>
+            <span class="float-right "><i class="fa fa-user"/>3</span>
+            <br/>
+            <div class="progress mt-4">
+                <div t-att-class="'progress-bar '
+                    + ('bg-success ' if obj.state in ('onboard') else ' ')
+                    + ('bg-secondary ' if obj.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
+                    + ('bg-success ' if obj.state in ('confirm') and obj.ratio_checkin_data &gt; 75 else ' ')
+                    + ('bg-warning ' if obj.state in ('confirm') and  75 &gt; obj.ratio_checkin_data &gt; 50 else ' ')
+                    + ('bg-danger ' if obj.state in ('confirm') and  obj.ratio_checkin_data &lt; 50 else ' ')"
+                    role="progressbar" t-att-style="'width:'+ str(obj.checkins_ratio if obj.state in ('onboard') else obj.ratio_checkin_data) + '%'"
+                    t-att-aria-valuenow="obj.checkins_ratio if obj.state in ('onboard') else obj.ratio_checkin_data" aria-valuemin="0"
+                    aria-valuemax="100"></div>
+            </div>
+        </td>
+        <td class="o_pms_pwa_lh45">
+            <t t-esc="obj.localizator"/>
+        </td>
+        <td class="o_pms_pwa_lh45">
+            <t t-esc="obj.room_type_id.code_type"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            2
+        </td>
+        <td>
+            <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
+        </td>
+        <td>
+            <t t-esc="obj.checkout"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
+        </td>
+        <td class="text-center">
+            <t t-if="obj.origin" t-esc="obj.origin"/>
+            <span class="o_pms_pwa_wler" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            <t t-esc="obj.folio_id.amount_total"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            <t t-esc="obj.folio_id.pending_amount"/>
+        </td>
+        <td class="o_pms_pwa_lh45 text-center">
+            3
+        </td>
+        <td class="o_pms_pwa_lh45">
+            <t t-if="obj.folio_internal_comment" t-esc="obj.folio_internal_comment"/>
+        </td>
+        <td class="o_pms_pwa_lh45">
+            Desayuno
+        </td>
+        <td>
+            <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
+            <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
+            <button t-att-url="pwa_action_buttons[keys[0]]" class="btn" type="button"><t t-esc="keys[0]"/></button>
+            <span class="dropdown">
+                <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                <div class="dropdown-menu" aria-labelledby="dLabel">
+                    <t t-foreach="pwa_action_buttons" t-as="button">
+                        <button
+                            t-if="button != keys[0]"
+                            t-att-url="pwa_action_buttons[button]"
+                            class="dropdown-item"
+                            type="button"><t t-esc="button"/></button>
+                    </t>
+                </div>
+            </span>
+        </td>
+    </template>
+
+    <template id="roomdoo_filters_modal" name="Roomdoo filters modal">
+
+        <div class="modal fade o_pms_pwa_right o_pms_pwa_filters_modal"
+            tabindex="-1" role="dialog" id="o_pms_pwa_filters_modal" aria-labelledby="o_pms_pwa_filters_modal"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" id="modalLabel">Filtros</div>
+                        <button class="close" data-dismiss="modal"><span><span class="fa fa-times" /></span></button>
+                    </div>
+                    <div class="modal-body o_pms_pwa_modal_body">
+                        <div class="container-fluid">
+
+                            <form class="form-horizontal" method="post">
+                                <div class="form-group form-field">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="checkin">
+                                                Check in
+                                            </label>
+                                            <input class="form-control"
+                                                type="date" name="checkin"
+                                                t-att-value="post['checkin'] if post and 'checkin' in post else None"/>
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <span class="fa fa-calendar"/>
+                                            </span>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="checkout">
+                                                Check in
+                                            </label>
+                                            <input class="form-control"
+                                                type="date" name="checkout"
+                                                t-att-value="post['checkout'] if post and 'checkout' in post else None"/>
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <span class="fa fa-calendar"/>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" name="name" placeholder="Name"
+                                                t-att-value="post['name'] if post and 'name' in post else None"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" name="vat" placeholder="VAT"
+                                                t-att-value="post['vat'] if post and 'vat' in post else None"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <input class="form-control" type="text" name="mail" placeholder="Mail"
+                                                t-att-value="post['mail'] if post and 'mail' in post else None"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion md-accordion" id="advanced_filters" role="tablist" aria-multiselectable="true">
+
+                                    <a data-toggle="collapse" data-parent="#advanced_filters" href="#a_filters" aria-expanded="true"
+                                        aria-controls="a_filters">
+                                        <h5>
+                                            Advanced filters <i class="fa fa-angle-down rotate-icon float-right"></i>
+                                        </h5>
+                                    </a>
+
+                                    <div id="a_filters" class="collapse" role="tabpanel" data-parent="#advanced_filters">
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Check in</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkin_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="checkin_from"
+                                                    t-att-value="post['checkin_from'] if post and 'checkin_from' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkin_to">
+                                                    To
+                                                </label>
+                                                <input class="form-control" type="date" name="checkin_to"
+                                                    t-att-value="post['checkin_to'] if post and 'checkin_to' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Check out</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkout_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="checkout_from"
+                                                    t-att-value="post['checkout_from'] if post and 'checkout_from' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="checkout_to">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="checkout_to"
+                                                    t-att-value="post['checkout_to'] if post and 'checkout_to' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Created at</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="created_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="created_from"
+                                                    t-att-value="post['created_from'] if post and 'created_from' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="created_to">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="created_to"
+                                                    t-att-value="post['created_to'] if post and 'created_to' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <h4>Last modification</h4>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="modified_from">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="modified_from"
+                                                    t-att-value="post['modified_from'] if post and 'modified_from' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="control-label col-12" for="modified_to">
+                                                    From
+                                                </label>
+                                                <input class="form-control" type="date" name="modified_to"
+                                                    t-att-value="post['modified_to'] if post and 'modified_to' in post else None"/>
+                                                <span class="o_pms_pwa_calendar_icon">
+                                                    <span class="fa fa-calendar"/>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <input class="form-control" type="text" name="origin" placeholder="Origin"
+                                                    t-att-value="post['origin'] if post and 'origin' in post else None"/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-12">
+                                                <input class="form-control" type="text" name="text_dialog" placeholder="Text in dialogs"
+                                                    t-att-value="post['text_dialog'] if post and 'text_dialog' in post else None"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-12 text-center">
+                                        <button class="btn o_pms_pwa_btn_border">
+                                            Delete all
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 mb-3">
+                                    <div class="col-12 text-center">
+                                        <input type="hidden" name="original_search" t-att-value="search if search else None"/>
+                                        <input class="btn btn-message" type="submit" value="Apply filters"/>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
 </odoo>
