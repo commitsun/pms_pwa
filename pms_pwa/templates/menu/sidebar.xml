@@ -6,8 +6,9 @@
             <t t-set="is_connected" t-value="not user_id._is_public()"/>
             <div t-if="is_connected" class="o_pms_pwa_bg_theme border-right" id="sidebar-wrapper">
                 <div class="sidebar-heading">
-                    <a href="/" class="o_offcanvas_logo logo">
-                        <span t-field="website.logo" t-options="{'widget': 'image', 'style': 'max-width: 200px'}" role="img" t-att-aria-label="'Logo of %s' % website.name" t-att-title="website.name" />
+                    <a href="/" class="o_offcanvas_logo o_pms_pwa_logo">
+                        <img src="/pms_pwa/static/img/svg/casita.svg" alt="logo menu roomdoo" class="img-responsive" />
+                        <img src="/pms_pwa/static/img/svg/logo_menu.svg" alt="logo menu roomdoo" class="img-responsive mobile" />
                     </a>
                 </div>
                 <div class="list-group list-group-flush">
@@ -15,6 +16,7 @@
                         <t t-call="website.submenu">
                             <t t-set="item_class" t-value="'o_pms_pwa_nav_item'"/>
                             <t t-set="link_class" t-value="'nav-link'"/>
+                            <t t-set="span_class" t-value="'mobile'"/>
                         </t>
                     </t>
                 </div>
