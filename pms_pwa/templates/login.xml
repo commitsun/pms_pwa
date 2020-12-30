@@ -4,8 +4,8 @@
         <xpath expr="t" position="replace">
             <t t-set="body_classname" t-value="'o_pms_pwa_login_bg'"/>
             <t t-call="website.layout">
-                <img src="/pms_pwa/static/img/svg/logo.svg" class="img-responsive o_pms_pwa_login_logo" />
-                <img src="/pms_pwa/static/img/svg/logo_movil.svg" class="img-responsive mobile o_pms_pwa_login_logo" />
+                <img src="/pms_pwa/static/img/svg/logo.svg" alt="logo roomdoo" class="img-responsive o_pms_pwa_login_logo" />
+                <img src="/pms_pwa/static/img/svg/logo_movil.svg" alt="logo roomdoo" class="img-responsive mobile o_pms_pwa_login_logo" />
                 <div class="oe_website_login_container" t-raw="0"/>
             </t>
         </xpath>

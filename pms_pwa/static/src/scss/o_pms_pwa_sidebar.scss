@@ -1,5 +1,5 @@
 body {
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     display: flex !important;
 }
 
@@ -18,7 +18,7 @@ body {
 }
 
 #sidebar-wrapper .list-group {
-    width: 15rem;
+    margin-top: 5rem;
 }
 
 #wrapwrap {
@@ -35,6 +35,12 @@ body.toggled #sidebar-wrapper {
     margin-left: 1rem;
     margin-top: 0.5rem;
 }
+.o_pms_pwa_logo {
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+    width: 50%;
+}
 
 @media (min-width: 768px) {
     #sidebar-wrapper {
@@ -45,7 +51,12 @@ body.toggled #sidebar-wrapper {
         min-width: 0;
         width: 100%;
     }
-
+    .o_pms_pwa_logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+    }
     body.toggled #sidebar-wrapper {
         margin-left: -15rem;
     }
@@ -106,4 +117,12 @@ body.toggled #sidebar-wrapper {
     border-bottom-color: transparent;
     border-left-color: transparent;
     border-radius: 0.25rem;
+}
+@media screen and (min-width: 2500px) {
+    .img-responsive {
+        display: none;
+    }
+    .img-responsive.mobile {
+        display: block;
+    }
 }
