@@ -6,7 +6,7 @@ main .oe_website_login_container {
     float: none;
     background-color: #ffffff;
     max-width: 400px;
-    margin: 20vh auto;
+    margin: 10vh auto;
     .btn-primary {
         margin-top: 0.5rem;
         border-radius: 1.5rem;
@@ -18,7 +18,6 @@ main .oe_website_login_container {
 }
 
 .o_pms_pwa_login_logo {
-    width: 250px;
     margin-top: 4rem;
     margin-left: 5rem;
 }
@@ -45,11 +44,10 @@ main .oe_website_login_container {
     }
 
     .o_pms_pwa_login_logo {
-        width: 250px;
         margin-left: auto;
         margin-right: auto;
         width: 50%;
-        margin-bottom: -20vh;
+        margin-bottom: -10vh;
         [data-content]:before {
             content: attr(data-content);
         }
@@ -62,7 +60,7 @@ main .oe_website_login_container {
         float: none;
         background-color: transparent;
         max-width: 400px;
-        margin: 20vh auto;
+        margin: 10vh auto;
         .btn-primary {
             margin-top: 0.5rem;
             border-radius: 1.5rem;
