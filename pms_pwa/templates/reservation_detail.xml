@@ -11,7 +11,7 @@
                                 <h1>
                                     <span class="title-header">Reserva</span>
                                     <span class="blue-header">
-                                        <t t-esc="invoice.localizator" />
+                                        <t t-esc="invoice.id" />
                                     </span>
                                     <span class="moreinfo-header">
                                         <t t-esc="invoice.origin" />
@@ -68,46 +68,60 @@
                                                         Datos personales huéspedes
                                                     </button>
                                                     <div class="dropdown-menu btn-persona-info" aria-labelledby="dropdownMenuButton">
+                                                        <t t-foreach="invoice.checkin_partner_ids" t-as="person">
                                                         <a class="dropdown-item" href="#">
-                                                            <t t-esc="invoice.partner_id.name" />
+                                                            <t t-esc="person.partner_id.name" />
                                                         </a>
+                                                        </t>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="box o_pms_pwa_direct_chat o_pms_pwa_direct_chat_warning">
-                                            <div class="box-header with-border">
+                                            <!-- <div class="box-header with-border">
                                                 <h3 class="box-title">Mensajes</h3>
                                                 <div class="box-tools pull-right">
                                                     <span data-toggle="tooltip" title="New Messages" class="badge o_pms_pwa_bg_blue" data-original-title="New Messages"><t t-esc="invoice.message_unread_counter"></t></span>
                                                 </div>
-                                            </div>
-                                            <div class="box-body">
+                                            </div> -->
+                                            <div id="o_pms_pwa_direct_chat_messages" class="box-body">
                                                 <div class="o_pms_pwa_direct_chat_messages">
-                                                    <t t-foreach="invoice.message_ids" t-as="msg">
-                                                    <div class="o_pms_pwa_direct_chat_msg m-2">
-                                                        <div class="o_pms_pwa_direct_direct_chat_info clearfix">
-                                                            <span class="pull-left">
-                                                                <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
-                                                                <strong class="ml-2"><t t-esc="msg.author_id.name"></t></strong>
-                                                            </span>
-                                                            <span class="o_pms_pwa_direct_chat_timestamp pull-right">
-                                                                <span t-field="msg.date" t-options='{"format": "dd/MM/yyyy H:s"}' />
-                                                            </span>
-                                                        </div>
+                                                    <t t-set="mesage_date" t-value="[]"/>
+                                                    <t t-foreach="invoice.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
+                                                        <t t-if="msg.date.strftime('%d %B %Y') not in mesage_date" t-set="mesage_date" t-value="mesage_date+[msg.date.strftime('%d %B %Y')]" />
+                                                    </t>
+                                                    <t t-foreach="mesage_date" t-as="date">
+                                                        <div class="o_pms_pwa_direct_chat_timestamp text-center"><strong t-esc="date"/></div>
+                                                        <t t-foreach="invoice.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
+                                                            <t t-if="date==msg.date.strftime('%d %B %Y')">
+                                                                <div class="o_pms_pwa_direct_chat_msg m-2">
+                                                                    <div class="o_pms_pwa_direct_direct_chat_info clearfix">
+                                                                        <span class="pull-left">
+                                                                            <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
+                                                                            <strong class="ml-2"><t t-esc="msg.author_id.name"></t></strong>
+                                                                        </span>
+                                                                        <span class="o_pms_pwa_direct_chat_timestamp pull-right">
+                                                                            <span t-field="msg.date" t-options='{"format": "H:s"}' />
+                                                                        </span>
+                                                                    </div>
 
-                                                        <div class="o_pms_pwa_direct_chat_text">
-                                                            <span t-field="msg.body" options="{'style-inline': true}" />
-                                                        </div>
-                                                    </div>
+                                                                    <div class="o_pms_pwa_direct_chat_text">
+                                                                        <span t-field="msg.body" options="{'style-inline': true}" />
+                                                                    </div>
+                                                                </div>
+                                                            </t>
+                                                        </t>
                                                     </t>
                                                 </div>
                                             </div>
                                             <div class="box-footer text-center">
-                                                <form action="#" method="post">
+                                                <form action="/reservation/82" method="post">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                    <input type="hidden" name="model" value="pms.reservation"/>
+                                                    <input type="hidden" name="id" t-att-value="invoice.id"/>
                                                     <div class="form-group">
-                                                        <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" />
-                                                        <button type="button" class="btn btn-message">ENVIAR</button>
+                                                        <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" required="" />
+                                                        <input type="submit" class="btn btn-message" value="Enviar" />
                                                     </div>
                                                 </form>
                                             </div>
