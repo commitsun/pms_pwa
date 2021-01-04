@@ -120,22 +120,12 @@ class TestFrontEnd(http.Controller):
             )
         if not reservation:
             raise MissingError(_("This document does not exist."))
-        allowed_rooms, allowed_room_types = reservation._get_allowed_rooms(
-            checkin=reservation.checkin,
-            checkout=reservation.checkout,
-            state=reservation.state,
-            overbooking=reservation.overbooking,
-            line_ids=reservation.reservation_line_ids.ids,
-        )
-        extras = reservation._get_allowed_extras(
-            partner=reservation.partner_id, pricelist=reservation.pricelist_id
-        )
         reservation_values = {
             "id": reservation.id,
             "partner_id": {
                 "id": reservation.partner_id.id,
                 "name": reservation.partner_id.name,
-                "mobile": reservation.partner_id.mobile,
+                "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
             },
             "unread_msg": 2,
             "messages": ["Lorem ipsum", "Unread short message"],
@@ -151,9 +141,7 @@ class TestFrontEnd(http.Controller):
                 if reservation.preferred_room_id
                 else reservation.rooms,
             },
-            "extras": reservation._get_reservation_services(),
             "nights": reservation.nights,
-            "reservation_line_ids": reservation._get_reservation_line_ids(),
             "checkin": reservation.checkin,
             "arrival_hour": reservation.arrival_hour,
             "checkout": reservation.checkout,
@@ -171,10 +159,10 @@ class TestFrontEnd(http.Controller):
             "price_tax": reservation.price_tax,
             "folio_pending_amount": reservation.folio_pending_amount,
             "folio_internal_comment": reservation.folio_internal_comment,
-            "allowed_room_type_ids": allowed_room_types,
-            "allowed_room_ids": allowed_rooms,
-            "allowed_extras": extras,
             "payment_methods": self._get_allowed_payments_journals(),
+            "checkins_ratio": reservation.checkins_ratio,
+            "ratio_checkin_data": reservation.ratio_checkin_data,
+            "adults":  reservation.adults,
         }
 
         return reservation_values
