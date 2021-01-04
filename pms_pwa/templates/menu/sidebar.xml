@@ -24,4 +24,16 @@
             <!-- /#sidebar-wrapper -->
         </xpath>
     </template>
+    <template id="roomdoo_menu_link" inherit_id="website.submenu">
+        <span position="replace">
+            <t t-if="submenu.img">
+                <img t-att-src="'data:image/svg+xml;base64,%s' % to_text(submenu.img)" t-att-alt="submenu.name" t-att-title="submenu.name" class="o_pms_pwa_sidebar_img"/>
+                <span t-field="submenu.name" class="o_pms_pwa_menu_link_mobile" />
+            </t>
+            <t t-else="">
+                <span t-field="submenu.name" />
+            </t>
+
+        </span>
+      </template>
 </odoo>

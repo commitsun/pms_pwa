@@ -41,6 +41,9 @@ body.toggled #sidebar-wrapper {
     margin-right: 0;
     width: 50%;
 }
+.o_pms_pwa_menu_link_mobile {
+    display: block;
+}
 
 @media (min-width: 768px) {
     #sidebar-wrapper {
@@ -70,6 +73,9 @@ body.toggled #sidebar-wrapper {
         margin-left: -15rem;
         margin-top: 0.5rem;
     }
+    .o_pms_pwa_menu_link_mobile {
+        display: none;
+    }
 }
 
 .o_pms_pwa_bg_theme {
@@ -79,20 +85,31 @@ body.toggled #sidebar-wrapper {
 .o_pms_pwa_nav_item {
     color: $white;
     display: block;
-    padding: 0.75rem 1.25rem;
-    margin-bottom: -1px;
+    padding-left: 0.75rem;
     & .active {
         border-bottom-left-radius: 5rem;
         border-top-left-radius: 5rem;
         background-color: $white;
         color: $theme-color;
-        width: 110%;
+        width: 101%;
     }
     & a {
         color: $white;
     }
     & a:hover {
         color: $black;
+    }
+    & a.nav-link {
+        padding-left: 1.5rem;
+    }
+    & .o_pms_pwa_sidebar_img:hover,
+    & .o_pms_pwa_sidebar_img:focus {
+        filter: invert(100%) sepia(100%) saturate(100%) hue-rotate(28deg)
+            brightness(100%) contrast(100%);
+    }
+    & a.active .o_pms_pwa_sidebar_img {
+        filter: invert(100%) sepia(100%) saturate(100%) hue-rotate(28deg)
+            brightness(100%) contrast(100%);
     }
 }
 
@@ -123,6 +140,9 @@ body.toggled #sidebar-wrapper {
         display: none;
     }
     .img-responsive.mobile {
+        display: block;
+    }
+    .o_pms_pwa_menu_link_mobile {
         display: block;
     }
 }

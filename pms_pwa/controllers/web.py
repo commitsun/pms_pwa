@@ -262,7 +262,9 @@ class TestFrontEnd(http.Controller):
             allowed_journals.append({"id": journal.id, "name": journal.name})
         return allowed_journals
 
-    @http.route("/calendar", auth="public", website=True)
+    @http.route(
+        "/calendar", type="http", auth="user", methods=["GET", "POST"], website=True,
+    )
     def calendar(self, date=False, **kw):
         if not date:
             date = datetime.now()
