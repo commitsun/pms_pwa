@@ -65,6 +65,11 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_calendar.js"
             />
+            <script
+                type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_notify.js"
+            />
+
         </xpath>
     </template>
 </odoo>

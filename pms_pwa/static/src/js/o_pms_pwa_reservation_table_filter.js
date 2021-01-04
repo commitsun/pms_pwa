@@ -42,6 +42,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             self.room_type_text = _t("Room type");
             self.room_number_text = _t("Room nº");
             self.nights_number_text = _t("Nights nº");
+            self.adults_number_text = _t("Adults nº");
             self.check_in_text = _t("Check in");
             self.check_in_time_text = _t("Check in time");
             self.check_out_text = _t("Check out");
@@ -50,7 +51,8 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             self.sales_channel_text = _t("Sales channel");
             self.extras_text = _t("Extras");
             self.card_text = _t("Reservation card number");
-            self.total_text = _t("Total");
+            self.total_nights_text = _t("Total nights price");
+            self.total_text = _t("Total reservation price");
             self.outstanding_text = _t("Outstanding");
             self.pay_text = _t("Pay");
             self.notes_text = _t("Notes");
@@ -78,8 +80,8 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                             "/web/static/src/img/placeholder.png";
                         reservation_data.unread_msg = 2;
                         reservation_data.messages = [
-                            "Lorem ipsum",
-                            "Unread short message",
+                            ['25-12-2020', "Lorem ipsum"],
+                            ['25-12-2020', "Unread short message"],
                         ];
                         reservation_data.extra = ["Breakfast", "Cradle"];
                         reservation_data.notes = "Lorem ipsum.";
@@ -104,12 +106,14 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                         room_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                         extras = ["Breakfast", "Additional bed", "Cradle"];
                         payment_methods = ["Credit card", "Cash"];
+                        reservation_types = ["Normal", "Staff", "Out of Service"];
                         self.displayContent("pms_pwa.roomdoo_reservation_modal", {
                             reservation: reservation_data,
                             room_types: room_types,
                             extras: extras,
                             payment_methods: payment_methods,
                             room_numbers: room_numbers,
+                            reservation_types: reservation_types,
                             texts: {
                                 reservation_text: this.reservation_text,
                                 info_text: this.info_text,
@@ -117,6 +121,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                                 room_type_text: this.room_type_text,
                                 room_number_text: this.room_number_text,
                                 nights_number_text: this.nights_number_text,
+                                nights_number_text: this.adults_number_text,
                                 check_in_text: this.check_in_text,
                                 check_in_time_text: this.check_in_time_text,
                                 check_out_text: this.check_out_text,

@@ -14,6 +14,7 @@
                         <div t-if="page_title" class="o_pms_pwa_page_title">
                             <t t-esc="page_title"/> <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter"/>
                         </div>
+                        <div class="o_pms_pwa_notifications"></div>
                         <t t-call="website.navbar_nav">
                             <t t-set="_nav_class" t-value="'flex-grow-1'"/>
 
