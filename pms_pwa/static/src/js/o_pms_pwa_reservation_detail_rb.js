@@ -41,4 +41,11 @@ odoo.define("pms_pwa.reservation_detail", function() {
         }
         alert(debug);
     }*/
+    /* Refresh chat
+    $(document).ready(function(){
+        setInterval(function(){
+              $("#o_pms_pwa_direct_chat_messages").load(window.location.href + " #o_pms_pwa_direct_chat_messages" );
+        }, 3000);
+    });
+     */
 });

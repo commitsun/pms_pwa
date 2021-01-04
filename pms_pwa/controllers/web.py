@@ -92,9 +92,13 @@ class TestFrontEnd(http.Controller):
         return http.request.render("pms_pwa.roomdoo_reservation_list", values)
 
     @http.route(
-        "/reservation/<int:reservation_id>", type="http", auth="public", website=True
+        "/reservation/<int:reservation_id>",
+        type="http",
+        auth="user",
+        methods=["GET", "POST"],
+        website=True,
     )
-    def reservation_detail(self, reservation_id, **kw):
+    def reservation_detail(self, reservation_id, **post):
         reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
@@ -102,6 +106,15 @@ class TestFrontEnd(http.Controller):
             "page_name": "Reservation",
             "invoice": reservation,
         }
+        if post and post["message"]:
+            try:
+                reservation.message_post(
+                    subject=_("PWA Message"),
+                    body=post["message"],
+                    message_type="comment",
+                )
+            except Exception as e:
+                _logger.critical(e)
         return http.request.render("pms_pwa.roomdoo_reservation_detail", values)
 
     @http.route(
@@ -162,7 +175,7 @@ class TestFrontEnd(http.Controller):
             "payment_methods": self._get_allowed_payments_journals(),
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
-            "adults":  reservation.adults,
+            "adults": reservation.adults,
         }
 
         return reservation_values
