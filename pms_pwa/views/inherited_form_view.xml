@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="website_menus_form_inherited" model="ir.ui.view">
+        <field name="name">Add img in website menu</field>
+        <field name="model">website.menu</field>
+        <field name="type">form</field>
+        <field name="inherit_id" ref="website.website_menus_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="img"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="website_menus_view_inherited" model="ir.ui.view">
+        <field name="name">Add img in website menu</field>
+        <field name="model">website.menu</field>
+        <field name="type">tree</field>
+        <field name="inherit_id" ref="website.menu_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="img"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
