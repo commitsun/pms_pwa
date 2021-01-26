@@ -92,6 +92,183 @@ class TestFrontEnd(http.Controller):
         return http.request.render("pms_pwa.roomdoo_reservation_list", values)
 
     @http.route(
+        "/pms_dashboard",
+        type="http",
+        auth="user",
+        methods=["GET", "POST"],
+        website=True,
+    )
+    def dashboard(self, **post):
+        values = {}
+
+        values.update(
+            {
+                "tasks": ['task 01', 'task 02', 'task 03'],
+                "arrivals": {
+                    "today": {
+                        "date": "14/10/2020",
+                        "to_arrive": 10,
+                        "to_check_in": 2,
+                    },
+                    "tomorrow": {
+                        "date": "15/10/2020",
+                        "to_arrive": 8,
+                    }
+                },
+                "departures": {
+                    "today": {
+                        "date": "14/10/2020",
+                        "to_leave": 10,
+                        "to_check_out": 2,
+                    },
+                    "tomorrow": {
+                        "date": "15/10/2020",
+                        "to_leave": 8,
+                    }
+                },
+                "rooms": {
+                    "date": "14/10/2020",
+                    "available": 10,
+                    "out_of_service": 2,
+                    "taken": 8,
+                    "ready": 1,
+                    "dirty": 1,
+                    "cleaning": 2,
+                },
+                "clocking_in": [
+                    {
+                        "name": "Juan Manuel Díaz",
+                        "date": "15/10/2020 10:19:25"
+                    },
+                    {
+                        "name": "Paula Sánchez",
+                        "date": "15/10/2020 10:54:25"
+                    }
+                ],
+                "deliveries": [
+                    {
+                        "name": "Envío fichero a la policía",
+                        "date": "15/10/2020"
+                    },
+                    {
+                        "name": "Envío facturas al gestor",
+                        "date": "15/10/2020"
+                    }
+                ],
+                "history": [
+                    {
+                        "date": "15/10/2020",
+                        "hour": "10:14:58",
+                        "name": "Nueva reserva",
+                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum."
+                    },
+                    {
+                        "date": "15/10/2020 10:54:25",
+                        "hour": "10:14:58",
+                        "name": "Nueva reserva",
+                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum."
+                    }
+                ],
+                "evolution": {
+                    "billing": {
+                        "current": [{
+                            "date": "05/10/2020",
+                            "amount": 3250
+                        },
+                        {
+                            "date": "06/10/2020",
+                            "amount": 3750
+                        }],
+                        "compare": [{
+                            "date": "05/10/2019",
+                            "amount": 2150
+                        },
+                        {
+                            "date": "06/10/2019",
+                            "amount": 3650
+                        }]
+                    },
+                    "revenue": {
+                        "current": [{
+                            "date": "05/10/2020",
+                            "amount": 3250
+                        },
+                        {
+                            "date": "06/10/2020",
+                            "amount": 3750
+                        }],
+                        "compare": [{
+                            "date": "05/10/2019",
+                            "amount": 2150
+                        },
+                        {
+                            "date": "06/10/2019",
+                            "amount": 3650
+                        }]
+                    },
+                    "ocupation": {
+                        "current": [{
+                            "date": "05/10/2020",
+                            "amount": 15
+                        },
+                        {
+                            "date": "06/10/2020",
+                            "amount": 20
+                        }],
+                        "compare": [{
+                            "date": "05/10/2019",
+                            "amount": 6
+                        },
+                        {
+                            "date": "06/10/2019",
+                            "amount": 19
+                        }]
+                    }
+                },
+                "kpi" : {
+                    "ocupation": {
+                        "arrivals": 14,
+                        "departures": 7,
+                        "no_show": 5,
+                        "ratio": 3.99
+                    },
+                    "reservations_by_channel": {
+                        "phone": 14,
+                        "booking": 7,
+                        "other": 5,
+                        "ratio": 4.21
+                    },
+                    "income_by_channel": {
+                        "phone": 1400,
+                        "booking": 700,
+                        "other": 500,
+                        "ratio": 4.66
+                    },
+                    "cleaning_score": {
+                        "good": 54,
+                        "acceptable": 24,
+                        "bad": 14,
+                        "ratio": 3.16
+                    },
+                    "attention_score": {
+                        "good": 55,
+                        "acceptable": 20,
+                        "bad": 11,
+                        "ratio": 4.05
+                    },
+                    "general_score": {
+                        "good": 64,
+                        "acceptable": 34,
+                        "bad": 4,
+                        "ratio": 4.25
+                    },
+                }
+            }
+        )
+
+        return http.request.render("pms_pwa.roomdoo_dashboard_page", values)
+
+    @http.route(
         "/reservation/<int:reservation_id>",
         type="http",
         auth="user",

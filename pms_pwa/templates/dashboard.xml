@@ -2,9 +2,357 @@
 <odoo>
     <template id="roomdoo_dashboard_page" name="Dashboard">
         <t t-call="website.layout">
-            <div class="oe_structure">
-                <section class="container">
-                    <h2>Dashboard</h2>
+            <t t-set="page_title" t-value="'DASHBOARD'"/>
+            <div class="oe_structure o_pms_pwa_structure mt-4">
+                <section class="container-fluid o_pms_pwa_dashboard">
+                    <div class="justify-content-center">
+                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        NOTIFICATIONS
+                                    </h3>
+                                </div>
+                                <div class="card-body o_pms_pwa_notifications"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        TASKS
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <t t-foreach="tasks" t-as="task">
+                                        <span t-esc="task"/><br/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="container-fluid o_pms_pwa_dashboard mt-4">
+                    <div class="justify-content-center">
+                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-dark o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        ARRIVALS
+                                    </h3>
+                                </div>
+                                <div class="card-body bg-dark">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Today <span t-esc="arrivals['today']['date']"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="arrivals['today']['to_arrive']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" 
+                                                    t-att-style="'width:'+ str((arrivals['today']['to_arrive']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((arrivals['today']['to_arrive']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Arrivals
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="arrivals['today']['to_check_in']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" 
+                                                    t-att-style="'width:'+ str((arrivals['today']['to_check_in']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((arrivals['today']['to_check_in']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Pending check in
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            Tomorrow <span t-esc="arrivals['tomorrow']['date']"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="arrivals['tomorrow']['to_arrive']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" role="progressbar" 
+                                                    t-att-style="'width:'+ str((arrivals['tomorrow']['to_arrive']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((arrivals['tomorrow']['to_arrive']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Arrivals
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-dark o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        DEPARTURES
+                                    </h3>
+                                </div>
+                                <div class="card-body bg-dark">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Today <span t-esc="departures['today']['date']"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="departures['today']['to_leave']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" 
+                                                    t-att-style="'width:'+ str((departures['today']['to_leave']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((departures['today']['to_leave']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Departures
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="departures['today']['to_check_out']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" 
+                                                    t-att-style="'width:'+ str((departures['today']['to_check_out']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((departures['today']['to_check_out']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Pending check out
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            Tomorrow <span t-esc="departures['tomorrow']['date']"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="departures['tomorrow']['to_leave']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" role="progressbar" 
+                                                    t-att-style="'width:'+ str((departures['tomorrow']['to_leave']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((departures['tomorrow']['to_leave']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Departures
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-dark o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        ROOMS
+                                    </h3>
+                                </div>
+                                <div class="card-body bg-dark">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            Today <span t-esc="rooms['date']"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="rooms['available']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-danger" role="progressbar" 
+                                                    t-att-style="'width:'+ str((rooms['available']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((rooms['available']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Available
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="rooms['out_of_service']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-success" role="progressbar" 
+                                                    t-att-style="'width:'+ str((rooms['out_of_service']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((rooms['out_of_service']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Out of service
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-1">
+                                            <span t-esc="rooms['taken']"/>
+                                        </div>
+                                        <div class="col-11">
+                                            <div class="progress">
+                                                <div class="progress-bar bg-info" role="progressbar" 
+                                                    t-att-style="'width:'+ str((rooms['taken']/20)*100) + '%'"
+                                                    t-att-aria-valuenow="str((rooms['taken']/20)*100)" 
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-right">
+                                            Taken
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body o_pms_pwa_blue">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <span t-esc="rooms['ready']"/><br/>
+                                            Ready
+                                        </div>
+                                        <div class="col-4">
+                                            <span t-esc="rooms['dirty']"/><br/>
+                                            Dirty
+                                        </div>
+                                        <div class="col-4">
+                                            <span t-esc="rooms['cleaning']"/><br/>
+                                            Cleaning
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="container-fluid o_pms_pwa_dashboard mt-4">
+                    <div class="justify-content-center">
+                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        EMPLOYEE CLOCKIN IN
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <t t-foreach="clocking_in" t-as="ci">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <span t-esc="ci['name']"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <span t-esc="ci['date']"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        DELIVERIES
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <t t-foreach="deliveries" t-as="delivery">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <span t-esc="delivery['name']"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <span t-esc="delivery['date']"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        HISTORY
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <t t-foreach="history" t-as="line">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span t-esc="line['date']"/> <span t-esc="line['hour']"/> <span t-esc="line['name']"/>
+                                            </div>
+                                            <div class="col-12">
+                                                <span t-esc="line['description']"/>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="container-fluid o_pms_pwa_dashboard mt-4">
+                    <div class="justify-content-center">
+                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        NOTIFICATIONS
+                                    </h3>
+                                </div>
+                                <div class="card-body o_pms_pwa_notifications"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        TASKS
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <t t-foreach="tasks" t-as="task">
+                                        <span t-esc="task"/><br/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
             </div>
         </t>
