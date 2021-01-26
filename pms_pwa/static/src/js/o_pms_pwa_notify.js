@@ -1,7 +1,6 @@
 odoo.define("pms_pwa.LongpollingFront", function (require) {
     "use strict";
 
-    console.log("WEBCLIENT PMS");
     const session = require('web.session');
     var core = require("web.core");
     require('web.Bus');

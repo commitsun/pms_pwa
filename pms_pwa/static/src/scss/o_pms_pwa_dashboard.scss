@@ -1,0 +1,26 @@
+section.o_pms_pwa_dashboard {
+  padding-left: unset;
+  div.o_pms_pwa_notifications {
+    & > span {
+        display: block;
+    }
+    overflow-y: scroll;
+    max-height: 75px;
+  }
+  div.justify-content-center {
+    display: flex;
+    > div.o_pms_pwa_no_pl {
+      padding-left: unset;
+    }
+  }
+  div.card-body {
+    &.o_pms_pwa_blue {
+      text-align: center;
+      background-color: $theme-color !important;
+      color: white;
+    }
+    &.o_pms_pwa_flex {
+      display: flex;
+    }
+  }
+}

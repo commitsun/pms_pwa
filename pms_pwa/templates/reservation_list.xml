@@ -5,9 +5,10 @@
             <t t-set="page_title" t-value="'My bookings'"/>
             <t t-set="page_counter" t-value="str(len(folios))"/>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
-            <div class="oe_structure">
+            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4"/>
+            <div class="oe_structure shadow o_pms_pwa_structure  mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo_list">
-                    <div class="shadow bg-white p-5">
+                    <div class="bg-white p-5">
                         <form method="post" t-att-class="_classes">
                             <div class="row">
                                 <div class="col-8 col-md-8 col-lg-5">

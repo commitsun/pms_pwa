@@ -2,6 +2,12 @@
     background-color: $bg-theme-color-modal;
 }
 
+.o_pms_pwa_notifications_regular {
+    margin-left: 100px;
+    /* overflow-x: scroll; */
+    display: block ruby;
+}
+
 section.o_pms_pwa_roomdoo_list {
     form {
         input.o_pmw_pwa_search_input {
@@ -227,6 +233,9 @@ div.o_pms_pwa_reservation_modal {
     }
     div.o_pms_pwa_group_separation {
         border-bottom: 1px solid $table-text-color-lighter;
+    }
+    label.o_pms_pwa_checkbox_label {
+        padding-top: 0.6rem;
     }
 }
 
