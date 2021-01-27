@@ -4,12 +4,15 @@ body {
 }
 
 #sidebar-wrapper {
-    min-height: 100vh;
-    margin-left: -15rem;
+    //min-height: 90vh;
+
     -webkit-transition: margin 0.25s ease-out;
     -moz-transition: margin 0.25s ease-out;
     -o-transition: margin 0.25s ease-out;
     transition: margin 0.25s ease-out;
+    @media (max-width: 992px) {
+        display: none;
+    }
 }
 
 #sidebar-wrapper .sidebar-heading {
@@ -21,12 +24,9 @@ body {
     margin-top: 5rem;
 }
 
-#wrapwrap {
-    min-width: 100vw;
-}
-
 body.toggled #sidebar-wrapper {
     margin-left: 0;
+    display: block;
 }
 .o_pms_pwa_page_title {
     font-weight: bold;
