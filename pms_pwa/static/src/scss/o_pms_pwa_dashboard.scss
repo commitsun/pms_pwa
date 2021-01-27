@@ -1,5 +1,4 @@
 section.o_pms_pwa_dashboard {
-  padding-left: unset;
   div.o_pms_pwa_notifications {
     & > span {
         display: block;
@@ -8,7 +7,9 @@ section.o_pms_pwa_dashboard {
     max-height: 75px;
   }
   div.justify-content-center {
-    display: flex;
+    > div {
+      float: left;
+    }
     > div.o_pms_pwa_no_pl {
       padding-left: unset;
     }
@@ -18,9 +19,6 @@ section.o_pms_pwa_dashboard {
       text-align: center;
       background-color: $theme-color !important;
       color: white;
-    }
-    &.o_pms_pwa_flex {
-      display: flex;
     }
   }
 }

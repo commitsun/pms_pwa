@@ -7,8 +7,6 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
     require("bus.BusService");
     require('web.ServicesMixin');
     var Longpolling = require('bus.Longpolling');
-
-
    
     Longpolling.include({
         init: function () {

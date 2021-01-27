@@ -3,10 +3,10 @@
     <template id="roomdoo_dashboard_page" name="Dashboard">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'DASHBOARD'"/>
-            <div class="oe_structure o_pms_pwa_structure mt-4">
+            <div class="oe_structure o_pms_pwa_structure">
                 <section class="container-fluid o_pms_pwa_dashboard">
-                    <div class="justify-content-center">
-                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6  mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -16,7 +16,7 @@
                                 <div class="card-body o_pms_pwa_notifications"/>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                        <div class="col-md-12 col-lg-6 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -33,9 +33,9 @@
                     </div>
                 </section>
 
-                <section class="container-fluid o_pms_pwa_dashboard mt-4">
-                    <div class="justify-content-center">
-                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                <section class="container-fluid o_pms_pwa_dashboard">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-dark o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -104,7 +104,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                        <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-dark o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -173,7 +173,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                        <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-dark o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -256,9 +256,9 @@
                     </div>
                 </section>
 
-                <section class="container-fluid o_pms_pwa_dashboard mt-4">
-                    <div class="justify-content-center">
-                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                <section class="container-fluid o_pms_pwa_dashboard">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -280,7 +280,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                        <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -302,7 +302,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-12 col-lg-4 o_pms_pwa_no_pl">
+                        <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -327,8 +327,8 @@
                 </section>
 
                 <section class="container-fluid o_pms_pwa_dashboard mt-4">
-                    <div class="justify-content-center">
-                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -338,7 +338,7 @@
                                 <div class="card-body o_pms_pwa_notifications"/>
                             </div>
                         </div>
-                        <div class="col-md-12 col-lg-6 o_pms_pwa_no_pl">
+                        <div class="col-md-12 col-lg-6 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
