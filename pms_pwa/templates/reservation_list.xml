@@ -5,10 +5,12 @@
             <t t-set="page_title" t-value="'My bookings'"/>
             <t t-set="page_counter" t-value="str(len(folios))"/>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
-            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4"/>
-            <div class="oe_structure shadow o_pms_pwa_structure  mt-4">
+            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
+                <span class="o_pms_notification_title"><i class="fa fa-info-circle mr-1"/> Updates <span class="o_pms_pwa_update_counter ml-1"/></span>
+            </div>
+            <div class="oe_structure o_pms_pwa_structure  mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo_list">
-                    <div class="bg-white p-5">
+                    <div class="o_pms_pwa_full_shadow bg-white p-5">
                         <form method="post" t-att-class="_classes">
                             <div class="row">
                                 <div class="col-8 col-md-8 col-lg-5">

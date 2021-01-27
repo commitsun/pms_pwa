@@ -4,7 +4,7 @@
         <xpath expr="//header//nav" position="replace">
             <t t-set="is_connected" t-value="not user_id._is_public()"/>
             <nav t-if="is_connected" data-name="Navbar" class="navbar navbar-expand-lg navbar-light o_colored_level o_cc">
-                <div id="top_menu_container" class="container justify-content-start justify-content-lg-between">
+                <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between">
                     <!-- Navbar Collapse -->
                     <div id="top_menu_collapse" class="collapse navbar-collapse order-last order-lg-0">
                         <button id="menu-toggle">

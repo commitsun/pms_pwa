@@ -204,9 +204,21 @@ footer {
     color: $theme-color;
 }
 .o_pms_pwa_structure {
-    padding: unset;
-    margin-left: 100px;
-    @media (max-width: 992px) {
-        margin-left: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.o_pms_pwa_full_shadow {
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+}
+.o_pms_pwa_navbar_counter {
+    color: $theme-color;
+    text-decoration: underline;
+}
+.o_pms_pwa_notifications {
+    > span.o_pms_notification_title {
+        background-color: $bg-theme-color-modal;
     }
+}
+.o_pms_notification_title {
+    padding: 0.3rem;
 }
