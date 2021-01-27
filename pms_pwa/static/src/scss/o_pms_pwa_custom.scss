@@ -206,4 +206,7 @@ footer {
 .o_pms_pwa_structure {
     padding: unset;
     margin-left: 100px;
+    @media (max-width: 992px) {
+        margin-left: 0;
+    }
 }
