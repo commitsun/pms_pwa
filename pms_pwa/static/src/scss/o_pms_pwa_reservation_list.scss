@@ -8,6 +8,9 @@
     overflow-x: scroll;
     display: block ruby;
 }
+.o_pms_pwa_reservation.accordion {
+    background-color: $bg-theme-color;
+}
 
 section.o_pms_pwa_roomdoo_list {
     form {
@@ -75,7 +78,7 @@ section.o_pms_pwa_roomdoo_list {
                 }
                 &.o_pms_pwa_accordion_padding {
                     & > td.first-col {
-                        padding-left: 20px;
+                        border-left: 1px $bg-theme-color solid;
                     }
                 }
                 & > td.first-col {
