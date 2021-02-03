@@ -10,16 +10,16 @@ odoo.define("pms_pwa.reservation_table", function(require) {
     $("button.close > span.o_pms_pwa_tag_close").on("click", function(event) {
         event.preventDefault();
         var self = this;
-        var input = event.currentTarget.parentNode.getAttribute("data-tag")
-        if (input == 'search') {
-            $("input[name='original_search']").val('');
+        var input = event.currentTarget.parentNode.getAttribute("data-tag");
+        if (input == "search") {
+            $("input[name='original_search']").val("");
         } else {
-            $("input[name='"+ input +"']").val('');
+            $("input[name='" + input + "']").val("");
         }
         $("form").submit();
     });
 
-    $('tbody > tr > td:not(:last-child) a').on("click", function(event) {
+    $("tbody > tr > td:not(:last-child) a").on("click", function(event) {
         event.stopPropagation();
     });
 
@@ -29,7 +29,8 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
         ],
         events: {
-            "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)": "_onClickReservationButton",
+            "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
+                "_onClickReservationButton",
         },
         /**
          * @override
@@ -74,28 +75,26 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             }).then(function(data) {
                 setTimeout(function() {
                     if (data) {
-                        reservation_data = data;
+                        var reservation_data = data;
                         /* Adding missing data */
-                        reservation_data.image =
-                            "/web/static/src/img/placeholder.png";
+                        reservation_data.image = "/web/static/src/img/placeholder.png";
                         reservation_data.unread_msg = 2;
                         reservation_data.messages = [
-                            ['25-12-2020', "Lorem ipsum"],
-                            ['25-12-2020', "Unread short message"],
+                            ["25-12-2020", "Lorem ipsum"],
+                            ["25-12-2020", "Unread short message"],
                         ];
                         reservation_data.extra = ["Breakfast", "Cradle"];
                         reservation_data.notes = "Lorem ipsum.";
                         reservation_data.card_number = "1253 5212 5214 1256 2145";
                         reservation_data.room_number = 2;
                         reservation_data.nights_number = 2;
-                        reservation_data.total =
-                            reservation_data.price_total.value;
+                        reservation_data.total = reservation_data.price_total.value;
                         reservation_data.total_vat =
                             (reservation_data.price_total.value * 21) / 100;
                         reservation_data.outstanding_vat =
                             (reservation_data.folio_pending_amount.value * 21) / 100;
                         /* End missin data */
-                        room_types = [
+                        var room_types = [
                             "Triple",
                             "Económica",
                             "Estándar",
@@ -103,10 +102,10 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                             "Premium",
                             "Superior",
                         ];
-                        room_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-                        extras = ["Breakfast", "Additional bed", "Cradle"];
-                        payment_methods = ["Credit card", "Cash"];
-                        reservation_types = ["Normal", "Staff", "Out of Service"];
+                        var room_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                        var extras = ["Breakfast", "Additional bed", "Cradle"];
+                        var payment_methods = ["Credit card", "Cash"];
+                        var reservation_types = ["Normal", "Staff", "Out of Service"];
                         self.displayContent("pms_pwa.roomdoo_reservation_modal", {
                             reservation: reservation_data,
                             room_types: room_types,
@@ -137,7 +136,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                             },
                         });
                     } else {
-                        reservation_data = false;
+                        var reservation_data = false;
                     }
                 }, 500);
             });
