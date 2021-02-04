@@ -9,6 +9,15 @@ class PmsReservation(models.Model):
     _inherit = "pms.reservation"
 
     pwa_action_buttons = fields.Char(compute="_compute_pwa_action_buttons")
+    pwa_board_service_tags = fields.Char(compute="_compute_pwa_board_service_tags")
+
+    def _compute_pwa_board_service_tags(self):
+        for record in self:
+            board_service_tags = list()
+            for service in record.service_ids:
+                if service.is_board_service:
+                    board_service_tags.append(service.name)
+            record.pwa_board_service_tags = json.dumps(board_service_tags)
 
     # REVIEW:store = true?
     def _compute_pwa_action_buttons(self):
@@ -38,8 +47,38 @@ class PmsReservation(models.Model):
         for reservation in self:
             active_buttons = {}
             for k, v in buttons.items():
-                # TODO: Logic buttons reservation
-                active_buttons[k] = v
+                if k == "Assign":
+                    if reservation.to_assign:
+                        active_buttons[k] = v
+                        continue
+                elif k == "Checkin":
+                    if (
+                        reservation.left_for_checkin
+                        and reservation.checkin == fields.date.today()
+                    ):
+                        active_buttons[k] = v
+                        continue
+                elif k == "Checkout":
+                    if (
+                        reservation.left_for_checkout
+                        and reservation.checkout == fields.date.today()
+                    ):
+                        active_buttons[k] = v
+                        continue
+                elif k == "Payment":
+                    if reservation.folio_pending_amount > 0:
+                        active_buttons[k] = v
+                        continue
+                elif k == "Invoice":
+                    if reservation.invoice_status == 'to invoice':
+                        active_buttons[k] = v
+                        continue
+                elif k == "Cancel":
+                    if reservation.left_for_cancel:
+                        active_buttons[k] = v
+                        continue
+                else:
+                    active_buttons[k] = v
             reservation.pwa_action_buttons = json.dumps(active_buttons)
 
     def _get_reservation_services(self):
