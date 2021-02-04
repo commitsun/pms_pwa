@@ -70,7 +70,7 @@ class PmsReservation(models.Model):
                         active_buttons[k] = v
                         continue
                 elif k == "Invoice":
-                    if reservation.invoice_status == 'to invoice':
+                    if reservation.invoice_status == "to invoice":
                         active_buttons[k] = v
                         continue
                 elif k == "Cancel":

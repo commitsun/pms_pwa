@@ -74,10 +74,7 @@ class TestFrontEnd(http.Controller):
         )
 
         folios = Folio.search(
-            domain,
-            order=sort_folio,
-            limit=paginate_by,
-            offset=pager["offset"]
+            domain, order=sort_folio, limit=paginate_by, offset=pager["offset"]
         )
 
         values.update(
