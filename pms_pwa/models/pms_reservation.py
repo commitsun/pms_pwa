@@ -50,35 +50,21 @@ class PmsReservation(models.Model):
                 if k == "Assign":
                     if reservation.to_assign:
                         active_buttons[k] = v
-                        continue
                 elif k == "Checkin":
-                    if (
-                        reservation.left_for_checkin
-                        and reservation.checkin == fields.date.today()
-                    ):
+                    if reservation.left_for_checkin:
                         active_buttons[k] = v
-                        continue
                 elif k == "Checkout":
-                    if (
-                        reservation.left_for_checkout
-                        and reservation.checkout == fields.date.today()
-                    ):
+                    if reservation.left_for_checkout:
                         active_buttons[k] = v
-                        continue
                 elif k == "Payment":
                     if reservation.folio_pending_amount > 0:
                         active_buttons[k] = v
-                        continue
                 elif k == "Invoice":
                     if reservation.invoice_status == "to invoice":
                         active_buttons[k] = v
-                        continue
                 elif k == "Cancel":
                     if reservation.left_for_cancel:
                         active_buttons[k] = v
-                        continue
-                else:
-                    active_buttons[k] = v
             reservation.pwa_action_buttons = json.dumps(active_buttons)
 
     def _get_reservation_services(self):
