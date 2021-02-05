@@ -8,6 +8,7 @@ import logging
 from datetime import datetime, timedelta
 
 from odoo import _, http
+from odoo.exceptions import MissingError
 from odoo.http import request
 from odoo.osv import expression
 
@@ -71,7 +72,7 @@ class TestFrontEnd(http.Controller):
             scope=7,
             url_args=post,
         )
-        offset = pager["offset"]
+
         folios = Folio.search(
             domain, order=sort_folio, limit=paginate_by, offset=pager["offset"]
         )
