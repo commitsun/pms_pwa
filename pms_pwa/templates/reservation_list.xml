@@ -157,7 +157,9 @@
                     <t t-esc="(folio.partner_id.mobile or folio.partner_id.phone)
                         if folio.partner_id else (folio_partner_id.mobile or folio_partner_id.phone)"/>
                 </a>
-                <span class="float-right "><i class="fa fa-user"/>3</span>
+                <span class="float-right "><i class="fa fa-user"/>
+                    <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
+                </span>
             </td>
             <td class="o_pms_pwa_lh45">
                 <t t-esc="folio.id"/>
@@ -213,7 +215,9 @@
             <a class="float-left" t-att-href="'tel:' + str(obj.partner_id.mobile or obj.partner_id.phone)">
                 <t t-esc="obj.partner_id.mobile or obj.partner_id.phone"/>
             </a>
-            <span class="float-right "><i class="fa fa-user"/>3</span>
+            <span class="float-right "><i class="fa fa-user"/>
+                <t t-if="obj.adults" t-esc="obj.adults"/>
+            </span>
             <br/>
             <div class="progress mt-4">
                 <div t-att-class="'progress-bar '
@@ -234,7 +238,8 @@
             <t t-esc="obj.room_type_id.code_type"/>
         </td>
         <td class="o_pms_pwa_lh45 text-center">
-            2
+            <t t-if="not obj.splitted" t-esc="obj.preferred_room_id.name"/>
+            <t t-if="obj.splitted" t-esc="'Splitted'"/>
         </td>
         <td>
             <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
@@ -257,13 +262,21 @@
             <t t-esc="obj.folio_id.pending_amount"/>
         </td>
         <td class="o_pms_pwa_lh45 text-center">
-            3
+
         </td>
         <td class="o_pms_pwa_lh45">
-            <t t-if="obj.folio_internal_comment" t-esc="obj.folio_internal_comment"/>
+            <t t-if="obj.requests" t-esc="obj.requests"/>
         </td>
         <td class="o_pms_pwa_lh45">
-            Desayuno
+            <t t-foreach="list(json.loads(obj.pwa_board_service_tags))" t-as="tag">
+                <span class="tags_holder">
+                    <span class="o_pms_tag_index">
+                        <span>
+                            <t t-esc="tag"/>
+                        </span>
+                    </span>
+                </span>
+            </t>
         </td>
         <td>
             <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
@@ -274,10 +287,11 @@
                 <div class="dropdown-menu" aria-labelledby="dLabel">
                     <t t-foreach="pwa_action_buttons" t-as="button">
                         <button
-                            t-if="button != keys[0]"
                             t-att-url="pwa_action_buttons[button]"
                             class="dropdown-item"
-                            type="button"><t t-esc="button"/></button>
+                            type="button">
+                            <t t-esc="button"/>
+                        </button>
                     </t>
                 </div>
             </span>
@@ -285,7 +299,6 @@
     </template>
 
     <template id="roomdoo_filters_modal" name="Roomdoo filters modal">
-
         <div class="modal fade o_pms_pwa_right o_pms_pwa_filters_modal"
             tabindex="-1" role="dialog" id="o_pms_pwa_filters_modal" aria-labelledby="o_pms_pwa_filters_modal"
             aria-hidden="true">
