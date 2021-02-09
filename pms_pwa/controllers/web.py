@@ -92,6 +92,71 @@ class TestFrontEnd(http.Controller):
 
         return http.request.render("pms_pwa.roomdoo_reservation_list", values)
 
+    # @http.route(
+    #     "/reservation/<int:reservation_id>/assign",
+    #     auth="user",
+    #     methods=["POST"],
+    #     website=True,
+    # )
+    # def reservation_assign(self, reservation_id=None, page=0, search=False, sortby=None, **post):
+    #     if reservation_id:
+    #         reservation = request.env['pms.reservation'].sudo().search([('id', '=', int(reservation_id))])
+    #     if not reservation:
+    #         raise MissingError(_("This document does not exist."))
+    #     reservation.action_assign()
+    #     return self.reservation_list(page=page, search=search, sortby=sortby, **post)
+
+    @http.route(
+        "/reservation/<int:reservation_id>/assign",
+        type="json",
+        auth="public",
+        website=True,
+    )
+    def reservation_assign(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+            reservation.action_assign()
+            return json.dumps({"result": "Success"})
+        return json.dumps({"result": "Fail"})
+
+    @http.route(
+        "/reservation/<int:reservation_id>/cancel",
+        type="json",
+        auth="public",
+        website=True,
+    )
+    def reservation_cancel(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+            reservation.action_cancel()
+            return json.dumps({"result": "Success"})
+        return json.dumps({"result": "Fail"})
+
+    @http.route(
+        "/reservation/<int:reservation_id>/checkout",
+        type="json",
+        auth="public",
+        website=True,
+    )
+    def reservation_checkout(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+            reservation.action_reservation_checkout()
+            return json.dumps({"result": "Success"})
+        return json.dumps({"result": "Fail"})
+
     @http.route(
         "/pms_dashboard",
         type="http",

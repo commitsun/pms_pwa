@@ -1,12 +1,11 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class PmsReservation(models.Model):
     _inherit = "pms.folio"
-
+    # REVIEW: location of this field [pms|pms_pwa]
     folio_total_adults = fields.Integer(
-        string="Folio nº adults",
-        compute="_compute_folio_adults"
+        string="Folio nº adults", compute="_compute_folio_adults"
     )
 
     def _compute_folio_adults(self):

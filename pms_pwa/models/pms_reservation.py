@@ -8,6 +8,7 @@ from odoo import _, api, fields, models
 class PmsReservation(models.Model):
     _inherit = "pms.reservation"
 
+    # REVIEW:store = true? (pwa_action_buttons & pwa_board_service_tags)
     pwa_action_buttons = fields.Char(compute="_compute_pwa_action_buttons")
     pwa_board_service_tags = fields.Char(compute="_compute_pwa_board_service_tags")
 
@@ -19,7 +20,7 @@ class PmsReservation(models.Model):
                     board_service_tags.append(service.name)
             record.pwa_board_service_tags = json.dumps(board_service_tags)
 
-    # REVIEW:store = true?
+
     def _compute_pwa_action_buttons(self):
         """ Return ordered button list, where the first button is
         the preditive action, the next are active actions:
@@ -49,22 +50,22 @@ class PmsReservation(models.Model):
             for k, v in buttons.items():
                 if k == "Assign":
                     if reservation.to_assign:
-                        active_buttons[k] = v
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
                 elif k == "Checkin":
                     if reservation.left_for_checkin:
-                        active_buttons[k] = v
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
                 elif k == "Checkout":
                     if reservation.left_for_checkout:
-                        active_buttons[k] = v
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
                 elif k == "Payment":
                     if reservation.folio_pending_amount > 0:
-                        active_buttons[k] = v
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
                 elif k == "Invoice":
                     if reservation.invoice_status == "to invoice":
-                        active_buttons[k] = v
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
                 elif k == "Cancel":
                     if reservation.left_for_cancel:
-                        active_buttons[k] = v
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
             reservation.pwa_action_buttons = json.dumps(active_buttons)
 
     def _get_reservation_services(self):

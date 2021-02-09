@@ -281,10 +281,26 @@
         <td>
             <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
             <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
-            <button t-att-url="pwa_action_buttons[keys[0]]" class="btn" type="button"><t t-esc="keys[0]"/></button>
+            <button t-att-url="pwa_action_buttons[keys[0]]" class="btn" type="button">
+                <t t-esc="keys[0]"/>
+            </button>
             <span class="dropdown">
                 <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
                 <div class="dropdown-menu" aria-labelledby="dLabel">
+<!--                    <t t-foreach="pwa_action_buttons" t-as="button">-->
+<!--                        <form method="POST">-->
+<!--                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>-->
+<!--                            <input type="hidden" name="page" t-att-value="page"/>-->
+<!--                            <input type="hidden" name="search" t-att-value="search"/>-->
+<!--                            <input type="hidden" name="post" t-att-value="post"/>-->
+<!--                            <button-->
+<!--                                t-att-formaction="pwa_action_buttons[button]"-->
+<!--                                class="dropdown-item"-->
+<!--                                type="submit">-->
+<!--                                <t t-esc="button"/>-->
+<!--                            </button>-->
+<!--                        </form>-->
+<!--                    </t>-->
                     <t t-foreach="pwa_action_buttons" t-as="button">
                         <button
                             t-att-url="pwa_action_buttons[button]"
