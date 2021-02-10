@@ -50,13 +50,19 @@ class TestFrontEnd(http.Controller):
         # REVIEW: magic number
         paginate_by = 10
 
-        # REVIEW: ORDER STUFF's
-        searchbar_sortings = {
-            "priority": {"label": _("Priority"), "order": "id desc"},
-        }
-        if not sortby:
-            sortby = "priority"
-        sort_folio = searchbar_sortings[sortby]["order"]
+        # TODO: ORDER STUFF's
+        pass
+        # searchbar_sortings = {
+        #     "priority":
+        #         {
+        #             "label": _("Priority"),
+        #             "order": "priority"
+        #         },
+        #     }
+        # if not sortby:
+        #     sortby = "priority"
+        # sort_folio = searchbar_sortings[sortby]["order"]
+        # sortby = 'priority'
         # / ORDER STUFF's
 
         pager = request.website.pager(
@@ -64,14 +70,13 @@ class TestFrontEnd(http.Controller):
             total=request.env["pms.folio"].search_count_folios_pwa(search, **post),
             page=page,
             step=paginate_by,
-            scope=7,  # REVIEW: magic number
             url_args=post,
         )
 
         values = {
             "folios": request.env["pms.folio"].search_folios_pwa(
                 search=search,
-                order=sort_folio,
+                # order=sort_folio,  #TODO: REVIEW SORTING
                 limit=paginate_by,
                 offset=pager["offset"],
                 **post
@@ -81,26 +86,11 @@ class TestFrontEnd(http.Controller):
             "search": search if search else None,
             "default_url": "",
             "post": post if post else None,
-            "searchbar_sortings": searchbar_sortings,
+            # "searchbar_sortings": searchbar_sortings, #TODO: REVIEW SORTING
             "sortby": sortby,
         }
 
         return http.request.render("pms_pwa.roomdoo_reservation_list", values)
-
-    # EX. REDIRECTING
-    # @http.route(
-    #     "/reservation/<int:reservation_id>/assign",
-    #     auth="user",
-    #     methods=["POST"],
-    #     website=True,
-    # )
-    # def reservation_assign(self, reservation_id=None, page=0, search=False, sortby=None, **post):
-    #     if reservation_id:
-    #         reservation = request.env['pms.reservation'].sudo().search([('id', '=', int(reservation_id))])
-    #     if not reservation:
-    #         raise MissingError(_("This document does not exist."))
-    #     reservation.action_assign()
-    #     return self.reservation_list(page=page, search=search, sortby=sortby, **post)
 
     @http.route(
         "/reservation/<int:reservation_id>/assign",
