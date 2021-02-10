@@ -20,7 +20,6 @@ class PmsReservation(models.Model):
                     board_service_tags.append(service.name)
             record.pwa_board_service_tags = json.dumps(board_service_tags)
 
-
     def _compute_pwa_action_buttons(self):
         """ Return ordered button list, where the first button is
         the preditive action, the next are active actions:

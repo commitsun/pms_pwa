@@ -2,7 +2,6 @@
 
 # -*- coding: utf-8 -*-
 
-import base64
 import json
 import logging
 from datetime import datetime, timedelta
@@ -10,7 +9,6 @@ from datetime import datetime, timedelta
 from odoo import _, http
 from odoo.exceptions import MissingError
 from odoo.http import request
-from odoo.osv import expression
 
 from odoo.addons.web.controllers.main import Home
 
@@ -48,50 +46,48 @@ class TestFrontEnd(http.Controller):
             if not search:
                 search = post["original_search"]
             post.pop("original_search")
+
+        # REVIEW: magic number
         paginate_by = 10
-        Folio = request.env["pms.folio"]
-        values = {}
 
-        domain = self._get_search_domain(search, **post)
-
+        # REVIEW: ORDER STUFF's
         searchbar_sortings = {
             "priority": {"label": _("Priority"), "order": "id desc"},
         }
-
-        # default sortby order
         if not sortby:
             sortby = "priority"
         sort_folio = searchbar_sortings[sortby]["order"]
+        # / ORDER STUFF's
 
-        folio_count = Folio.search_count(domain)
         pager = request.website.pager(
             url="",
-            total=folio_count,
+            total=request.env["pms.folio"].search_count_folios_pwa(search, **post),
             page=page,
             step=paginate_by,
-            scope=7,
+            scope=7,  # REVIEW: magic number
             url_args=post,
         )
 
-        folios = Folio.search(
-            domain, order=sort_folio, limit=paginate_by, offset=pager["offset"]
-        )
-
-        values.update(
-            {
-                "folios": folios,
-                "page_name": "Reservations",
-                "pager": pager,
-                "search": search if search else None,
-                "default_url": "",
-                "post": post if post else None,
-                "searchbar_sortings": searchbar_sortings,
-                "sortby": sortby,
-            }
-        )
+        values = {
+            "folios": request.env["pms.folio"].search_folios_pwa(
+                search=search,
+                order=sort_folio,
+                limit=paginate_by,
+                offset=pager["offset"],
+                **post
+            ),
+            "page_name": "Reservations",
+            "pager": pager,
+            "search": search if search else None,
+            "default_url": "",
+            "post": post if post else None,
+            "searchbar_sortings": searchbar_sortings,
+            "sortby": sortby,
+        }
 
         return http.request.render("pms_pwa.roomdoo_reservation_list", values)
 
+    # EX. REDIRECTING
     # @http.route(
     #     "/reservation/<int:reservation_id>/assign",
     #     auth="user",
@@ -383,16 +379,6 @@ class TestFrontEnd(http.Controller):
     #     """
     #     pass
 
-    # @http.route("/reservation/<int:id>/check-out", auth="public", website=True)
-    # def reservation_check_out(self, **kw):
-    #     reservation = request.env["pms.reservation"].browse([reservation_id])
-    #     if not reservation:
-    #         raise MissingError(_("This document does not exist."))
-    #     """
-    #         Ruta para realizar el checkout de la reserva 'id'
-    #     """
-    #     pass
-
     # @http.route("/reservation/<int:id>/pay", auth="public", website=True)
     # def reservation_pay(self, **kw):
     #     reservation = request.env["pms.reservation"].browse([reservation_id])
@@ -403,37 +389,6 @@ class TestFrontEnd(http.Controller):
     #         ¿puede aceptar pagos parciales?
     #     """
     #     pass
-
-    # @http.route("/reservation/<int:id>/cancel", auth="public", website=True)
-    # def reservation_cancel(self, **kw):
-    #     reservation = request.env["pms.reservation"].browse([reservation_id])
-    #     if not reservation:
-    #         raise MissingError(_("This document does not exist."))
-    #     """
-    #         Ruta para realizar la cancelación de la reserva 'id'
-    #     """
-    #     pass
-
-    def _get_search_domain(self, search=False, **post):
-        domains = []
-        if search:
-            for srch in search.split(" "):
-                subdomains = [
-                    [("reservation_ids.localizator", "in", [srch])],
-                    [("reservation_ids.partner_id.phone", "ilike", srch)],
-                    [("reservation_ids.partner_id.mobile", "ilike", srch)],
-                    [("reservation_ids.partner_id.name", "ilike", srch)],
-                    [("reservation_ids.partner_id.vat", "ilike", srch)],
-                    [("reservation_ids.partner_id.email", "ilike", srch)],
-                ]
-                domains.append(expression.OR(subdomains))
-        # REVIEW: Use lib to this
-        # post send a filters with key: "operator&field"
-        # to build a odoo domain:
-        for k, v in post.items():
-            if "&" in v:
-                domains.append((k[v.index("&") :], k[: v.index("&"), v]))
-        return expression.AND(domains)
 
     def _get_allowed_payments_journals(self):
         """
