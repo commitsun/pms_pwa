@@ -51,7 +51,6 @@ class TestFrontEnd(http.Controller):
         paginate_by = 10
 
         # TODO: ORDER STUFF's
-        pass
         # searchbar_sortings = {
         #     "priority":
         #         {

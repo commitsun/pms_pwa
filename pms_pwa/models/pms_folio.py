@@ -43,7 +43,12 @@ def _get_search_domain(search=False, **post):
                 domain_fields.append(("create_date", "<=", v))
             elif k == "modified_to":
                 domain_fields.append(("write_date", "<=", v))
-            # TODO: origin & text_dialog
+            elif k == "origin":
+                domain_fields.extend(
+                    ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]
+                )
+
+            # TODO: text_dialog
 
     if search_exists:
         return expression.AND([domain_fields, (domains[0])])
