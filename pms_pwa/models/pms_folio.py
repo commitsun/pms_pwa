@@ -36,13 +36,13 @@ def _get_search_domain(search=False, **post):
             elif k == "checkout_to":
                 domain_fields.append(("reservation_ids.checkout", "<=", v))
             elif k == "created_from":
-                domain_fields.append(("create_date", ">=", v))
+                domain_fields.append(("reservation_ids.create_date", ">=", v))
             elif k == "modified_from":
-                domain_fields.append(("write_date", ">=", v))
+                domain_fields.append(("reservation_ids.write_date", ">=", v))
             elif k == "created_to":
-                domain_fields.append(("create_date", "<=", v))
+                domain_fields.append(("reservation_ids.create_date", "<=", v))
             elif k == "modified_to":
-                domain_fields.append(("write_date", "<=", v))
+                domain_fields.append(("reservation_ids.write_date", "<=", v))
             elif k == "origin":
                 domain_fields.extend(
                     ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]

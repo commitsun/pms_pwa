@@ -78,24 +78,31 @@ class PmsReservation(models.Model):
                     _("The list of guests is greater than the capacity")
                 )
             for guest in checkin_partner_list:
-                partner = self.env["res.partner"].search([("name", "=", guest["name"])])
+                partner = self.env["res.partner"].search(
+                    [
+                        # TODO: determine which fields identify univocally a partner
+                        ("document_number", "=", guest["document_number"])
+                    ]
+                )
                 if not partner:
                     partner = self.env["res.partner"].create(
-                        # TODO: determine which fields identify univocally a partner
-                        {"name": guest["name"]}
+
+                        {
+                            "name": guest["name"],
+                            "lastname": guest["lastname"],
+                            "lastname2": guest["lastname2"],
+                            "birthdate_date": guest["birthdate_date"],
+                            "document_number": guest["document_number"],
+                            "document_type": guest["document_type"],
+                            "document_expedition_date": guest["document_expedition_date"],
+                            "gender": guest["gender"],
+                            "mobile": guest["mobile"],
+                        }
                     )
                 checkin_partner = self.env["pms.checkin.partner"].create(
                     {
                         "name": guest["name"],
-                        "lastname": guest["lastname"],
-                        "lastname2": guest["lastname2"],
-                        "birthdate_date": guest["birthdate_date"],
-                        "document_number": guest["document_number"],
-                        "document_type": guest["document_type"],
-                        "document_expedition_date": guest["document_expedition_date"],
-                        "gender": guest["gender"],
                         "reservation_id": reservation_id,
-                        "mobile": guest["mobile"],
                         "pms_property_id": guest["pms_property_id"],
                         "partner_id": partner.id,
                     }
