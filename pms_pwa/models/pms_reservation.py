@@ -1,8 +1,10 @@
 # Copyright 2017  Dario Lodeiros
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import datetime
 import json
 
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class PmsReservation(models.Model):
@@ -66,6 +68,39 @@ class PmsReservation(models.Model):
                     if reservation.left_for_cancel:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
             reservation.pwa_action_buttons = json.dumps(active_buttons)
+
+    @api.model
+    def pwa_action_checkin(self, checkin_partner_list, reservation_id):
+        reservation = self.browse(reservation_id)
+        if reservation:
+            if len(checkin_partner_list) > reservation.adults:
+                raise ValidationError(
+                    _("The list of guests is greater than the capacity")
+                )
+            for guest in checkin_partner_list:
+                partner = self.env["res.partner"].search([("name", "=", guest["name"])])
+                if not partner:
+                    partner = self.env["res.partner"].create(
+                        # TODO: determine which fields identify univocally a partner
+                        {"name": guest["name"]}
+                    )
+                checkin_partner = self.env["pms.checkin.partner"].create(
+                    {
+                        "name": guest["name"],
+                        "lastname": guest["lastname"],
+                        "lastname2": guest["lastname2"],
+                        "birthdate_date": guest["birthdate_date"],
+                        "document_number": guest["document_number"],
+                        "document_type": guest["document_type"],
+                        "document_expedition_date": guest["document_expedition_date"],
+                        "gender": guest["gender"],
+                        "reservation_id": reservation_id,
+                        "mobile": guest["mobile"],
+                        "pms_property_id": guest["pms_property_id"],
+                        "partner_id": partner.id,
+                    }
+                )
+                checkin_partner.action_on_board()
 
     def _get_reservation_services(self):
         """

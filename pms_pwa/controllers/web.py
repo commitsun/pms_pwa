@@ -95,6 +95,7 @@ class TestFrontEnd(http.Controller):
         "/reservation/<int:reservation_id>/assign",
         type="json",
         auth="public",
+        csrf=False,
         website=True,
     )
     def reservation_assign(self, reservation_id=None, **kw):
@@ -112,6 +113,7 @@ class TestFrontEnd(http.Controller):
         "/reservation/<int:reservation_id>/cancel",
         type="json",
         auth="public",
+        csrf=False,
         website=True,
     )
     def reservation_cancel(self, reservation_id=None, **kw):
@@ -129,6 +131,7 @@ class TestFrontEnd(http.Controller):
         "/reservation/<int:reservation_id>/checkout",
         type="json",
         auth="public",
+        csrf=False,
         website=True,
     )
     def reservation_checkout(self, reservation_id=None, **kw):
@@ -139,6 +142,26 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             reservation.action_reservation_checkout()
+            return json.dumps({"result": "Success"})
+        return json.dumps({"result": "Fail"})
+
+    @http.route(
+        "/reservation/<int:reservation_id>/checkin",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_checkin(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+            reservation.pwa_action_checkin(
+                http.request.jsonrequest.get("guests_list"), reservation_id
+            )
             return json.dumps({"result": "Success"})
         return json.dumps({"result": "Fail"})
 
@@ -357,16 +380,6 @@ class TestFrontEnd(http.Controller):
         }
 
         return reservation_values
-
-    # @http.route("/reservation/<int:id>/check-in", auth="public", website=True)
-    # def reservation_check_in(self, **kw):
-    #     reservation = request.env["pms.reservation"].browse([reservation_id])
-    #     if not reservation:
-    #         raise MissingError(_("This document does not exist."))
-    #     """
-    #         Ruta para realizar el checkin de la reserva 'id'
-    #     """
-    #     pass
 
     # @http.route("/reservation/<int:id>/pay", auth="public", website=True)
     # def reservation_pay(self, **kw):

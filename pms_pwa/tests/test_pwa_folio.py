@@ -1,7 +1,9 @@
 import datetime
 
 from odoo import fields
+
 from .common import TestHotel
+
 
 class TestPwaFolio(TestHotel):
     def create_common_scenario(self):
