@@ -4,7 +4,7 @@ import json
 from freezegun import freeze_time
 
 from odoo import fields
-
+from odoo.exceptions import ValidationError
 from .common import TestHotel
 
 
@@ -51,6 +51,16 @@ class TestPwaReservation(TestHotel):
             {
                 "pms_property_id": self.property.id,
                 "name": "Double 102",
+                "room_type_id": self.room_type_double.id,
+                "capacity": 2,
+            }
+        )
+
+        # create room
+        self.room3 = self.env["pms.room"].create(
+            {
+                "pms_property_id": self.property.id,
+                "name": "Double 103",
                 "room_type_id": self.room_type_double.id,
                 "capacity": 2,
             }
@@ -148,7 +158,20 @@ class TestPwaReservation(TestHotel):
         }
         reservation = self.env["pms.reservation"].create(reservation_vals)
         checkin = self.env["pms.checkin.partner"].create(
-            {"partner_id": host.id, "reservation_id": reservation.id,}
+            {
+                "partner_id": host.id,
+                "name": "Paco",
+                "lastname": "Martínez",
+                "lastname2": "Soria",
+                "birthdate_date": "1970-01-01",
+                "document_number": "789654489P",
+                "document_type": "D",
+                "document_expedition_date": "1890-01-01",
+                "gender": "male",
+                "mobile": "789456123",
+                "email": "myemail@email1.com",
+                "reservation_id": reservation.id,
+            }
         )
         # ACT
         checkin.action_on_board()
@@ -345,3 +368,144 @@ class TestPwaReservation(TestHotel):
             bsrt.board_service_line_ids.mapped("product_id.name"),
             "Board service tags should be the same as board service room type line",
         )
+
+    def test_checkin_partners_ok(self):
+        # TEST CASE
+        # An empty list & a list with 1 or 2 guests
+        # should mantain the reservation guests properly
+
+        # ARRANGE
+        self.create_common_scenario()
+
+        test_cases = [
+            [],
+            [
+                {
+                    "name": "Eugenio",
+                    "lastname": "Rodríguez",
+                    "lastname2": "Fernández",
+                    "birthdate_date": "1890-01-01",
+                    "document_number": "741852963M",
+                    "document_type": "D",
+                    "document_expedition_date": "1890-01-01",
+                    "gender": "male",
+                    "mobile": "639857896",
+                    "email": "myemail@email.com",
+                    "pms_property_id": self.property.id,
+                },
+            ],
+            [
+                {
+                    "name": "Pablo",
+                    "lastname": "Rodríguez",
+                    "lastname2": "Fernández",
+                    "birthdate_date": "1890-01-01",
+                    "document_number": "789456189E",
+                    "document_type": "D",
+                    "document_expedition_date": "1890-01-01",
+                    "gender": "male",
+                    "mobile": "630857876",
+                    "email": "myemail@email.com",
+                    "pms_property_id": self.property.id,
+                },
+                {
+                    "name": "Pepe",
+                    "lastname": "Rodríguez",
+                    "lastname2": "Fernández",
+                    "birthdate_date": "1890-01-01",
+                    "document_number": "456789852J",
+                    "document_type": "D",
+                    "document_expedition_date": "1890-01-01",
+                    "gender": "male",
+                    "mobile": "639857896",
+                    "email": "myemail2@email.com",
+                    "pms_property_id": self.property.id,
+                },
+            ],
+        ]
+        for tc in test_cases:
+            with self.subTest(k=tc):
+                # ARRANGE
+                reservation = self.env["pms.reservation"].create(
+                    {
+                        "checkin": fields.date.today(),
+                        "checkout": fields.date.today() + datetime.timedelta(days=1),
+                        "room_type_id": self.room_type_double.id,
+                        "partner_id": self.env.ref("base.res_partner_12").id,
+                        "pms_property_id": self.property.id,
+                    }
+                )
+                reservation.flush()
+
+                # ACT
+                reservation.pwa_action_checkin(tc, reservation.id)
+                reservation.flush()
+
+                # ASSERT
+                self.assertEqual(
+                    reservation.count_pending_arrival,
+                    reservation.checkin_partner_count - len(tc),
+                )
+
+    def test_checkin_partners_fail(self):
+        # TEST CASE
+        # A list with more guests than the
+        # room_type capacity should raises an error
+
+        # ARRANGE
+        self.create_common_scenario()
+        reservation = self.env["pms.reservation"].create(
+            {
+                "checkin": fields.date.today(),
+                "checkout": fields.date.today() + datetime.timedelta(days=1),
+                "room_type_id": self.room_type_double.id,
+                "partner_id": self.env.ref("base.res_partner_12").id,
+                "pms_property_id": self.property.id,
+            }
+        )
+
+        guest_list = [
+            {
+                "name": "Eugenio",
+                "lastname": "Rodríguez",
+                "lastname2": "Fernández",
+                "birthdate_date": "1890-01-01",
+                "document_number": "147852369T",
+                "document_type": "D",
+                "document_expedition_date": "1890-01-01",
+                "gender": "male",
+                "mobile": "789456123",
+                "email": "myemail@email1.com",
+                "pms_property_id": self.property.id,
+            },
+            {
+                "name": "Eugenio",
+                "lastname": "Rodríguez",
+                "lastname2": "Fernández",
+                "birthdate_date": "1890-01-01",
+                "document_number": "145856325V",
+                "document_type": "D",
+                "document_expedition_date": "1890-01-01",
+                "gender": "male",
+                "mobile": "123456789",
+                "email": "myemail@email2.com",
+                "pms_property_id": self.property.id,
+            },
+            {
+                "name": "Eugenio",
+                "lastname": "Rodríguez",
+                "lastname2": "Fernández",
+                "birthdate_date": "1890-01-01",
+                "document_number": "456789132L",
+                "document_type": "D",
+                "document_expedition_date": "1890-01-01",
+                "gender": "male",
+                "mobile": "654987321",
+                "email": "myemail@email3.com",
+                "pms_property_id": self.property.id,
+            },
+        ]
+
+        # ACT & ASSERT
+        with self.assertRaises(ValidationError):
+            reservation.pwa_action_checkin(guest_list, reservation.id)
