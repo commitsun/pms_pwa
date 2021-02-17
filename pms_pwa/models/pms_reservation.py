@@ -77,24 +77,25 @@ class PmsReservation(models.Model):
                 raise ValidationError(
                     _("The list of guests is greater than the capacity")
                 )
+            key_fields = self.env["res.partner"]._get_key_fields()
             for guest in checkin_partner_list:
-                partner = self.env["res.partner"].search(
-                    [
-                        # TODO: determine which fields identify univocally a partner
-                        ("document_number", "=", guest["document_number"])
-                    ]
-                )
+                domain_partner = []
+                for key_field in key_fields:
+                    domain_partner.append((key_field, "=", guest[key_field]))
+                partner = self.env["res.partner"].search(domain_partner)
                 if not partner:
                     partner = self.env["res.partner"].create(
-
                         {
                             "name": guest["name"],
+                            "firstname": guest["name"],
                             "lastname": guest["lastname"],
                             "lastname2": guest["lastname2"],
                             "birthdate_date": guest["birthdate_date"],
                             "document_number": guest["document_number"],
                             "document_type": guest["document_type"],
-                            "document_expedition_date": guest["document_expedition_date"],
+                            "document_expedition_date": guest[
+                                "document_expedition_date"
+                            ],
                             "gender": guest["gender"],
                             "mobile": guest["mobile"],
                         }
