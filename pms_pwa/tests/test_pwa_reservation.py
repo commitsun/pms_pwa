@@ -5,7 +5,6 @@ from freezegun import freeze_time
 
 from odoo import fields
 from odoo.exceptions import ValidationError
-
 from .common import TestHotel
 
 
