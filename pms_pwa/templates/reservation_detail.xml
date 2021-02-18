@@ -453,12 +453,69 @@
                                             <div class="col-12">Nº tarjeta reserva</div>
                                             <div class="col-12 num">
                                                 <t t-esc="invoice.folio_id.credit_card_details" />
-                                                ¿?invoice.folio_id.credit_card_details¿?
+                                                **** **** **** 2545
                                             </div>
                                         </div>
-                                        <div class="row m-1">
+                                        <div class="row m-1" id="facturacion">
                                             <div class="col-12">
-                                                <h4>Datos de facturación</h4>
+                                                <h4 data-toggle="collapse" data-target="#collapseDatos">Datos de facturación <i class="fa fa-angle-down o_pms_pwa_rotate-icon" /></h4>
+                                                <div id="collapseDatos" class="collapse" aria-labelledby="headingOne" data-parent="#facturacion">
+                                                    <div class="card-body">
+                                                        <form action="#" method="post" class="form-horizontal">
+                                                            <div class="form-group form-field mt8">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
+                                                                            Name
+                                                                        </label>
+                                                                        <input class="form-control" type="text" name="invoice_name" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-2">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
+                                                                            NIF/CIF
+                                                                        </label>
+                                                                        <input class="form-control" type="text" name="invoice_cif" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-2">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
+                                                                            Address
+                                                                        </label>
+                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-2">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
+                                                                            City
+                                                                        </label>
+                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-2">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
+                                                                            Postal code
+                                                                        </label>
+                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-2">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
+                                                                            Country
+                                                                        </label>
+                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <input type="submit" class="btn btn-message" value="Actualizar" />
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row m-1">

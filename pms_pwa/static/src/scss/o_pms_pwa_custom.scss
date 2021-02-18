@@ -110,6 +110,14 @@ h4 {
         color: $white;
     }
 }
+.btn-pms_pwa {
+    background-image: linear-gradient(to right, $theme-color 80%, $bg-theme-color);
+    color: $white;
+    font-weight: 600;
+    &:hover {
+        color: $white;
+    }
+}
 select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -131,6 +139,40 @@ select::-ms-expand {
     background: $white;
     pointer-events: none;
     color: $theme-color;
+}
+.o_pms_pwa_header {
+    position: absolute;
+    right: 0;
+    margin-top: 1rem;
+    width: 40%;
+    .o_pms_icons {
+        display: inline;
+        button {
+            margin-right: 3rem;
+        }
+    }
+    .o_pms_user_name {
+        margin-left: 0.5rem;
+        a {
+            color: $black;
+            font-weight: 600;
+            &:hover {
+                color: $grey-900;
+                text-decoration: none;
+            }
+        }
+    }
+    .o_pms_close_session {
+        margin-left: 4rem;
+        margin-top: -1rem;
+        a {
+            color: $theme-color;
+            &:hover {
+                color: $grey-900;
+                text-decoration: none;
+            }
+        }
+    }
 }
 .o_pms_pwa_calendar_icon span {
     border: none;
