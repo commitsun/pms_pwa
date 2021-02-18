@@ -1,16 +1,27 @@
 # Copyright 2017  Dario Lodeiros
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import datetime
 import json
 
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class PmsReservation(models.Model):
     _inherit = "pms.reservation"
 
+    # REVIEW:store = true? (pwa_action_buttons & pwa_board_service_tags)
     pwa_action_buttons = fields.Char(compute="_compute_pwa_action_buttons")
+    pwa_board_service_tags = fields.Char(compute="_compute_pwa_board_service_tags")
 
-    # REVIEW:store = true?
+    def _compute_pwa_board_service_tags(self):
+        for record in self:
+            board_service_tags = list()
+            for service in record.service_ids:
+                if service.is_board_service:
+                    board_service_tags.append(service.name)
+            record.pwa_board_service_tags = json.dumps(board_service_tags)
+
     def _compute_pwa_action_buttons(self):
         """ Return ordered button list, where the first button is
         the preditive action, the next are active actions:
@@ -38,9 +49,66 @@ class PmsReservation(models.Model):
         for reservation in self:
             active_buttons = {}
             for k, v in buttons.items():
-                # TODO: Logic buttons reservation
-                active_buttons[k] = v
+                if k == "Assign":
+                    if reservation.to_assign:
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                elif k == "Checkin":
+                    if reservation.left_for_checkin:
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                elif k == "Checkout":
+                    if reservation.left_for_checkout:
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                elif k == "Payment":
+                    if reservation.folio_pending_amount > 0:
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                elif k == "Invoice":
+                    if reservation.invoice_status == "to invoice":
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                elif k == "Cancel":
+                    if reservation.left_for_cancel:
+                        active_buttons[k] = "/reservation/" + str(reservation.id) + v
             reservation.pwa_action_buttons = json.dumps(active_buttons)
+
+    @api.model
+    def pwa_action_checkin(self, checkin_partner_list, reservation_id):
+        reservation = self.browse(reservation_id)
+        if reservation:
+            if len(checkin_partner_list) > reservation.adults:
+                raise ValidationError(
+                    _("The list of guests is greater than the capacity")
+                )
+            key_fields = self.env["res.partner"]._get_key_fields()
+            for guest in checkin_partner_list:
+                domain_partner = []
+                for key_field in key_fields:
+                    domain_partner.append((key_field, "=", guest[key_field]))
+                partner = self.env["res.partner"].search(domain_partner)
+                if not partner:
+                    partner = self.env["res.partner"].create(
+                        {
+                            "name": guest["name"],
+                            "firstname": guest["name"],
+                            "lastname": guest["lastname"],
+                            "lastname2": guest["lastname2"],
+                            "birthdate_date": guest["birthdate_date"],
+                            "document_number": guest["document_number"],
+                            "document_type": guest["document_type"],
+                            "document_expedition_date": guest[
+                                "document_expedition_date"
+                            ],
+                            "gender": guest["gender"],
+                            "mobile": guest["mobile"],
+                        }
+                    )
+                checkin_partner = self.env["pms.checkin.partner"].create(
+                    {
+                        "name": guest["name"],
+                        "reservation_id": reservation_id,
+                        "pms_property_id": guest["pms_property_id"],
+                        "partner_id": partner.id,
+                    }
+                )
+                checkin_partner.action_on_board()
 
     def _get_reservation_services(self):
         """

@@ -23,7 +23,7 @@ PWA PMS
     :target: https://runbot.odoo-community.org/runbot/282/13.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5| 
+|badge1| |badge2| |badge3| |badge4| |badge5|
 
 This module adds Frontend PWA panel manager to PMS
 
@@ -35,7 +35,7 @@ This module adds Frontend PWA panel manager to PMS
 **Table of contents**
 
 .. contents::
-   :lcommitsunl:
+   :local:
 
 Bug Tracker
 ===========
@@ -54,7 +54,7 @@ Authors
 ~~~~~~~
 
 * Darío Lodeiros Vázquez
-* 
+*
 
 Maintainers
 ~~~~~~~~~~~
