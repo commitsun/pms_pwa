@@ -106,8 +106,10 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             reservation.action_assign()
-            return json.dumps({"result": "Success"})
-        return json.dumps({"result": "Fail"})
+            return json.dumps(
+                {"result": True, "message": _("Operation completed successfully.")}
+            )
+        return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         "/reservation/<int:reservation_id>/cancel",
@@ -123,9 +125,14 @@ class TestFrontEnd(http.Controller):
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-            reservation.action_cancel()
-            return json.dumps({"result": "Success"})
-        return json.dumps({"result": "Fail"})
+            try:
+                reservation.action_cancel()
+            except Exception as e:
+                return json.dumps({"result": False, "message": str(e)})
+            return json.dumps(
+                {"result": True, "message": _("Operation completed successfully.")}
+            )
+        return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         "/reservation/<int:reservation_id>/checkout",
@@ -141,9 +148,15 @@ class TestFrontEnd(http.Controller):
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-            reservation.action_reservation_checkout()
-            return json.dumps({"result": "Success"})
-        return json.dumps({"result": "Fail"})
+
+            try:
+                reservation.action_reservation_checkout()
+            except Exception as e:
+                return json.dumps({"result": False, "message": str(e)})
+            return json.dumps(
+                {"result": True, "message": _("Operation completed successfully.")}
+            )
+        return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         "/reservation/<int:reservation_id>/checkin",
@@ -159,11 +172,16 @@ class TestFrontEnd(http.Controller):
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-            reservation.pwa_action_checkin(
-                http.request.jsonrequest.get("guests_list"), reservation_id
+            try:
+                reservation.pwa_action_checkin(
+                    http.request.jsonrequest.get("guests_list"), reservation_id
+                )
+            except Exception as e:
+                return json.dumps({"result": False, "message": str(e)})
+            return json.dumps(
+                {"result": True, "message": _("Operation completed successfully.")}
             )
-            return json.dumps({"result": "Success"})
-        return json.dumps({"result": "Fail"})
+        return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         "/reservation/<int:reservation_id>/payment",
@@ -182,22 +200,26 @@ class TestFrontEnd(http.Controller):
 
             if reservation:
                 payload = http.request.jsonrequest.get("payment")
-                account_journals = (
-                    reservation.folio_id.pms_property_id._get_payment_methods()
+                try:
+                    account_journals = (
+                        reservation.folio_id.pms_property_id._get_payment_methods()
+                    )
+                    journal = account_journals.browse(payload["payment_method"])
+                    reservation.folio_id.do_payment(
+                        journal,
+                        journal.suspense_account_id,
+                        request.env.user,
+                        payload["amount"],
+                        reservation.folio_id,
+                        partner=reservation.partner_id,
+                        date=fields.date.today(),
+                    )
+                except Exception as e:
+                    return json.dumps({"result": False, "message": str(e)})
+                return json.dumps(
+                    {"result": True, "message": _("Operation completed successfully.")}
                 )
-                journal = account_journals.browse(payload["payment_method"])
-                reservation.folio_id.do_payment(
-                    journal,
-                    journal.suspense_account_id,
-                    request.env.user,
-                    payload["amount"],
-                    reservation.folio_id,
-                    partner=reservation.partner_id,
-                    date=fields.date.today(),
-                )
-
-            return json.dumps({"result": "Success"})
-        return json.dumps({"result": "Fail"})
+            return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         "/pms_dashboard",
@@ -414,17 +436,6 @@ class TestFrontEnd(http.Controller):
         }
 
         return reservation_values
-
-    # @http.route("/reservation/<int:id>/pay", auth="public", website=True)
-    # def reservation_pay(self, **kw):
-    #     reservation = request.env["pms.reservation"].browse([reservation_id])
-    #     if not reservation:
-    #         raise MissingError(_("This document does not exist."))
-    #     """
-    #         Ruta para realizar pago de la reserva 'id',
-    #         ¿puede aceptar pagos parciales?
-    #     """
-    #     pass
 
     def _get_allowed_payments_journals(self):
         """
