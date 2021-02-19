@@ -6,7 +6,7 @@ import json
 import logging
 from datetime import datetime, timedelta
 
-from odoo import _, http
+from odoo import _, fields, http
 from odoo.exceptions import MissingError
 from odoo.http import request
 
@@ -162,6 +162,40 @@ class TestFrontEnd(http.Controller):
             reservation.pwa_action_checkin(
                 http.request.jsonrequest.get("guests_list"), reservation_id
             )
+            return json.dumps({"result": "Success"})
+        return json.dumps({"result": "Fail"})
+
+    @http.route(
+        "/reservation/<int:reservation_id>/payment",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_payment(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+
+            if reservation:
+                payload = http.request.jsonrequest.get("payment")
+                account_journals = (
+                    reservation.folio_id.pms_property_id._get_payment_methods()
+                )
+                journal = account_journals.browse(payload["payment_method"])
+                reservation.folio_id.do_payment(
+                    journal,
+                    journal.suspense_account_id,
+                    request.env.user,
+                    payload["amount"],
+                    reservation.folio_id,
+                    partner=reservation.partner_id,
+                    date=fields.date.today(),
+                )
+
             return json.dumps({"result": "Success"})
         return json.dumps({"result": "Fail"})
 
