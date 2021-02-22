@@ -5,6 +5,7 @@ from freezegun import freeze_time
 
 from odoo import fields
 from odoo.exceptions import ValidationError
+
 from .common import TestHotel
 
 
@@ -25,7 +26,9 @@ class TestPwaReservation(TestHotel):
         )
 
         # create room type class
-        self.room_type_class = self.env["pms.room.type.class"].create({"name": "Room"})
+        self.room_type_class = self.env["pms.room.type.class"].create(
+            {"name": "Room", "code_class": "TSTCODERT"}
+        )
 
         # create room type
         self.room_type_double = self.env["pms.room.type"].create(
@@ -146,33 +149,33 @@ class TestPwaReservation(TestHotel):
         # reservation should allow CHECKOUT action
         # ARRANGE
         self.create_common_scenario()
-        host = self.env["res.partner"].create(
-            {"name": "Miguel", "phone": "654667733", "email": "miguel@example.com",}
-        )
+
         reservation_vals = {
             "checkin": fields.date.today(),
             "checkout": fields.date.today() + datetime.timedelta(days=1),
             "room_type_id": self.room_type_double.id,
-            "partner_id": host.id,
             "pms_property_id": self.property.id,
+            "adults": 1,
         }
         reservation = self.env["pms.reservation"].create(reservation_vals)
+
         checkin = self.env["pms.checkin.partner"].create(
             {
-                "partner_id": host.id,
-                "name": "Paco",
-                "lastname": "Martínez",
-                "lastname2": "Soria",
-                "birthdate_date": "1970-01-01",
-                "document_number": "789654489P",
+                "firstname": "Pablo",
+                "lastname": "Rodríguez",
+                "lastname2": "Fernández",
+                "birthdate_date": "1890-01-01",
+                "document_number": "789456189E",
                 "document_type": "D",
                 "document_expedition_date": "1890-01-01",
                 "gender": "male",
-                "mobile": "789456123",
-                "email": "myemail@email1.com",
+                "mobile": "630857876",
+                "email": "myemail@email.com",
+                "pms_property_id": self.property.id,
                 "reservation_id": reservation.id,
             }
         )
+
         # ACT
         checkin.action_on_board()
         # ASSERT
@@ -381,7 +384,7 @@ class TestPwaReservation(TestHotel):
             [],
             [
                 {
-                    "name": "Eugenio",
+                    "firstname": "Eugenio",
                     "lastname": "Rodríguez",
                     "lastname2": "Fernández",
                     "birthdate_date": "1890-01-01",
@@ -396,7 +399,7 @@ class TestPwaReservation(TestHotel):
             ],
             [
                 {
-                    "name": "Pablo",
+                    "firstname": "Pablo",
                     "lastname": "Rodríguez",
                     "lastname2": "Fernández",
                     "birthdate_date": "1890-01-01",
@@ -409,7 +412,7 @@ class TestPwaReservation(TestHotel):
                     "pms_property_id": self.property.id,
                 },
                 {
-                    "name": "Pepe",
+                    "firstname": "Pepe",
                     "lastname": "Rodríguez",
                     "lastname2": "Fernández",
                     "birthdate_date": "1890-01-01",
@@ -463,10 +466,11 @@ class TestPwaReservation(TestHotel):
                 "pms_property_id": self.property.id,
             }
         )
+        reservation.flush()
 
         guest_list = [
             {
-                "name": "Eugenio",
+                "firstname": "Eugenio",
                 "lastname": "Rodríguez",
                 "lastname2": "Fernández",
                 "birthdate_date": "1890-01-01",
@@ -479,7 +483,7 @@ class TestPwaReservation(TestHotel):
                 "pms_property_id": self.property.id,
             },
             {
-                "name": "Eugenio",
+                "firstname": "Eugenio",
                 "lastname": "Rodríguez",
                 "lastname2": "Fernández",
                 "birthdate_date": "1890-01-01",
@@ -492,7 +496,7 @@ class TestPwaReservation(TestHotel):
                 "pms_property_id": self.property.id,
             },
             {
-                "name": "Eugenio",
+                "firstname": "Eugenio",
                 "lastname": "Rodríguez",
                 "lastname2": "Fernández",
                 "birthdate_date": "1890-01-01",
