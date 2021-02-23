@@ -77,37 +77,23 @@ class PmsReservation(models.Model):
                 raise ValidationError(
                     _("The list of guests is greater than the capacity")
                 )
-            key_fields = self.env["res.partner"]._get_key_fields()
             for guest in checkin_partner_list:
-                domain_partner = []
-                for key_field in key_fields:
-                    domain_partner.append((key_field, "=", guest[key_field]))
-                partner = self.env["res.partner"].search(domain_partner)
-                if not partner:
-                    partner = self.env["res.partner"].create(
-                        {
-                            "name": guest["name"],
-                            "firstname": guest["name"],
-                            "lastname": guest["lastname"],
-                            "lastname2": guest["lastname2"],
-                            "birthdate_date": guest["birthdate_date"],
-                            "document_number": guest["document_number"],
-                            "document_type": guest["document_type"],
-                            "document_expedition_date": guest[
-                                "document_expedition_date"
-                            ],
-                            "gender": guest["gender"],
-                            "mobile": guest["mobile"],
-                        }
-                    )
                 checkin_partner = self.env["pms.checkin.partner"].create(
                     {
-                        "name": guest["name"],
                         "reservation_id": reservation_id,
                         "pms_property_id": guest["pms_property_id"],
-                        "partner_id": partner.id,
+                        "name": guest["firstname"],
+                        "lastname": guest["lastname"],
+                        "lastname2": guest["lastname2"],
+                        "birthdate_date": guest["birthdate_date"],
+                        "document_number": guest["document_number"],
+                        "document_type": guest["document_type"],
+                        "document_expedition_date": guest["document_expedition_date"],
+                        "gender": guest["gender"],
+                        "mobile": guest["mobile"],
                     }
                 )
+                checkin_partner.flush()
                 checkin_partner.action_on_board()
 
     def _get_reservation_services(self):
