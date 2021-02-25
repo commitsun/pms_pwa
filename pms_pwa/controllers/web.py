@@ -375,6 +375,42 @@ class TestFrontEnd(http.Controller):
         return http.request.render("pms_pwa.roomdoo_reservation_detail", values)
 
     @http.route(
+        "/reservation/reservation_lines",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def reservation_lines_json(self, reservation_ids=False, folio_id=False, **kw):
+        if folio_id and reservation_ids:
+            folio = request.env["pms.folio"].sudo().search([("id", "=", int(folio_id))])
+            if not folio:
+                raise MissingError(_("This document does not exist."))
+            if reservation_ids:
+                reservation_lines = folio.sale_line_ids.filtered(
+                    lambda x: x.reservation_id.id in reservation_ids
+                )
+                reservation_show_lines = [
+                    {
+                        "id": x.id,
+                        "name": x.name,
+                        "qty_to_invoice": x.qty_to_invoice,
+                        "qty_invoiced": x.qty_invoiced,
+                        "price_total": x.price_total,
+                        "price_subtotal": x.price_subtotal,
+                    }
+                    for x in reservation_lines
+                ]
+                total_amount = sum([x.price_subtotal for x in reservation_lines])
+                data = {
+                    "reservation_lines": reservation_show_lines,
+                    "total_amount": total_amount,
+                }
+                return data
+        return False
+
+    @http.route(
         ["/reservation/json_data"],
         type="json",
         auth="public",

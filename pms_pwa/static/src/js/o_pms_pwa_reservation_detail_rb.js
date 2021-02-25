@@ -1,6 +1,13 @@
-odoo.define("pms_pwa.reservation_detail", function() {
+odoo.define("pms_pwa.reservation_detail", function(require) {
     "use strict";
-
+    var rpc = require("web.rpc");
+    require("web.dom_ready");
+    var ajax = require("web.ajax");
+    var core = require("web.core");
+    var _t = core._t;
+    var QWeb = core.qweb;
+    var tmp = [];
+    var folio_id = $("input[name='folio_id']").val();
     var survey = [];
     // Bidimensional array: [ [1,3], [2,4] ]
     // Switcher function:
@@ -33,6 +40,7 @@ odoo.define("pms_pwa.reservation_detail", function() {
         // Debug:
         // debug();
     });
+
     // Debug:
     /* -function debug() {
         var debug = "";
@@ -41,27 +49,142 @@ odoo.define("pms_pwa.reservation_detail", function() {
         }
         alert(debug);
     }*/
-    /* Refresh chat */
+    $("input[name='reservation_ids']").change(function() {
+        var checked = $(this).val();
+        if ($(this).is(":checked")) {
+            tmp.push(parseInt(checked));
+            ajax.jsonRpc("/reservation/reservation_lines", "call", {
+                reservation_ids: tmp,
+                folio_id: folio_id,
+            }).then(function(data) {
+                var lines = data["reservation_lines"];
+                $("#total_amount").html(data["total_amount"]);
+                var i;
+                var html = "";
+                for (i in lines) {
+                    html +=
+                        '<div class="row m-1 o_roomdoo_hide_show2">' +
+                        '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
+                        lines[i].id +
+                        '" /></div>' +
+                        '<div class="col-4">' +
+                        lines[i].name +
+                        "</div>" +
+                        '<div class="col-2 right">' +
+                        lines[i].qty_to_invoice +
+                        "</div>" +
+                        '<div class="col-2 right">' +
+                        lines[i].qty_invoiced +
+                        "</div>" +
+                        '<div class="col-3 right">' +
+                        lines[i].price_total +
+                        "</div>" +
+                        "</div>";
+                }
+                $("#reservation_list").html(html);
+            });
+        } else {
+            tmp.splice($.inArray(parseInt(checked), tmp), 1);
+            ajax.jsonRpc("/reservation/reservation_lines", "call", {
+                reservation_ids: tmp,
+                folio_id: folio_id,
+            }).then(function(data) {
+                var lines = data["reservation_lines"];
+                $("#total_amount").html(data["total_amount"]);
+                var i;
+                var html = "";
+                for (i in lines) {
+                    html +=
+                        '<div class="row m-1 o_roomdoo_hide_show2">' +
+                        '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
+                        lines[i].id +
+                        '" /></div>' +
+                        '<div class="col-4">' +
+                        lines[i].name +
+                        "</div>" +
+                        '<div class="col-2 right">' +
+                        lines[i].qty_to_invoice +
+                        "</div>" +
+                        '<div class="col-2 right">' +
+                        lines[i].qty_invoiced +
+                        "</div>" +
+                        '<div class="col-3 right">' +
+                        lines[i].price_total +
+                        "</div>" +
+                        "</div>";
+                }
+                $("#reservation_list").html(html);
+            });
+        }
+    });
     $(document).ready(function() {
+        tmp.push(parseInt($("input[name='reservation_ids']:checked").val()));
+        console.log("inicial", tmp);
+        if ($("input[name='reservation_ids']:checked").val()) {
+            ajax.jsonRpc("/reservation/reservation_lines", "call", {
+                reservation_ids: tmp,
+                folio_id: folio_id,
+            }).then(function(data) {
+                console.log(data);
+                if (data["reservation_lines"]) {
+                    var lines = data["reservation_lines"];
+                    $("#total_amount").html(data["total_amount"]);
+                    var i;
+                    var html = "";
+                    for (i in lines) {
+                        html +=
+                            '<div class="row m-1 o_roomdoo_hide_show2">' +
+                            '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
+                            lines[i].id +
+                            '" /></div>' +
+                            '<div class="col-4">' +
+                            lines[i].name +
+                            "</div>" +
+                            '<div class="col-2 right">' +
+                            lines[i].qty_to_invoice +
+                            "</div>" +
+                            '<div class="col-2 right">' +
+                            lines[i].qty_invoiced +
+                            "</div>" +
+                            '<div class="col-3 right">' +
+                            lines[i].price_total +
+                            "</div>" +
+                            "</div>";
+                    }
+                    $("#reservation_list").html(html);
+                }
+            });
+        }
         setInterval(function() {
             $("#o_pms_pwa_direct_chat_messages").load(
                 window.location.href + " #o_pms_pwa_direct_chat_messages"
             );
         }, 3000);
+        if ($(".o_roomdoo_hide_show").length > 3) {
+            $(".o_roomdoo_hide_show:gt(2)").hide();
+            $(".o_roomdoo_hide_show-more").show();
+        }
 
-        var tmp = [];
-        tmp.push($("input[name='reservation_ids']:checked").val())
-
-
-        $("input[name='reservation_ids']").change(function() {
-            var checked = $(this).val();
-            if ($(this).is(':checked')) {
-                tmp.push(checked);
-
-            }else{
-                tmp.splice($.inArray(checked, tmp),1);
-
-            }
+        $(".o_roomdoo_hide_show-more").on("click", function() {
+            //toggle elements with class .o_roomdoo_hide_show that their index is bigger than 2
+            $(".o_roomdoo_hide_show:gt(2)").toggle();
+            //change text of show more element just for demonstration purposes to this demo
+            $(this).text() === "Show more"
+                ? $(this).text("Show less")
+                : $(this).text("Show more");
         });
+        // if ($(".o_roomdoo_hide_show2").length > 3) {
+        //     $(".o_roomdoo_hide_show2:gt(2)").hide();
+        //     $(".o_roomdoo_hide_show-more2").show();
+        // }
+
+        // $(".o_roomdoo_hide_show-more2").on("click", function() {
+        //     //toggle elements with class .o_roomdoo_hide_show that their index is bigger than 2
+        //     $(".o_roomdoo_hide_show2:gt(2)").toggle();
+        //     //change text of show more element just for demonstration purposes to this demo
+        //     $(this).text() === "Show more"
+        //         ? $(this).text("Show less")
+        //         : $(this).text("Show more");
+        // });
     });
 });
