@@ -48,5 +48,20 @@ odoo.define("pms_pwa.reservation_detail", function() {
                 window.location.href + " #o_pms_pwa_direct_chat_messages"
             );
         }, 3000);
+
+        var tmp = [];
+        tmp.push($("input[name='reservation_ids']:checked").val())
+
+
+        $("input[name='reservation_ids']").change(function() {
+            var checked = $(this).val();
+            if ($(this).is(':checked')) {
+                tmp.push(checked);
+
+            }else{
+                tmp.splice($.inArray(checked, tmp),1);
+
+            }
+        });
     });
 });

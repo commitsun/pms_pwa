@@ -525,4 +525,22 @@ section.o_pms_pwa_roomdoo {
     tr > .o_pms_pwa_detail_th {
         background-color: $bg-theme-color !important;
     }
+    #folio_reservation_ids_list {
+        height: 100px;
+        overflow: hidden;
+        &:hover {
+            height: auto;
+            overflow: visible;
+            transition: ease 0.5s;
+        }
+    }
+    .folio_sale_line_ids {
+        height: 150px;
+        overflow: hidden;
+        &:hover {
+            height: auto;
+            overflow: visible;
+            transition: ease 0.5s;
+        }
+    }
 }
