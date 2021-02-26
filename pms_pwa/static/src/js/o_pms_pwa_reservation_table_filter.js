@@ -6,6 +6,8 @@ odoo.define("pms_pwa.reservation_table", function(require) {
     var _t = core._t;
     var QWeb = core.qweb;
     var publicWidget = require("web.public.widget");
+    var core = require("web.core");
+    var csrf_token = core.csrf_token;
 
     $(".o_pms_pwa_button_invoice").on("click", function(event) {
         event.preventDefault();
@@ -440,6 +442,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                                 pay_text: this.pay_text,
                                 notes_text: this.notes_text,
                             },
+                            csrf_token: csrf_token,
                         });
                     } else {
                         var reservation_data = false;

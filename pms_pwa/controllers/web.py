@@ -362,7 +362,7 @@ class TestFrontEnd(http.Controller):
             "page_name": "Reservation",
             "invoice": reservation,
         }
-        if post and post["message"]:
+        if post and "message" in post:
             try:
                 reservation.message_post(
                     subject=_("PWA Message"),

@@ -154,7 +154,7 @@
                             <form
                                 class="mt-2"
                                 target="_self"
-                                action="/my/reservations/update"
+                                t-att-action="'/reservation/'+reservation.id"
                                 method="post">
                                 <div class="form-group form-field mt8">
                                     <div class="row">
@@ -451,6 +451,7 @@
 
                                     <div class="row mt-3 mb-3">
                                         <div class="col-12 text-center">
+                                            <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>
                                             <input
                                                 t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
                                                 class="btn btn-message" type="submit" t-att-value="_t('Save')"/>
