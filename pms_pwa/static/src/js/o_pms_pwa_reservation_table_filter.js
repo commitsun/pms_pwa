@@ -7,6 +7,288 @@ odoo.define("pms_pwa.reservation_table", function(require) {
     var QWeb = core.qweb;
     var publicWidget = require("web.public.widget");
 
+    $(".o_pms_pwa_button_invoice").on("click", function(event) {
+        event.preventDefault();
+        var self = this;
+        var button = event.currentTarget;
+        var reservation_id = button.closest("tr").getAttribute("data-id");
+        location.href = "/reservation/" + reservation_id;
+    });
+
+    $(".o_pms_pwa_button_payment").on("click", function(event) {
+        event.preventDefault();
+        var self = this;
+        var button = event.currentTarget;
+        var reservation_id = button.closest("tr").getAttribute("data-id");
+        var modal = $(".o_pms_pwa_roomdoo_reservation_modal");
+        ajax.jsonRpc("/reservation/json_data", "call", {
+            reservation_id: reservation_id,
+        }).then(function(data) {
+            if (data) {
+                console.log(data);
+                var html = core.qweb.render("pms_pwa.reservation_payment_modal", {
+                    reservation: data,
+                });
+                modal.html(html);
+                $("div.o_pms_pwa_reservation_modal").modal();
+                $(".o_pms_pwa_button_payment_confirm").on("click", function(event) {
+                    event.preventDefault();
+                    var selector =
+                        "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                    var div = $(selector);
+                    var payment_method = div
+                        .find("select[name='payment_method'] option")
+                        .filter(":selected")
+                        .val();
+                    var payment_amount = div.find("input[name='amount']").val();
+                    ajax.jsonRpc(button.attributes.url.value, "call", {
+                        payment_method: payment_method,
+                        amount: payment_amount,
+                    }).then(function(data) {
+                        data = JSON.parse(data);
+                        if (data && data["result"] == true) {
+                            data["type"] = "success";
+                        } else if (data && data["result"] == false) {
+                            data["type"] = "warning";
+                        } else {
+                            data["type"] = "warning";
+                            data["message"] = _t(
+                                "An undefined error has ocurred, please try again later."
+                            );
+                        }
+                        var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                        var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                            alert: data,
+                        });
+                        alert_div.append(alert);
+                    });
+                });
+            }
+        });
+    });
+
+    $(".o_pms_pwa_button_checkout").on("click", function(event) {
+        event.preventDefault();
+        var self = this;
+        var button = event.currentTarget;
+        var url = button.attributes.url.value;
+        var modal = $(".o_pms_pwa_roomdoo_reservation_modal");
+        if (modal) {
+            var reservation_id = button.closest("tr").getAttribute("data-id");
+            ajax.jsonRpc("/reservation/json_data", "call", {
+                reservation_id: reservation_id,
+            }).then(function(data) {
+                setTimeout(function() {
+                    if (data) {
+                        console.log(data);
+                        var html = core.qweb.render(
+                            "pms_pwa.reservation_checkout_modal",
+                            {reservation: data}
+                        );
+                        modal.html(html);
+                        $("div.o_pms_pwa_reservation_modal").modal();
+                        $(".o_pms_pwa_button_checkout_confirm").on("click", function(
+                            event
+                        ) {
+                            event.preventDefault();
+                            var button = event.currentTarget;
+                            ajax.jsonRpc(button.attributes.url.value, "call", {}).then(
+                                function(data) {
+                                    data = JSON.parse(data);
+                                    if (data && data["result"] == true) {
+                                        data["type"] = "success";
+                                    } else if (data && data["result"] == false) {
+                                        data["type"] = "warning";
+                                    } else {
+                                        data["type"] = "warning";
+                                        data["message"] = _t(
+                                            "An undefined error has ocurred, please try again later."
+                                        );
+                                    }
+                                    var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                                    var alert = core.qweb.render(
+                                        "pms_pwa.reservation_alerts",
+                                        {alert: data}
+                                    );
+                                    alert_div.append(alert);
+                                }
+                            );
+                        });
+                    }
+                });
+            });
+        }
+    });
+
+    $(".o_pms_pwa_button_cancel").on("click", function(event) {
+        event.preventDefault();
+        var self = this;
+        var button = event.currentTarget;
+        var url = button.attributes.url.value;
+        var modal = $(".o_pms_pwa_roomdoo_reservation_modal");
+        if (modal) {
+            var reservation_id = button.closest("tr").getAttribute("data-id");
+            ajax.jsonRpc("/reservation/json_data", "call", {
+                reservation_id: reservation_id,
+            }).then(function(data) {
+                setTimeout(function() {
+                    if (data) {
+                        console.log(data);
+                        var html = core.qweb.render(
+                            "pms_pwa.reservation_cancel_modal",
+                            {reservation: data}
+                        );
+                        modal.html(html);
+                        $("div.o_pms_pwa_reservation_modal").modal();
+                        $(".o_pms_pwa_button_cancel_confirm").on("click", function(
+                            event
+                        ) {
+                            event.preventDefault();
+                            var button = event.currentTarget;
+                            ajax.jsonRpc(button.attributes.url.value, "call", {}).then(
+                                function(data) {
+                                    data = JSON.parse(data);
+                                    if (data && data["result"] == true) {
+                                        data["type"] = "success";
+                                    } else if (data && data["result"] == false) {
+                                        data["type"] = "warning";
+                                    } else {
+                                        data["type"] = "warning";
+                                        data["message"] = _t(
+                                            "An undefined error has ocurred, please try again later."
+                                        );
+                                    }
+                                    var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                                    var alert = core.qweb.render(
+                                        "pms_pwa.reservation_alerts",
+                                        {alert: data}
+                                    );
+                                    alert_div.append(alert);
+                                }
+                            );
+                        });
+                    }
+                });
+            });
+        }
+    });
+
+    $(".o_pms_pwa_button_checkin").on("click", function(event) {
+        event.preventDefault();
+        var self = this;
+        var button = event.currentTarget;
+        var modal = $(".o_pms_pwa_roomdoo_reservation_modal");
+        if (modal) {
+            var reservation_id = button.closest("tr").getAttribute("data-id");
+            ajax.jsonRpc("/reservation/json_data", "call", {
+                reservation_id: reservation_id,
+            }).then(function(data) {
+                setTimeout(function() {
+                    if (data) {
+                        console.log(data);
+                        var html = core.qweb.render(
+                            "pms_pwa.reservation_checkin_modal",
+                            {reservation: data}
+                        );
+                        modal.html(html);
+                        $("div.o_pms_pwa_reservation_modal").modal();
+                        var stepper = new Stepper($(".bs-stepper")[0], {
+                            linear: false,
+                            animation: true,
+                            selectors: {
+                                steps: ".step",
+                                trigger: ".step-trigger",
+                                stepper: ".bs-stepper",
+                            },
+                        });
+                        $(".o_pms_pwa_button_checkin_confirm").on("click", function(
+                            event
+                        ) {
+                            event.preventDefault();
+                            var guest_list = [];
+                            var selector =
+                                "div.bs-stepper[guest-data-id=" +
+                                reservation_id +
+                                "] .content";
+                            var contents = $(selector);
+                            for (var i = 1; i <= contents.length; i++) {
+                                var element = $(
+                                    "#" + contents[i - 1].getAttribute("id")
+                                );
+                                guest_list.push({
+                                    firstname: element
+                                        .find("input[name='firstname']")
+                                        .val(),
+                                    lastname: element
+                                        .find("input[name='lastname']")
+                                        .val(),
+                                    lastname2: element
+                                        .find("input[name='lastname2']")
+                                        .val(),
+                                    birthdate_date: element
+                                        .find("input[name='birthdate_date']")
+                                        .val(),
+                                    document_number: element
+                                        .find("input[name='document_number']")
+                                        .val(),
+                                    document_type: element
+                                        .find("select[name='document_type'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    document_expedition_date: element
+                                        .find("input[name='document_expedition_date']")
+                                        .val(),
+                                    gender: element
+                                        .find("select[name='gender'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    mobile: element.find("input[name='mobile']").val(),
+                                    email: element.find("input[name='email']").val(),
+                                    pms_property_id: element
+                                        .find("input[name='pms_property_id']")
+                                        .val(),
+                                });
+                            }
+                            ajax.jsonRpc(button.attributes.url.value, "call", {
+                                guests_list: guest_list,
+                            }).then(function(data) {
+                                data = JSON.parse(data);
+                                if (data && data["result"] == true) {
+                                    data["type"] = "success";
+                                } else if (data && data["result"] == false) {
+                                    data["type"] = "warning";
+                                } else {
+                                    data["type"] = "warning";
+                                    data["message"] = _t(
+                                        "An undefined error has ocurred, please try again later."
+                                    );
+                                }
+                                var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                                var alert = core.qweb.render(
+                                    "pms_pwa.reservation_alerts",
+                                    {alert: data}
+                                );
+                                alert_div.append(alert);
+                            });
+                        });
+                    }
+                });
+            });
+        }
+    });
+
+    $(".o_pms_pwa_button_assign").on("click", function(event) {
+        event.preventDefault();
+        var self = this;
+        var button = event.currentTarget;
+        var tr = button.closest("tr");
+        var selector =
+            ".o_pms_pwa_reservation[data-id=" + tr.getAttribute("data-id") + "]";
+        $(selector)
+            .find("td.first-col")
+            .click();
+    });
+
     $("button.close > span.o_pms_pwa_tag_close").on("click", function(event) {
         event.preventDefault();
         var self = this;
@@ -63,6 +345,30 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             var html = core.qweb.render(xmlid, render_values);
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
+            $(".o_pms_pwa_button_assign_confirm").on("click", function(event) {
+                event.preventDefault();
+                var button = event.currentTarget;
+                ajax.jsonRpc(button.attributes.url.value, "call", {}).then(function(
+                    data
+                ) {
+                    data = JSON.parse(data);
+                    if (data && data["result"] == true) {
+                        data["type"] = "success";
+                    } else if (data && data["result"] == false) {
+                        data["type"] = "warning";
+                    } else {
+                        data["type"] = "warning";
+                        data["message"] = _t(
+                            "An undefined error has ocurred, please try again later."
+                        );
+                    }
+                    var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                    var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                        alert: data,
+                    });
+                    alert_div.append(alert);
+                });
+            });
         },
         _onClickReservationButton: function(event) {
             event.preventDefault();

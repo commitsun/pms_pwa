@@ -173,9 +173,8 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             try:
-                reservation.pwa_action_checkin(
-                    http.request.jsonrequest.get("guests_list"), reservation_id
-                )
+                params = http.request.jsonrequest.get("params")
+                reservation.pwa_action_checkin(params["guests_list"], reservation_id)
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
             return json.dumps(
@@ -199,7 +198,7 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                payload = http.request.jsonrequest.get("payment")
+                payload = http.request.jsonrequest.get("params")
                 try:
                     account_journals = (
                         reservation.folio_id.pms_property_id._get_payment_methods()
@@ -469,6 +468,8 @@ class TestFrontEnd(http.Controller):
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
+            "checkin_partner_ids": reservation._get_checkin_partner_ids(),
+            "pms_property_id": reservation.pms_property_id.id,
         }
 
         return reservation_values

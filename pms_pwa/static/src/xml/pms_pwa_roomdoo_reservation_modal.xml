@@ -195,7 +195,9 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <button type="button" class="btn btn-message"><t t-esc="_t('Confirm')" /></button>
+                                            <button type="button"
+                                                class="btn btn-message o_pms_pwa_button_assign_confirm"
+                                                t-att-url="'/reservation/' + reservation.id +'/assign'"><t t-esc="_t('Confirm')" /></button>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -465,4 +467,379 @@
             <!-- modal -->
         </t>
     </t>
+
+    <t t-name="pms_pwa.reservation_checkout_modal">
+        <t t-if="reservation">
+            <div
+                class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="o_pms_pwa_reservation_modal"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header o_pms_pwa_modal_header">
+                            <div class="col-12">
+                                <div class="row o_pms_pwa_modal_header_pad">
+                                    <h4 class="col-6 modal-title">
+                                        Reservation checkout:
+                                        <span t-esc="reservation.id" />
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body o_pms_pwa_modal_body">
+                            <div class="o_pms_pwa_shadow">
+                                <p>Are you sure you want to cancel this reservation?</p>
+                                Name: <t t-esc="reservation.partner_id.name"/><br/>
+                                Nights: <t t-esc="reservation.nights"/><br/>
+                                Adults: <t t-esc="reservation.adults"/><br/>
+                                Pending amount: <t t-esc="reservation.folio_pending_amount"/><br/>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span>Close</span>
+                            </button>
+                            <button type="button"
+                                t-att-url="'/reservation/' + reservation.id +'/checkout'"
+                                class="btn btn-message o_pms_pwa_button_checkout_confirm" data-dismiss="modal" aria-label="Checkout">
+                                <span>Checkout</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- modal-content -->
+                </div>
+                <!-- modal-dialog -->
+            </div>
+        </t>
+    </t>
+
+    <t t-name="pms_pwa.reservation_cancel_modal">
+        <t t-if="reservation">
+            <div
+                class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="o_pms_pwa_reservation_modal"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header o_pms_pwa_modal_header">
+                            <div class="col-12">
+                                <div class="row o_pms_pwa_modal_header_pad">
+                                    <h4 class="col-6 modal-title">
+                                        Reservation cancel:
+                                        <span t-esc="reservation.id" />
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body o_pms_pwa_modal_body">
+                            <div class="o_pms_pwa_shadow">
+                                <p>Are you sure you want to cancel this reservation?</p>
+                                Name: <t t-esc="reservation.partner_id.name"/><br/>
+                                Nights: <t t-esc="reservation.nights"/><br/>
+                                Adults: <t t-esc="reservation.adults"/><br/>
+                                Pending amount: <t t-esc="reservation.folio_pending_amount"/><br/>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span>Close</span>
+                            </button>
+                            <button type="button"
+                                t-att-url="'/reservation/' + reservation.id +'/cancel'"
+                                class="cancel o_pms_pwa_button_cancel_confirm" data-dismiss="modal" aria-label="Cancel">
+                                <span>Cancel</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- modal-content -->
+                </div>
+                <!-- modal-dialog -->
+            </div>
+        </t>
+    </t>
+
+    <t t-name="pms_pwa.reservation_payment_modal">
+        <t t-if="reservation">
+            <div
+                class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="o_pms_pwa_reservation_modal"
+            >
+                <div class="modal-dialog" role="document" t-att-payment-data-id="reservation.id">
+                    <div class="modal-content">
+                        <div class="modal-header o_pms_pwa_modal_header">
+                            <div class="col-12">
+                                <div class="row o_pms_pwa_modal_header_pad">
+                                    <h4 class="col-6 modal-title">
+                                        Reservation payment:
+                                        <span t-esc="reservation.id" />
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body o_pms_pwa_modal_body">
+                            <div class="o_pms_pwa_shadow">
+                                <div class="form-group form-field mt8">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="payment_method">
+                                                Payment method
+                                            </label>
+                                            <select
+                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                name="payment_method">
+                                                <option
+                                                    name="payment_method"
+                                                    t-foreach="reservation.payment_methods"
+                                                    t-as="key"
+                                                    t-att-value="key.id">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="amount">
+                                                Amount
+                                            </label>
+                                            <input class="form-control" type="number" min="0" step="any"
+                                                name="amount" t-att-value="reservation.folio_pending_amount"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span>Close</span>
+                            </button>
+                            <button type="button"
+                                class="cancel o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
+                                <span>Pay</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- modal-content -->
+                </div>
+                <!-- modal-dialog -->
+            </div>
+        </t>
+    </t>
+
+    <t t-name="pms_pwa.reservation_checkin_modal">
+        <t t-if="reservation">
+            <div
+                class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="o_pms_pwa_reservation_modal"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header o_pms_pwa_modal_header">
+                            <div class="col-12">
+                                <div class="row o_pms_pwa_modal_header_pad">
+                                    <h4 class="col-6 modal-title">
+                                        Reservation checkin:
+                                        <span t-esc="reservation.id" />
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body o_pms_pwa_modal_body">
+                            <div class="bs-stepper" t-att-guest-data-id="reservation.id">
+                                <div class="bs-stepper-header" role="tablist">
+                                    <!-- your steps here -->
+                                    <t t-set="step_counter" t-value="1"/>
+                                    <t t-foreach="reservation.checkin_partner_ids" t-as="partner">
+                                        <div class="step" t-att-data-target="'#checkin_partner_'+partner.id">
+                                            <button type="button" class="step-trigger" role="tab"
+                                                t-att-aria-controls="'#checkin_partner_'+partner.id" t-att-id="'checkin_partner_'+partner.id+'-trigger'">
+                                                <span class="bs-stepper-circle"><t t-esc="step_counter"/></span>
+                                            </button>
+                                        </div>
+                                        <div class="line"></div>
+                                        <t t-set="step_counter" t-value="step_counter + 1"/>
+                                    </t>
+                                </div>
+                                <div class="bs-stepper-content">
+                                    <!-- your steps content here -->
+                                    <t t-set="step_counter" t-value="1"/>
+                                    <t t-foreach="reservation.checkin_partner_ids" t-as="partner">
+                                        <div t-att-id="'checkin_partner_'+partner.id"
+                                            class="content" role="tabpanel" t-att-aria-labelledby="'checkin_partner_'+partner.id+'-trigger'">
+                                            <div class="form-group form-field mt8">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="firstname">
+                                                            First name
+                                                        </label>
+                                                        <input class="form-control" type="text"
+                                                            name="firstname" t-att-value="partner.name ? partner.name : ''"/>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="lastname">
+                                                            Last name
+                                                        </label>
+                                                        <input class="form-control" type="text"
+                                                            name="lastname" t-att-value="partner.name ? partner.name : ''"/>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="lastname2">
+                                                            Second last name
+                                                        </label>
+                                                        <input class="form-control" type="text"
+                                                            name="lastname2" t-att-value="partner.name ? partner.name : ''"/>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="birthdate_date">
+                                                            Birthdate date
+                                                        </label>
+                                                        <input class="form-control" type="date" name="birthdate_date"/>
+                                                        <span class="o_pms_pwa_calendar_icon">
+                                                            <span class="fa fa-calendar" />
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="document_number">
+                                                            VAT number
+                                                        </label>
+                                                        <input class="form-control" type="text"
+                                                            name="document_number"/>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="document_type">
+                                                            Document type
+                                                        </label>
+                                                        <select
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                            name="document_type">
+                                                            <option
+                                                                name="document_type"
+                                                                value="D">
+                                                                DNI
+                                                            </option>
+                                                            <option
+                                                                name="document_type"
+                                                                value="P">
+                                                                Passport
+                                                            </option>
+                                                            <option
+                                                                name="document_type"
+                                                                value="C">
+                                                                Driving license
+                                                            </option>
+                                                            <option
+                                                                name="document_type"
+                                                                value="I">
+                                                                Identification Document
+                                                            </option>
+                                                            <option
+                                                                name="document_type"
+                                                                value="N">
+                                                                Spanish residence permit
+                                                            </option>
+                                                            <option
+                                                                name="document_type"
+                                                                value="X">
+                                                                European residence permit
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="document_expedition_date">
+                                                            Document expedition date
+                                                        </label>
+                                                        <input class="form-control" type="date" name="document_expedition_date"/>
+                                                        <span class="o_pms_pwa_calendar_icon">
+                                                            <span class="fa fa-calendar" />
+                                                        </span>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="gender">
+                                                            Gender
+                                                        </label>
+                                                        <select
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                            name="gender">
+                                                            <option
+                                                                name="gender"
+                                                                value="male">
+                                                                Male
+                                                            </option>
+                                                            <option
+                                                                name="gender"
+                                                                value="female">
+                                                                Female
+                                                            </option>
+                                                            <option
+                                                                name="gender"
+                                                                value="other">
+                                                                Other
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="mobile">
+                                                            Mobile
+                                                        </label>
+                                                        <input class="form-control" type="tel"
+                                                            name="mobile"/>
+                                                    </div>
+
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="email">
+                                                            Email
+                                                        </label>
+                                                        <input class="form-control" type="email"
+                                                            name="email"/>
+
+                                                        <input class="form-control" type="hidden"
+                                                            name="pms_property_id" t-att-value="reservation.pms_property_id"/>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <t t-set="step_counter" t-value="step_counter + 1"/>
+                                    </t>
+                                </div>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span>Close</span>
+                            </button>
+                            <button type="button"
+                                class="cancel o_pms_pwa_button_checkin_confirm" data-dismiss="modal" aria-label="Checkin">
+                                <span>Checkin</span>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- modal-content -->
+                </div>
+                <!-- modal-dialog -->
+            </div>
+        </t>
+    </t>
+
+    <t t-name="pms_pwa.reservation_alerts">
+        <t t-if="alert">
+            <div
+                t-att-class="'alert alert-dismissible fade show alert-' + alert['type']"
+                role="alert">
+                <t t-esc="alert['message']"/>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">Close</span>
+                </button>
+            </div>
+        </t>
+    </t>
+
+
 </templates>

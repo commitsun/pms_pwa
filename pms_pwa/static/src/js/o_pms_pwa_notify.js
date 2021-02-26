@@ -36,7 +36,9 @@ odoo.define("pms_pwa.LongpollingFront", function(require) {
             var span = document.createElement("span");
             var content = document.createTextNode(message);
             span.appendChild(content);
-            div[0].appendChild(span);
+            if (div && div[0]) {
+                div[0].appendChild(span);
+            }
         },
     });
 });

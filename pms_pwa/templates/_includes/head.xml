@@ -41,6 +41,7 @@
                 type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_dashboard.scss"
             />
+            <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/bs-stepper.min.css"/>
         </xpath>
     </template>
     <template id="website_roomdoo_js" inherit_id="website.assets_frontend">
@@ -74,6 +75,7 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_notify.js"
             />
+            <script src="/pms_pwa/static/src/js/vendor/bs-stepper.min.js"></script>
 
         </xpath>
     </template>
