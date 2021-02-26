@@ -4,4 +4,8 @@ odoo.define("pms_pwa.sidebar", function() {
         e.preventDefault();
         $("body").toggleClass("toggled");
     });
+    $("#menu-toggle2").click(function(e) {
+        e.preventDefault();
+        $("body").toggleClass("toggled");
+    });
 });
