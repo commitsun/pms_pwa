@@ -435,7 +435,7 @@
                                         <div id="reservation_list">
                                             <t t-foreach="invoice.folio_id.sale_line_ids" t-as="i">
                                                 <t t-if="i.product_uom_qty">
-                                                    <div class="row m-1 o_roomdoo_hide_show2" t-att-id="'line' + str(i.reservation_id.id)">
+                                                    <div class="row m-1 o_roomdoo_hide_show2" t-att-id="'line' + str(i.id)">
                                                         <div class="col-1">
                                                             <input type="checkbox" checked="checked" name="invoice_line" t-attf-value="{{ i.id }}" />
                                                         </div>

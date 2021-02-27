@@ -389,13 +389,17 @@ class TestFrontEnd(http.Controller):
             if not folio:
                 raise MissingError(_("This document does not exist."))
             if reservation_ids:
+                # TODO resisar si se puede hacer de otra forma.
                 reservation_lines = folio.sale_line_ids.filtered(
                     lambda x: x.reservation_id.id in reservation_ids
+                )
+                reservation_lines += folio.sale_line_ids.filtered(
+                    lambda x: x.service_id.reservation_id.id in reservation_ids
                 )
                 reservation_show_lines = [
                     {
                         "id": x.id,
-                        "name": x.name,
+                        "name": x.product_id.name,
                         "qty_to_invoice": x.qty_to_invoice,
                         "qty_invoiced": x.qty_invoiced,
                         "price_total": x.price_total,

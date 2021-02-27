@@ -65,7 +65,9 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                 var html = "";
                 for (i in lines) {
                     html +=
-                        '<div class="row m-1 o_roomdoo_hide_show2">' +
+                        '<div class="row m-1 o_roomdoo_hide_show2" id="line' +
+                        lines[i].id +
+                        '">' +
                         '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
                         lines[i].id +
                         '" /></div>' +
@@ -98,7 +100,9 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                 var html = "";
                 for (i in lines) {
                     html +=
-                        '<div class="row m-1 o_roomdoo_hide_show2">' +
+                        '<div class="row m-1 o_roomdoo_hide_show2" id="line' +
+                        lines[i].id +
+                        '">' +
                         '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
                         lines[i].id +
                         '" /></div>' +
@@ -121,6 +125,7 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
         }
     });
     $("input[name='invoice_line']").change(function() {
+        console.log("EEEE");
         var checked = $(this).val();
         if ($(this).is(":checked")) {
             invoice_lines.push(parseInt(checked));
@@ -129,8 +134,8 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                 invoice_lines: invoice_lines,
                 folio_id: folio_id,
             }).then(function(data) {
+                console.log("WEE", data);
                 $("#total_amount").html(data["total_amount"]);
-                console.log("WEE");
             });
         } else {
             invoice_lines.splice($.inArray(parseInt(checked), invoice_lines), 1);
@@ -139,8 +144,8 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                 invoice_lines: invoice_lines,
                 folio_id: folio_id,
             }).then(function(data) {
+                console.log("WEE", data);
                 $("#total_amount").html(data["total_amount"]);
-                console.log("WEE");
             });
         }
         console.log("---> ", invoice_lines);
@@ -157,42 +162,44 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             tmp.push(parseInt($("input[name='id']").val()));
         }
         //- console.log("inicial", tmp);
-        if ($("input[name='reservation_ids']:checked").val()) {
-            ajax.jsonRpc("/reservation/reservation_lines", "call", {
-                reservation_ids: tmp,
-                invoice_lines: invoice_lines,
-                folio_id: folio_id,
-            }).then(function(data) {
-                console.log(data);
-                if (data["reservation_lines"]) {
-                    var lines = data["reservation_lines"];
-                    $("#total_amount").html(data["total_amount"]);
-                    var i;
-                    var html = "";
-                    for (i in lines) {
-                        html +=
-                            '<div class="row m-1 o_roomdoo_hide_show2">' +
-                            '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
-                            lines[i].id +
-                            '" /></div>' +
-                            '<div class="col-4">' +
-                            lines[i].name +
-                            "</div>" +
-                            '<div class="col-2 right">' +
-                            lines[i].qty_to_invoice +
-                            "</div>" +
-                            '<div class="col-2 right">' +
-                            lines[i].qty_invoiced +
-                            "</div>" +
-                            '<div class="col-3 right">' +
-                            lines[i].price_total +
-                            "</div>" +
-                            "</div>";
-                    }
-                    $("#reservation_list").html(html);
+
+        ajax.jsonRpc("/reservation/reservation_lines", "call", {
+            reservation_ids: tmp,
+            invoice_lines: invoice_lines,
+            folio_id: folio_id,
+        }).then(function(data) {
+            console.log(data);
+            if (data["reservation_lines"]) {
+                var lines = data["reservation_lines"];
+                $("#total_amount").html(data["total_amount"]);
+                var i;
+                var html = "";
+                for (i in lines) {
+                    html +=
+                        '<div class="row m-1 o_roomdoo_hide_show2" id="line' +
+                        lines[i].id +
+                        '">' +
+                        '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
+                        lines[i].id +
+                        '" /></div>' +
+                        '<div class="col-4">' +
+                        lines[i].name +
+                        "</div>" +
+                        '<div class="col-2 right">' +
+                        lines[i].qty_to_invoice +
+                        "</div>" +
+                        '<div class="col-2 right">' +
+                        lines[i].qty_invoiced +
+                        "</div>" +
+                        '<div class="col-3 right">' +
+                        lines[i].price_total +
+                        "</div>" +
+                        "</div>";
                 }
-            });
-        }
+                $("#reservation_list").html(html);
+            }
+        });
+
         setInterval(function() {
             $("#o_pms_pwa_direct_chat_messages").load(
                 window.location.href + " #o_pms_pwa_direct_chat_messages"
