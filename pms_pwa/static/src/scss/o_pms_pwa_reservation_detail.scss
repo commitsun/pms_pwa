@@ -441,7 +441,7 @@ section.o_pms_pwa_roomdoo {
         table {
             margin: auto;
             text-align: left;
-            width: 80%;
+            width: 100%;
             thead {
                 color: $theme-color;
                 font-weight: 600;
@@ -548,7 +548,8 @@ section.o_pms_pwa_roomdoo {
         cursor: pointer;
         color: $theme-color;
         text-align: "center";
-        margin: auto;
+        //margin: auto;
+        margin-left: 40%;
     }
     // .o_roomdoo_hide_show2 {
     //     width: 100%;
@@ -558,26 +559,50 @@ section.o_pms_pwa_roomdoo {
         cursor: pointer;
         color: $theme-color;
         text-align: "center";
+        margin-left: 40%;
     }
     #folio_reservation_ids {
         table {
-            border-collapse: collapse;
-            border-spacing: 0;
+            border-collapse: separate;
+            border-spacing: 0.5rem;
             border: none;
-            th {
-                border-top: none;
+            width: 100%;
+            th:first-child,
+            td:first-child {
+                min-width: 0;
+            }
+            tr {
+                th {
+                    padding: 0.5rem;
+                    border: none;
+                }
+                td {
+                    padding: 0.5rem;
+                    border: none;
+                }
             }
         }
     }
     #invoice_col {
         table {
-            border-spacing: 0;
+            border-collapse: separate;
+            border-spacing: 0.5rem;
             border: none;
-            th {
-                border-top: none;
+            width: 100%;
+            th:first-child,
+            td:first-child {
+                min-width: 0;
             }
-            td {
-                color: $white;
+            tr {
+                th {
+                    border: none;
+                    padding: 0.5rem;
+                }
+                td {
+                    padding: 0.5rem;
+                    border: none;
+                    color: $white;
+                }
             }
             tr:nth-child(odd) > td {
                 background-color: transparent;

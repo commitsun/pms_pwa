@@ -148,7 +148,7 @@
 
                                 <div t-if="invoice.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
                                     <div class="card-body">
-                                        <table class="table table-condensed table-responsive">
+                                        <table class="table table-responsive">
                                             <thead>
 
                                                 <tr>
@@ -173,16 +173,16 @@
                                                                 <t t-esc="i.id" />
                                                             </a>
                                                         </td>
-                                                        <td>
+                                                        <td class="text-right">
                                                             <t t-esc="i.price_total" />
                                                         </td>
                                                         <td>
                                                             <t t-esc="i.partner_id.name" />
                                                         </td>
-                                                        <td>
+                                                        <td class="text-right">
                                                             <t t-esc="i.room_type_id.code_type" />
                                                         </td>
-                                                        <td>
+                                                        <td >
                                                             <t t-esc="i.preferred_room_id.name" />
                                                         </td>
                                                     </tr>
@@ -192,9 +192,7 @@
 
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="o_roomdoo_hide_show-more">
-                                                    Show more
-                                                </div>
+                                                <div class="o_roomdoo_hide_show-more">Show more</div>
                                             </div>
                                         </div>
 
@@ -434,7 +432,7 @@
                                         </h3>
                                     </div>
                                     <div class="card-body bg-dark">
-                                        <table class="table table-condensed table-responsive">
+                                        <table class="table table-responsive">
                                             <thead>
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
