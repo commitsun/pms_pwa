@@ -487,6 +487,34 @@ class TestFrontEnd(http.Controller):
 
         return reservation_values
 
+    @http.route(
+        ["/reservation/onchange_data"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def reservation_onchange_data(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+
+        if "nights" in params:
+            reservation_values = {}
+        else:
+            reservation_values = {
+                "nights": 4,
+            }
+
+        return reservation_values
+
     def _get_allowed_payments_journals(self):
         """
         @return: Return dict with journals

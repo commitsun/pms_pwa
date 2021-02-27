@@ -152,7 +152,7 @@
                             </div>
                             <!-- Form action needs to be updated with the real action -->
                             <form
-                                class="mt-2"
+                                class="mt-2 o_pms_pwa_reservation_form"
                                 target="_self"
                                 t-att-action="'/reservation/'+reservation.id"
                                 method="post">
@@ -202,16 +202,16 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="nights_number">
+                                            <label class="control-label col-12" for="adults">
                                                 <t t-esc="texts.adults_number_text || _t('Adults nº')"/>
                                             </label>
                                             <input class="form-control" type="text" name="adults" t-att-value="reservation.adults" />
                                         </div>
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="nights_number">
+                                            <label class="control-label col-12" for="nights">
                                                 <t t-esc="texts.nights_number_text || _t('Nights nº')"/>
                                             </label>
-                                            <input class="form-control" type="text" name="nights_number" t-att-value="reservation.nights" />
+                                            <input class="form-control" type="text" name="nights" t-att-value="reservation.nights" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -614,7 +614,7 @@
                                 <span>Close</span>
                             </button>
                             <button type="button"
-                                class="cancel o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
+                                class="o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
                                 <span>Pay</span>
                             </button>
                         </div>
@@ -817,7 +817,7 @@
                                 <span>Close</span>
                             </button>
                             <button type="button"
-                                class="cancel o_pms_pwa_button_checkin_confirm" data-dismiss="modal" aria-label="Checkin">
+                                class="o_pms_pwa_button_checkin_confirm" data-dismiss="modal" aria-label="Checkin">
                                 <span>Checkin</span>
                             </button>
                         </div>
