@@ -7,6 +7,7 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
     var _t = core._t;
     var QWeb = core.qweb;
     var tmp = [];
+    var invoice_lines = [];
     var folio_id = $("input[name='folio_id']").val();
     var survey = [];
     // Bidimensional array: [ [1,3], [2,4] ]
@@ -55,6 +56,7 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             tmp.push(parseInt(checked));
             ajax.jsonRpc("/reservation/reservation_lines", "call", {
                 reservation_ids: tmp,
+                invoice_lines: invoice_lines,
                 folio_id: folio_id,
             }).then(function(data) {
                 var lines = data["reservation_lines"];
@@ -87,6 +89,7 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             tmp.splice($.inArray(parseInt(checked), tmp), 1);
             ajax.jsonRpc("/reservation/reservation_lines", "call", {
                 reservation_ids: tmp,
+                invoice_lines: invoice_lines,
                 folio_id: folio_id,
             }).then(function(data) {
                 var lines = data["reservation_lines"];
@@ -117,12 +120,47 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             });
         }
     });
+    $("input[name='invoice_line']").change(function() {
+        var checked = $(this).val();
+        if ($(this).is(":checked")) {
+            invoice_lines.push(parseInt(checked));
+            ajax.jsonRpc("/reservation/reservation_lines", "call", {
+                reservation_ids: tmp,
+                invoice_lines: invoice_lines,
+                folio_id: folio_id,
+            }).then(function(data) {
+                $("#total_amount").html(data["total_amount"]);
+                console.log("WEE");
+            });
+        } else {
+            invoice_lines.splice($.inArray(parseInt(checked), invoice_lines), 1);
+            ajax.jsonRpc("/reservation/reservation_lines", "call", {
+                reservation_ids: tmp,
+                invoice_lines: invoice_lines,
+                folio_id: folio_id,
+            }).then(function(data) {
+                $("#total_amount").html(data["total_amount"]);
+                console.log("WEE");
+            });
+        }
+        console.log("---> ", invoice_lines);
+    });
     $(document).ready(function() {
-        tmp.push(parseInt($("input[name='reservation_ids']:checked").val()));
-        console.log("inicial", tmp);
+        var checkboxes = document.getElementsByName("invoice_line");
+        var checkboxesChecked = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            invoice_lines.push(parseInt(checkboxes[i].value));
+        }
+        if ($("input[name='reservation_ids']:checked").val()) {
+            tmp.push(parseInt($("input[name='reservation_ids']:checked").val()));
+        } else {
+            tmp.push(parseInt($("input[name='id']").val()));
+        }
+        //- console.log("inicial", tmp);
         if ($("input[name='reservation_ids']:checked").val()) {
             ajax.jsonRpc("/reservation/reservation_lines", "call", {
                 reservation_ids: tmp,
+                invoice_lines: invoice_lines,
                 folio_id: folio_id,
             }).then(function(data) {
                 console.log(data);

@@ -11,10 +11,10 @@
                     <span class="o_pms_pwa_update_counter ml-1" />
                 </span>
             </div>
-            <div class="oe_structure o_pms_pwa_structure  mt-4">
+            <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
-                    <div class="justify-content-center">
-                        <div class="row m-2">
+                    <div class="justify-content-center ">
+                        <div class="row ">
                             <div class="col-sm-12 col-lg-6">
                                 <h1>
                                     <span class="title-header">Reserva</span>
@@ -35,7 +35,7 @@
                                 <a href="#" class="btn btn-grey-300 btn-radius o_pms_pwa_disabled">Check out</a>
                             </div>
                         </div>
-                        <div class="row m-2">
+                        <div class="row">
                             <div class="col-md-12 col-lg-4">
                                 <div class="card shadow">
                                     <div class="container-fluid">
@@ -72,10 +72,15 @@
                                                         </span>
                                                         Datos personales huéspedes
                                                     </button>
-                                                    <div class="dropdown-menu btn-persona-info" aria-labelledby="dropdownMenuButton">
+                                                    <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
                                                         <t t-foreach="invoice.checkin_partner_ids" t-as="person">
                                                             <a class="dropdown-item" href="#">
-                                                                <t t-esc="person.partner_id.name" />
+                                                                <t t-if="person.partner_id.name">
+                                                                    <t t-esc="person.partner_id.name" />
+                                                                </t>
+                                                                <t t-else="">
+                                                                    No indicado
+                                                                </t>
                                                             </a>
                                                         </t>
                                                     </div>
@@ -144,35 +149,35 @@
                                 <div t-if="invoice.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-1 o_pms_pwa_theme_color"></div>
-                                            <div class="col-2 o_pms_pwa_theme_color">ID</div>
-                                            <div class="col-2 o_pms_pwa_theme_color">Total(€)</div>
-                                            <div class="col-3 o_pms_pwa_theme_color">Nombre</div>
-                                            <div class="col-2 o_pms_pwa_theme_color">Tipo</div>
-                                            <div class="col-2 o_pms_pwa_theme_color">nº</div>
+                                            <div class="col-md-1 o_pms_pwa_theme_color"></div>
+                                            <div class="col-md-2 o_pms_pwa_theme_color">ID</div>
+                                            <div class="col-md-2 o_pms_pwa_theme_color">Total(€)</div>
+                                            <div class="col-md-3 o_pms_pwa_theme_color">Nombre</div>
+                                            <div class="col-md-2 o_pms_pwa_theme_color">Tipo</div>
+                                            <div class="col-md-2 o_pms_pwa_theme_color">nº</div>
                                         </div>
 
                                         <t t-foreach="invoice.folio_id.reservation_ids" t-as="i">
                                             <div class="row o_roomdoo_hide_show">
-                                                <div class="col-1">
+                                                <div class="col-md-1">
                                                     <input type="checkbox" name="reservation_ids" checked="checked" t-if="invoice.id == i.id" t-attf-value="{{ i.id }}" />
                                                     <input type="checkbox" name="reservation_ids" t-if="invoice.id != i.id" t-attf-value="{{ i.id }}" />
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-md-2">
                                                     <a t-att-href="'/reservation/' + str(i.id)">
-                                                        <t t-esc="i.localizator" />
+                                                        <t t-esc="i.id" />
                                                     </a>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-md-2">
                                                     <t t-esc="i.price_total" />
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-md-3">
                                                     <t t-esc="i.partner_id.name" />
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-md-2">
                                                     <t t-esc="i.room_type_id.code_type" />
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-md-2">
                                                     <t t-esc="i.preferred_room_id.name" />
                                                 </div>
                                             </div>
@@ -432,7 +437,7 @@
                                                 <t t-if="i.product_uom_qty">
                                                     <div class="row m-1 o_roomdoo_hide_show2" t-att-id="'line' + str(i.reservation_id.id)">
                                                         <div class="col-1">
-                                                            <input type="checkbox" checked="checked" t-attf-name="{{ i.id }}" />
+                                                            <input type="checkbox" checked="checked" name="invoice_line" t-attf-value="{{ i.id }}" />
                                                         </div>
                                                         <div class="col-4">
                                                             <t t-esc="i.name" />

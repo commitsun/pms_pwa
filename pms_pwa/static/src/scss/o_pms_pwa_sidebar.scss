@@ -10,8 +10,6 @@ body {
     }
 }
 #sidebar-wrapper {
-    //min-height: 90vh;
-
     -webkit-transition: margin 0.25s ease-out;
     -moz-transition: margin 0.25s ease-out;
     -o-transition: margin 0.25s ease-out;
@@ -20,9 +18,7 @@ body {
         display: none;
     }
 }
-.o_pms_pwa_header {
-    display: none;
-}
+
 #sidebar-wrapper .sidebar-heading {
     padding: 0.875rem 1.25rem;
     font-size: 1.2rem;
@@ -31,16 +27,48 @@ body {
 #sidebar-wrapper .list-group {
     margin-top: 5rem;
 }
-
+.o_pms_pwa_header {
+    display: none;
+}
 body.toggled {
     #wrapwrap {
         width: 0%;
     }
+
     #sidebar-wrapper {
         margin-left: 0;
         display: block;
         width: 100%;
         z-index: 10;
+        .o_pms_pwa_sidebar_login {
+            margin-top: 5rem !important;
+            margin-left: 2rem !important;
+            .o_pms_user_name {
+                a {
+                    display: inline-block;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: $black;
+                    &:hover {
+                        color: $grey-900;
+                        text-decoration: none;
+                    }
+                }
+            }
+            .o_pms_close_session {
+                display: block;
+                margin-left: 3.5rem;
+                margin-top: -1.5rem;
+                a {
+                    font-size: 14px;
+                    color: $white;
+                    &:hover {
+                        color: $grey-900;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
     }
 }
 .o_pms_pwa_page_title {
@@ -65,11 +93,14 @@ body.toggled {
 
 @media (min-width: 768px) {
     .o_pms_pwa_header {
-        display: block;
+        display: flex;
     }
     #sidebar-wrapper {
         margin-left: 0;
-        width: 18vh;
+        width: 120px;
+        .o_pms_pwa_sidebar_login {
+            display: none;
+        }
     }
 
     #wrapwrap {
@@ -165,11 +196,14 @@ body.toggled {
 }
 @media screen and (min-width: 2500px) {
     #sidebar-wrapper {
-        width: 50vh;
+        width: 250px;
         .sidebar-heading {
             .mt-2 {
                 display: none;
             }
+        }
+        .o_pms_pwa_sidebar_login {
+            display: none;
         }
     }
     .img-responsive {

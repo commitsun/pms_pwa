@@ -14,6 +14,17 @@ body {
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
 }
+footer {
+    visibility: hidden;
+}
+header#top {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+main {
+    margin-left: 3.5rem;
+    margin-right: 3.5rem;
+}
 h1,
 h2,
 h3,
@@ -143,19 +154,30 @@ select::-ms-expand {
 .o_pms_pwa_header {
     position: absolute;
     right: 0;
-    margin-top: 1rem;
+    margin-top: 2rem;
     width: 40%;
+    min-width: 700px;
     .o_pms_icons {
-        display: inline;
+        display: inline-block;
         button {
-            margin-right: 3rem;
+            margin-right: 4rem;
+            min-width: 200px;
+            text-transform: uppercase;
+            font-size: 16px;
+            img {
+                margin-right: 0.5rem;
+            }
+        }
+        img {
+            margin-left: 1rem;
         }
     }
     .o_pms_user_name {
-        margin-left: 0.5rem;
         a {
+            display: inline-block;
+            font-size: 16px;
+            font-weight: bold;
             color: $black;
-            font-weight: 600;
             &:hover {
                 color: $grey-900;
                 text-decoration: none;
@@ -163,9 +185,11 @@ select::-ms-expand {
         }
     }
     .o_pms_close_session {
-        margin-left: 4rem;
-        margin-top: -1rem;
+        display: block;
+        margin-left: 3.5rem;
+        margin-top: -1.5rem;
         a {
+            font-size: 14px;
             color: $theme-color;
             &:hover {
                 color: $grey-900;
@@ -239,16 +263,11 @@ select::-ms-expand {
     animation-name: reveal;
     animation-direction: reverse;
 }
-footer {
-    visibility: hidden;
-}
+
 .o_pms_pwa_theme_color {
     color: $theme-color;
 }
-.o_pms_pwa_structure {
-    margin-left: 1rem;
-    margin-right: 1rem;
-}
+
 .o_pms_pwa_full_shadow {
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
 }
@@ -263,4 +282,14 @@ footer {
 }
 .o_pms_notification_title {
     padding: 0.3rem;
+}
+@media (max-width: 991.98px) {
+    header#top {
+        margin-left: -1rem;
+        margin-right: 0;
+    }
+    main {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }

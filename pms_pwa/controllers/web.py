@@ -381,7 +381,9 @@ class TestFrontEnd(http.Controller):
         methods=["POST"],
         website=True,
     )
-    def reservation_lines_json(self, reservation_ids=False, folio_id=False, **kw):
+    def reservation_lines_json(
+        self, reservation_ids=False, invoice_lines=False, folio_id=False, **kw
+    ):
         if folio_id and reservation_ids:
             folio = request.env["pms.folio"].sudo().search([("id", "=", int(folio_id))])
             if not folio:
@@ -401,11 +403,18 @@ class TestFrontEnd(http.Controller):
                     }
                     for x in reservation_lines
                 ]
-                total_amount = sum([x.price_subtotal for x in reservation_lines])
+                if invoice_lines:
+                    reservation_show_lines = [
+                        x for x in reservation_show_lines if x["id"] in invoice_lines
+                    ]
+                total_amount = sum(
+                    [float(x["price_total"]) for x in reservation_show_lines]
+                )
                 data = {
                     "reservation_lines": reservation_show_lines,
                     "total_amount": total_amount,
                 }
+
                 return data
         return False
 

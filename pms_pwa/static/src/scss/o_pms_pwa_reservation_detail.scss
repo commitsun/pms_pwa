@@ -1,5 +1,7 @@
 section.o_pms_pwa_roomdoo {
     @media (max-width: 991.98px) {
+        margin: 0;
+        padding: 0;
         .padding {
             padding: 1.5rem;
         }
@@ -310,6 +312,13 @@ section.o_pms_pwa_roomdoo {
         color: $white;
         background-color: $red;
     }
+    .o_pms_pwa_btn_principal {
+        width: 30%;
+    }
+    .o_pms_pwa_disabled {
+        width: 30%;
+        margin-left: 1rem;
+    }
     .pago-header {
         color: $theme-color;
         font-size: small;
@@ -379,6 +388,11 @@ section.o_pms_pwa_roomdoo {
             98.5% !important;
         background: url("/pms_pwa/static/img/br_down.png") $bg-theme-color no-repeat
             calc(100% - 10px) !important;
+    }
+    .btn-persona-info-item {
+        width: 100%;
+        background-color: $bg-theme-color;
+        color: $black;
     }
     .btn-persona-info::-ms-expand {
         display: none;

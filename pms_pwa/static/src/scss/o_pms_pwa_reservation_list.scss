@@ -5,7 +5,7 @@
 .o_pms_pwa_notifications_regular {
     margin-left: 2rem;
     margin-right: 2rem;
-    overflow-x: scroll;
+    overflow-x: auto; //scroll;
     display: block ruby;
 }
 .o_pms_pwa_reservation.accordion {
@@ -61,6 +61,7 @@ section.o_pms_pwa_roomdoo_list {
             & > tr {
                 & > td {
                     border-top: none;
+                    cursor: pointer;
                     & > span.dropdown {
                         & a.btn {
                             color: $theme-color;

@@ -5,7 +5,6 @@
             <!-- Sidebar -->
             <t t-set="is_connected" t-value="not user_id._is_public()"/>
             <div t-if="is_connected" class="o_pms_pwa_bg_theme border-right" id="sidebar-wrapper">
-
                 <div class="row sidebar-heading">
                     <div class="col-8">
                         <a href="/" class="o_offcanvas_logo o_pms_pwa_logo">
@@ -33,6 +32,13 @@
                             <t t-set="span_class" t-value="'mobile'"/>
                         </t>
                     </t>
+                </div>
+                <div class="row o_pms_pwa_sidebar_login">
+                    <div class="col-12 o_pms_user_img">
+                        <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
+                        <spam class="o_pms_user_name"><a href=""><t t-esc="user_id.name"></t></a></spam>
+                        <p class="o_pms_close_session"><a href="">Cerrar sesión</a></p>
+                    </div>
                 </div>
             </div>
             <!-- /#sidebar-wrapper -->
