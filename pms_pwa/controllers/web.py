@@ -420,7 +420,7 @@ class TestFrontEnd(http.Controller):
                 }
 
                 return data
-        return False
+        return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         ["/reservation/json_data"],

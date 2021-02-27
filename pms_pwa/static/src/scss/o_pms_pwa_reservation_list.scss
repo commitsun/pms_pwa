@@ -7,6 +7,7 @@
     margin-right: 2rem;
     overflow-x: auto; //scroll;
     display: block ruby;
+    min-height: 30px;
 }
 .o_pms_pwa_reservation.accordion {
     background-color: $bg-theme-color;

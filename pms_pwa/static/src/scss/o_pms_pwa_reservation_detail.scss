@@ -539,6 +539,7 @@ section.o_pms_pwa_roomdoo {
     tr > .o_pms_pwa_detail_th {
         background-color: $bg-theme-color !important;
     }
+
     .o_roomdoo_hide_show {
         width: 100%;
     }
@@ -547,6 +548,7 @@ section.o_pms_pwa_roomdoo {
         cursor: pointer;
         color: $theme-color;
         text-align: "center";
+        margin: auto;
     }
     // .o_roomdoo_hide_show2 {
     //     width: 100%;
@@ -556,5 +558,39 @@ section.o_pms_pwa_roomdoo {
         cursor: pointer;
         color: $theme-color;
         text-align: "center";
+    }
+    #folio_reservation_ids {
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+            border: none;
+            th {
+                border-top: none;
+            }
+        }
+    }
+    #invoice_col {
+        table {
+            border-spacing: 0;
+            border: none;
+            th {
+                border-top: none;
+            }
+            td {
+                color: $white;
+            }
+            tr:nth-child(odd) > td {
+                background-color: transparent;
+            }
+            tr:nth-child(even) > td {
+                background-color: transparent;
+            }
+            tr:nth-child(odd) > td {
+                background-color: transparent;
+            }
+            tr > th {
+                background-color: transparent !important;
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
     var core = require("web.core");
     var _t = core._t;
     var QWeb = core.qweb;
-    var tmp = [];
+    var reservation_ids = [];
     var invoice_lines = [];
     var folio_id = $("input[name='folio_id']").val();
     var survey = [];
@@ -38,163 +38,107 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             survey.push([i, rbValue]);
             // Bidimensional array: [ [1,3], [2,4] ]
         }
-        // Debug:
-        // debug();
     });
 
-    // Debug:
-    /* -function debug() {
-        var debug = "";
-        for (i = 0; i < survey.length; i++) {
-            debug += "Nº " + survey[i][0] + " = " + survey[i][1] + "\n";
-        }
-        alert(debug);
-    }*/
-    $("input[name='reservation_ids']").change(function() {
+    $(document).on("change", "input[name='reservation_ids']", function() {
         var checked = $(this).val();
         if ($(this).is(":checked")) {
-            tmp.push(parseInt(checked));
-            ajax.jsonRpc("/reservation/reservation_lines", "call", {
-                reservation_ids: tmp,
-                invoice_lines: invoice_lines,
-                folio_id: folio_id,
-            }).then(function(data) {
-                var lines = data["reservation_lines"];
-                $("#total_amount").html(data["total_amount"]);
-                var i;
-                var html = "";
-                for (i in lines) {
-                    html +=
-                        '<div class="row m-1 o_roomdoo_hide_show2" id="line' +
-                        lines[i].id +
-                        '">' +
-                        '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
-                        lines[i].id +
-                        '" /></div>' +
-                        '<div class="col-4">' +
-                        lines[i].name +
-                        "</div>" +
-                        '<div class="col-2 right">' +
-                        lines[i].qty_to_invoice +
-                        "</div>" +
-                        '<div class="col-2 right">' +
-                        lines[i].qty_invoiced +
-                        "</div>" +
-                        '<div class="col-3 right">' +
-                        lines[i].price_total +
-                        "</div>" +
-                        "</div>";
-                }
-                $("#reservation_list").html(html);
-            });
+            reservation_ids.push(parseInt(checked));
         } else {
-            tmp.splice($.inArray(parseInt(checked), tmp), 1);
-            ajax.jsonRpc("/reservation/reservation_lines", "call", {
-                reservation_ids: tmp,
-                invoice_lines: invoice_lines,
-                folio_id: folio_id,
-            }).then(function(data) {
-                var lines = data["reservation_lines"];
-                $("#total_amount").html(data["total_amount"]);
-                var i;
-                var html = "";
-                for (i in lines) {
-                    html +=
-                        '<div class="row m-1 o_roomdoo_hide_show2" id="line' +
-                        lines[i].id +
-                        '">' +
-                        '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
-                        lines[i].id +
-                        '" /></div>' +
-                        '<div class="col-4">' +
-                        lines[i].name +
-                        "</div>" +
-                        '<div class="col-2 right">' +
-                        lines[i].qty_to_invoice +
-                        "</div>" +
-                        '<div class="col-2 right">' +
-                        lines[i].qty_invoiced +
-                        "</div>" +
-                        '<div class="col-3 right">' +
-                        lines[i].price_total +
-                        "</div>" +
-                        "</div>";
-                }
-                $("#reservation_list").html(html);
-            });
+            reservation_ids.splice($.inArray(parseInt(checked), reservation_ids), 1);
         }
+        ajax.jsonRpc("/reservation/reservation_lines", "call", {
+            reservation_ids: reservation_ids,
+            invoice_lines: false,
+            folio_id: folio_id,
+        }).then(function(data) {
+            var lines = data["reservation_lines"];
+            $("#total_amount").html(parseFloat(data["total_amount"]).toFixed(2));
+            var i;
+            var html = "";
+            invoice_lines = [];
+            for (i in lines) {
+                invoice_lines.push(parseInt(lines[i].id));
+                html +=
+                    '<tr class="o_roomdoo_hide_show2" id="line' +
+                    lines[i].id +
+                    '">' +
+                    '<td><input type="checkbox" checked="checked" name="invoice_line" value="' +
+                    lines[i].id +
+                    '" /></td>' +
+                    "<td>" +
+                    lines[i].name +
+                    "</td>" +
+                    "<td>" +
+                    lines[i].qty_to_invoice +
+                    "</td>" +
+                    "<td>" +
+                    lines[i].qty_invoiced +
+                    "</td>" +
+                    "<td>" +
+                    parseFloat(lines[i].price_total).toFixed(2) +
+                    "</td>" +
+                    "</tr>";
+            }
+            $("#reservation_list").html(html);
+        });
     });
-    $("input[name='invoice_line']").change(function() {
-        console.log("EEEE");
+    $(document).on("change", "input[name='invoice_line']", function() {
         var checked = $(this).val();
         if ($(this).is(":checked")) {
             invoice_lines.push(parseInt(checked));
-            ajax.jsonRpc("/reservation/reservation_lines", "call", {
-                reservation_ids: tmp,
-                invoice_lines: invoice_lines,
-                folio_id: folio_id,
-            }).then(function(data) {
-                console.log("WEE", data);
-                $("#total_amount").html(data["total_amount"]);
-            });
         } else {
             invoice_lines.splice($.inArray(parseInt(checked), invoice_lines), 1);
-            ajax.jsonRpc("/reservation/reservation_lines", "call", {
-                reservation_ids: tmp,
-                invoice_lines: invoice_lines,
-                folio_id: folio_id,
-            }).then(function(data) {
-                console.log("WEE", data);
-                $("#total_amount").html(data["total_amount"]);
-            });
         }
-        console.log("---> ", invoice_lines);
-    });
-    $(document).ready(function() {
-        var checkboxes = document.getElementsByName("invoice_line");
-        var checkboxesChecked = [];
-        for (var i = 0; i < checkboxes.length; i++) {
-            invoice_lines.push(parseInt(checkboxes[i].value));
-        }
-        if ($("input[name='reservation_ids']:checked").val()) {
-            tmp.push(parseInt($("input[name='reservation_ids']:checked").val()));
-        } else {
-            tmp.push(parseInt($("input[name='id']").val()));
-        }
-        //- console.log("inicial", tmp);
-
         ajax.jsonRpc("/reservation/reservation_lines", "call", {
-            reservation_ids: tmp,
+            reservation_ids: reservation_ids,
             invoice_lines: invoice_lines,
             folio_id: folio_id,
         }).then(function(data) {
-            console.log(data);
+            $("#total_amount").html(parseFloat(data["total_amount"]).toFixed(2));
+        });
+    });
+    $(document).ready(function() {
+        if ($("input[name='reservation_ids']:checked").val()) {
+            reservation_ids.push(
+                parseInt($("input[name='reservation_ids']:checked").val())
+            );
+        } else {
+            reservation_ids.push(parseInt($("input[name='id']").val()));
+        }
+        ajax.jsonRpc("/reservation/reservation_lines", "call", {
+            reservation_ids: reservation_ids,
+            invoice_lines: false,
+            folio_id: folio_id,
+        }).then(function(data) {
             if (data["reservation_lines"]) {
                 var lines = data["reservation_lines"];
-                $("#total_amount").html(data["total_amount"]);
+                $("#total_amount").html(parseFloat(data["total_amount"]).toFixed(2));
                 var i;
                 var html = "";
+                invoice_lines = [];
                 for (i in lines) {
+                    invoice_lines.push(parseInt(lines[i].id));
                     html +=
-                        '<div class="row m-1 o_roomdoo_hide_show2" id="line' +
+                        '<tr class="o_roomdoo_hide_show2" id="line' +
                         lines[i].id +
                         '">' +
-                        '<div class="col-1"><input type="checkbox" checked="checked" name="invoice_line" value="' +
+                        '<td><input type="checkbox" checked="checked" name="invoice_line" value="' +
                         lines[i].id +
-                        '" /></div>' +
-                        '<div class="col-4">' +
+                        '" /></td>' +
+                        "<td>" +
                         lines[i].name +
-                        "</div>" +
-                        '<div class="col-2 right">' +
+                        "</td>" +
+                        "<td>" +
                         lines[i].qty_to_invoice +
-                        "</div>" +
-                        '<div class="col-2 right">' +
+                        "</td>" +
+                        "<td>" +
                         lines[i].qty_invoiced +
-                        "</div>" +
-                        '<div class="col-3 right">' +
-                        lines[i].price_total +
-                        "</div>" +
-                        "</div>";
+                        "</td>" +
+                        "<td>" +
+                        parseFloat(lines[i].price_total).toFixed(2) +
+                        "</td>" +
+                        "</tr>";
                 }
                 $("#reservation_list").html(html);
             }
