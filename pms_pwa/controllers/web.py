@@ -251,7 +251,7 @@ class TestFrontEnd(http.Controller):
                     {
                         "result": True,
                         "message": _("Operation completed successfully."),
-                        "invoices": reservation.folio_id.move_ids,
+                        "invoices": reservation.folio_id.move_ids.ids,
                     }
                 )
             return json.dumps({"result": False, "message": _("Reservation not found")})
