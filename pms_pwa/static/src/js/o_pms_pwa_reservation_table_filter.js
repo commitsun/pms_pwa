@@ -22,7 +22,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
     });
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
-        selector: "table.o_pms_pwa_reservation_list_table",
+        selector: "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
         ],
@@ -222,7 +222,13 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             event.preventDefault();
             var self = this;
             var button = event.currentTarget;
-            var reservation_id = button.closest("tr").getAttribute("data-id");
+            try {
+                var reservation_id = button.closest("tr").getAttribute("data-id");
+            } catch (error) {
+                console.error(error);
+                var reservation_id = $("input[name='id']").val();
+            }
+            // var reservation_id = button.closest("tr").getAttribute("data-id");
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function(data) {
@@ -303,7 +309,13 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             var self = this;
             var button = event.currentTarget;
             var url = button.attributes.url.value;
-            var reservation_id = button.closest("tr").getAttribute("data-id");
+            try {
+                var reservation_id = button.closest("tr").getAttribute("data-id");
+            } catch (error) {
+                console.error(error);
+                var reservation_id = $("input[name='id']").val();
+            }
+            // var reservation_id = button.closest("tr").getAttribute("data-id");
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function(data) {
@@ -332,7 +344,13 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             var self = this;
             var button = event.currentTarget;
             var url = button.attributes.url.value;
-            var reservation_id = button.closest("tr").getAttribute("data-id");
+            try {
+                var reservation_id = button.closest("tr").getAttribute("data-id");
+            } catch (error) {
+                console.error(error);
+                var reservation_id = $("input[name='id']").val();
+            }
+            // var reservation_id = button.closest("tr").getAttribute("data-id");
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function(data) {
@@ -360,7 +378,13 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             event.preventDefault();
             var self = this;
             var button = event.currentTarget;
-            var reservation_id = button.closest("tr").getAttribute("data-id");
+            try {
+                var reservation_id = button.closest("tr").getAttribute("data-id");
+            } catch (error) {
+                console.error(error);
+                var reservation_id = $("input[name='id']").val();
+            }
+            // var reservation_id = button.closest("tr").getAttribute("data-id");
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function(data) {
@@ -392,7 +416,13 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             event.preventDefault();
             var self = this;
             var button = event.currentTarget;
-            var reservation_id = button.closest("tr").getAttribute("data-id");
+            try {
+                var reservation_id = button.closest("tr").getAttribute("data-id");
+            } catch (error) {
+                console.error(error);
+                var reservation_id = $("input[name='id']").val();
+            }
+            // var reservation_id = button.closest("tr").getAttribute("data-id");
             location.href = "/reservation/" + reservation_id;
         },
         _onClickAssignConfirm: function(event) {

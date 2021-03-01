@@ -11,7 +11,8 @@
                     <span class="o_pms_pwa_update_counter ml-1" />
                 </span>
             </div>
-            <div class="oe_structure o_pms_pwa_structure mt-4">
+            <div class="o_pms_pwa_roomdoo_alerts" />
+            <div id="o_pms_detail_reservation" class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <div class="justify-content-center ">
                         <div class="row ">
@@ -30,9 +31,9 @@
                                 </h1>
                             </div>
                             <div class="col-sm-12 col-lg-6 text-right o_pms_pwa_keypad_footer">
-                                <a href="#" class="btn btn-grey-900 btn-radius o_pms_pwa_btn_principal">Cancelar reserva</a>
-                                <a href="#" class="btn btn-grey-300 btn-radius o_pms_pwa_disabled">Check in</a>
-                                <a href="#" class="btn btn-grey-300 btn-radius o_pms_pwa_disabled">Check out</a>
+                                <button id="o_pms_pwa_button_cancel" t-attf-url="/reservation/{{ invoice.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancelar reserva</button>
+                                <button id="o_pms_pwa_button_checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkin o_pms_pwa_disabled">Check in</button>
+                                <button id="o_pms_pwa_button_checkout" t-attf-url="/reservation/{{ invoice.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
                             </div>
                         </div>
                         <div class="row">
@@ -74,7 +75,7 @@
                                                     </button>
                                                     <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
                                                         <t t-foreach="invoice.checkin_partner_ids" t-as="person">
-                                                            <a class="dropdown-item" href="#">
+                                                            <a class="dropdown-item o_pms_pwa_button_checkin" href="#">
                                                                 <t t-if="person.partner_id.name">
                                                                     <t t-esc="person.partner_id.name" />
                                                                 </t>
@@ -227,6 +228,7 @@
                                                             Nº de habitaciones
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
+                                                            <!-- TODO Cambiar por? ._get_allowed_rooms(invoice.checkin, invoice.checkout, invoice.state) -->
                                                             <t t-foreach="invoice.allowed_room_ids" t-as="i">
                                                                 <option name="room_number" t-att-value="i.id" selected="selected" t-if="invoice.preferred_room_id.id == i.id">
                                                                     <t t-esc="i.name" />
@@ -238,7 +240,10 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-6">
-                                                        <button type="button" class="btn btn-confirm">Confirmar</button>
+                                                        <button type="button"
+                                                            class="btn btn-message o_pms_pwa_button_assign_confirm"
+                                                            t-attf-url="/reservation/{{ invoice.id }}/assign">Confirmar</button>
+
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
@@ -492,22 +497,25 @@
                                                 </h4>
                                                 <div id="collapseDatos" class="collapse" aria-labelledby="headingOne" data-parent="#facturacion">
                                                     <div class="card-body">
-                                                        <form action="#" method="post" class="form-horizontal">
+                                                        <form target="_self"
+                                                            t-attf-action="/reservation/{{ invoice.id }}"
+                                                            method="post" class="form-horizontal">
+                                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                                             <div class="form-group form-field mt8">
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Name
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_name" />
+                                                                        <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ invoice.folio_id.partner_id.name }}" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
                                                                     <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type">
+                                                                        <label class="control-label col-12" for="rate_type" >
                                                                             NIF/CIF
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_cif" />
+                                                                        <input class="form-control" type="text" name="invoice_cif" t-attf-value="{{ invoice.folio_id.partner_id.name }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -515,7 +523,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Address
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                        <input class="form-control" type="text" name="invoice_street" t-attf-value="{{ invoice.folio_id.partner_id.street }}" required="required"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -523,7 +531,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             City
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                        <input class="form-control" type="text" name="invoice_city" t-attf-value="{{ invoice.folio_id.partner_id.city }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -531,7 +539,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Postal code
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                        <input class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ invoice.folio_id.partner_id.zip }}" required="required"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -539,7 +547,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Country
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_address" />
+                                                                        <input class="form-control" type="text" name="invoice_country" t-attf-value="{{ invoice.folio_id.partner_id.country_id.name }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                             </div>

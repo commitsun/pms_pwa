@@ -39,7 +39,42 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             // Bidimensional array: [ [1,3], [2,4] ]
         }
     });
+    $(document).on("click", ".editable", function(e) {
+        var i = 0;
+        var currentEle = $(this).attr("id");
+        e.stopPropagation(); //<-------stop the bubbling of the event here
+        var value = $("#" + currentEle).html();
+        console.log("Current Element is " + currentEle);
+        // '<select class="thVal">'+
+        //     for(let i = 1; i <= value; i++)
+        //         '<option value="'+i+'">'+i+'</option>' +
+        //     },
+        //     '</select>'
+        $("#" + currentEle).html(
+            '<input class="thVal" maxlength="1" type="number" width="10" min="1" max="' +
+                value +
+                '" />'
+        );
+        $(".thVal").focus();
+        $(".thVal").keyup(function(event) {
+            if (event.keyCode == 13) {
+                $("#" + currentEle).html(
+                    $(".thVal")
+                        .val()
+                        .trim()
+                );
+            }
+        });
 
+        $(".thVal").focusout(function() {
+            // you can use $('html')
+            $("#" + currentEle).html(
+                $(".thVal")
+                    .val()
+                    .trim()
+            );
+        });
+    });
     $(document).on("change", "input[name='reservation_ids']", function() {
         var checked = $(this).val();
         if ($(this).is(":checked")) {
@@ -69,7 +104,9 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                     "<td>" +
                     lines[i].name +
                     "</td>" +
-                    "<td class='text-right'>" +
+                    "<td id='my" +
+                    lines[i].id +
+                    "' class='text-right editable'>" +
                     lines[i].qty_to_invoice +
                     "</td>" +
                     "<td class='text-right'>" +
@@ -129,7 +166,9 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                         "<td>" +
                         lines[i].name +
                         "</td>" +
-                        "<td class='text-right'>" +
+                        "<td id='my" +
+                        lines[i].id +
+                        "' class='text-right editable'>" +
                         lines[i].qty_to_invoice +
                         "</td>" +
                         "<td class='text-right'>" +
@@ -144,11 +183,11 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             }
         });
 
-        setInterval(function() {
-            $("#o_pms_pwa_direct_chat_messages").load(
-                window.location.href + " #o_pms_pwa_direct_chat_messages"
-            );
-        }, 3000);
+        // setInterval(function () {
+        //     $("#o_pms_pwa_direct_chat_messages").load(
+        //         window.location.href + " #o_pms_pwa_direct_chat_messages"
+        //     );
+        // }, 3000);
         if ($(".o_roomdoo_hide_show").length > 3) {
             $(".o_roomdoo_hide_show:gt(2)").hide();
             $(".o_roomdoo_hide_show-more").show();
@@ -175,5 +214,6 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
         //         ? $(this).text("Show less")
         //         : $(this).text("Show more");
         // });
+        //EDIT INLINE
     });
 });
