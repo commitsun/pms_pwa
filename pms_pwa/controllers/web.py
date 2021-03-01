@@ -222,6 +222,36 @@ class TestFrontEnd(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
+        "/reservation/<int:reservation_id>/invoice",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_invoice(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"].sudo().search([("id", "=", int(reservation_id))])
+            )
+
+            if reservation:
+                payload = http.request.jsonrequest.get("invoice_lines")
+                try:
+                    lines_to_invoice = dict()
+                    for value in payload:
+                        lines_to_invoice[value['id']] = value['qty']
+                    reservation.folio_id._create_invoices(lines_to_invoice=lines_to_invoice)
+                except Exception as e:
+                    return json.dumps({"result": False, "message": str(e)})
+                return json.dumps(
+                    {
+                        "result": True,
+                        "message": _("Operation completed successfully."),
+                        "invoices": reservation.folio_id.move_ids
+                    }
+                )
+            return json.dumps({"result": False, "message": _("Reservation not found")})
+    @http.route(
         "/pms_dashboard",
         type="http",
         auth="user",
