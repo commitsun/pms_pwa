@@ -44,16 +44,10 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
         var currentEle = $(this).attr("id");
         e.stopPropagation(); //<-------stop the bubbling of the event here
         var value = $("#" + currentEle).html();
-        console.log("Current Element is " + currentEle);
-        // '<select class="thVal">'+
-        //     for(let i = 1; i <= value; i++)
-        //         '<option value="'+i+'">'+i+'</option>' +
-        //     },
-        //     '</select>'
+        // console.log("Current Element is " + currentEle);
+
         $("#" + currentEle).html(
-            '<input class="thVal" maxlength="1" type="number" width="10" min="1" max="' +
-                value +
-                '" />'
+            '<input class="thVal o_pms_pwa_editinline" type="number" width="10" min="1" max="10" />'
         );
         $(".thVal").focus();
         $(".thVal").keyup(function(event) {
