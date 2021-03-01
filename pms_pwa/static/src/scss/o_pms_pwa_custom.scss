@@ -43,7 +43,8 @@ h6,
     line-height: 1.2;
 }
 form > div.form-group,
-div.o_pms_pwa_filters_modal {
+div.o_pms_pwa_filters_modal,
+div.o_pms_pwa_reservation_modal {
     & input,
     & select,
     & textarea {

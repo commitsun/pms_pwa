@@ -483,6 +483,7 @@ class TestFrontEnd(http.Controller):
             "adults": reservation.adults,
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
+            "service_ids": reservation._get_service_ids(),
         }
 
         return reservation_values

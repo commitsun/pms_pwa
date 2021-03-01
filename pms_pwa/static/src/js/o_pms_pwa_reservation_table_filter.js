@@ -36,7 +36,6 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             "click .o_pms_pwa_button_checkout": "_onClickCheckoutButton",
             "click .o_pms_pwa_button_payment": "_onClickPaymentButton",
             "click .o_pms_pwa_button_invoice": "_onClickInvoiceButton",
-            "click .o_pms_pwa_button_assign_confirm": "_onClickAssignConfirm",
         },
         /**
          * @override
@@ -161,6 +160,45 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                             },
                             csrf_token: csrf_token,
                         });
+
+                        var survey = [];
+                        // Bidimensional array: [ [1,3], [2,4] ]
+                        // Switcher function:
+                        $("form.o_pms_pwa_reservation_form .o_pms_pwa_rb_tab").click(
+                            function() {
+                                // Spot switcher:
+                                $(this)
+                                    .parent()
+                                    .find(".o_pms_pwa_rb_tab")
+                                    .removeClass("o_pms_pwa_rb_tab_active");
+                                $(this).addClass("o_pms_pwa_rb_tab_active");
+                            }
+                        );
+
+                        $("form.o_pms_pwa_reservation_form").submit(function(event) {
+                            event.preventDefault();
+                            // Empty array:
+                            survey = [];
+                            // Push data:
+                            $(".o_pms_pwa_rb").each(function(i, element) {
+                                element = $(element);
+                                var data_id = element.attr("data-id");
+                                var rbValue = parseInt(
+                                    element
+                                        .find(".o_pms_pwa_rb_tab_active")
+                                        .attr("data-value"),
+                                    0
+                                );
+                                survey.push([data_id, rbValue]);
+                            });
+
+                            $(this)
+                                .find("input[name='reservation_extras']")
+                                .val(survey);
+
+                            event.currentTarget.submit();
+                        });
+
                         $("form.o_pms_pwa_reservation_form").on(
                             "change",
                             "input, select",
@@ -198,6 +236,18 @@ odoo.define("pms_pwa.reservation_table", function(require) {
                                 });
                             }
                         );
+
+                        $(".o_pms_pwa_button_assign_confirm").on("click", function(
+                            event
+                        ) {
+                            event.preventDefault();
+                            var button = event.currentTarget;
+                            ajax.jsonRpc(button.attributes.url.value, "call", {}).then(
+                                function(data) {
+                                    self.displayDataAlert(data);
+                                }
+                            );
+                        });
                     } else {
                         var reservation_data = false;
                     }
@@ -424,13 +474,6 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             }
             // var reservation_id = button.closest("tr").getAttribute("data-id");
             location.href = "/reservation/" + reservation_id;
-        },
-        _onClickAssignConfirm: function(event) {
-            event.preventDefault();
-            var button = event.currentTarget;
-            ajax.jsonRpc(button.attributes.url.value, "call", {}).then(function(data) {
-                self.displayDataAlert(data);
-            });
         },
     });
 

@@ -164,6 +164,31 @@ class PmsReservation(models.Model):
             )
         return checkin_partner_ids
 
+    def _get_service_ids(self):
+        """
+        @return: Return dict with service_ids
+         [
+          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+          ...
+          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+         ]
+        """
+        self.ensure_one()
+        service_ids = []
+        for service in self.service_ids:
+            service_ids.append(
+                {
+                    "id": service.id,
+                    "product_id": {
+                        "id": service.product_id.id,
+                        "name": service.product_id.name,
+                    },
+                    "service_line_ids": service._get_service_line_ids(),
+                }
+            )
+        return service_ids
+
     def _get_reservation_line_ids(self):
         """
         @return: Return dict with nights, price, discount

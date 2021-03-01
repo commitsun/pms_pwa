@@ -302,50 +302,72 @@
                                 </div> -->
 
                                 <div class="form-group form-field o_pms_pwa_group_separation">
-                                    <h4>
-                                        <t
-                                            t-esc="texts.extras_text || _t('Extras')"
-                                        />
-                                    </h4>
-                                    <t t-foreach="extras" t-as="key">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <input
-                                                    type="checkbox"
-                                                    t-att-checked="reservation.extra.includes(key) ? 'checked' : undefined"
-                                                    t-att-value="key"
-                                                    t-att-id="key"
-                                                />
-                                                <label
-                                                    class="control-label o_pms_pwa_checkbox_label"
-                                                    t-att-for="key"
-                                                >
-                                                    <span t-esc="key" />
-                                                </label>
+                                    <div class="row m-3">
+                                        <div class="col-12">
+
+                                            <t t-foreach="reservation.service_ids" t-as="i">
+                                                <div class="form-check" t-if="i.service_line_ids">
+                                                    <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-attf-id="defaultCheck{{i.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{i.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{i.id}}" />
+                                                    <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{i.id}}">
+                                                        <t t-esc="i.product_id.name" />
+                                                    </label>
+                                                    <div t-attf-id='collapsediv{{i.id}}' class='o_pms_pwa_collapse collapse show'>
+                                                        <div class="o_pms_pwa_collapse_content mt-3">
+                                                            <br />
+                                                            <table>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="o_pms_pwa_detail_th">Fecha</th>
+                                                                        <th class="o_pms_pwa_detail_th">Cantidad</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <t t-foreach="i.service_line_ids" t-as="s">
+                                                                        <tr>
+                                                                            <td class="o_pms_pwa_detail_td">
+                                                                                <span t-esc="s.date"/>
+                                                                            </td>
+                                                                            <td class="o_pms_pwa_detail_td">
+                                                                                <div class="o_pms_pwa_rb_box">
+                                                                                    <div t-attf-id='o_pms_pwa_rb_{{i.id}}' t-att-data-id="i.id" class="o_pms_pwa_rb">
+                                                                                        <t t-foreach="reservation.adults+1" t-as="x">
+                                                                                            <div
+                                                                                                t-att-class="'o_pms_pwa_rb_tab ' + (x==s.day_qty ? ' o_pms_pwa_rb_tab_active' : '')"
+                                                                                                t-att-data-value="x">
+                                                                                                <div class="o_pms_pwa_rb_spot">
+                                                                                                    <span class="o_pms_pwa_rb_txt">
+                                                                                                        <t t-esc="x" />
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </t>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </t>
+                                                                </tbody>
+                                                            </table>
+                                                            <br />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-check mt-2" t-if="i.service_line_ids==''">
+                                                    <input class="o_pms_pwa_checkbox" type="checkbox" id="defaultCheck2" checked="checked" />
+                                                    <label class="o_pms_pwa_checkbox_label" for="defaultCheck2">
+                                                        <t t-esc="i.product_id.name" />
+                                                    </label>
+                                                </div>
+                                            </t>
+                                            <input type="hidden" name="reservation_extras"/>
+                                            <div class="form-check mt-2">
+                                                <a class="o_pms_pwa_extras" href="#">Más extras</a>
                                             </div>
                                         </div>
-                                    </t>
-                                    <a class="o_pms_pwa_extras" href="#"><t t-esc="_t('More extras')"/></a>
-                                </div>
-                                <div class="form-group form-field o_pms_pwa_group_separation">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <label
-                                                class="control-label col-12"
-                                                for="card_number"
-                                            >
-                                                <t
-                                                    t-esc="texts.card_text || _t('Reservation card number')"
-                                                />
-                                            </label>
-                                            <input
-                                                class="form-control"
-                                                type="text"
-                                                name="card_number"
-                                                t-att-value="reservation.credit_card_details"
-                                            />
-                                        </div>
                                     </div>
+                                </div>
+
+                                <div class="form-group form-field o_pms_pwa_group_separation">
 
                                     <div class="o_pms_pwa_shadow mt-3">
                                         <div class="row">
@@ -482,7 +504,7 @@
                         <div class="modal-header o_pms_pwa_modal_header">
                             <div class="col-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
-                                    <h4 class="col-6 modal-title">
+                                    <h4 class="modal-title">
                                         Reservation checkout:
                                         <span t-esc="reservation.id" />
                                     </h4>
@@ -497,12 +519,12 @@
                                 Adults: <t t-esc="reservation.adults"/><br/>
                                 Pending amount: <t t-esc="reservation.folio_pending_amount"/><br/>
                             </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                 <span>Close</span>
                             </button>
                             <button type="button"
                                 t-att-url="'/reservation/' + reservation.id +'/checkout'"
-                                class="btn btn-message o_pms_pwa_button_checkout_confirm" data-dismiss="modal" aria-label="Checkout">
+                                class="btn btn-message btn-block o_pms_pwa_button_checkout_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkout">
                                 <span>Checkout</span>
                             </button>
                         </div>
@@ -527,7 +549,7 @@
                         <div class="modal-header o_pms_pwa_modal_header">
                             <div class="col-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
-                                    <h4 class="col-6 modal-title">
+                                    <h4 class="modal-title">
                                         Reservation cancel:
                                         <span t-esc="reservation.id" />
                                     </h4>
@@ -542,12 +564,12 @@
                                 Adults: <t t-esc="reservation.adults"/><br/>
                                 Pending amount: <t t-esc="reservation.folio_pending_amount"/><br/>
                             </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                 <span>Close</span>
                             </button>
                             <button type="button"
                                 t-att-url="'/reservation/' + reservation.id +'/cancel'"
-                                class="cancel o_pms_pwa_button_cancel_confirm" data-dismiss="modal" aria-label="Cancel">
+                                class="btn btn-message btn-block o_pms_pwa_button_cancel_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Cancel">
                                 <span>Cancel</span>
                             </button>
                         </div>
@@ -572,7 +594,7 @@
                         <div class="modal-header o_pms_pwa_modal_header">
                             <div class="col-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
-                                    <h4 class="col-6 modal-title">
+                                    <h4 class="modal-title">
                                         Reservation payment:
                                         <span t-esc="reservation.id" />
                                     </h4>
@@ -600,7 +622,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-12 mt-2">
                                             <label class="control-label col-12" for="amount">
                                                 Amount
                                             </label>
@@ -610,11 +632,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                 <span>Close</span>
                             </button>
                             <button type="button"
-                                class="o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
+                                class="btn btn-message btn-block o_pms_pwa_button_payment_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Pay">
                                 <span>Pay</span>
                             </button>
                         </div>
@@ -639,7 +661,7 @@
                         <div class="modal-header o_pms_pwa_modal_header">
                             <div class="col-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
-                                    <h4 class="col-6 modal-title">
+                                    <h4 class="modal-title">
                                         Reservation checkin:
                                         <span t-esc="reservation.id" />
                                     </h4>
@@ -678,7 +700,7 @@
                                                             name="firstname" t-att-value="partner.name ? partner.name : ''"/>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="lastname">
                                                             Last name
                                                         </label>
@@ -686,7 +708,7 @@
                                                             name="lastname" t-att-value="partner.name ? partner.name : ''"/>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="lastname2">
                                                             Second last name
                                                         </label>
@@ -694,7 +716,7 @@
                                                             name="lastname2" t-att-value="partner.name ? partner.name : ''"/>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="birthdate_date">
                                                             Birthdate date
                                                         </label>
@@ -704,7 +726,7 @@
                                                         </span>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="document_number">
                                                             VAT number
                                                         </label>
@@ -712,7 +734,7 @@
                                                             name="document_number"/>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="document_type">
                                                             Document type
                                                         </label>
@@ -752,7 +774,7 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="document_expedition_date">
                                                             Document expedition date
                                                         </label>
@@ -762,7 +784,7 @@
                                                         </span>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="gender">
                                                             Gender
                                                         </label>
@@ -787,7 +809,7 @@
                                                         </select>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="mobile">
                                                             Mobile
                                                         </label>
@@ -795,7 +817,7 @@
                                                             name="mobile"/>
                                                     </div>
 
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="email">
                                                             Email
                                                         </label>
@@ -813,11 +835,11 @@
                                     </t>
                                 </div>
                             </div>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                 <span>Close</span>
                             </button>
                             <button type="button"
-                                class="o_pms_pwa_button_checkin_confirm" data-dismiss="modal" aria-label="Checkin">
+                                class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkin">
                                 <span>Checkin</span>
                             </button>
                         </div>
