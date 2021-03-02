@@ -38,7 +38,58 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             survey.push([i, rbValue]);
             // Bidimensional array: [ [1,3], [2,4] ]
         }
+        // console.log(survey);
     });
+    $(function() {
+        $('input[name="range_check_date"]').daterangepicker(
+            {
+                locale: {
+                    direction: "ltr",
+                    format: "DD/MM/YYYY",
+                    separator: " - ",
+                    applyLabel: "Aplicar",
+                    cancelLabel: "Cancelar",
+                    fromLabel: "Desde",
+                    toLabel: "hasta",
+                    customRangeLabel: "Custom",
+                    daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                    monthNames: [
+                        "Enero",
+                        "Febrero",
+                        "Marzo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre",
+                    ],
+                    firstDay: 1,
+                },
+
+                opens: "left",
+                showCustomRangeLabel: false,
+            },
+            function(start, end, label) {
+                $('input[name="check_in_date"]').val(start);
+                $('input[name="check_out_date"]').val(end);
+                let nights = 1;
+                const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+                const firstDate = new Date(start);
+                const secondDate = new Date(end);
+                const diffDays = Math.round(
+                    Math.abs((firstDate - secondDate) / oneDay)
+                );
+                nights = diffDays - 1;
+                $('input[name="nights_number"]').val(nights);
+                $("form#reservation_detail").submit();
+            }
+        );
+    });
+
     $(document).on("click", ".editable", function(e) {
         var i = 0;
         var currentEle = $(this).attr("id");
@@ -129,6 +180,8 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
             $("#total_amount").html(parseFloat(data["total_amount"]).toFixed(2));
         });
     });
+
+    //daterangepicker
     $(document).ready(function() {
         if ($("input[name='reservation_ids']:checked").val()) {
             reservation_ids.push(

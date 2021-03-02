@@ -25,6 +25,13 @@
                                     <span class="moreinfo-header">
                                         <t t-esc="invoice.origin" />
                                     </span>
+                                    <span class="agency">
+                                        <t t-if="invoice.channel_type_id" t-esc="invoice.channel_type_id.name"/>
+                                        <img t-if="invoice.agency_id" t-att-src="website.image_url(invoice.agency_id, 'image_128')"
+                                            width="50"
+                                            t-att-title="invoice.agency_id.name"
+                                            t-att-alt="invoice.agency_id.name"/>
+                                    </span>
                                     <span class="status-header">
                                         <t t-esc="invoice.state" />
                                     </span>
@@ -208,7 +215,7 @@
                                         </h3>
                                     </div>
                                     <div class="card-body">
-                                        <form action="#" method="post" class="form-horizontal">
+                                        <form t-attf-action="/reservation/{{invoice.id}}" method="post" class="form-horizontal" id="reservation_detail">
                                             <div class="form-group form-field mt8">
                                                 <div class="row">
                                                     <div class="col-sm-12">
@@ -248,10 +255,10 @@
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <label class="control-label col-12" for="nights_number">
+                                                        <label class="control-label col-12" for="adults">
                                                             Nº de personas
                                                         </label>
-                                                        <input class="form-control" type="text" name="nights_number" t-att-value="invoice.adults" />
+                                                        <input class="form-control" type="text" name="adults" t-att-value="invoice.adults" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="nights_number">
@@ -261,11 +268,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
+                                                    <t t-set="date_checkin" t-value="invoice.checkin.strftime('%d/%m/%Y')" />
+                                                    <t t-set="date_checkout" t-value="invoice.checkout.strftime('%d/%m/%Y')" />
                                                     <div class="col-6">
-                                                        <label class="control-label col-12" for="check_in_date">
-                                                            Check in
+                                                        <label class="control-label col-12" for="range_check_date">
+                                                            Check in - Check out
                                                         </label>
-                                                        <input class="form-control" type="date" name="check_in_date" t-att-value="invoice.checkin" />
+                                                        <input class="form-control" type="text" name="range_check_date" t-attf-value="{{ date_checkin }} - {{ date_checkout }}" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <span class="fa fa-calendar" />
                                                         </span>
@@ -279,13 +288,15 @@
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <label class="control-label col-12" for="check_out_date">
+                                                        <input type="hidden" name="check_in_date" t-attf-value="{{ date_checkin }}" />
+                                                        <input type="hidden" name="check_out_date" t-attf-value="{{ date_checkout }}" />
+                                                        <!-- <label class="control-label col-12" for="check_out_date">
                                                             Check out
                                                         </label>
-                                                        <input class="form-control" type="date" name="check_out_date" t-att-value="invoice.checkout" />
+                                                        <input class="form-control" type="text" name="check_out_date" t-att-value="invoice.checkout" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <span class="fa fa-calendar" />
-                                                        </span>
+                                                        </span> -->
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="check_out_hour">
