@@ -697,7 +697,7 @@
                                                             First name
                                                         </label>
                                                         <input class="form-control" type="text"
-                                                            name="firstname" t-att-value="partner.name ? partner.name : ''"/>
+                                                            name="firstname" t-att-value="partner.firstname ? partner.firstname : ''"/>
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
@@ -705,7 +705,7 @@
                                                             Last name
                                                         </label>
                                                         <input class="form-control" type="text"
-                                                            name="lastname" t-att-value="partner.name ? partner.name : ''"/>
+                                                            name="lastname" t-att-value="partner.lastname ? partner.lastname : ''"/>
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
@@ -713,14 +713,15 @@
                                                             Second last name
                                                         </label>
                                                         <input class="form-control" type="text"
-                                                            name="lastname2" t-att-value="partner.name ? partner.name : ''"/>
+                                                            name="lastname2" t-att-value="partner.lastname2 ? partner.lastname2 : ''"/>
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="birthdate_date">
                                                             Birthdate date
                                                         </label>
-                                                        <input class="form-control" type="date" name="birthdate_date"/>
+                                                        <input class="form-control" type="date"
+                                                            name="birthdate_date" t-att-value="partner.birthdate_date ? partner.birthdate_date : ''"/>
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <span class="fa fa-calendar" />
                                                         </span>
@@ -731,7 +732,7 @@
                                                             VAT number
                                                         </label>
                                                         <input class="form-control" type="text"
-                                                            name="document_number"/>
+                                                            name="document_number" t-att-value="partner.document_number ? partner.document_number : ''"/>
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
@@ -743,32 +744,35 @@
                                                             name="document_type">
                                                             <option
                                                                 name="document_type"
-                                                                value="D">
+                                                                value="D"
+                                                                t-att-selected="partner.document_type == D ? 'selected' : None">
                                                                 DNI
                                                             </option>
                                                             <option
                                                                 name="document_type"
-                                                                value="P">
+                                                                value="P"
+                                                                t-att-selected="partner.document_type == P ? 'selected' : None">
                                                                 Passport
                                                             </option>
                                                             <option
                                                                 name="document_type"
-                                                                value="C">
+                                                                value="C"
+                                                                t-att-selected="partner.document_type == C ? 'selected' : None">
                                                                 Driving license
                                                             </option>
                                                             <option
                                                                 name="document_type"
-                                                                value="I">
+                                                                value="I" t-att-selected="partner.document_type == I ? 'selected' : None">
                                                                 Identification Document
                                                             </option>
                                                             <option
                                                                 name="document_type"
-                                                                value="N">
+                                                                value="N" t-att-selected="partner.document_type == N ? 'selected' : None">
                                                                 Spanish residence permit
                                                             </option>
                                                             <option
                                                                 name="document_type"
-                                                                value="X">
+                                                                value="X" t-att-selected="partner.document_type == X ? 'selected' : None">
                                                                 European residence permit
                                                             </option>
                                                         </select>
@@ -778,7 +782,8 @@
                                                         <label class="control-label col-12" for="document_expedition_date">
                                                             Document expedition date
                                                         </label>
-                                                        <input class="form-control" type="date" name="document_expedition_date"/>
+                                                        <input class="form-control" type="date" name="document_expedition_date"
+                                                            t-att-value="partner.document_expedition_date ? partner.document_expedition_date : ''"/>
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <span class="fa fa-calendar" />
                                                         </span>
@@ -793,17 +798,20 @@
                                                             name="gender">
                                                             <option
                                                                 name="gender"
-                                                                value="male">
+                                                                value="male"
+                                                                t-att-selected="partner.gender == 'male' ? 'selected' : None">
                                                                 Male
                                                             </option>
                                                             <option
                                                                 name="gender"
-                                                                value="female">
+                                                                value="female"
+                                                                t-att-selected="partner.gender == 'female' ? 'selected' : None">
                                                                 Female
                                                             </option>
                                                             <option
                                                                 name="gender"
-                                                                value="other">
+                                                                value="other"
+                                                                t-att-selected="partner.gender == 'other' ? 'selected' : None">
                                                                 Other
                                                             </option>
                                                         </select>
@@ -814,7 +822,8 @@
                                                             Mobile
                                                         </label>
                                                         <input class="form-control" type="tel"
-                                                            name="mobile"/>
+                                                            name="mobile"
+                                                            t-att-value="partner.mobile ? partner.mobile : ''"/>
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
@@ -822,7 +831,8 @@
                                                             Email
                                                         </label>
                                                         <input class="form-control" type="email"
-                                                            name="email"/>
+                                                            name="email"
+                                                            t-att-value="partner.email ? partner.email : ''"/>
 
                                                         <input class="form-control" type="hidden"
                                                             name="pms_property_id" t-att-value="reservation.pms_property_id"/>
