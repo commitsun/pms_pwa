@@ -1,6 +1,5 @@
 # Copyright 2017  Dario Lodeiros
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-import datetime
 import json
 
 from odoo import _, api, fields, models
@@ -23,7 +22,7 @@ class PmsReservation(models.Model):
             record.pwa_board_service_tags = json.dumps(board_service_tags)
 
     def _compute_pwa_action_buttons(self):
-        """ Return ordered button list, where the first button is
+        """Return ordered button list, where the first button is
         the preditive action, the next are active actions:
         - "Assign":     Predictive: Reservation by assign
                         Active- Idem
@@ -131,7 +130,10 @@ class PmsReservation(models.Model):
                 lines = []
                 for line in service.service_line_ids:
                     lines.append(
-                        {"date": line.date, "day_qty": line.day_qty,}
+                        {
+                            "date": line.date,
+                            "day_qty": line.day_qty,
+                        }
                     )
                 reservation_extra[service.id]["lines"] = lines
             else:
@@ -203,7 +205,11 @@ class PmsReservation(models.Model):
         reservation_lines = []
         for line in self.reservation_line_ids:
             reservation_lines.append(
-                {"date": line.date, "price": line.price, "discount": line.discount,}
+                {
+                    "date": line.date,
+                    "price": line.price,
+                    "discount": line.discount,
+                }
             )
             # TODO: Splitted Reservations has different rooms at line
             # TODO: Cancel Discount, calculate on discount or send separately??)
@@ -245,7 +251,10 @@ class PmsReservation(models.Model):
             allowed_rooms = []
             for room in rooms_available:
                 allowed_rooms.append(
-                    {"id": room.id, "name": room.name,}
+                    {
+                        "id": room.id,
+                        "name": room.name,
+                    }
                 )
             allowed_room_types = []
             for room_type_id in rooms_available.mapped("room_type_id.id"):
