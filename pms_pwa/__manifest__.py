@@ -17,6 +17,7 @@
     "depends": ["base", "website", "pms", "bus"],
     "data": [
         "templates/_includes/head.xml",
+        "templates/modal.xml",
         "templates/menu/sidebar.xml",
         "templates/menu/navbar.xml",
         "templates/reservation_list.xml",
