@@ -156,6 +156,8 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                     "</td>" +
                     "<td class='text-right'>" +
                     lines[i].qty_invoiced +
+                    "/" +
+                    lines[i].qty_to_invoice +
                     "</td>" +
                     "<td class='text-right'>" +
                     parseFloat(lines[i].price_total).toFixed(2) +
@@ -220,6 +222,8 @@ odoo.define("pms_pwa.reservation_detail", function(require) {
                         "</td>" +
                         "<td class='text-right'>" +
                         lines[i].qty_invoiced +
+                        "/" +
+                        lines[i].qty_to_invoice +
                         "</td>" +
                         "<td class='text-right'>" +
                         parseFloat(lines[i].price_total).toFixed(2) +
