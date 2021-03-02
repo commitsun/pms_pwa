@@ -453,8 +453,8 @@
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
                                                     <th class="o_pms_pwa_theme_color">concepto</th>
-                                                    <th class="o_pms_pwa_theme_color">cantidad</th>
-                                                    <th class="o_pms_pwa_theme_color">facturado</th>
+                                                    <th class="o_pms_pwa_theme_color">a facturar</th>
+                                                    <th class="o_pms_pwa_theme_color">facturado/total</th>
                                                     <th class="o_pms_pwa_theme_color">importe(€)</th>
                                                 </tr>
                                             </thead>
@@ -470,16 +470,18 @@
                                             <div class="col-4">
                                                 Total
                                                 <br />
+                                                a facturar
+                                                <br />
                                                 <span class="pt" id="total_amount">
                                                     <t t-esc="invoice.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
-                                                Comisión
+                                                Total
                                                 <br />
                                                 <br />
                                                 <span class="price">
-                                                    <t t-esc="invoice.folio_id.commission" />
+                                                    <t t-esc="invoice.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
