@@ -1,13 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="12.82" height="12.779" viewBox="0 0 12.82 12.779">
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="12.82"
+  height="12.779"
+  viewBox="0 0 12.82 12.779"
+>
   <g id="_992680" data-name="992680" transform="translate(0.25 -0.6)">
     <g id="Grupo_3926" data-name="Grupo 3926" transform="translate(0 0.85)">
       <g id="Grupo_3925" data-name="Grupo 3925">
-        <path id="Trazado_2445" data-name="Trazado 2445" d="M6.14,12.106h-4.6a.512.512,0,0,1-.512-.512V2.385a.512.512,0,0,1,.512-.512h4.6A.512.512,0,0,0,6.14.85h-4.6A1.537,1.537,0,0,0,0,2.385v9.21a1.537,1.537,0,0,0,1.535,1.535h4.6a.512.512,0,1,0,0-1.023Z" transform="translate(0 -0.85)" fill="#3f4443" stroke="#3f4443" stroke-width="0.5"/>
+        <path
+          id="Trazado_2445"
+          data-name="Trazado 2445"
+          d="M6.14,12.106h-4.6a.512.512,0,0,1-.512-.512V2.385a.512.512,0,0,1,.512-.512h4.6A.512.512,0,0,0,6.14.85h-4.6A1.537,1.537,0,0,0,0,2.385v9.21a1.537,1.537,0,0,0,1.535,1.535h4.6a.512.512,0,1,0,0-1.023Z"
+          transform="translate(0 -0.85)"
+          fill="#3f4443"
+          stroke="#3f4443"
+          stroke-width="0.5"
+        />
       </g>
     </g>
     <g id="Grupo_3928" data-name="Grupo 3928" transform="translate(4.093 3.408)">
       <g id="Grupo_3927" data-name="Grupo 3927">
-        <path id="Trazado_2446" data-name="Trazado 2446" d="M178.175,110.382l-3.111-3.07a.512.512,0,1,0-.718.729l2.223,2.194h-5.957a.512.512,0,0,0,0,1.023h5.957l-2.223,2.194a.512.512,0,1,0,.718.729l3.111-3.07a.511.511,0,0,0,0-.729Z" transform="translate(-170.1 -107.165)" fill="#3f4443" stroke="#3f4443" stroke-width="0.5"/>
+        <path
+          id="Trazado_2446"
+          data-name="Trazado 2446"
+          d="M178.175,110.382l-3.111-3.07a.512.512,0,1,0-.718.729l2.223,2.194h-5.957a.512.512,0,0,0,0,1.023h5.957l-2.223,2.194a.512.512,0,1,0,.718.729l3.111-3.07a.511.511,0,0,0,0-.729Z"
+          transform="translate(-170.1 -107.165)"
+          fill="#3f4443"
+          stroke="#3f4443"
+          stroke-width="0.5"
+        />
       </g>
     </g>
   </g>

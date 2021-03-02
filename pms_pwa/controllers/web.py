@@ -222,6 +222,41 @@ class TestFrontEnd(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
+        "/reservation/<int:reservation_id>/invoice",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_invoice(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+
+            if reservation:
+                payload = http.request.jsonrequest.get("invoice_lines")
+                try:
+                    lines_to_invoice = dict()
+                    for value in payload:
+                        lines_to_invoice[value["id"]] = value["qty"]
+                    reservation.folio_id._create_invoices(
+                        lines_to_invoice=lines_to_invoice
+                    )
+                except Exception as e:
+                    return json.dumps({"result": False, "message": str(e)})
+                return json.dumps(
+                    {
+                        "result": True,
+                        "message": _("Operation completed successfully."),
+                        "invoices": reservation.folio_id.move_ids.ids,
+                    }
+                )
+            return json.dumps({"result": False, "message": _("Reservation not found")})
+
+    @http.route(
         "/pms_dashboard",
         type="http",
         auth="user",
@@ -235,12 +270,26 @@ class TestFrontEnd(http.Controller):
             {
                 "tasks": ["task 01", "task 02", "task 03"],
                 "arrivals": {
-                    "today": {"date": "14/10/2020", "to_arrive": 10, "to_check_in": 2,},
-                    "tomorrow": {"date": "15/10/2020", "to_arrive": 8,},
+                    "today": {
+                        "date": "14/10/2020",
+                        "to_arrive": 10,
+                        "to_check_in": 2,
+                    },
+                    "tomorrow": {
+                        "date": "15/10/2020",
+                        "to_arrive": 8,
+                    },
                 },
                 "departures": {
-                    "today": {"date": "14/10/2020", "to_leave": 10, "to_check_out": 2,},
-                    "tomorrow": {"date": "15/10/2020", "to_leave": 8,},
+                    "today": {
+                        "date": "14/10/2020",
+                        "to_leave": 10,
+                        "to_check_out": 2,
+                    },
+                    "tomorrow": {
+                        "date": "15/10/2020",
+                        "to_leave": 8,
+                    },
                 },
                 "rooms": {
                     "date": "14/10/2020",
@@ -458,7 +507,11 @@ class TestFrontEnd(http.Controller):
         return allowed_journals
 
     @http.route(
-        "/calendar", type="http", auth="user", methods=["GET", "POST"], website=True,
+        "/calendar",
+        type="http",
+        auth="user",
+        methods=["GET", "POST"],
+        website=True,
     )
     def calendar(self, date=False, **kw):
         if not date:
@@ -475,7 +528,10 @@ class TestFrontEnd(http.Controller):
             "rooms_list": rooms,
             "date_list": date_list,
         }
-        return http.request.render("pms_pwa.roomdoo_calendar_page", values,)
+        return http.request.render(
+            "pms_pwa.roomdoo_calendar_page",
+            values,
+        )
 
     @http.route("/calendar/line", auth="public", website=True)
     def calendar_list(self, date=False, search="", **post):

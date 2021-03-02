@@ -321,7 +321,9 @@ class TestPwaReservation(TestHotel):
 
         # board service
         bs = self.env["pms.board.service"].create(
-            {"name": "Board Service Only Breakfast",}
+            {
+                "name": "Board Service Only Breakfast",
+            }
         )
         bsrt = self.env["pms.board.service.room.type"].create(
             {
@@ -347,11 +349,17 @@ class TestPwaReservation(TestHotel):
         )
 
         self.env["pms.board.service.room.type.line"].create(
-            {"pms_board_service_room_type_id": bsrt.id, "product_id": prod.id,}
+            {
+                "pms_board_service_room_type_id": bsrt.id,
+                "product_id": prod.id,
+            }
         )
 
         self.env["pms.board.service.room.type.line"].create(
-            {"pms_board_service_room_type_id": bsrt.id, "product_id": prod2.id,}
+            {
+                "pms_board_service_room_type_id": bsrt.id,
+                "product_id": prod2.id,
+            }
         )
 
         reservation_vals = {

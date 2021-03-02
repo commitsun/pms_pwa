@@ -13,7 +13,7 @@
         "Manuel Alejandro Núñez Liz <alejandro@zeleiro.com>",
         "Vicente Ángel Gutiérrez Fernández <vicente@comunitea.com>",
     ],
-    "website": "https://github.com/commitsun/pms_pwa",
+    "website": "https://github.com/OCA/pms",
     "depends": ["base", "website", "pms", "bus"],
     "data": [
         "templates/_includes/head.xml",

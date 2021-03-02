@@ -1,4 +1,4 @@
-odoo.define("pms_pwa.reservation_table", function(require) {
+odoo.define("pms_pwa.reservation_table", function (require) {
     var rpc = require("web.rpc");
     require("web.dom_ready");
     var ajax = require("web.ajax");
@@ -7,7 +7,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
     var QWeb = core.qweb;
     var publicWidget = require("web.public.widget");
 
-    $("button.close > span.o_pms_pwa_tag_close").on("click", function(event) {
+    $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
         event.preventDefault();
         var self = this;
         var input = event.currentTarget.parentNode.getAttribute("data-tag");
@@ -19,7 +19,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
         $("form").submit();
     });
 
-    $("tbody > tr > td:not(:last-child) a").on("click", function(event) {
+    $("tbody > tr > td:not(:last-child) a").on("click", function (event) {
         event.stopPropagation();
     });
 
@@ -35,7 +35,7 @@ odoo.define("pms_pwa.reservation_table", function(require) {
         /**
          * @override
          */
-        start: function() {
+        start: function () {
             var self = this;
             self.reservation_text = _t("Reservation");
             self.info_text = _t("More info");
@@ -59,12 +59,12 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             self.notes_text = _t("Notes");
             return this._super.apply(this, arguments);
         },
-        displayContent: function(xmlid, render_values) {
+        displayContent: function (xmlid, render_values) {
             var html = core.qweb.render(xmlid, render_values);
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
         },
-        _onClickReservationButton: function(event) {
+        _onClickReservationButton: function (event) {
             event.preventDefault();
             var self = this;
             var reservation_id = event.currentTarget.parentNode.getAttribute("data-id");
@@ -72,8 +72,8 @@ odoo.define("pms_pwa.reservation_table", function(require) {
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
-            }).then(function(data) {
-                setTimeout(function() {
+            }).then(function (data) {
+                setTimeout(function () {
                     if (data) {
                         var reservation_data = data;
                         /* Adding missing data */

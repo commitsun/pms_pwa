@@ -1,10 +1,10 @@
-odoo.define("pms_pwa.reservation_detail", function() {
+odoo.define("pms_pwa.reservation_detail", function () {
     "use strict";
 
     var survey = [];
     // Bidimensional array: [ [1,3], [2,4] ]
     // Switcher function:
-    $(".o_pms_pwa_rb_tab").click(function() {
+    $(".o_pms_pwa_rb_tab").click(function () {
         // Spot switcher:
         $(this)
             .parent()
@@ -14,7 +14,7 @@ odoo.define("pms_pwa.reservation_detail", function() {
     });
 
     // Save data:
-    $(".trigger").click(function() {
+    $(".trigger").click(function () {
         // Empty array:
         survey = [];
         // Push data:
@@ -42,8 +42,8 @@ odoo.define("pms_pwa.reservation_detail", function() {
         alert(debug);
     }*/
     /* Refresh chat */
-    $(document).ready(function() {
-        setInterval(function() {
+    $(document).ready(function () {
+        setInterval(function () {
             $("#o_pms_pwa_direct_chat_messages").load(
                 window.location.href + " #o_pms_pwa_direct_chat_messages"
             );
