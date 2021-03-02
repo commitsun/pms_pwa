@@ -8,6 +8,7 @@
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
                 <span class="o_pms_notification_title"><i class="fa fa-info-circle mr-1"/> Updates <span class="o_pms_pwa_update_counter ml-1"/></span>
             </div>
+            <div class="mx-3 o_pms_pwa_roomdoo_alerts"/>
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo_list">
                     <div class="o_pms_pwa_full_shadow bg-white p-5">
@@ -54,8 +55,6 @@
                                 </span>
                             </t>
                         </div>
-
-                        <div class="o_pms_pwa_roomdoo_alerts" />
 
                         <div class="table-wrapper table-responsive">
                             <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
@@ -345,7 +344,7 @@
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="checkout">
-                                                Check in
+                                                Check out
                                             </label>
                                             <input class="form-control"
                                                 type="date" name="checkout"

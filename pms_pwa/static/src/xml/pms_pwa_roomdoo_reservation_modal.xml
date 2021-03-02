@@ -215,7 +215,6 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-
                                         <div class="col-6">
                                             <label class="control-label col-12" for="check_in_date">
                                                 <t t-esc="texts.check_in_text || _t('Check in')"/>

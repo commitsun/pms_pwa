@@ -17,7 +17,11 @@
                         </div>
                         <div class="row o_pms_pwa_header">
                             <div class="col-md-8 o_pms_icons">
-                                <button class="btn btn-radius btn-pms_pwa">
+                                <button
+                                    class="btn btn-radius btn-pms_pwa"
+                                    href="#" data-toggle="modal"
+                                    data-target="#o_pms_pwa_new_reservation_modal"
+                                    rel="nofollow">
                                     <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" />
                                     Nueva reserva
                                 </button>
@@ -55,6 +59,8 @@
                     <div class="oe_structure oe_structure_solo" id="oe_structure_header_default_1" />
                 </div>
             </nav>
+
+            <t t-call="pms_pwa.o_pms_pwa_new_reservation_modal"/>
         </xpath>
     </template>
 </odoo>

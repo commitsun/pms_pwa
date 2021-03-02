@@ -151,7 +151,8 @@ section.o_pms_pwa_roomdoo_list {
 *******************************/
 
 div.o_pms_pwa_reservation_modal,
-div.o_pms_pwa_filters_modal {
+div.o_pms_pwa_filters_modal,
+div.o_pms_pwa_new_reservation_modal {
     &.modal.o_pms_pwa_right .modal-dialog {
         position: fixed;
         margin: auto;
@@ -411,9 +412,16 @@ div.o_pms_pwa_reservation_modal {
     }
 }
 
+div.o_pms_pwa_new_reservation_modal {
+    .o_pms_pwa_group_separation {
+        border-bottom: 1px solid $table-text-color-lighter;
+    }
+}
+
 section.o_pms_pwa_roomdoo_section,
 div.o_pms_pwa_reservation_modal,
-div.o_pms_pwa_filters_modal {
+div.o_pms_pwa_filters_modal,
+div.o_pms_pwa_new_reservation_modal {
     a.btn-outline-dark,
     button.btn-outline-dark {
         border-width: 1px;
