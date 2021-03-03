@@ -128,8 +128,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             $("#total_amount").html(parseFloat(data.total_amount).toFixed(2));
             var html = "";
             invoice_lines = [];
-            var i;
-            for (i in lines) {
+            for (const i in lines) {
                 invoice_lines.push(parseInt(lines[i].id, 10));
                 html +=
                     '<tr class="o_roomdoo_hide_show2" id="line' +
@@ -194,8 +193,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 $("#total_amount").html(parseFloat(data.total_amount).toFixed(2));
                 var html = "";
                 invoice_lines = [];
-                var i;
-                for (i in lines) {
+                for (const i in lines) {
                     invoice_lines.push(parseInt(lines[i].id, 10));
                     html +=
                         '<tr class="o_roomdoo_hide_show2" id="line' +

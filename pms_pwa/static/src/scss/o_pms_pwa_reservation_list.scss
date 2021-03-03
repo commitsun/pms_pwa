@@ -167,7 +167,7 @@ div.o_pms_pwa_new_reservation_modal {
     }
     &.modal.o_pms_pwa_right .modal-content {
         overflow-y: auto;
-        max-height: 92%;
+        height: 92%;
         & > div.modal-header {
             border-bottom: none;
             & > button.close {
