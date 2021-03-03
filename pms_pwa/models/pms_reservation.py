@@ -39,9 +39,9 @@ class PmsReservation(models.Model):
         """
         buttons = {
             "Assign": "/assign",
-            "Checkin": "/check-in",
-            "Checkout": "/check-out",
-            "Payment": "/pay",
+            "Checkin": "/checkin",
+            "Checkout": "/checkout",
+            "Payment": "/payment",
             "Invoice": "/invoice",
             "Cancel": "/cancel",
         }
@@ -142,6 +142,54 @@ class PmsReservation(models.Model):
                     "product_qty": service.product_qty,
                 }
         return reservation_extra
+
+    def _get_checkin_partner_ids(self):
+        """
+        @return: Return dict with checkin_partner_ids
+         [
+          {"id": id, "name": name, "mobile": mobile, "email": email},
+          {"id": id, "name": name, "mobile": mobile, "email": email},
+          ...
+          {"id": id, "name": name, "mobile": mobile, "email": email},
+         ]
+        """
+        self.ensure_one()
+        checkin_partner_ids = []
+        for partner in self.checkin_partner_ids:
+            checkin_partner_ids.append(
+                {
+                    "id": partner.id,
+                    "name": partner.name,
+                    "mobile": partner.mobile,
+                    "email": partner.email,
+                }
+            )
+        return checkin_partner_ids
+
+    def _get_service_ids(self):
+        """
+        @return: Return dict with service_ids
+         [
+          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+          ...
+          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+         ]
+        """
+        self.ensure_one()
+        service_ids = []
+        for service in self.service_ids:
+            service_ids.append(
+                {
+                    "id": service.id,
+                    "product_id": {
+                        "id": service.product_id.id,
+                        "name": service.product_id.name,
+                    },
+                    "service_line_ids": service._get_service_line_ids(),
+                }
+            )
+        return service_ids
 
     def _get_reservation_line_ids(self):
         """

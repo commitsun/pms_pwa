@@ -2,7 +2,6 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
     "use strict";
 
     const session = require("web.session");
-    var core = require("web.core");
     require("web.Bus");
     require("bus.BusService");
     require("web.ServicesMixin");
@@ -17,7 +16,7 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
         _onPoll: function (notifications) {
             this.bus_front_notification(notifications);
             this._addChannelPMS();
-            return this._super.apply(this, [notifications]);
+            return this._super;
         },
         bus_front_notification: function (notifications) {
             var self = this;
@@ -27,8 +26,8 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
             });
         },
         _addChannelPMS: function () {
-            this.deleteChannel(channel_pms);
             var channel_pms = "notify_pms_" + session.user_id;
+            this.deleteChannel(channel_pms);
             this.addChannel(channel_pms);
         },
         on_front_message: function (message) {
@@ -36,7 +35,9 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
             var span = document.createElement("span");
             var content = document.createTextNode(message);
             span.appendChild(content);
-            div[0].appendChild(span);
+            if (div && div[0]) {
+                div[0].appendChild(span);
+            }
         },
     });
 });

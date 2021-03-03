@@ -173,9 +173,8 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             try:
-                reservation.pwa_action_checkin(
-                    http.request.jsonrequest.get("guests_list"), reservation_id
-                )
+                params = http.request.jsonrequest.get("params")
+                reservation.pwa_action_checkin(params["guests_list"], reservation_id)
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
             return json.dumps(
@@ -199,7 +198,7 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                payload = http.request.jsonrequest.get("payment")
+                payload = http.request.jsonrequest.get("params")
                 try:
                     account_journals = (
                         reservation.folio_id.pms_property_id._get_payment_methods()
@@ -412,7 +411,7 @@ class TestFrontEnd(http.Controller):
             "page_name": "Reservation",
             "invoice": reservation,
         }
-        if post and post["message"]:
+        if post and "message" in post:
             try:
                 reservation.message_post(
                     subject=_("PWA Message"),
@@ -422,6 +421,55 @@ class TestFrontEnd(http.Controller):
             except Exception as e:
                 _logger.critical(e)
         return http.request.render("pms_pwa.roomdoo_reservation_detail", values)
+
+    @http.route(
+        "/reservation/reservation_lines",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def reservation_lines_json(
+        self, reservation_ids=False, invoice_lines=False, folio_id=False, **kw
+    ):
+        if folio_id and reservation_ids:
+            folio = request.env["pms.folio"].sudo().search([("id", "=", int(folio_id))])
+            if not folio:
+                raise MissingError(_("This document does not exist."))
+            if reservation_ids:
+                # TODO resisar si se puede hacer de otra forma.
+                reservation_lines = folio.sale_line_ids.filtered(
+                    lambda x: x.reservation_id.id in reservation_ids
+                )
+                reservation_lines += folio.sale_line_ids.filtered(
+                    lambda x: x.service_id.reservation_id.id in reservation_ids
+                )
+                reservation_show_lines = [
+                    {
+                        "id": x.id,
+                        "name": x.product_id.name,
+                        "qty_to_invoice": x.qty_to_invoice,
+                        "qty_invoiced": x.qty_invoiced,
+                        "price_total": x.price_total,
+                        "price_subtotal": x.price_subtotal,
+                    }
+                    for x in reservation_lines
+                ]
+                if invoice_lines:
+                    reservation_show_lines = [
+                        x for x in reservation_show_lines if x["id"] in invoice_lines
+                    ]
+                total_amount = sum(
+                    [float(x["price_total"]) for x in reservation_show_lines]
+                )
+                data = {
+                    "reservation_lines": reservation_show_lines,
+                    "total_amount": total_amount,
+                }
+
+                return data
+        return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         ["/reservation/json_data"],
@@ -482,7 +530,38 @@ class TestFrontEnd(http.Controller):
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
+            "checkin_partner_ids": reservation._get_checkin_partner_ids(),
+            "pms_property_id": reservation.pms_property_id.id,
+            "service_ids": reservation._get_service_ids(),
         }
+
+        return reservation_values
+
+    @http.route(
+        ["/reservation/onchange_data"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def reservation_onchange_data(self, reservation_id=None, **kw):
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+        if not reservation:
+            raise MissingError(_("This document does not exist."))
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+
+        if "nights" in params:
+            reservation_values = {}
+        else:
+            reservation_values = {
+                "nights": 4,
+            }
 
         return reservation_values
 

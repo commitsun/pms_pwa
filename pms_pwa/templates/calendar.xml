@@ -3,7 +3,15 @@
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Calendar'"/>
-            <div class="oe_structure">
+            <div class="o_pms_pwa_roomdoo_reservation_modal" />
+            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
+                <span class="o_pms_notification_title">
+                    <i class="fa fa-info-circle mr-1" />
+                    Updates
+                    <span class="o_pms_pwa_update_counter ml-1" />
+                </span>
+            </div>
+            <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <!-- Calendar -->
                     <div class="o_pms_pwa_calendar shadow bg-white p-5">

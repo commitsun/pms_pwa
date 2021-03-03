@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="roomdoo_remove_items_navbar" inherit_id="website.layout" name="Template roomdoo Default">
         <xpath expr="//header//nav" position="replace">
-            <t t-set="is_connected" t-value="not user_id._is_public()"/>
+            <t t-set="is_connected" t-value="not user_id._is_public()" />
             <nav t-if="is_connected" data-name="Navbar" class="navbar navbar-expand-lg navbar-light o_colored_level o_cc">
                 <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between">
                     <!-- Navbar Collapse -->
@@ -12,33 +12,55 @@
                         </button>
                         <!-- Page Title -->
                         <div t-if="page_title" class="o_pms_pwa_page_title">
-                            <t t-esc="page_title"/> <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter"/>
+                            <t t-esc="page_title" />
+                            <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter" />
                         </div>
-                        <t t-call="website.navbar_nav">
-                            <t t-set="_nav_class" t-value="'flex-grow-1'"/>
+                        <div class="row o_pms_pwa_header">
+                            <div class="col-md-8 o_pms_icons">
+                                <button
+                                    class="btn btn-radius btn-pms_pwa"
+                                    href="#" data-toggle="modal"
+                                    data-target="#o_pms_pwa_new_reservation_modal"
+                                    rel="nofollow">
+                                    <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" />
+                                    Nueva reserva
+                                </button>
+                                <img src="/pms_pwa/static/img/svg/interrogante.svg" alt="ayuda" class="img-responsive" style="width:40px;" />
+                                <img src="/pms_pwa/static/img/svg/campana.svg" alt="notificaciones" class="img-responsive" style="width:40px;" />
+                            </div>
+                            <div class="col-md-4 o_pms_user_img">
+                                <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
+                                <spam class="o_pms_user_name"><a href=""><t t-esc="user_id.name"></t></a></spam>
+                                <p class="o_pms_close_session"><a href="">Cerrar sesión</a></p>
+                            </div>
+                        </div>
+                        <!-- <t t-call="website.navbar_nav">
+                            <t t-set="_nav_class" t-value="'flex-grow-1'" />
 
-                            <!-- Sign In
                             <t t-call="portal.placeholder_user_sign_in">
                                 <t t-set="_item_class" t-value="'nav-item ml-auto'"/>
                                 <t t-set="_link_class" t-value="'nav-link font-weight-bold'"/>
                             </t>
-                            -->
-                            <!-- User Dropdown -->
+
+
+
                             <t t-call="portal.user_dropdown">
-                                <t t-set="_user_name" t-value="true"/>
-                                <t t-set="_item_class" t-value="'nav-item dropdown ml-auto'"/>
-                                <t t-set="_link_class" t-value="'nav-link font-weight-bold'"/>
+                                <t t-set="_user_name" t-value="true" />
+                                <t t-set="_item_class" t-value="'nav-item dropdown ml-auto'" />
+                                <t t-set="_link_class" t-value="'nav-link font-weight-bold'" />
                             </t>
-                        </t>
+                        </t> -->
                     </div>
                     <!-- Language Selector -->
                     <t t-call="website.placeholder_header_language_selector">
-                        <t t-set="_div_classes" t-value="'ml-2'"/>
+                        <t t-set="_div_classes" t-value="'ml-2'" />
                     </t>
                     <!-- Button -->
-                    <div class="oe_structure oe_structure_solo" id="oe_structure_header_default_1"/>
+                    <div class="oe_structure oe_structure_solo" id="oe_structure_header_default_1" />
                 </div>
             </nav>
+
+            <t t-call="pms_pwa.o_pms_pwa_new_reservation_modal"/>
         </xpath>
     </template>
 </odoo>

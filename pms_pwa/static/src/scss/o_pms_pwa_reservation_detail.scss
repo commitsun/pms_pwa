@@ -1,5 +1,7 @@
 section.o_pms_pwa_roomdoo {
     @media (max-width: 991.98px) {
+        margin: 0;
+        padding: 0;
         .padding {
             padding: 1.5rem;
         }
@@ -22,7 +24,7 @@ section.o_pms_pwa_roomdoo {
             );
             color: $white;
             text-align: center;
-            z-index: 9999;
+            z-index: 5;
             .btn-radius {
                 text-align: center;
                 border: 1px solid $white;
@@ -310,6 +312,13 @@ section.o_pms_pwa_roomdoo {
         color: $white;
         background-color: $red;
     }
+    .o_pms_pwa_btn_principal {
+        width: 30%;
+    }
+    .o_pms_pwa_disabled {
+        width: 30%;
+        margin-left: 1rem;
+    }
     .pago-header {
         color: $theme-color;
         font-size: small;
@@ -380,6 +389,11 @@ section.o_pms_pwa_roomdoo {
         background: url("/pms_pwa/static/img/br_down.png") $bg-theme-color no-repeat
             calc(100% - 10px) !important;
     }
+    .btn-persona-info-item {
+        width: 100%;
+        background-color: $bg-theme-color;
+        color: $black;
+    }
     .btn-persona-info::-ms-expand {
         display: none;
     }
@@ -400,6 +414,14 @@ section.o_pms_pwa_roomdoo {
         font-weight: 600;
         font-size: medium;
         margin-left: 4rem;
+    }
+    .agency {
+        font-weight: 600;
+        font-size: medium;
+        img {
+            margin-left: 1rem;
+            //margin-top: 0.8rem;
+        }
     }
     .status-header {
         color: $red;
@@ -427,7 +449,7 @@ section.o_pms_pwa_roomdoo {
         table {
             margin: auto;
             text-align: left;
-            width: 80%;
+            width: 100%;
             thead {
                 color: $theme-color;
                 font-weight: 600;
@@ -524,5 +546,87 @@ section.o_pms_pwa_roomdoo {
     }
     tr > .o_pms_pwa_detail_th {
         background-color: $bg-theme-color !important;
+    }
+
+    .o_roomdoo_hide_show {
+        width: 100%;
+    }
+    .o_roomdoo_hide_show-more {
+        display: none;
+        cursor: pointer;
+        color: $theme-color;
+        text-align: "center";
+        //margin: auto;
+        margin-left: 40%;
+    }
+    // .o_roomdoo_hide_show2 {
+    //     width: 100%;
+    // }
+    .o_roomdoo_hide_show-more2 {
+        display: none;
+        cursor: pointer;
+        color: $theme-color;
+        text-align: "center";
+        margin-left: 40%;
+    }
+    #folio_reservation_ids {
+        table {
+            border-collapse: separate;
+            border-spacing: 0.5rem;
+            border: none;
+            width: 100%;
+            th:first-child,
+            td:first-child {
+                min-width: 0;
+            }
+            tr {
+                th {
+                    padding: 0.5rem;
+                    border: none;
+                }
+                td {
+                    padding: 0.5rem;
+                    border: none;
+                }
+            }
+        }
+    }
+    #invoice_col {
+        table {
+            border-collapse: separate;
+            border-spacing: 0.5rem;
+            border: none;
+            width: 100%;
+            th:first-child,
+            td:first-child {
+                min-width: 0;
+            }
+            tr {
+                th {
+                    border: none;
+                    padding: 0.5rem;
+                }
+                td {
+                    padding: 0.5rem;
+                    border: none;
+                    color: $white;
+                }
+            }
+            tr:nth-child(odd) > td {
+                background-color: transparent;
+            }
+            tr:nth-child(even) > td {
+                background-color: transparent;
+            }
+            tr:nth-child(odd) > td {
+                background-color: transparent;
+            }
+            tr > th {
+                background-color: transparent !important;
+            }
+        }
+    }
+    .o_pms_pwa_editinline {
+        width: 50px;
     }
 }

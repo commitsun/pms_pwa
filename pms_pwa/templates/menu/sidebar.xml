@@ -5,11 +5,24 @@
             <!-- Sidebar -->
             <t t-set="is_connected" t-value="not user_id._is_public()"/>
             <div t-if="is_connected" class="o_pms_pwa_bg_theme border-right" id="sidebar-wrapper">
-                <div class="sidebar-heading">
-                    <a href="/" class="o_offcanvas_logo o_pms_pwa_logo">
-                        <img src="/pms_pwa/static/img/svg/casita.svg" alt="logo menu roomdoo" class="img-responsive" />
-                        <img src="/pms_pwa/static/img/svg/logo_menu.svg" alt="logo menu roomdoo" class="img-responsive mobile" />
-                    </a>
+                <div class="row sidebar-heading">
+                    <div class="col-8">
+                        <a href="/" class="o_offcanvas_logo o_pms_pwa_logo">
+                            <img src="/pms_pwa/static/img/svg/casita.svg" alt="logo menu roomdoo" class="img-responsive" />
+                            <img src="/pms_pwa/static/img/svg/logo_menu.svg" alt="logo menu roomdoo" class="img-responsive mobile" />
+                        </a>
+                    </div>
+                    <div class="col-1 mt-2">
+                        <img src="/pms_pwa/static/img/svg/campana.svg" alt="logo menu roomdoo" class="img-responsive mobile" />
+                    </div>
+                    <div class="col-1  mt-2">
+                        <img src="/pms_pwa/static/img/svg/interrogante.svg" alt="logo menu roomdoo" class="img-responsive mobile" />
+                    </div>
+                    <div class="col-2 mt-2">
+                        <span id="menu-toggle2">
+                            <i class="fa fa-times img-responsive mobile"></i>
+                        </span>
+                    </div>
                 </div>
                 <div class="list-group list-group-flush">
                     <t t-foreach="website.menu_id.child_id" t-as="submenu">
@@ -19,6 +32,13 @@
                             <t t-set="span_class" t-value="'mobile'"/>
                         </t>
                     </t>
+                </div>
+                <div class="row o_pms_pwa_sidebar_login">
+                    <div class="col-12 o_pms_user_img">
+                        <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
+                        <spam class="o_pms_user_name"><a href=""><t t-esc="user_id.name"></t></a></spam>
+                        <p class="o_pms_close_session"><a href="">Cerrar sesión</a></p>
+                    </div>
                 </div>
             </div>
             <!-- /#sidebar-wrapper -->
