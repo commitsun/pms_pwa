@@ -283,6 +283,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         self.displayContent("pms_pwa.reservation_checkin_modal", {
                             reservation: data,
                         });
+                        // eslint-disable-next-line no-new, no-undef
                         new Stepper($(".bs-stepper")[0], {
                             linear: false,
                             animation: true,

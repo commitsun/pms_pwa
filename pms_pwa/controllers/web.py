@@ -312,13 +312,15 @@ class TestFrontEnd(http.Controller):
                         "date": "15/10/2020",
                         "hour": "10:14:58",
                         "name": "Nueva reserva",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",
+                        "description": "Lorem ipsum dolor sit amet, consectetur"
+                        " adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",
                     },
                     {
                         "date": "15/10/2020 10:54:25",
                         "hour": "10:14:58",
                         "name": "Nueva reserva",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",
+                        "description": "Lorem ipsum dolor sit amet, consectetur"
+                        " adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",
                     },
                 ],
                 "evolution": {
