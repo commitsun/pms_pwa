@@ -198,19 +198,22 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                payload = http.request.jsonrequest.get("params")
+                payments = http.request.jsonrequest.get("payments")
+                partner_invoice_id = http.request.jsonrequest.get("partner_invoice_id")
                 try:
                     account_journals = (
                         reservation.folio_id.pms_property_id._get_payment_methods()
                     )
-                    journal = account_journals.browse(payload["payment_method"])
+                    journal = account_journals.browse(payments["payment_method"])
                     reservation.folio_id.do_payment(
                         journal,
                         journal.suspense_account_id,
                         request.env.user,
-                        payload["amount"],
+                        payments["amount"],
                         reservation.folio_id,
-                        partner=reservation.partner_id,
+                        partner=partner_invoice_id
+                        if partner_invoice_id
+                        else reservation.partner_id,
                         date=fields.date.today(),
                     )
                 except Exception as e:
@@ -236,13 +239,15 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                payload = http.request.jsonrequest.get("invoice_lines")
+                invoice_lines = http.request.jsonrequest.get("invoice_lines")
+                partner_invoice_id = http.request.jsonrequest.get("partner_invoice_id")
                 try:
                     lines_to_invoice = dict()
-                    for value in payload:
+                    for value in invoice_lines:
                         lines_to_invoice[value["id"]] = value["qty"]
                     reservation.folio_id._create_invoices(
-                        lines_to_invoice=lines_to_invoice
+                        lines_to_invoice=lines_to_invoice,
+                        partner_invoice_id=partner_invoice_id,
                     )
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
