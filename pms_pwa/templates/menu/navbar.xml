@@ -25,8 +25,8 @@
                                     <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" />
                                     Nueva reserva
                                 </button>
-                                <img src="/pms_pwa/static/img/svg/interrogante.svg" alt="ayuda" class="img-responsive" style="width:40px;" />
-                                <img src="/pms_pwa/static/img/svg/campana.svg" alt="notificaciones" class="img-responsive" style="width:40px;" />
+                                <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
+                                <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
                             </div>
                             <div class="col-md-4 o_pms_user_img">
                                 <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />

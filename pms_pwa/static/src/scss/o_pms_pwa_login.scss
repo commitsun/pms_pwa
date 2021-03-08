@@ -23,12 +23,15 @@ main .oe_website_login_container {
 }
 
 .o_pms_pwa_login_bg {
-    background-image: url("/pms_pwa/static/img/background_img.jpeg");
+    background-image: url("/pms_pwa/static/img/svg/fondo.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
     border: none;
-    height: 100vh;
+    // height: 90vh;
+    footer {
+        display: none;
+    }
 }
 
 .img-responsive.mobile {
