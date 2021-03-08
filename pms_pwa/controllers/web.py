@@ -196,20 +196,22 @@ class TestFrontEnd(http.Controller):
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-
             if reservation:
-                payments = http.request.jsonrequest.get("payments")
+                payment = http.request.jsonrequest.get("payment")
                 partner_invoice_id = http.request.jsonrequest.get("partner_invoice_id")
                 try:
                     account_journals = (
                         reservation.folio_id.pms_property_id._get_payment_methods()
                     )
-                    journal = account_journals.browse(payments["payment_method"])
+                    journal = account_journals.browse(payment["payment_method"])
+                    partner_invoice_id = request.env["res.partner"].browse(
+                        partner_invoice_id
+                    )
                     reservation.folio_id.do_payment(
                         journal,
                         journal.suspense_account_id,
                         request.env.user,
-                        payments["amount"],
+                        payment["amount"],
                         reservation.folio_id,
                         partner=partner_invoice_id
                         if partner_invoice_id
