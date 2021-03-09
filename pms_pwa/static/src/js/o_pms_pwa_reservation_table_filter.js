@@ -423,16 +423,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         _onClickPaymentButton: function (event) {
             event.preventDefault();
-            var partners = []
-            var rpc = require('web.rpc');
-            rpc.query({
-                model: 'res.partner',
-                method: 'search_read',
-                args: [[], ['id', 'name']],
-            }).then(function (data) {
-                partners = data
-            });
-
             var self = this;
             var button = event.currentTarget;
             var reservation_id = false;
@@ -445,32 +435,35 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 reservation_id: reservation_id,
             }).then(function (data) {
                 if (data) {
-                    self.displayContent("pms_pwa.reservation_payment_modal", {
-                        reservation: data,
-                    });
-                    $(".o_pms_pwa_button_payment_confirm").on("click", function (
-                        new_event
-                    ) {
-                        new_event.preventDefault();
-                        var selector =
-                            "div.modal-dialog[payment-data-id=" + reservation_id + "]";
-                        var div = $(selector);
-                        var payment_method = div
-                            .find("select[name='payment_method'] option")
-                            .filter(":selected")
-                            .val();
-                        var payment_amount = div.find("input[name='amount']").val();
-                        var partner_id = div
-                            .find("select[name='partner'] option")
-                            .filter(":selected")
-                            .val();
+                    ajax.jsonRpc("/partners", "call").then(function (partners) {
+                        self.displayContent("pms_pwa.reservation_payment_modal", {
+                            reservation: data,
+                            partners: partners,
+                        });
+                        $(".o_pms_pwa_button_payment_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var selector =
+                                "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                            var div = $(selector);
+                            var payment_method = div
+                                .find("select[name='payment_method'] option")
+                                .filter(":selected")
+                                .val();
+                            var payment_amount = div.find("input[name='amount']").val();
+                            var partner_id = div
+                                .find("select[name='partner'] option")
+                                .filter(":selected")
+                                .val();
 
-                        ajax.jsonRpc(button.attributes.url.value, "call", {
-                            payment_method: payment_method,
-                            amount: payment_amount,
-                            partner_id: partner_id,
-                        }).then(function (new_data) {
-                            self.displayDataAlert(new_data);
+                            ajax.jsonRpc(button.attributes.url.value, "call", {
+                                payment_method: payment_method,
+                                amount: payment_amount,
+                                partner_id: partner_id,
+                            }).then(function (new_data) {
+                                self.displayDataAlert(new_data);
+                            });
                         });
                     });
                 }

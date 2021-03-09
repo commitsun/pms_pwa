@@ -642,3 +642,21 @@ class TestFrontEnd(http.Controller):
         ]
         reservations = Reservation.search(domain)
         return reservations
+
+    @http.route(
+        "/partners",
+        type="json",
+        auth="public",
+        website=True,
+    )
+    def partner_list(self, search="", **post):
+        all_partners = request.env['res.partner'].search([])
+        result = []
+        for partner in all_partners:
+            result.append(
+                {
+                    "id": partner.id,
+                    "name": partner.name,
+                }
+            )
+        return result
