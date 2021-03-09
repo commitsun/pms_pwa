@@ -45,6 +45,9 @@ def _get_search_domain(search=False, **post):
             )
     # TODO: text_dialog  (chatter)
 
+    domain_fields.append(
+        ("reservation_ids", "!=", False)
+    )
     if search_exists:
         return expression.AND([domain_fields, (domains[0])])
     else:

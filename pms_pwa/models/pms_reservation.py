@@ -82,6 +82,7 @@ class PmsReservation(models.Model):
                         "reservation_id": reservation_id,
                         "pms_property_id": guest["pms_property_id"],
                         "name": guest["firstname"],
+                        "firstname": guest["firstname"],
                         "lastname": guest["lastname"],
                         "lastname2": guest["lastname2"],
                         "birthdate_date": guest["birthdate_date"],
