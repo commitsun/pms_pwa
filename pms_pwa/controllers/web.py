@@ -197,27 +197,34 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             if reservation:
-                payment = http.request.jsonrequest.get("payment")
-                partner_invoice_id = http.request.jsonrequest.get("partner_invoice_id")
+                payload = http.request.jsonrequest.get("params")
+                payment_method = int(payload['payment_method'])
+                payment_amount = float(payload['amount'])
+                payment_partner_id = int(payload['partner_id'])
                 try:
                     account_journals = (
                         reservation.folio_id.pms_property_id._get_payment_methods()
                     )
-                    journal = account_journals.browse(payment["payment_method"])
-                    partner_invoice_id = request.env["res.partner"].browse(
-                        partner_invoice_id
+                    journal = account_journals.browse(payment_method)
+                    partner_id = request.env["res.partner"].browse(
+                        int(payment_partner_id)
                     )
-                    reservation.folio_id.do_payment(
-                        journal,
-                        journal.suspense_account_id,
-                        request.env.user,
-                        payment["amount"],
-                        reservation.folio_id,
-                        partner=partner_invoice_id
-                        if partner_invoice_id
-                        else reservation.partner_id,
-                        date=fields.date.today(),
-                    )
+                    if reservation.folio_payment_state =='not_paid':
+                        reservation.folio_id.do_payment(
+                            journal,
+                            journal.suspense_account_id,
+                            request.env.user,
+                            payment_amount,
+                            reservation.folio_id,
+                            partner=partner_id
+                            if partner_id
+                            else reservation.partner_id,
+                            date=fields.date.today(),
+                        )
+                    else:
+                        return json.dumps(
+                            {"result": False, "message": _("Reservation already paid.")}
+                        )
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
                 return json.dumps(

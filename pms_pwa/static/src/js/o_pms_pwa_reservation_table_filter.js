@@ -423,6 +423,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         _onClickPaymentButton: function (event) {
             event.preventDefault();
+            var partners = []
+            var rpc = require('web.rpc');
+            rpc.query({
+                model: 'res.partner',
+                method: 'search_read',
+                args: [[], ['id', 'name']],
+            }).then(function (data) {
+                partners = data
+            });
+
             var self = this;
             var button = event.currentTarget;
             var reservation_id = false;
@@ -450,9 +460,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .filter(":selected")
                             .val();
                         var payment_amount = div.find("input[name='amount']").val();
+                        var partner_id = div
+                            .find("select[name='partner'] option")
+                            .filter(":selected")
+                            .val();
+
                         ajax.jsonRpc(button.attributes.url.value, "call", {
                             payment_method: payment_method,
                             amount: payment_amount,
+                            partner_id: partner_id,
                         }).then(function (new_data) {
                             self.displayDataAlert(new_data);
                         });

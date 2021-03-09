@@ -629,6 +629,24 @@
                                             <input class="form-control" type="number" min="0" step="any"
                                                 name="amount" t-att-value="reservation.folio_pending_amount"/>
                                         </div>
+
+                                        <div class="col-sm-12 mt-2">
+                                            <label class="control-label col-12" for="payment_method">
+                                                Partner
+                                            </label>
+                                            <select
+                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                                                name="partner">
+                                                <option
+                                                    name="partner"
+                                                    t-foreach="partners"
+                                                    t-as="key"
+                                                    t-att-value="key.id">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
