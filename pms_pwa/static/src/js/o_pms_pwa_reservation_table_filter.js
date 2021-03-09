@@ -445,7 +445,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         ) {
                             new_event.preventDefault();
                             var selector =
-                                "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                                "div.modal-dialog[payment-data-id=" +
+                                reservation_id +
+                                "]";
                             var div = $(selector);
                             var payment_method = div
                                 .find("select[name='payment_method'] option")

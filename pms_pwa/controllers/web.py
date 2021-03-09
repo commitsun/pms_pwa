@@ -198,9 +198,9 @@ class TestFrontEnd(http.Controller):
             )
             if reservation:
                 payload = http.request.jsonrequest.get("params")
-                payment_method = int(payload['payment_method'])
-                payment_amount = float(payload['amount'])
-                payment_partner_id = int(payload['partner_id'])
+                payment_method = int(payload["payment_method"])
+                payment_amount = float(payload["amount"])
+                payment_partner_id = int(payload["partner_id"])
                 try:
                     account_journals = (
                         reservation.folio_id.pms_property_id._get_payment_methods()
@@ -209,7 +209,7 @@ class TestFrontEnd(http.Controller):
                     partner_id = request.env["res.partner"].browse(
                         int(payment_partner_id)
                     )
-                    if reservation.folio_payment_state =='not_paid':
+                    if reservation.folio_payment_state == "not_paid":
                         reservation.folio_id.do_payment(
                             journal,
                             journal.suspense_account_id,
@@ -650,7 +650,7 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def partner_list(self, search="", **post):
-        all_partners = request.env['res.partner'].search([])
+        all_partners = request.env["res.partner"].search([])
         result = []
         for partner in all_partners:
             result.append(
