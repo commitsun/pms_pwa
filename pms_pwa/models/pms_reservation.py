@@ -144,7 +144,6 @@ class PmsReservation(models.Model):
                 }
         return reservation_extra
 
-
     def _get_checkin_partner_ids(self):
         """
         @return: Return dict with checkin_partner_ids
@@ -229,6 +228,29 @@ class PmsReservation(models.Model):
                 }
             )
         return allowed_rooms
+
+    @api.model
+    def _get_room_types(
+        self, checkin, checkout, pms_property_id=False, pricelist_id=False
+    ):
+        self.ensure_one()
+        room_types = []
+
+        pms_room_types = self.env["pms.room.type"].search([])
+        pms_room_types = pms_room_types.with_context(
+            checkin=checkin,
+            checkout=checkout,
+            pms_property_id=pms_property_id.id,
+            pricelist_id=pricelist_id.id,
+        ).name_get()
+        for room_type in pms_room_types:
+            room_types.append(
+                {
+                    "id": room_type[0],
+                    "name": room_type[1],
+                }
+            )
+        return room_types
 
     @api.model
     def _get_allowed_extras(self, partner=False, pricelist=False):

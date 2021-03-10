@@ -250,16 +250,20 @@ class TestFrontEnd(http.Controller):
             if reservation:
                 invoice_lines = http.request.jsonrequest.get("invoice_lines")
                 partner_invoice_id = http.request.jsonrequest.get("partner_invoice_id")
-                partner_invoice_values = http.request.jsonrequest.get("partner_invoice_values")
+                partner_invoice_values = http.request.jsonrequest.get(
+                    "partner_invoice_values"
+                )
                 try:
                     if partner_invoice_id:
-                        partner_invoice_id = request.env["res.partner"].sudo().search(
-                        [
-                            ("id", "=", int(partner_invoice_id))
-                        ]
-                    )
+                        partner_invoice_id = (
+                            request.env["res.partner"]
+                            .sudo()
+                            .search([("id", "=", int(partner_invoice_id))])
+                        )
                     else:
-                        partner_invoice_id = request.env['res.partner'].create(partner_invoice_values)
+                        partner_invoice_id = request.env["res.partner"].create(
+                            partner_invoice_values
+                        )
                     lines_to_invoice = dict()
                     for value in invoice_lines:
                         lines_to_invoice[value["id"]] = value["qty"]
@@ -516,7 +520,8 @@ class TestFrontEnd(http.Controller):
                     "partner_id": {
                         "id": reservation.partner_id.id,
                         "name": reservation.partner_id.name,
-                        "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
+                        "mobile": reservation.partner_id.mobile
+                        or reservation.partner_id.phone,
                     },
                     "unread_msg": 2,
                     "messages": ["Lorem ipsum", "Unread short message"],
@@ -558,6 +563,12 @@ class TestFrontEnd(http.Controller):
                     "pms_property_id": reservation.pms_property_id.id,
                     "service_ids": reservation._get_service_ids(),
                     "allowed_room_ids": reservation._get_allowed_rooms(),
+                    "room_types": reservation._get_room_types(
+                        reservation.checkin,
+                        reservation.checkout,
+                        pms_property_id=reservation.pms_property_id,
+                        pricelist_id=reservation.pricelist_id,
+                    ),
                 }
                 return reservation_values
         else:
@@ -583,10 +594,10 @@ class TestFrontEnd(http.Controller):
                 # payment_amount = float(payload["checkout"])
                 # TODO something with the data and give back the new values
                 params = http.request.jsonrequest.get("params")
-                del params['reservation_id']
-                for key in params.keys():
-                    print(key)
-                print(params)
+                del params["reservation_id"]
+                # for key in params.keys():
+                #     print(key)
+                # print(params)
                 if "nights" in params:
                     reservation_values = {}
                 else:
@@ -595,7 +606,9 @@ class TestFrontEnd(http.Controller):
                     }
                 return reservation_values
             else:
-                return json.dumps({"result": False, "message": _("Reservation not found")})
+                return json.dumps(
+                    {"result": False, "message": _("Reservation not found")}
+                )
 
     def _get_allowed_payments_journals(self):
         """

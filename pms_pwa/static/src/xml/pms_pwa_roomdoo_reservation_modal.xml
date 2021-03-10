@@ -167,11 +167,11 @@
                                                 name="room_type">
                                                 <option
                                                     name="room_type"
-                                                    t-foreach="room_types"
-                                                    t-as="key"
-                                                    t-att-value="key"
-                                                    t-att-selected="reservation.room_type_id.room_type === key ? 'selected' : None">
-                                                    <t t-esc="key" />
+                                                    t-foreach="reservation.room_types"
+                                                    t-as="room_type"
+                                                    t-att-value="room_type.id"
+                                                    t-att-selected="reservation.room_type_id.room_type === room_type.id ? 'selected' : None">
+                                                    <t t-esc="room_type.name" />
                                                 </option>
                                             </select>
                                         </div>
