@@ -250,9 +250,7 @@ class TestFrontEnd(http.Controller):
             if reservation:
                 invoice_lines = http.request.jsonrequest.get("lines_to_invoice")
                 partner_invoice_id = http.request.jsonrequest.get("partner_to_invoice")
-                partner_invoice_values = http.request.jsonrequest.get(
-                    "partner_values"
-                )
+                partner_invoice_values = http.request.jsonrequest.get("partner_values")
                 try:
                     if partner_invoice_id:
                         partner_invoice_id = (
@@ -575,7 +573,7 @@ class TestFrontEnd(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
-        ["/reservation/onchange_data"],
+        ["/reservation/<int:reservation_id>/onchange_data"],
         type="json",
         auth="public",
         methods=["POST"],
@@ -589,22 +587,23 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             if reservation:
-                payload = http.request.jsonrequest.get("params")
-                # payment_method = int(payload["checkin"])
-                # payment_amount = float(payload["checkout"])
-                # TODO something with the data and give back the new values
                 params = http.request.jsonrequest.get("params")
                 del params["reservation_id"]
-                # for key in params.keys():
-                #     print(key)
-                # print(params)
-                if "nights" in params:
-                    reservation_values = {}
-                else:
-                    reservation_values = {
-                        "nights": 4,
+                try:
+                    reservation.write(params)
+                    return {
+                        "room_type_id": reservation.room_type_id,
+                        "preferred_room_id": reservation.preferred_room_id,
+                        "adults": reservation.adults,
+                        "checkin": reservation.checkin,
+                        "checkout": reservation.checkout,
+                        "arrival_hour": reservation.arrival_hour,
+                        "departure_hour": reservation.departure_hour,
+                        "reservation_type": reservation.reservation_type,
+                        "price_total": reservation.price_total,
                     }
-                return reservation_values
+                except Exception as e:
+                    return json.dumps({"result": False, "message": str(e)})
             else:
                 return json.dumps(
                     {"result": False, "message": _("Reservation not found")}

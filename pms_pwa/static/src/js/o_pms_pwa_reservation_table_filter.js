@@ -207,7 +207,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 values[new_event.currentTarget.name] =
                                     new_event.currentTarget.value;
                                 ajax.jsonRpc(
-                                    "/reservation/onchange_data",
+                                    "/reservation/" + reservation_id + "/onchange_data",
                                     "call",
                                     values
                                 ).then(function (new_data) {

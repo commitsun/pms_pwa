@@ -164,7 +164,7 @@
                                             </label>
                                             <select
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="room_type">
+                                                name="room_type_id">
                                                 <option
                                                     name="room_type"
                                                     t-foreach="reservation.room_types"
@@ -183,7 +183,7 @@
                                             </label>
                                             <select
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="room_number">
+                                                name="preferred_room_id">
                                                 <option
                                                     name="room_number"
                                                     t-foreach="reservation.allowed_room_ids"
@@ -228,7 +228,7 @@
                                             <label class="control-label col-12" for="check_in_hour">
                                                 <t t-esc="texts.check_in_time_text || _t('Check in time')"/>
                                             </label>
-                                            <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
+                                            <input class="form-control" type="time" name="arrival_hour" t-att-value="reservation.arrival_hour" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -245,15 +245,15 @@
                                             <label class="control-label col-12" for="check_out_hour">
                                                 <t t-esc="texts.check_out_time_text || _t('Check out time')"/>
                                             </label>
-                                            <input class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
+                                            <input class="form-control" type="time" name="departure_hour" t-att-value="reservation.departure_hour" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
-                                            <label class="control-label col-12" for="rate_type">
+                                            <label class="control-label col-12" for="reservation_type">
                                                 <t t-esc="_t('Reservation type')" />
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="rate_type">
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
                                                 <option
                                                     name="reservation_type"
                                                     t-foreach="reservation_types"
