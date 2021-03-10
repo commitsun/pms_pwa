@@ -250,7 +250,16 @@ class TestFrontEnd(http.Controller):
             if reservation:
                 invoice_lines = http.request.jsonrequest.get("invoice_lines")
                 partner_invoice_id = http.request.jsonrequest.get("partner_invoice_id")
+                partner_invoice_values = http.request.jsonrequest.get("partner_invoice_values")
                 try:
+                    if partner_invoice_id:
+                        partner_invoice_id = request.env["res.partner"].sudo().search(
+                        [
+                            ("id", "=", int(partner_invoice_id))
+                        ]
+                    )
+                    else:
+                        partner_invoice_id = request.env['res.partner'].create(partner_invoice_values)
                     lines_to_invoice = dict()
                     for value in invoice_lines:
                         lines_to_invoice[value["id"]] = value["qty"]
@@ -567,19 +576,22 @@ class TestFrontEnd(http.Controller):
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        # TODO something with the data and give back the new values
-        params = http.request.jsonrequest.get("params")
-
-        if "nights" in params:
-            reservation_values = {}
-        else:
-            reservation_values = {
-                "nights": 4,
-            }
-
-        return reservation_values
+            if reservation:
+                payload = http.request.jsonrequest.get("params")
+                print(payload)
+                # payment_method = int(payload["checkin"])
+                # payment_amount = float(payload["checkout"])
+                # TODO something with the data and give back the new values
+                params = http.request.jsonrequest.get("params")
+                if "nights" in params:
+                    reservation_values = {}
+                else:
+                    reservation_values = {
+                        "nights": 4,
+                    }
+                return reservation_values
+            else:
+                return json.dumps({"result": False, "message": _("Reservation not found")})
 
     def _get_allowed_payments_journals(self):
         """
