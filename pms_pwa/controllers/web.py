@@ -248,10 +248,10 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                invoice_lines = http.request.jsonrequest.get("invoice_lines")
-                partner_invoice_id = http.request.jsonrequest.get("partner_invoice_id")
+                invoice_lines = http.request.jsonrequest.get("lines_to_invoice")
+                partner_invoice_id = http.request.jsonrequest.get("partner_to_invoice")
                 partner_invoice_values = http.request.jsonrequest.get(
-                    "partner_invoice_values"
+                    "partner_values"
                 )
                 try:
                     if partner_invoice_id:
