@@ -510,57 +510,58 @@ class TestFrontEnd(http.Controller):
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-        if not reservation:
-            raise MissingError(_("This document does not exist."))
-        reservation_values = {
-            "id": reservation.id,
-            "partner_id": {
-                "id": reservation.partner_id.id,
-                "name": reservation.partner_id.name,
-                "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
-            },
-            "unread_msg": 2,
-            "messages": ["Lorem ipsum", "Unread short message"],
-            "room_type_id": {
-                "id": reservation.room_type_id.id,
-                "name": reservation.room_type_id.name,
-            },
-            "preferred_room_id": {
-                "id": reservation.preferred_room_id.id
-                if reservation.preferred_room_id
-                else False,
-                "name": reservation.preferred_room_id.name
-                if reservation.preferred_room_id
-                else reservation.rooms,
-            },
-            "nights": reservation.nights,
-            "checkin": reservation.checkin,
-            "arrival_hour": reservation.arrival_hour,
-            "checkout": reservation.checkout,
-            "departure_hour": reservation.departure_hour,
-            "folio_id": {
-                "id": reservation.folio_id.id,
-                "amount_total": reservation.folio_id.amount_total,
-                "outstanding_vat": 15.69,
-            },
-            "state": reservation.state,
-            "origin": reservation.origin,
-            "detail_origin": reservation.detail_origin,
-            "credit_card_details": reservation.credit_card_details,
-            "price_total": reservation.price_total,
-            "price_tax": reservation.price_tax,
-            "folio_pending_amount": reservation.folio_pending_amount,
-            "folio_internal_comment": reservation.folio_internal_comment,
-            "payment_methods": self._get_allowed_payments_journals(),
-            "checkins_ratio": reservation.checkins_ratio,
-            "ratio_checkin_data": reservation.ratio_checkin_data,
-            "adults": reservation.adults,
-            "checkin_partner_ids": reservation._get_checkin_partner_ids(),
-            "pms_property_id": reservation.pms_property_id.id,
-            "service_ids": reservation._get_service_ids(),
-        }
-
-        return reservation_values
+            if reservation:
+                reservation_values = {
+                    "id": reservation.id,
+                    "partner_id": {
+                        "id": reservation.partner_id.id,
+                        "name": reservation.partner_id.name,
+                        "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
+                    },
+                    "unread_msg": 2,
+                    "messages": ["Lorem ipsum", "Unread short message"],
+                    "room_type_id": {
+                        "id": reservation.room_type_id.id,
+                        "name": reservation.room_type_id.name,
+                    },
+                    "preferred_room_id": {
+                        "id": reservation.preferred_room_id.id
+                        if reservation.preferred_room_id
+                        else False,
+                        "name": reservation.preferred_room_id.name
+                        if reservation.preferred_room_id
+                        else reservation.rooms,
+                    },
+                    "nights": reservation.nights,
+                    "checkin": reservation.checkin,
+                    "arrival_hour": reservation.arrival_hour,
+                    "checkout": reservation.checkout,
+                    "departure_hour": reservation.departure_hour,
+                    "folio_id": {
+                        "id": reservation.folio_id.id,
+                        "amount_total": reservation.folio_id.amount_total,
+                        "outstanding_vat": 15.69,
+                    },
+                    "state": reservation.state,
+                    "origin": reservation.origin,
+                    "detail_origin": reservation.detail_origin,
+                    "credit_card_details": reservation.credit_card_details,
+                    "price_total": reservation.price_total,
+                    "price_tax": reservation.price_tax,
+                    "folio_pending_amount": reservation.folio_pending_amount,
+                    "folio_internal_comment": reservation.folio_internal_comment,
+                    "payment_methods": self._get_allowed_payments_journals(),
+                    "checkins_ratio": reservation.checkins_ratio,
+                    "ratio_checkin_data": reservation.ratio_checkin_data,
+                    "adults": reservation.adults,
+                    "checkin_partner_ids": reservation._get_checkin_partner_ids(),
+                    "pms_property_id": reservation.pms_property_id.id,
+                    "service_ids": reservation._get_service_ids(),
+                    "allowed_room_ids": reservation._get_allowed_rooms(),
+                }
+                return reservation_values
+        else:
+            return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         ["/reservation/onchange_data"],
@@ -578,11 +579,14 @@ class TestFrontEnd(http.Controller):
             )
             if reservation:
                 payload = http.request.jsonrequest.get("params")
-                print(payload)
                 # payment_method = int(payload["checkin"])
                 # payment_amount = float(payload["checkout"])
                 # TODO something with the data and give back the new values
                 params = http.request.jsonrequest.get("params")
+                del params['reservation_id']
+                for key in params.keys():
+                    print(key)
+                print(params)
                 if "nights" in params:
                     reservation_values = {}
                 else:

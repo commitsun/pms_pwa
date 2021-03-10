@@ -186,11 +186,11 @@
                                                 name="room_number">
                                                 <option
                                                     name="room_number"
-                                                    t-foreach="room_numbers"
-                                                    t-as="key"
-                                                    t-att-value="key"
-                                                    t-att-selected="reservation.room_number === key ? 'selected' : None">
-                                                    <t t-esc="key" />
+                                                    t-foreach="reservation.allowed_room_ids"
+                                                    t-as="room"
+                                                    t-att-value="room.id"
+                                                    t-att-selected="reservation.id === key ? 'selected' : None">
+                                                    <t t-esc="room.name" />
                                                 </option>
                                             </select>
                                         </div>

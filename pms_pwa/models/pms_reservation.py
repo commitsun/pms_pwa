@@ -144,6 +144,7 @@ class PmsReservation(models.Model):
                 }
         return reservation_extra
 
+
     def _get_checkin_partner_ids(self):
         """
         @return: Return dict with checkin_partner_ids
@@ -217,62 +218,17 @@ class PmsReservation(models.Model):
         return reservation_lines
 
     @api.model
-    def _get_allowed_rooms(
-        self, checkin, checkout, state, overbooking=False, line_ids=False
-    ):
-        # TODO: Refact with pms base _compute_allowed_room_ids?,
-        """
-        @return: [0] Return list with free rooms
-         [
-          {"id": id, "name": "room_name"},
-          {"id": id, "name": "room_name"},
-          ... ,
-          {"id": id, "name": "room_name"},
-         ]
-         and [1] list with free room types
-         [
-          {"id": id, "name": "room_name", "code_type": "code", "availability": qty},
-          {"id": id, "name": "room_name", "code_type": "code", "availability": qty},
-          ... ,
-          {"id": id, "name": "room_name", "code_type": "code", "availability": qty},
-         ]
-        """
-        if checkin and checkout:
-            if overbooking or state in ("cancelled"):
-                rooms_available = self.env["pms.room"].search([])
-            else:
-                rooms_available = self.env[
-                    "pms.room.type.availability"
-                ].rooms_available(
-                    checkin=checkin,
-                    checkout=checkout,
-                    room_type_id=False,  # Allow chosen any available room
-                    current_lines=line_ids,
-                )
-            allowed_rooms = []
-            for room in rooms_available:
-                allowed_rooms.append(
-                    {
-                        "id": room.id,
-                        "name": room.name,
-                    }
-                )
-            allowed_room_types = []
-            for room_type_id in rooms_available.mapped("room_type_id.id"):
-                room_type = self.env["pms.room.type"].browse(room_type_id)
-                allowed_room_types.append(
-                    {
-                        "id": room_type.id,
-                        "name": room_type.name,
-                        "code_type": room_type.code_type,
-                        "availability": len(
-                            rooms_available.filtered(
-                                lambda r: r.room_type_id.id == room_type_id
-                            )
-                        ),
-                    }
-                )
-            return allowed_rooms, allowed_room_types
+    def _get_allowed_rooms(self):
+        self.ensure_one()
+        allowed_rooms = []
+        for room in self.allowed_room_ids:
+            allowed_rooms.append(
+                {
+                    "id": room.id,
+                    "name": room.name,
+                }
+            )
+        return allowed_rooms
 
     @api.model
     def _get_allowed_extras(self, partner=False, pricelist=False):
