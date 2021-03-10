@@ -170,7 +170,7 @@
                                                     t-foreach="reservation.room_types"
                                                     t-as="room_type"
                                                     t-att-value="room_type.id"
-                                                    t-att-selected="reservation.room_type_id.room_type === room_type.id ? 'selected' : None">
+                                                    t-att-selected="reservation.room_type_id.id === room_type.id ? 'selected' : None">
                                                     <t t-esc="room_type.name" />
                                                 </option>
                                             </select>
@@ -189,7 +189,7 @@
                                                     t-foreach="reservation.allowed_room_ids"
                                                     t-as="room"
                                                     t-att-value="room.id"
-                                                    t-att-selected="reservation.id === key ? 'selected' : None">
+                                                    t-att-selected="reservation.preferred_room_id.id === room.id ? 'selected' : None">
                                                     <t t-esc="room.name" />
                                                 </option>
                                             </select>
