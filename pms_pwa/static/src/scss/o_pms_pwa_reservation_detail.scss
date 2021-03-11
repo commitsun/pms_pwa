@@ -611,6 +611,9 @@ section.o_pms_pwa_roomdoo {
                     border: none;
                     color: $white;
                 }
+                .black_text {
+                    color: $dark;
+                }
             }
             tr:nth-child(odd) > td {
                 background-color: transparent;

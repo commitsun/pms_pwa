@@ -518,6 +518,24 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
                                                                         <label class="control-label col-12" for="rate_type">
+                                                                            Invoice contact
+                                                                        </label>
+                                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="partner_to_invoice">
+                                                                            <t t-foreach="invoice.folio_id.partner_invoice_ids" t-as="partner">
+                                                                                <t t-if="partner.id == invoice.folio_id.partner_id.id">
+                                                                                    <option t-attf-value="{{ partner.id }}" selected="selected"><t t-esc="partner.name"></t></option>
+                                                                                </t>
+                                                                                <t t-else="">
+                                                                                    <option t-attf-value="{{ partner.id }}"><t t-esc="partner.name"></t></option>
+                                                                                </t>
+                                                                            </t>
+                                                                            <option value="False">New contact</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-2">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
                                                                             Name
                                                                         </label>
                                                                         <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ invoice.folio_id.partner_id.name }}" />
@@ -528,7 +546,7 @@
                                                                         <label class="control-label col-12" for="rate_type" >
                                                                             NIF/CIF
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_cif" t-attf-value="{{ invoice.folio_id.partner_id.name }}" required="required" />
+                                                                        <input class="form-control" type="text" name="invoice_vat" t-attf-value="{{ invoice.folio_id.partner_id.vat }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -564,7 +582,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <input type="submit" class="btn btn-message" value="Actualizar" />
+                                                            <!-- <input type="submit" class="btn btn-message" value="Actualizar" /> -->
                                                         </form>
                                                     </div>
                                                 </div>
@@ -592,15 +610,59 @@
                                         <hr class="m-1" />
                                         <div class="col-12">
                                             <div class="form-group text-center">
-                                                <button class="btn btn-print">
+                                                <!-- <button class="btn btn-print">
                                                     <i class="fa fa-print" aria-hidden="false" />
                                                     IMPRIMIR
-                                                </button>
+                                                </button> -->
                                                 <input type="submit" class="btn btn-message" value="COBRAR" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <t t-if="invoice.folio_id.invoice_count > 0">
+                                    <div class="card  bg-white  shadow mt-4">
+                                        <div class="card-header bg-white o_pms_pwa_card_header">
+                                            <h3 class="mb-0">
+                                                Facturas
+                                            </h3>
+                                        </div>
+                                        <div class="card-body  bg-white ">
+                                            <table class="table table-responsive">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th class="o_pms_pwa_theme_color">ID</th>
+                                                        <th class="o_pms_pwa_theme_color">Partner</th>
+                                                        <th class="o_pms_pwa_theme_color">Date</th>
+                                                        <th class="o_pms_pwa_theme_color">Total</th>
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="invoice.folio_id.move_ids" t-as="i">
+                                                        <tr>
+                                                            <td>
+                                                                <a class="o_pms_pwa_theme_color" t-att-href="'/my/invoices/' + str(i.id)">
+                                                                    <t t-esc="i.name" />
+                                                                </a>
+                                                            </td>
+                                                            <td class="black_text">
+                                                                <t t-esc="i.partner_id.name" />
+                                                            </td>
+                                                            <td class="black_text text-right">
+                                                                <t t-esc="i.invoice_date" />
+                                                            </td>
+                                                            <td class="black_text text-right">
+                                                                <t t-esc="i.amount_total" />
+                                                            </td>
+
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
                             </div>
                         </div>
                     </div>
