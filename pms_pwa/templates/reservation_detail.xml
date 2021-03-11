@@ -494,6 +494,7 @@
                                                 </span>
                                             </div>
                                         </div>
+                                        <t t-if="invoice.folio_id.payment_state != 'paid'">
                                         <hr class="m-1" />
                                         <!-- <div class="row pago-badge">
                                             <div class="col-12">Nº tarjeta reserva</div>
@@ -520,7 +521,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Invoice contact
                                                                         </label>
-                                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="partner_to_invoice">
+                                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" id="partner_to_invoice">
                                                                             <t t-foreach="invoice.folio_id.partner_invoice_ids" t-as="partner">
                                                                                 <t t-if="partner.id == invoice.folio_id.partner_id.id">
                                                                                     <option t-attf-value="{{ partner.id }}" selected="selected"><t t-esc="partner.name"></t></option>
@@ -607,6 +608,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <hr class="m-1" />
                                         <div class="col-12">
                                             <div class="form-group text-center">
@@ -614,9 +616,14 @@
                                                     <i class="fa fa-print" aria-hidden="false" />
                                                     IMPRIMIR
                                                 </button> -->
-                                                <input type="submit" class="btn btn-message" value="COBRAR" />
+
+                                                    <button id="payment_button" class="btn btn-message">
+                                                        COBRAR
+                                                    </button>
+
                                             </div>
                                         </div>
+                                        </t>
                                     </div>
                                 </div>
                                 <t t-if="invoice.folio_id.invoice_count > 0">

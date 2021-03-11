@@ -312,13 +312,13 @@ class TestFrontEnd(http.Controller):
                         "date": "15/10/2020",
                         "hour": "10:14:58",
                         "name": "Nueva reserva",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",
+                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",  # noqa
                     },
                     {
                         "date": "15/10/2020 10:54:25",
                         "hour": "10:14:58",
                         "name": "Nueva reserva",
-                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",
+                        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",  # noqa
                     },
                 ],
                 "evolution": {
@@ -453,6 +453,7 @@ class TestFrontEnd(http.Controller):
                         "qty_invoiced": x.qty_invoiced,
                         "price_total": x.price_total,
                         "price_subtotal": x.price_subtotal,
+                        "product_uom_qty": x.product_uom_qty,
                     }
                     for x in reservation_lines
                 ]
