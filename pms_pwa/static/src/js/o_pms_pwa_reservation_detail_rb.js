@@ -270,13 +270,17 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         for (var i = 0; i < checkboxesChecked.length; i++) {
             var td_id = "#my" + checkboxesChecked[i];
             reservation_lines.push({
-                id: checkboxesChecked[i],
-                qty: $(td_id).text(),
+                id: parseInt(checkboxesChecked[i]),
+                qty: parseInt($(td_id).text()),
             });
         }
+        var partner_id_value = $("#partner_to_invoice option:selected").val();
+        var partner_id = isNaN(parseInt(partner_id_value))
+            ? false
+            : parseInt(partner_id_value);
         reservation_data.push({
             lines_to_invoice: [reservation_lines],
-            partner_to_invoice: $("#partner_to_invoice option:selected").val(),
+            partner_to_invoice: partner_id,
             partner_values: [
                 {
                     name: $("input[name='invoice_name']").val(),
@@ -287,8 +291,10 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     country: $("input[name='invoice_country']").val(),
                 },
             ],
+            payment_method: parseInt($('input[name="payment_method"]:checked').val()),
         });
-        ajax.jsonRpc("/reservation/" + folio_id + "/payment", "call", {
+        console.log(reservation_data);
+        ajax.jsonRpc("/reservation/" + folio_id + "/invoice", "call", {
             data: reservation_data,
             folio_id: folio_id,
         }).then(function (result) {
@@ -309,6 +315,8 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 alert: data,
             });
             alert_div.append(alert);
+
+            jQuery.ready();
         });
     });
 });

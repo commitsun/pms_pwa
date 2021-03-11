@@ -594,18 +594,17 @@
                                                 <h4>Métodos de pago</h4>
                                             </div>
                                             <div class="col-12">
-                                                <div class="form-check mt-2">
-                                                    <input class="o_pms_pwa_checkbox" type="checkbox" id="payment_method1" checked="checked" />
-                                                    <label class="o_pms_pwa_checkbox_label" for="payment_method1">
-                                                        Tarjeta de crédito
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input class="o_pms_pwa_checkbox" type="checkbox" id="payment_method2" />
-                                                    <label class="o_pms_pwa_checkbox_label" for="payment_method2">
-                                                        Efectivo
-                                                    </label>
-                                                </div>
+                                                <t t-foreach="invoice.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
+
+                                                    <div class="form-check mt-2">
+                                                        <input type="radio" class="o_pms_pwa_checkbox" name="payment_method" t-attf-value="{{ payment.id }}" checked="checked" />
+                                                        <!-- <input class="o_pms_pwa_checkbox" type="checkbox" t-attf-id="{{ payment.id }}" checked="checked" /> -->
+                                                        <label class="o_pms_pwa_checkbox_label">
+                                                            <t t-esc="payment.name"></t>
+                                                        </label>
+                                                    </div>
+
+                                                </t>
                                             </div>
                                         </div>
 
@@ -618,7 +617,8 @@
                                                 </button> -->
 
                                                     <button id="payment_button" class="btn btn-message">
-                                                        COBRAR
+                                                        <i class="fa fa-file-text-o" aria-hidden="false" />
+                                                        FACTURAR
                                                     </button>
 
                                             </div>
