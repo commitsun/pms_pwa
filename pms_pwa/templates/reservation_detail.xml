@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- <template id="roomdoo_menu_link_active" inherit_id="pms_pwa.roomdoo_sidebar_menu">
-        <xpath expr="//a[@href='/reservation/list']" position="attributes">
-            <attribute name="class">nav-link active</attribute>
+    <template id="roomdoo_menu_link_active" inherit_id="website.submenu">
+        <xpath expr="//a[@t-att-href='submenu.clean_url()']" position="attributes">
+            <attribute name="t-attf-class">#{link_class or ''} #{'active' if submenu.clean_url() and unslug_url(request.httprequest.path) == unslug_url(submenu.clean_url()) or submenu.clean_url() == '/reservation/list' and unslug_url(request.httprequest.path).startswith('/reservation/') else ''}</attribute>
         </xpath>
-    </template> -->
+    </template>
     <template id="roomdoo_reservation_detail" name="Reservation detail">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Reservation detail'" />
