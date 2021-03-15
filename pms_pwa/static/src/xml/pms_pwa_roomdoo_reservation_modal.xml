@@ -1136,10 +1136,10 @@
 
     <t t-name="pms_pwa.reservation_alerts">
         <t t-if="alert">
-            <div t-attf-class="toast fade show {{ alert['type'] }}">
+            <div t-attf-class="toast show {{ alert['type'] }}" data-autohide="false">
                 <div class="toast-header">
                     <strong class="mr-auto"><i class="fa fa-bell"></i> </strong>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <button type="button" class="ml-2 mb-1 o_pms_pwa_toast-close close" data-dismiss="toast">
                         <span>x</span>
                     </button>
                 </div>
