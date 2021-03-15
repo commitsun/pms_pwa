@@ -8,6 +8,11 @@ odoo.define("pms_pwa.sidebar", function () {
         e.preventDefault();
         $("body").toggleClass("toggled");
     });
+    // TOAST
+    $(document).ready(function () {
+        $(".toast").toast();
+    });
+    // DATE RANGE MODAL
     $(function () {
         $('input[name="range_check_date_modal"]').daterangepicker(
             {

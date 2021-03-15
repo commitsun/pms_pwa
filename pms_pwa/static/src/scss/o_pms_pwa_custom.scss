@@ -311,3 +311,31 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
 }
+
+// TOAST
+.o_pms_pwa_roomdoo_alerts {
+    position: fixed;
+    z-index: 99999;
+    bottom: 3%;
+    left: 40%;
+    .toast.warning {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        .toast-header {
+            strong {
+                color: #721c24;
+            }
+        }
+    }
+    .toast.success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        .toast-header {
+            strong {
+                color: #155724;
+            }
+        }
+    }
+}
