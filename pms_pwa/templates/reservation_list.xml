@@ -11,14 +11,14 @@
             <div class="mx-3 o_pms_pwa_roomdoo_alerts"/>
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo_list">
-                    <div class="o_pms_pwa_full_shadow bg-white p-5">
+                    <div class="o_pms_pwa_full_shadow bg-white p-4">
                         <form method="post" t-att-class="_classes">
                             <div class="row">
-                                <div class="col-8 col-md-8 col-lg-5">
+                                <div class="col-9 col-md-9 col-lg-5">
                                     <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 </div>
-                                <div class="col-4 col-md-4 col-lg-7">
+                                <div class="col-3 col-md-3 col-lg-7">
                                     <span class="dropdown">
                                         <a
                                             class="btn o_pms_pwa_float_right"
@@ -27,6 +27,7 @@
                                             <span class="d-none d-lg-flex align-self-center">
                                                 FILTERS <i class="fa fa-angle-left"/>
                                             </span>
+                                            <i class="fa fa-filter d-lg-none"></i>
                                         </a>
                                     </span>
                                 </div>
@@ -141,26 +142,34 @@
             t-att-data-target="'.accordion_'+str(folio.id)"
             role="tablist" aria-multiselectable="true">
             <td class="first-col">
-                <span class="float-left">
-                    <img t-att-src="website.image_url(folio.partner_id if folio.partner_id else folio_partner_id, 'image_128')"
-                        width="50"
-                        class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
-                        t-att-title="folio.partner_id.name if folio.partner_id else folio_partner_id.name"
-                        t-att-alt="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
-                    <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
-                </span>
-                <div class="float-left">
-                    <t t-esc="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
+                <div class="o_pms_pwa_info">
+                    <div>
+                        <img t-att-src="website.image_url(folio.partner_id if folio.partner_id else folio_partner_id, 'image_128')"
+                            width="40px"
+                            class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                            t-att-title="folio.partner_id.name if folio.partner_id else folio_partner_id.name"
+                            t-att-alt="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
+                        <sup class="o_pms_pwa_badge_position">0</sup>
+                    </div>
+                    <div>
+                        <span class="text-left o_pms_pwa_info_name">
+                            <t t-esc="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
+                        </span>
+                        <br />
+                        <span class="text-left">
+                            <a class="text-left" t-att-href="'tel:' + str(folio.partner_id.mobile or folio.partner_id.phone)
+                                if folio.partner_id else str(folio_partner_id.mobile or folio_partner_id.phone)">
+                                <t t-esc="(folio.partner_id.mobile or folio.partner_id.phone)
+                                    if folio.partner_id else (folio_partner_id.mobile or folio_partner_id.phone)"/>
+                            </a>
+
+                        </span>
+                        <span class="o_pms_pwa_info_num text-rigth">
+                            <i class="fa fa-user text-rigth"/>
+                            <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
+                        </span>
+                    </div>
                 </div>
-                <br/>
-                <a class="float-left" t-att-href="'tel:' + str(folio.partner_id.mobile or folio.partner_id.phone)
-                    if folio.partner_id else str(folio_partner_id.mobile or folio_partner_id.phone)">
-                    <t t-esc="(folio.partner_id.mobile or folio.partner_id.phone)
-                        if folio.partner_id else (folio_partner_id.mobile or folio_partner_id.phone)"/>
-                </a>
-                <span class="float-right "><i class="fa fa-user"/>
-                    <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
-                </span>
             </td>
             <td class="o_pms_pwa_lh45">
                 <t t-esc="folio.id"/>
@@ -202,25 +211,31 @@
 
     <template id="roomdoo_reservation_item" name="Roomdoo reservation item">
         <td class="first-col">
-            <span class="float-left">
-                <img t-att-src="website.image_url(obj.partner_id, 'image_128')"
-                    width="50"
-                    class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
-                    t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
-                <span class="badge badge-pill o_pms_pwa_badge_position">0</span>
-            </span>
-            <div class="float-left">
-                <t t-esc="obj.partner_id.name"/>
+            <div class="o_pms_pwa_info">
+                <div>
+                    <img t-att-src="website.image_url(obj.partner_id, 'image_128')"
+                        width="40px"
+                        class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                        t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
+                    <sup class="o_pms_pwa_badge_position">0</sup>
+                </div>
+                <div>
+                    <span class="text-left o_pms_pwa_info_name">
+                        <t t-esc="obj.partner_id.name"/>
+                    </span>
+                    <br />
+                    <span class="text-left">
+                        <a t-att-href="'tel:' + str(obj.partner_id.mobile or obj.partner_id.phone)">
+                            <t t-esc="obj.partner_id.mobile or obj.partner_id.phone"/>
+                        </a>
+                    </span>
+                    <span class="o_pms_pwa_info_num text-rigth">
+                        <i class="fa fa-user"/>
+                        <t t-if="obj.adults" t-esc="obj.adults"/>
+                    </span>
+                </div>
             </div>
-            <br/>
-            <a class="float-left" t-att-href="'tel:' + str(obj.partner_id.mobile or obj.partner_id.phone)">
-                <t t-esc="obj.partner_id.mobile or obj.partner_id.phone"/>
-            </a>
-            <span class="float-right "><i class="fa fa-user"/>
-                <t t-if="obj.adults" t-esc="obj.adults"/>
-            </span>
-            <br/>
-            <div class="progress mt-4">
+            <div class="progress mt-2">
                 <div t-att-class="'progress-bar '
                     + ('bg-success ' if obj.state in ('onboard') else ' ')
                     + ('bg-secondary ' if obj.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')

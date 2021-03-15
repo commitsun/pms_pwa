@@ -75,7 +75,9 @@ body.toggled {
     font-weight: bold;
     font-size: large;
     float: left;
-    margin-top: 0.5rem;
+    margin-top: 2.5rem;
+    text-transform: uppercase;
+    margin-left: 1.5rem;
 }
 .o_pms_pwa_logo {
     display: block;
@@ -153,13 +155,15 @@ body.toggled {
         font-size: xx-large;
         float: left;
         margin-top: 0.5rem;
+        margin-left: 0.5rem;
     }
-    .o_pms_pwa_menu_link_mobile {
-        display: none;
-    }
+
     .o_pms_pwa_bg_theme {
-        background-image: linear-gradient(to right, $theme-color 50%, $bg-theme-color);
+        background-image: linear-gradient(to right, $theme-color 60%, $bg-theme-color);
         color: $white;
+    }
+    .img-responsive.mobile {
+        display: none;
     }
 }
 
@@ -206,22 +210,25 @@ body.toggled {
     display: block;
 }
 #menu-toggle {
-    display: block;
-    float: left;
-    color: rgba(0, 0, 0, 0.5);
-    border-color: transparent;
-    padding: 0.25rem 0.75rem;
-    padding-right: 0.75rem;
-    padding-left: 0.75rem;
-    font-size: 1.25rem;
-    line-height: 1;
-    background-color: transparent;
-    border: 1px solid transparent;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-bottom-color: transparent;
-    border-left-color: transparent;
-    border-radius: 0.25rem;
+    display: flex;
+    margin-left: 1rem;
+    .o_pms_pwa_options {
+        position: absolute;
+        right: 5%;
+        display: flex;
+        img {
+            margin-left: 1rem;
+            width: 20px;
+            margin-top: 0.75rem;
+        }
+        .navbar-toggler-icon {
+            cursor: pointer;
+            margin-left: 1.5rem;
+            width: 30px;
+            height: 30px;
+            // margin-top: 1rem;
+        }
+    }
 }
 @media screen and (min-width: 2500px) {
     #sidebar-wrapper {

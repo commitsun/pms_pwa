@@ -3,7 +3,7 @@
 }
 
 .o_pms_pwa_notifications_regular {
-    margin-left: 2rem;
+    margin-left: 1rem;
     margin-right: 2rem;
     overflow-x: auto; //scroll;
     display: block ruby;
@@ -42,9 +42,10 @@ section.o_pms_pwa_roomdoo_list {
         }
     }
     .table-hover {
-        font-family: "Barlow Condensed", sans-serif;
-        letter-spacing: 1px;
-        font-size: 16px;
+        font: normal normal normal 16px/16px Barlow Condensed;
+        // font-family: "Barlow Condensed", sans-serif;
+        letter-spacing: 0.02px;
+        // font-size: 16px;
         color: $table-text-color;
         line-height: 16px;
         & > thead {
@@ -84,30 +85,52 @@ section.o_pms_pwa_roomdoo_list {
                     }
                 }
                 & > td.first-col {
-                    div:first-of-type {
-                        font-weight: bold;
+                    display: block;
+                    width: 200px;
+                    .o_pms_pwa_info {
+                        display: flex;
+                        img {
+                            min-width: 40px;
+                            min-height: 40px;
+                        }
+                        .o_pms_pwa_info_name {
+                            font-weight: bold;
+                        }
+                        .o_pms_pwa_badge_position {
+                            position: relative;
+                            top: -1em;
+                            right: 1.5em;
+                            border-radius: 10em;
+                            padding: 0.2em 0.4em;
+                            text-align: center;
+                            font: normal normal bold 12px/14px Barlow Condensed;
+                            color: #ffffff;
+                            background-color: $badge-color;
+                        }
+                        .o_pms_pwa_info_num {
+                            position: relative;
+                            left: 15%;
+                            i {
+                                color: $theme-color;
+                            }
+                        }
+
+                        a:first-of-type {
+                            color: $table-text-color;
+                        }
                     }
-                    a:first-of-type {
-                        color: $table-text-color;
-                    }
-                    .o_pms_pwa_badge_position {
-                        position: relative;
-                        top: -20px;
-                        right: 25px;
-                        font-size: 12px;
-                        font-family: "Barlow", sans-serif;
-                        font-weight: bold;
-                        color: #ffffff;
-                        background-color: $badge-color;
-                        line-height: 14px;
-                    }
-                    i {
-                        margin-right: 5px;
-                        color: $theme-color;
-                    }
+
+                    // div:first-of-type {
+                    //     font-weight: bold;
+                    // }
+                    //
                 }
                 & > td.o_pms_pwa_lh45 {
                     line-height: 45px;
+                    overflow: hidden;
+                    max-width: 75ch;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
                 & > td:last-of-type {
                     border-left: 5px solid $bg-theme-color;
@@ -158,7 +181,7 @@ div.o_pms_pwa_new_reservation_modal {
         margin: auto;
         margin-top: 60px;
         margin-right: 10px;
-        width: 360px;
+        max-width: 360px;
         height: 100%;
         -webkit-transform: translate3d(0%, 0, 0);
         -ms-transform: translate3d(0%, 0, 0);
@@ -176,7 +199,7 @@ div.o_pms_pwa_new_reservation_modal {
             & > div.modal-title {
                 color: $table-text-color;
                 font-size: 22px;
-                font-family: "Barlow", sans-serif;
+                font-family: "Barlow Condensed", sans-serif;
                 font-weight: bold;
                 letter-spacing: 0.02px;
                 text-transform: uppercase;
@@ -257,6 +280,7 @@ section.o_pms_pwa_roomdoo_list,
 div.o_pms_pwa_reservation_modal {
     .o_pms_pwa_img_rounded_bg {
         background-color: $theme-color;
+        padding: 0.15rem;
     }
     .progress {
         height: 0.2rem;

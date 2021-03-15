@@ -4,12 +4,17 @@
         <xpath expr="//header//nav" position="replace">
             <t t-set="is_connected" t-value="not user_id._is_public()" />
             <nav t-if="is_connected" data-name="Navbar" class="navbar navbar-expand-lg navbar-light o_colored_level o_cc">
-                <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between">
+                <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between mt-2">
                     <!-- Navbar Collapse -->
                     <div id="top_menu_collapse" class="collapse navbar-collapse order-last order-lg-0">
-                        <button id="menu-toggle">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
+                        <div id="menu-toggle">
+                            <img src="/pms_pwa/static/img/logo_mobil.png" alt="logo menu roomdoo" class="img-responsive mobile" />
+                            <div class="o_pms_pwa_options">
+                                <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive mobile" />
+                                <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive mobile"/>
+                                <img src="/pms_pwa/static/img/menu_img.png" alt="notificaciones" class="img-responsive mobile navbar-toggler-icon"/>
+                            </div>
+                        </div>
                         <!-- Page Title -->
                         <div t-if="page_title" class="o_pms_pwa_page_title">
                             <t t-esc="page_title" />

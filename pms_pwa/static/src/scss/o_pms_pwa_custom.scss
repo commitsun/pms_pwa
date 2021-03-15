@@ -11,8 +11,9 @@ $table-text-color: #3f4443;
 $table-text-color-lighter: #b5bfbd;
 
 body {
-    font-family: "Barlow Condensed", sans-serif;
-    font-weight: 400;
+    font: normal normal normal 16px/16px Barlow Condensed;
+    // font-family: "Barlow Condensed", sans-serif;
+    // font-weight: 400;
 }
 footer {
     visibility: hidden;
@@ -271,6 +272,10 @@ select::-ms-expand {
 
 .o_pms_pwa_full_shadow {
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+    @media (max-width: 991.98px) {
+        box-shadow: none;
+        margin: -2rem;
+    }
 }
 .o_pms_pwa_navbar_counter {
     color: $theme-color;
@@ -282,7 +287,9 @@ select::-ms-expand {
     }
 }
 .o_pms_notification_title {
-    padding: 0.3rem;
+    padding: 0.4rem;
+    margin: auto;
+    text-align: center;
 }
 @media (max-width: 991.98px) {
     header#top {
