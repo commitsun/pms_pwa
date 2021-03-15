@@ -513,20 +513,113 @@
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
                             <div class="o_pms_pwa_shadow">
-                                <p>Are you sure you want to cancel this reservation?</p>
-                                Name: <t t-esc="reservation.partner_id.name"/><br/>
-                                Nights: <t t-esc="reservation.nights"/><br/>
-                                Adults: <t t-esc="reservation.adults"/><br/>
-                                Pending amount: <t t-esc="reservation.folio_pending_amount"/><br/>
+                                <div class="row">
+                                    <div class="col-3 align-self-center">
+                                        <img
+                                            t-att-src="'/web/image/res.partner/'+reservation.partner_id.id+'/image_128'"
+                                            class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                                            t-att-title="reservation.partner_id.name"
+                                            t-att-alt="reservation.partner_id.name"
+                                        />
+                                    </div>
+                                    <div class="col-9 align-self-center">
+                                        <div class="row">
+                                            <div class="col-12 align-self-center">
+                                                <strong>
+                                                    <span
+                                                        class="o_pms_pwa_reservation_name"
+                                                        t-esc="reservation.partner_id.name"
+                                                    />
+                                                </strong>
+                                            </div>
+                                            <div class="col-12 align-self-center">
+                                                <a
+                                                    t-att-href="'tel:' + reservation.partner_id.mobile"
+                                                >
+                                                    <span
+                                                        t-esc="reservation.partner_id.mobile"
+                                                    />
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 progress mt-2">
+                                    <div
+                                        t-if="reservation.state in ['onboard']" class="progress-bar bg-success"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.checkins_ratio + '%'"
+                                        t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['done', 'cancelled', 'no_show', 'no_checkout']"
+                                        class="progress-bar bg-secondary"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &gt; 75"
+                                        class="progress-bar bg-success"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        class="progress-bar bg-warning"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &lt; 50"
+                                        class="progress-bar bg-danger"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-else="" class="progress-bar"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
                             </div>
-                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
-                                <span>Close</span>
-                            </button>
-                            <button type="button"
-                                t-att-url="'/reservation/' + reservation.id +'/checkout'"
-                                class="btn btn-message btn-block o_pms_pwa_button_checkout_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkout">
-                                <span>Checkout</span>
-                            </button>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mt-4">
+                                        <h5>Are you sure you want to checkout this reservation?</h5>
+                                        <p><strong>Name:</strong> <t t-esc="reservation.partner_id.name"/></p>
+                                        <p><strong>Nights:</strong> <t t-esc="reservation.nights"/></p>
+                                        <p><strong>Adults:</strong> <t t-esc="reservation.adults"/></p>
+                                        <p><strong>Pending amount:</strong> <t t-esc="reservation.folio_pending_amount"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
+                                        <span>Close</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button"
+                                        t-att-url="'/reservation/' + reservation.id +'/checkout'"
+                                        class="btn btn-message btn-block o_pms_pwa_button_cancel_confirm" data-dismiss="modal" aria-label="Checkout">
+                                        <span>Checkout</span>
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                     <!-- modal-content -->
@@ -558,20 +651,112 @@
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
                             <div class="o_pms_pwa_shadow">
-                                <p>Are you sure you want to cancel this reservation?</p>
-                                Name: <t t-esc="reservation.partner_id.name"/><br/>
-                                Nights: <t t-esc="reservation.nights"/><br/>
-                                Adults: <t t-esc="reservation.adults"/><br/>
-                                Pending amount: <t t-esc="reservation.folio_pending_amount"/><br/>
+                                <div class="row">
+                                    <div class="col-3 align-self-center">
+                                        <img
+                                            t-att-src="'/web/image/res.partner/'+reservation.partner_id.id+'/image_128'"
+                                            class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                                            t-att-title="reservation.partner_id.name"
+                                            t-att-alt="reservation.partner_id.name"
+                                        />
+                                    </div>
+                                    <div class="col-9 align-self-center">
+                                        <div class="row">
+                                            <div class="col-12 align-self-center">
+                                                <strong>
+                                                    <span
+                                                        class="o_pms_pwa_reservation_name"
+                                                        t-esc="reservation.partner_id.name"
+                                                    />
+                                                </strong>
+                                            </div>
+                                            <div class="col-12 align-self-center">
+                                                <a
+                                                    t-att-href="'tel:' + reservation.partner_id.mobile"
+                                                >
+                                                    <span
+                                                        t-esc="reservation.partner_id.mobile"
+                                                    />
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 progress mt-2">
+                                    <div
+                                        t-if="reservation.state in ['onboard']" class="progress-bar bg-success"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.checkins_ratio + '%'"
+                                        t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['done', 'cancelled', 'no_show', 'no_checkout']"
+                                        class="progress-bar bg-secondary"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &gt; 75"
+                                        class="progress-bar bg-success"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        class="progress-bar bg-warning"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &lt; 50"
+                                        class="progress-bar bg-danger"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-else="" class="progress-bar"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
                             </div>
-                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
-                                <span>Close</span>
-                            </button>
-                            <button type="button"
-                                t-att-url="'/reservation/' + reservation.id +'/cancel'"
-                                class="btn btn-message btn-block o_pms_pwa_button_cancel_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Cancel">
-                                <span>Cancel</span>
-                            </button>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mt-4">
+                                        <h5>Are you sure you want to cancel this reservation?</h5>
+                                        <p><strong>Name:</strong> <t t-esc="reservation.partner_id.name"/></p>
+                                        <p><strong>Nights:</strong> <t t-esc="reservation.nights"/></p>
+                                        <p><strong>Adults:</strong> <t t-esc="reservation.adults"/></p>
+                                        <p><strong>Pending amount:</strong> <t t-esc="reservation.folio_pending_amount"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
+                                        <span>Close</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button"
+                                        t-att-url="'/reservation/' + reservation.id +'/cancel'"
+                                        class="btn btn-message btn-block o_pms_pwa_button_cancel_confirm" data-dismiss="modal" aria-label="Cancel">
+                                        <span>Cancel</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- modal-content -->
@@ -603,6 +788,88 @@
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
                             <div class="o_pms_pwa_shadow">
+                                <div class="row">
+                                    <div class="col-3 align-self-center">
+                                        <img
+                                            t-att-src="'/web/image/res.partner/'+reservation.partner_id.id+'/image_128'"
+                                            class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                                            t-att-title="reservation.partner_id.name"
+                                            t-att-alt="reservation.partner_id.name"
+                                        />
+                                    </div>
+                                    <div class="col-9 align-self-center">
+                                        <div class="row">
+                                            <div class="col-12 align-self-center">
+                                                <strong>
+                                                    <span
+                                                        class="o_pms_pwa_reservation_name"
+                                                        t-esc="reservation.partner_id.name"
+                                                    />
+                                                </strong>
+                                            </div>
+                                            <div class="col-12 align-self-center">
+                                                <a
+                                                    t-att-href="'tel:' + reservation.partner_id.mobile"
+                                                >
+                                                    <span
+                                                        t-esc="reservation.partner_id.mobile"
+                                                    />
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 progress mt-2">
+                                    <div
+                                        t-if="reservation.state in ['onboard']" class="progress-bar bg-success"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.checkins_ratio + '%'"
+                                        t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['done', 'cancelled', 'no_show', 'no_checkout']"
+                                        class="progress-bar bg-secondary"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &gt; 75"
+                                        class="progress-bar bg-success"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        class="progress-bar bg-warning"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &lt; 50"
+                                        class="progress-bar bg-danger"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                    <div
+                                        t-else="" class="progress-bar"
+                                        role="progressbar"
+                                        t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
+                                        t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
                                 <div class="form-group form-field mt8">
                                     <div class="row">
                                         <div class="col-sm-12">
@@ -632,13 +899,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
-                                <span>Close</span>
-                            </button>
-                            <button type="button"
-                                class="btn btn-message btn-block o_pms_pwa_button_payment_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Pay">
-                                <span>Pay</span>
-                            </button>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
+                                        <span>Close</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button"
+                                        class="btn btn-message btn-block o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
+                                        <span>Pay</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <!-- modal-content -->

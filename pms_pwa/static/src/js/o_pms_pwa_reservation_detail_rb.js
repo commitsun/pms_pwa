@@ -94,7 +94,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         var currentEle = $(this).attr("id");
         // <-------stop the bubbling of the event here
         e.stopPropagation();
-        // Console.log("Current Element is " + currentEle);
+        console.log("Current Element is " + currentEle);
 
         $("#" + currentEle).html(
             '<input class="thVal o_pms_pwa_editinline" type="number" width="10" min="1" max="10" />'
@@ -146,7 +146,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     lines[i].id +
                     "' class='text-right editable'>" +
                     lines[i].qty_to_invoice +
-                    "</td>" +
+                    "<i class='fa fa-edit'></i></td>" +
                     "<td class='text-right'>" +
                     lines[i].qty_invoiced +
                     "/" +
@@ -211,7 +211,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         lines[i].id +
                         "' class='text-right editable'>" +
                         lines[i].qty_to_invoice +
-                        "</td>" +
+                        "<i class='fa fa-edit' ></i></td>" +
                         "<td class='text-right'>" +
                         lines[i].qty_invoiced +
                         "/" +
