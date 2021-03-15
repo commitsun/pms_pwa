@@ -242,12 +242,12 @@ class PmsReservation(models.Model):
             checkout=checkout,
             pms_property_id=pms_property_id.id,
             pricelist_id=pricelist_id.id,
-        ).name_get()
+        )
         for room_type in pms_room_types:
             room_types.append(
                 {
-                    "id": room_type[0],
-                    "name": room_type[1],
+                    "id": room_type.id,
+                    "name": room_type.display_name,
                 }
             )
         return room_types

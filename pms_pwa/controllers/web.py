@@ -7,7 +7,7 @@ import logging
 from datetime import datetime, timedelta
 
 from odoo import _, fields, http
-from odoo.exceptions import MissingError
+from odoo.exceptions import MissingError, ValidationError
 from odoo.http import request
 
 from odoo.addons.web.controllers.main import Home
@@ -554,6 +554,8 @@ class TestFrontEnd(http.Controller):
                     "folio_pending_amount": reservation.folio_pending_amount,
                     "folio_internal_comment": reservation.folio_internal_comment,
                     "payment_methods": self._get_allowed_payments_journals(),
+                    "reservation_types": self._get_reservation_types(),
+                    "reservation_type": reservation.reservation_type,
                     "checkins_ratio": reservation.checkins_ratio,
                     "ratio_checkin_data": reservation.ratio_checkin_data,
                     "adults": reservation.adults,
@@ -580,6 +582,8 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def reservation_onchange_data(self, reservation_id=None, **kw):
+        old_reservation_type = None
+        old_values = None
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
@@ -587,27 +591,102 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             if reservation:
-                params = http.request.jsonrequest.get("params")
-                del params["reservation_id"]
                 try:
+                    params = http.request.jsonrequest.get("params")
+                    for param in params.keys():
+
+                        # ADULTS
+                        if param == "adults":
+                            params["adults"] = int(params["adults"])
+
+                        # ROOM TYPE
+                        elif param == "room_type_id":
+                            params["room_type_id"] = request.env[
+                                "pms.room.type"
+                            ].browse(int(params["room_type_id"]))
+
+                        # PREFERRED ROOM ID
+                        elif param == "preferred_room_id":
+                            params["preferred_room_id"] = request.env[
+                                "pms.room"
+                            ].browse(int(params["preferred_room_id"]))
+
+                        #  PRICE TOTAL REVIEW
+                        elif param == "price_total":
+                            # params[param] = float(params[param])
+                            pass
+                        # CHECKIN & CHECKOUT TODO process both as an unit
+                        elif param in ["checkin", "checkout"]:
+                            pass
+
+                        # ARRIVAL HOUR, DEPARTURE HOUR TODO
+                        elif param in ["arrival_hour", "departure_hour"]:
+                            pass
+
+                        # ELIF CHANGE QTY BOARD SERVICES
+                        elif param == "board_service":
+                            # reservation_id, board_service_line, board_service_line_id, qty
+                            # get service_line & service_line_ids and change qty
+                            board_service = params["board_service"]
+                            service_id = board_service["service_id"]
+                            service_line_id = board_service["service_line_id"]
+                            qty = board_service["qty"]
+
+                            service = reservation.folio_id.service_ids.browse(
+                                int(service_id)
+                            )
+                            service_line = service.service_line_ids.browse(
+                                int(service_line_id)
+                            )
+                            service_line.day_qty = int(qty)
+
+                        # RESERVATION TYPE
+                        elif param == "reservation_type":
+                            old_reservation_type = reservation.folio_id.reservation_type
+                            reservation.folio_id.reservation_type = params[param]
+
+                    if "reservation_type" in params:
+                        del params["reservation_type"]
+                    if "board_service" in params:
+                        del params["board_service"]
+
+                    print(params)
+                    old_values = parse_reservation(reservation)
+                    del params["price_total"]
                     reservation.write(params)
-                    return {
-                        "room_type_id": reservation.room_type_id,
-                        "preferred_room_id": reservation.preferred_room_id,
-                        "adults": reservation.adults,
-                        "checkin": reservation.checkin,
-                        "checkout": reservation.checkout,
-                        "arrival_hour": reservation.arrival_hour,
-                        "departure_hour": reservation.departure_hour,
-                        "reservation_type": reservation.reservation_type,
-                        "price_total": reservation.price_total,
-                    }
+                    # reservation.flush()
+                    # reservation.folio_id.flush()
                 except Exception as e:
-                    return json.dumps({"result": False, "message": str(e)})
+                    # REVIEW
+                    reservation.write(old_values)
+                    reservation.flush()
+                    reservation.folio_id.reservation_type = old_reservation_type
+                    return json.dumps(
+                        {
+                            "result": False,
+                            "message": str(e),
+                            "reservation": parse_reservation(reservation),
+                        }
+                    )
+                print(parse_reservation(reservation))
+                return json.dumps(
+                    {
+                        "result": True,
+                        "message": _("Operation completed successfully."),
+                        "reservation": parse_reservation(reservation),
+                    }
+                )
             else:
                 return json.dumps(
                     {"result": False, "message": _("Reservation not found")}
                 )
+
+    def _get_reservation_types(self):
+        return [
+            {"id": "out", "name": "Out of service"},
+            {"id": "normal", "name": "Normal"},
+            {"id": "staff", "name": "Staff"},
+        ]
 
     def _get_allowed_payments_journals(self):
         """
@@ -677,7 +756,7 @@ class TestFrontEnd(http.Controller):
         auth="public",
         website=True,
     )
-    def partner_list(self, search="", **post):
+    def partner_list(self):
         all_partners = request.env["res.partner"].search([])
         result = []
         for partner in all_partners:
@@ -688,3 +767,20 @@ class TestFrontEnd(http.Controller):
                 }
             )
         return result
+
+
+def parse_reservation(reservation):
+    reservation_values = dict()
+    reservation_values["room_type_id"] = int(reservation.room_type_id.id)
+    reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
+    reservation_values["adults"] = reservation.adults
+    reservation_values["reservation_type"] = reservation.folio_id.reservation_type
+
+    reservation_values["arrival_hour"] = reservation.arrival_hour
+    reservation_values["departure_hour"] = reservation.departure_hour
+    reservation_values["price_total"] = reservation.price_total
+
+    # TODO: pending receive checkin & checkout as a unit
+    # "checkin": reservation.checkin,
+    # "checkout": reservation.checkout,
+    return reservation_values

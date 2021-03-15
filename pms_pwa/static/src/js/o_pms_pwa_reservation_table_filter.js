@@ -116,25 +116,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         reservation_data.outstanding_vat =
                             (reservation_data.folio_pending_amount.value * 21) / 100;
                         /* End missin data */
-                        var room_types = [
-                            "Triple",
-                            "Económica",
-                            "Estándar",
-                            "Individual",
-                            "Premium",
-                            "Superior",
-                        ];
-                        var room_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
                         var extras = ["Breakfast", "Additional bed", "Cradle"];
-                        var payment_methods = ["Credit card", "Cash"];
-                        var reservation_types = ["Normal", "Staff", "Out of Service"];
                         self.displayContent("pms_pwa.roomdoo_reservation_modal", {
                             reservation: reservation_data,
-                            room_types: room_types,
                             extras: extras,
-                            payment_methods: payment_methods,
-                            room_numbers: room_numbers,
-                            reservation_types: reservation_types,
                             texts: {
                                 reservation_text: this.reservation_text,
                                 info_text: this.info_text,
@@ -158,18 +143,27 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             },
                             csrf_token: csrf_token,
                         });
-
                         var survey = [];
-                        // Bidimensional array: [ [1,3], [2,4] ]
-                        // Switcher function:
                         $("form.o_pms_pwa_reservation_form .o_pms_pwa_rb_tab").click(
                             function () {
-                                // Spot switcher:
-                                $(this)
-                                    .parent()
-                                    .find(".o_pms_pwa_rb_tab")
-                                    .removeClass("o_pms_pwa_rb_tab_active");
-                                $(this).addClass("o_pms_pwa_rb_tab_active");
+                                const selectors = [].slice.call(
+                                    this.parentElement.children
+                                );
+                                selectors.forEach((el) =>
+                                    el.classList.remove("o_pms_pwa_rb_tab_active")
+                                );
+                                this.classList.add("o_pms_pwa_rb_tab_active");
+                                ajax.jsonRpc(
+                                    "/reservation/" + reservation_id + "/onchange_data",
+                                    "call",
+                                    {
+                                        board_service: {
+                                            service_id: this.dataset.serviceid,
+                                            service_line_id: this.dataset.servicelineid,
+                                            qty: this.dataset.value,
+                                        },
+                                    }
+                                );
                             }
                         );
 
@@ -203,7 +197,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             "change",
                             "input, select",
                             function (new_event) {
-                                var values = {reservation_id: reservation_id};
+                                var values = {};
                                 values[new_event.currentTarget.name] =
                                     new_event.currentTarget.value;
                                 ajax.jsonRpc(
@@ -213,7 +207,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 ).then(function (new_data) {
                                     setTimeout(function () {
                                         if (new_data) {
-                                            $.each(new_data, function (key, value) {
+                                            const data = JSON.parse(new_data);
+
+                                            $.each(data.reservation, function (
+                                                key,
+                                                value
+                                            ) {
                                                 var input = $(
                                                     "form.o_pms_pwa_reservation_form input[name='" +
                                                         key +
