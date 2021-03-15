@@ -35,7 +35,7 @@ class Home(Home):
 # Frontend controllers to test
 class TestFrontEnd(http.Controller):
     @http.route(
-        ["/", "/page/<int:page>"],
+        ["/reservation/list", "/reservation/list/page/<int:page>"],
         type="http",
         auth="user",
         methods=["GET", "POST"],
@@ -65,7 +65,7 @@ class TestFrontEnd(http.Controller):
         # / ORDER STUFF's
 
         pager = request.website.pager(
-            url="",
+            url="/reservation/list",
             total=request.env["pms.folio"].search_count_folios_pwa(search, **post),
             page=page,
             step=paginate_by,
@@ -256,7 +256,7 @@ class TestFrontEnd(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
-        "/pms_dashboard",
+        "/",
         type="http",
         auth="user",
         methods=["GET", "POST"],

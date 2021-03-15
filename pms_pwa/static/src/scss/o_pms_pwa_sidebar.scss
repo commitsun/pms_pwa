@@ -91,6 +91,35 @@ body.toggled {
     color: $white;
 }
 
+@media (min-width: 1025px) {
+    .o_pms_pwa_header {
+        display: flex;
+    }
+    #sidebar-wrapper {
+        margin-left: 0;
+        width: 120px;
+        .o_pms_pwa_sidebar_login {
+            display: block;
+        }
+    }
+
+    #wrapwrap {
+        min-width: 0;
+        width: 100%;
+    }
+    .o_pms_pwa_logo {
+        display: block;
+        margin-left: 1.5rem;
+        margin-right: 0;
+        width: 50%;
+    }
+    body.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+    #menu-toggle {
+        display: none !important;
+    }
+}
 @media (min-width: 768px) {
     .o_pms_pwa_header {
         display: flex;

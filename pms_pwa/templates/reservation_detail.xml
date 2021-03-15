@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- <template id="roomdoo_menu_link_active" inherit_id="pms_pwa.roomdoo_sidebar_menu">
+        <xpath expr="//a[hashref('/reservation/list')]" position="attributes">
+            <attribute name="class">nav-link active</attribute>
+        </xpath>
+    </template> -->
     <template id="roomdoo_reservation_detail" name="Reservation detail">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Reservation detail'" />
