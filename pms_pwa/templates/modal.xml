@@ -23,18 +23,21 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-6">
+                                        <div class="col-8">
                                             <label class="control-label col-12" for="checkin">
                                                 Check in
                                             </label>
-                                            <input class="form-control"
+                                            <input class="form-control" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                                            <input type="hidden" name="check_in_date" value="" />
+                                            <input type="hidden" name="check_out_date" value="" />
+                                            <!-- <input class="form-control"
                                                 type="date" name="checkin"
-                                                t-att-value="post['checkin'] if post and 'checkin' in post else None"/>
+                                                t-att-value="post['checkin'] if post and 'checkin' in post else None"/> -->
                                             <span class="o_pms_pwa_calendar_icon">
                                                 <span class="fa fa-calendar"/>
                                             </span>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-4">
                                             <label class="control-label col-12" for="nights">
                                                 Nº of nights
                                             </label>

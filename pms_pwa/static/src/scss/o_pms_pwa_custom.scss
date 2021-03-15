@@ -126,6 +126,7 @@ h4 {
 .btn-pms_pwa {
     background-image: linear-gradient(to right, $theme-color 80%, $bg-theme-color);
     color: $white;
+    border: none;
     font-weight: 600;
     &:hover {
         color: $white;
@@ -303,4 +304,10 @@ select::-ms-expand {
 }
 .o_header_affixed {
     position: absolute;
+}
+// Remove chrome calendar icon
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
 }
