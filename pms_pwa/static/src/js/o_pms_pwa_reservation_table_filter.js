@@ -18,6 +18,127 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         $("form").submit();
     });
 
+    /* Single reservation form */
+
+    $("form#single_reservation_form").on("change", "input, select", function (event) {
+        var values = {};
+        values[event.currentTarget.name] = event.currentTarget.value;
+        ajax.jsonRpc("/reservation/single_reservation_onchange", "call", values).then(
+            function (new_data) {
+                setTimeout(function () {
+                    if (new_data) {
+                        console.log(new_data);
+                        $.each(new_data, function (key, value) {
+                            var input = $(
+                                "form#single_reservation_form input[name='" + key + "']"
+                            );
+                            if (input) {
+                                input.val(value);
+                            } else {
+                                $(
+                                    "form#single_reservation_form select[name='" +
+                                        key +
+                                        "'] option[value='" +
+                                        value +
+                                        "']"
+                                ).prop("selected", true);
+                            }
+                        });
+                    }
+                });
+            }
+        );
+    });
+
+    $("form#single_reservation_form").on("submit", function (event) {
+        event.preventDefault();
+        var values = $("form#single_reservation_form").serializeArray();
+        ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
+            function (new_data) {
+                setTimeout(function () {
+                    if (new_data) {
+                        console.log(new_data);
+                        var data = JSON.parse(new_data);
+                        if (data && data.result === true) {
+                            /* We need to integrate this into the public widget */
+                            location.href = "/reservation/" + data.id;
+                        } else {
+                            data.type = "warning";
+                            data.message = _t(
+                                "An undefined error has ocurred, please try again later."
+                            );
+                            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                                alert: data,
+                            });
+                            alert_div.append(alert);
+                        }
+                    }
+                });
+            }
+        );
+    });
+
+    /* Multiple reservation form */
+
+    $("form#multiple_reservation_form").on("change", "input, select", function (event) {
+        var values = {};
+        values[event.currentTarget.name] = event.currentTarget.value;
+        ajax.jsonRpc("/reservation/multiple_reservation_onchange", "call", values).then(
+            function (new_data) {
+                setTimeout(function () {
+                    if (new_data) {
+                        console.log(new_data);
+                        $.each(new_data, function (key, value) {
+                            var input = $(
+                                "form#multiple_reservation_form input[name='" +
+                                    key +
+                                    "']"
+                            );
+                            if (input) {
+                                input.val(value);
+                            } else {
+                                $(
+                                    "form#multiple_reservation_form select[name='" +
+                                        key +
+                                        "'] option[value='" +
+                                        value +
+                                        "']"
+                                ).prop("selected", true);
+                            }
+                        });
+                    }
+                });
+            }
+        );
+    });
+
+    $("form#multiple_reservation_form").on("submit", function (event) {
+        event.preventDefault();
+        var values = $("form#multiple_reservation_form").serializeArray();
+        ajax.jsonRpc("/reservation/multiple_reservation_new", "call", values).then(
+            function (new_data) {
+                setTimeout(function () {
+                    if (new_data) {
+                        console.log(new_data);
+                        var data = JSON.parse(new_data);
+                        if (data && data.result === true) {
+                            /* We need to integrate this into the public widget */
+                            location.href = "/reservation/" + data.id;
+                        } else {
+                            data.type = "warning";
+                            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                                alert: data,
+                            });
+                            alert_div.append(alert);
+                        }
+                    }
+                });
+            }
+        );
+    });
+
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
         selector: "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation",
         xmlDependencies: [
@@ -66,7 +187,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
         },
-        displayDataAlert: function (result) {
+        displayDataAlert: function (result, data_id) {
             var data = JSON.parse(result);
             if (data && data.result === true) {
                 data.type = "success";
@@ -83,6 +204,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 alert: data,
             });
             alert_div.append(alert);
+            $(String("#reservation_" + data_id)).load(
+                String(window.location.href + " #reservation_" + data_id)
+            );
+            /* $("#o_pms_pwa_reservation_list_table").load(
+                window.location.href + " #o_pms_pwa_reservation_list_table"
+            ) */
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
@@ -244,7 +371,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             var button = new_event.currentTarget;
                             ajax.jsonRpc(button.attributes.url.value, "call", {}).then(
                                 function (new_data) {
-                                    self.displayDataAlert(new_data);
+                                    $(".o_pms_pwa_reservation_modal").modal("toggle");
+                                    self.displayDataAlert(
+                                        new_data,
+                                        reservation_data.id
+                                    );
                                 }
                             );
                         });
@@ -343,7 +474,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             ajax.jsonRpc(button.attributes.url.value, "call", {
                                 guests_list: guest_list,
                             }).then(function (new_data) {
-                                self.displayDataAlert(new_data);
+                                self.displayDataAlert(new_data, data.id);
                             });
                         });
                     }
@@ -378,7 +509,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 "call",
                                 {}
                             ).then(function (new_data) {
-                                self.displayDataAlert(new_data);
+                                self.displayDataAlert(new_data, data.id);
                             });
                         });
                     }
@@ -413,7 +544,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 "call",
                                 {}
                             ).then(function (new_data) {
-                                self.displayDataAlert(new_data);
+                                self.displayDataAlert(new_data, data.id);
                             });
                         });
                     }
@@ -453,7 +584,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             payment_method: payment_method,
                             amount: payment_amount,
                         }).then(function (new_data) {
-                            self.displayDataAlert(new_data);
+                            self.displayDataAlert(new_data, data.id);
                         });
                     });
                 }

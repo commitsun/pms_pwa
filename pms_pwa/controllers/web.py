@@ -627,3 +627,87 @@ class TestFrontEnd(http.Controller):
         ]
         reservations = Reservation.search(domain)
         return reservations
+
+    @http.route(
+        ["/reservation/single_reservation_onchange"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def single_reservation_onchange(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+
+        if "rooms" in params:
+            reservation_values = {}
+        else:
+            reservation_values = {
+                "total": 260,
+            }
+
+        return reservation_values
+
+    @http.route(
+        ["/reservation/multiple_reservation_onchange"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def multiple_reservation_onchange(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+
+        if "rooms" in params:
+            reservation_values = {}
+        else:
+            reservation_values = {
+                "total": 260,
+            }
+
+        return reservation_values
+
+    @http.route(
+        ["/reservation/single_reservation_new"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def single_reservation_new(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+        return json.dumps(
+            {
+                "result": True,
+                "message": _("Operation completed successfully."),
+                "id": 8,
+            }
+        )
+        """ OR """
+        return json.dumps(
+            {"result": False, "message": _("Unnable to create the reservation")}
+        )
+
+    @http.route(
+        ["/reservation/multiple_reservation_new"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def multiple_reservation_new(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+        return json.dumps(
+            {
+                "result": True,
+                "message": _("Operation completed successfully."),
+                "id": 25,
+            }
+        )
+        """ OR """
+        return json.dumps(
+            {"result": False, "message": _("Unnable to create the reservation")}
+        )

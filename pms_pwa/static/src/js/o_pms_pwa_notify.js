@@ -38,6 +38,14 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
             if (div && div[0]) {
                 div[0].appendChild(span);
             }
+            if (
+                document.getElementsByClassName("o_pms_pwa_notifications")[0].childNodes
+                    .length > 1
+            ) {
+                document.getElementsByClassName(
+                    "o_pms_pwa_notifications"
+                )[0].style.display = "block ruby";
+            }
         },
     });
 });

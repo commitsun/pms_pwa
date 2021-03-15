@@ -27,6 +27,7 @@
                         <div class="table-responsive">
                             <table class="table table-condensed">
                                 <thead>
+
                                     <tr>
                                         <th class="align-self-end o_pms_pwa_table_week"></th>
                                         <t t-foreach="date_list" t-as="day">

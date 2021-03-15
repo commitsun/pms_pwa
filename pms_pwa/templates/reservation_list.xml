@@ -64,7 +64,7 @@
                                         <th>Guest</th>
                                         <th>ID</th>
                                         <th>Room type</th>
-                                        <th class="text-center">Room nº</th>
+                                        <th class="text-center">State</th>
                                         <th>Check in</th>
                                         <th>Check out</th>
                                         <th class="text-center">Sales channel</th>
@@ -86,6 +86,7 @@
                                             <t t-foreach="reservations" t-as="obj">
                                                 <tr t-att-class="'o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_' + str(folio.id)"
                                                     t-att-data-id="obj.id"
+                                                    t-att-id="'reservation_'+ str(obj.id)"
                                                     role="tabpanel">
                                                     <t t-call="pms_pwa.roomdoo_reservation_item">
                                                         <t t-set="obj" t-value="obj"/>
@@ -178,7 +179,7 @@
 
             </td>
             <td class="o_pms_pwa_lh45 text-center">
-
+                <t t-if="folio.state" t-esc="folio.state"/>
             </td>
             <td>
 
@@ -254,8 +255,7 @@
             <t t-esc="obj.room_type_id.code_type"/>
         </td>
         <td class="o_pms_pwa_lh45 text-center">
-            <t t-if="not obj.splitted" t-esc="obj.preferred_room_id.name"/>
-            <t t-if="obj.splitted" t-esc="'Splitted'"/>
+            <t t-if="obj.state" t-esc="obj.state"/>
         </td>
         <td>
             <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
