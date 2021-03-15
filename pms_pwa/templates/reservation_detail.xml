@@ -52,50 +52,54 @@
                             <div class="col-md-12 col-lg-4">
                                 <div class="card shadow">
                                     <div class="container-fluid">
-                                        <div class="row bg-dark">
-                                            <div class="col-md-11 col-lg-3 ml-4 my-4">
-                                                <img class="rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
-                                            </div>
-                                            <div class="col-md-11 col-lg-8 my-4">
-                                                <h3 class="text-white">
-                                                    <t t-esc="invoice.partner_id.name" />
-                                                </h3>
-                                                <p class="mb-0">
-                                                    <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
-                                                        <t t-esc="invoice.phone" />
-                                                    </a>
-                                                </p>
-                                                <p>
-                                                    <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
-                                                        <t t-esc="invoice.email" />
-                                                    </a>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-10 col-lg-11 ml-4 mb-4">
-                                                <div class="progress o_pms_pwa_progress">
-                                                    <div t-att-class="'progress-bar '
-                                                        + ('bg-success ' if invoice.ratio_checkin_data &gt; 75 else ' ')
-                                                        + ('bg-warning ' if 75 &gt; invoice.ratio_checkin_data &gt; 50 else ' ')
-                                                        + ('bg-danger ' if invoice.ratio_checkin_data &lt; 50 else ' ')" role="progressbar" t-att-style="'width:'+ str(invoice.ratio_checkin_data) + '%'" t-att-aria-valuenow="invoice.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="bg-dark">
+                                            <div class="row ">
+                                                <div class="col-4 ">
+                                                    <img class="ml-2 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
                                                 </div>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
-                                                            <t t-esc="invoice.adults" />
-                                                        </span>
-                                                        Datos personales huéspedes
-                                                    </button>
-                                                    <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
-                                                        <t t-foreach="invoice.checkin_partner_ids" t-as="person">
-                                                            <a class="dropdown-item o_pms_pwa_button_checkin" href="#">
-                                                                <t t-if="person.partner_id.name">
-                                                                    <t t-esc="person.partner_id.name" />
-                                                                </t>
-                                                                <t t-else="">
-                                                                    No indicado
-                                                                </t>
-                                                            </a>
-                                                        </t>
+                                                <div class="col-8 ">
+                                                    <h3 class="text-white my-4">
+                                                        <t t-esc="invoice.partner_id.name" />
+                                                    </h3>
+                                                    <p class="mb-0">
+                                                        <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
+                                                            <t t-esc="invoice.phone" />
+                                                        </a>
+                                                    </p>
+                                                    <p>
+                                                        <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
+                                                            <t t-esc="invoice.email" />
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div clas="row">
+                                                <div class="col-12">
+                                                    <div class="progress o_pms_pwa_progress">
+                                                        <div t-att-class="'progress-bar '
+                                                            + ('bg-success ' if invoice.ratio_checkin_data &gt; 75 else ' ')
+                                                            + ('bg-warning ' if 75 &gt; invoice.ratio_checkin_data &gt; 50 else ' ')
+                                                            + ('bg-danger ' if invoice.ratio_checkin_data &lt; 50 else ' ')" role="progressbar" t-att-style="'width:'+ str(invoice.ratio_checkin_data) + '%'" t-att-aria-valuenow="invoice.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    </div>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
+                                                                <t t-esc="invoice.adults" />
+                                                            </span>
+                                                            Datos personales huéspedes
+                                                        </button>
+                                                        <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
+                                                            <t t-foreach="invoice.checkin_partner_ids" t-as="person">
+                                                                <a class="dropdown-item o_pms_pwa_button_checkin" href="#">
+                                                                    <t t-if="person.partner_id.name">
+                                                                        <t t-esc="person.partner_id.name" />
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        No indicado
+                                                                    </t>
+                                                                </a>
+                                                            </t>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

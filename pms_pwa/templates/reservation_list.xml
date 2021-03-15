@@ -294,7 +294,7 @@
                 </span>
             </t>
         </td>
-        <td>
+        <td style="white-space: nowrap">
             <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
             <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
             <button t-att-url="pwa_action_buttons[keys[0]]" t-att-class="'btn o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
