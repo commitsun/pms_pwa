@@ -1136,13 +1136,15 @@
 
     <t t-name="pms_pwa.reservation_alerts">
         <t t-if="alert">
-            <div
-                t-att-class="'alert alert-dismissible fade show alert-' + alert['type']"
-                role="alert">
-                <t t-esc="alert['message']"/>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">Close</span>
-                </button>
+            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">Close</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    <t t-esc="alert['message']"/>
+                </div>
             </div>
         </t>
     </t>
