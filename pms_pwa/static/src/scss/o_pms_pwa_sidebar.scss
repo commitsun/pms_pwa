@@ -173,6 +173,7 @@ body.toggled {
     color: $white;
     display: block;
     padding-left: 0.5rem;
+    margin-top: 0.5rem;
     & .active {
         border-bottom-left-radius: 5rem;
         border-top-left-radius: 5rem;
