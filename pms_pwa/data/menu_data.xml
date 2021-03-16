@@ -8,6 +8,8 @@
             <field name="sequence" type="int">0</field>
             <field name="website_id" ref="website.default_website"/>
         </record>
+        <!-- Delete contact menu -->
+        <delete id="website.menu_contactus" model="website.menu"/>
         <!-- Menus -->
         <record id="menu_reservation_list" model="website.menu">
             <field name="name">Reservation list</field>
