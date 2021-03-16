@@ -76,16 +76,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 progress mt-2">
+                                <div class="progress mt-2">
                                     <div
-                                        t-if="reservation.state in ['onboard']" class="progress-bar bg-success"
+                                        t-if="reservation.state == 'onboard'" class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.checkins_ratio + '%'"
                                         t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0"
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['done', 'cancelled', 'no_show', 'no_checkout']"
+                                        t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
                                         class="progress-bar bg-secondary"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -93,7 +93,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &gt; 75"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &gt; 75"
                                         class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -101,7 +101,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -109,7 +109,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &lt; 50"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &lt; 50"
                                         class="progress-bar bg-danger"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -545,16 +545,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 progress mt-2">
+                                <div class="progress mt-2">
                                     <div
-                                        t-if="reservation.state in ['onboard']" class="progress-bar bg-success"
+                                        t-if="reservation.state == 'onboard'" class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.checkins_ratio + '%'"
                                         t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0"
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['done', 'cancelled', 'no_show', 'no_checkout']"
+                                        t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
                                         class="progress-bar bg-secondary"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -562,7 +562,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &gt; 75"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &gt; 75"
                                         class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -570,7 +570,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -578,7 +578,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &lt; 50"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &lt; 50"
                                         class="progress-bar bg-danger"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -683,16 +683,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 progress mt-2">
+                                <div class="progress mt-2">
                                     <div
-                                        t-if="reservation.state in ['onboard']" class="progress-bar bg-success"
+                                        t-if="reservation.state == 'onboard'" class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.checkins_ratio + '%'"
                                         t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0"
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['done', 'cancelled', 'no_show', 'no_checkout']"
+                                        t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
                                         class="progress-bar bg-secondary"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -700,7 +700,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &gt; 75"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &gt; 75"
                                         class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -708,7 +708,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -716,7 +716,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &lt; 50"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &lt; 50"
                                         class="progress-bar bg-danger"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -820,16 +820,16 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12 progress mt-2">
+                                <div class="progress mt-2">
                                     <div
-                                        t-if="reservation.state in ['onboard']" class="progress-bar bg-success"
+                                        t-if="reservation.state == 'onboard'" class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.checkins_ratio + '%'"
                                         t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0"
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['done', 'cancelled', 'no_show', 'no_checkout']"
+                                        t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
                                         class="progress-bar bg-secondary"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -837,7 +837,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &gt; 75"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &gt; 75"
                                         class="progress-bar bg-success"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -845,7 +845,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -853,7 +853,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state in ['confirm'] and reservation.ratio_checkin_data &lt; 50"
+                                        t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &lt; 50"
                                         class="progress-bar bg-danger"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
