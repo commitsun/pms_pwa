@@ -95,13 +95,14 @@
                                                     </div>
                                                     <div class="o_pms_pwa_calendar_line_nigth_3">
                                                         <p class="o_pms_pwa_calendar_line_hr_success">
-                                                            <img src="https://www.zeleiro.gal/static/images/logo.webp"
+                                                            <img
+                                                                t-att-src="website.image_url(user_id.partner_id, 'image_128')"
                                                                 width="50"
                                                                 class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
                                                                 title="image"
                                                                 alt="image"/>
                                                             <span class="o_pms_pwa_calendar_line_price">240€</span>
-                                                            <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
+                                                            <span class="o_pms_pwa_calendar_line_name"><t t-esc="user_id.name"></t></span>
                                                             <!-- <span class="badge o_pms_pwa_calendar_line_badge bg-success">
                                                                 OK
                                                             </span> -->
@@ -115,13 +116,14 @@
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_nigth_1">
                                                         <p class="o_pms_pwa_calendar_line_hr_warning">
-                                                            <img src="https://www.zeleiro.gal/static/images/logo.webp"
+                                                            <img
+                                                                t-att-src="website.image_url(user_id.partner_id, 'image_128')"
                                                                 width="50"
                                                                 class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
                                                                 title="image"
                                                                 alt="image"/>
                                                             <span class="o_pms_pwa_calendar_line_price">80€</span>
-                                                            <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
+                                                            <span class="o_pms_pwa_calendar_line_name">Admin</span>
                                                         </p>
 
                                                     </div>
@@ -170,13 +172,14 @@
 
                                                     <div class="o_pms_pwa_calendar_line_nigth_2">
                                                         <p class="o_pms_pwa_calendar_line_hr_success">
-                                                            <img src="https://www.zeleiro.gal/static/images/logo.webp"
+                                                            <img
+                                                                t-att-src="website.image_url(user_id.partner_id, 'image_128')"
                                                                 width="50"
                                                                 class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
                                                                 title="image"
                                                                 alt="image"/>
                                                             <span class="o_pms_pwa_calendar_line_price">120€</span>
-                                                            <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
+                                                            <span class="o_pms_pwa_calendar_line_name"><t t-esc="user_id.name"></t></span>
                                                         </p>
                                                     </div>
                                                 </div>
