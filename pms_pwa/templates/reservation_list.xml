@@ -96,7 +96,9 @@
                                         </t>
                                         <t t-else="">
                                             <t t-foreach="reservations" t-as="obj">
-                                                <tr class="o_pms_pwa_reservation" t-att-data-id="obj.id">
+                                                <tr class="o_pms_pwa_reservation"
+                                                    t-att-id="'reservation_'+ str(obj.id)"
+                                                    t-att-data-id="obj.id">
                                                     <t t-call="pms_pwa.roomdoo_reservation_item">
                                                         <t t-set="obj" t-value="obj"/>
                                                     </t>
