@@ -156,6 +156,7 @@
                                                     <input type="hidden" name="model" value="pms.reservation" />
                                                     <input type="hidden" name="id" t-att-value="invoice.id" />
                                                     <input type="hidden" name="folio_id" t-att-value="invoice.folio_id.id" />
+                                                    <input type="hidden" name="reservation_id" t-att-value="invoice.id" />
                                                     <div class="form-group">
                                                         <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" required="" />
                                                         <input type="submit" class="btn btn-message" value="Enviar" />
@@ -275,10 +276,10 @@
                                                         <input class="form-control" type="text" name="adults" t-att-value="invoice.adults" />
                                                     </div>
                                                     <div class="col-6">
-                                                        <label class="control-label col-12" for="nights_number">
+                                                        <label class="control-label col-12" for="nights">
                                                             Nº de noches
                                                         </label>
-                                                        <input class="form-control" type="text" name="nights_number" t-att-value="invoice.nights" />
+                                                        <input class="form-control" type="text" name="nights" t-att-value="invoice.nights" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
