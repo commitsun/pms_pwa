@@ -17,6 +17,8 @@ body {
 }
 footer {
     visibility: hidden;
+    display: none;
+    opacity: 0;
 }
 header#top {
     margin-left: 2rem;
@@ -338,4 +340,9 @@ input[type="date"]::-webkit-calendar-picker-indicator {
             }
         }
     }
+}
+
+.o_pms_pwa_img_rounded_bg {
+    background-color: $theme-color;
+    padding: 0.15rem;
 }

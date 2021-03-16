@@ -110,7 +110,7 @@
                     </div>
                 </section>
             </div>
-            <t t-if="int(pager['page_count']) > 0">
+            <t t-if="int(pager['page_count']) > 1">
                 <div class="page-load-status">
                     <p class="infinite-scroll-request">
                         <div class="loader-ellips">

@@ -35,6 +35,20 @@
                                 </button>
                                 <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
                                 <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
+
+                                <!-- <t t-if="request.httprequest.cookies['pms_pids']">
+                                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])"/>
+                                    <select name="user_property">
+                                    <t t-foreach="user_id.pms_property_ids" t-as="i">
+                                        <t t-if="current_property == i.id">
+                                            <option t-attf-value="{{ i.id }}" selected="selected"><t t-esc="i.name"/></option>
+                                        </t>
+                                        <t t-else="">
+                                            <option t-attf-value="{{i.id}}"><t t-esc="i.name"/></option>
+                                        </t>
+                                    </t>
+                                    </select>
+                                </t> -->
                             </div>
                             <div class="col-md-4 o_pms_user_img">
                                 <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />

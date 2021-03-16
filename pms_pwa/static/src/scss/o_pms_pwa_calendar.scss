@@ -1,4 +1,21 @@
 section.o_pms_pwa_roomdoo {
+    .o_pms_pwa_month_select {
+        margin-right: 2rem;
+        text-align: right;
+        color: $theme-color;
+        font-weight: 800;
+        font-size: 18px;
+        a {
+            color: $theme-color;
+            text-decoration: none;
+        }
+        // margin-top: 1rem;
+        .o_pms_pwa_month_select_calendar_icon {
+            background: $white;
+            pointer-events: none;
+            color: $theme-color;
+        }
+    }
     .table {
         border-collapse: separate;
         border-spacing: 10px;
@@ -45,6 +62,11 @@ section.o_pms_pwa_roomdoo {
             }
             .o_pms_pwa_info {
                 color: $theme-color;
+                .o_pms_pwa_interrogante-calendar {
+                    width: 13px;
+                    margin-left: 2px;
+                    margin-top: -3px;
+                }
             }
         }
     }

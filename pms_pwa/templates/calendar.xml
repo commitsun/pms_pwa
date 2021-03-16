@@ -16,11 +16,27 @@
                     <!-- Calendar -->
                     <div class="o_pms_pwa_calendar shadow bg-white p-5">
                         <div class="row">
-                            <div class="col-6">
-                                <div class="d-flex align-items-center">
+                            <div class="col-4">
+                                <div class="d-flex align-items-center ml-4">
                                     <h2
                                         class="font-weight-bold mb-0 text-uppercase"
                                     ><t t-esc="date.strftime('%B %Y')" /></h2>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <select name="tarifa" class="form-control o_website_form_input o_domain_leaf_operator_select o_input">
+                                    <option value="1">Tarifa estandar</option>
+                                    <option value="2">Tarifa especial</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <div class="o_pms_pwa_month_select">
+                                    <a href="#" class="mx-2"><i class="fa fa-angle-left" style="font-size: 20px;"></i></a>
+                                    <span class="o_pms_pwa_month_select_calendar_icon">
+                                        <span class="fa fa-calendar" />
+                                    </span>
+                                    <t t-esc="date.strftime('%B')" />
+                                    <a href="#" class="mx-2"><i class="fa fa-angle-right" style="font-size: 20px;"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +78,9 @@
                                                     <p class="o_pms_pwa_content">
                                                         <span class="o_pms_pwa_type">Estandar</span>
                                                         <span class="o_pms_pwa_price">40€</span>
-                                                        <span class="o_pms_pwa_info">?</span>
+                                                        <span class="o_pms_pwa_info">
+                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" />
+                                                        </span>
                                                     </p>
                                                     <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
                                                 </td>
@@ -84,14 +102,16 @@
                                                                 alt="image"/>
                                                             <span class="o_pms_pwa_calendar_line_price">240€</span>
                                                             <span class="o_pms_pwa_calendar_line_name">Sabela G.</span>
-                                                            <span class="badge o_pms_pwa_calendar_line_badge bg-success">
+                                                            <!-- <span class="badge o_pms_pwa_calendar_line_badge bg-success">
                                                                 OK
-                                                            </span>
+                                                            </span> -->
                                                         </p>
                                                     </div>
 
                                                     <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add">+</button>
+                                                        <button type="button" class="btn btn-add" data-toggle="modal"
+                                                        data-target="#o_pms_pwa_new_reservation_modal"
+                                                        rel="nofollow">+</button>
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_nigth_1">
                                                         <p class="o_pms_pwa_calendar_line_hr_warning">
@@ -106,10 +126,14 @@
 
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add">+</button>
+                                                        <button type="button" class="btn btn-add" data-toggle="modal"
+                                                        data-target="#o_pms_pwa_new_reservation_modal"
+                                                        rel="nofollow">+</button>
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add">+</button>
+                                                        <button type="button" class="btn btn-add" data-toggle="modal"
+                                                        data-target="#o_pms_pwa_new_reservation_modal"
+                                                        rel="nofollow">+</button>
                                                     </div>
                                                 </div>
                                                 <div t-att-id="'collapse_accordion_'+str(obj.id)" class="collapse o_pms_pwa_calendar_line row">
@@ -119,10 +143,14 @@
                                                         <p class="o_pms_pwa_calendar_line_content">Limpia</p>
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add">+</button>
+                                                        <button type="button" class="btn btn-add" data-toggle="modal"
+                                                        data-target="#o_pms_pwa_new_reservation_modal"
+                                                        rel="nofollow">+</button>
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add">+</button>
+                                                        <button type="button" class="btn btn-add" data-toggle="modal"
+                                                        data-target="#o_pms_pwa_new_reservation_modal"
+                                                        rel="nofollow">+</button>
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_nigth_1">
                                                         <p class="o_pms_pwa_calendar_line_hr_info">
@@ -130,10 +158,14 @@
                                                         </p>
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add">+</button>
+                                                        <button type="button" class="btn btn-add" data-toggle="modal"
+                                                        data-target="#o_pms_pwa_new_reservation_modal"
+                                                        rel="nofollow">+</button>
                                                     </div>
                                                     <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add">+</button>
+                                                        <button type="button" class="btn btn-add" data-toggle="modal"
+                                                        data-target="#o_pms_pwa_new_reservation_modal"
+                                                        rel="nofollow">+</button>
                                                     </div>
 
                                                     <div class="o_pms_pwa_calendar_line_nigth_2">
