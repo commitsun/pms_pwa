@@ -215,31 +215,24 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="check_in_date">
-                                                <t t-esc="texts.check_in_text || _t('Check in')"/>
+                                        <div class="col-12">
+                                            <label class="control-label col-12" for="checkin">
+                                                Check in - Check out
                                             </label>
-                                            <input class="form-control" type="date" name="check_in_date" t-att-value="reservation.checkin" />
+                                            <input class="form-control" type="text" name="range_check_date_modal" t-att-value="reservation.checkin" />
+                                            <input type="hidden" name="check_in_date" value="" />
+                                            <input type="hidden" name="check_out_date" value="" />
                                             <span class="o_pms_pwa_calendar_icon">
-                                                <span class="fa fa-calendar" />
+                                                <span class="fa fa-calendar"/>
                                             </span>
                                         </div>
+                                    </div>
+                                    <div class="row mt-3">
                                         <div class="col-6">
                                             <label class="control-label col-12" for="check_in_hour">
                                                 <t t-esc="texts.check_in_time_text || _t('Check in time')"/>
                                             </label>
                                             <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="check_out_date">
-                                                <t t-esc="texts.check_out_text || _t('Check out')"/>
-                                            </label>
-                                            <input class="form-control" type="date" name="check_out_date" t-att-value="reservation.checkout" />
-                                            <span class="o_pms_pwa_calendar_icon">
-                                                <span class="fa fa-calendar" />
-                                            </span>
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="check_out_hour">
