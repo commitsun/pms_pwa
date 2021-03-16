@@ -509,6 +509,18 @@ class TestFrontEnd(http.Controller):
                 if reservation.preferred_room_id
                 else reservation.rooms,
             },
+            "channel_type_id": {
+                "id": reservation.channel_type_id.id
+                if reservation.channel_type_id
+                else False,
+                "name": reservation.channel_type_id.name
+                if reservation.channel_type_id
+                else False,
+            },
+            "agency_id": {
+                "id": reservation.agency_id.id if reservation.agency_id else False,
+                "name": reservation.agency_id.name if reservation.agency_id else False,
+            },
             "nights": reservation.nights,
             "checkin": reservation.checkin,
             "arrival_hour": reservation.arrival_hour,

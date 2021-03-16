@@ -37,9 +37,16 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <t t-if="reservation.origin" t-esc="reservation.origin"/>
-                                <span class="o_pms_pwa_wler ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin"/>
+                            <div class="col-12 mt-1">
+                                <img t-if="reservation.agency_id and reservation.agency_id.id"
+                                    t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'"
+                                    width="80"
+                                    t-att-title="reservation.agency_id.name"
+                                    t-att-alt="reservation.agency_id.name"/>
+                                <span t-else="">
+                                    <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name"/>
+                                    <span class="o_pms_pwa_wler ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin"/>
+                                </span>
                             </div>
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
@@ -86,7 +93,7 @@
                                     </div>
                                     <div
                                         t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
-                                        class="progress-bar bg-secondary"
+                                        class="progress-bar bg-light"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
                                         t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
@@ -548,7 +555,7 @@
                                     </div>
                                     <div
                                         t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
-                                        class="progress-bar bg-secondary"
+                                        class="progress-bar bg-light"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
                                         t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
@@ -686,7 +693,7 @@
                                     </div>
                                     <div
                                         t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
-                                        class="progress-bar bg-secondary"
+                                        class="progress-bar bg-light"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
                                         t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
@@ -823,7 +830,7 @@
                                     </div>
                                     <div
                                         t-elif="reservation.state == 'cancelled' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'"
-                                        class="progress-bar bg-secondary"
+                                        class="progress-bar bg-light"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
                                         t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0"
