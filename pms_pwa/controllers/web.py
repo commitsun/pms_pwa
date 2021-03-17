@@ -488,6 +488,38 @@ class TestFrontEnd(http.Controller):
             )
         if not reservation:
             raise MissingError(_("This document does not exist."))
+
+        buttons = json.loads(reservation.pwa_action_buttons)
+        keys = buttons.keys()
+        keysList = [key for key in keys]
+
+        primary_button = ""
+        secondary_buttons = []
+
+        counter = 0
+        for _key in keysList:
+            if counter == 0:
+                primary_button = (
+                    "<button url='"
+                    + buttons[keysList[counter]]
+                    + "' class='btn o_pms_pwa_abutton o_pms_pwa_button_"
+                    + str(keysList[counter].lower())
+                    + "' type='button'>"
+                    + keysList[counter]
+                    + "</button>"
+                )
+            else:
+                secondary_buttons.append(
+                    "<button url='"
+                    + buttons[keysList[counter]]
+                    + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
+                    + str(keysList[counter].lower())
+                    + "' type='button'>"
+                    + keysList[counter]
+                    + "</button>"
+                )
+            counter += 1
+
         reservation_values = {
             "id": reservation.id,
             "partner_id": {
@@ -546,6 +578,8 @@ class TestFrontEnd(http.Controller):
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "service_ids": reservation._get_service_ids(),
+            "primary_button": primary_button,
+            "secondary_buttons": secondary_buttons,
         }
 
         return reservation_values

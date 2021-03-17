@@ -204,9 +204,34 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 alert: data,
             });
             alert_div.append(alert);
-            $(String("#reservation_" + data_id)).load(
+
+            ajax.jsonRpc("/reservation/json_data", "call", {
+                reservation_id: data_id,
+            }).then(function (updated_data) {
+                setTimeout(function () {
+                    if (updated_data) {
+                        try {
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[3].textContent = updated_data.state;
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[12].firstElementChild.outerHTML =
+                                updated_data.primary_button;
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[12].lastElementChild.lastElementChild.innerHTML =
+                                updated_data.secondary_buttons;
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                });
+            });
+
+            /* $(String("#reservation_" + data_id)).load(
                 String(window.location.href + " #reservation_" + data_id + " td")
-            );
+            ); */
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
