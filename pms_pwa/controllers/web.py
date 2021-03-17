@@ -650,7 +650,7 @@ class TestFrontEnd(http.Controller):
                     if "board_service" in params:
                         del params["board_service"]
 
-                    print(params)
+                    # print(params)
                     old_values = parse_reservation(reservation)
                     del params["price_total"]
                     reservation.write(params)
@@ -668,7 +668,7 @@ class TestFrontEnd(http.Controller):
                             "reservation": parse_reservation(reservation),
                         }
                     )
-                print(parse_reservation(reservation))
+                # print(parse_reservation(reservation))
                 return json.dumps(
                     {
                         "result": True,
@@ -680,6 +680,53 @@ class TestFrontEnd(http.Controller):
                 return json.dumps(
                     {"result": False, "message": _("Reservation not found")}
                 )
+
+    @http.route(
+        ["/reservation/virtual"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def create_virtual_reservation(self):
+
+        reservation_values = http.request.jsonrequest.get("params")
+
+        checkin_date = datetime.strptime(
+            reservation_values["check_in_date"], "%d/%m/%Y"
+        )
+        checkout_date = datetime.strptime(
+            reservation_values["check_out_date"], "%d/%m/%Y"
+        )
+
+        pricelist_id = reservation_values["pricelist_id"]
+        room_type_id = reservation_values["room_type_id"]
+        pms_property_id = reservation_values["pms_property_id"]
+
+        pricelist = (
+            request.env["product.pricelist"].sudo().search([("id", "=", pricelist_id)])
+        )
+        room_type = (
+            request.env["pms.room.type"].sudo().search([("id", "=", room_type_id)])
+        )
+        pms_property = (
+            request.env["pms.property"].sudo().search([("id", "=", pms_property_id)])
+        )
+
+        reservation = request.env["pms.reservation"].new(
+            {
+                "checkin": checkin_date,
+                "checkout": checkout_date,
+                "room_type_id": room_type,
+                "pricelist_id": pricelist,
+                "pms_property_id": pms_property,
+            }
+        )
+        reservation.flush()
+        # print(reservation.price_total)
+        # print("name", reservation.preferred_room_id.name)
+        # print(reservation.reservation_line_ids.mapped("room_id"))
+        # print(reservation.reservation_line_ids.mapped("price"))
 
     def _get_reservation_types(self):
         return [
