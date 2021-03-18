@@ -168,7 +168,8 @@
 
                         </span>
                         <span class="o_pms_pwa_info_num text-rigth">
-                            <i class="fa fa-user text-rigth"/>
+                            <!-- <i class="fa fa-user text-rigth"/> -->
+                            <img src="/pms_pwa/static/img/svg/icon-usuario.svg" alt="user icon" title="adults" width="7" />
                             <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
                         </span>
                     </div>
@@ -233,7 +234,8 @@
                         </a>
                     </span>
                     <span class="o_pms_pwa_info_num">
-                        <i class="fa fa-user"/>
+                        <!-- <i class="fa fa-user"/> -->
+                        <img src="/pms_pwa/static/img/svg/icon-usuario.svg" alt="user icon" title="adults" width="7" />
                         <t t-if="obj.adults" t-esc="obj.adults"/>
                     </span>
                 </div>
@@ -358,7 +360,8 @@
                                                 type="date" name="checkin"
                                                 t-att-value="post['checkin'] if post and 'checkin' in post else None"/>
                                             <span class="o_pms_pwa_calendar_icon">
-                                                <span class="fa fa-calendar"/>
+                                                <!-- <span class="fa fa-calendar"/> -->
+                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                             </span>
                                         </div>
                                         <div class="col-6">
@@ -369,7 +372,8 @@
                                                 type="date" name="checkout"
                                                 t-att-value="post['checkout'] if post and 'checkout' in post else None"/>
                                             <span class="o_pms_pwa_calendar_icon">
-                                                <span class="fa fa-calendar"/>
+                                                <!-- <span class="fa fa-calendar"/> -->
+                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                             </span>
                                         </div>
                                     </div>
@@ -417,7 +421,8 @@
                                                 <input class="form-control" type="date" name="checkin_from"
                                                     t-att-value="post['checkin_from'] if post and 'checkin_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                             <div class="col-6">
@@ -427,7 +432,8 @@
                                                 <input class="form-control" type="date" name="checkin_to"
                                                     t-att-value="post['checkin_to'] if post and 'checkin_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                         </div>
@@ -443,7 +449,8 @@
                                                 <input class="form-control" type="date" name="checkout_from"
                                                     t-att-value="post['checkout_from'] if post and 'checkout_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                             <div class="col-6">
@@ -453,7 +460,8 @@
                                                 <input class="form-control" type="date" name="checkout_to"
                                                     t-att-value="post['checkout_to'] if post and 'checkout_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                         </div>
@@ -469,7 +477,8 @@
                                                 <input class="form-control" type="date" name="created_from"
                                                     t-att-value="post['created_from'] if post and 'created_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                             <div class="col-6">
@@ -479,7 +488,8 @@
                                                 <input class="form-control" type="date" name="created_to"
                                                     t-att-value="post['created_to'] if post and 'created_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                         </div>
@@ -495,7 +505,8 @@
                                                 <input class="form-control" type="date" name="modified_from"
                                                     t-att-value="post['modified_from'] if post and 'modified_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                             <div class="col-6">
@@ -505,7 +516,8 @@
                                                 <input class="form-control" type="date" name="modified_to"
                                                     t-att-value="post['modified_to'] if post and 'modified_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
-                                                    <span class="fa fa-calendar"/>
+                                                    <!-- <span class="fa fa-calendar"/> -->
+                                                    <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                 </span>
                                             </div>
                                         </div>

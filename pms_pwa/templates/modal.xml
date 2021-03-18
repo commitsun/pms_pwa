@@ -59,7 +59,8 @@
                         <input type="hidden" name="check_in_date" value="" />
                         <input type="hidden" name="check_out_date" value="" />
                         <span class="o_pms_pwa_calendar_icon">
-                            <span class="fa fa-calendar"/>
+                            <!-- <span class="fa fa-calendar"/> -->
+                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                         </span>
                     </div>
                 </div>
@@ -241,7 +242,8 @@
                         <input type="hidden" name="check_in_date" value="" />
                         <input type="hidden" name="check_out_date" value="" />
                         <span class="o_pms_pwa_calendar_icon">
-                            <span class="fa fa-calendar"/>
+                            <!-- <span class="fa fa-calendar"/> -->
+                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                         </span>
                     </div>
                 </div>

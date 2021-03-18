@@ -114,7 +114,7 @@ section.o_pms_pwa_roomdoo_list {
 
                     .o_pms_pwa_info {
                         display: flex;
-                        img {
+                        img.o_pms_pwa_img_rounded_bg {
                             min-width: 40px;
                             min-height: 40px;
                         }
@@ -146,6 +146,9 @@ section.o_pms_pwa_roomdoo_list {
                             i {
                                 color: $theme-color;
                             }
+                            img {
+                                padding-top: -2px;
+                            }
                         }
 
                         a:first-of-type {
@@ -174,6 +177,9 @@ section.o_pms_pwa_roomdoo_list {
             }
             & > tr:hover {
                 background-color: $bg-theme-color;
+                td.first-col {
+                    background-color: $bg-theme-color;
+                }
             }
         }
     }
@@ -369,7 +375,7 @@ div.o_pms_pwa_reservation_modal {
         padding: 0.15rem;
     }
     .progress {
-        height: 0.2rem;
+        height: 0.25rem;
     }
     .o_pms_pwa_btn_border {
         width: 100%;
@@ -419,10 +425,10 @@ div.o_pms_pwa_reservation_modal {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        background: url("/pms_pwa/static/img/br_down.png") $bg-theme-color no-repeat
-            98.5% !important;
-        background: url("/pms_pwa/static/img/br_down.png") $bg-theme-color no-repeat
-            calc(100% - 10px) !important;
+        background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") $bg-theme-color
+            no-repeat 98.5% !important;
+        background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") $bg-theme-color
+            no-repeat calc(100% - 10px) !important;
 
         > span.bg-red {
             color: $white;

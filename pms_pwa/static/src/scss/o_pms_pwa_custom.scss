@@ -195,8 +195,9 @@ select {
     -moz-appearance: none;
     appearance: none;
     /* Some browsers will not display the caret when using calc, so we put the fallback first */
-    background: url("/pms_pwa/static/img/br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
-    background: url("/pms_pwa/static/img/br_down.png") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
+    background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
+    background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") white no-repeat
+        calc(100% - 10px) !important; /* Better placement regardless of input width */
 }
 /*For IE*/
 select::-ms-expand {
@@ -349,6 +350,7 @@ select::-ms-expand {
     padding: 0.4rem;
     margin: auto;
     text-align: center;
+    display: none;
 }
 @media (max-width: 991.98px) {
     header#top {

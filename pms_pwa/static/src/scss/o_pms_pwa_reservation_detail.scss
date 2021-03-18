@@ -402,10 +402,10 @@ section.o_pms_pwa_roomdoo {
         -webkit-appearance: none;
         -moz-appearance: none;
         appearance: none;
-        background: url("/pms_pwa/static/img/br_down.png") $bg-theme-color no-repeat
-            98.5% !important;
-        background: url("/pms_pwa/static/img/br_down.png") $bg-theme-color no-repeat
-            calc(100% - 10px) !important;
+        background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") $bg-theme-color
+            no-repeat 98.5% !important;
+        background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") $bg-theme-color
+            no-repeat calc(100% - 10px) !important;
         span.badge {
             border-radius: 10rem;
         }
