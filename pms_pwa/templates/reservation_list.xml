@@ -157,7 +157,7 @@
                             <t t-esc="pending_nots"/>
                         </sup>
                     </div>
-                    <div>
+                    <div class="o_pms_pwa_w66">
                         <span class="text-left o_pms_pwa_info_name">
                             <t t-esc="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
                         </span>
@@ -170,7 +170,7 @@
                             </a>
 
                         </span>
-                        <span class="o_pms_pwa_info_num text-rigth">
+                        <span class="o_pms_pwa_info_num text-right">
                             <!-- <i class="fa fa-user text-rigth"/> -->
                             <img src="/pms_pwa/static/img/svg/icon-usuario.svg" alt="user icon" title="adults" width="7" />
                             <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
@@ -229,7 +229,7 @@
                         <t t-esc="pending_nots"/>
                     </sup>
                 </div>
-                <div>
+                <div class="o_pms_pwa_w66">
                     <span class="text-left o_pms_pwa_info_name">
                         <t t-esc="obj.partner_id.name"/>
                     </span>
