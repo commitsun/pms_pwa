@@ -550,6 +550,10 @@ div.o_pms_pwa_reservation_modal {
         border-radius: 100%;
         cursor: pointer;
         transition: ease 0.5s;
+        @media (max-width: 768px) {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+        }
     }
 
     .o_pms_pwa_rb_tab_active .o_pms_pwa_rb_spot {
