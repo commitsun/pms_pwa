@@ -31,11 +31,15 @@
                                         <t t-esc="invoice.origin" />
                                     </span>
                                     <span class="agency">
-                                        <t t-if="invoice.channel_type_id" t-esc="invoice.channel_type_id.name"/>
                                         <img t-if="invoice.agency_id" t-att-src="website.image_url(invoice.agency_id, 'image_128')"
-                                            width="60"
+                                            width="100"
                                             t-att-title="invoice.agency_id.name"
                                             t-att-alt="invoice.agency_id.name"/>
+                                        <span t-else="">
+                                            <span t-if="invoice.channel_type_id" t-esc="invoice.channel_type_id.name"/>
+                                            <span class="ml-2" t-if="invoice.detail_origin" t-esc="invoice.detail_origin"/>
+                                        </span>
+
                                     </span>
                                     <span class="status-header">
                                         <t t-esc="invoice.state" />
@@ -53,20 +57,20 @@
                                 <div class="card shadow">
                                     <div class="container-fluid">
                                         <div class="bg-dark">
-                                            <div class="row ">
-                                                <div class="col-4 ">
-                                                    <img class="ml-2 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" width="100" />
                                                 </div>
-                                                <div class="col-8 ">
-                                                    <h3 class="text-white my-4">
+                                                <div class="col-12">
+                                                    <h3 class="text-white ml-4">
                                                         <t t-esc="invoice.partner_id.name" />
                                                     </h3>
-                                                    <p class="mb-0">
+                                                    <p class="ml-4 mb-0">
                                                         <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
                                                             <t t-esc="invoice.phone" />
                                                         </a>
                                                     </p>
-                                                    <p>
+                                                    <p class="ml-4">
                                                         <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
                                                             <t t-esc="invoice.email" />
                                                         </a>
@@ -75,10 +79,10 @@
                                             </div>
                                             <div clas="row">
                                                 <div class="col-12">
-                                                    <div class="progress o_pms_pwa_progress">
+                                                    <div class="progress o_pms_pwa_progress mx-2">
                                                         <div t-att-class="'progress-bar '
                                                             + ('bg-success ' if invoice.state in ('onboard') else ' ')
-                                                            + ('bg-secondary ' if invoice.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
+                                                            + ('bg-light ' if invoice.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
                                                             + ('bg-success ' if invoice.state in ('confirm') and invoice.ratio_checkin_data &gt; 75 else ' ')
                                                             + ('bg-warning ' if invoice.state in ('confirm') and  75 &gt; invoice.ratio_checkin_data &gt; 50 else ' ')
                                                             + ('bg-danger ' if invoice.state in ('confirm') and  invoice.ratio_checkin_data &lt; 50 else ' ')"
@@ -86,7 +90,7 @@
                                                             t-att-aria-valuenow="invoice.checkins_ratio if invoice.state in ('onboard') else invoice.ratio_checkin_data" aria-valuemin="0"
                                                             aria-valuemax="100"></div>
                                                     </div>
-                                                    <div class="dropdown">
+                                                    <div class="dropdown mx-2">
                                                         <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
                                                                 <t t-esc="invoice.adults" />
@@ -170,10 +174,9 @@
                             <div class="col-md-12 col-lg-4" id="folio_reservation_ids">
 
                                 <div t-if="invoice.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
-                                    <div class="card-body">
-                                        <table class="table table-responsive">
+                                    <div class="o_pms_pwa_table_reservation_list m-4">
+                                        <table class="table table-condensed">
                                             <thead>
-
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
                                                     <th class="o_pms_pwa_theme_color">ID</th>
@@ -193,7 +196,7 @@
                                                         </td>
                                                         <td>
                                                             <a t-att-href="'/reservation/' + str(i.id)">
-                                                                <t t-esc="i.id" />
+                                                                <t t-esc="i.name" />
                                                             </a>
                                                         </td>
                                                         <td class="text-right">
@@ -214,7 +217,7 @@
                                         </table>
 
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-12 mt-2">
                                                 <div class="o_roomdoo_hide_show-more">Show more</div>
                                             </div>
                                         </div>
@@ -226,7 +229,6 @@
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
                                             HABITACIÓN
-                                            <t t-esc="invoice.localizator" />
                                         </h3>
                                     </div>
                                     <div class="card-body">
@@ -263,7 +265,7 @@
                                                     </div>
                                                     <div class="col-6">
                                                         <button type="button"
-                                                            class="btn btn-message o_pms_pwa_button_assign_confirm"
+                                                            class="btn btn-message-form o_pms_pwa_button_assign_confirm"
                                                             t-attf-url="/reservation/{{ invoice.id }}/assign">Confirmar</button>
 
                                                     </div>
@@ -323,13 +325,13 @@
                                                 <div class="row m-3">
                                                     <div class="col-12">
                                                         <t t-foreach="invoice.service_ids" t-as="i">
-                                                            <div class="form-check" t-if="i.service_line_ids">
+                                                            <div class="form-check mt-2" t-if="i.service_line_ids">
                                                                 <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-attf-id="defaultCheck{{i.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{i.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{i.id}}" />
                                                                 <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{i.id}}">
                                                                     <t t-esc="i.product_id.name" />
                                                                 </label>
                                                                 <div t-attf-id='collapsediv{{i.id}}' class='o_pms_pwa_collapse collapse show'>
-                                                                    <div class="o_pms_pwa_collapse_content">
+                                                                    <div class="o_pms_pwa_collapse_content mt-3">
 
                                                                         <table>
                                                                             <thead>
@@ -463,14 +465,14 @@
                                         </h3>
                                     </div>
                                     <div class="card-body bg-dark">
-                                        <table class="table table-responsive">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
                                                     <th class="o_pms_pwa_theme_color">concepto</th>
-                                                    <th class="o_pms_pwa_theme_color">a facturar</th>
-                                                    <th class="o_pms_pwa_theme_color">facturado/total</th>
-                                                    <th class="o_pms_pwa_theme_color">importe(€)</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">a facturar</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">facturado/total</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">importe(€)</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="reservation_list">
@@ -483,27 +485,29 @@
                                         </div> -->
                                         <div class="row pago-badge">
                                             <div class="col-4">
-                                                Total
-                                                <br />
-                                                a facturar
-                                                <br />
+                                                <span>
+                                                    Total
+                                                    <br />
+                                                    a facturar
+                                                </span>
                                                 <span class="pt" id="total_amount">
                                                     <t t-esc="invoice.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
-                                                Total
-                                                <br />
-                                                <br />
+                                                <span>
+                                                    Total
+                                                </span>
                                                 <span class="price">
                                                     <t t-esc="invoice.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
-                                                Pendiente
-                                                <br />
-                                                de pago
-                                                <br />
+                                                <span>
+                                                    Pendiente
+                                                    <br />
+                                                    de pago
+                                                </span>
                                                 <span class="price2">
                                                     <t t-esc="invoice.folio_id.pending_amount" />
                                                 </span>
@@ -611,10 +615,10 @@
                                             <div class="col-12">
                                                 <t t-foreach="invoice.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
 
-                                                    <div class="form-check mt-2">
+                                                    <div class="form-check mt-1">
                                                         <input type="radio" class="o_pms_pwa_checkbox" name="payment_method" t-attf-value="{{ payment.id }}" checked="checked" />
                                                         <!-- <input class="o_pms_pwa_checkbox" type="checkbox" t-attf-id="{{ payment.id }}" checked="checked" /> -->
-                                                        <label class="o_pms_pwa_checkbox_label">
+                                                        <label class="o_pms_pwa_checkbox_label pl-1">
                                                             <t t-esc="payment.name"></t>
                                                         </label>
                                                     </div>
@@ -642,14 +646,14 @@
                                     </div>
                                 </div>
                                 <t t-if="invoice.folio_id.invoice_count > 0">
-                                    <div class="card  bg-white  shadow mt-4">
+                                    <div class="card bg-white shadow mt-4">
                                         <div class="card-header bg-white o_pms_pwa_card_header">
                                             <h3 class="mb-0">
                                                 Facturas
                                             </h3>
                                         </div>
-                                        <div class="card-body  bg-white ">
-                                            <table class="table table-responsive">
+                                        <div class="card-body bg-white o_pms_pwa_table_reservation_list">
+                                            <table class="table">
                                                 <thead>
 
                                                     <tr>

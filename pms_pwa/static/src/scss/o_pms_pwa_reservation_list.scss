@@ -10,8 +10,17 @@
     // display: None;
     min-height: 2rem;
 }
+.o_pms_pwa_reservation {
+    background-color: $white;
+    td.first-col {
+        background-color: $white;
+    }
+}
 .o_pms_pwa_reservation.accordion {
     background-color: $bg-theme-color;
+    td.first-col {
+        background-color: $bg-theme-color;
+    }
 }
 
 section.o_pms_pwa_roomdoo_list {
@@ -91,11 +100,18 @@ section.o_pms_pwa_roomdoo_list {
                 &.o_pms_pwa_accordion_padding {
                     & > td.first-col {
                         border-left: 1px $bg-theme-color solid;
+                        position: sticky;
+                        z-index: 1;
+                        left: 0;
                     }
                 }
                 & > td.first-col {
                     display: block;
                     width: 200px;
+                    position: sticky;
+                    z-index: 1;
+                    left: 0;
+
                     .o_pms_pwa_info {
                         display: flex;
                         img {
@@ -306,10 +322,6 @@ div.o_pms_pwa_reservation_modal {
         label.o_pms_pwa_radiobox_label {
             padding-top: 0.75rem;
         }
-    }
-
-    label {
-        padding-top: 0.15rem;
     }
 }
 

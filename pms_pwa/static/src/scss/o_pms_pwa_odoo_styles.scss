@@ -11,6 +11,21 @@ div.o_pms_pwa_reservation_modal,
 div.o_pms_pwa_filters_modal,
 div.o_pms_pwa_new_reservation_modal {
     &.modal.o_pms_pwa_right .modal-dialog {
+        position: fixed;
+        // margin: auto;
         margin-top: 10px;
+        margin-right: 10px;
+        width: 25%;
+        height: 100%;
+        -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+        -o-transform: translate3d(0%, 0, 0);
+        transform: translate3d(0%, 0, 0);
+        @media (max-width: 1677px) {
+            width: 450px;
+        }
+        @media (max-width: 768px) {
+            width: 95%;
+        }
     }
 }
