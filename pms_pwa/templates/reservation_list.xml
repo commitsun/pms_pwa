@@ -152,7 +152,10 @@
                             class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
                             t-att-title="folio.partner_id.name if folio.partner_id else folio_partner_id.name"
                             t-att-alt="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
-                        <sup class="o_pms_pwa_badge_position">0</sup>
+                        <t t-set="pending_nots" t-value="len(folio.message_ids.filtered(lambda x: user_id.partner_id in x.notified_partner_ids).sorted(key=lambda x: x.date))"/>
+                        <sup t-att-class="'o_pms_pwa_badge_position' + (' visible' if (pending_nots and pending_nots > 0) else ' invisible')">
+                            <t t-esc="pending_nots"/>
+                        </sup>
                     </div>
                     <div>
                         <span class="text-left o_pms_pwa_info_name">
@@ -221,7 +224,10 @@
                         width="40px"
                         class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
                         t-att-title="obj.partner_id.name" t-att-alt="obj.partner_id.name"/>
-                    <sup class="o_pms_pwa_badge_position">0</sup>
+                    <t t-set="pending_nots" t-value="len(obj.message_ids.filtered(lambda x: user_id.partner_id in x.notified_partner_ids).sorted(key=lambda x: x.date))"/>
+                    <sup t-att-class="'o_pms_pwa_badge_position' + (' visible' if (pending_nots and pending_nots > 0) else ' invisible')">
+                        <t t-esc="pending_nots"/>
+                    </sup>
                 </div>
                 <div>
                     <span class="text-left o_pms_pwa_info_name">

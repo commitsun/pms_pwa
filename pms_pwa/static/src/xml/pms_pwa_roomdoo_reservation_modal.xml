@@ -137,7 +137,7 @@
                                     class="row"
                                 >
                                     <div class="col-12">
-                                        <button class="btn o_pms_pwa_messages mt-2"
+                                        <button class="btn o_pms_pwa_messages collapsed mt-2"
                                             aria-controls="#collapseMessages" data-target="#collapseMessages"
                                             type="button" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
                                             <span data-toggle="tooltip" t-att-title="texts.unread_text || _t('unread message(s)')"

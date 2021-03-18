@@ -522,6 +522,7 @@ class TestFrontEnd(http.Controller):
 
         reservation_values = {
             "id": reservation.id,
+            "name": reservation.name,
             "partner_id": {
                 "id": reservation.partner_id.id,
                 "name": reservation.partner_id.name,
