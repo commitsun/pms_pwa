@@ -57,6 +57,17 @@ main {
     margin-right: 3.5rem;
     // margin-top: 1rem;
 }
+footer {
+    visibility: hidden;
+}
+header#top {
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+main {
+    margin-left: 3.5rem;
+    margin-right: 3.5rem;
+}
 h1,
 h2,
 h3,
@@ -406,4 +417,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 input[type="time"]::-webkit-calendar-picker-indicator {
     background: none;
+}
+@media (max-width: 991.98px) {
+    header#top {
+        margin-left: -1rem;
+        margin-right: 0;
+    }
+    main {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
 }

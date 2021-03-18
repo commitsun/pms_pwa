@@ -17,38 +17,33 @@ def _get_search_domain(search=False, **post):
                 [("reservation_ids.partner_id.email", "ilike", srch)],
             ]
             domains.append(expression.OR(subdomains))
-    # REVIEW: Use lib to this
-    # post send a filters with key: "operator&field"
-    # to build a odoo domain:
     domain_fields = []
     for k, v in post.items():
-        if v:
-            if k in ["name", "vat", "email"]:
-                domain_fields.append(("reservation_ids.partner_id." + k, "=", v))
-            elif k in ["checkin", "checkout"]:
-                domain_fields.append(("reservation_ids." + k, "=", v))
-            elif k == "checkin_from":
-                domain_fields.append(("reservation_ids.checkin", ">=", v))
-            elif k == "checkout_from":
-                domain_fields.append(("reservation_ids.checkout", ">=", v))
-            elif k == "checkin_to":
-                domain_fields.append(("reservation_ids.checkin", "<=", v))
-            elif k == "checkout_to":
-                domain_fields.append(("reservation_ids.checkout", "<=", v))
-            elif k == "created_from":
-                domain_fields.append(("reservation_ids.create_date", ">=", v))
-            elif k == "modified_from":
-                domain_fields.append(("reservation_ids.write_date", ">=", v))
-            elif k == "created_to":
-                domain_fields.append(("reservation_ids.create_date", "<=", v))
-            elif k == "modified_to":
-                domain_fields.append(("reservation_ids.write_date", "<=", v))
-            elif k == "origin":
-                domain_fields.extend(
-                    ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]
-                )
-
-            # TODO: text_dialog
+        if v and k in ["name", "vat", "email"]:
+            domain_fields.append(("reservation_ids.partner_id." + k, "=", v))
+        elif v and k in ["checkin", "checkout"]:
+            domain_fields.append(("reservation_ids." + k, "=", v))
+        elif v and k == "checkin_from":
+            domain_fields.append(("reservation_ids.checkin", ">=", v))
+        elif v and k == "checkout_from":
+            domain_fields.append(("reservation_ids.checkout", ">=", v))
+        elif v and k == "checkin_to":
+            domain_fields.append(("reservation_ids.checkin", "<=", v))
+        elif v and k == "checkout_to":
+            domain_fields.append(("reservation_ids.checkout", "<=", v))
+        elif v and k == "created_from":
+            domain_fields.append(("reservation_ids.create_date", ">=", v))
+        elif v and k == "modified_from":
+            domain_fields.append(("reservation_ids.write_date", ">=", v))
+        elif v and k == "created_to":
+            domain_fields.append(("reservation_ids.create_date", "<=", v))
+        elif v and k == "modified_to":
+            domain_fields.append(("reservation_ids.write_date", "<=", v))
+        elif v and k == "origin":
+            domain_fields.extend(
+                ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]
+            )
+    # TODO: text_dialog  (chatter)
 
     if search_exists:
         return expression.AND([domain_fields, (domains[0])])

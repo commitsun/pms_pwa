@@ -168,6 +168,10 @@ body.toggled {
     .img-responsive.mobile {
         display: none;
     }
+    .o_pms_pwa_bg_theme {
+        background-image: linear-gradient(to right, $theme-color 50%, $bg-theme-color);
+        color: $white;
+    }
 }
 
 .o_pms_pwa_nav_item {

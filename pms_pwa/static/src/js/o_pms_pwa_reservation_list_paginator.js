@@ -13,7 +13,10 @@ odoo.define("pms_pwa.reservation_list", function () {
         });
 
         $container.on("append.infiniteScroll", function (event, response, path, items) {
-            var current_items_length = parseInt($(".o_pms_pwa_navbar_counter").text());
+            var current_items_length = parseInt(
+                $(".o_pms_pwa_navbar_counter").text(),
+                10
+            );
             $(".o_pms_pwa_navbar_counter").text(current_items_length + items.length);
         });
 

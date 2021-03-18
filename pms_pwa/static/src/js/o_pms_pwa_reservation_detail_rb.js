@@ -95,7 +95,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         var currentEle = $(this).attr("id");
         // <-------stop the bubbling of the event here
         e.stopPropagation();
-        console.log("Current Element is " + currentEle);
+        // Console.log("Current Element is " + currentEle);
 
         $("#" + currentEle).html(
             '<input class="thVal o_pms_pwa_editinline" type="number" width="10" min="1" max="10" />'
