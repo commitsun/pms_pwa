@@ -179,7 +179,7 @@
                 </div>
             </td>
             <td class="o_pms_pwa_lh45">
-                <t t-esc="folio.id"/>
+                <t t-esc="folio.name"/>
             </td>
             <td class="o_pms_pwa_lh45">
 
