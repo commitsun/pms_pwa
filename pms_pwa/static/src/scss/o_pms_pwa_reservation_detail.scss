@@ -444,7 +444,7 @@ section.o_pms_pwa_roomdoo {
         margin-left: -1.5rem;
     }
     .o_pms_pwa_collapse_content {
-        margin: auto;
+        margin-top: 1rem;
         min-height: 3rem;
         table {
             margin: auto;
@@ -464,17 +464,17 @@ section.o_pms_pwa_roomdoo {
 
     .o_pms_pwa_rb_box {
         max-width: 420px;
-        margin: auto;
+        margin-top: -1rem;
     }
-    .o_pms_pwa_rb {
-        padding: 0.3rem 0;
-        border-radius: 0.3em;
-    }
+    // .o_pms_pwa_rb {
+    //     padding: 0.3rem 0;
+    //     border-radius: 0.3em;
+    // }
 
     .o_pms_pwa_rb_tab {
         display: inline-block;
         position: relative;
-        width: 20%;
+        width: 17%;
     }
 
     .o_pms_pwa_rb_txt {
@@ -526,7 +526,7 @@ section.o_pms_pwa_roomdoo {
         border: 0;
     }
     .o_pms_pwa_price_link {
-        color: $theme-color;
+        color: $theme-color-text;
         text-decoration: underline;
         font-size: medium;
         font-weight: 600;

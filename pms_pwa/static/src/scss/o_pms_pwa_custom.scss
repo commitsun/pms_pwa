@@ -4,6 +4,8 @@
 $theme-color: #01b6e3;
 $bg-theme-color: #daf7fc;
 $bg-theme-color-modal: #01b6e345;
+$bg-theme-color-extras: #e2f7fc;
+$theme-color-text: #00b5e2;
 $grey-900: #394240;
 $grey-300: #dadada;
 $badge-color: #ff3b00;
@@ -11,9 +13,9 @@ $table-text-color: #3f4443;
 $table-text-color-lighter: #b5bfbd;
 
 body {
-    font: normal normal normal 16px/16px Barlow Condensed;
-    // font-family: "Barlow Condensed", sans-serif;
-    // font-weight: 400;
+    font-family: "Barlow";
+    font-weight: 400;
+    font-size: 16px;
 }
 footer {
     visibility: hidden;
@@ -23,10 +25,12 @@ footer {
 header#top {
     margin-left: 2rem;
     margin-right: 2rem;
+    margin-top: 1rem;
 }
 main {
     margin-left: 3.5rem;
     margin-right: 3.5rem;
+    // margin-top: 1rem;
 }
 h1,
 h2,
@@ -52,26 +56,36 @@ div.o_pms_pwa_reservation_modal {
     & select,
     & textarea {
         min-height: 3rem;
-        border: 1px $theme-color solid;
-        font-weight: unset;
+        border: 1px $theme-color-text solid;
+        // font-weight: unset;
         font-size: medium;
         padding-top: 0.5rem;
     }
     & label {
-        font-weight: unset;
+        font-weight: 600;
         font-size: small;
+
         position: absolute;
-        color: $theme-color;
+        color: $theme-color-text;
     }
     .o_pms_pwa_checkbox {
         min-height: 1rem;
         border: 1px solid;
         margin-left: -3rem;
-        border-color: $theme-color !important;
+        border-color: $theme-color-text !important;
     }
     .o_pms_pwa_checkbox_label {
-        font-weight: unset;
-        font-size: medium;
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0px;
+        position: absolute;
+        color: $black;
+        padding-left: 0.5rem;
+    }
+    .o_pms_pwa_radiobox_label {
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0px;
         position: absolute;
         color: $black;
         padding-left: 0.5rem;
@@ -81,11 +95,14 @@ form > div.form-group {
     & input,
     & select,
     & textarea {
-        border: 2px solid $theme-color;
+        border: 1px solid $theme-color-text;
     }
     & label {
-        font-weight: unset;
+        //font-weight: unset;
         font-size: small;
+    }
+    .form-check {
+        margin-top: 0.25rem;
     }
 }
 .bg-dark {
@@ -107,7 +124,7 @@ h4 {
     font-size: medium;
 }
 .btn-grey-900 {
-    background-color: $grey-900;
+    background-color: $table-text-color;
     color: $white;
     text-transform: uppercase;
     font-weight: 600;

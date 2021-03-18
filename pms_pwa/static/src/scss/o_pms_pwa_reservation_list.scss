@@ -7,8 +7,8 @@
     margin-right: 2rem;
     overflow-x: auto; //scroll;
     /* display: block ruby; */
-    display: None;
-    min-height: 30px;
+    // display: None;
+    min-height: 2rem;
 }
 .o_pms_pwa_reservation.accordion {
     background-color: $bg-theme-color;
@@ -43,10 +43,10 @@ section.o_pms_pwa_roomdoo_list {
         }
     }
     .table-hover {
-        font: normal normal normal 16px/16px Barlow Condensed;
-        // font-family: "Barlow Condensed", sans-serif;
+        // font: normal normal normal 16px/16px Barlow Condensed;
+        font-family: "Barlow Condensed";
         letter-spacing: 0.02px;
-        // font-size: 16px;
+        font-size: 16px;
         color: $table-text-color;
         line-height: 16px;
         & > thead {
@@ -55,8 +55,11 @@ section.o_pms_pwa_roomdoo_list {
                 & > th {
                     border-top: none;
                     border-bottom-color: $theme-color;
-                    font-weight: normal;
-                    line-height: 15px;
+                    font-family: "Barlow Condensed";
+                    font-size: 16px;
+                    font-weight: 600;
+                    //font: normal normal medium 16px/15px Barlow Condensed;
+                    letter-spacing: 0.02px;
                 }
             }
         }
@@ -64,6 +67,7 @@ section.o_pms_pwa_roomdoo_list {
             & > tr {
                 & > td {
                     border-top: none;
+                    vertical-align: middle;
                     cursor: pointer;
                     & > span.dropdown {
                         & a.btn {
@@ -71,8 +75,12 @@ section.o_pms_pwa_roomdoo_list {
                         }
                         & div.dropdown-menu {
                             border: 1px solid $theme-color;
-                            & button.dropdown-item:hover {
-                                background-color: $bg-theme-color;
+                            min-width: 5.5rem;
+                            & button.dropdown-item {
+                                padding: 0.25rem 0.5rem;
+                                & :hover {
+                                    background-color: $theme-color;
+                                }
                             }
                         }
                     }
@@ -95,7 +103,12 @@ section.o_pms_pwa_roomdoo_list {
                             min-height: 40px;
                         }
                         .o_pms_pwa_info_name {
+                            //font: normal normal bold 16px/16px Barlow Condensed;
+                            font-family: "Barlow Condensed";
+                            font-size: 16px;
                             font-weight: bold;
+                            letter-spacing: 0.02px;
+                            margin-left: -0.5rem;
                         }
                         .o_pms_pwa_badge_position {
                             position: relative;
@@ -103,9 +116,12 @@ section.o_pms_pwa_roomdoo_list {
                             right: 1.5em;
                             border-radius: 10em;
                             padding: 0.2em 0.4em;
+                            font-family: "Barlow Condensed";
                             text-align: center;
-                            font: normal normal bold 12px/14px Barlow Condensed;
-                            color: #ffffff;
+                            font-size: 12px;
+                            font-weight: bold;
+                            //font: normal normal bold 12px/14px Barlow Condensed;
+                            color: $white;
                             background-color: $badge-color;
                         }
                         .o_pms_pwa_info_num {
@@ -118,6 +134,7 @@ section.o_pms_pwa_roomdoo_list {
 
                         a:first-of-type {
                             color: $table-text-color;
+                            margin-left: -0.5rem;
                         }
                     }
 
@@ -127,14 +144,16 @@ section.o_pms_pwa_roomdoo_list {
                     //
                 }
                 & > td.o_pms_pwa_lh45 {
-                    line-height: 45px;
+                    // line-height: 45px;
                     overflow: hidden;
                     max-width: 75ch;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
                 & > td:last-of-type {
-                    border-left: 5px solid $bg-theme-color;
+                    background: transparent
+                        linear-gradient(90deg, #daf7fc 1%, $white 10%) 0% 0% no-repeat
+                        padding-box;
                 }
             }
             & > tr:hover {
@@ -144,22 +163,23 @@ section.o_pms_pwa_roomdoo_list {
     }
     .tags_holder {
         display: inline-block;
+        //font: normal normal medium 12px/30px Barlow Condensed;
         & > span {
             background-color: $bg-theme-color;
-            color: $theme-color;
+            color: $theme-color-text;
             font-size: 15px;
-            margin-left: 5px;
+            padding: 3px 6px;
             & > span {
                 color: $table-text-color;
                 margin-left: 5px;
             }
             & span.o_pms_tag_index {
-                color: $theme-color;
+                color: $theme-color-text;
                 text-transform: capitalize;
             }
             & > button {
                 float: none;
-                color: $theme-color;
+                color: $theme-color-text;
                 line-height: 18px;
                 & > span {
                     font-size: 15px;
@@ -182,12 +202,18 @@ div.o_pms_pwa_new_reservation_modal {
         margin: auto;
         margin-top: 60px;
         margin-right: 10px;
-        max-width: 360px;
+        width: 25%;
         height: 100%;
         -webkit-transform: translate3d(0%, 0, 0);
         -ms-transform: translate3d(0%, 0, 0);
         -o-transform: translate3d(0%, 0, 0);
         transform: translate3d(0%, 0, 0);
+        @media (max-width: 1677px) {
+            width: 450px;
+        }
+        @media (max-width: 768px) {
+            width: 95%;
+        }
     }
     &.modal.o_pms_pwa_right .modal-content {
         overflow-y: auto;
@@ -200,7 +226,7 @@ div.o_pms_pwa_new_reservation_modal {
             & > div.modal-title {
                 color: $table-text-color;
                 font-size: 22px;
-                font-family: "Barlow Condensed", sans-serif;
+                // font-family: "Barlow Condensed", sans-serif;
                 font-weight: bold;
                 letter-spacing: 0.02px;
                 text-transform: uppercase;
@@ -214,7 +240,7 @@ div.o_pms_pwa_new_reservation_modal {
         & > div.o_pms_pwa_modal_body {
             overflow-x: clip;
             button.o_pms_pwa_btn_border {
-                margin-top: 1rem;
+                margin-top: 0.25rem;
             }
         }
     }
@@ -235,8 +261,8 @@ div.o_pms_pwa_new_reservation_modal {
         font-size: 18px;
     }
     .btn-message {
-        width: 90%;
-        margin-top: 1rem;
+        width: 100%;
+        margin-top: 0.25rem;
         border-radius: 1.5rem;
         border: none;
         background-image: linear-gradient(to right, $theme-color 50%, $bg-theme-color);
@@ -254,6 +280,9 @@ div.o_pms_pwa_reservation_modal {
         > h4.modal-title {
             color: $table-text-color !important; /* Check the important on h4 */
             text-transform: uppercase;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 0.02px;
             > span {
                 color: $theme-color;
             }
@@ -269,7 +298,18 @@ div.o_pms_pwa_reservation_modal {
         border-bottom: 1px solid $table-text-color-lighter;
     }
     label.o_pms_pwa_checkbox_label {
-        padding-top: 0.6rem;
+        padding-top: 0;
+    }
+    .o_pms_pwa_radiobox {
+        display: block;
+        margin-top: -1rem;
+        label.o_pms_pwa_radiobox_label {
+            padding-top: 0.75rem;
+        }
+    }
+
+    label {
+        padding-top: 0.15rem;
     }
 }
 
@@ -279,6 +319,39 @@ div.o_pms_pwa_reservation_modal {
 
 section.o_pms_pwa_roomdoo_list,
 div.o_pms_pwa_reservation_modal {
+    .o_pms_pwa_reservation_name {
+        text-align: left;
+        font-size: 18px;
+        font-weight: bold;
+        // normal normal bold 18px/22px Barlow;
+        letter-spacing: 0.02px;
+        color: $table-text-color;
+        margin-left: -2.5rem;
+        // margin-top: 0.5rem;
+        @media (max-width: 1677px) {
+            margin-left: -1.5rem;
+        }
+        @media (max-width: 768px) {
+            margin-left: -4.5rem;
+        }
+        @media (max-width: 610px) {
+            margin-left: -1.5rem;
+        }
+    }
+    .o_pms_pwa_reservation_anchor {
+        text-decoration: none;
+        color: $table-text-color;
+        margin-left: -2.5rem;
+        @media (max-width: 1677px) {
+            margin-left: -1.5rem;
+        }
+        @media (max-width: 768px) {
+            margin-left: -4.5rem;
+        }
+        @media (max-width: 610px) {
+            margin-left: -1.5rem;
+        }
+    }
     .o_pms_pwa_img_rounded_bg {
         background-color: $theme-color;
         padding: 0.15rem;
@@ -287,7 +360,7 @@ div.o_pms_pwa_reservation_modal {
         height: 0.2rem;
     }
     .o_pms_pwa_btn_border {
-        width: 90%;
+        width: 100%;
         border-radius: 1.5rem;
         border: 1px solid $theme-color;
         color: $theme-color;
@@ -300,6 +373,22 @@ div.o_pms_pwa_reservation_modal {
         box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.15);
         padding: 10px;
         border-radius: 0.3rem;
+        .o_pms_pwa_total_title {
+            color: $theme-color;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .o_pms_pwa_total_price {
+            color: $table-text-color;
+            font-size: 22px;
+            font-weight: bold;
+            span {
+                font-size: 14px;
+                font-weight: 400;
+                display: block;
+                margin-top: -0.25rem;
+            }
+        }
     }
     .o_pms_pwa_messages::before {
         display: none;
@@ -322,9 +411,11 @@ div.o_pms_pwa_reservation_modal {
             98.5% !important;
         background: url("/pms_pwa/static/img/br_down.png") $bg-theme-color no-repeat
             calc(100% - 10px) !important;
+
         > span.bg-red {
             color: $white;
             background-color: $red;
+            border-radius: 1rem;
         }
         > div {
             background: unset;
@@ -341,23 +432,42 @@ div.o_pms_pwa_reservation_modal {
     .o_pms_pwa_30w {
         width: 30%;
     }
+    .o_pms_pwa_price_link {
+        color: $theme-color-text;
+        text-decoration: underline;
+        font-size: medium;
+        font-weight: 600;
+        text-align: center;
+    }
     /* Extras */
     tr:nth-child(odd) > .o_pms_pwa_detail_td {
-        background-color: $bg-theme-color;
+        background-color: $bg-theme-color-extras;
+        padding-left: 2rem;
+        font-size: 16px;
+        font-weight: 600;
     }
     tr:nth-child(even) > .o_pms_pwa_detail_td {
-        background-color: $bg-theme-color;
+        background-color: $bg-theme-color-extras;
+        padding-left: 2rem;
+        font-size: 16px;
+        font-weight: 600;
     }
     tr:nth-child(odd) > .o_pms_pwa_detail_td {
-        background-color: $bg-theme-color;
+        background-color: $bg-theme-color-extras;
+        padding-left: 2rem;
+        font-size: 16px;
+        font-weight: 600;
     }
     tr > .o_pms_pwa_detail_th {
-        background-color: $bg-theme-color !important;
+        background-color: $bg-theme-color-extras !important;
+        padding-left: 2rem;
+        font-weight: 600;
+        font-size: 14px;
     }
-    .o_pms_pwa_rb_spot {
-        width: 1rem !important;
-        height: 1rem !important;
-    }
+    // .o_pms_pwa_rb_spot {
+    //     width: 1rem !important;
+    //     height: 1rem !important;
+    // }
     .o_pms_pwa_collapse {
         background-color: $bg-theme-color;
         margin-left: -1.5rem;
@@ -375,7 +485,7 @@ div.o_pms_pwa_reservation_modal {
                 font-size: small;
             }
             tbody {
-                line-height: 1.5rem;
+                line-height: 1.75rem;
                 font-size: medium;
             }
         }
@@ -393,7 +503,7 @@ div.o_pms_pwa_reservation_modal {
     .o_pms_pwa_rb_tab {
         display: inline-block;
         position: relative;
-        width: 20%;
+        width: 25%;
     }
 
     .o_pms_pwa_rb_txt {
@@ -407,8 +517,8 @@ div.o_pms_pwa_reservation_modal {
 
     .o_pms_pwa_rb_spot {
         position: absolute;
-        width: 1.5rem;
-        height: 1.5rem;
+        width: 2rem;
+        height: 2rem;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
@@ -421,7 +531,7 @@ div.o_pms_pwa_reservation_modal {
 
     .o_pms_pwa_rb_tab_active .o_pms_pwa_rb_spot {
         background: $theme-color;
-        border: 2px solid $theme-color;
+        border: 1px solid $theme-color;
         color: $white;
     }
 
@@ -450,6 +560,11 @@ div.o_pms_pwa_new_reservation_modal {
     a.btn-outline-dark,
     button.btn-outline-dark {
         border-width: 1px;
+    }
+    .o_pms_pwa_pay {
+        width: 90%;
+        margin-top: 20%;
+        margin-left: 5%;
     }
 }
 

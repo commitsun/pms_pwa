@@ -58,11 +58,12 @@
                                             class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
                                             t-att-title="reservation.partner_id.name"
                                             t-att-alt="reservation.partner_id.name"
+                                            width="55"
                                         />
                                     </div>
-                                    <div class="col-9 align-self-center">
+                                    <div class="col-9 ">
                                         <div class="row">
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12">
                                                 <strong>
                                                     <span
                                                         class="o_pms_pwa_reservation_name"
@@ -70,11 +71,11 @@
                                                     />
                                                 </strong>
                                             </div>
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12" style="margin-top:-0.5rem">
                                                 <a
                                                     t-att-href="'tel:' + reservation.partner_id.mobile"
                                                 >
-                                                    <span
+                                                    <span class="o_pms_pwa_reservation_anchor"
                                                         t-esc="reservation.partner_id.mobile"
                                                     />
                                                 </a>
@@ -372,54 +373,51 @@
                                     <div class="o_pms_pwa_shadow mt-3">
                                         <div class="row">
                                             <div class="col-6">
-                                                <div class="row">
-                                                    <strong class="col-12">
+                                                <div class="row mx-2">
+                                                    <div class="o_pms_pwa_total_title col-12">
                                                         <t
-                                                            t-esc="texts.total_text || _t('Total')"
+                                                            t-esc="texts.total_text || _t('Precio total reserva')"
                                                         />
-                                                    </strong>
-                                                    <span class="col-12">
+                                                    </div>
+                                                    <div class="o_pms_pwa_total_price col-12">
                                                         <strong
                                                             t-esc="reservation.price_total"
                                                         />€
-                                                        (<span
-                                                            t-esc="reservation.price_tax"
-                                                        />€ vat)
-                                                    </span>
+                                                        <span>(
+                                                            <t t-esc="reservation.price_tax"/>€ vat)
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-6">
-                                                <div class="row">
-                                                    <strong class="col-12">
+                                                <div class="row mx-2">
+                                                    <div class="o_pms_pwa_total_title col-12">
                                                         <t
-                                                            t-esc="texts.outstading_text || _t('Outstanding')"
+                                                            t-esc="texts.outstading_text || _t('Importe pendiente')"
                                                         />
-                                                    </strong>
-                                                    <span
-                                                        class="col-12"
-                                                        t-if="reservation.folio_pending_amount.value"
-                                                    >
+                                                    </div>
+                                                    <div class="o_pms_pwa_total_price col-12"
+                                                        t-if="reservation.folio_pending_amount.value">
                                                         <strong
                                                             t-esc="reservation.folio_pending_amount.value"
                                                         />€
-                                                        (<span
-                                                            t-esc="reservation.folio_id.outstanding_vat"
-                                                        />€ vat)
-                                                    </span>
+                                                        <span>(
+                                                            <t t-esc="reservation.folio_id.outstanding_vat"/>€ vat)
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3" t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods">
-                                        <div class="col-6">
+                                    <div class="row mt-4" t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods">
+                                        <div class="col-6 mb-2">
                                             <h4 t-esc="_t('Payment mode')"/>
                                             <t
                                                 t-foreach="payment_methods"
                                                 t-as="key"
                                             >
-                                                <div class="row">
-                                                    <div class="col-12">
+                                                <div class="o_pms_pwa_radiobox">
                                                         <input
                                                             type="radio"
                                                             t-att-value="key"
@@ -427,18 +425,18 @@
                                                             t-att-id="key"
                                                         />
                                                         <label
-                                                            class="control-label o_pms_pwa_checkbox_label"
+                                                            class="control-label o_pms_pwa_radiobox_label"
                                                             t-att-for="key"
                                                         >
                                                             <span t-esc="key" />
                                                         </label>
-                                                    </div>
                                                 </div>
+
                                             </t>
                                         </div>
-                                        <div class="col-6 mt4">
+                                        <div class="col-6">
                                             <button
-                                                class="btn btn-outline-dark btn-block"
+                                                class="btn btn-grey-900 btn-radius o_pms_pwa_pay"
                                                 special="cancel"
                                             >
                                                 <t
@@ -449,16 +447,16 @@
                                     </div>
                                 </div>
 
-                                <div class="row mt-3">
+                                <div class="row mt-4">
                                     <div class="col-12">
                                         <h4><t t-esc="texts.notes_text || _t('Notes')"/></h4>
-                                        <div>
+                                        <div t-if="reservation.folio_internal_comment" >
                                             <t t-esc="reservation.folio_internal_comment"/>
                                         </div>
                                     </div>
                                 </div>
                                 <hr/>
-                                <div class="form-group mt32">
+                                <div class="form-group">
                                     <div class="row mt-3">
                                         <div class="col-12 text-center">
                                             <button
@@ -520,11 +518,12 @@
                                             class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
                                             t-att-title="reservation.partner_id.name"
                                             t-att-alt="reservation.partner_id.name"
+                                            width="55"
                                         />
                                     </div>
-                                    <div class="col-9 align-self-center">
+                                    <div class="col-9 ">
                                         <div class="row">
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12">
                                                 <strong>
                                                     <span
                                                         class="o_pms_pwa_reservation_name"
@@ -532,11 +531,11 @@
                                                     />
                                                 </strong>
                                             </div>
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12" style="margin-top:-0.5rem">
                                                 <a
                                                     t-att-href="'tel:' + reservation.partner_id.mobile"
                                                 >
-                                                    <span
+                                                    <span class="o_pms_pwa_reservation_anchor"
                                                         t-esc="reservation.partner_id.mobile"
                                                     />
                                                 </a>
@@ -658,11 +657,12 @@
                                             class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
                                             t-att-title="reservation.partner_id.name"
                                             t-att-alt="reservation.partner_id.name"
+                                            width="55"
                                         />
                                     </div>
-                                    <div class="col-9 align-self-center">
+                                    <div class="col-9 ">
                                         <div class="row">
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12">
                                                 <strong>
                                                     <span
                                                         class="o_pms_pwa_reservation_name"
@@ -670,11 +670,11 @@
                                                     />
                                                 </strong>
                                             </div>
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12" style="margin-top:-0.5rem">
                                                 <a
                                                     t-att-href="'tel:' + reservation.partner_id.mobile"
                                                 >
-                                                    <span
+                                                    <span class="o_pms_pwa_reservation_anchor"
                                                         t-esc="reservation.partner_id.mobile"
                                                     />
                                                 </a>
@@ -795,11 +795,12 @@
                                             class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
                                             t-att-title="reservation.partner_id.name"
                                             t-att-alt="reservation.partner_id.name"
+                                            width="55"
                                         />
                                     </div>
-                                    <div class="col-9 align-self-center">
+                                    <div class="col-9 ">
                                         <div class="row">
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12">
                                                 <strong>
                                                     <span
                                                         class="o_pms_pwa_reservation_name"
@@ -807,11 +808,11 @@
                                                     />
                                                 </strong>
                                             </div>
-                                            <div class="col-12 align-self-center">
+                                            <div class="col-12" style="margin-top:-0.5rem">
                                                 <a
                                                     t-att-href="'tel:' + reservation.partner_id.mobile"
                                                 >
-                                                    <span
+                                                    <span class="o_pms_pwa_reservation_anchor"
                                                         t-esc="reservation.partner_id.mobile"
                                                     />
                                                 </a>

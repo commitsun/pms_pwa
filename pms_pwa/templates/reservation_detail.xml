@@ -25,7 +25,7 @@
                                 <h1>
                                     <span class="title-header">Reserva</span>
                                     <span class="blue-header">
-                                        <t t-esc="invoice.id" />
+                                        <t t-esc="invoice.name" />
                                     </span>
                                     <span class="moreinfo-header">
                                         <t t-esc="invoice.origin" />
@@ -33,7 +33,7 @@
                                     <span class="agency">
                                         <t t-if="invoice.channel_type_id" t-esc="invoice.channel_type_id.name"/>
                                         <img t-if="invoice.agency_id" t-att-src="website.image_url(invoice.agency_id, 'image_128')"
-                                            width="50"
+                                            width="60"
                                             t-att-title="invoice.agency_id.name"
                                             t-att-alt="invoice.agency_id.name"/>
                                     </span>
@@ -330,7 +330,7 @@
                                                                 </label>
                                                                 <div t-attf-id='collapsediv{{i.id}}' class='o_pms_pwa_collapse collapse show'>
                                                                     <div class="o_pms_pwa_collapse_content">
-                                                                        <br />
+
                                                                         <table>
                                                                             <thead>
                                                                                 <tr>
@@ -364,7 +364,7 @@
                                                                                 </t>
                                                                             </tbody>
                                                                         </table>
-                                                                        <br />
+
                                                                     </div>
                                                                 </div>
                                                             </div>
