@@ -662,20 +662,151 @@ class TestFrontEnd(http.Controller):
             values,
         )
 
-    @http.route("/calendar/line", auth="public", website=True)
+    @http.route(
+        "/calendar/line",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
     def calendar_list(self, date=False, search="", **post):
-        if not date:
-            date = datetime.now()
-        date_end = date + timedelta(days=7)
-        Reservation = request.env["pms.reservation"]
-        domain = self._get_search_domain(search, **post)
+        # if not date:
+        #     date = datetime.now()
+        # date_end = date + timedelta(days=7)
+        # Reservation = request.env["pms.reservation"]
+        # domain = self._get_search_domain(search, **post)
 
-        domain += [
-            ("checkin", ">=", date),
-            ("checkout", "<=", date_end),
-        ]
-        reservations = Reservation.search(domain)
-        return reservations
+        # domain += [
+        #     ("checkin", ">=", date),
+        #     ("checkout", "<=", date_end),
+        # ]
+        # reservations = Reservation.search(domain)
+        # Ejemplo json
+        values = {}
+        values.update(
+            {
+                "reservations": [
+                    {
+                        "habitacion": {
+                            "id": "20",
+                            "nombre": "normal",
+                            "status": 2,
+                        },
+                        "ocupation": [
+                            {
+                                "date": "22/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "23/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "24/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "25/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "26/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "27/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 120,
+                                    "status": "done",
+                                    "nigth": 1,
+                                },
+                            },
+                            {
+                                "date": "28/03/2021",
+                                "reservation_info": False,
+                            },
+                        ],
+                    },
+                    {
+                        "habitacion": {
+                            "id": "20",
+                            "nombre": "doble",
+                            "status": 2,
+                        },
+                        "ocupation": [
+                            {
+                                "date": "22/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "23/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "24/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "25/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 120,
+                                    "status": "done",
+                                    "nigth": 1,
+                                },
+                            },
+                            {
+                                "date": "26/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "27/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "28/03/2021",
+                                "reservation_info": False,
+                            },
+                        ],
+                    },
+                ]
+            }
+        )
+        return values
 
     @http.route(
         ["/reservation/single_reservation_onchange"],
@@ -734,10 +865,10 @@ class TestFrontEnd(http.Controller):
                 "id": 8,
             }
         )
-        """ OR """
-        return json.dumps(
-            {"result": False, "message": _("Unnable to create the reservation")}
-        )
+        # """ OR """
+        # return json.dumps(
+        #     {"result": False, "message": _("Unnable to create the reservation")}
+        # )
 
     @http.route(
         ["/reservation/multiple_reservation_new"],
@@ -756,7 +887,7 @@ class TestFrontEnd(http.Controller):
                 "id": 25,
             }
         )
-        """ OR """
-        return json.dumps(
-            {"result": False, "message": _("Unnable to create the reservation")}
-        )
+        # """ OR """
+        # return json.dumps(
+        #     {"result": False, "message": _("Unnable to create the reservation")}
+        # )
