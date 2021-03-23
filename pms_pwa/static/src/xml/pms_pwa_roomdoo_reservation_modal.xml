@@ -109,7 +109,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; reservation.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
