@@ -68,8 +68,8 @@
                                         <th>Check in</th>
                                         <th>Check out</th>
                                         <th class="text-center">Sales channel</th>
-                                        <th class="text-center">Total(€)</th>
-                                        <th class="text-center">Outstanding(€)</th>
+                                        <th class="text-center">Total (€)</th>
+                                        <th class="text-center">Outstanding (€)</th>
                                         <th class="text-center">Room qty</th>
                                         <th>Requests</th>
                                         <th>Services</th>
@@ -188,14 +188,24 @@
                 <t t-if="folio.state" t-esc="folio.state"/>
             </td>
             <td>
-
+                <t t-esc="min(folio.reservation_ids.mapped('checkin'))"/>
             </td>
             <td>
-
+                <t t-esc="max(folio.reservation_ids.mapped('checkin'))"/>
             </td>
             <td class="text-center">
-
-            </td>
+            <img
+                t-if="folio.agency_id"
+                t-att-src="website.image_url(folio.agency_id, 'image_128')"
+                width="80"
+                t-att-title="folio.agency_id.name"
+                t-att-alt="folio.agency_id.name"
+            />
+            <span t-else="">
+                <span t-if="folio.channel_type_id" t-esc="folio.channel_type_id.name"/><br/>
+                <span t-if="folio.channel_type_id" class="o_pms_pwa_wler" t-esc="folio.partner_id.name"/><br/>
+            </span>
+        </td>
             <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.amount_total"/>
             </td>
@@ -280,6 +290,7 @@
                 t-att-alt="obj.agency_id.name"/>
             <span t-else="">
                 <span t-if="obj.channel_type_id" t-esc="obj.channel_type_id.name"/><br/>
+                <span t-if="obj.channel_type_id" class="o_pms_pwa_wler" t-esc="obj.partner_id.name"/><br/>
                 <span class="o_pms_pwa_wler ml-2" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
             </span>
         </td>
@@ -290,7 +301,7 @@
             <t t-esc="obj.folio_id.pending_amount"/>
         </td>
         <td class="o_pms_pwa_lh45 text-center">
-
+            1
         </td>
         <td class="o_pms_pwa_lh45">
             <t t-if="obj.requests" t-esc="obj.requests"/>

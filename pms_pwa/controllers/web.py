@@ -196,23 +196,38 @@ class TestFrontEnd(http.Controller):
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-
             if reservation:
                 payload = http.request.jsonrequest.get("params")
+                payment_method = int(payload["payment_method"])
+                payment_amount = float(payload["amount"])
+                if "partner_id" in payload:
+                    payment_partner_id = int(payload["partner_id"])
+                else:
+                    payment_partner_id = reservation.partner_id.id
                 try:
                     account_journals = (
                         reservation.folio_id.pms_property_id._get_payment_methods()
                     )
-                    journal = account_journals.browse(payload["payment_method"])
-                    reservation.folio_id.do_payment(
-                        journal,
-                        journal.suspense_account_id,
-                        request.env.user,
-                        payload["amount"],
-                        reservation.folio_id,
-                        partner=reservation.partner_id,
-                        date=fields.date.today(),
+                    journal = account_journals.browse(payment_method)
+                    partner_id = request.env["res.partner"].browse(
+                        int(payment_partner_id)
                     )
+                    if reservation.folio_payment_state == "not_paid":
+                        reservation.folio_id.do_payment(
+                            journal,
+                            journal.suspense_account_id,
+                            request.env.user,
+                            payment_amount,
+                            reservation.folio_id,
+                            partner=partner_id
+                            if partner_id
+                            else reservation.partner_id,
+                            date=fields.date.today(),
+                        )
+                    else:
+                        return json.dumps(
+                            {"result": False, "message": _("Reservation already paid.")}
+                        )
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
                 return json.dumps(

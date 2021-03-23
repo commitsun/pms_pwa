@@ -102,7 +102,7 @@ section.o_pms_pwa_roomdoo_list {
                 }
                 &.o_pms_pwa_accordion_padding {
                     & > td.first-col {
-                        border-left: 1px $bg-theme-color solid;
+                        border-left: 15px $bg-theme-color solid;
                         position: sticky;
                         z-index: 1;
                         left: 0;
