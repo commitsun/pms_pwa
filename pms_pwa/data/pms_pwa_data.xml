@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="website.default_website" model="website">
+            <field name="name">Roomdoo PWA</field>
+            <field name="domain">roomdoo</field>
+            <field name="favicon" type="base64" file="pms_pwa/static/img/favicon/favicon.ico" />
+            <field name="logo" type="base64" file="pms_pwa/static/img/logo_footer.png" />
+            <field name="social_default_image" type="base64" file="pms_pwa/static/img/logo_footer.png" />
+        </record>
+    </data>
+</odoo>

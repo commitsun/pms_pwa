@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="roomdoo_menu_link_active" inherit_id="website.submenu">
+        <xpath expr="//a[@t-att-href='submenu.clean_url()']" position="attributes">
+            <attribute name="t-attf-class">#{link_class or ''} #{'active' if submenu.clean_url() and unslug_url(request.httprequest.path) == unslug_url(submenu.clean_url()) or submenu.clean_url() == '/reservation/list' and unslug_url(request.httprequest.path).startswith('/reservation/') else ''}</attribute>
+        </xpath>
+    </template>
     <template id="roomdoo_reservation_detail" name="Reservation detail">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Reservation detail'" />
@@ -20,17 +25,21 @@
                                 <h1>
                                     <span class="title-header">Reserva</span>
                                     <span class="blue-header">
-                                        <t t-esc="invoice.id" />
+                                        <t t-esc="invoice.name" />
                                     </span>
                                     <span class="moreinfo-header">
                                         <t t-esc="invoice.origin" />
                                     </span>
                                     <span class="agency">
-                                        <t t-if="invoice.channel_type_id" t-esc="invoice.channel_type_id.name"/>
                                         <img t-if="invoice.agency_id" t-att-src="website.image_url(invoice.agency_id, 'image_128')"
-                                            width="50"
+                                            width="100"
                                             t-att-title="invoice.agency_id.name"
                                             t-att-alt="invoice.agency_id.name"/>
+                                        <span t-else="">
+                                            <span t-if="invoice.channel_type_id" t-esc="invoice.channel_type_id.name"/>
+                                            <span class="ml-2" t-if="invoice.detail_origin" t-esc="invoice.detail_origin"/>
+                                        </span>
+
                                     </span>
                                     <span class="status-header">
                                         <t t-esc="invoice.state" />
@@ -47,50 +56,59 @@
                             <div class="col-md-12 col-lg-4">
                                 <div class="card shadow">
                                     <div class="container-fluid">
-                                        <div class="row bg-dark">
-                                            <div class="col-md-11 col-lg-3 ml-4 my-4">
-                                                <img class="rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
-                                            </div>
-                                            <div class="col-md-11 col-lg-8 my-4">
-                                                <h3 class="text-white">
-                                                    <t t-esc="invoice.partner_id.name" />
-                                                </h3>
-                                                <p class="mb-0">
-                                                    <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
-                                                        <t t-esc="invoice.phone" />
-                                                    </a>
-                                                </p>
-                                                <p>
-                                                    <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
-                                                        <t t-esc="invoice.email" />
-                                                    </a>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-10 col-lg-11 ml-4 mb-4">
-                                                <div class="progress o_pms_pwa_progress">
-                                                    <div t-att-class="'progress-bar '
-                                                        + ('bg-success ' if invoice.ratio_checkin_data &gt; 75 else ' ')
-                                                        + ('bg-warning ' if 75 &gt; invoice.ratio_checkin_data &gt; 50 else ' ')
-                                                        + ('bg-danger ' if invoice.ratio_checkin_data &lt; 50 else ' ')" role="progressbar" t-att-style="'width:'+ str(invoice.ratio_checkin_data) + '%'" t-att-aria-valuenow="invoice.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                        <div class="bg-dark">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" width="100" />
                                                 </div>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                        <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
-                                                            <t t-esc="invoice.adults" />
-                                                        </span>
-                                                        Datos personales huéspedes
-                                                    </button>
-                                                    <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
-                                                        <t t-foreach="invoice.checkin_partner_ids" t-as="person">
-                                                            <a class="dropdown-item o_pms_pwa_button_checkin" href="#">
-                                                                <t t-if="person.partner_id.name">
-                                                                    <t t-esc="person.partner_id.name" />
-                                                                </t>
-                                                                <t t-else="">
-                                                                    No indicado
-                                                                </t>
-                                                            </a>
-                                                        </t>
+                                                <div class="col-12">
+                                                    <h3 class="text-white ml-4">
+                                                        <t t-esc="invoice.partner_id.name" />
+                                                    </h3>
+                                                    <p class="ml-4 mb-0">
+                                                        <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
+                                                            <t t-esc="invoice.phone" />
+                                                        </a>
+                                                    </p>
+                                                    <p class="ml-4">
+                                                        <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
+                                                            <t t-esc="invoice.email" />
+                                                        </a>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div clas="row">
+                                                <div class="col-12">
+                                                    <div class="progress o_pms_pwa_progress mx-2">
+                                                        <div t-att-class="'progress-bar '
+                                                            + ('bg-success ' if invoice.state in ('onboard') else ' ')
+                                                            + ('bg-light ' if invoice.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
+                                                            + ('bg-success ' if invoice.state in ('confirm') and invoice.ratio_checkin_data &gt; 75 else ' ')
+                                                            + ('bg-warning ' if invoice.state in ('confirm') and  75 &gt; invoice.ratio_checkin_data &gt; 50 else ' ')
+                                                            + ('bg-danger ' if invoice.state in ('confirm') and  invoice.ratio_checkin_data &lt; 50 else ' ')"
+                                                            role="progressbar" t-att-style="'width:'+ str(invoice.checkins_ratio if invoice.state in ('onboard') else invoice.ratio_checkin_data) + '%'"
+                                                            t-att-aria-valuenow="invoice.checkins_ratio if invoice.state in ('onboard') else invoice.ratio_checkin_data" aria-valuemin="0"
+                                                            aria-valuemax="100"></div>
+                                                    </div>
+                                                    <div class="dropdown mx-2">
+                                                        <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
+                                                                <t t-esc="invoice.adults" />
+                                                            </span>
+                                                            Datos personales huéspedes
+                                                        </button>
+                                                        <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
+                                                            <t t-foreach="invoice.checkin_partner_ids" t-as="person">
+                                                                <a class="dropdown-item o_pms_pwa_button_checkin" href="#">
+                                                                    <t t-if="person.partner_id.name">
+                                                                        <t t-esc="person.partner_id.name" />
+                                                                    </t>
+                                                                    <t t-else="">
+                                                                        No indicado
+                                                                    </t>
+                                                                </a>
+                                                            </t>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,6 +160,7 @@
                                                     <input type="hidden" name="model" value="pms.reservation" />
                                                     <input type="hidden" name="id" t-att-value="invoice.id" />
                                                     <input type="hidden" name="folio_id" t-att-value="invoice.folio_id.id" />
+                                                    <input type="hidden" name="reservation_id" t-att-value="invoice.id" />
                                                     <div class="form-group">
                                                         <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" required="" />
                                                         <input type="submit" class="btn btn-message" value="Enviar" />
@@ -155,10 +174,9 @@
                             <div class="col-md-12 col-lg-4" id="folio_reservation_ids">
 
                                 <div t-if="invoice.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
-                                    <div class="card-body">
-                                        <table class="table table-responsive">
+                                    <div class="o_pms_pwa_table_reservation_list m-4">
+                                        <table class="table table-condensed">
                                             <thead>
-
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
                                                     <th class="o_pms_pwa_theme_color">ID</th>
@@ -178,7 +196,7 @@
                                                         </td>
                                                         <td>
                                                             <a t-att-href="'/reservation/' + str(i.id)">
-                                                                <t t-esc="i.id" />
+                                                                <t t-esc="i.name" />
                                                             </a>
                                                         </td>
                                                         <td class="text-right">
@@ -199,7 +217,7 @@
                                         </table>
 
                                         <div class="row">
-                                            <div class="col-12">
+                                            <div class="col-12 mt-2">
                                                 <div class="o_roomdoo_hide_show-more">Show more</div>
                                             </div>
                                         </div>
@@ -211,7 +229,6 @@
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
                                             HABITACIÓN
-                                            <t t-esc="invoice.localizator" />
                                         </h3>
                                     </div>
                                     <div class="card-body">
@@ -248,8 +265,11 @@
                                                     </div>
                                                     <div class="col-6">
                                                         <button type="button"
-                                                            class="btn btn-message o_pms_pwa_button_assign_confirm"
-                                                            t-attf-url="/reservation/{{ invoice.id }}/assign">Confirmar</button>
+                                                            class="btn btn-message-form o_pms_pwa_button_assign_confirm"
+                                                            t-attf-url="/reservation/{{ invoice.id }}/assign">
+                                                            <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
+                                                            Confirmar
+                                                        </button>
 
                                                     </div>
                                                 </div>
@@ -261,10 +281,10 @@
                                                         <input class="form-control" type="text" name="adults" t-att-value="invoice.adults" />
                                                     </div>
                                                     <div class="col-6">
-                                                        <label class="control-label col-12" for="nights_number">
+                                                        <label class="control-label col-12" for="nights">
                                                             Nº de noches
                                                         </label>
-                                                        <input class="form-control" type="text" name="nights_number" t-att-value="invoice.nights" />
+                                                        <input class="form-control" type="text" name="nights" t-att-value="invoice.nights" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
@@ -276,7 +296,8 @@
                                                         </label>
                                                         <input class="form-control" type="text" name="range_check_date" t-attf-value="{{ date_checkin }} - {{ date_checkout }}" />
                                                         <span class="o_pms_pwa_calendar_icon">
-                                                            <span class="fa fa-calendar" />
+                                                            <!-- <span class="fa fa-calendar" /> -->
+                                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                         </span>
                                                     </div>
                                                     <div class="col-6">
@@ -308,14 +329,14 @@
                                                 <div class="row m-3">
                                                     <div class="col-12">
                                                         <t t-foreach="invoice.service_ids" t-as="i">
-                                                            <div class="form-check" t-if="i.service_line_ids">
+                                                            <div class="form-check mt-2" t-if="i.service_line_ids">
                                                                 <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-attf-id="defaultCheck{{i.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{i.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{i.id}}" />
                                                                 <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{i.id}}">
                                                                     <t t-esc="i.product_id.name" />
                                                                 </label>
                                                                 <div t-attf-id='collapsediv{{i.id}}' class='o_pms_pwa_collapse collapse show'>
-                                                                    <div class="o_pms_pwa_collapse_content">
-                                                                        <br />
+                                                                    <div class="o_pms_pwa_collapse_content mt-3">
+
                                                                         <table>
                                                                             <thead>
                                                                                 <tr>
@@ -349,7 +370,7 @@
                                                                                 </t>
                                                                             </tbody>
                                                                         </table>
-                                                                        <br />
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -448,14 +469,14 @@
                                         </h3>
                                     </div>
                                     <div class="card-body bg-dark">
-                                        <table class="table table-responsive">
+                                        <table class="table">
                                             <thead>
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
                                                     <th class="o_pms_pwa_theme_color">concepto</th>
-                                                    <th class="o_pms_pwa_theme_color">a facturar</th>
-                                                    <th class="o_pms_pwa_theme_color">facturado/total</th>
-                                                    <th class="o_pms_pwa_theme_color">importe(€)</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">a facturar</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">facturado/total</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">importe(€)</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="reservation_list">
@@ -468,32 +489,35 @@
                                         </div> -->
                                         <div class="row pago-badge">
                                             <div class="col-4">
-                                                Total
-                                                <br />
-                                                a facturar
-                                                <br />
+                                                <span>
+                                                    Total
+                                                    <br />
+                                                    a facturar
+                                                </span>
                                                 <span class="pt" id="total_amount">
                                                     <t t-esc="invoice.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
-                                                Total
-                                                <br />
-                                                <br />
+                                                <span>
+                                                    Total
+                                                </span>
                                                 <span class="price">
                                                     <t t-esc="invoice.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
-                                                Pendiente
-                                                <br />
-                                                de pago
-                                                <br />
+                                                <span>
+                                                    Pendiente
+                                                    <br />
+                                                    de pago
+                                                </span>
                                                 <span class="price2">
                                                     <t t-esc="invoice.folio_id.pending_amount" />
                                                 </span>
                                             </div>
                                         </div>
+                                        <t t-if="invoice.folio_id.payment_state != 'paid'">
                                         <hr class="m-1" />
                                         <!-- <div class="row pago-badge">
                                             <div class="col-12">Nº tarjeta reserva</div>
@@ -518,6 +542,24 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
                                                                         <label class="control-label col-12" for="rate_type">
+                                                                            Invoice contact
+                                                                        </label>
+                                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" id="partner_to_invoice">
+                                                                            <t t-foreach="invoice.folio_id.partner_invoice_ids" t-as="partner">
+                                                                                <t t-if="partner.id == invoice.folio_id.partner_id.id">
+                                                                                    <option t-attf-value="{{ partner.id }}" selected="selected"><t t-esc="partner.name"></t></option>
+                                                                                </t>
+                                                                                <t t-else="">
+                                                                                    <option t-attf-value="{{ partner.id }}"><t t-esc="partner.name"></t></option>
+                                                                                </t>
+                                                                            </t>
+                                                                            <option value="False">New contact</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-2">
+                                                                    <div class="col-sm-12">
+                                                                        <label class="control-label col-12" for="rate_type">
                                                                             Name
                                                                         </label>
                                                                         <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ invoice.folio_id.partner_id.name }}" />
@@ -528,7 +570,7 @@
                                                                         <label class="control-label col-12" for="rate_type" >
                                                                             NIF/CIF
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_cif" t-attf-value="{{ invoice.folio_id.partner_id.name }}" required="required" />
+                                                                        <input class="form-control" type="text" name="invoice_vat" t-attf-value="{{ invoice.folio_id.partner_id.vat }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -564,7 +606,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <input type="submit" class="btn btn-message" value="Actualizar" />
+                                                            <!-- <input type="submit" class="btn btn-message" value="Actualizar" /> -->
                                                         </form>
                                                     </div>
                                                 </div>
@@ -575,32 +617,82 @@
                                                 <h4>Métodos de pago</h4>
                                             </div>
                                             <div class="col-12">
-                                                <div class="form-check mt-2">
-                                                    <input class="o_pms_pwa_checkbox" type="checkbox" id="payment_method1" checked="checked" />
-                                                    <label class="o_pms_pwa_checkbox_label" for="payment_method1">
-                                                        Tarjeta de crédito
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mt-2">
-                                                    <input class="o_pms_pwa_checkbox" type="checkbox" id="payment_method2" />
-                                                    <label class="o_pms_pwa_checkbox_label" for="payment_method2">
-                                                        Efectivo
-                                                    </label>
-                                                </div>
+                                                <t t-foreach="invoice.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
+
+                                                    <div class="form-check mt-1">
+                                                        <input type="radio" class="o_pms_pwa_checkbox" name="payment_method" t-attf-value="{{ payment.id }}" checked="checked" />
+                                                        <!-- <input class="o_pms_pwa_checkbox" type="checkbox" t-attf-id="{{ payment.id }}" checked="checked" /> -->
+                                                        <label class="o_pms_pwa_checkbox_label pl-1">
+                                                            <t t-esc="payment.name"></t>
+                                                        </label>
+                                                    </div>
+
+                                                </t>
                                             </div>
                                         </div>
+
                                         <hr class="m-1" />
                                         <div class="col-12">
                                             <div class="form-group text-center">
-                                                <button class="btn btn-print">
+                                                <!-- <button class="btn btn-print">
                                                     <i class="fa fa-print" aria-hidden="false" />
                                                     IMPRIMIR
-                                                </button>
-                                                <input type="submit" class="btn btn-message" value="COBRAR" />
+                                                </button> -->
+
+                                                    <button id="payment_button" class="btn btn-message">
+                                                        <i class="fa fa-file-text-o" aria-hidden="false" />
+                                                        FACTURAR
+                                                    </button>
+
                                             </div>
                                         </div>
+                                        </t>
                                     </div>
                                 </div>
+                                <t t-if="invoice.folio_id.invoice_count > 0">
+                                    <div class="card bg-white shadow mt-4">
+                                        <div class="card-header bg-white o_pms_pwa_card_header">
+                                            <h3 class="mb-0">
+                                                Facturas
+                                            </h3>
+                                        </div>
+                                        <div class="card-body bg-white o_pms_pwa_table_reservation_list">
+                                            <table class="table">
+                                                <thead>
+
+                                                    <tr>
+                                                        <th class="o_pms_pwa_theme_color">ID</th>
+                                                        <th class="o_pms_pwa_theme_color">Partner</th>
+                                                        <th class="o_pms_pwa_theme_color">Date</th>
+                                                        <th class="o_pms_pwa_theme_color">Total</th>
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="invoice.folio_id.move_ids" t-as="i">
+                                                        <tr>
+                                                            <td>
+                                                                <a class="o_pms_pwa_theme_color" t-att-href="'/my/invoices/' + str(i.id)">
+                                                                    <t t-esc="i.name" />
+                                                                </a>
+                                                            </td>
+                                                            <td class="black_text">
+                                                                <t t-esc="i.partner_id.name" />
+                                                            </td>
+                                                            <td class="black_text text-right">
+                                                                <t t-esc="i.invoice_date" />
+                                                            </td>
+                                                            <td class="black_text text-right">
+                                                                <t t-esc="i.amount_total" />
+                                                            </td>
+
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </t>
                             </div>
                         </div>
                     </div>

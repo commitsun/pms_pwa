@@ -1,0 +1,37 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="27.688"
+  height="29.514"
+  viewBox="0 0 27.688 29.514"
+>
+  <g id="_2636568" data-name="2636568" transform="translate(-15.755 0.25)">
+    <path
+      id="Trazado_2357"
+      data-name="Trazado 2357"
+      d="M29.6,0A13.594,13.594,0,0,0,19.347,22.52v5.63a.85.85,0,0,0,1.45.6L23.7,25.846A13.6,13.6,0,1,0,29.6,0ZM23.944,24.061a.85.85,0,0,0-1.005.146L21.046,26.1V22.2a.85.85,0,0,0-.223-.574,11.891,11.891,0,1,1,3.121,2.438Z"
+      fill="#00b5e2"
+      stroke="#00b6df"
+      stroke-width="0.5"
+    />
+    <path
+      id="Trazado_2358"
+      data-name="Trazado 2358"
+      d="M171.053,105.9a5.106,5.106,0,0,0-5.1,5.1.85.85,0,0,0,1.7,0,3.4,3.4,0,1,1,3.4,3.4.85.85,0,0,0-.85.85V117.8a.85.85,0,0,0,1.7,0v-1.767a5.1,5.1,0,0,0-.85-10.13Z"
+      transform="translate(-141.454 -99.9)"
+      fill="#00b5e2"
+      stroke="#00b6df"
+      stroke-width="0.5"
+    />
+    <circle
+      id="Elipse_6"
+      data-name="Elipse 6"
+      cx="0.847"
+      cy="0.847"
+      r="0.847"
+      transform="translate(28.752 20.448)"
+      fill="#00b5e2"
+      stroke="#00b6df"
+      stroke-width="0.5"
+    />
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="6.444"
+  height="11.743"
+  viewBox="0 0 6.444 11.743"
+>
+  <g id="Grupo_4118" data-name="Grupo 4118" transform="translate(-328.84 -319.613)">
+    <g id="Grupo_4123" data-name="Grupo 4123" transform="translate(328.84 324.912)">
+      <g id="Grupo_4122" data-name="Grupo 4122">
+        <path
+          id="Trazado_2496"
+          data-name="Trazado 2496"
+          d="M141.275,234.815h-2.448a2,2,0,0,0-2,2v4.046a.4.4,0,0,0,.4.4h5.645a.4.4,0,0,0,.4-.4v-4.046A2,2,0,0,0,141.275,234.815Z"
+          transform="translate(-136.829 -234.815)"
+          fill="#00b5e2"
+        />
+      </g>
+    </g>
+    <g id="Grupo_4125" data-name="Grupo 4125" transform="translate(329.659 319.613)">
+      <g id="Grupo_4124" data-name="Grupo 4124">
+        <path
+          id="Trazado_2497"
+          data-name="Trazado 2497"
+          d="M169.517,38.84a2.4,2.4,0,1,0,2.4,2.4A2.406,2.406,0,0,0,169.517,38.84Z"
+          transform="translate(-167.114 -38.84)"
+          fill="#00b5e2"
+        />
+      </g>
+    </g>
+  </g>
+</svg>

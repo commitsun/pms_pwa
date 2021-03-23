@@ -4,16 +4,24 @@
         <xpath expr="//header//nav" position="replace">
             <t t-set="is_connected" t-value="not user_id._is_public()" />
             <nav t-if="is_connected" data-name="Navbar" class="navbar navbar-expand-lg navbar-light o_colored_level o_cc">
-                <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between">
+                <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between mt-2">
                     <!-- Navbar Collapse -->
                     <div id="top_menu_collapse" class="collapse navbar-collapse order-last order-lg-0">
-                        <button id="menu-toggle">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
+                        <div id="menu-toggle">
+                            <img src="/pms_pwa/static/img/logo_mobil.png" alt="logo menu roomdoo" class="img-responsive mobile" />
+                            <div class="o_pms_pwa_options">
+                                <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive mobile" />
+                                <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive mobile"/>
+                                <img src="/pms_pwa/static/img/menu_img.png" alt="notificaciones" class="img-responsive mobile navbar-toggler-icon"/>
+                            </div>
+                        </div>
                         <!-- Page Title -->
                         <div t-if="page_title" class="o_pms_pwa_page_title">
                             <t t-esc="page_title" />
                             <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter" />
+                        </div>
+                        <div t-else="" class="o_pms_pwa_page_title">
+                            Portal
                         </div>
                         <div class="row o_pms_pwa_header">
                             <div class="col-md-8 o_pms_icons">
@@ -25,13 +33,27 @@
                                     <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" />
                                     Nueva reserva
                                 </button>
-                                <img src="/pms_pwa/static/img/svg/interrogante.svg" alt="ayuda" class="img-responsive" style="width:40px;" />
-                                <img src="/pms_pwa/static/img/svg/campana.svg" alt="notificaciones" class="img-responsive" style="width:40px;" />
+                                <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
+                                <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
+
+                                <!-- <t t-if="request.httprequest.cookies['pms_pids']">
+                                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])"/>
+                                    <select name="user_property">
+                                    <t t-foreach="user_id.pms_property_ids" t-as="i">
+                                        <t t-if="current_property == i.id">
+                                            <option t-attf-value="{{ i.id }}" selected="selected"><t t-esc="i.name"/></option>
+                                        </t>
+                                        <t t-else="">
+                                            <option t-attf-value="{{i.id}}"><t t-esc="i.name"/></option>
+                                        </t>
+                                    </t>
+                                    </select>
+                                </t> -->
                             </div>
                             <div class="col-md-4 o_pms_user_img">
                                 <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
-                                <spam class="o_pms_user_name"><a href=""><t t-esc="user_id.name"></t></a></spam>
-                                <p class="o_pms_close_session"><a href="">Cerrar sesión</a></p>
+                                <spam class="o_pms_user_name"><a href="/my"><t t-esc="user_id.name"></t></a></spam>
+                                <p class="o_pms_close_session"><a href="/web/session/logout">Cerrar sesión</a></p>
                             </div>
                         </div>
                         <!-- <t t-call="website.navbar_nav">

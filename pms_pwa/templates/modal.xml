@@ -13,212 +13,347 @@
                     <div class="modal-body o_pms_pwa_modal_body">
                         <div class="container-fluid">
 
-                            <form class="form-horizontal" method="post">
-                                <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="true">Single</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="multiple-tab" data-toggle="tab" href="#multiple" role="tab" aria-controls="multiple" aria-selected="false">Multiple</a>
+                                </li>
+                            </ul>
 
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <input class="form-control" type="text" name="name" placeholder="Name"
-                                                t-att-value="post['name'] if post and 'name' in post else None"/>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="checkin">
-                                                Check in
-                                            </label>
-                                            <input class="form-control"
-                                                type="date" name="checkin"
-                                                t-att-value="post['checkin'] if post and 'checkin' in post else None"/>
-                                            <span class="o_pms_pwa_calendar_icon">
-                                                <span class="fa fa-calendar"/>
-                                            </span>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="nights">
-                                                Nº of nights
-                                            </label>
-                                            <input class="form-control" type="text" name="nights"
-                                                t-att-value="post['nights'] if post and 'nights' in post else None"/>
-                                        </div>
-                                    </div>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="single" role="tabpanel" aria-labelledby="home-tab">
+                                    <t t-call="pms_pwa.single_reservation_form"/>
                                 </div>
-
-                                <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                                    <div class="row mt-3">
-                                        <t t-set="room_types" t-value="['ECO', 'DUAL']"/>
-                                        <t t-set="guest_numbers" t-value="[1,2,3,4,5,6]"/>
-                                        <div class="col-sm-12">
-                                            <h4>Room </h4>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <label class="control-label col-12" for="room_type">
-                                                Room type
-                                            </label>
-                                            <select
-                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="room_type">
-                                                <option
-                                                    name="room_type"
-                                                    t-foreach="room_types"
-                                                    t-as="key"
-                                                    t-att-value="key">
-                                                    <t t-esc="key" />
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-sm-12">
-                                            <h4>Room </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="guest_number">
-                                                Guest nº
-                                            </label>
-                                            <select
-                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="guest_number">
-                                                <option
-                                                    name="guest_number"
-                                                    t-foreach="guest_numbers"
-                                                    t-as="key"
-                                                    t-att-value="key">
-                                                    <t t-esc="key" />
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <button type="button"
-                                                class="btn btn-message o_pms_pwa_button_assign_confirm"
-                                                url="/room_block">Block</button>
-                                        </div>
-                                    </div>
+                                <div class="tab-pane" id="multiple" role="tabpanel" aria-labelledby="profile-tab">
+                                    <t t-call="pms_pwa.multiple_reservation_form"/>
                                 </div>
-
-                                <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                                    <div class="row mt-3">
-                                        <div class="col-sm-12">
-                                            <h4>Personal data </h4>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-12">
-                                            <input class="form-control" type="text" name="surname" placeholder="Surname"
-                                                t-att-value="post['surname'] if post and 'surname' in post else None"/>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <input class="form-control" type="tel" name="phone" placeholder="Phone"
-                                                t-att-value="post['phone'] if post and 'phone' in post else None"/>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <input class="form-control" type="text" name="vat" placeholder="VAT"
-                                                t-att-value="post['vat'] if post and 'vat' in post else None"/>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <input class="form-control" type="date" name="exp_date" placeholder="Document exp. date"
-                                                t-att-value="post['exp_date'] if post and 'exp_date' in post else None"/>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <input class="form-control" type="date" name="birthday" placeholder="Birthday"
-                                                t-att-value="post['birthday'] if post and 'birthday' in post else None"/>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <input class="form-control" type="text" name="address" placeholder="Address"
-                                                t-att-value="post['address'] if post and 'address' in post else None"/>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <input class="form-control" type="email" name="email" placeholder="Email"
-                                                t-att-value="post['email'] if post and 'email' in post else None"/>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                                    <div class="row mt-3">
-                                        <t t-set="room_numbers" t-value="[1,2,3,4,5,6]"/>
-                                        <div class="col-sm-12">
-                                            <h4>Personal data </h4>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-sm-12">
-                                            <h4>Room </h4>
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="room_number">
-                                                Room nº
-                                            </label>
-                                            <select
-                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="room_number">
-                                                <option
-                                                    name="guest_number"
-                                                    t-foreach="room_numbers"
-                                                    t-as="key"
-                                                    t-att-value="key">
-                                                    <t t-esc="key" />
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <button type="button"
-                                                class="btn btn-message o_pms_pwa_button_assign_confirm"
-                                                url="/room_confirm">Confirm</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <t t-set="pricelists" t-value="['No return', 'Regular']"/>
-                                        <div class="col-12">
-                                            <label class="control-label col-12" for="pricelist">
-                                                Room nº
-                                            </label>
-                                            <select
-                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="pricelist">
-                                                <option
-                                                    name="pricelist"
-                                                    t-foreach="pricelists"
-                                                    t-as="key"
-                                                    t-att-value="key">
-                                                    <t t-esc="key" />
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="total">
-                                                Total price
-                                            </label>
-                                            <input class="form-control"
-                                                type="number" min="0" step="any" name="total"
-                                                t-att-value="post['total'] if post and 'total' in post else None"/>
-                                        </div>
-                                        <div class="col-sm-6 mt-3">
-                                            <a href="" class="o_pms_pwa_price_link">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="false" />
-                                                Price / Night
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3 mb-3">
-                                    <div class="col-12 text-center">
-                                        <input type="hidden" name="original_search" t-att-value="search if search else None"/>
-                                        <input class="btn btn-message" type="submit" value="Apply filters"/>
-                                    </div>
-                                </div>
-
-                            </form>
+                            </div>
 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </template>
+
+    <template id="single_reservation_form" name="Single reservation form">
+        <form id="single_reservation_form" class="form-horizontal mt-3" method="post">
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+
+                <div class="row">
+                    <div class="col-12">
+                        <input class="form-control" type="text" name="name" placeholder="Name"
+                            t-att-value="post['name'] if post and 'name' in post else None"/>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label class="control-label col-12" for="checkin">
+                            Check in
+                        </label>
+                        <input class="form-control" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                        <input type="hidden" name="check_in_date" value="" />
+                        <input type="hidden" name="check_out_date" value="" />
+                        <span class="o_pms_pwa_calendar_icon">
+                            <!-- <span class="fa fa-calendar"/> -->
+                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="row mt-3">
+                    <t t-set="room_types" t-value="['ECO', 'DUAL']"/>
+                    <t t-set="guest_numbers" t-value="[1,2,3,4,5,6]"/>
+                    <div class="col-sm-12">
+                        <h4>Room </h4>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="control-label col-12" for="room_type">
+                            Room type
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="room_type">
+                            <option
+                                name="room_type"
+                                t-foreach="room_types"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <label class="control-label col-12" for="guest_number">
+                            Guest nº
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="guest_number">
+                            <option
+                                name="guest_number"
+                                t-foreach="guest_numbers"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="row mt-3">
+                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']"/>
+                    <t t-set="allowed_services" t-value="[1,2,3,4,5,6]"/>
+                    <div class="col-sm-12">
+                        <h4>Room and service</h4>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="room">
+                            Room
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="room">
+                            <option
+                                name="room"
+                                t-foreach="allowed_rooms"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="service">
+                            Broad service
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="service">
+                            <option
+                                name="service"
+                                t-foreach="allowed_services"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="row mt-3">
+                    <t t-set="allowed_channels" t-value="['Booking', 'Airbnb', 'Teléfono']"/>
+                    <t t-set="allowed_pricelist" t-value="['Tarifa normal', 'Tarifa reducida']"/>
+                    <div class="col-sm-12">
+                        <h4>Channel and pricelist </h4>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="channel">
+                            Channel
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="channel">
+                            <option
+                                name="channel"
+                                t-foreach="allowed_channels"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="pricelist">
+                            Pricelist
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="pricelist">
+                            <option
+                                name="pricelist"
+                                t-foreach="allowed_pricelist"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="col-sm-12">
+                    <h4>Total </h4>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <label class="control-label col-12" for="discount">
+                            Discount
+                        </label>
+                        <input class="form-control" type="number" name="discount" placeholder="Discount"/>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="total">
+                            Total
+                        </label>
+                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div class="col-12 text-center">
+                    <input class="btn btn-message" type="submit" value="Submit"/>
+                </div>
+            </div>
+
+        </form>
+    </template>
+
+    <template id="multiple_reservation_form" name="Multiple reservation form">
+        <form id="multiple_reservation_form" class="form-horizontal mt-3" method="post">
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+
+                <div class="row">
+                    <div class="col-12">
+                        <input class="form-control" type="text" name="name" placeholder="Name"
+                            t-att-value="post['name'] if post and 'name' in post else None"/>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label class="control-label col-12" for="checkin">
+                            Check in
+                        </label>
+                        <input class="form-control" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                        <input type="hidden" name="check_in_date" value="" />
+                        <input type="hidden" name="check_out_date" value="" />
+                        <span class="o_pms_pwa_calendar_icon">
+                            <!-- <span class="fa fa-calendar"/> -->
+                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                        </span>
+                    </div>
+                </div>
+                <t t-set="allowed_pricelist" t-value="['Tarifa normal', 'Tarifa reducida']"/>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label class="control-label col-12" for="pricelist">
+                            Pricelist
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="pricelist">
+                            <option
+                                name="pricelist"
+                                t-foreach="allowed_pricelist"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="row mt-3">
+                    <t t-set="room_types" t-value="['ECO', 'DUAL']"/>
+                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']"/>
+                    <t t-set="allowed_numbers" t-value="[1,2,3,4,5,6]"/>
+                    <div class="col-sm-12">
+                        <h4>Room</h4>
+                    </div>
+                    <div class="col-sm-12">
+                        <label class="control-label col-12" for="room_type">
+                            Room type
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="room_type">
+                            <option
+                                name="room_type"
+                                t-foreach="room_types"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-6 mt-3">
+                        <label class="control-label col-12" for="room">
+                            Room
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="room">
+                            <option
+                                name="room"
+                                t-foreach="allowed_rooms"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-6 mt-3">
+                        <label class="control-label col-12" for="room_number">
+                            Nº of rooms
+                        </label>
+                        <select
+                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
+                            name="room_number">
+                            <option
+                                name="room_number"
+                                t-foreach="allowed_numbers"
+                                t-as="key"
+                                t-att-value="key">
+                                <t t-esc="key" />
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="col-sm-12">
+                    <h4>Total </h4>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <label class="control-label col-12" for="discount">
+                            Discount
+                        </label>
+                        <input class="form-control" type="number" name="discount" placeholder="Discount"/>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="total">
+                            Total
+                        </label>
+                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-3 mb-3">
+                <div class="col-12 text-center">
+                    <input class="btn btn-message" type="submit" value="Submit"/>
+                </div>
+            </div>
+
+        </form>
     </template>
 </odoo>

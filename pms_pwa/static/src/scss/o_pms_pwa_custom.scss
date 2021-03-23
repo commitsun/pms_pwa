@@ -4,6 +4,8 @@
 $theme-color: #01b6e3;
 $bg-theme-color: #daf7fc;
 $bg-theme-color-modal: #01b6e345;
+$bg-theme-color-extras: #e2f7fc;
+$theme-color-text: #00b5e2;
 $grey-900: #394240;
 $grey-300: #dadada;
 $badge-color: #ff3b00;
@@ -11,8 +13,49 @@ $table-text-color: #3f4443;
 $table-text-color-lighter: #b5bfbd;
 
 body {
-    font-family: "Barlow Condensed", sans-serif;
+    font-family: "Barlow";
     font-weight: 400;
+    font-size: 14px;
+}
+// scroll Firefox
+body {
+    scrollbar-width: auto; /* "auto" or "thin" */
+    scrollbar-color: $theme-color $white; /* scroll thumb and track */
+}
+// scroll Chrome
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: $theme-color;
+    border-radius: 10px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: $bg-theme-color-modal;
+}
+
+footer {
+    visibility: hidden;
+    display: none;
+    opacity: 0;
+}
+header#top {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 1rem;
+}
+main {
+    margin-left: 3.5rem;
+    margin-right: 3.5rem;
+    // margin-top: 1rem;
 }
 footer {
     visibility: hidden;
@@ -42,6 +85,9 @@ h6,
     font-weight: 600;
     line-height: 1.2;
 }
+a {
+    color: $theme-color;
+}
 form > div.form-group,
 div.o_pms_pwa_filters_modal,
 div.o_pms_pwa_reservation_modal {
@@ -49,26 +95,39 @@ div.o_pms_pwa_reservation_modal {
     & select,
     & textarea {
         min-height: 3rem;
-        border: 1px $theme-color solid;
-        font-weight: unset;
-        font-size: medium;
-        padding-top: 0.5rem;
+        border: 1px $theme-color-text solid;
+        font-weight: 500;
+        font-size: 16px;
+        padding-top: 1.2rem;
+    }
+    & input[type="submit"] {
+        padding-top: 0;
     }
     & label {
-        font-weight: unset;
-        font-size: small;
+        font-weight: 600;
+        font-size: 12px;
+        padding-top: 0.15rem;
         position: absolute;
-        color: $theme-color;
+        color: $theme-color-text;
     }
     .o_pms_pwa_checkbox {
         min-height: 1rem;
         border: 1px solid;
         margin-left: -3rem;
-        border-color: $theme-color !important;
+        border-color: $theme-color-text !important;
     }
     .o_pms_pwa_checkbox_label {
-        font-weight: unset;
-        font-size: medium;
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0px;
+        position: absolute;
+        color: $black;
+        padding-left: 0.5rem;
+    }
+    .o_pms_pwa_radiobox_label {
+        font-size: 16px;
+        font-weight: 500;
+        letter-spacing: 0px;
         position: absolute;
         color: $black;
         padding-left: 0.5rem;
@@ -78,11 +137,14 @@ form > div.form-group {
     & input,
     & select,
     & textarea {
-        border: 2px solid $theme-color;
+        border: 1px solid $theme-color-text;
     }
     & label {
-        font-weight: unset;
+        //font-weight: unset;
         font-size: small;
+    }
+    .form-check {
+        margin-top: 0.25rem;
     }
 }
 .bg-dark {
@@ -104,7 +166,7 @@ h4 {
     font-size: medium;
 }
 .btn-grey-900 {
-    background-color: $grey-900;
+    background-color: $table-text-color;
     color: $white;
     text-transform: uppercase;
     font-weight: 600;
@@ -125,18 +187,28 @@ h4 {
 .btn-pms_pwa {
     background-image: linear-gradient(to right, $theme-color 80%, $bg-theme-color);
     color: $white;
+    border: none;
     font-weight: 600;
     &:hover {
         color: $white;
     }
+}
+.btn-message-form {
+    width: 100%;
+    margin-top: 0.25rem;
+    border-radius: 1.5rem;
+    border: none;
+    background-image: linear-gradient(to right, $theme-color 50%, $bg-theme-color);
+    color: $white;
 }
 select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     /* Some browsers will not display the caret when using calc, so we put the fallback first */
-    background: url("/pms_pwa/static/img/br_down.png") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
-    background: url("/pms_pwa/static/img/br_down.png") white no-repeat calc(100% - 10px) !important; /* Better placement regardless of input width */
+    background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") white no-repeat 98.5% !important; /* !important used for overriding all other customisations */
+    background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") white no-repeat
+        calc(100% - 10px) !important; /* Better placement regardless of input width */
 }
 /*For IE*/
 select::-ms-expand {
@@ -187,8 +259,8 @@ select::-ms-expand {
     }
     .o_pms_close_session {
         display: block;
-        margin-left: 3.5rem;
-        margin-top: -1.5rem;
+        margin-left: 3.25rem;
+        margin-top: -1.25rem;
         a {
             font-size: 14px;
             color: $theme-color;
@@ -271,6 +343,10 @@ select::-ms-expand {
 
 .o_pms_pwa_full_shadow {
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.15);
+    @media (max-width: 991.98px) {
+        box-shadow: none;
+        margin: -2rem;
+    }
 }
 .o_pms_pwa_navbar_counter {
     color: $theme-color;
@@ -282,7 +358,65 @@ select::-ms-expand {
     }
 }
 .o_pms_notification_title {
-    padding: 0.3rem;
+    padding: 0.4rem;
+    margin: auto;
+    text-align: center;
+    display: none;
+}
+@media (max-width: 991.98px) {
+    header#top {
+        margin-left: -1rem;
+        margin-right: 0;
+    }
+    main {
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+    }
+}
+.o_header_affixed {
+    position: absolute;
+}
+// Remove chrome calendar icon
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+// TOAST
+.o_pms_pwa_roomdoo_alerts {
+    position: fixed;
+    z-index: 99999;
+    bottom: 3%;
+    left: 40%;
+    .toast.warning {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        .toast-header {
+            strong {
+                color: #721c24;
+            }
+        }
+    }
+    .toast.success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        .toast-header {
+            strong {
+                color: #155724;
+            }
+        }
+    }
+}
+
+.o_pms_pwa_img_rounded_bg {
+    background-color: $theme-color;
+    padding: 0.15rem;
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+    background: none;
 }
 @media (max-width: 991.98px) {
     header#top {

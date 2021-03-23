@@ -4,11 +4,14 @@
         <xpath expr="//div[@id='wrapwrap']" position="before">
             <!-- Sidebar -->
             <t t-set="is_connected" t-value="not user_id._is_public()"/>
-            <div t-if="is_connected" class="o_pms_pwa_bg_theme border-right" id="sidebar-wrapper">
+            <div t-if="is_connected" class="o_pms_pwa_bg_theme" id="sidebar-wrapper">
                 <div class="row sidebar-heading">
                     <div class="col-8">
                         <a href="/" class="o_offcanvas_logo o_pms_pwa_logo">
-                            <img src="/pms_pwa/static/img/svg/casita.svg" alt="logo menu roomdoo" class="img-responsive" />
+                            <span>
+                                <img src="/pms_pwa/static/img/svg/casita.svg" alt="logo menu roomdoo" class="img-responsive" />
+                                <!-- <i class="fa fa-angle-right" style="color: white;"></i> -->
+                            </span>
                             <img src="/pms_pwa/static/img/svg/logo_menu.svg" alt="logo menu roomdoo" class="img-responsive mobile" />
                         </a>
                     </div>
@@ -18,7 +21,7 @@
                     <div class="col-1  mt-2">
                         <img src="/pms_pwa/static/img/svg/interrogante.svg" alt="logo menu roomdoo" class="img-responsive mobile" />
                     </div>
-                    <div class="col-2 mt-2">
+                    <div class="col-1 mt-2">
                         <span id="menu-toggle2">
                             <i class="fa fa-times img-responsive mobile"></i>
                         </span>

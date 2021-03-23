@@ -4,7 +4,10 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var ajax = require("web.ajax");
     var reservation_ids = [];
     var invoice_lines = [];
+    var core = require("web.core");
+    var _t = core._t;
     var folio_id = $("input[name='folio_id']").val();
+    var reservation_id = $("input[name='reservation_id']").val();
     var survey = [];
     // Bidimensional array: [ [1,3], [2,4] ]
     // Switcher function:
@@ -82,8 +85,8 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     Math.abs((firstDate - secondDate) / oneDay)
                 );
                 nights = diffDays - 1;
-                $('input[name="nights_number"]').val(nights);
-                $("form#reservation_detail").submit();
+                $('input[name="nights"]').val(nights);
+                // $("form#reservation_detail").submit();
             }
         );
     });
@@ -144,11 +147,11 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     lines[i].id +
                     "' class='text-right editable'>" +
                     lines[i].qty_to_invoice +
-                    "</td>" +
+                    "<i class='fa fa-edit'></i></td>" +
                     "<td class='text-right'>" +
                     lines[i].qty_invoiced +
                     "/" +
-                    lines[i].qty_to_invoice +
+                    lines[i].product_uom_qty +
                     "</td>" +
                     "<td class='text-right'>" +
                     parseFloat(lines[i].price_total).toFixed(2) +
@@ -173,7 +176,36 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             $("#total_amount").html(parseFloat(data.total_amount).toFixed(2));
         });
     });
-
+    $(document).on(
+        "change",
+        "form#reservation_detail input, form#reservation_detail select",
+        function (new_event) {
+            var values = {reservation_id: reservation_id};
+            values[new_event.currentTarget.name] = new_event.currentTarget.value;
+            ajax.jsonRpc("/reservation/onchange_data", "call", values).then(function (
+                new_data
+            ) {
+                if (new_data) {
+                    $.each(new_data, function (key, value) {
+                        var input = $(
+                            "form.o_pms_pwa_reservation_form input[name='" + key + "']"
+                        );
+                        if (input) {
+                            input.val(value);
+                        } else {
+                            $(
+                                "form.o_pms_pwa_reservation_form select[name='" +
+                                    key +
+                                    "'] option[value='" +
+                                    value +
+                                    "']"
+                            ).prop("selected", true);
+                        }
+                    });
+                }
+            });
+        }
+    );
     // Daterangepicker
     $(document).ready(function () {
         if ($("input[name='reservation_ids']:checked").val()) {
@@ -209,11 +241,11 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         lines[i].id +
                         "' class='text-right editable'>" +
                         lines[i].qty_to_invoice +
-                        "</td>" +
+                        "<i class='fa fa-edit' ></i></td>" +
                         "<td class='text-right'>" +
                         lines[i].qty_invoiced +
                         "/" +
-                        lines[i].qty_to_invoice +
+                        lines[i].product_uom_qty +
                         "</td>" +
                         "<td class='text-right'>" +
                         parseFloat(lines[i].price_total).toFixed(2) +
@@ -258,5 +290,65 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         //         : $(this).text("Show more");
         // });
         // EDIT INLINE
+    });
+    $(document).on("click", "#payment_button", function () {
+        const reservation_data = [];
+        const reservation_lines = [];
+        const checkboxesChecked = [
+            ...document.querySelectorAll("input[name=invoice_line]:checked"),
+        ].map((e) => e.value);
+        for (var i = 0; i < checkboxesChecked.length; i++) {
+            var td_id = "#my" + checkboxesChecked[i];
+            reservation_lines.push({
+                id: parseInt(checkboxesChecked[i], 10),
+                qty: parseInt($(td_id).text(), 10),
+            });
+        }
+        var partner_id_value = $("#partner_to_invoice option:selected").val();
+        var partner_id = isNaN(parseInt(partner_id_value, 10))
+            ? false
+            : parseInt(partner_id_value, 10);
+        reservation_data.push({
+            lines_to_invoice: [reservation_lines],
+            partner_to_invoice: partner_id,
+            partner_values: [
+                {
+                    name: $("input[name='invoice_name']").val(),
+                    vat: $("input[name='invoice_vat']").val(),
+                    address: $("input[name='invoice_street']").val(),
+                    postal_code: $("input[name='invoice_postal_code']").val(),
+                    city: $("input[name='invoice_city']").val(),
+                    country: $("input[name='invoice_country']").val(),
+                },
+            ],
+            payment_method: parseInt(
+                $('input[name="payment_method"]:checked').val(),
+                10
+            ),
+        });
+        console.log(reservation_data);
+        ajax.jsonRpc("/reservation/" + reservation_id + "/invoice", "call", {
+            data: reservation_data,
+            reservation_id: reservation_id,
+        }).then(function (result) {
+            console.log(result);
+            var data = JSON.parse(result);
+            if (data && data.result === true) {
+                data.type = "success";
+            } else if (data && data.result === false) {
+                data.type = "warning";
+            } else {
+                data.type = "warning";
+                data.message = _t(
+                    "An undefined error has ocurred, please try again later."
+                );
+            }
+            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                alert: data,
+            });
+            alert_div.append(alert);
+            jQuery.ready();
+        });
     });
 });

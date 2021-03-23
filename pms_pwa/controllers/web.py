@@ -35,7 +35,7 @@ class Home(Home):
 # Frontend controllers to test
 class TestFrontEnd(http.Controller):
     @http.route(
-        ["/", "/page/<int:page>"],
+        ["/reservation/list", "/reservation/list/page/<int:page>"],
         type="http",
         auth="user",
         methods=["GET", "POST"],
@@ -65,7 +65,7 @@ class TestFrontEnd(http.Controller):
         # / ORDER STUFF's
 
         pager = request.website.pager(
-            url="",
+            url="/reservation/list",
             total=request.env["pms.folio"].search_count_folios_pwa(search, **post),
             page=page,
             step=paginate_by,
@@ -256,7 +256,7 @@ class TestFrontEnd(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
-        "/pms_dashboard",
+        "/",
         type="http",
         auth="user",
         methods=["GET", "POST"],
@@ -455,6 +455,7 @@ class TestFrontEnd(http.Controller):
                         "qty_invoiced": x.qty_invoiced,
                         "price_total": x.price_total,
                         "price_subtotal": x.price_subtotal,
+                        "product_uom_qty": x.product_uom_qty,
                     }
                     for x in reservation_lines
                 ]
@@ -489,8 +490,41 @@ class TestFrontEnd(http.Controller):
             )
         if not reservation:
             raise MissingError(_("This document does not exist."))
+
+        buttons = json.loads(reservation.pwa_action_buttons)
+        keys = buttons.keys()
+        keysList = [key for key in keys]
+
+        primary_button = ""
+        secondary_buttons = []
+
+        counter = 0
+        for _key in keysList:
+            if counter == 0:
+                primary_button = (
+                    "<button url='"
+                    + buttons[keysList[counter]]
+                    + "' class='btn o_pms_pwa_abutton o_pms_pwa_button_"
+                    + str(keysList[counter].lower())
+                    + "' type='button'>"
+                    + keysList[counter]
+                    + "</button>"
+                )
+            else:
+                secondary_buttons.append(
+                    "<button url='"
+                    + buttons[keysList[counter]]
+                    + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
+                    + str(keysList[counter].lower())
+                    + "' type='button'>"
+                    + keysList[counter]
+                    + "</button>"
+                )
+            counter += 1
+
         reservation_values = {
             "id": reservation.id,
+            "name": reservation.name,
             "partner_id": {
                 "id": reservation.partner_id.id,
                 "name": reservation.partner_id.name,
@@ -509,6 +543,18 @@ class TestFrontEnd(http.Controller):
                 "name": reservation.preferred_room_id.name
                 if reservation.preferred_room_id
                 else reservation.rooms,
+            },
+            "channel_type_id": {
+                "id": reservation.channel_type_id.id
+                if reservation.channel_type_id
+                else False,
+                "name": reservation.channel_type_id.name
+                if reservation.channel_type_id
+                else False,
+            },
+            "agency_id": {
+                "id": reservation.agency_id.id if reservation.agency_id else False,
+                "name": reservation.agency_id.name if reservation.agency_id else False,
             },
             "nights": reservation.nights,
             "checkin": reservation.checkin,
@@ -535,6 +581,8 @@ class TestFrontEnd(http.Controller):
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "service_ids": reservation._get_service_ids(),
+            "primary_button": primary_button,
+            "secondary_buttons": secondary_buttons,
         }
 
         return reservation_values
@@ -614,17 +662,232 @@ class TestFrontEnd(http.Controller):
             values,
         )
 
-    @http.route("/calendar/line", auth="public", website=True)
+    @http.route(
+        "/calendar/line",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
     def calendar_list(self, date=False, search="", **post):
-        if not date:
-            date = datetime.now()
-        date_end = date + timedelta(days=7)
-        Reservation = request.env["pms.reservation"]
-        domain = self._get_search_domain(search, **post)
+        # if not date:
+        #     date = datetime.now()
+        # date_end = date + timedelta(days=7)
+        # Reservation = request.env["pms.reservation"]
+        # domain = self._get_search_domain(search, **post)
 
-        domain += [
-            ("checkin", ">=", date),
-            ("checkout", "<=", date_end),
-        ]
-        reservations = Reservation.search(domain)
-        return reservations
+        # domain += [
+        #     ("checkin", ">=", date),
+        #     ("checkout", "<=", date_end),
+        # ]
+        # reservations = Reservation.search(domain)
+        # Ejemplo json
+        values = {}
+        values.update(
+            {
+                "reservations": [
+                    {
+                        "habitacion": {
+                            "id": "20",
+                            "nombre": "normal",
+                            "status": 2,
+                        },
+                        "ocupation": [
+                            {
+                                "date": "22/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "23/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "24/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "25/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "26/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "27/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 120,
+                                    "status": "done",
+                                    "nigth": 1,
+                                },
+                            },
+                            {
+                                "date": "28/03/2021",
+                                "reservation_info": False,
+                            },
+                        ],
+                    },
+                    {
+                        "habitacion": {
+                            "id": "20",
+                            "nombre": "doble",
+                            "status": 2,
+                        },
+                        "ocupation": [
+                            {
+                                "date": "22/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "23/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 240,
+                                    "status": "done",
+                                    "nigth": 2,
+                                },
+                            },
+                            {
+                                "date": "24/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "25/03/2021",
+                                "reservation_info": {
+                                    "id": 1,
+                                    "partner_name": "Sabela Gómez G",
+                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "price": 120,
+                                    "status": "done",
+                                    "nigth": 1,
+                                },
+                            },
+                            {
+                                "date": "26/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "27/03/2021",
+                                "reservation_info": False,
+                            },
+                            {
+                                "date": "28/03/2021",
+                                "reservation_info": False,
+                            },
+                        ],
+                    },
+                ]
+            }
+        )
+        return values
+
+    @http.route(
+        ["/reservation/single_reservation_onchange"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def single_reservation_onchange(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+
+        if "rooms" in params:
+            reservation_values = {}
+        else:
+            reservation_values = {
+                "total": 260,
+            }
+
+        return reservation_values
+
+    @http.route(
+        ["/reservation/multiple_reservation_onchange"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def multiple_reservation_onchange(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+
+        if "rooms" in params:
+            reservation_values = {}
+        else:
+            reservation_values = {
+                "total": 260,
+            }
+
+        return reservation_values
+
+    @http.route(
+        ["/reservation/single_reservation_new"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def single_reservation_new(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+        return json.dumps(
+            {
+                "result": True,
+                "message": _("Operation completed successfully."),
+                "id": 8,
+            }
+        )
+        # """ OR """
+        # return json.dumps(
+        #     {"result": False, "message": _("Unnable to create the reservation")}
+        # )
+
+    @http.route(
+        ["/reservation/multiple_reservation_new"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def multiple_reservation_new(self, **kw):
+        # TODO something with the data and give back the new values
+        params = http.request.jsonrequest.get("params")
+        return json.dumps(
+            {
+                "result": True,
+                "message": _("Operation completed successfully."),
+                "id": 25,
+            }
+        )
+        # """ OR """
+        # return json.dumps(
+        #     {"result": False, "message": _("Unnable to create the reservation")}
+        # )
