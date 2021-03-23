@@ -23,7 +23,7 @@
                                     ><t t-esc="date.strftime('%B %Y')" /></h2>
                                 </div>
                             </div>
-                            <div class="col-md-2  d-none d-lg-block">
+                            <div class="col-md-2 d-none d-lg-block">
                                 <select name="tarifa" class="form-control o_website_form_input o_domain_leaf_operator_select o_input">
                                     <option value="1">Tarifa estandar</option>
                                     <option value="2">Tarifa especial</option>
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-condensed">
+                            <table id="calendar_table" class="table table-condensed">
                                 <thead>
 
                                     <tr>
@@ -55,19 +55,19 @@
                                     </tr>
 
                                 </thead>
-                                <tbody>
+                                <tbody id="accordion">
                                     <t t-foreach="rooms_list" t-as="obj">
-                                        <tr data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)">
+                                        <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td>
                                                 <p class="o_pms_pwa_room_name">
                                                     <t
-                                                        t-if="obj.product_id.name"
-                                                        t-esc="obj.product_id.name"
+                                                        t-if="obj.name"
+                                                        t-esc="obj.name"
                                                     />
                                                 </p>
                                                 <p class="o_pms_pwa_extra_info">
                                                     <span>2</span>
-                                                    <span>4 hab</span>
+                                                    <span><t t-esc="obj.total_rooms_count"/> hab</span>
                                                     <span class="o_pms_pwa_restr">Restricciones</span>
 
                                                 </p>
@@ -87,102 +87,7 @@
                                             </t>
                                         </tr>
                                         <tr>
-                                            <td colspan="8" class="o_pms_pwa_hiddenRow">
-                                                <div t-att-id="'collapse_accordion_'+str(obj.id)" class="collapse o_pms_pwa_calendar_line row">
-                                                    <div class="col-2 o_pms_pwa_calendar_line_room_type">
-                                                        <p class="o_pms_pwa_calendar_line_title">Habitación 1</p>
-                                                        <p class="o_pms_pwa_calendar_line_content">Estado ahora</p>
-                                                    </div>
-                                                    <div class="o_pms_pwa_calendar_line_nigth_3">
-                                                        <p class="o_pms_pwa_calendar_line_hr_success">
-                                                            <img
-                                                                t-att-src="website.image_url(user_id.partner_id, 'image_128')"
-                                                                width="50"
-                                                                class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
-                                                                title="image"
-                                                                alt="image"/>
-                                                            <span class="o_pms_pwa_calendar_line_price">240€</span>
-                                                            <span class="o_pms_pwa_calendar_line_name"><t t-esc="user_id.name"></t></span>
-                                                            <!-- <span class="badge o_pms_pwa_calendar_line_badge bg-success">
-                                                                OK
-                                                            </span> -->
-                                                        </p>
-                                                    </div>
-
-                                                    <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add" data-toggle="modal"
-                                                        data-target="#o_pms_pwa_new_reservation_modal"
-                                                        rel="nofollow">+</button>
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_nigth_1">
-                                                        <p class="o_pms_pwa_calendar_line_hr_warning">
-                                                            <img
-                                                                t-att-src="website.image_url(user_id.partner_id, 'image_128')"
-                                                                width="50"
-                                                                class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
-                                                                title="image"
-                                                                alt="image"/>
-                                                            <span class="o_pms_pwa_calendar_line_price">80€</span>
-                                                            <span class="o_pms_pwa_calendar_line_name">Admin</span>
-                                                        </p>
-
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add" data-toggle="modal"
-                                                        data-target="#o_pms_pwa_new_reservation_modal"
-                                                        rel="nofollow">+</button>
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add" data-toggle="modal"
-                                                        data-target="#o_pms_pwa_new_reservation_modal"
-                                                        rel="nofollow">+</button>
-                                                    </div>
-                                                </div>
-                                                <div t-att-id="'collapse_accordion_'+str(obj.id)" class="collapse o_pms_pwa_calendar_line row">
-
-                                                    <div class="col-2 o_pms_pwa_calendar_line_room_type">
-                                                        <p class="o_pms_pwa_calendar_line_title">Habitación 2</p>
-                                                        <p class="o_pms_pwa_calendar_line_content">Limpia</p>
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add" data-toggle="modal"
-                                                        data-target="#o_pms_pwa_new_reservation_modal"
-                                                        rel="nofollow">+</button>
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add" data-toggle="modal"
-                                                        data-target="#o_pms_pwa_new_reservation_modal"
-                                                        rel="nofollow">+</button>
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_nigth_1">
-                                                        <p class="o_pms_pwa_calendar_line_hr_info">
-                                                            <span class="o_pms_pwa_calendar_line_name">Por asignar</span>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add" data-toggle="modal"
-                                                        data-target="#o_pms_pwa_new_reservation_modal"
-                                                        rel="nofollow">+</button>
-                                                    </div>
-                                                    <div class="col o_pms_pwa_calendar_line_event">
-                                                        <button type="button" class="btn btn-add" data-toggle="modal"
-                                                        data-target="#o_pms_pwa_new_reservation_modal"
-                                                        rel="nofollow">+</button>
-                                                    </div>
-
-                                                    <div class="o_pms_pwa_calendar_line_nigth_2">
-                                                        <p class="o_pms_pwa_calendar_line_hr_success">
-                                                            <img
-                                                                t-att-src="website.image_url(user_id.partner_id, 'image_128')"
-                                                                width="50"
-                                                                class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
-                                                                title="image"
-                                                                alt="image"/>
-                                                            <span class="o_pms_pwa_calendar_line_price">120€</span>
-                                                            <span class="o_pms_pwa_calendar_line_name"><t t-esc="user_id.name"></t></span>
-                                                        </p>
-                                                    </div>
-                                                </div>
+                                            <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)">
 
                                             </td>
                                         </tr>

@@ -683,15 +683,16 @@ class TestFrontEnd(http.Controller):
         # ]
         # reservations = Reservation.search(domain)
         # Ejemplo json
+
         values = {}
         values.update(
             {
                 "reservations": [
                     {
-                        "habitacion": {
+                        "room": {
                             "id": "20",
-                            "nombre": "normal",
-                            "status": 2,
+                            "name": "normal-101",
+                            "status": "Estado ahora",
                         },
                         "ocupation": [
                             {
@@ -703,21 +704,10 @@ class TestFrontEnd(http.Controller):
                                 "reservation_info": {
                                     "id": 1,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 240,
                                     "status": "done",
-                                    "nigth": 2,
-                                },
-                            },
-                            {
-                                "date": "24/03/2021",
-                                "reservation_info": {
-                                    "id": 1,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
-                                    "price": 240,
-                                    "status": "done",
-                                    "nigth": 2,
+                                    "nigths": 2,
                                 },
                             },
                             {
@@ -733,10 +723,10 @@ class TestFrontEnd(http.Controller):
                                 "reservation_info": {
                                     "id": 1,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 120,
                                     "status": "done",
-                                    "nigth": 1,
+                                    "nigths": 1,
                                 },
                             },
                             {
@@ -746,10 +736,10 @@ class TestFrontEnd(http.Controller):
                         ],
                     },
                     {
-                        "habitacion": {
+                        "room": {
                             "id": "20",
-                            "nombre": "doble",
-                            "status": 2,
+                            "name": "doble-202",
+                            "status": "limpia",
                         },
                         "ocupation": [
                             {
@@ -757,21 +747,10 @@ class TestFrontEnd(http.Controller):
                                 "reservation_info": {
                                     "id": 1,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 240,
                                     "status": "done",
-                                    "nigth": 2,
-                                },
-                            },
-                            {
-                                "date": "23/03/2021",
-                                "reservation_info": {
-                                    "id": 1,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
-                                    "price": 240,
-                                    "status": "done",
-                                    "nigth": 2,
+                                    "nigths": 2,
                                 },
                             },
                             {
@@ -783,10 +762,10 @@ class TestFrontEnd(http.Controller):
                                 "reservation_info": {
                                     "id": 1,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 120,
                                     "status": "done",
-                                    "nigth": 1,
+                                    "nigths": 1,
                                 },
                             },
                             {
