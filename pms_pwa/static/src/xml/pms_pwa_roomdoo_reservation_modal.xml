@@ -617,7 +617,7 @@
                                 <div class="col-6">
                                     <button type="button"
                                         t-att-url="'/reservation/' + reservation.id +'/checkout'"
-                                        class="btn btn-message btn-block o_pms_pwa_button_cancel_confirm" data-dismiss="modal" aria-label="Checkout">
+                                        class="btn btn-message btn-block o_pms_pwa_button_checkout_confirm" data-dismiss="modal" aria-label="Checkout">
                                         <span>Checkout</span>
                                     </button>
                                 </div>

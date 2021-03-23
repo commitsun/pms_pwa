@@ -615,7 +615,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }).then(function (data) {
                 setTimeout(function () {
                     if (data) {
-                        self.displayContent("pms_pwa.reservation_cancel_modal", {
+                        self.displayContent("pms_pwa.reservation_checkout_modal", {
                             reservation: data,
                         });
                         $(".o_pms_pwa_button_checkout_confirm").on("click", function (
