@@ -44,6 +44,7 @@ def _get_search_domain(search=False, **post):
                 ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]
             )
     # TODO: text_dialog  (chatter)
+    domain_fields.append(("reservation_ids", "!=", False))
 
     if search_exists:
         return expression.AND([domain_fields, (domains[0])])

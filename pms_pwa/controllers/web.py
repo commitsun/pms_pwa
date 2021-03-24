@@ -251,13 +251,26 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                payload = http.request.jsonrequest.get("invoice_lines")
+                invoice_lines = http.request.jsonrequest.get("lines_to_invoice")
+                partner_invoice_id = http.request.jsonrequest.get("partner_to_invoice")
+                partner_invoice_values = http.request.jsonrequest.get("partner_values")
                 try:
+                    if partner_invoice_id:
+                        partner_invoice_id = (
+                            request.env["res.partner"]
+                            .sudo()
+                            .search([("id", "=", int(partner_invoice_id))])
+                        )
+                    else:
+                        partner_invoice_id = request.env["res.partner"].create(
+                            partner_invoice_values
+                        )
                     lines_to_invoice = dict()
-                    for value in payload:
+                    for value in invoice_lines:
                         lines_to_invoice[value["id"]] = value["qty"]
                     reservation.folio_id._create_invoices(
-                        lines_to_invoice=lines_to_invoice
+                        lines_to_invoice=lines_to_invoice,
+                        partner_invoice_id=partner_invoice_id,
                     )
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
