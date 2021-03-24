@@ -25,31 +25,31 @@
                                 <h1>
                                     <span class="title-header">Reserva</span>
                                     <span class="blue-header">
-                                        <t t-esc="invoice.name" />
+                                        <t t-esc="reservation.name" />
                                     </span>
                                     <span class="moreinfo-header">
-                                        <t t-esc="invoice.origin" />
+                                        <t t-esc="reservation.origin" />
                                     </span>
                                     <span class="agency">
-                                        <img t-if="invoice.agency_id" t-att-src="website.image_url(invoice.agency_id, 'image_128')"
+                                        <img t-if="reservation.agency_id" t-att-src="website.image_url(reservation.agency_id, 'image_128')"
                                             width="100"
-                                            t-att-title="invoice.agency_id.name"
-                                            t-att-alt="invoice.agency_id.name"/>
+                                            t-att-title="reservation.agency_id.name"
+                                            t-att-alt="reservation.agency_id.name"/>
                                         <span t-else="">
-                                            <span t-if="invoice.channel_type_id" t-esc="invoice.channel_type_id.name"/>
-                                            <span class="ml-2" t-if="invoice.detail_origin" t-esc="invoice.detail_origin"/>
+                                            <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name"/>
+                                            <span class="ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin"/>
                                         </span>
 
                                     </span>
                                     <span class="status-header">
-                                        <t t-esc="invoice.state" />
+                                        <t t-esc="reservation.state" />
                                     </span>
                                 </h1>
                             </div>
                             <div class="col-sm-12 col-lg-6 text-right o_pms_pwa_keypad_footer">
-                                <button id="o_pms_pwa_button_cancel" t-attf-url="/reservation/{{ invoice.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancelar reserva</button>
+                                <button id="o_pms_pwa_button_cancel" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancelar reserva</button>
                                 <button id="o_pms_pwa_button_checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkin o_pms_pwa_disabled">Check in</button>
-                                <button id="o_pms_pwa_button_checkout" t-attf-url="/reservation/{{ invoice.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
+                                <button id="o_pms_pwa_button_checkout" t-attf-url="/reservation/{{ reservation.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
                             </div>
                         </div>
                         <div class="row">
@@ -59,20 +59,20 @@
                                         <div class="bg-dark">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(invoice.partner_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" width="100" />
+                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(reservation.partner_id, 'image_128')" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="100" />
                                                 </div>
                                                 <div class="col-12">
                                                     <h3 class="text-white ml-4">
-                                                        <t t-esc="invoice.partner_id.name" />
+                                                        <t t-esc="reservation.partner_id.name" />
                                                     </h3>
                                                     <p class="ml-4 mb-0">
-                                                        <a t-attf-href="tel:{{invoice.phone}}" class="text-white">
-                                                            <t t-esc="invoice.phone" />
+                                                        <a t-attf-href="tel:{{reservation.phone}}" class="text-white">
+                                                            <t t-esc="reservation.phone" />
                                                         </a>
                                                     </p>
                                                     <p class="ml-4">
-                                                        <a t-attf-href="mailto:{{invoice.email}}" class="text-white font-italic">
-                                                            <t t-esc="invoice.email" />
+                                                        <a t-attf-href="mailto:{{reservation.email}}" class="text-white font-italic">
+                                                            <t t-esc="reservation.email" />
                                                         </a>
                                                     </p>
                                                 </div>
@@ -81,24 +81,24 @@
                                                 <div class="col-12">
                                                     <div class="progress o_pms_pwa_progress mx-2">
                                                         <div t-att-class="'progress-bar '
-                                                            + ('bg-success ' if invoice.state in ('onboard') else ' ')
-                                                            + ('bg-light ' if invoice.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
-                                                            + ('bg-success ' if invoice.state in ('confirm') and invoice.ratio_checkin_data &gt; 75 else ' ')
-                                                            + ('bg-warning ' if invoice.state in ('confirm') and  75 &gt; invoice.ratio_checkin_data &gt; 50 else ' ')
-                                                            + ('bg-danger ' if invoice.state in ('confirm') and  invoice.ratio_checkin_data &lt; 50 else ' ')"
-                                                            role="progressbar" t-att-style="'width:'+ str(invoice.checkins_ratio if invoice.state in ('onboard') else invoice.ratio_checkin_data) + '%'"
-                                                            t-att-aria-valuenow="invoice.checkins_ratio if invoice.state in ('onboard') else invoice.ratio_checkin_data" aria-valuemin="0"
+                                                            + ('bg-success ' if reservation.state in ('onboard') else ' ')
+                                                            + ('bg-light ' if reservation.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
+                                                            + ('bg-success ' if reservation.state in ('confirm') and reservation.ratio_checkin_data &gt; 75 else ' ')
+                                                            + ('bg-warning ' if reservation.state in ('confirm') and  75 &gt; reservation.ratio_checkin_data &gt; 50 else ' ')
+                                                            + ('bg-danger ' if reservation.state in ('confirm') and  reservation.ratio_checkin_data &lt; 50 else ' ')"
+                                                            role="progressbar" t-att-style="'width:'+ str(reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data) + '%'"
+                                                            t-att-aria-valuenow="reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data" aria-valuemin="0"
                                                             aria-valuemax="100"></div>
                                                     </div>
                                                     <div class="dropdown mx-2">
                                                         <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                             <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
-                                                                <t t-esc="invoice.adults" />
+                                                                <t t-esc="reservation.adults" />
                                                             </span>
                                                             Datos personales huéspedes
                                                         </button>
                                                         <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
-                                                            <t t-foreach="invoice.checkin_partner_ids" t-as="person">
+                                                            <t t-foreach="reservation.checkin_partner_ids" t-as="person">
                                                                 <a class="dropdown-item o_pms_pwa_button_checkin" href="#">
                                                                     <t t-if="person.partner_id.name">
                                                                         <t t-esc="person.partner_id.name" />
@@ -117,25 +117,25 @@
                                             <!-- <div class="box-header with-border">
                                                 <h3 class="box-title">Mensajes</h3>
                                                 <div class="box-tools pull-right">
-                                                    <span data-toggle="tooltip" title="New Messages" class="badge o_pms_pwa_bg_blue" data-original-title="New Messages"><t t-esc="invoice.message_unread_counter"></t></span>
+                                                    <span data-toggle="tooltip" title="New Messages" class="badge o_pms_pwa_bg_blue" data-original-title="New Messages"><t t-esc="reservation.message_unread_counter"></t></span>
                                                 </div>
                                             </div> -->
                                             <div id="o_pms_pwa_direct_chat_messages" class="box-body">
                                                 <div class="o_pms_pwa_direct_chat_messages">
                                                     <t t-set="mesage_date" t-value="[]" />
-                                                    <t t-foreach="invoice.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
+                                                    <t t-foreach="reservation.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
                                                         <t t-if="msg.date.strftime('%d %B %Y') not in mesage_date" t-set="mesage_date" t-value="mesage_date+[msg.date.strftime('%d %B %Y')]" />
                                                     </t>
                                                     <t t-foreach="mesage_date" t-as="date">
                                                         <div class="o_pms_pwa_direct_chat_timestamp text-center">
                                                             <strong t-esc="date" />
                                                         </div>
-                                                        <t t-foreach="invoice.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
+                                                        <t t-foreach="reservation.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
                                                             <t t-if="date==msg.date.strftime('%d %B %Y')">
                                                                 <div class="o_pms_pwa_direct_chat_msg m-2">
                                                                     <div class="o_pms_pwa_direct_direct_chat_info clearfix">
                                                                         <span class="pull-left">
-                                                                            <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="invoice.partner_id.name" t-att-alt="invoice.partner_id.name" />
+                                                                            <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" />
                                                                             <strong class="ml-2">
                                                                                 <t t-esc="msg.author_id.name"></t>
                                                                             </strong>
@@ -158,9 +158,9 @@
                                                 <form action="/reservation/82" method="post">
                                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                     <input type="hidden" name="model" value="pms.reservation" />
-                                                    <input type="hidden" name="id" t-att-value="invoice.id" />
-                                                    <input type="hidden" name="folio_id" t-att-value="invoice.folio_id.id" />
-                                                    <input type="hidden" name="reservation_id" t-att-value="invoice.id" />
+                                                    <input type="hidden" name="id" t-att-value="reservation.id" />
+                                                    <input type="hidden" name="folio_id" t-att-value="reservation.folio_id.id" />
+                                                    <input type="hidden" name="reservation_id" t-att-value="reservation.id" />
                                                     <div class="form-group">
                                                         <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" required="" />
                                                         <input type="submit" class="btn btn-message" value="Enviar" />
@@ -173,7 +173,7 @@
                             </div>
                             <div class="col-md-12 col-lg-4" id="folio_reservation_ids">
 
-                                <div t-if="invoice.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
+                                <div t-if="reservation.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
                                     <div class="o_pms_pwa_table_reservation_list m-4">
                                         <table class="table table-condensed">
                                             <thead>
@@ -188,11 +188,11 @@
 
                                             </thead>
                                             <tbody>
-                                                <t t-foreach="invoice.folio_id.reservation_ids" t-as="i">
+                                                <t t-foreach="reservation.folio_id.reservation_ids" t-as="i">
                                                     <tr class="o_roomdoo_hide_show">
                                                         <td>
-                                                            <input type="checkbox" name="reservation_ids" checked="checked" t-if="invoice.id == i.id" t-attf-value="{{ i.id }}" />
-                                                            <input type="checkbox" name="reservation_ids" t-if="invoice.id != i.id" t-attf-value="{{ i.id }}" />
+                                                            <input type="checkbox" name="reservation_ids" checked="checked" t-if="reservation.id == i.id" t-attf-value="{{ i.id }}" />
+                                                            <input type="checkbox" name="reservation_ids" t-if="reservation.id != i.id" t-attf-value="{{ i.id }}" />
                                                         </td>
                                                         <td>
                                                             <a t-att-href="'/reservation/' + str(i.id)">
@@ -232,7 +232,7 @@
                                         </h3>
                                     </div>
                                     <div class="card-body">
-                                        <form t-attf-action="/reservation/{{invoice.id}}" method="post" class="form-horizontal" id="reservation_detail">
+                                        <form t-attf-action="/reservation/{{reservation.id}}" method="post" class="form-horizontal" id="reservation_detail">
                                             <div class="form-group form-field mt8">
                                                 <div class="row">
                                                     <div class="col-sm-12">
@@ -240,8 +240,8 @@
                                                             Tipo de habitación
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
-                                                            <option name="room_type" t-att-value="invoice.room_type_id.id" selected="selected">
-                                                                <t t-esc="invoice.room_type_id.name" />
+                                                            <option name="room_type" t-att-value="reservation.room_type_id.id" selected="selected">
+                                                                <t t-esc="reservation.room_type_id.name" />
                                                             </option>
                                                         </select>
                                                     </div>
@@ -252,12 +252,12 @@
                                                             Nº de habitaciones
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
-                                                            <!-- TODO Cambiar por? ._get_allowed_rooms(invoice.checkin, invoice.checkout, invoice.state) -->
-                                                            <t t-foreach="invoice.allowed_room_ids" t-as="i">
-                                                                <option name="room_number" t-att-value="i.id" selected="selected" t-if="invoice.preferred_room_id.id == i.id">
+                                                            <!-- TODO Cambiar por? ._get_allowed_rooms(reservation.checkin, reservation.checkout, reservation.state) -->
+                                                            <t t-foreach="reservation.allowed_room_ids" t-as="i">
+                                                                <option name="room_number" t-att-value="i.id" selected="selected" t-if="reservation.preferred_room_id.id == i.id">
                                                                     <t t-esc="i.name" />
                                                                 </option>
-                                                                <option name="room_number" t-att-value="i.id" t-if="invoice.preferred_room_id.id != i.id">
+                                                                <option name="room_number" t-att-value="i.id" t-if="reservation.preferred_room_id.id != i.id">
                                                                     <t t-esc="i.name" />
                                                                 </option>
                                                             </t>
@@ -266,7 +266,7 @@
                                                     <div class="col-6">
                                                         <button type="button"
                                                             class="btn btn-message-form o_pms_pwa_button_assign_confirm"
-                                                            t-attf-url="/reservation/{{ invoice.id }}/assign">
+                                                            t-attf-url="/reservation/{{ reservation.id }}/assign">
                                                             <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
                                                             Confirmar
                                                         </button>
@@ -278,18 +278,18 @@
                                                         <label class="control-label col-12" for="adults">
                                                             Nº de personas
                                                         </label>
-                                                        <input class="form-control" type="text" name="adults" t-att-value="invoice.adults" />
+                                                        <input class="form-control" type="text" name="adults" t-att-value="reservation.adults" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="nights">
                                                             Nº de noches
                                                         </label>
-                                                        <input class="form-control" type="text" name="nights" t-att-value="invoice.nights" />
+                                                        <input class="form-control" type="text" name="nights" t-att-value="reservation.nights" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <t t-set="date_checkin" t-value="invoice.checkin.strftime('%d/%m/%Y')" />
-                                                    <t t-set="date_checkout" t-value="invoice.checkout.strftime('%d/%m/%Y')" />
+                                                    <t t-set="date_checkin" t-value="reservation.checkin.strftime('%d/%m/%Y')" />
+                                                    <t t-set="date_checkout" t-value="reservation.checkout.strftime('%d/%m/%Y')" />
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="range_check_date">
                                                             Check in - Check out
@@ -304,7 +304,7 @@
                                                         <label class="control-label col-12" for="check_in_hour">
                                                             Hora Check in
                                                         </label>
-                                                        <input class="form-control" type="time" name="check_in_hour" t-att-value="invoice.arrival_hour" />
+                                                        <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
@@ -314,7 +314,7 @@
                                                         <!-- <label class="control-label col-12" for="check_out_date">
                                                             Check out
                                                         </label>
-                                                        <input class="form-control" type="text" name="check_out_date" t-att-value="invoice.checkout" />
+                                                        <input class="form-control" type="text" name="check_out_date" t-att-value="reservation.checkout" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <span class="fa fa-calendar" />
                                                         </span> -->
@@ -323,12 +323,12 @@
                                                         <label class="control-label col-12" for="check_out_hour">
                                                             Hora Check out
                                                         </label>
-                                                        <input class="form-control" type="time" name="check_out_hour" t-att-value="invoice.departure_hour" />
+                                                        <input class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
                                                     </div>
                                                 </div>
                                                 <div class="row m-3">
                                                     <div class="col-12">
-                                                        <t t-foreach="invoice.service_ids" t-as="i">
+                                                        <t t-foreach="reservation.service_ids" t-as="i">
                                                             <div class="form-check mt-2" t-if="i.service_line_ids">
                                                                 <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-attf-id="defaultCheck{{i.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{i.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{i.id}}" />
                                                                 <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{i.id}}">
@@ -353,7 +353,7 @@
                                                                                         <td class="o_pms_pwa_detail_td">
                                                                                             <div class="o_pms_pwa_rb_box">
                                                                                                 <div t-attf-id='o_pms_pwa_rb_{{i.id}}' class="o_pms_pwa_rb">
-                                                                                                    <t t-foreach="range(invoice.adults+1)" t-as="x">
+                                                                                                    <t t-foreach="range(reservation.adults+1)" t-as="x">
                                                                                                         <div t-att-class="'o_pms_pwa_rb_tab '
                                                                                                             + ('o_pms_pwa_rb_tab_active ' if x==s.day_qty else ' ')" class="" t-att-data-value="x">
                                                                                                             <div class="o_pms_pwa_rb_spot">
@@ -436,8 +436,8 @@
                                                             Tipo de tarifa
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="rate_type">
-                                                            <option name="rate_type" t-att-value="invoice.reservation_type" selected="selected">
-                                                                <t t-esc="invoice.reservation_type" />
+                                                            <option name="rate_type" t-att-value="reservation.reservation_type" selected="selected">
+                                                                <t t-esc="reservation.reservation_type" />
                                                             </option>
                                                         </select>
                                                     </div>
@@ -447,7 +447,7 @@
                                                         <label class="control-label col-12" for="price_total">
                                                             Precio total noches
                                                         </label>
-                                                        <input class="form-control" type="text" name="price_total" t-att-value="invoice.price_total" />
+                                                        <input class="form-control" type="text" name="price_total" t-att-value="reservation.price_total" />
                                                     </div>
                                                     <div class="col-sm-6 mt-3">
                                                         <a href="" class="o_pms_pwa_price_link">
@@ -495,7 +495,7 @@
                                                     a facturar
                                                 </span>
                                                 <span class="pt" id="total_amount">
-                                                    <t t-esc="invoice.folio_id.amount_total" />
+                                                    <t t-esc="reservation.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
@@ -503,7 +503,7 @@
                                                     Total
                                                 </span>
                                                 <span class="price">
-                                                    <t t-esc="invoice.folio_id.amount_total" />
+                                                    <t t-esc="reservation.folio_id.amount_total" />
                                                 </span>
                                             </div>
                                             <div class="col-4">
@@ -513,16 +513,16 @@
                                                     de pago
                                                 </span>
                                                 <span class="price2">
-                                                    <t t-esc="invoice.folio_id.pending_amount" />
+                                                    <t t-esc="reservation.folio_id.pending_amount" />
                                                 </span>
                                             </div>
                                         </div>
-                                        <t t-if="invoice.folio_id.payment_state != 'paid'">
+                                        <t t-if="reservation.invoice_status == 'to invoice'">
                                         <hr class="m-1" />
                                         <!-- <div class="row pago-badge">
                                             <div class="col-12">Nº tarjeta reserva</div>
                                             <div class="col-12 num">
-                                                <t t-esc="invoice.folio_id.credit_card_details" />
+                                                <t t-esc="reservation.folio_id.credit_card_details" />
                                                 **** **** **** 2545
                                             </div>
                                         </div> -->
@@ -535,7 +535,7 @@
                                                 <div id="collapseDatos" class="collapse" aria-labelledby="headingOne" data-parent="#facturacion">
                                                     <div class="card-body">
                                                         <form target="_self"
-                                                            t-attf-action="/reservation/{{ invoice.id }}"
+                                                            t-attf-action="/reservation/{{ reservation.id }}"
                                                             method="post" class="form-horizontal">
                                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                                             <div class="form-group form-field mt8">
@@ -545,8 +545,8 @@
                                                                             Invoice contact
                                                                         </label>
                                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" id="partner_to_invoice">
-                                                                            <t t-foreach="invoice.folio_id.partner_invoice_ids" t-as="partner">
-                                                                                <t t-if="partner.id == invoice.folio_id.partner_id.id">
+                                                                            <t t-foreach="reservation.folio_id.partner_invoice_ids" t-as="partner">
+                                                                                <t t-if="partner.id == reservation.folio_id.partner_id.id">
                                                                                     <option t-attf-value="{{ partner.id }}" selected="selected"><t t-esc="partner.name"></t></option>
                                                                                 </t>
                                                                                 <t t-else="">
@@ -562,7 +562,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Name
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ invoice.folio_id.partner_id.name }}" />
+                                                                        <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -570,7 +570,7 @@
                                                                         <label class="control-label col-12" for="rate_type" >
                                                                             NIF/CIF
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_vat" t-attf-value="{{ invoice.folio_id.partner_id.vat }}" required="required" />
+                                                                        <input class="form-control" type="text" name="invoice_vat" t-attf-value="{{ reservation.folio_id.partner_id.vat }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -578,7 +578,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Address
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_street" t-attf-value="{{ invoice.folio_id.partner_id.street }}" required="required"/>
+                                                                        <input class="form-control" type="text" name="invoice_street" t-attf-value="{{ reservation.folio_id.partner_id.street }}" required="required"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -586,7 +586,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             City
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_city" t-attf-value="{{ invoice.folio_id.partner_id.city }}" required="required" />
+                                                                        <input class="form-control" type="text" name="invoice_city" t-attf-value="{{ reservation.folio_id.partner_id.city }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -594,7 +594,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Postal code
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ invoice.folio_id.partner_id.zip }}" required="required"/>
+                                                                        <input class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ reservation.folio_id.partner_id.zip }}" required="required"/>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mt-2">
@@ -602,7 +602,7 @@
                                                                         <label class="control-label col-12" for="rate_type">
                                                                             Country
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_country" t-attf-value="{{ invoice.folio_id.partner_id.country_id.name }}" required="required" />
+                                                                        <input class="form-control" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -617,7 +617,7 @@
                                                 <h4>Métodos de pago</h4>
                                             </div>
                                             <div class="col-12">
-                                                <t t-foreach="invoice.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
+                                                <t t-foreach="reservation.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
 
                                                     <div class="form-check mt-1">
                                                         <input type="radio" class="o_pms_pwa_checkbox" name="payment_method" t-attf-value="{{ payment.id }}" checked="checked" />
@@ -649,7 +649,7 @@
                                         </t>
                                     </div>
                                 </div>
-                                <t t-if="invoice.folio_id.invoice_count > 0">
+                                <t t-if="reservation.folio_id.invoice_count > 0">
                                     <div class="card bg-white shadow mt-4">
                                         <div class="card-header bg-white o_pms_pwa_card_header">
                                             <h3 class="mb-0">
@@ -669,7 +669,7 @@
 
                                                 </thead>
                                                 <tbody>
-                                                    <t t-foreach="invoice.folio_id.move_ids" t-as="i">
+                                                    <t t-foreach="reservation.folio_id.move_ids" t-as="i">
                                                         <tr>
                                                             <td>
                                                                 <a class="o_pms_pwa_theme_color" t-att-href="'/my/invoices/' + str(i.id)">

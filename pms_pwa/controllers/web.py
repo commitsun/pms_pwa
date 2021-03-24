@@ -251,9 +251,10 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                invoice_lines = http.request.jsonrequest.get("lines_to_invoice")
-                partner_invoice_id = http.request.jsonrequest.get("partner_to_invoice")
-                partner_invoice_values = http.request.jsonrequest.get("partner_values")
+                payload = http.request.jsonrequest['params']['data']
+                invoice_lines = payload[0]['lines_to_invoice']
+                partner_invoice_id = payload[0]['partner_to_invoice']
+                partner_invoice_values = payload[0]['partner_values'][0]
                 try:
                     if partner_invoice_id:
                         partner_invoice_id = (
@@ -267,7 +268,7 @@ class TestFrontEnd(http.Controller):
                         )
                     lines_to_invoice = dict()
                     for value in invoice_lines:
-                        lines_to_invoice[value["id"]] = value["qty"]
+                        lines_to_invoice[value[0]["id"]] = value[0]["qty"]
                     reservation.folio_id._create_invoices(
                         lines_to_invoice=lines_to_invoice,
                         partner_invoice_id=partner_invoice_id,
@@ -439,7 +440,7 @@ class TestFrontEnd(http.Controller):
             raise MissingError(_("This document does not exist."))
         values = {
             "page_name": "Reservation",
-            "invoice": reservation,
+            "reservation": reservation,
         }
         if post and "message" in post:
             try:
