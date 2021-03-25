@@ -141,6 +141,16 @@ section.o_pms_pwa_roomdoo {
         border-right: 2px solid $theme-color;
         margin-left: -2rem;
     }
+    .o_pms_pwa_open_calendar[aria-expanded="true"] {
+        background-color: #42dca3;
+        .o_pms_pwa_room_name {
+            i {
+                -moz-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
+    }
     .o_pms_pwa_room_name {
         color: $black;
         font-weight: bold;
@@ -150,7 +160,11 @@ section.o_pms_pwa_roomdoo {
             color: $theme-color;
             font-size: 18px;
             font-weight: bold;
+            -moz-transition: all 0.5s linear;
+            -webkit-transition: all 0.5s linear;
+            transition: all 0.5s linear;
         }
+
         @media (max-width: 991.98px) {
             width: 175px;
         }
@@ -227,7 +241,7 @@ section.o_pms_pwa_roomdoo {
             z-index: 2;
             min-width: 200px;
             background-color: $bg-theme-color;
-            width: 14%;
+            width: 14.25%;
             @media (max-width: 991.98px) {
                 width: 175px;
                 min-width: 175px;

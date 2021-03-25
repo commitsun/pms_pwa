@@ -43,6 +43,7 @@
                         </div>
                         <hr/>
                         <div class="table-responsive">
+                            <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
                             <table id="calendar_table" class="table">
                                 <thead>
                                     <tr>
@@ -56,7 +57,7 @@
                                     </tr>
 
                                 </thead>
-                                <tbody id="accordion">
+                                <tbody>
                                     <t t-foreach="rooms_list" t-as="obj">
                                         <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td>
@@ -89,7 +90,7 @@
                                             </t>
                                         </tr>
                                         <tr>
-                                            <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)">
+                                            <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" data-parent="#calendar_table">>
                                                 <!-- Llamamos a json y pms_pwa_roomdoo_calendar_line.xml -->
                                             </td>
                                         </tr>

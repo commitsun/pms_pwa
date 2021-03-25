@@ -3,7 +3,7 @@
     <template id="roomdoo_dashboard_page" name="Dashboard">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'DASHBOARD'"/>
-            <div class="oe_structure o_pms_pwa_structure">
+            <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_dashboard">
                     <div class="row">
                         <div class="col-md-12 col-lg-6  mt-4">
