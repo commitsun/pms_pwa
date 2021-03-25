@@ -20,37 +20,47 @@
                                 <div class="d-flex align-items-center ml-4">
                                     <h2
                                         class="font-weight-bold mb-0 text-uppercase"
-                                    ><t t-esc="date.strftime('%B %Y')" /></h2>
+                                    ><t t-esc="date_start.strftime('%B %Y')" /></h2>
                                 </div>
                             </div>
                             <div class="col-6 col-sm-2">
-                                <select id="tarifa" name="tarifa" class="form-control o_website_form_input o_domain_leaf_operator_select o_input">
-                                    <option value="1">Tarifa estandar</option>
-                                    <option value="2">Tarifa especial</option>
-                                </select>
+                                <form method="post" action="">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                        <t t-foreach="pricelist" t-as="price">
+                                            <t t-if="default_pricelist==price.id">
+                                                <option t-attf-value="{{ price.id }}" selected="selected"><t t-esc="price.name" /></option>
+                                            </t>
+                                            <t t-else="">
+                                                <option t-attf-value="{{ price.id }}"><t t-esc="price.name" /></option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </form>
                             </div>
                             <div class="col-6 col-sm-8">
                                 <div class="o_pms_pwa_month_select">
-                                    <a t-att-href="'#?previous='+date.strftime('%d-%m-%Y')" class="mx-2"><i class="fa fa-angle-left"></i></a>
+                                    <a t-att-href="'?previous='+date_start.strftime('%Y-%m-%d')" class="mx-2"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
-                                        <t t-esc="date.strftime('%B %Y')" />
+                                        <t t-esc="date_start.strftime('%B %Y')" />
                                     </span>
 
-                                    <a t-att-href="'#?next='+date.strftime('%d-%m-%Y')" class="mx-2"><i class="fa fa-angle-right"></i></a>
+                                    <a t-att-href="'?next='+date_start.strftime('%Y-%m-%d')" class="mx-2"><i class="fa fa-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
                         <hr/>
                         <div class="table-responsive">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
-                            <table id="calendar_table" class="table">
+                            <table id="calendar_table" class="table o_pms_pwa_reservation_list_table">
                                 <thead>
                                     <tr>
                                         <th class="align-self-end o_pms_pwa_table_week"></th>
+
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
-                                                    + ('o_pms_pwa_today vertical-line ' if date==day else ' ')"  t-att-data-value="x">
+                                                    + ('o_pms_pwa_today vertical-line ' if today==day else ' ')" t-att-data-value="x">
                                                 <t t-esc="day.strftime('%A %d')" />
                                             </th>
                                         </t>
@@ -69,18 +79,19 @@
                                                     />
                                                 </p>
                                                 <p class="o_pms_pwa_extra_info">
-                                                    <span>2 <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
+                                                    <span><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
                                                     <span><t t-esc="obj.total_rooms_count"/> hab</span>
                                                     <span class="o_pms_pwa_restr"><img src="/pms_pwa/static/img/svg/palma_mano.svg" alt="user icon" title="user icon" /> Restricciones</span>
 
                                                 </p>
                                             </td>
+                                            <t t-set="current_property" t-value="int(request.httprequest.cookies.get('pms_pids', 1).split(',')[0])" />
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <td class="o_pms_pwa_table_cell">
-                                                    <p class="o_pms_pwa_title">1 disponible</p>
+                                                    <p class="o_pms_pwa_title"><t t-esc="default_pricelist"/> disponible</p>
                                                     <div class="o_pms_pwa_content">
                                                         <span class="o_pms_pwa_type">Estandar</span>
-                                                        <span class="o_pms_pwa_price">40€</span>
+                                                        <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
                                                         <span class="o_pms_pwa_info">
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" />
                                                         </span>
