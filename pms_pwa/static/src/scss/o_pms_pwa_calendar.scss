@@ -1,25 +1,72 @@
 section.o_pms_pwa_roomdoo {
-    .o_pms_pwa_month_select {
-        margin-right: 2rem;
-        text-align: right;
-        color: $theme-color;
-        font-weight: 800;
-        font-size: 18px;
-        a {
-            color: $theme-color;
-            text-decoration: none;
+    .o_pms_pwa_calendar {
+        @media (max-width: 991.98px) {
+            margin-left: -3rem;
+            margin-top: -4rem;
         }
-        // margin-top: 1rem;
-        .o_pms_pwa_month_select_calendar_icon {
-            background: $white;
-            pointer-events: none;
+        hr {
+            background-color: #dadada;
+            margin-top: 1rem;
+            margin-bottom: -0.5rem;
+            width: 98%;
+        }
+        #tarifa {
+            background-color: $bg-theme-color !important;
+            color: $theme-color-text;
+            margin-left: -1rem;
+            font-size: 14px;
+            @media (max-width: 991.98px) {
+                margin-left: 0rem;
+            }
+        }
+        .o_pms_pwa_month_select {
+            margin-right: 1rem;
+            text-align: right;
             color: $theme-color;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 0.5rem;
+            @media (max-width: 991.98px) {
+                margin-right: 0rem;
+            }
+            a {
+                color: $theme-color;
+                text-decoration: none;
+                i {
+                    font-size: 20px;
+                    font-weight: bold;
+                    align-items: center;
+                }
+            }
+            // margin-top: 1rem;
+            .o_pms_pwa_month_select_calendar_icon {
+                pointer-events: none;
+                color: $theme-color-text;
+                font-size: 14px;
+                margin-bottom: 0.25rem;
+                img {
+                    width: 14px;
+                    margin-bottom: 0.25rem;
+                    margin-right: 0.25rem;
+                }
+            }
+        }
+        #calendar_table.table {
+            border-collapse: separate;
+            border-spacing: 8px;
+            thead {
+                border-bottom: 1px solid $theme-color;
+            }
+            tbody {
+                tr {
+                    td {
+                        padding-bottom: 0;
+                    }
+                }
+            }
         }
     }
-    .table {
-        border-collapse: separate;
-        border-spacing: 10px;
-    }
+
     .o_pms_pwa_arrow:before,
     .o_pms_pwa_arrow:after {
         content: "";
@@ -75,6 +122,12 @@ section.o_pms_pwa_roomdoo {
         border-bottom: 1px solid $theme-color;
         border-collapse: collapse;
         border-spacing: 0;
+        &:after {
+            border-bottom: 1px solid $theme-color !important;
+        }
+        &:before {
+            border-bottom: 1px solid $theme-color !important;
+        }
     }
     .o_pms_pwa_today {
         border-bottom: 3px solid $theme-color;
@@ -83,8 +136,8 @@ section.o_pms_pwa_roomdoo {
     .o_pms_pwa_today:after {
         content: "";
         position: absolute;
-        top: 16%;
-        height: 85%;
+        top: 17.5%;
+        height: 82.5%;
         border-right: 2px solid $theme-color;
         margin-left: -2rem;
     }
@@ -92,18 +145,35 @@ section.o_pms_pwa_roomdoo {
         color: $black;
         font-weight: bold;
         font-size: larger;
+        i {
+            margin-right: 0.25rem;
+            color: $theme-color;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        @media (max-width: 991.98px) {
+            width: 175px;
+        }
     }
     .o_pms_pwa_extra_info {
-        font-size: small;
+        font-size: 14px;
         margin-top: -1rem;
+        margin-left: 0.25rem;
+
         span:nth-child(even) {
-            margin-left: 1rem;
+            margin-left: 0.5rem;
         }
         span:nth-child(odd) {
-            margin-left: 1rem;
+            margin-left: 0.5rem;
         }
         .o_pms_pwa_restr {
-            color: $theme-color;
+            color: $theme-color-text;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        img {
+            margin-bottom: 0.25rem;
+            width: 10px;
         }
     }
     /* Table movil */
@@ -114,15 +184,22 @@ section.o_pms_pwa_roomdoo {
         z-index: 2;
         min-width: 3rem;
         border: none;
+        width: 16% !important;
     }
     tr:nth-child(odd) > td {
         background-color: $white;
+        width: 12%;
+        min-width: 150px;
     }
     tr:nth-child(even) > td {
         background-color: $white;
+        width: 12%;
+        min-width: 150px;
     }
     tr:nth-child(odd) > th {
         background-color: $white;
+        width: 12%;
+        min-width: 150px;
     }
     .o_pms_pwa_hiddenRow {
         padding: 0 !important;
@@ -137,21 +214,35 @@ section.o_pms_pwa_roomdoo {
         z-index: 1;
         margin-right: 0.2rem;
         margin-top: 0.3rem;
+        a {
+            text-decoration: none;
+            color: $table-text-color;
+            &:hover {
+                text-decoration: none;
+            }
+        }
         &_room_type {
             position: sticky;
             left: 0px;
             z-index: 2;
-            min-width: 2rem;
+            min-width: 200px;
             background-color: $bg-theme-color;
+            width: 14%;
+            @media (max-width: 991.98px) {
+                width: 175px;
+                min-width: 175px;
+            }
         }
         &_title {
             color: $theme-color;
             font-weight: bold;
             padding-top: 0.5rem;
+            margin-left: 1rem;
         }
         &_content {
             color: $black;
             margin-top: -1rem;
+            margin-left: 1rem;
         }
         &_event {
             text-align: center;
@@ -182,19 +273,48 @@ section.o_pms_pwa_roomdoo {
             background-color: $theme-color;
             float: left;
             margin-top: -0.2rem;
+            padding: 0.1rem;
         }
         &_hr {
             &_success {
                 margin-top: 0.7rem;
+                margin-left: 0.75rem;
                 border-bottom: 4px solid var(--success);
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 12px;
+                    margin-left: 0.1rem;
+                }
             }
             &_warning {
                 margin-top: 0.7rem;
+                margin-left: 0.75rem;
                 border-bottom: 4px solid var(--warning);
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 8px;
+                    margin-left: 0.1rem;
+                }
+            }
+            &_danger {
+                margin-top: 0.7rem;
+                margin-left: 0.75rem;
+                border-bottom: 4px solid var(--danger);
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 8px;
+                    margin-left: 0.1rem;
+                }
             }
             &_info {
                 margin-top: 0.7rem;
+                margin-left: 0.75rem;
                 border-bottom: 4px solid $theme-color;
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 12px;
+                    margin-left: 0.1rem;
+                }
             }
         }
         &_badge {

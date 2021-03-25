@@ -3,30 +3,32 @@
     <t t-name="pms_pwa.calendar_line">
         <t t-foreach="obj_list" t-as="obj">
             <div class=" o_pms_pwa_calendar_line row">
-                <div class="col-2 o_pms_pwa_calendar_line_room_type">
+                <div class="o_pms_pwa_calendar_line_room_type">
                     <p class="o_pms_pwa_calendar_line_title"><t t-esc="obj.room.name" /></p>
                     <p class="o_pms_pwa_calendar_line_content"><t t-esc="obj.room.status" /></p>
                 </div>
                 <t t-foreach="obj.ocupation" t-as="reservation">
                     <div t-if="reservation.reservation_info" t-att-class="'o_pms_pwa_calendar_line_nigth_'+reservation.reservation_info.nigths">
-                        <p class="o_pms_pwa_calendar_line_hr_success">
-                            <img
-                                t-att-src="reservation.reservation_info.img"
-                                width="50"
-                                class="img-thumbnail rounded-circle o_pms_pwa_calendar_line_img_bg"
-                                title="image"
-                                alt="image"/>
-                            <span class="o_pms_pwa_calendar_line_price"><t t-esc="reservation.reservation_info.price" />€</span>
+                        <a t-attf-href="/reservation/{{ reservation.reservation_info.id }}" title="reservation detail">
+                            <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
+                                <img
+                                    t-att-src="reservation.reservation_info.img"
+                                    width="50"
+                                    class="rounded-circle o_pms_pwa_calendar_line_img_bg"
+                                    title="image"
+                                    alt="image"/>
+                                <span class="o_pms_pwa_calendar_line_price"><t t-esc="reservation.reservation_info.price" />€</span>
 
-                            <span class="badge o_pms_pwa_calendar_line_badge bg-success">
-                                OK
-                            </span>
-                        </p>
-                        <p class="o_pms_pwa_calendar_line_name"><t t-esc="reservation.reservation_info.partner_name" /></p>
+                                <span t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
+                                    <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.status }}.svg" alt="check" title="check icon" />
+                                </span>
+                            </p>
+                            <p class="o_pms_pwa_calendar_line_name"><t t-esc="reservation.reservation_info.partner_name" /></p>
+                        </a>
                     </div>
 
                     <div t-else="" class="col o_pms_pwa_calendar_line_event">
-                        <button type="button" class="btn btn-add" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
+                        <button type="button" class="btn btn-add" t-attf-data-date="{{ reservation.date }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
                     </div>
                 </t>
 

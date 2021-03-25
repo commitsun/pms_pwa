@@ -16,39 +16,40 @@
                     <!-- Calendar -->
                     <div class="o_pms_pwa_calendar o_pms_pwa_full_shadow bg-white p-5">
                         <div class="row">
-                            <div class="col-md-4 col-sm-12">
+                            <div class="col-sm-2 d-none d-lg-block">
                                 <div class="d-flex align-items-center ml-4">
                                     <h2
                                         class="font-weight-bold mb-0 text-uppercase"
                                     ><t t-esc="date.strftime('%B %Y')" /></h2>
                                 </div>
                             </div>
-                            <div class="col-md-2 d-none d-lg-block">
-                                <select name="tarifa" class="form-control o_website_form_input o_domain_leaf_operator_select o_input">
+                            <div class="col-6 col-sm-2">
+                                <select id="tarifa" name="tarifa" class="form-control o_website_form_input o_domain_leaf_operator_select o_input">
                                     <option value="1">Tarifa estandar</option>
                                     <option value="2">Tarifa especial</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 d-none d-lg-block">
+                            <div class="col-6 col-sm-8">
                                 <div class="o_pms_pwa_month_select">
-                                    <a href="#" class="mx-2"><i class="fa fa-angle-left" style="font-size: 20px;"></i></a>
+                                    <a t-att-href="'#?previous='+date.strftime('%d-%m-%Y')" class="mx-2"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
-                                        <span class="fa fa-calendar" />
+                                        <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
+                                        <t t-esc="date.strftime('%B %Y')" />
                                     </span>
-                                    <t t-esc="date.strftime('%B')" />
-                                    <a href="#" class="mx-2"><i class="fa fa-angle-right" style="font-size: 20px;"></i></a>
+
+                                    <a t-att-href="'#?next='+date.strftime('%d-%m-%Y')" class="mx-2"><i class="fa fa-angle-right"></i></a>
                                 </div>
                             </div>
                         </div>
+                        <hr/>
                         <div class="table-responsive">
-                            <table id="calendar_table" class="table table-condensed">
+                            <table id="calendar_table" class="table">
                                 <thead>
-
                                     <tr>
                                         <th class="align-self-end o_pms_pwa_table_week"></th>
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
-                                                    + ('o_pms_pwa_today vertical-line ' if date==day else ' ')" class="" t-att-data-value="x">
+                                                    + ('o_pms_pwa_today vertical-line ' if date==day else ' ')"  t-att-data-value="x">
                                                 <t t-esc="day.strftime('%A %d')" />
                                             </th>
                                         </t>
@@ -60,35 +61,36 @@
                                         <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td>
                                                 <p class="o_pms_pwa_room_name">
+                                                    <i class="fa fa-angle-down"></i>
                                                     <t
                                                         t-if="obj.name"
                                                         t-esc="obj.name"
                                                     />
                                                 </p>
                                                 <p class="o_pms_pwa_extra_info">
-                                                    <span>2</span>
+                                                    <span>2 <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
                                                     <span><t t-esc="obj.total_rooms_count"/> hab</span>
-                                                    <span class="o_pms_pwa_restr">Restricciones</span>
+                                                    <span class="o_pms_pwa_restr"><img src="/pms_pwa/static/img/svg/palma_mano.svg" alt="user icon" title="user icon" /> Restricciones</span>
 
                                                 </p>
                                             </td>
                                             <t t-foreach="range(7)" t-as="l">
                                                 <td class="o_pms_pwa_table_cell">
                                                     <p class="o_pms_pwa_title">1 disponible</p>
-                                                    <p class="o_pms_pwa_content">
+                                                    <div class="o_pms_pwa_content">
                                                         <span class="o_pms_pwa_type">Estandar</span>
                                                         <span class="o_pms_pwa_price">40€</span>
                                                         <span class="o_pms_pwa_info">
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" />
                                                         </span>
-                                                    </p>
+                                                    </div>
                                                     <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
                                                 </td>
                                             </t>
                                         </tr>
                                         <tr>
                                             <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)">
-
+                                                <!-- Llamamos a json y pms_pwa_roomdoo_calendar_line.xml -->
                                             </td>
                                         </tr>
                                     </t>

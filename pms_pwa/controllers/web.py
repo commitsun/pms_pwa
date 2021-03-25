@@ -702,11 +702,11 @@ class TestFrontEnd(http.Controller):
                             {
                                 "date": "23/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 58,
                                     "partner_name": "Sabela Gómez G",
                                     "img": "/web/image/res.partner/3/image_128",
                                     "price": 240,
-                                    "status": "done",
+                                    "status": "danger",
                                     "nigths": 2,
                                 },
                             },
@@ -721,11 +721,11 @@ class TestFrontEnd(http.Controller):
                             {
                                 "date": "27/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 10,
                                     "partner_name": "Sabela Gómez G",
                                     "img": "/web/image/res.partner/3/image_128",
                                     "price": 120,
-                                    "status": "done",
+                                    "status": "success",
                                     "nigths": 1,
                                 },
                             },
@@ -745,11 +745,11 @@ class TestFrontEnd(http.Controller):
                             {
                                 "date": "22/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 52,
                                     "partner_name": "Sabela Gómez G",
                                     "img": "/web/image/res.partner/3/image_128",
                                     "price": 240,
-                                    "status": "done",
+                                    "status": "success",
                                     "nigths": 2,
                                 },
                             },
@@ -760,11 +760,11 @@ class TestFrontEnd(http.Controller):
                             {
                                 "date": "25/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 8,
                                     "partner_name": "Sabela Gómez G",
                                     "img": "/web/image/res.partner/3/image_128",
                                     "price": 120,
-                                    "status": "done",
+                                    "status": "warning",
                                     "nigths": 1,
                                 },
                             },
