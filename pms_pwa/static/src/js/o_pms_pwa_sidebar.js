@@ -87,6 +87,6 @@ odoo.define("pms_pwa.sidebar", function () {
         const new_pms_pids_order = new_property + "," + pms_pids_array.toString();
         // Console.log(new_pms_pids_order);
         document.cookie = "pms_pids=" + new_pms_pids_order;
-        window.location.reload(true);
+        location.reload();
     });
 });
