@@ -75,7 +75,7 @@
 
                                                 </p>
                                             </td>
-                                            <t t-foreach="range(7)" t-as="l">
+                                            <t t-foreach="len(date_list)" t-as="l">
                                                 <td class="o_pms_pwa_table_cell">
                                                     <p class="o_pms_pwa_title">1 disponible</p>
                                                     <div class="o_pms_pwa_content">
