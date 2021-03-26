@@ -37,7 +37,7 @@
                     </t>
                 </div>
                 <div class="row o_pms_pwa_sidebar_login">
-                    <t t-if="request.httprequest.cookies['pms_pids']">
+                    <t t-if="request.httprequest.cookies.get('pms_pids', false)">
                         <div class="col-12 mb-4">
 
                                 <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />

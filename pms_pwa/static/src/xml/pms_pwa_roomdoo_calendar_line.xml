@@ -2,14 +2,17 @@
 <templates id="pms_pwa" xml:space="preserve">
     <t t-name="pms_pwa.calendar_line">
         <t t-foreach="obj_list" t-as="obj">
-            <div class=" o_pms_pwa_calendar_line row">
+            <div class="o_pms_pwa_calendar_line row">
                 <div class="o_pms_pwa_calendar_line_room_type">
                     <p class="o_pms_pwa_calendar_line_title"><t t-esc="obj.room.name" /></p>
                     <p class="o_pms_pwa_calendar_line_content"><t t-esc="obj.room.status" /></p>
                 </div>
                 <t t-foreach="obj.ocupation" t-as="reservation">
-                    <div t-if="reservation.reservation_info" t-att-class="'o_pms_pwa_calendar_line_nigth_'+reservation.reservation_info.nigths">
-                        <a t-attf-href="/reservation/{{ reservation.reservation_info.id }}" title="reservation detail">
+                    <div t-if="reservation.reservation_info"
+                        t-att-class="'o_pms_pwa_calendar_reservation o_pms_pwa_calendar_line_nigth_'+reservation.reservation_info.nigths"
+                        t-att-id="'reservation_'+ reservation.reservation_info.id"
+                        t-attf-data-id="{{ reservation.reservation_info.id }}">
+
                             <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
                                 <img
                                     t-att-src="reservation.reservation_info.img"
@@ -24,7 +27,7 @@
                                 </span>
                             </p>
                             <p class="o_pms_pwa_calendar_line_name"><t t-esc="reservation.reservation_info.partner_name" /></p>
-                        </a>
+
                     </div>
 
                     <div t-else="" class="col o_pms_pwa_calendar_line_event">
