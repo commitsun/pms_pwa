@@ -327,33 +327,93 @@
                 </section>
 
                 <section class="container-fluid o_pms_pwa_dashboard mt-4">
-                    <div class="row">
-                        <div class="col-md-12 col-lg-6 mt-4">
-                            <div class="card shadow">
-                                <div class="card-header bg-white o_pms_pwa_card_header">
-                                    <h3 class="mb-0">
-                                        NOTIFICATIONS
-                                    </h3>
-                                </div>
-                                <div class="card-body o_pms_pwa_notifications"/>
-                            </div>
+                    <div class="card shadow">
+                        <div class="card-header bg-white o_pms_pwa_card_header">
+                            <h3 class="mb-0">
+                                EVOLUTION
+                            </h3>
                         </div>
-                        <div class="col-md-12 col-lg-6 mt-4">
-                            <div class="card shadow">
-                                <div class="card-header bg-white o_pms_pwa_card_header">
-                                    <h3 class="mb-0">
-                                        TASKS
-                                    </h3>
-                                </div>
-                                <div class="card-body">
-                                    <t t-foreach="tasks" t-as="task">
-                                        <span t-esc="task"/><br/>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <t t-set="i" t-value="1"/>
+                                    <t t-foreach="evolutions" t-as="evolution">
+                                        <li class="nav-item">
+                                            <a t-att-class="'nav-link active' if i == 1 else 'nav-link'" t-att-id="evolution['selector'] + '-tab'" data-toggle="tab" t-att-href="'#' + evolution['selector']" role="tab" t-att-aria-controls="evolution['selector']" aria-selected="true" t-esc="evolution['name']"/>
+                                        </li>
+                                        <t t-set="i" t-value="i+1"/>
+                                    </t>
+                                </ul>
+                            </div>
+                            <div class="row">
+                                <!-- Tab panes -->
+                                <div class="tab-content col-12">
+                                    <t t-set="i" t-value="1"/>
+                                    <t t-foreach="evolutions" t-as="evolution">
+                                        <div t-att-class="'tab-pane active' if i == 1 else 'tab-pane'" t-att-id="evolution['selector']" role="tabpanel" t-att-aria-labelledby="evolution['selector'] + '-tab'">
+                                            <h2 class="o_default_snippet_text" t-esc="evolution['name']"/>
+                                            <canvas class="o_pms_pwa_line"
+                                                style="display: block; width: 100%; height: 240px;"
+                                                width="1110" height="240"
+                                                t-att-data-labels="evolution['labels']"
+                                                t-att-data-label_1="evolution['label_1']"
+                                                t-att-data-data_1="evolution['data_1']"
+                                                t-att-data-background_color_1="evolution['backgroundColor_1']"
+                                                t-att-data-border_color_1="evolution['borderColor_1']"
+                                                t-att-data-label_2="evolution['label_2']"
+                                                t-att-data-data_2="evolution['data_2']"
+                                                t-att-data-background_color_2="evolution['backgroundColor_2']"
+                                                t-att-data-border_color_2="evolution['borderColor_2']"/>
+                                        </div>
+                                        <t t-set="i" t-value="i+1"/>
                                     </t>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                <section class="container-fluid o_pms_pwa_dashboard mt-4">
+                    <div class="card shadow">
+                        <div class="card-header bg-white o_pms_pwa_card_header">
+                            <h3 class="mb-0">
+                                KPIs
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" t-att-class="_classes">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <input class="form-control float-left" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                                        <input type="hidden" name="check_in_date" value="" />
+                                        <input type="hidden" name="check_out_date" value="" />
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control float-left" type="submit" name="Submit"/>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row mt-3">
+                                <t t-foreach="kpis" t-as="kpi">
+                                    <div class="col-2">
+                                        <canvas class="o_pms_pwa_doughnut"
+                                            style="display: block; width: 1110px; height: 555px;"
+                                            width="1110" height="555"
+                                            t-att-data-labels="kpi['labels']"
+                                            t-att-data-label="kpi['label']"
+                                            t-att-data-data="kpi['data']"
+                                            t-att-data-background_color="kpi['backgroundColor']"
+                                            t-att-data-border_color="kpi['borderColor']"/>
+                                        <h3 class="o_default_snippet_text text-center" t-esc="kpi['name']"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
         </t>
     </template>
