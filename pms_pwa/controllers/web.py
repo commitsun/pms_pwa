@@ -728,7 +728,6 @@ class TestFrontEnd(http.Controller):
         # ]
         # reservations = Reservation.search(domain)
         # Ejemplo json
-
         values = {}
         values.update(
             {
