@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="roomdoo_sidebar_menu" inherit_id="website.layout" name="Template sidebar roomdoo">
         <xpath expr="//div[@id='wrapwrap']" position="before">
             <!-- Sidebar -->
-            <t t-set="is_connected" t-value="not user_id._is_public()"/>
+            <t t-set="is_connected" t-value="not user_id._is_public()" />
             <div t-if="is_connected" class="o_pms_pwa_bg_theme" id="sidebar-wrapper">
                 <div class="row sidebar-heading">
                     <div class="col-8">
@@ -30,9 +30,9 @@
                 <div class="list-group list-group-flush">
                     <t t-foreach="website.menu_id.child_id" t-as="submenu">
                         <t t-call="website.submenu">
-                            <t t-set="item_class" t-value="'o_pms_pwa_nav_item'"/>
-                            <t t-set="link_class" t-value="'nav-link'"/>
-                            <t t-set="span_class" t-value="'mobile'"/>
+                            <t t-set="item_class" t-value="'o_pms_pwa_nav_item'" />
+                            <t t-set="link_class" t-value="'nav-link'" />
+                            <t t-set="span_class" t-value="'mobile'" />
                         </t>
                     </t>
                 </div>
@@ -40,29 +40,40 @@
                     <t t-if="request.httprequest.cookies.get('pms_pids', false)">
                         <div class="col-12 mb-4">
 
+                            <t t-if="len(request.httprequest.cookies['pms_pids']) > 1">
                                 <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
-                                <input type="hidden" name="allowed_properties" t-att-value="request.httprequest.cookies['pms_pids']" />
-                                <select id="o_pms_pwa_user_property" name="user_property">
-                                    <t t-foreach="user_id.pms_property_ids" t-as="i">
-                                        <t t-if="current_property == i.id">
-                                            <option t-attf-value="{{ i.id }}" selected="selected">
-                                                <t t-esc="i.name" />
-                                            </option>
-                                        </t>
-                                        <t t-else="">
-                                            <option t-attf-value="{{i.id}}">
-                                                <t t-esc="i.name" />
-                                            </option>
-                                        </t>
+                            </t>
+                            <t t-else="">
+                                <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
+                            </t>
+                            <input type="hidden" name="allowed_properties" t-att-value="request.httprequest.cookies['pms_pids']" />
+                            <select id="o_pms_pwa_user_property" name="user_property">
+                                <t t-foreach="user_id.pms_property_ids" t-as="i">
+                                    <t t-if="current_property == i.id">
+                                        <option t-attf-value="{{ i.id }}" selected="selected">
+                                            <t t-esc="i.name" />
+                                        </option>
                                     </t>
-                                </select>
+                                    <t t-else="">
+                                        <option t-attf-value="{{i.id}}">
+                                            <t t-esc="i.name" />
+                                        </option>
+                                    </t>
+                                </t>
+                            </select>
 
                         </div>
                     </t>
                     <div class="col-12 o_pms_user_img">
                         <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
-                        <spam class="o_pms_user_name"><a href=""><t t-esc="user_id.name"></t></a></spam>
-                        <p class="o_pms_close_session"><a href="">Cerrar sesión</a></p>
+                        <spam class="o_pms_user_name">
+                            <a href="">
+                                <t t-esc="user_id.name"></t>
+                            </a>
+                        </spam>
+                        <p class="o_pms_close_session">
+                            <a href="">Cerrar sesión</a>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -72,7 +83,7 @@
     <template id="roomdoo_menu_link" inherit_id="website.submenu">
         <span position="replace">
             <t t-if="submenu.img">
-                <img t-att-src="'data:image/svg+xml;base64,%s' % to_text(submenu.img)" t-att-alt="submenu.name" t-att-title="submenu.name" class="o_pms_pwa_sidebar_img"/>
+                <img t-att-src="'data:image/svg+xml;base64,%s' % to_text(submenu.img)" t-att-alt="submenu.name" t-att-title="submenu.name" class="o_pms_pwa_sidebar_img" />
                 <span t-field="submenu.name" class="o_pms_pwa_menu_link_mobile" />
             </t>
             <t t-else="">
@@ -80,5 +91,5 @@
             </t>
 
         </span>
-      </template>
+    </template>
 </odoo>

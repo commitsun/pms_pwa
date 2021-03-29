@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template id="roomdoo_calendar_page" name="Calendar">
+    <template id="roomdoo_calendar_config_page" name="Calendar">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendar'"/>
+            <t t-set="page_title" t-value="'Calendar config"/>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
                 <span class="o_pms_notification_title">
@@ -41,11 +41,11 @@
                             <div class="col-6 col-sm-8">
                                 <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
                                     <select id="calendar_select" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
-                                        <option value="" selected="selected">Default</option>
-                                        <option value="/calendar/config">Config</option>
+                                        <option value="" selected="selected">Config</option>
+                                        <option value="/calendar">Default</option>
                                     </select>
                                 </div>
-                                <div class="o_pms_pwa_month_select">
+                                <div class="o_pms_pwa_month_select ">
                                     <a t-att-href="'?previous='+date_start.strftime('%Y-%m-%d')" class="mx-2"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
@@ -91,10 +91,10 @@
 
                                                 </p>
                                             </td>
+                                            <t t-set="current_property" t-value="int(request.httprequest.cookies.get('pms_pids', 1).split(',')[0])" />
                                             <t t-foreach="len(date_list)" t-as="l">
-                                                <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property).get_availability_rooms()"></t>
                                                 <td class="o_pms_pwa_table_cell">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible</p>
+                                                    <p class="o_pms_pwa_title"><t t-esc="default_pricelist"/> disponible</p>
                                                     <div class="o_pms_pwa_content">
                                                         <span class="o_pms_pwa_type">Estandar</span>
                                                         <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>

@@ -19,6 +19,12 @@ section.o_pms_pwa_roomdoo {
                 margin-left: 0rem;
             }
         }
+        .o_pms_pwa_calendar_select {
+            float: left;
+            select {
+                width: 200px;
+            }
+        }
         .o_pms_pwa_month_select {
             margin-right: 1rem;
             text-align: right;
