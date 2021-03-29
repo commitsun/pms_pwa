@@ -238,17 +238,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             event.preventDefault();
             var self = this;
             var reservation_id = event.currentTarget.parentNode.getAttribute("data-id");
-            var reservation_data = false;
 
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
-            }).then(function (data) {
+            }).then(function (reservation_data) {
                 setTimeout(function () {
-                    if (data) {
-                        reservation_data = data;
+                    if (reservation_data) {
+                        // Console.log(reservation_data)
                         /* Adding missing data */
-                        reservation_data.image = "/web/static/src/img/placeholder.png";
+                        // reservation_data.image = "/web/static/src/img/placeholder.png";
                         reservation_data.unread_msg = 2;
                         reservation_data.messages = [
                             ["25-12-2020", "Lorem ipsum"],
@@ -260,212 +259,228 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         reservation_data.room_number = 2;
                         reservation_data.nights_number = 2;
                         reservation_data.total = reservation_data.price_total.value;
-                        reservation_data.total_vat =
-                            (reservation_data.price_total.value * 21) / 100;
-                        reservation_data.outstanding_vat =
-                            (reservation_data.folio_pending_amount.value * 21) / 100;
+                        reservation_data.total_vat = (reservation_data.price_total.value * 21) / 100;
+                        reservation_data.outstanding_vat = (reservation_data.folio_pending_amount.value * 21) / 100;
+
                         /* End missin data */
-                        var room_types = [
-                            "Triple",
-                            "Económica",
-                            "Estándar",
-                            "Individual",
-                            "Premium",
-                            "Superior",
-                        ];
-                        var room_numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-                        var extras = ["Breakfast", "Additional bed", "Cradle"];
+                        var room_types = [];
+                        var room_numbers = [];
                         var payment_methods = ["Credit card", "Cash"];
                         var reservation_types = ["Normal", "Staff", "Out of Service"];
-                        self.displayContent("pms_pwa.roomdoo_reservation_modal", {
-                            reservation: reservation_data,
-                            room_types: room_types,
-                            extras: extras,
-                            payment_methods: payment_methods,
-                            room_numbers: room_numbers,
-                            reservation_types: reservation_types,
-                            texts: {
-                                reservation_text: this.reservation_text,
-                                info_text: this.info_text,
-                                unread_text: this.unread_text,
-                                room_type_text: this.room_type_text,
-                                room_number_text: this.room_number_text,
-                                nights_number_text: this.nights_number_text,
-                                adults_number_text: this.adults_number_text,
-                                check_in_text: this.check_in_text,
-                                check_in_time_text: this.check_in_time_text,
-                                check_out_text: this.check_out_text,
-                                check_out_time_text: this.check_out_time_text,
-                                room_price_text: this.room_price_text,
-                                sales_channel_text: this.sales_channel_text,
-                                extras_text: this.extras_text,
-                                card_text: this.card_text,
-                                total_text: this.total_text,
-                                outstanding_text: this.outstanding_text,
-                                pay_text: this.pay_text,
-                                notes_text: this.notes_text,
-                            },
-                            csrf_token: csrf_token,
-                        });
 
-                        var survey = [];
-                        // Bidimensional array: [ [1,3], [2,4] ]
-                        // Switcher function:
-                        $("form.o_pms_pwa_reservation_form .o_pms_pwa_rb_tab").click(
-                            function () {
-                                // Spot switcher:
-                                $(this)
-                                    .parent()
-                                    .find(".o_pms_pwa_rb_tab")
-                                    .removeClass("o_pms_pwa_rb_tab_active");
-                                $(this).addClass("o_pms_pwa_rb_tab_active");
-                            }
-                        );
-
-                        $("form.o_pms_pwa_reservation_form").submit(function (
-                            new_event
-                        ) {
-                            new_event.preventDefault();
-                            // Empty array:
-                            survey = [];
-                            // Push data:
-                            $(".o_pms_pwa_rb").each(function (i, element) {
-                                var cur_element = $(element);
-                                var data_id = cur_element.attr("data-id");
-                                var rbValue = parseInt(
-                                    cur_element
-                                        .find(".o_pms_pwa_rb_tab_active")
-                                        .attr("data-value"),
-                                    10
-                                );
-                                survey.push([data_id, rbValue]);
-                            });
-
-                            $(this)
-                                .find("input[name='reservation_extras']")
-                                .val(survey);
-
-                            new_event.currentTarget.submit();
-                        });
-
-                        $("form.o_pms_pwa_reservation_form").on(
-                            "change",
-                            "input, select",
-                            function (new_event) {
-                                var values = {reservation_id: reservation_id};
-                                values[new_event.currentTarget.name] =
-                                    new_event.currentTarget.value;
-                                ajax.jsonRpc(
-                                    "/reservation/onchange_data",
-                                    "call",
-                                    values
-                                ).then(function (new_data) {
+                        ajax.jsonRpc("/room_types", "call", {
+                            pms_property_id: reservation_data.pms_property_id,
+                            pricelist_id: reservation_data.pricelist_id,
+                            checkin: reservation_data.checkin,
+                            checkout: reservation_data.checkout,
+                            reservation_id: reservation_id,
+                        }).then(function (room_types_data) {
+                            setTimeout(function () {
+                                room_types = room_types_data;
+                                ajax.jsonRpc("/rooms", "call", {
+                                    pms_property_id: reservation_data.pms_property_id,
+                                    pricelist_id: reservation_data.pricelist_id,
+                                    checkin: reservation_data.checkin,
+                                    checkout: reservation_data.checkout,
+                                    reservation_id: reservation_id,
+                                }).then(function(rooms_data) {
                                     setTimeout(function () {
-                                        if (new_data) {
-                                            $.each(new_data, function (key, value) {
-                                                var input = $(
-                                                    "form.o_pms_pwa_reservation_form input[name='" +
-                                                        key +
-                                                        "']"
-                                                );
-                                                if (input) {
-                                                    input.val(value);
+                                        room_numbers = rooms_data
+                                        self.displayContent(
+                                            "pms_pwa.roomdoo_reservation_modal",
+                                            {
+                                                reservation: reservation_data,
+                                                room_types: room_types,
+                                                payment_methods: payment_methods,
+                                                room_numbers: room_numbers,
+                                                reservation_types: reservation_types,
+                                                texts: {
+                                                    reservation_text: this.reservation_text,
+                                                    info_text: this.info_text,
+                                                    unread_text: this.unread_text,
+                                                    room_type_text: this.room_type_text,
+                                                    room_number_text: this.room_number_text,
+                                                    nights_number_text: this.nights_number_text,
+                                                    adults_number_text: this.adults_number_text,
+                                                    check_in_text: this.check_in_text,
+                                                    check_in_time_text: this.check_in_time_text,
+                                                    check_out_text: this.check_out_text,
+                                                    check_out_time_text: this.check_out_time_text,
+                                                    room_price_text: this.room_price_text,
+                                                    sales_channel_text: this.sales_channel_text,
+                                                    extras_text: this.extras_text,
+                                                    card_text: this.card_text,
+                                                    total_text: this.total_text,
+                                                    outstanding_text: this.outstanding_text,
+                                                    pay_text: this.pay_text,
+                                                    notes_text: this.notes_text,
+                                                },
+                                            }
+                                        );
+
+                                        // On change inputs reservation modal
+                                        $("form.o_pms_pwa_reservation_form").on(
+                                            "change",
+                                            "input, select",
+                                            function (new_event) {
+                                                // Reservation id
+                                                var values = {
+                                                    reservation_id: reservation_id,
+                                                };
+                                                // Set checkin & checkout separated
+                                                if (
+                                                    new_event.currentTarget.name ==
+                                                    "range_check_date_modal"
+                                                ) {
+                                                    values.checkin = false;
+                                                    values.checkout = false;
                                                 } else {
-                                                    $(
-                                                        "form.o_pms_pwa_reservation_form select[name='" +
-                                                            key +
-                                                            "'] option[value='" +
-                                                            value +
-                                                            "']"
-                                                    ).prop("selected", true);
+                                                    values[new_event.currentTarget.name] = new_event.currentTarget.value;
                                                 }
-                                            });
-                                        }
-                                    });
-                                });
-                            }
-                        );
+                                                // Call to set the new values
+                                                ajax.jsonRpc(
+                                                    "/reservation/onchange_data",
+                                                    "call",
+                                                    values
+                                                ).then(function (new_data) {
+                                                    setTimeout(function () {
+                                                        if (new_data) {
+                                                            // Refresh reservation modal values and sync with new data
+                                                            $.each(new_data, function (
+                                                                key,
+                                                                value
+                                                            ) {
+                                                                var input = $(
+                                                                    "form.o_pms_pwa_reservation_form input[name='" +
+                                                                        key +
+                                                                        "']"
+                                                                );
+                                                                if (input) {
+                                                                    input.val(value);
+                                                                } else {
+                                                                    $(
+                                                                        "form.o_pms_pwa_reservation_form select[name='" +
+                                                                            key +
+                                                                            "'] option[value='" +
+                                                                            value +
+                                                                            "']"
+                                                                    ).prop("selected", true);
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        );
 
-                        $(".o_pms_pwa_button_assign_confirm").on("click", function (
-                            new_event
-                        ) {
-                            new_event.preventDefault();
-                            var button = new_event.currentTarget;
-                            ajax.jsonRpc(button.attributes.url.value, "call", {}).then(
-                                function (new_data) {
-                                    $(".o_pms_pwa_reservation_modal").modal("toggle");
-                                    self.displayDataAlert(
-                                        new_data,
-                                        reservation_data.id
-                                    );
-                                }
-                            );
-                        });
+                                        // On change qty on services
+                                        $(
+                                            "form.o_pms_pwa_reservation_form .o_pms_pwa_rb_tab"
+                                        ).click(function () {
+                                            // Spot switcher:
+                                            $(this)
+                                                .parent()
+                                                .find(".o_pms_pwa_rb_tab")
+                                                .removeClass("o_pms_pwa_rb_tab_active");
+                                            $(this).addClass("o_pms_pwa_rb_tab_active");
+                                        });
 
-                        // DATE RANGE MODAL
-                        $(function () {
-                            $('input[name="range_check_date_modal"]').daterangepicker(
-                                {
-                                    locale: {
-                                        direction: "ltr",
-                                        format: "DD/MM/YYYY",
-                                        separator: " - ",
-                                        applyLabel: "Aplicar",
-                                        cancelLabel: "Cancelar",
-                                        fromLabel: "Desde",
-                                        toLabel: "hasta",
-                                        customRangeLabel: "Custom",
-                                        daysOfWeek: [
-                                            "Do",
-                                            "Lu",
-                                            "Ma",
-                                            "Mi",
-                                            "Ju",
-                                            "Vi",
-                                            "Sa",
-                                        ],
-                                        monthNames: [
-                                            "Enero",
-                                            "Febrero",
-                                            "Marzo",
-                                            "Abril",
-                                            "Mayo",
-                                            "Junio",
-                                            "Julio",
-                                            "Agosto",
-                                            "Septiembre",
-                                            "Octubre",
-                                            "Noviembre",
-                                            "Diciembre",
-                                        ],
-                                        firstDay: 1,
-                                    },
+                                        // On confirm assign
+                                        $(".o_pms_pwa_button_assign_confirm").on(
+                                            "click",
+                                            function (new_event) {
+                                                new_event.preventDefault();
+                                                var button = new_event.currentTarget;
+                                                ajax.jsonRpc(
+                                                    button.attributes.url.value,
+                                                    "call",
+                                                    {}
+                                                ).then(function (new_data) {
+                                                    $(".o_pms_pwa_reservation_modal").modal(
+                                                        "toggle"
+                                                    );
+                                                    self.displayDataAlert(
+                                                        new_data,
+                                                        reservation_data.id
+                                                    );
+                                                });
+                                            }
+                                        );
 
-                                    opens: "left",
-                                    showCustomRangeLabel: false,
-                                },
-                                function (start, end, label) {
-                                    console.log(label);
-                                    $('input[name="check_in_date"]').val(start);
-                                    $('input[name="check_out_date"]').val(end);
-                                    let nights = 1;
-                                    // Hours*minutes*seconds*milliseconds
-                                    const oneDay = 24 * 60 * 60 * 1000;
-                                    const firstDate = new Date(start);
-                                    const secondDate = new Date(end);
-                                    const diffDays = Math.round(
-                                        Math.abs((firstDate - secondDate) / oneDay)
-                                    );
-                                    nights = diffDays - 1;
-                                    $('input[name="nights"]').val(nights);
-                                    // $("form#reservation_detail").submit();
-                                }
-                            );
+                                        // DATE RANGE MODAL
+                                        $(function () {
+                                            $(
+                                                'input[name="range_check_date_modal"]'
+                                            ).daterangepicker(
+                                                {
+                                                    locale: {
+                                                        direction: "ltr",
+                                                        format: "YYYY-MM-DD",
+                                                        separator: " : ",
+                                                        applyLabel: "Aplicar",
+                                                        cancelLabel: "Cancelar",
+                                                        fromLabel: "Desde",
+                                                        toLabel: "hasta",
+                                                        customRangeLabel: "Custom",
+                                                        daysOfWeek: [
+                                                            "Do",
+                                                            "Lu",
+                                                            "Ma",
+                                                            "Mi",
+                                                            "Ju",
+                                                            "Vi",
+                                                            "Sa",
+                                                        ],
+                                                        monthNames: [
+                                                            "Enero",
+                                                            "Febrero",
+                                                            "Marzo",
+                                                            "Abril",
+                                                            "Mayo",
+                                                            "Junio",
+                                                            "Julio",
+                                                            "Agosto",
+                                                            "Septiembre",
+                                                            "Octubre",
+                                                            "Noviembre",
+                                                            "Diciembre",
+                                                        ],
+                                                        firstDay: 1,
+                                                    },
+                                                    startDate: reservation_data.checkin,
+                                                    endDate: reservation_data.checkout,
+
+                                                    opens: "left",
+                                                    showCustomRangeLabel: false,
+                                                },
+                                                function (start, end) {
+                                                    $('input[name="check_in_date"]').val(start);
+                                                    $('input[name="check_out_date"]').val(end);
+                                                    let nights = 1;
+                                                    // Hours*minutes*seconds*milliseconds
+                                                    const oneDay = 24 * 60 * 60 * 1000;
+                                                    const firstDate = new Date(start);
+                                                    const secondDate = new Date(end);
+                                                    const diffDays = Math.round(
+                                                        Math.abs(
+                                                            (firstDate - secondDate) / oneDay
+                                                        )
+                                                    );
+                                                    nights = diffDays - 1;
+                                                    $('input[name="nights"]').val(nights);
+                                                    // $("form#reservation_detail").submit();
+                                                }
+                                            );
+                                        });
+
+                                    }, 0);
+                                })
+                            }, 0);
                         });
                     } else {
                         reservation_data = false;
                     }
-                }, 500);
+                }, 0);
             });
         },
         _onClickAssingButton: function (event) {

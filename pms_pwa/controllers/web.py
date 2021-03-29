@@ -15,7 +15,7 @@ from odoo.addons.web.controllers.main import Home
 _logger = logging.getLogger(__name__)
 
 
-class Home(Home):
+class PWAHome(Home):
     @http.route()
     def index(self, *args, **kw):
         if request.session.uid and request.env["res.users"].sudo().browse(
@@ -251,10 +251,10 @@ class TestFrontEnd(http.Controller):
             )
 
             if reservation:
-                payload = http.request.jsonrequest['params']['data']
-                invoice_lines = payload[0]['lines_to_invoice']
-                partner_invoice_id = payload[0]['partner_to_invoice']
-                partner_invoice_values = payload[0]['partner_values'][0]
+                payload = http.request.jsonrequest["params"]["data"]
+                invoice_lines = payload[0]["lines_to_invoice"]
+                partner_invoice_id = payload[0]["partner_to_invoice"]
+                partner_invoice_values = payload[0]["partner_values"][0]
                 try:
                     if partner_invoice_id:
                         partner_invoice_id = (
@@ -612,8 +612,8 @@ class TestFrontEnd(http.Controller):
             "service_ids": reservation._get_service_ids(),
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
+            "pricelist_id": reservation.pricelist_id.id,
         }
-
         return reservation_values
 
     @http.route(
