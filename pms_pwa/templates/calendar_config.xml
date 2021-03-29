@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template id="roomdoo_calendar_config_page" name="Calendar">
+    <template id="roomdoo_calendar_config_page" name="Calendar config">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendar config"/>
+            <t t-set="page_title" t-value="'Calendar config'"/>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
                 <span class="o_pms_notification_title">
@@ -59,7 +59,7 @@
                         <hr/>
                         <div class="table-responsive">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
-                            <table id="calendar_table" class="table o_pms_pwa_reservation_list_table">
+                            <table id="calendar_config_table" class="table o_pms_pwa_reservation_list_table">
                                 <thead>
                                     <tr>
                                         <th class="align-self-end o_pms_pwa_table_week"></th>
@@ -75,7 +75,7 @@
                                 </thead>
                                 <tbody>
                                     <t t-foreach="rooms_list" t-as="obj">
-                                        <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
+                                        <tr t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td>
                                                 <p class="o_pms_pwa_room_name">
                                                     <i class="fa fa-angle-down"></i>
@@ -91,10 +91,10 @@
 
                                                 </p>
                                             </td>
-                                            <t t-set="current_property" t-value="int(request.httprequest.cookies.get('pms_pids', 1).split(',')[0])" />
                                             <t t-foreach="len(date_list)" t-as="l">
+                                                <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property).get_availability_rooms()"></t>
                                                 <td class="o_pms_pwa_table_cell">
-                                                    <p class="o_pms_pwa_title"><t t-esc="default_pricelist"/> disponible</p>
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible</p>
                                                     <div class="o_pms_pwa_content">
                                                         <span class="o_pms_pwa_type">Estandar</span>
                                                         <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
@@ -102,13 +102,41 @@
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" />
                                                         </span>
                                                     </div>
-                                                    <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
                                                 </td>
                                             </t>
                                         </tr>
                                         <tr>
-                                            <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" data-parent="#calendar_table">>
-                                                <!-- Llamamos a json y pms_pwa_roomdoo_calendar_line.xml -->
+                                            <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" data-parent="#calendar_config_table">
+                                                <t t-foreach="obj.room_ids" t-as="room">
+                                                    <div class="o_pms_pwa_calendar_line row">
+                                                        <div class="o_pms_pwa_calendar_line_room_type">
+                                                            <p class="o_pms_pwa_calendar_line_title"><t t-esc="room.name" /></p>
+                                                            <p class="o_pms_pwa_calendar_line_name">Price</p>
+                                                            <p class="o_pms_pwa_calendar_line_name">Min. stay</p>
+                                                            <p class="o_pms_pwa_calendar_line_name">Max. stay</p>
+                                                            <p class="o_pms_pwa_calendar_line_name">Min. stay arrival</p>
+                                                            <p class="o_pms_pwa_calendar_line_name">Max. stay arrival</p>
+                                                            <p class="o_pms_pwa_calendar_line_name">Quota</p>
+                                                        </div>
+                                                        <t t-foreach="len(date_list)" t-as="room_day">
+                                                            <div
+                                                                class="o_pms_pwa_calendar_reservation o_pms_pwa_calendar_line_td"
+                                                                t-attf-id="room_{{room_day}}"
+                                                                t-attf-data-id="{{ room_day }}">
+                                                                <p class="o_pms_pwa_calendar_line_title">Conf.</p>
+                                                                <p><input type="text" value="10" name="price"/></p>
+                                                                <p><input type="text" value="1" name="min_stay"/></p>
+                                                                <p><input type="text" value="7" name="max_avail"/></p>
+                                                                <p><input type="text" value="1" name="min_stay_arrival"/></p>
+                                                                <p><input type="text" value="7" name="max_stay_arrival"/></p>
+                                                                <p><input type="text" value="1" name="quota"/></p>
+                                                            </div>
+                                                        </t>
+
+
+                                                    </div>
+
+                                                </t>
                                             </td>
                                         </tr>
                                     </t>

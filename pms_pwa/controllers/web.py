@@ -946,7 +946,7 @@ class TestFrontEnd(http.Controller):
         values = {
             "today": datetime.now(),
             "date_start": date_start,
-            "page_name": "Calendar",
+            "page_name": "Calendar config",
             "pricelist": pricelist,
             "default_pricelist": default_pricelist,
             "rooms_list": rooms,

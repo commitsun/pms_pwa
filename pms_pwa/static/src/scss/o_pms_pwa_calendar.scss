@@ -57,7 +57,8 @@ section.o_pms_pwa_roomdoo {
                 }
             }
         }
-        #calendar_table.table {
+        #calendar_table.table,
+        #calendar_config_table.table {
             border-collapse: separate;
             border-spacing: 8px;
             thead {
@@ -378,6 +379,49 @@ section.o_pms_pwa_roomdoo {
     section.o_pms_pwa_roomdoo {
         .o_pms_pwa_today:after {
             display: none;
+        }
+    }
+}
+
+// Calendar Config
+
+#calendar_config_table.table {
+    .o_pms_pwa_calendar_line {
+        // margin: auto;
+        p {
+            margin-left: 1rem;
+            //margin-top: 1rem;
+        }
+        &_title {
+            background-color: $bg-theme-color-modal;
+            text-align: center;
+
+            margin-left: 0rem !important;
+            margin-top: 0rem !important;
+            margin-bottom: 0.5rem !important;
+            color: $table-text-color;
+            :after,
+            :before {
+                background-color: $bg-theme-color-modal;
+            }
+        }
+        &_title:last-child {
+            width: 103%;
+        }
+        &_name {
+            margin: 1rem;
+            font-size: 14px;
+        }
+
+        &_td {
+            width: 12.2%;
+            p {
+                margin-bottom: 0.2rem;
+            }
+            input {
+                width: 80%;
+                margin-left: 1rem;
+            }
         }
     }
 }
