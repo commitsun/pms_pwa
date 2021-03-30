@@ -36,7 +36,12 @@
                                 <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
 
                                 <t t-if="request.httprequest.cookies.get('pms_pids', false)">
-                                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
+                                    <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
+                                        <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
+                                    </t>
                                     <input type="hidden" name="allowed_properties" t-att-value="request.httprequest.cookies['pms_pids']" />
                                     <select id="o_pms_pwa_user_property" name="user_property">
                                         <t t-foreach="user_id.pms_property_ids" t-as="i">

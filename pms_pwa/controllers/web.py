@@ -937,3 +937,45 @@ class TestFrontEnd(http.Controller):
         # return json.dumps(
         #     {"result": False, "message": _("Unnable to create the reservation")}
         # )
+
+    @http.route(
+        "/calendar/config",
+        type="http",
+        auth="user",
+        methods=["GET", "POST"],
+        website=True,
+    )
+    def calendar_config(self, date=False, **post):
+        if not date:
+            date = datetime.now()
+        date_start = date + timedelta(days=-1)
+        if post.get("next"):
+            date = datetime.strptime(post.get("next"), "%Y-%m-%d")
+            date_start = date + timedelta(days=+7)
+        if post.get("previous"):
+            date = datetime.strptime(post.get("previous"), "%Y-%m-%d")
+            date_start = date + timedelta(days=-7)
+
+        Room = request.env["pms.room.type"]
+        rooms = Room.search([])
+        date_list = [date_start + timedelta(days=x) for x in range(7)]
+
+        Pricelist = request.env["product.pricelist"]
+        pricelist = Pricelist.search([])
+        default_pricelist = pricelist[0].id
+        if post and "pricelist" in post:
+            default_pricelist = int(post["pricelist"])
+
+        values = {
+            "today": datetime.now(),
+            "date_start": date_start,
+            "page_name": "Calendar config",
+            "pricelist": pricelist,
+            "default_pricelist": default_pricelist,
+            "rooms_list": rooms,
+            "date_list": date_list,
+        }
+        return http.request.render(
+            "pms_pwa.roomdoo_calendar_config_page",
+            values,
+        )
