@@ -1,10 +1,13 @@
 section.o_pms_pwa_dashboard {
+    div.o_pms_pwa_notifications,
+    div.o_pms_pwa_dbh_force {
+        overflow-y: scroll;
+        height: 150px;
+    }
     div.o_pms_pwa_notifications {
         & > span {
             display: block;
         }
-        overflow-y: scroll;
-        max-height: 75px;
     }
     div.justify-content-center {
         > div {
@@ -15,7 +18,7 @@ section.o_pms_pwa_dashboard {
         }
     }
     div.o_pms_pwa_dark_card {
-        min-height: 356px;
+        height: 356px;
     }
     div.card-body {
         &.o_pms_pwa_blue {
@@ -26,10 +29,28 @@ section.o_pms_pwa_dashboard {
     }
     .o_pms_pwa_kpi_ratio {
         position: relative;
-        /* top: -4.5rem;
-        right: -6.8rem; */
         top: -33%;
         right: -44%;
+        visibility: visible;
+        @media (max-width: 300px) {
+            visibility: hidden;
+        }
+        @media (min-width: 301px) and (max-width: 420px) {
+            top: -42%;
+            right: -46%;
+        }
+        @media (min-width: 421px) and (max-width: 767px) {
+            top: -44%;
+            right: -47%;
+        }
+        @media (min-width: 1200px) and (max-width: 1294px) {
+            top: -24%;
+            right: -42%;
+        }
+        @media (min-width: 1295px) and (max-width: 1360px) {
+            top: -30%;
+            right: -42%;
+        }
     }
     div.o_pms_pwa_card_header {
         border-bottom: none;
@@ -103,6 +124,9 @@ section.o_pms_pwa_dashboard {
                     font: normal normal bold 36px Barlow;
                 }
             }
+        }
+        .o_pms_pwa_pt_adjust {
+            padding-top: 0.3rem;
         }
         hr {
             border-top: 1px solid $theme-color-text;

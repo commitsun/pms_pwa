@@ -29,11 +29,11 @@
                                             Mark as completed
                                         </a>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="card-body o_pms_pwa_dbh_force">
                                         <hr/>
                                         <div class="row">
                                             <t t-foreach="tasks" t-as="task">
-                                                <div class="col-1">
+                                                <div class="col-1 o_pms_pwa_pt_adjust">
                                                     <input class="o_pms_pwa_checkbox" t-att-data-task-id="task.id" type="checkbox"/>
                                                 </div>
                                                 <div class="col-6">
@@ -317,7 +317,7 @@
                                         EMPLOYEE CLOCKIN IN
                                     </h3>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body o_pms_pwa_dbh_force">
                                     <hr/>
                                     <t t-foreach="clocking_in" t-as="ci">
                                         <div class="row">
@@ -340,7 +340,7 @@
                                         DELIVERIES
                                     </h3>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body o_pms_pwa_dbh_force">
                                     <hr/>
                                     <t t-foreach="deliveries" t-as="delivery">
                                         <div class="row">
@@ -363,7 +363,7 @@
                                         HISTORY
                                     </h3>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body o_pms_pwa_dbh_force">
                                     <hr/>
                                     <t t-foreach="history" t-as="line">
                                         <div class="row">
@@ -493,8 +493,9 @@
                                             t-att-data-label="kpi['label']"
                                             t-att-data-data="kpi['data']"
                                             t-att-data-background_color="kpi['backgroundColor']"
-                                            t-att-data-border_color="kpi['borderColor']"/>
-                                        <span t-esc="kpi['ratio']" class="o_pms_pwa_kpi_ratio"/>
+                                            t-att-data-border_color="kpi['borderColor']" t-esc="kpi['ratio']">
+                                        </canvas>
+                                        <span t-esc="kpi['ratio']" class="o_pms_pwa_kpi_ratio d-block d-lg-none d-xl-block"/>
                                         <h3 class="o_default_snippet_text text-center" t-esc="kpi['name']"/>
                                     </div>
                                 </t>

@@ -39,8 +39,10 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
                 div[0].appendChild(span);
             }
             if (
-                document.getElementsByClassName("o_pms_pwa_notifications")[0].childNodes
-                    .length > 1
+                div[0].childNodes.length > 1 &&
+                div[0].attributes.class.value.includes(
+                    "o_pms_pwa_notifications_regular"
+                )
             ) {
                 document.getElementsByClassName(
                     "o_pms_pwa_notifications"
