@@ -1,5 +1,6 @@
 odoo.define("pms_pwa.dashboard", function () {
     "use strict";
+
     $(document).ready(function () {
         $.each(document.getElementsByClassName("o_pms_pwa_doughnut"), function (
             key,
@@ -58,6 +59,33 @@ odoo.define("pms_pwa.dashboard", function () {
                     },
                 },
             });
+        });
+
+        $(document).on("click", "a.o_pms_pwa_accept_tasks", function (ev) {
+            ev.preventDefault();
+            var form = $('form[name="tasks"]');
+            var form_field = form.find('input[type="hidden"]');
+            var task_ids = [];
+            $.each(form.find('input[type="checkbox"]:checked'), function (key, input) {
+                task_ids.push(input.dataset.taskId);
+            });
+            form_field.val(task_ids);
+            form.submit();
+        });
+
+        $(document).on("change", "input[name='arrival_date']", function () {
+            var form = $('form[name="arrival_form"]');
+            form.submit();
+        });
+
+        $(document).on("change", "input[name='departure_date']", function () {
+            var form = $('form[name="departure_form"]');
+            form.submit();
+        });
+
+        $(document).on("change", "input[name='rooms_date']", function () {
+            var form = $('form[name="rooms_form"]');
+            form.submit();
         });
     });
 });

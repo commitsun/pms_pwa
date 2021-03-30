@@ -265,9 +265,22 @@ class TestFrontEnd(http.Controller):
     def dashboard(self, **post):
         values = {}
 
+        def _get_user_activities(uid=False):
+            activities = []
+            if uid:
+                activities = [
+                    activity
+                    for activity in request.env["mail.activity"].search(
+                        [("user_id", "in", [uid])]
+                    )
+                ]
+            return activities
+
         values.update(
             {
-                "tasks": ["task 01", "task 02", "task 03"],
+                "tasks": _get_user_activities(
+                    request.session.uid if request.session.uid else False
+                ),
                 "arrivals": {
                     "today": {
                         "date": "14/10/2020",
@@ -421,6 +434,16 @@ class TestFrontEnd(http.Controller):
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
                         "borderColor": ",,",
                         "ratio": 4.25,
+                    },
+                ],
+                "compare_options": [
+                    {
+                        "id": 1,
+                        "value": "Previous year",
+                    },
+                    {
+                        "id": 2,
+                        "value": "Two years ago",
                     },
                 ],
             }
