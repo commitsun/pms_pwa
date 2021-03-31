@@ -52,6 +52,7 @@
                                                 </div>
                                             </t>
                                             <input class="o_pms_pwa_checkbox" name="task_ids" type="hidden"/>
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                         </div>
                                     </div>
                                 </div>

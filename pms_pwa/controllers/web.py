@@ -349,7 +349,6 @@ class TestFrontEnd(http.Controller):
                         "data_2": "15,19,25,69,12",
                         "backgroundColor_2": "#CEF2E8",
                         "borderColor_2": "#00BA39",
-                        "ratio": 3.99,
                     },
                     {
                         "name": "Revenue",
@@ -363,7 +362,6 @@ class TestFrontEnd(http.Controller):
                         "data_2": "150,190,250,690,120",
                         "backgroundColor_2": "#CEF2E8",
                         "borderColor_2": "#00BA39",
-                        "ratio": 3.99,
                     },
                     {
                         "name": "Ocupation",
@@ -377,7 +375,6 @@ class TestFrontEnd(http.Controller):
                         "data_2": "150,650,250",
                         "backgroundColor_2": "#CEF2E8",
                         "borderColor_2": "#00BA39",
-                        "ratio": 3.99,
                     },
                 ],
                 "kpis": [
@@ -387,7 +384,7 @@ class TestFrontEnd(http.Controller):
                         "label": "",
                         "data": "12,24,18",
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "borderColor": ",,",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 3.99,
                     },
                     {
@@ -396,7 +393,7 @@ class TestFrontEnd(http.Controller):
                         "label": "",
                         "data": "14,7,5",
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "borderColor": ",,",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.21,
                     },
                     {
@@ -405,7 +402,7 @@ class TestFrontEnd(http.Controller):
                         "label": "",
                         "data": "1400,700,500",
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "borderColor": ",,",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.66,
                     },
                     {
@@ -414,7 +411,7 @@ class TestFrontEnd(http.Controller):
                         "label": "",
                         "data": "54,24,14",
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "borderColor": ",,",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 3.16,
                     },
                     {
@@ -423,7 +420,7 @@ class TestFrontEnd(http.Controller):
                         "label": "",
                         "data": "55,20,11",
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "borderColor": ",,",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.05,
                     },
                     {
@@ -432,7 +429,7 @@ class TestFrontEnd(http.Controller):
                         "label": "",
                         "data": "64,34,4",
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "borderColor": ",,",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.25,
                     },
                 ],
