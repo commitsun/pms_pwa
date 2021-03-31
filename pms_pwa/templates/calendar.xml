@@ -92,7 +92,7 @@
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
-                                                <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property).get_availability_rooms()"></t>
+                                                <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
                                                 <td class="o_pms_pwa_table_cell">
                                                     <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible</p>
                                                     <div class="o_pms_pwa_content">

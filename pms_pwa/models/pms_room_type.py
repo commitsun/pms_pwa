@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 class PmsPWARoomType(models.Model):
     _inherit = "pms.room.type"
 
-    def get_availability_rooms(self):
+    def _get_availability_rooms(self):
         avail = 0
         if self._context.get("checkin") and self._context.get("checkout"):
             avail = self.env[
