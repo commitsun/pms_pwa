@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="pms_pwa" xml:space="preserve">
+    <t t-name="pms_pwa.calendar_line">
+        <t t-foreach="obj_list" t-as="obj">
+            <div class="o_pms_pwa_calendar_line row">
+                <div class="o_pms_pwa_calendar_line_room_type">
+                    <p class="o_pms_pwa_calendar_line_title"><t t-esc="obj.room.name" /></p>
+                    <p class="o_pms_pwa_calendar_line_content"><t t-esc="obj.room.status" /></p>
+                </div>
+                <t t-foreach="obj.ocupation" t-as="reservation">
+                    <div t-if="reservation.reservation_info"
+                        t-att-class="'o_pms_pwa_calendar_reservation o_pms_pwa_calendar_line_nigth_'+reservation.reservation_info.nigths"
+                        t-att-id="'reservation_'+ reservation.reservation_info.id"
+                        t-attf-data-id="{{ reservation.reservation_info.id }}">
+
+                            <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
+                                <img
+                                    t-att-src="reservation.reservation_info.img"
+                                    width="50"
+                                    class="rounded-circle o_pms_pwa_calendar_line_img_bg"
+                                    title="image"
+                                    alt="image"/>
+                                <span class="o_pms_pwa_calendar_line_price"><t t-esc="reservation.reservation_info.price" />€</span>
+
+                                <span t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
+                                    <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.status }}.svg" alt="check" title="check icon" />
+                                </span>
+                            </p>
+                            <p class="o_pms_pwa_calendar_line_name"><t t-esc="reservation.reservation_info.partner_name" /></p>
+
+                    </div>
+
+                    <div t-else="" class="col o_pms_pwa_calendar_line_event">
+                        <button type="button" class="btn btn-add open-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
+                    </div>
+                </t>
+
+            </div>
+
+        </t>
+    </t>
+</templates>

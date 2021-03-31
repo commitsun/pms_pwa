@@ -147,6 +147,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         events: {
             "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
                 "_onClickReservationButton",
+            "click div.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
             "click .o_pms_pwa_button_assign": "_onClickAssingButton",
             "click tbody > tr > td:not(:last-child) a": "_onClickNotLastChildA",
             "click .o_pms_pwa_button_checkin": "_onClickCheckinButton",
@@ -238,6 +239,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             event.preventDefault();
             var self = this;
             var reservation_id = event.currentTarget.parentNode.getAttribute("data-id");
+
+            /* Añadido para que sea válido en calendario */
+            if (!reservation_id) {
+                reservation_id = event.currentTarget.getAttribute("data-id");
+            }
+            var reservation_data = false;
 
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/reservation/json_data", "call", {
@@ -539,7 +546,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         self.displayContent("pms_pwa.reservation_checkin_modal", {
                             reservation: data,
                         });
-                        // eslint-disable-next-line
+                        /* eslint-disable no-alert, no-console */
                         new Stepper($(".bs-stepper")[0], {
                             linear: false,
                             animation: true,
@@ -549,6 +556,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 stepper: ".bs-stepper",
                             },
                         });
+                        /* eslint-enable no-alert */
                         $(".o_pms_pwa_button_checkin_confirm").on("click", function (
                             new_event
                         ) {
