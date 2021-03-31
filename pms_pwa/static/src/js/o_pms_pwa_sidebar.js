@@ -1,5 +1,7 @@
 odoo.define("pms_pwa.sidebar", function () {
     "use strict";
+    // Var session = require("pms.session");
+
     $("#menu-toggle").click(function (e) {
         e.preventDefault();
         $("body").toggleClass("toggled");
@@ -67,5 +69,24 @@ odoo.define("pms_pwa.sidebar", function () {
                 // $("form#reservation_detail").submit();
             }
         );
+    });
+
+    $(document).on("change", "#o_pms_pwa_user_property", function () {
+        // Console.log("AQUI CAMBIAR LAS COOKIES");
+        const new_property = $(this).val();
+        // Console.log(new_property);
+        const allowed_pms_properties = $('input[name="allowed_properties"]').val();
+        // Console.log(allowed_pms_properties);
+        const pms_pids_array = allowed_pms_properties.split(",");
+        const index = pms_pids_array.indexOf(new_property);
+        if (index > -1) {
+            pms_pids_array.splice(index, 1);
+        }
+        // Session.setPmsProperties(1, allowed_pms_property_ids);
+
+        const new_pms_pids_order = new_property + "," + pms_pids_array.toString();
+        // Console.log(new_pms_pids_order);
+        document.cookie = "pms_pids=" + new_pms_pids_order;
+        location.reload();
     });
 });

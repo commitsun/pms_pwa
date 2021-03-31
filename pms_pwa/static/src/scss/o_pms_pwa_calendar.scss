@@ -1,25 +1,80 @@
 section.o_pms_pwa_roomdoo {
-    .o_pms_pwa_month_select {
-        margin-right: 2rem;
-        text-align: right;
-        color: $theme-color;
-        font-weight: 800;
-        font-size: 18px;
-        a {
-            color: $theme-color;
-            text-decoration: none;
+    .o_pms_pwa_calendar {
+        @media (max-width: 991.98px) {
+            margin-left: -3rem;
+            margin-top: -4rem;
         }
-        // margin-top: 1rem;
-        .o_pms_pwa_month_select_calendar_icon {
-            background: $white;
-            pointer-events: none;
+        hr {
+            background-color: #dadada;
+            margin-top: 1rem;
+            margin-bottom: -0.5rem;
+            width: 98%;
+        }
+        #pricelist_select {
+            background-color: $bg-theme-color !important;
+            color: $theme-color-text;
+            margin-left: -1rem;
+            font-size: 14px;
+            @media (max-width: 991.98px) {
+                margin-left: 0rem;
+            }
+        }
+        .o_pms_pwa_calendar_select {
+            float: left;
+            select {
+                width: 200px;
+                font-size: 14px;
+            }
+        }
+        .o_pms_pwa_month_select {
+            margin-right: 1rem;
+            text-align: right;
             color: $theme-color;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 0.5rem;
+            @media (max-width: 991.98px) {
+                margin-right: 0rem;
+            }
+            a {
+                color: $theme-color;
+                text-decoration: none;
+                i {
+                    font-size: 20px;
+                    font-weight: bold;
+                    align-items: center;
+                }
+            }
+            // margin-top: 1rem;
+            .o_pms_pwa_month_select_calendar_icon {
+                pointer-events: none;
+                color: $theme-color-text;
+                font-size: 14px;
+                margin-bottom: 0.25rem;
+                img {
+                    width: 14px;
+                    margin-bottom: 0.25rem;
+                    margin-right: 0.25rem;
+                }
+            }
+        }
+        #calendar_table.table,
+        #calendar_config_table.table {
+            border-collapse: separate;
+            border-spacing: 8px;
+            thead {
+                border-bottom: 1px solid $theme-color;
+            }
+            tbody {
+                tr {
+                    td {
+                        padding-bottom: 0;
+                    }
+                }
+            }
         }
     }
-    .table {
-        border-collapse: separate;
-        border-spacing: 10px;
-    }
+
     .o_pms_pwa_arrow:before,
     .o_pms_pwa_arrow:after {
         content: "";
@@ -75,6 +130,12 @@ section.o_pms_pwa_roomdoo {
         border-bottom: 1px solid $theme-color;
         border-collapse: collapse;
         border-spacing: 0;
+        &:after {
+            border-bottom: 1px solid $theme-color !important;
+        }
+        &:before {
+            border-bottom: 1px solid $theme-color !important;
+        }
     }
     .o_pms_pwa_today {
         border-bottom: 3px solid $theme-color;
@@ -83,27 +144,58 @@ section.o_pms_pwa_roomdoo {
     .o_pms_pwa_today:after {
         content: "";
         position: absolute;
-        top: 16%;
-        height: 85%;
+        top: 22%;
+        height: 78%;
         border-right: 2px solid $theme-color;
         margin-left: -2rem;
+    }
+    .o_pms_pwa_open_calendar[aria-expanded="true"] {
+        background-color: #42dca3;
+        .o_pms_pwa_room_name {
+            i {
+                -moz-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
     }
     .o_pms_pwa_room_name {
         color: $black;
         font-weight: bold;
         font-size: larger;
+        i {
+            margin-right: 0.25rem;
+            color: $theme-color;
+            font-size: 18px;
+            font-weight: bold;
+            -moz-transition: all 0.5s linear;
+            -webkit-transition: all 0.5s linear;
+            transition: all 0.5s linear;
+        }
+
+        @media (max-width: 991.98px) {
+            width: 175px;
+        }
     }
     .o_pms_pwa_extra_info {
-        font-size: small;
+        font-size: 14px;
         margin-top: -1rem;
+        margin-left: 0.75rem;
+
         span:nth-child(even) {
-            margin-left: 1rem;
+            margin-left: 0.5rem;
         }
         span:nth-child(odd) {
-            margin-left: 1rem;
+            margin-left: 0.5rem;
         }
         .o_pms_pwa_restr {
-            color: $theme-color;
+            color: $theme-color-text;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        img {
+            margin-bottom: 0.25rem;
+            width: 10px;
         }
     }
     /* Table movil */
@@ -114,15 +206,22 @@ section.o_pms_pwa_roomdoo {
         z-index: 2;
         min-width: 3rem;
         border: none;
+        width: 16% !important;
     }
     tr:nth-child(odd) > td {
         background-color: $white;
+        width: 12%;
+        min-width: 150px;
     }
     tr:nth-child(even) > td {
         background-color: $white;
+        width: 12%;
+        min-width: 150px;
     }
     tr:nth-child(odd) > th {
         background-color: $white;
+        width: 12%;
+        min-width: 150px;
     }
     .o_pms_pwa_hiddenRow {
         padding: 0 !important;
@@ -137,21 +236,31 @@ section.o_pms_pwa_roomdoo {
         z-index: 1;
         margin-right: 0.2rem;
         margin-top: 0.3rem;
+        .o_pms_pwa_calendar_reservation {
+            cursor: pointer;
+        }
         &_room_type {
             position: sticky;
             left: 0px;
             z-index: 2;
-            min-width: 2rem;
+            min-width: 200px;
             background-color: $bg-theme-color;
+            width: 14.25%;
+            @media (max-width: 991.98px) {
+                width: 175px;
+                min-width: 175px;
+            }
         }
         &_title {
             color: $theme-color;
             font-weight: bold;
             padding-top: 0.5rem;
+            margin-left: 1rem;
         }
         &_content {
             color: $black;
             margin-top: -1rem;
+            margin-left: 1rem;
         }
         &_event {
             text-align: center;
@@ -182,33 +291,67 @@ section.o_pms_pwa_roomdoo {
             background-color: $theme-color;
             float: left;
             margin-top: -0.2rem;
+            padding: 0.1rem;
         }
         &_hr {
             &_success {
                 margin-top: 0.7rem;
+                margin-left: 0.75rem;
                 border-bottom: 4px solid var(--success);
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 12px;
+                    margin-left: 0.1rem;
+                }
             }
             &_warning {
                 margin-top: 0.7rem;
+                margin-left: 0.75rem;
                 border-bottom: 4px solid var(--warning);
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 8px;
+                    margin-left: 0.1rem;
+                }
+            }
+            &_danger {
+                margin-top: 0.7rem;
+                margin-left: 0.75rem;
+                border-bottom: 4px solid var(--danger);
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 8px;
+                    margin-left: 0.1rem;
+                }
             }
             &_info {
                 margin-top: 0.7rem;
+                margin-left: 0.75rem;
                 border-bottom: 4px solid $theme-color;
+                .o_pms_pwa_calendar_line_icon {
+                    margin-top: 0.25rem;
+                    width: 12px;
+                    margin-left: 0.1rem;
+                }
             }
         }
         &_badge {
             float: right;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
             border-radius: 3rem;
-            text-align: end;
+            text-align: center;
+            width: 1.5rem;
+            height: 1.5rem;
         }
         &_price {
-            font-weight: bolder;
+            font-weight: bold;
+            font-size: 14px;
             margin-left: 0.2rem;
         }
         &_name {
             margin-left: 0.2rem;
+            margin-top: -1rem;
+            font-size: 12px;
         }
     }
     .btn-add {
@@ -237,6 +380,56 @@ section.o_pms_pwa_roomdoo {
     section.o_pms_pwa_roomdoo {
         .o_pms_pwa_today:after {
             display: none;
+        }
+    }
+}
+
+// Calendar Config
+
+#calendar_config_table.table {
+    .o_pms_pwa_calendar_line {
+        // margin: auto;
+        p {
+            margin-left: 1rem;
+            //margin-top: 1rem;
+        }
+        &_title {
+            background-color: $bg-theme-color-modal;
+            text-align: center;
+
+            margin-left: 0rem !important;
+            margin-top: 0rem !important;
+            margin-bottom: 0.5rem !important;
+            color: $table-text-color;
+            :after,
+            :before {
+                background-color: $bg-theme-color-modal;
+            }
+        }
+        &_title:last-child {
+            width: 103%;
+        }
+        &_name {
+            margin: 1rem;
+            font-size: 14px;
+        }
+        // &_room_type {
+        //     p{
+        //         margin-bottom: 0.2rem;
+        //         margin-top: 0.2rem;
+        //     }
+
+        // }
+        &_td {
+            width: 12.2%;
+
+            input {
+                width: 80%;
+                margin-left: 1rem;
+                // padding: 0;
+                border: none;
+                text-align: center;
+            }
         }
     }
 }

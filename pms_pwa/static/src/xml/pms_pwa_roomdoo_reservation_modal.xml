@@ -914,7 +914,6 @@
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
                                                 name="payment_method">
                                                 <option
-                                                    name="payment_method"
                                                     t-foreach="reservation.payment_methods"
                                                     t-as="key"
                                                     t-att-value="key.id">
@@ -1051,35 +1050,29 @@
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
                                                             name="document_type">
                                                             <option
-                                                                name="document_type"
                                                                 value="D"
                                                                 t-att-selected="partner.document_type == D ? 'selected' : None">
                                                                 DNI
                                                             </option>
                                                             <option
-                                                                name="document_type"
                                                                 value="P"
                                                                 t-att-selected="partner.document_type == P ? 'selected' : None">
                                                                 Passport
                                                             </option>
                                                             <option
-                                                                name="document_type"
                                                                 value="C"
                                                                 t-att-selected="partner.document_type == C ? 'selected' : None">
                                                                 Driving license
                                                             </option>
                                                             <option
-                                                                name="document_type"
                                                                 value="I" t-att-selected="partner.document_type == I ? 'selected' : None">
                                                                 Identification Document
                                                             </option>
                                                             <option
-                                                                name="document_type"
                                                                 value="N" t-att-selected="partner.document_type == N ? 'selected' : None">
                                                                 Spanish residence permit
                                                             </option>
                                                             <option
-                                                                name="document_type"
                                                                 value="X" t-att-selected="partner.document_type == X ? 'selected' : None">
                                                                 European residence permit
                                                             </option>
@@ -1106,13 +1099,11 @@
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
                                                             name="gender">
                                                             <option
-                                                                name="gender"
                                                                 value="male"
                                                                 t-att-selected="partner.gender == 'male' ? 'selected' : None">
                                                                 Male
                                                             </option>
                                                             <option
-                                                                name="gender"
                                                                 value="female"
                                                                 t-att-selected="partner.gender == 'female' ? 'selected' : None">
                                                                 Female

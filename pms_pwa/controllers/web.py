@@ -294,9 +294,22 @@ class TestFrontEnd(http.Controller):
     def dashboard(self, **post):
         values = {}
 
+        def _get_user_activities(uid=False):
+            activities = []
+            if uid:
+                activities = [
+                    activity
+                    for activity in request.env["mail.activity"].search(
+                        [("user_id", "in", [uid])]
+                    )
+                ]
+            return activities
+
         values.update(
             {
-                "tasks": ["task 01", "task 02", "task 03"],
+                "tasks": _get_user_activities(
+                    request.session.uid if request.session.uid else False
+                ),
                 "arrivals": {
                     "today": {
                         "date": "14/10/2020",
@@ -352,76 +365,113 @@ class TestFrontEnd(http.Controller):
                         " adipiscing elit. Nulla sit amet enim sit amet ex laoreet dictum.",
                     },
                 ],
-                "evolution": {
-                    "billing": {
-                        "current": [
-                            {"date": "05/10/2020", "amount": 3250},
-                            {"date": "06/10/2020", "amount": 3750},
-                        ],
-                        "compare": [
-                            {"date": "05/10/2019", "amount": 2150},
-                            {"date": "06/10/2019", "amount": 3650},
-                        ],
+                "evolutions": [
+                    {
+                        "name": "Billing",
+                        "selector": "billing",
+                        "labels": "5 oct,6 oct,7 oct,8 oct,9 oct",
+                        "label_1": "2019",
+                        "data_1": "12,24,13,3,54",
+                        "backgroundColor_1": "#E5F8FC",
+                        "borderColor_1": "#00B5E2",
+                        "label_2": "2020",
+                        "data_2": "15,19,25,69,12",
+                        "backgroundColor_2": "#CEF2E8",
+                        "borderColor_2": "#00BA39",
                     },
-                    "revenue": {
-                        "current": [
-                            {"date": "05/10/2020", "amount": 3250},
-                            {"date": "06/10/2020", "amount": 3750},
-                        ],
-                        "compare": [
-                            {"date": "05/10/2019", "amount": 2150},
-                            {"date": "06/10/2019", "amount": 3650},
-                        ],
+                    {
+                        "name": "Revenue",
+                        "selector": "revenue",
+                        "labels": "19 nov,20 nov,21 nov,22 nov,23 nov",
+                        "label_1": "2019",
+                        "data_1": "200,210,130,36,540",
+                        "backgroundColor_1": "#E5F8FC",
+                        "borderColor_1": "#00B5E2",
+                        "label_2": "2020",
+                        "data_2": "150,190,250,690,120",
+                        "backgroundColor_2": "#CEF2E8",
+                        "borderColor_2": "#00BA39",
                     },
-                    "ocupation": {
-                        "current": [
-                            {"date": "05/10/2020", "amount": 15},
-                            {"date": "06/10/2020", "amount": 20},
-                        ],
-                        "compare": [
-                            {"date": "05/10/2019", "amount": 6},
-                            {"date": "06/10/2019", "amount": 19},
-                        ],
+                    {
+                        "name": "Ocupation",
+                        "selector": "ocupation",
+                        "labels": "5 sept,6 sept,7 sept",
+                        "label_1": "2019",
+                        "data_1": "315,850,130",
+                        "backgroundColor_1": "#E5F8FC",
+                        "borderColor_1": "#00B5E2",
+                        "label_2": "2020",
+                        "data_2": "150,650,250",
+                        "backgroundColor_2": "#CEF2E8",
+                        "borderColor_2": "#00BA39",
                     },
-                },
-                "kpi": {
-                    "ocupation": {
-                        "arrivals": 14,
-                        "departures": 7,
-                        "no_show": 5,
+                ],
+                "kpis": [
+                    {
+                        "name": "Ocupation",
+                        "labels": "Arrivals,Departures,No show",
+                        "label": "",
+                        "data": "12,24,18",
+                        "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 3.99,
                     },
-                    "reservations_by_channel": {
-                        "phone": 14,
-                        "booking": 7,
-                        "other": 5,
+                    {
+                        "name": "Reservations by channel",
+                        "labels": "Phone,Booking,Other",
+                        "label": "",
+                        "data": "14,7,5",
+                        "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.21,
                     },
-                    "income_by_channel": {
-                        "phone": 1400,
-                        "booking": 700,
-                        "other": 500,
+                    {
+                        "name": "Income by channel",
+                        "labels": "Phone,Booking,Other",
+                        "label": "",
+                        "data": "1400,700,500",
+                        "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.66,
                     },
-                    "cleaning_score": {
-                        "good": 54,
-                        "acceptable": 24,
-                        "bad": 14,
+                    {
+                        "name": "Cleaning score",
+                        "labels": "Good,Acceptable,Bad",
+                        "label": "",
+                        "data": "54,24,14",
+                        "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 3.16,
                     },
-                    "attention_score": {
-                        "good": 55,
-                        "acceptable": 20,
-                        "bad": 11,
+                    {
+                        "name": "Attention score",
+                        "labels": "Good,Acceptable,Bad",
+                        "label": "",
+                        "data": "55,20,11",
+                        "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.05,
                     },
-                    "general_score": {
-                        "good": 64,
-                        "acceptable": 34,
-                        "bad": 4,
+                    {
+                        "name": "General score",
+                        "labels": "Good,Acceptable,Bad",
+                        "label": "",
+                        "data": "64,34,4",
+                        "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
+                        "borderColor": "#FF5733,#B5BFBD,#00B5E2",
                         "ratio": 4.25,
                     },
-                },
+                ],
+                "compare_options": [
+                    {
+                        "id": 1,
+                        "value": "Previous year",
+                    },
+                    {
+                        "id": 2,
+                        "value": "Two years ago",
+                    },
+                ],
             }
         )
 
@@ -805,18 +855,33 @@ class TestFrontEnd(http.Controller):
         methods=["GET", "POST"],
         website=True,
     )
-    def calendar(self, date=False, **kw):
+    def calendar(self, date=False, **post):
         if not date:
             date = datetime.now()
         date_start = date + timedelta(days=-1)
+        if post.get("next"):
+            date = datetime.strptime(post.get("next"), "%Y-%m-%d")
+            date_start = date + timedelta(days=+7)
+        if post.get("previous"):
+            date = datetime.strptime(post.get("previous"), "%Y-%m-%d")
+            date_start = date + timedelta(days=-7)
+
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
         date_list = [date_start + timedelta(days=x) for x in range(7)]
 
+        Pricelist = request.env["product.pricelist"]
+        pricelist = Pricelist.search([])
+        default_pricelist = pricelist[0].id
+        if post and "pricelist" in post:
+            default_pricelist = int(post["pricelist"])
+
         values = {
-            "date": date,
+            "today": datetime.now(),
+            "date_start": date_start,
             "page_name": "Calendar",
-            # "reservations": reservations,
+            "pricelist": pricelist,
+            "default_pricelist": default_pricelist,
             "rooms_list": rooms,
             "date_list": date_list,
         }
@@ -851,10 +916,10 @@ class TestFrontEnd(http.Controller):
             {
                 "reservations": [
                     {
-                        "habitacion": {
+                        "room": {
                             "id": "20",
-                            "nombre": "normal",
-                            "status": 2,
+                            "name": "normal-101",
+                            "status": "Estado ahora",
                         },
                         "ocupation": [
                             {
@@ -864,23 +929,12 @@ class TestFrontEnd(http.Controller):
                             {
                                 "date": "23/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 58,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 240,
-                                    "status": "done",
-                                    "nigth": 2,
-                                },
-                            },
-                            {
-                                "date": "24/03/2021",
-                                "reservation_info": {
-                                    "id": 1,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
-                                    "price": 240,
-                                    "status": "done",
-                                    "nigth": 2,
+                                    "status": "danger",
+                                    "nigths": 2,
                                 },
                             },
                             {
@@ -894,12 +948,12 @@ class TestFrontEnd(http.Controller):
                             {
                                 "date": "27/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 10,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 120,
-                                    "status": "done",
-                                    "nigth": 1,
+                                    "status": "success",
+                                    "nigths": 1,
                                 },
                             },
                             {
@@ -909,32 +963,21 @@ class TestFrontEnd(http.Controller):
                         ],
                     },
                     {
-                        "habitacion": {
+                        "room": {
                             "id": "20",
-                            "nombre": "doble",
-                            "status": 2,
+                            "name": "doble-202",
+                            "status": "limpia",
                         },
                         "ocupation": [
                             {
                                 "date": "22/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 52,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 240,
-                                    "status": "done",
-                                    "nigth": 2,
-                                },
-                            },
-                            {
-                                "date": "23/03/2021",
-                                "reservation_info": {
-                                    "id": 1,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
-                                    "price": 240,
-                                    "status": "done",
-                                    "nigth": 2,
+                                    "status": "success",
+                                    "nigths": 2,
                                 },
                             },
                             {
@@ -944,12 +987,12 @@ class TestFrontEnd(http.Controller):
                             {
                                 "date": "25/03/2021",
                                 "reservation_info": {
-                                    "id": 1,
+                                    "id": 8,
                                     "partner_name": "Sabela Gómez G",
-                                    "img": "pms_pwa/static/img/logo_mobil.png",
+                                    "img": "/web/image/res.partner/3/image_128",
                                     "price": 120,
-                                    "status": "done",
-                                    "nigth": 1,
+                                    "status": "warning",
+                                    "nigths": 1,
                                 },
                             },
                             {
@@ -1054,6 +1097,50 @@ class TestFrontEnd(http.Controller):
         # return json.dumps(
         #     {"result": False, "message": _("Unnable to create the reservation")}
         # )
+
+    @http.route(
+        "/calendar/config",
+        type="http",
+        auth="user",
+        methods=["GET", "POST"],
+        website=True,
+    )
+    def calendar_config(self, date=False, **post):
+        if not date:
+            date = datetime.now()
+        date_start = date + timedelta(days=-1)
+        if post.get("next"):
+            date = datetime.strptime(post.get("next"), "%Y-%m-%d")
+            date_start = date + timedelta(days=+7)
+        if post.get("previous"):
+            date = datetime.strptime(post.get("previous"), "%Y-%m-%d")
+            date_start = date + timedelta(days=-7)
+
+        Room = request.env["pms.room.type"]
+        rooms = Room.search([])
+        date_list = [date_start + timedelta(days=x) for x in range(7)]
+
+        Pricelist = request.env["product.pricelist"]
+        pricelist = Pricelist.search([])
+        default_pricelist = pricelist[0].id
+        if post and "pricelist" in post:
+            default_pricelist = int(post["pricelist"])
+
+        values = {
+            "today": datetime.now(),
+            "date_start": date_start,
+            "page_name": "Calendar config",
+            "pricelist": pricelist,
+            "default_pricelist": default_pricelist,
+            "rooms_list": rooms,
+            "date_list": date_list,
+        }
+        return http.request.render(
+            "pms_pwa.roomdoo_calendar_config_page",
+            values,
+        )
+
+
 def parse_reservation(reservation):
     reservation_values = dict()
     reservation_values["id"] = reservation.id

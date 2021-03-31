@@ -1,10 +1,13 @@
 section.o_pms_pwa_dashboard {
+    div.o_pms_pwa_notifications,
+    div.o_pms_pwa_dbh_force {
+        overflow-y: scroll;
+        height: 150px;
+    }
     div.o_pms_pwa_notifications {
         & > span {
             display: block;
         }
-        overflow-y: scroll;
-        max-height: 75px;
     }
     div.justify-content-center {
         > div {
@@ -14,11 +17,171 @@ section.o_pms_pwa_dashboard {
             padding-left: unset;
         }
     }
+    div.o_pms_pwa_dark_card {
+        height: 356px;
+    }
     div.card-body {
         &.o_pms_pwa_blue {
             text-align: center;
             background-color: $theme-color !important;
             color: white;
+        }
+    }
+    .o_pms_pwa_kpi_ratio {
+        position: relative;
+        top: -33%;
+        right: -44%;
+        visibility: visible;
+        @media (max-width: 300px) {
+            visibility: hidden;
+        }
+        @media (min-width: 301px) and (max-width: 420px) {
+            top: -42%;
+            right: -46%;
+        }
+        @media (min-width: 421px) and (max-width: 767px) {
+            top: -44%;
+            right: -47%;
+        }
+        @media (min-width: 1200px) and (max-width: 1294px) {
+            top: -24%;
+            right: -42%;
+        }
+        @media (min-width: 1295px) and (max-width: 1360px) {
+            top: -30%;
+            right: -42%;
+        }
+    }
+    div.o_pms_pwa_card_header {
+        border-bottom: none;
+        &:not(.bg-dark) {
+            padding-bottom: 0px;
+        }
+        &.bg-dark {
+            background-color: #3f4443 !important;
+            h3 {
+                text-align: left;
+                font: normal normal bold 18px/22px Barlow;
+                letter-spacing: 0.02px;
+                color: #ffffff !important;
+                opacity: 1;
+            }
+        }
+        h3 {
+            height: 22px;
+            text-align: left;
+            font: normal normal bold 18px/22px Barlow;
+            letter-spacing: 0.02px;
+            color: $table-text-color !important;
+            opacity: 1;
+        }
+        a.o_pms_pwa_btn_border {
+            width: 100%;
+            border-radius: 1.5rem;
+            border: 1px solid #01b6e3;
+            color: #01b6e3;
+            text-align: center;
+            cursor: pointer;
+        }
+        a.o_pms_pwa_accept_tasks {
+            padding-right: 15px;
+            padding-left: 15px;
+            float: right;
+        }
+    }
+    div.card-header {
+        min-height: 3rem;
+        hr {
+            border-top: 1px solid $theme-color-text;
+        }
+    }
+    div.card-body {
+        &:not(.bg-dark):not(.o_pms_pwa_blue) {
+            padding-top: 0px;
+        }
+        &.bg-dark {
+            background-color: #3f4443 !important;
+            .o_pms_pwa_bb_index {
+                height: 19px;
+                text-align: left;
+                font: normal normal bold 16px Barlow;
+                letter-spacing: 0px;
+                color: #ffffff;
+                opacity: 1;
+            }
+            .progress {
+                height: 8px;
+                margin-top: 0.45rem;
+                .bg-danger {
+                    background-color: #ff5221 !important;
+                }
+                .bg_success {
+                    background-color: #00ba39 !important;
+                }
+                .bg_info {
+                    background-color: $theme-color-text !important;
+                }
+            }
+        }
+        &.o_pms_pwa_blue {
+            letter-spacing: 0px;
+            color: #ffffff;
+            opacity: 1;
+            text-align: center;
+            .col-4 {
+                font: normal normal bold 17px Barlow;
+                span {
+                    text-align: right;
+                    font: normal normal bold 36px Barlow;
+                }
+            }
+        }
+        .o_pms_pwa_pt_adjust {
+            padding-top: 0.3rem;
+        }
+
+        .o_pms_pwa_db_dates {
+            color: $theme-color-text;
+            text-align: left;
+            font: normal normal 600 14px Barlow;
+            letter-spacing: 0px;
+            opacity: 1;
+        }
+        form {
+            div.form-group {
+                label.control-label {
+                    font-weight: 600;
+                    font-size: 16px;
+                    padding-top: 0.15rem;
+                    position: absolute;
+                    left: 3.4rem;
+                    top: 0.3rem;
+                    color: $theme-color-text;
+                }
+                input,
+                select,
+                textarea {
+                    border: 1px solid $theme-color-text;
+                    background-color: $bg-theme-color !important;
+                    &.o_pms_pwa_range_check_date_modal {
+                        font-weight: 500;
+                        font-size: 16px;
+                        padding-top: 0rem;
+                        padding-bottom: 0rem;
+                        padding-left: 5.5rem;
+                    }
+                }
+                .o_pms_pwa_calendar_icon {
+                    position: absolute;
+                    top: 0.46rem;
+                    left: 1.5rem;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    background: $bg-theme-color;
+                    pointer-events: none;
+                    color: $theme-color-text;
+                }
+            }
         }
     }
 }
