@@ -266,7 +266,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         var room_types = [];
                         var room_numbers = [];
                         var payment_methods = ["Credit card", "Cash"];
-                        var reservation_types = ["Normal", "Staff", "Out of Service"];
 
                         ajax.jsonRpc("/room_types", "call", {
                             pms_property_id: reservation_data.pms_property_id,
@@ -293,7 +292,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 room_types: room_types,
                                                 payment_methods: payment_methods,
                                                 room_numbers: room_numbers,
-                                                reservation_types: reservation_types,
                                                 texts: {
                                                     reservation_text: this.reservation_text,
                                                     info_text: this.info_text,
@@ -332,24 +330,35 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     new_event.currentTarget.name ==
                                                     "range_check_date_modal"
                                                 ) {
-                                                    values.checkin = false;
-                                                    values.checkout = false;
+                                                    let value_range_picker = new_event.currentTarget.value;
+
+                                                    values.checkin = value_range_picker.substr(0, value_range_picker.indexOf(':'));
+                                                    values.checkout = value_range_picker.substr(value_range_picker.indexOf(':')+2);
+                                                    console.log(values)
                                                 } else {
                                                     values[new_event.currentTarget.name] = new_event.currentTarget.value;
                                                 }
                                                 // Call to set the new values
                                                 ajax.jsonRpc(
-                                                    "/reservation/onchange_data",
+                                                    "/reservation/"+reservation_id+"/onchange_data",
                                                     "call",
                                                     values
                                                 ).then(function (new_data) {
                                                     setTimeout(function () {
+                                                        console.log(new_data)
                                                         if (new_data) {
+                                                            if (!(JSON.parse(new_data).result)){
+                                                                self.displayDataAlert(new_data);
+                                                            }
                                                             // Refresh reservation modal values and sync with new data
-                                                            $.each(new_data, function (
+                                                            $.each(JSON.parse(new_data).reservation, function (
                                                                 key,
                                                                 value
                                                             ) {
+                                                                console.log('-----')
+                                                                console.log(key)
+                                                                console.log('-----')
+//                                                                if (key !== '')
                                                                 var input = $(
                                                                     "form.o_pms_pwa_reservation_form input[name='" +
                                                                         key +
@@ -367,6 +376,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                     ).prop("selected", true);
                                                                 }
                                                             });
+                                                            // refresh total
+                                                            let a = document.getElementsByClassName("price_total")
+                                                            console.log(a)
+                                                            a[0].innerText=JSON.parse(new_data).reservation.price_total
+                                                            //.value(JSON.parse(new_data).reservation.price_total)
                                                         }
                                                     });
                                                 });
@@ -378,11 +392,24 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "form.o_pms_pwa_reservation_form .o_pms_pwa_rb_tab"
                                         ).click(function () {
                                             // Spot switcher:
-                                            $(this)
-                                                .parent()
-                                                .find(".o_pms_pwa_rb_tab")
-                                                .removeClass("o_pms_pwa_rb_tab_active");
-                                            $(this).addClass("o_pms_pwa_rb_tab_active");
+                                            const selectors = [].slice.call(
+                                                this.parentElement.children
+                                            );
+                                            selectors.forEach((el) =>
+                                                el.classList.remove("o_pms_pwa_rb_tab_active")
+                                            );
+                                            this.classList.add("o_pms_pwa_rb_tab_active");
+                                            ajax.jsonRpc(
+                                                "/reservation/" + reservation_id + "/onchange_data",
+                                                "call",
+                                                {
+                                                    board_service: {
+                                                        service_id: this.dataset.serviceid,
+                                                        service_line_id: this.dataset.servicelineid,
+                                                        qty: this.dataset.value,
+                                                    },
+                                                }
+                                            );
                                         });
 
                                         // On confirm assign

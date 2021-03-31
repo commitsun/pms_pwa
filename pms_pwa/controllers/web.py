@@ -604,6 +604,7 @@ class TestFrontEnd(http.Controller):
             "folio_pending_amount": reservation.folio_pending_amount,
             "folio_internal_comment": reservation.folio_internal_comment,
             "payment_methods": self._get_allowed_payments_journals(),
+            "reservation_types": self._get_reservation_types(),
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
@@ -617,13 +618,15 @@ class TestFrontEnd(http.Controller):
         return reservation_values
 
     @http.route(
-        ["/reservation/onchange_data"],
+        ["/reservation/<int:reservation_id>/onchange_data"],
         type="json",
         auth="public",
         methods=["POST"],
         website=True,
     )
     def reservation_onchange_data(self, reservation_id=None, **kw):
+        old_reservation_type = None
+        old_values = None
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
@@ -632,17 +635,148 @@ class TestFrontEnd(http.Controller):
             )
         if not reservation:
             raise MissingError(_("This document does not exist."))
-        # TODO something with the data and give back the new values
-        params = http.request.jsonrequest.get("params")
+        if reservation:
+            try:
+                params = http.request.jsonrequest.get("params")
+                for param in params.keys():
+                    # ADULTS
+                    if param == "adults":
+                        params["adults"] = int(params["adults"])
 
-        if "nights" in params:
-            reservation_values = {}
+                    # ROOM TYPE
+                    elif param == "room_type_id":
+                        params["room_type_id"] = request.env[
+                            "pms.room.type"
+                        ].browse(int(params["room_type_id"]))
+
+                    # PREFERRED ROOM ID
+                    elif param == "preferred_room_id":
+                        params["preferred_room_id"] = request.env[
+                            "pms.room"
+                        ].browse(int(params["preferred_room_id"]))
+
+                    #  PRICE TOTAL REVIEW
+                    elif param == "price_total":
+                        # params[param] = float(params[param])
+                        pass
+                    # CHECKIN & CHECKOUT TODO process both as an unit
+                    elif param in ["checkin", "checkout"]:
+                        pass
+
+                    # ARRIVAL HOUR, DEPARTURE HOUR TODO
+                    elif param in ["arrival_hour", "departure_hour"]:
+                        pass
+
+                    # ELIF CHANGE QTY BOARD SERVICES
+                    elif param == "board_service":
+                        # reservation_id, board_service_line, board_service_line_id, qty
+                        # get service_line & service_line_ids and change qty
+                        board_service = params["board_service"]
+                        service_id = board_service["service_id"]
+                        service_line_id = board_service["service_line_id"]
+                        qty = board_service["qty"]
+
+                        service = reservation.folio_id.service_ids.browse(
+                            int(service_id)
+                        )
+                        service_line = service.service_line_ids.browse(
+                            int(service_line_id)
+                        )
+                        service_line.day_qty = int(qty)
+
+                    # RESERVATION TYPE
+
+                    elif param == "reservation_type":
+                        old_reservation_type = reservation.folio_id.reservation_type
+                        reservation.folio_id.reservation_type = params[param]
+
+                if "reservation_type" in params:
+                    del params["reservation_type"]
+                if "board_service" in params:
+                    del params["board_service"]
+                old_values = parse_reservation(reservation)
+                if "price_total" in params:
+                    del params["price_total"]
+                del params["reservation_id"]
+                reservation.write(params)
+            except Exception as e:
+                # REVIEW
+                reservation.write(old_values)
+                reservation.flush()
+                reservation.folio_id.reservation_type = old_reservation_type
+                return json.dumps(
+                    {
+                        "result": False,
+                        "message": str(e),
+                        "reservation": parse_reservation(reservation),
+                    }
+                )
+            # print(parse_reservation(reservation))
+            return json.dumps(
+                {
+                    "result": True,
+                    "message": _("Operation completed successfully."),
+                    "reservation": parse_reservation(reservation),
+                }
+            )
         else:
-            reservation_values = {
-                "nights": 4,
-            }
+            return json.dumps(
+                {"result": False, "message": _("Reservation not found")}
+            )
 
-        return reservation_values
+    @http.route(
+        ["/reservation/virtual"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def create_virtual_reservation(self):
+        reservation_values = http.request.jsonrequest.get("params")
+
+        # return reservation_values
+        checkin_date = datetime.strptime(
+            reservation_values["check_in_date"], "%d/%m/%Y"
+        )
+        checkout_date = datetime.strptime(
+            reservation_values["check_out_date"], "%d/%m/%Y"
+        )
+
+        pricelist_id = reservation_values["pricelist_id"]
+        room_type_id = reservation_values["room_type_id"]
+        pms_property_id = reservation_values["pms_property_id"]
+
+        pricelist = (
+            request.env["product.pricelist"].sudo().search([("id", "=", pricelist_id)])
+        )
+        room_type = (
+            request.env["pms.room.type"].sudo().search([("id", "=", room_type_id)])
+        )
+        pms_property = (
+            request.env["pms.property"].sudo().search([("id", "=", pms_property_id)])
+        )
+
+        reservation = request.env["pms.reservation"].new(
+            {
+                "checkin": checkin_date,
+                "checkout": checkout_date,
+                "room_type_id": room_type,
+                "pricelist_id": pricelist,
+                "pms_property_id": pms_property,
+            }
+        )
+        reservation.flush()
+        # print(reservation.price_total)
+        # print("name", reservation.preferred_room_id.name)
+        # print(reservation.reservation_line_ids.mapped("room_id"))
+        # print(reservation.reservation_line_ids.mapped("price"))
+
+    def _get_reservation_types(self):
+        return [
+            {"id": "out", "name": "Out of service"},
+            {"id": "normal", "name": "Normal"},
+            {"id": "staff", "name": "Staff"},
+        ]
 
     def _get_allowed_payments_journals(self):
         """
@@ -847,7 +981,7 @@ class TestFrontEnd(http.Controller):
     def single_reservation_onchange(self, **kw):
         # TODO something with the data and give back the new values
         params = http.request.jsonrequest.get("params")
-
+        print(params)
         if "rooms" in params:
             reservation_values = {}
         else:
@@ -920,3 +1054,19 @@ class TestFrontEnd(http.Controller):
         # return json.dumps(
         #     {"result": False, "message": _("Unnable to create the reservation")}
         # )
+def parse_reservation(reservation):
+    reservation_values = dict()
+    reservation_values["id"] = reservation.id
+    reservation_values["room_type_id"] = int(reservation.room_type_id.id)
+    reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
+    reservation_values["adults"] = reservation.adults
+    reservation_values["reservation_type"] = reservation.folio_id.reservation_type
+
+    reservation_values["arrival_hour"] = reservation.arrival_hour
+    reservation_values["departure_hour"] = reservation.departure_hour
+    reservation_values["price_total"] = reservation.price_total
+
+    # TODO: pending receive checkin & checkout as a unit
+    # "checkin": reservation.checkin,
+    # "checkout": reservation.checkout,
+    return reservation_values
