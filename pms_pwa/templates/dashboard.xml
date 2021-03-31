@@ -6,15 +6,16 @@
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_dashboard">
                     <div class="row">
-                        <div class="col-md-12 col-lg-6  mt-4">
+                        <div class="col-md-12 col-lg-6 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
                                         NOTIFICATIONS
                                     </h3>
+                                    <hr/>
                                 </div>
                                 <div class="card-body o_pms_pwa_notifications">
-                                    <hr/>
+
                                 </div>
                             </div>
                         </div>
@@ -22,15 +23,22 @@
                             <form method="post" name="tasks" t-att-class="_classes">
                                 <div class="card shadow">
                                     <div class="card-header bg-white o_pms_pwa_card_header">
-                                        <h3 class="col-6 float-left mb-0">
-                                            TASKS
-                                        </h3>
-                                        <a class="col-6 float-right o_pms_pwa_btn_border o_pms_pwa_accept_tasks">
-                                            Mark as completed
-                                        </a>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <h3 class="mb-0">
+                                                    TASKS
+                                                </h3>
+                                            </div>
+                                            <div class="col-6">
+                                                <a href="" class="o_pms_pwa_btn_border o_pms_pwa_accept_tasks">
+                                                    Mark as completed
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <hr/>
                                     </div>
                                     <div class="card-body o_pms_pwa_dbh_force">
-                                        <hr/>
+
                                         <div class="row">
                                             <t t-foreach="tasks" t-as="task">
                                                 <div class="col-1 o_pms_pwa_pt_adjust">
@@ -316,9 +324,10 @@
                                     <h3 class="mb-0">
                                         EMPLOYEE CLOCKIN IN
                                     </h3>
+                                    <hr/>
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <hr/>
+
                                     <t t-foreach="clocking_in" t-as="ci">
                                         <div class="row">
                                             <div class="col-6">
@@ -339,9 +348,10 @@
                                     <h3 class="mb-0">
                                         DELIVERIES
                                     </h3>
+                                    <hr/>
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <hr/>
+
                                     <t t-foreach="deliveries" t-as="delivery">
                                         <div class="row">
                                             <div class="col-6">
@@ -362,9 +372,10 @@
                                     <h3 class="mb-0">
                                         HISTORY
                                     </h3>
+                                    <hr/>
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <hr/>
+
                                     <t t-foreach="history" t-as="line">
                                         <div class="row">
                                             <div class="col-12">

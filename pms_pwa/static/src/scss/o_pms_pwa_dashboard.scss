@@ -83,6 +83,17 @@ section.o_pms_pwa_dashboard {
             text-align: center;
             cursor: pointer;
         }
+        a.o_pms_pwa_accept_tasks {
+            padding-right: 15px;
+            padding-left: 15px;
+            float: right;
+        }
+    }
+    div.card-header {
+        min-height: 3rem;
+        hr {
+            border-top: 1px solid $theme-color-text;
+        }
     }
     div.card-body {
         &:not(.bg-dark):not(.o_pms_pwa_blue) {
@@ -128,9 +139,7 @@ section.o_pms_pwa_dashboard {
         .o_pms_pwa_pt_adjust {
             padding-top: 0.3rem;
         }
-        hr {
-            border-top: 1px solid $theme-color-text;
-        }
+
         .o_pms_pwa_db_dates {
             color: $theme-color-text;
             text-align: left;
