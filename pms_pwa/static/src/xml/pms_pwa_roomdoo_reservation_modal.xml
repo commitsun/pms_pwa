@@ -431,13 +431,13 @@
                                                         />
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12"
-                                                        t-if="reservation.folio_pending_amount.value">
+                                                        t-if="reservation.folio_pending_amount">
                                                         <strong
-                                                            t-esc="reservation.folio_pending_amount.value"
+                                                            t-esc="reservation.folio_pending_amount"
                                                         />€
-                                                        <span>(
-                                                            <t t-esc="reservation.folio_id.outstanding_vat"/>€ vat)
-                                                        </span>
+<!--                                                        <span>(-->
+<!--                                                            <t t-esc="reservation.folio_id.outstanding_vat"/>€ vat)-->
+<!--                                                        </span>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -465,7 +465,6 @@
 <!--                                                            <span t-esc="key" />-->
 <!--                                                        </label>-->
 <!--                                                </div>-->
-
 <!--                                            </t>-->
 <!--                                        </div>-->
                                         <div class="col-6">
@@ -474,7 +473,7 @@
                                                 special="cancel"
                                             >
                                                 <t
-                                                    t-esc="texts.pay_text || _t('Pay')"
+                                                    t-esc="texts.pay_text || _t('Payssss')"
                                                 />
                                             </button>
                                         </div>

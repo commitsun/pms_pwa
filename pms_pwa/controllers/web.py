@@ -1065,8 +1065,6 @@ def parse_reservation(reservation):
     reservation_values["arrival_hour"] = reservation.arrival_hour
     reservation_values["departure_hour"] = reservation.departure_hour
     reservation_values["price_total"] = reservation.price_total
+    reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
 
-    # TODO: pending receive checkin & checkout as a unit
-    # "checkin": reservation.checkin,
-    # "checkout": reservation.checkout,
     return reservation_values
