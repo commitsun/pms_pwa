@@ -109,7 +109,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; reservation.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -167,38 +167,38 @@
                                 <div class="form-group form-field mt8">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <label class="control-label col-12" for="room_type">
+                                            <label class="control-label col-12" for="room_type_id">
                                                 <t t-esc="texts.room_type_text || _t('Room type')"/>
                                             </label>
                                             <select
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="room_type">
+                                                name="room_type_id">
                                                 <option
-                                                    name="room_type"
+                                                    name="room_type_id"
                                                     t-foreach="room_types"
                                                     t-as="key"
-                                                    t-att-value="key"
-                                                    t-att-selected="reservation.room_type_id.room_type === key ? 'selected' : None">
-                                                    <t t-esc="key" />
+                                                    t-att-value="key.id"
+                                                    t-att-selected="reservation.room_type_id.id === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="room_number">
+                                            <label class="control-label col-12" for="preferred_room_id">
                                                 <t t-esc="texts.room_number_text || _t('Room nº')"/>
                                             </label>
                                             <select
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                                                name="room_number">
+                                                name="preferred_room_id">
                                                 <option
-                                                    name="room_number"
+                                                    name="preferred_room_id"
                                                     t-foreach="room_numbers"
                                                     t-as="key"
-                                                    t-att-value="key"
-                                                    t-att-selected="reservation.room_number === key ? 'selected' : None">
-                                                    <t t-esc="key" />
+                                                    t-att-value="key.id"
+                                                    t-att-selected="reservation.preferred_room_id === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
                                                 </option>
                                             </select>
                                         </div>
@@ -231,8 +231,8 @@
                                                 Check in - Check out
                                             </label>
                                             <input class="form-control" type="text" name="range_check_date_modal" t-att-value="reservation.checkin" />
-                                            <input type="hidden" name="check_in_date" value="" />
-                                            <input type="hidden" name="check_out_date" value="" />
+                                            <input type="hidden" name="check_in_date" t-att-value="reservation.checkin" />
+                                            <input type="hidden" name="check_out_date" t-att-value="reservation.checkout" />
                                             <span class="o_pms_pwa_calendar_icon">
                                                 <!-- <span class="fa fa-calendar"/> -->
                                                 <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -241,31 +241,31 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="check_in_hour">
+                                            <label class="control-label col-12" for="arrival_hour">
                                                 <t t-esc="texts.check_in_time_text || _t('Check in time')"/>
                                             </label>
-                                            <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
+                                            <input class="form-control" type="time" name="arrival_hour" t-att-value="reservation.arrival_hour" />
                                         </div>
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="check_out_hour">
+                                            <label class="control-label col-12" for="departure_hour">
                                                 <t t-esc="texts.check_out_time_text || _t('Check out time')"/>
                                             </label>
-                                            <input class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
+                                            <input class="form-control" type="time" name="departure_hour" t-att-value="reservation.departure_hour" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
-                                            <label class="control-label col-12" for="rate_type">
+                                            <label class="control-label col-12" for="reservation_type">
                                                 <t t-esc="_t('Reservation type')" />
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="rate_type">
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
                                                 <option
                                                     name="reservation_type"
-                                                    t-foreach="reservation_types"
+                                                    t-foreach="reservation.reservation_types"
                                                     t-as="key"
-                                                    t-att-value="key"
-                                                    t-att-selected="reservation.reservation_type === key ? 'selected' : None">
-                                                    <t t-esc="key" />
+                                                    t-att-value="key.id"
+                                                    t-att-selected="reservation.reservation_type === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
                                                 </option>
                                             </select>
                                         </div>
@@ -310,13 +310,31 @@
                                     <div class="row m-3">
                                         <div class="col-12">
 
-                                            <t t-foreach="reservation.service_ids" t-as="i">
-                                                <div class="form-check" t-if="i.service_line_ids">
-                                                    <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-attf-id="defaultCheck{{i.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{i.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{i.id}}" />
-                                                    <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{i.id}}">
-                                                        <t t-esc="i.product_id.name" />
+                                            <t t-foreach="reservation.service_ids" t-as="service">
+                                                <div
+                                                    class="form-check"
+                                                    t-if="service.service_line_ids"
+                                                >
+                                                    <input
+                                                        class="o_pms_pwa_checkbox"
+                                                        type="checkbox"
+                                                        checked="checked"
+                                                        t-attf-id="defaultCheck{{service.id}}"
+                                                        data-toggle='collapse'
+                                                        t-attf-data-target='#collapsediv{{service.id}}'
+                                                        aria-expanded="true"
+                                                        t-attf-aria-controls="collapsediv{{service.id}}"
+                                                    />
+                                                    <label
+                                                        class="o_pms_pwa_checkbox_label"
+                                                        t-attf-for="defaultCheck{{service.id}}"
+                                                    >
+                                                        <t t-esc="service.product_id.name" />
                                                     </label>
-                                                    <div t-attf-id='collapsediv{{i.id}}' class='o_pms_pwa_collapse collapse show'>
+                                                    <div
+                                                        t-attf-id='collapsediv{{service.id}}'
+                                                        class='o_pms_pwa_collapse collapse show'
+                                                    >
                                                         <div class="o_pms_pwa_collapse_content mt-3">
                                                             <br />
                                                             <table>
@@ -327,21 +345,32 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    <t t-foreach="i.service_line_ids" t-as="s">
+                                                                    <t
+                                                                        t-foreach="service.service_line_ids"
+                                                                        t-as="service_line"
+                                                                    >
                                                                         <tr>
                                                                             <td class="o_pms_pwa_detail_td">
-                                                                                <span t-esc="s.date"/>
+                                                                                <span t-esc="service_line.date"/>
                                                                             </td>
                                                                             <td class="o_pms_pwa_detail_td">
                                                                                 <div class="o_pms_pwa_rb_box">
-                                                                                    <div t-attf-id='o_pms_pwa_rb_{{i.id}}' t-att-data-id="i.id" class="o_pms_pwa_rb">
-                                                                                        <t t-foreach="reservation.adults+1" t-as="x">
+                                                                                    <div
+                                                                                        t-attf-id='o_pms_pwa_rb_{{service.id}}'
+                                                                                        class="o_pms_pwa_rb"
+                                                                                    >
+                                                                                        <t
+                                                                                            t-foreach="reservation.adults+1"
+                                                                                            t-as="qty"
+                                                                                        >
                                                                                             <div
-                                                                                                t-att-class="'o_pms_pwa_rb_tab ' + (x==s.day_qty ? ' o_pms_pwa_rb_tab_active' : '')"
-                                                                                                t-att-data-value="x">
+                                                                                                t-att-class="'o_pms_pwa_rb_tab ' + (qty==service_line.day_qty ? ' o_pms_pwa_rb_tab_active' : '')"
+                                                                                                t-att-data-serviceid="service.id"
+                                                                                                t-att-data-servicelineid="service_line.id"
+                                                                                                t-att-data-value="qty">
                                                                                                 <div class="o_pms_pwa_rb_spot">
                                                                                                     <span class="o_pms_pwa_rb_txt">
-                                                                                                        <t t-esc="x" />
+                                                                                                        <t t-esc="qty" />
                                                                                                     </span>
                                                                                                 </div>
                                                                                             </div>
@@ -357,10 +386,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-check mt-2" t-if="i.service_line_ids==''">
+                                                <div class="form-check mt-2" t-if="service.service_line_ids==''">
                                                     <input class="o_pms_pwa_checkbox" type="checkbox" id="defaultCheck2" checked="checked" />
                                                     <label class="o_pms_pwa_checkbox_label" for="defaultCheck2">
-                                                        <t t-esc="i.product_id.name" />
+                                                        <t t-esc="service.product_id.name" />
                                                     </label>
                                                 </div>
                                             </t>
@@ -385,6 +414,7 @@
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12">
                                                         <strong
+                                                            class="price_total"
                                                             t-esc="reservation.price_total"
                                                         />€
                                                         <span>(
@@ -401,13 +431,13 @@
                                                         />
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12"
-                                                        t-if="reservation.folio_pending_amount.value">
+                                                        t-if="reservation.folio_pending_amount">
                                                         <strong
-                                                            t-esc="reservation.folio_pending_amount.value"
+                                                            t-esc="reservation.folio_pending_amount"
                                                         />€
-                                                        <span>(
-                                                            <t t-esc="reservation.folio_id.outstanding_vat"/>€ vat)
-                                                        </span>
+<!--                                                        <span>(-->
+<!--                                                            <t t-esc="reservation.folio_id.outstanding_vat"/>€ vat)-->
+<!--                                                        </span>-->
                                                     </div>
                                                 </div>
                                             </div>
@@ -415,36 +445,35 @@
                                     </div>
 
                                     <div class="row mt-4" t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods">
-                                        <div class="col-6 mb-2">
-                                            <h4 t-esc="_t('Payment mode')"/>
-                                            <t
-                                                t-foreach="payment_methods"
-                                                t-as="key"
-                                            >
-                                                <div class="o_pms_pwa_radiobox">
-                                                        <input
-                                                            type="radio"
-                                                            t-att-value="key"
-                                                            name="payment_methods"
-                                                            t-att-id="key"
-                                                        />
-                                                        <label
-                                                            class="control-label o_pms_pwa_radiobox_label"
-                                                            t-att-for="key"
-                                                        >
-                                                            <span t-esc="key" />
-                                                        </label>
-                                                </div>
-
-                                            </t>
-                                        </div>
+<!--                                        <div class="col-6 mb-2">-->
+<!--                                            <h4 t-esc="_t('Payment mode')"/>-->
+<!--                                            <t-->
+<!--                                                t-foreach="payment_methods"-->
+<!--                                                t-as="key"-->
+<!--                                            >-->
+<!--                                                <div class="o_pms_pwa_radiobox">-->
+<!--                                                        <input-->
+<!--                                                            type="radio"-->
+<!--                                                            t-att-value="key"-->
+<!--                                                            name="payment_methods"-->
+<!--                                                            t-att-id="key"-->
+<!--                                                        />-->
+<!--                                                        <label-->
+<!--                                                            class="control-label o_pms_pwa_radiobox_label"-->
+<!--                                                            t-att-for="key"-->
+<!--                                                        >-->
+<!--                                                            <span t-esc="key" />-->
+<!--                                                        </label>-->
+<!--                                                </div>-->
+<!--                                            </t>-->
+<!--                                        </div>-->
                                         <div class="col-6">
                                             <button
                                                 class="btn btn-grey-900 btn-radius o_pms_pwa_pay"
                                                 special="cancel"
                                             >
                                                 <t
-                                                    t-esc="texts.pay_text || _t('Pay')"
+                                                    t-esc="texts.pay_text || _t('Payssss')"
                                                 />
                                             </button>
                                         </div>
@@ -460,28 +489,28 @@
                                     </div>
                                 </div>
                                 <hr/>
-                                <div class="form-group">
-                                    <div class="row mt-3">
-                                        <div class="col-12 text-center">
-                                            <button
-                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
-                                                confirm="Current reservation will be cancelled, are you sure about that?"
-                                                special="cancel"
-                                                class="btn o_pms_pwa_btn_border">
-                                                <t t-esc="_t('Cancel')" />
-                                            </button>
-                                        </div>
-                                    </div>
+<!--                                <div class="form-group">-->
+<!--                                    <div class="row mt-3">-->
+<!--                                        <div class="col-12 text-center">-->
+<!--                                            <button-->
+<!--                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"-->
+<!--                                                confirm="Current reservation will be cancelled, are you sure about that?"-->
+<!--                                                special="cancel"-->
+<!--                                                class="btn o_pms_pwa_btn_border">-->
+<!--                                                <t t-esc="_t('Cancel')" />-->
+<!--                                            </button>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
 
-                                    <div class="row mt-3 mb-3">
-                                        <div class="col-12 text-center">
-                                            <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>
-                                            <input
-                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
-                                                class="btn btn-message" type="submit" t-att-value="_t('Save')"/>
-                                        </div>
-                                    </div>
-                                </div>
+<!--                                    <div class="row mt-3 mb-3">-->
+<!--                                        <div class="col-12 text-center">-->
+<!--                                            <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>-->
+<!--                                            <input-->
+<!--                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"-->
+<!--                                                class="btn btn-message" type="submit" t-att-value="_t('Save')"/>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
                             </form>
                         </div>
                     </div>
@@ -573,7 +602,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; reservation.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -617,7 +646,7 @@
                                 <div class="col-6">
                                     <button type="button"
                                         t-att-url="'/reservation/' + reservation.id +'/checkout'"
-                                        class="btn btn-message btn-block o_pms_pwa_button_cancel_confirm" data-dismiss="modal" aria-label="Checkout">
+                                        class="btn btn-message btn-block o_pms_pwa_button_checkout_confirm" data-dismiss="modal" aria-label="Checkout">
                                         <span>Checkout</span>
                                     </button>
                                 </div>
@@ -712,7 +741,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; reservation.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"
@@ -850,7 +879,7 @@
                                         aria-valuemax="100">
                                     </div>
                                     <div
-                                        t-elif="reservation.state == 'confirm' and 75 &gt; obj.ratio_checkin_data &gt; 50"
+                                        t-elif="reservation.state == 'confirm' and 75 &gt; reservation.ratio_checkin_data &gt; 50"
                                         class="progress-bar bg-warning"
                                         role="progressbar"
                                         t-att-style="'width:'+ reservation.ratio_checkin_data + '%'"

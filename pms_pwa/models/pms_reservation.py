@@ -76,12 +76,26 @@ class PmsReservation(models.Model):
                 raise ValidationError(
                     _("The list of guests is greater than the capacity")
                 )
-            for guest in checkin_partner_list:
+
+            for guest in filter(
+                lambda x: x["pms_property_id"]
+                and x["firstname"]
+                and x["lastname"]
+                and x["lastname2"]
+                and x["birthdate_date"]
+                and x["document_number"]
+                and x["document_type"]
+                and x["document_expedition_date"]
+                and x["gender"]
+                and x["mobile"],
+                checkin_partner_list,
+            ):
                 checkin_partner = self.env["pms.checkin.partner"].create(
                     {
                         "reservation_id": reservation_id,
                         "pms_property_id": guest["pms_property_id"],
                         "name": guest["firstname"],
+                        "firstname": guest["firstname"],
                         "lastname": guest["lastname"],
                         "lastname2": guest["lastname2"],
                         "birthdate_date": guest["birthdate_date"],
