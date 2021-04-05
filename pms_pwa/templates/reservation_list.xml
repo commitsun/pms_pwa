@@ -84,14 +84,25 @@
                                                 <t t-set="folio" t-value="folio"/>
                                             </t>
                                             <t t-foreach="reservations" t-as="obj">
-                                                <tr t-att-class="'o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_' + str(folio.id)"
+                                                <tr t-if="obj_last" t-attf-class="o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_{{folio.id}} o_pms_pwa_accordion_last_item"
                                                     t-att-data-id="obj.id"
+                                                    t-attf-data-loop="{{obj_last}}"
                                                     t-att-id="'reservation_'+ str(obj.id)"
                                                     role="tabpanel">
                                                     <t t-call="pms_pwa.roomdoo_reservation_item">
                                                         <t t-set="obj" t-value="obj"/>
                                                     </t>
                                                 </tr>
+                                                <tr t-else="" t-attf-class="o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_{{folio.id}}"
+                                                    t-att-data-id="obj.id"
+                                                    t-attf-data-loop="{{obj_last}}"
+                                                    t-att-id="'reservation_'+ str(obj.id)"
+                                                    role="tabpanel">
+                                                    <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                        <t t-set="obj" t-value="obj"/>
+                                                    </t>
+                                                </tr>
+
                                             </t>
                                         </t>
                                         <t t-else="">
@@ -141,7 +152,7 @@
         <t t-set="folio_partner_id" t-value="folio.reservation_ids[0].partner_id"/>
         <tr class="o_pms_pwa_reservation accordion md-accordion"
             t-att-id="'accordion_'+str(folio.id)"
-            data-toggle="collapse" aria-expanded="true"
+            data-toggle="collapse" aria-expanded="false"
             t-att-data-target="'.accordion_'+str(folio.id)"
             role="tablist" aria-multiselectable="true">
             <td class="first-col">
@@ -172,8 +183,9 @@
                         </span>
                         <span class="o_pms_pwa_info_num text-right">
                             <!-- <i class="fa fa-user text-rigth"/> -->
-                            <img src="/pms_pwa/static/img/svg/flecha-dropdown.svg" alt="user icon" title="adults" width="7" />
-                            <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
+                            <i class="fa fa-angle-down"></i>
+                            <!-- <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/> -->
+                            <t t-if="folio.reservation_ids" t-esc="len(folio.reservation_ids)"/>
                         </span>
                     </div>
                 </div>
@@ -210,7 +222,7 @@
             </td>
             <td class="o_pms_pwa_lh45">
             </td>
-            <td>
+            <td class="o_pms_pwa_td_services">
 
             </td>
         </tr>
