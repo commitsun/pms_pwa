@@ -63,14 +63,14 @@
                                     <tr>
                                         <th>Guest</th>
                                         <th>ID Res</th>
-                                        <th>Room type</th>
-                                        <th class="text-center">State</th>
+                                        <th>Room</th>
+                                        <!-- <th class="text-center">State</th> -->
                                         <th>Check in</th>
                                         <th>Check out</th>
                                         <th class="text-center">Sales channel</th>
                                         <th class="text-center">Total(€)</th>
                                         <th class="text-center">Outstanding(€)</th>
-                                        <th class="text-center">Room qty</th>
+                                        <!-- <th class="text-center">Room qty</th> -->
                                         <th>Requests</th>
                                         <th>Services</th>
                                         <th></th>
@@ -172,7 +172,7 @@
                         </span>
                         <span class="o_pms_pwa_info_num text-right">
                             <!-- <i class="fa fa-user text-rigth"/> -->
-                            <img src="/pms_pwa/static/img/svg/icon-usuario.svg" alt="user icon" title="adults" width="7" />
+                            <img src="/pms_pwa/static/img/svg/flecha-dropdown.svg" alt="user icon" title="adults" width="7" />
                             <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
                         </span>
                     </div>
@@ -184,9 +184,9 @@
             <td class="o_pms_pwa_lh45">
 
             </td>
-            <td class="o_pms_pwa_lh45 text-center">
+            <!-- <td class="o_pms_pwa_lh45 text-center">
                 <t t-if="folio.state" t-esc="folio.state"/>
-            </td>
+            </td> -->
             <td>
 
             </td>
@@ -202,9 +202,9 @@
             <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.pending_amount"/>
             </td>
-            <td class="o_pms_pwa_lh45 text-center">
+            <!-- <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.number_of_rooms"/>
-            </td>
+            </td> -->
             <td class="o_pms_pwa_lh45">
                 <t t-if="folio.internal_comment" t-esc="folio.internal_comment"/>
             </td>
@@ -262,11 +262,13 @@
             <t t-esc="obj.name"/>
         </td>
         <td class="o_pms_pwa_lh45">
-            <t t-esc="obj.room_type_id.code_type"/>
+            <t t-esc="obj.rooms"/>
+            <br/><span class="o_pms_pwa_wler" t-esc="obj.room_type_id.code_type"/>
+
         </td>
-        <td class="o_pms_pwa_lh45 text-center">
+        <!-- <td class="o_pms_pwa_lh45 text-center">
             <t t-if="obj.state" t-esc="obj.state"/>
-        </td>
+        </td> -->
         <td>
             <t t-esc="obj.checkin.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
         </td>
@@ -289,14 +291,15 @@
         <td class="o_pms_pwa_lh45 text-center">
             <t t-esc="obj.folio_id.pending_amount"/>
         </td>
-        <td class="o_pms_pwa_lh45 text-center">
+        <!-- <td class="o_pms_pwa_lh45 text-center">
 
-        </td>
+        </td> -->
         <td class="o_pms_pwa_lh45">
             <t t-if="obj.requests" t-esc="obj.requests"/>
         </td>
         <td class="o_pms_pwa_lh45">
-            <t t-foreach="list(json.loads(obj.pwa_board_service_tags))" t-as="tag">
+            <t t-esc="obj.board_service_room_id"/>
+            <!-- <t t-foreach="list(json.loads(obj.pwa_board_service_tags))" t-as="tag">
                 <span class="tags_holder">
                     <span class="o_pms_tag_index">
                         <span>
@@ -304,7 +307,7 @@
                         </span>
                     </span>
                 </span>
-            </t>
+            </t> -->
         </td>
         <td style="white-space: nowrap; ">
             <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
