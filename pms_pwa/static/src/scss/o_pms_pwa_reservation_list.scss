@@ -138,12 +138,14 @@ section.o_pms_pwa_roomdoo_list {
                         }
                         & div.dropdown-menu {
                             border: 1px solid $theme-color;
-                            min-width: 6rem;
-                            background-color: $white;
+                            min-width: 6.5rem;
+                            background-color: $white !important;
+                            transform: none !important;
+                            margin-left: -3rem;
                             & button.dropdown-item {
                                 padding: 0.25rem 0.5rem;
                                 & :hover {
-                                    background-color: $theme-color;
+                                    background-color: $bg-theme-color-modal;
                                 }
                             }
                         }
