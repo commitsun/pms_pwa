@@ -546,30 +546,24 @@ class TestFrontEnd(http.Controller):
         keysList = [key for key in keys]
 
         primary_button = ""
-        secondary_buttons = []
+        secondary_buttons = ""
 
         counter = 0
         for _key in keysList:
             if counter == 0:
-                primary_button = (
-                    "<button url='"
-                    + buttons[keysList[counter]]
-                    + "' class='btn o_pms_pwa_abutton o_pms_pwa_button_"
-                    + str(keysList[counter].lower())
-                    + "' type='button'>"
-                    + keysList[counter]
-                    + "</button>"
-                )
+                if buttons[keysList[counter]]:
+                    primary_button = (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' class='btn o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
             else:
-                secondary_buttons.append(
-                    "<button url='"
-                    + buttons[keysList[counter]]
-                    + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
-                    + str(keysList[counter].lower())
-                    + "' type='button'>"
-                    + keysList[counter]
-                    + "</button>"
-                )
+                if buttons[keysList[counter]]:
+                    secondary_buttons += "<button url='"+ buttons[keysList[counter]]+ "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"+ str(keysList[counter].lower())+ "' type='button'>"+ keysList[counter]+ "</button>"
             counter += 1
 
         reservation_values = {
