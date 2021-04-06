@@ -579,7 +579,7 @@ class TestFrontEnd(http.Controller):
 
         counter = 0
         for _key in keysList:
-            if counter == 0:
+            if counter == 0 or keysList[counter] == "Ver Detalle":
                 primary_button = (
                     "<button url='"
                     + buttons[keysList[counter]]
@@ -589,7 +589,7 @@ class TestFrontEnd(http.Controller):
                     + keysList[counter]
                     + "</button>"
                 )
-            else:
+            elif keysList[counter] != "Ver Detalle":
                 secondary_buttons.append(
                     "<button url='"
                     + buttons[keysList[counter]]
@@ -695,15 +695,15 @@ class TestFrontEnd(http.Controller):
 
                     # ROOM TYPE
                     elif param == "room_type_id":
-                        params["room_type_id"] = request.env[
-                            "pms.room.type"
-                        ].browse(int(params["room_type_id"]))
+                        params["room_type_id"] = request.env["pms.room.type"].browse(
+                            int(params["room_type_id"])
+                        )
 
                     # PREFERRED ROOM ID
                     elif param == "preferred_room_id":
-                        params["preferred_room_id"] = request.env[
-                            "pms.room"
-                        ].browse(int(params["preferred_room_id"]))
+                        params["preferred_room_id"] = request.env["pms.room"].browse(
+                            int(params["preferred_room_id"])
+                        )
 
                     #  PRICE TOTAL REVIEW
                     elif param == "price_total":
@@ -770,9 +770,7 @@ class TestFrontEnd(http.Controller):
                 }
             )
         else:
-            return json.dumps(
-                {"result": False, "message": _("Reservation not found")}
-            )
+            return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
         ["/reservation/virtual"],
@@ -1024,7 +1022,6 @@ class TestFrontEnd(http.Controller):
     def single_reservation_onchange(self, **kw):
         # TODO something with the data and give back the new values
         params = http.request.jsonrequest.get("params")
-        print(params)
         if "rooms" in params:
             reservation_values = {}
         else:

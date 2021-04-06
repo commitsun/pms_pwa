@@ -51,21 +51,36 @@ class PmsReservation(models.Model):
                 if k == "Assign":
                     if reservation.to_assign:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Checkin":
                     if reservation.left_for_checkin:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Checkout":
                     if reservation.left_for_checkout:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Payment":
                     if reservation.folio_pending_amount > 0:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Invoice":
                     if reservation.invoice_status == "to invoice":
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Cancel":
                     if reservation.left_for_cancel:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
+            if all(not v for k, v in active_buttons.items()):
+                active_buttons["Ver Detalle"] = "/reservation/" + str(reservation.id)
+
             reservation.pwa_action_buttons = json.dumps(active_buttons)
 
     @api.model
