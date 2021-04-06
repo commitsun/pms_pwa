@@ -61,7 +61,7 @@
                             <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
                                 <thead>
                                     <tr>
-                                        <th>Guest</th>
+                                        <th class="o_pms_pwa_reservation_table_header">Guest</th>
                                         <th class="o_pms_pwa_priority-1">ID Res</th>
                                         <th>Room</th>
                                         <!-- <th class="text-center">State</th> -->

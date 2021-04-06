@@ -124,6 +124,16 @@ section.o_pms_pwa_roomdoo_list {
                     //font: normal normal medium 16px/15px Barlow Condensed;
                     letter-spacing: 0.02px;
                 }
+                .o_pms_pwa_reservation_table_header {
+                    background-color: $white;
+                    width: 200px;
+                    position: sticky;
+                    position: -webkit-sticky; /* for safari */
+                    z-index: 1;
+                    left: 0;
+                    top: 0;
+                    height: min-content;
+                }
             }
         }
         & > tbody {
@@ -160,16 +170,22 @@ section.o_pms_pwa_roomdoo_list {
                     & > td.first-col {
                         // border-left: 1px $bg-theme-color solid;
                         position: sticky;
+                        position: -webkit-sticky; /* for safari */
                         z-index: 1;
                         left: 0;
+                        top: 0;
+                        height: min-content;
                     }
                 }
                 & > td.first-col {
                     display: block;
                     width: 200px;
                     position: sticky;
+                    position: -webkit-sticky; /* for safari */
                     z-index: 1;
                     left: 0;
+                    top: 0;
+                    height: min-content;
 
                     .o_pms_pwa_info {
                         display: flex;

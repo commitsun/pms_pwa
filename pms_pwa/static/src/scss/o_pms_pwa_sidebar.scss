@@ -1,6 +1,10 @@
 body {
     overflow-x: hidden !important;
     display: flex !important;
+    #wrapwrap {
+        overflow: hidden;
+        overflow-y: auto;
+    }
 }
 #menu-toggle2 {
     i {

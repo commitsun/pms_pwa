@@ -100,6 +100,7 @@ section.o_pms_pwa_roomdoo {
         border-radius: 0.25rem;
         min-height: 2rem;
         position: sticky;
+        position: -webkit-sticky; /* for safari */
         z-index: 1;
         .o_pms_pwa_title {
             color: $black;
@@ -202,6 +203,7 @@ section.o_pms_pwa_roomdoo {
     th:first-child,
     td:first-child {
         position: sticky;
+        position: -webkit-sticky; /* for safari */
         left: 0px;
         z-index: 2;
         min-width: 3rem;
@@ -241,11 +243,13 @@ section.o_pms_pwa_roomdoo {
         }
         &_room_type {
             position: sticky;
+            position: -webkit-sticky; /* for safari */
             left: 0px;
             z-index: 2;
             min-width: 200px;
             background-color: $bg-theme-color;
             width: 14.25%;
+
             @media (max-width: 991.98px) {
                 width: 175px;
                 min-width: 175px;
