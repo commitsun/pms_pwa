@@ -214,14 +214,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         try {
                             $(String("#reservation_" + data_id)).find(
                                 "td"
-                            )[3].textContent = updated_data.state;
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[12].firstElementChild.outerHTML =
+                            )[10].firstElementChild.outerHTML =
                                 updated_data.primary_button;
                             $(String("#reservation_" + data_id)).find(
                                 "td"
-                            )[12].lastElementChild.lastElementChild.innerHTML =
+                            )[10].lastElementChild.lastElementChild.innerHTML =
                                 updated_data.secondary_buttons;
                         } catch (error) {
                             console.log(error);
