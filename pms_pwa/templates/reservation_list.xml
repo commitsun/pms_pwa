@@ -324,7 +324,10 @@
         <td style="white-space: nowrap; " >
             <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
             <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
-            <button t-att-url="pwa_action_buttons[keys[0]]" t-att-class="'btn o_pms_pwa_default_button_name o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
+            <button t-if="pwa_action_buttons[keys[0]]" t-att-url="pwa_action_buttons[keys[0]]" t-att-class="'btn o_pms_pwa_default_button_name o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
+                <t t-esc="keys[0]"/>
+            </button>
+            <button t-else="" t-att-class="'disabled btn o_pms_pwa_default_button_name o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
                 <t t-esc="keys[0]"/>
             </button>
             <span class="dropdown">
@@ -346,8 +349,15 @@
 <!--                    </t>-->
                     <t t-foreach="pwa_action_buttons" t-as="button">
                         <button
+                            t-if="pwa_action_buttons[button]"
                             t-att-url="pwa_action_buttons[button]"
                             t-att-class="'dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_' + str(button).lower()"
+                            type="button">
+                            <t t-esc="button"/>
+                        </button>
+                        <button
+                            t-else=""
+                            t-att-class="'disabled dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_' + str(button).lower()"
                             type="button">
                             <t t-esc="button"/>
                         </button>

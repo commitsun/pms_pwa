@@ -562,12 +562,30 @@ class TestFrontEnd(http.Controller):
                         + keysList[counter]
                         + "</button>"
                     )
+                else:
+                    primary_button = (
+                        "<button class='disabled o_pms_pwa_default_button_name btn "
+                        + "o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
             else:
                 if buttons[keysList[counter]]:
                     secondary_buttons += (
                         "<button url='"
                         + buttons[keysList[counter]]
                         + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+                else:
+                    secondary_buttons += (
+                        "<button class='disabled dropdown-item"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
                         + "' type='button'>"
                         + keysList[counter]

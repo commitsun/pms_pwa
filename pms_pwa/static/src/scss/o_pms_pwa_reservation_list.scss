@@ -24,6 +24,9 @@
 // }
 
 section.o_pms_pwa_roomdoo_list {
+    .o_pms_pwa_abutton.disabled {
+        color: $theme-color-text;
+    }
     .o_pms_pwa_w66 {
         width: 66%;
     }
