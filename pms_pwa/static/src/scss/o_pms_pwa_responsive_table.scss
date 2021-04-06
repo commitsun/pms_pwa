@@ -5,6 +5,18 @@
     .o_pms_pwa_button_assign {
         display: none;
     }
+    .o_pms_pwa_button_cancel {
+        display: none;
+    }
+    .o_pms_pwa_button_checkout {
+        display: none;
+    }
+    .o_pms_pwa_button_payment {
+        display: none;
+    }
+    .o_pms_pwa_button_invoice {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 1375px) and (min-width: 1225px) {
@@ -26,6 +38,18 @@
 }
 @media screen and (max-width: 1250px) {
     .o_pms_pwa_button_assign {
+        display: none;
+    }
+    .o_pms_pwa_button_cancel {
+        display: none;
+    }
+    .o_pms_pwa_button_checkout {
+        display: none;
+    }
+    .o_pms_pwa_button_payment {
+        display: none;
+    }
+    .o_pms_pwa_button_invoice {
         display: none;
     }
 }
@@ -102,6 +126,18 @@
         margin-top: -2rem;
         min-height: 80%;
         .o_pms_pwa_button_assign {
+            display: none;
+        }
+        .o_pms_pwa_button_cancel {
+            display: none;
+        }
+        .o_pms_pwa_button_checkout {
+            display: none;
+        }
+        .o_pms_pwa_button_payment {
+            display: none;
+        }
+        .o_pms_pwa_button_invoice {
             display: none;
         }
         .dropdown-menu.show {
