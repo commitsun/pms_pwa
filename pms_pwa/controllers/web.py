@@ -563,7 +563,15 @@ class TestFrontEnd(http.Controller):
                     )
             else:
                 if buttons[keysList[counter]]:
-                    secondary_buttons += "<button url='"+ buttons[keysList[counter]]+ "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"+ str(keysList[counter].lower())+ "' type='button'>"+ keysList[counter]+ "</button>"
+                    secondary_buttons += (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
             counter += 1
 
         reservation_values = {
