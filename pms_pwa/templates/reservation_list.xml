@@ -62,17 +62,17 @@
                                 <thead>
                                     <tr>
                                         <th>Guest</th>
-                                        <th>ID Res</th>
+                                        <th class="o_pms_pwa_priority-1">ID Res</th>
                                         <th>Room</th>
                                         <!-- <th class="text-center">State</th> -->
                                         <th>Check in</th>
                                         <th>Check out</th>
-                                        <th class="text-center">Sales channel</th>
-                                        <th class="text-center">Total(€)</th>
+                                        <th class="text-center o_pms_pwa_priority-2">Sales channel</th>
+                                        <th class="text-center o_pms_pwa_priority-3">Total(€)</th>
                                         <th class="text-center">Outstanding(€)</th>
                                         <!-- <th class="text-center">Room qty</th> -->
-                                        <th>Requests</th>
-                                        <th>Services</th>
+                                        <th class="o_pms_pwa_priority-5">Requests</th>
+                                        <th class="o_pms_pwa_priority-4">Services</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -190,7 +190,7 @@
                     </div>
                 </div>
             </td>
-            <td class="o_pms_pwa_lh45">
+            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-1">
                 <t t-esc="folio.name"/>
             </td>
             <td class="o_pms_pwa_lh45">
@@ -205,10 +205,10 @@
             <td>
 
             </td>
-            <td class="text-center">
+            <td class="text-center o_pms_pwa_priority-2">
 
             </td>
-            <td class="o_pms_pwa_lh45 text-center">
+            <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
                 <t t-esc="folio.amount_total"/>
             </td>
             <td class="o_pms_pwa_lh45 text-center">
@@ -217,10 +217,10 @@
             <!-- <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.number_of_rooms"/>
             </td> -->
-            <td class="o_pms_pwa_lh45">
+            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
                 <t t-if="folio.internal_comment" t-esc="folio.internal_comment"/>
             </td>
-            <td class="o_pms_pwa_lh45">
+            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-4">
             </td>
             <td class="o_pms_pwa_td_services">
 
@@ -270,7 +270,7 @@
                     aria-valuemax="100"></div>
             </div>
         </td>
-        <td class="o_pms_pwa_lh45">
+        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-1">
             <t t-esc="obj.name"/>
         </td>
         <td class="o_pms_pwa_lh45">
@@ -287,7 +287,7 @@
         <td>
             <t t-esc="obj.checkout.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
         </td>
-        <td class="text-center">
+        <td class="text-center o_pms_pwa_priority-2">
             <img t-if="obj.agency_id" t-att-src="website.image_url(obj.agency_id, 'image_128')"
                 width="80"
                 t-att-title="obj.agency_id.name"
@@ -297,7 +297,7 @@
                 <span class="o_pms_pwa_wler ml-2" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
             </span>
         </td>
-        <td class="o_pms_pwa_lh45 text-center">
+        <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
             <t t-esc="obj.folio_id.amount_total"/>
         </td>
         <td class="o_pms_pwa_lh45 text-center">
@@ -306,7 +306,7 @@
         <!-- <td class="o_pms_pwa_lh45 text-center">
 
         </td> -->
-        <td class="o_pms_pwa_lh45">
+        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
             <t t-if="obj.requests" t-esc="obj.requests"/>
         </td>
         <td class="o_pms_pwa_lh45">
@@ -321,7 +321,7 @@
                 </span>
             </t> -->
         </td>
-        <td style="white-space: nowrap; ">
+        <td style="white-space: nowrap; " >
             <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
             <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
             <button t-att-url="pwa_action_buttons[keys[0]]" t-att-class="'btn o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
