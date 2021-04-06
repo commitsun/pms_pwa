@@ -309,7 +309,7 @@
         <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
             <t t-if="obj.requests" t-esc="obj.requests"/>
         </td>
-        <td class="o_pms_pwa_lh45">
+        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-4">
             <t t-if="obj.board_service_room_id" t-esc="obj.board_service_room_id.display_name"/>
             <!-- <t t-foreach="list(json.loads(obj.pwa_board_service_tags))" t-as="tag">
                 <span class="tags_holder">
