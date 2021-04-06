@@ -98,7 +98,7 @@
         .o_pms_pwa_default_button_name {
             display: none;
         }
-        .dropdown-menu.show {
+        .dropdown.show {
             z-index: 3;
         }
     }
@@ -113,6 +113,9 @@
             z-index: 2;
             left: 180px;
             margin-top: -1.5rem;
+        }
+        .dropdown.show {
+            z-index: 3;
         }
     }
     .o_pms_pwa_info_num {

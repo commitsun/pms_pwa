@@ -555,7 +555,7 @@ class TestFrontEnd(http.Controller):
                     primary_button = (
                         "<button url='"
                         + buttons[keysList[counter]]
-                        + "' class='o_pms_pwa_default_button_name btn"
+                        + "' class='o_pms_pwa_default_button_name btn "
                         + "o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
                         + "' type='button'>"
