@@ -52,11 +52,23 @@ def _get_search_domain(search=False, **post):
         return domain_fields
 
 
-class PmsReservation(models.Model):
+class PmsFolio(models.Model):
     _inherit = "pms.folio"
     # REVIEW: location of this field [pms|pms_pwa]
     folio_total_adults = fields.Integer(
         string="Folio nº adults", compute="_compute_folio_adults"
+    )
+    checkin_folio = fields.Date(
+        string="Check In Folio",
+        compute="_compute_checkin_folio",
+        store=True,
+        help="Only set when all bookings on the folio have the same check-in date",
+    )
+    checkout_folio = fields.Date(
+        string="Check Out Folio",
+        help="Only set when all bookings on the folio have the same check-out date",
+        compute="_compute_checkout_folio",
+        store=True,
     )
 
     def _compute_folio_adults(self):
@@ -65,6 +77,28 @@ class PmsReservation(models.Model):
             for res in record.reservation_ids:
                 adults += res.adults
             record.folio_total_adults = adults
+
+    @api.depends("reservation_ids.checkin")
+    def _compute_checkin_folio(self):
+        for record in self:
+            if (
+                record.reservation_ids
+                and len(set(record.reservation_ids.mapped("checkin"))) == 1
+            ):
+                record.checkin_folio = record.reservation_ids[0].checkin
+            else:
+                record.checkin_folio = False
+
+    @api.depends("reservation_ids.checkout")
+    def _compute_checkout_folio(self):
+        for record in self:
+            if (
+                record.reservation_ids
+                and len(set(record.reservation_ids.mapped("checkout"))) == 1
+            ):
+                record.checkout_folio = record.reservation_ids[0].checkout
+            else:
+                record.checkout_folio = False
 
     @api.model
     def search_count_folios_pwa(self, search, **post):
