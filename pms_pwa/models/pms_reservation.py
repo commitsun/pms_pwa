@@ -51,21 +51,36 @@ class PmsReservation(models.Model):
                 if k == "Assign":
                     if reservation.to_assign:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Checkin":
                     if reservation.left_for_checkin:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Checkout":
                     if reservation.left_for_checkout:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Payment":
                     if reservation.folio_pending_amount > 0:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Invoice":
                     if reservation.invoice_status == "to invoice":
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
                 elif k == "Cancel":
                     if reservation.left_for_cancel:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
+                    else:
+                        active_buttons[k] = False
+            if all(not v for k, v in active_buttons.items()):
+                active_buttons["Ver Detalle"] = "/reservation/" + str(reservation.id)
+
             reservation.pwa_action_buttons = json.dumps(active_buttons)
 
     @api.model
@@ -76,12 +91,26 @@ class PmsReservation(models.Model):
                 raise ValidationError(
                     _("The list of guests is greater than the capacity")
                 )
-            for guest in checkin_partner_list:
+
+            for guest in filter(
+                lambda x: x["pms_property_id"]
+                and x["firstname"]
+                and x["lastname"]
+                and x["lastname2"]
+                and x["birthdate_date"]
+                and x["document_number"]
+                and x["document_type"]
+                and x["document_expedition_date"]
+                and x["gender"]
+                and x["mobile"],
+                checkin_partner_list,
+            ):
                 checkin_partner = self.env["pms.checkin.partner"].create(
                     {
                         "reservation_id": reservation_id,
                         "pms_property_id": guest["pms_property_id"],
                         "name": guest["firstname"],
+                        "firstname": guest["firstname"],
                         "lastname": guest["lastname"],
                         "lastname2": guest["lastname2"],
                         "birthdate_date": guest["birthdate_date"],

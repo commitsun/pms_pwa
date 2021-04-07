@@ -200,10 +200,10 @@
                 <t t-if="folio.state" t-esc="folio.state"/>
             </td> -->
             <td>
-
+                <t t-esc="min(folio.reservation_ids.mapped('checkin'))"/>
             </td>
             <td>
-
+                <t t-esc="max(folio.reservation_ids.mapped('checkin'))"/>
             </td>
             <td class="text-center o_pms_pwa_priority-2">
 
@@ -294,6 +294,7 @@
                 t-att-alt="obj.agency_id.name"/>
             <span t-else="">
                 <span t-if="obj.channel_type_id" t-esc="obj.channel_type_id.name"/><br/>
+                <span t-if="obj.channel_type_id" class="o_pms_pwa_wler" t-esc="obj.partner_id.name"/><br/>
                 <span class="o_pms_pwa_wler ml-2" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
             </span>
         </td>
