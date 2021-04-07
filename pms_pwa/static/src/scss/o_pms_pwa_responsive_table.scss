@@ -1,0 +1,124 @@
+@media screen and (max-width: 1510px) and (min-width: 1376px) {
+    .o_pms_pwa_priority-5 {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1375px) and (min-width: 1225px) {
+    .o_pms_pwa_priority-5 {
+        display: none;
+    }
+    .o_pms_pwa_priority-4 {
+        display: none;
+    }
+    #o_pms_pwa_user_property {
+        display: none;
+    }
+    .o_pms_user_name {
+        display: none;
+    }
+}
+@media screen and (max-width: 1510px) {
+    .o_pms_pwa_default_button_name {
+        display: none;
+    }
+}
+@media screen and (max-width: 1224px) and (min-width: 1180px) {
+    .o_pms_pwa_priority-5 {
+        display: none;
+    }
+    .o_pms_pwa_priority-4 {
+        display: none;
+    }
+    .o_pms_pwa_priority-3 {
+        display: none;
+    }
+    #o_pms_pwa_user_property {
+        display: none;
+    }
+    .o_pms_user_name {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1179px) and (min-width: 1090px) {
+    .o_pms_pwa_priority-5 {
+        display: none;
+    }
+    .o_pms_pwa_priority-4 {
+        display: none;
+    }
+    .o_pms_pwa_priority-3 {
+        display: none;
+    }
+    .o_pms_pwa_priority-2 {
+        display: none;
+    }
+    #o_pms_pwa_user_property {
+        display: none;
+    }
+    .o_pms_user_name {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1089px) and (min-width: 992px) {
+    .o_pms_pwa_priority-5 {
+        display: none;
+    }
+    .o_pms_pwa_priority-4 {
+        display: none;
+    }
+    .o_pms_pwa_priority-3 {
+        display: none;
+    }
+    .o_pms_pwa_priority-2 {
+        display: none;
+    }
+    .o_pms_pwa_priority-1 {
+        display: none;
+    }
+    #o_pms_pwa_user_property {
+        display: none;
+    }
+    .o_pms_user_name {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 992px) and (min-width: 768px) {
+    section.o_pms_pwa_roomdoo_list .table-hover > tbody > tr > td:last-of-type {
+        display: block;
+        width: 60px;
+        position: absolute;
+        // z-index: 2;
+        right: 0;
+        margin-top: -2.25rem;
+        min-height: 80%;
+        .o_pms_pwa_default_button_name {
+            display: none;
+        }
+        .dropdown.show {
+            z-index: 3;
+        }
+    }
+}
+@media screen and (max-width: 767px) {
+    section.o_pms_pwa_roomdoo_list .table-hover > tbody > tr > td:last-of-type {
+        // display: none;
+        span.dropdown {
+            display: block;
+            width: 10px;
+            position: absolute;
+            z-index: 2;
+            left: 180px;
+            margin-top: -1.5rem;
+        }
+        .dropdown.show {
+            z-index: 3;
+        }
+    }
+    .o_pms_pwa_info_num {
+        display: none;
+    }
+}

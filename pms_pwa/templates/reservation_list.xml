@@ -61,18 +61,18 @@
                             <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
                                 <thead>
                                     <tr>
-                                        <th>Guest</th>
-                                        <th>ID Res</th>
-                                        <th>Room type</th>
-                                        <th class="text-center">State</th>
+                                        <th class="o_pms_pwa_reservation_table_header">Guest</th>
+                                        <th class="o_pms_pwa_priority-1">ID Res</th>
+                                        <th>Room</th>
+                                        <!-- <th class="text-center">State</th> -->
                                         <th>Check in</th>
                                         <th>Check out</th>
-                                        <th class="text-center">Sales channel</th>
-                                        <th class="text-center">Total (€)</th>
-                                        <th class="text-center">Outstanding (€)</th>
-                                        <th class="text-center">Room qty</th>
-                                        <th>Requests</th>
-                                        <th>Services</th>
+                                        <th class="text-center o_pms_pwa_priority-2">Sales channel</th>
+                                        <th class="text-center o_pms_pwa_priority-3">Total(€)</th>
+                                        <th class="text-center">Outstanding(€)</th>
+                                        <!-- <th class="text-center">Room qty</th> -->
+                                        <th class="o_pms_pwa_priority-5">Requests</th>
+                                        <th class="o_pms_pwa_priority-4">Services</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -84,14 +84,25 @@
                                                 <t t-set="folio" t-value="folio"/>
                                             </t>
                                             <t t-foreach="reservations" t-as="obj">
-                                                <tr t-att-class="'o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_' + str(folio.id)"
+                                                <tr t-if="obj_last" t-attf-class="o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_{{folio.id}} o_pms_pwa_accordion_last_item"
                                                     t-att-data-id="obj.id"
+                                                    t-attf-data-loop="{{obj_last}}"
                                                     t-att-id="'reservation_'+ str(obj.id)"
                                                     role="tabpanel">
                                                     <t t-call="pms_pwa.roomdoo_reservation_item">
                                                         <t t-set="obj" t-value="obj"/>
                                                     </t>
                                                 </tr>
+                                                <tr t-else="" t-attf-class="o_pms_pwa_reservation o_pms_pwa_accordion_padding collapse accordion_{{folio.id}}"
+                                                    t-att-data-id="obj.id"
+                                                    t-attf-data-loop="{{obj_last}}"
+                                                    t-att-id="'reservation_'+ str(obj.id)"
+                                                    role="tabpanel">
+                                                    <t t-call="pms_pwa.roomdoo_reservation_item">
+                                                        <t t-set="obj" t-value="obj"/>
+                                                    </t>
+                                                </tr>
+
                                             </t>
                                         </t>
                                         <t t-else="">
@@ -141,7 +152,7 @@
         <t t-set="folio_partner_id" t-value="folio.reservation_ids[0].partner_id"/>
         <tr class="o_pms_pwa_reservation accordion md-accordion"
             t-att-id="'accordion_'+str(folio.id)"
-            data-toggle="collapse" aria-expanded="true"
+            data-toggle="collapse" aria-expanded="false"
             t-att-data-target="'.accordion_'+str(folio.id)"
             role="tablist" aria-multiselectable="true">
             <td class="first-col">
@@ -172,55 +183,46 @@
                         </span>
                         <span class="o_pms_pwa_info_num text-right">
                             <!-- <i class="fa fa-user text-rigth"/> -->
-                            <img src="/pms_pwa/static/img/svg/icon-usuario.svg" alt="user icon" title="adults" width="7" />
-                            <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/>
+                            <i class="fa fa-angle-down"></i>
+                            <!-- <t t-if="folio.folio_total_adults" t-esc="folio.folio_total_adults"/> -->
+                            <t t-if="folio.reservation_ids" t-esc="len(folio.reservation_ids)"/>
                         </span>
                     </div>
                 </div>
             </td>
-            <td class="o_pms_pwa_lh45">
+            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-1">
                 <t t-esc="folio.name"/>
             </td>
             <td class="o_pms_pwa_lh45">
 
             </td>
-            <td class="o_pms_pwa_lh45 text-center">
+            <!-- <td class="o_pms_pwa_lh45 text-center">
                 <t t-if="folio.state" t-esc="folio.state"/>
-            </td>
+            </td> -->
             <td>
                 <t t-esc="min(folio.reservation_ids.mapped('checkin'))"/>
             </td>
             <td>
                 <t t-esc="max(folio.reservation_ids.mapped('checkin'))"/>
             </td>
-            <td class="text-center">
-            <img
-                t-if="folio.agency_id"
-                t-att-src="website.image_url(folio.agency_id, 'image_128')"
-                width="80"
-                t-att-title="folio.agency_id.name"
-                t-att-alt="folio.agency_id.name"
-            />
-            <span t-else="">
-                <span t-if="folio.channel_type_id" t-esc="folio.channel_type_id.name"/><br/>
-                <span t-if="folio.channel_type_id" class="o_pms_pwa_wler" t-esc="folio.user_id.name"/><br/>
-            </span>
-        </td>
-            <td class="o_pms_pwa_lh45 text-center">
-                <t t-esc="folio.amount_total"/>
+            <td class="text-center o_pms_pwa_priority-2">
+
+            </td>
+            <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
+                <!-- <t t-esc="folio.amount_total"/> -->
             </td>
             <td class="o_pms_pwa_lh45 text-center">
-                <t t-esc="folio.pending_amount"/>
+                <!-- <t t-esc="folio.pending_amount"/> -->
             </td>
-            <td class="o_pms_pwa_lh45 text-center">
+            <!-- <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.number_of_rooms"/>
-            </td>
-            <td class="o_pms_pwa_lh45">
+            </td> -->
+            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
                 <t t-if="folio.internal_comment" t-esc="folio.internal_comment"/>
             </td>
-            <td class="o_pms_pwa_lh45">
+            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-4">
             </td>
-            <td>
+            <td class="o_pms_pwa_td_services">
 
             </td>
         </tr>
@@ -268,22 +270,24 @@
                     aria-valuemax="100"></div>
             </div>
         </td>
-        <td class="o_pms_pwa_lh45">
+        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-1">
             <t t-esc="obj.name"/>
         </td>
         <td class="o_pms_pwa_lh45">
-            <t t-esc="obj.room_type_id.code_type"/>
+            <t t-esc="obj.rooms"/>
+            <br/><span class="o_pms_pwa_wler" t-esc="obj.room_type_id.code_type"/>
+
         </td>
-        <td class="o_pms_pwa_lh45 text-center">
+        <!-- <td class="o_pms_pwa_lh45 text-center">
             <t t-if="obj.state" t-esc="obj.state"/>
-        </td>
+        </td> -->
         <td>
             <t t-esc="obj.checkin.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
         </td>
         <td>
             <t t-esc="obj.checkout.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
         </td>
-        <td class="text-center">
+        <td class="text-center o_pms_pwa_priority-2">
             <img t-if="obj.agency_id" t-att-src="website.image_url(obj.agency_id, 'image_128')"
                 width="80"
                 t-att-title="obj.agency_id.name"
@@ -294,20 +298,21 @@
                 <span class="o_pms_pwa_wler ml-2" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
             </span>
         </td>
-        <td class="o_pms_pwa_lh45 text-center">
+        <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
             <t t-esc="obj.folio_id.amount_total"/>
         </td>
         <td class="o_pms_pwa_lh45 text-center">
             <t t-esc="obj.folio_id.pending_amount"/>
         </td>
-        <td class="o_pms_pwa_lh45 text-center">
-            1
-        </td>
-        <td class="o_pms_pwa_lh45">
+        <!-- <td class="o_pms_pwa_lh45 text-center">
+
+        </td> -->
+        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
             <t t-if="obj.requests" t-esc="obj.requests"/>
         </td>
-        <td class="o_pms_pwa_lh45">
-            <t t-foreach="list(json.loads(obj.pwa_board_service_tags))" t-as="tag">
+        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-4">
+            <t t-if="obj.board_service_room_id" t-esc="obj.board_service_room_id.display_name"/>
+            <!-- <t t-foreach="list(json.loads(obj.pwa_board_service_tags))" t-as="tag">
                 <span class="tags_holder">
                     <span class="o_pms_tag_index">
                         <span>
@@ -315,12 +320,15 @@
                         </span>
                     </span>
                 </span>
-            </t>
+            </t> -->
         </td>
-        <td style="white-space: nowrap; ">
+        <td style="white-space: nowrap; " >
             <t t-set="pwa_action_buttons" t-value="json.loads(obj.pwa_action_buttons)"/>
             <t t-set="keys" t-value="list(pwa_action_buttons.keys())"/>
-            <button t-att-url="pwa_action_buttons[keys[0]]" t-att-class="'btn o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
+            <button t-if="pwa_action_buttons[keys[0]]" t-att-url="pwa_action_buttons[keys[0]]" t-att-class="'btn o_pms_pwa_default_button_name o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
+                <t t-esc="keys[0]"/>
+            </button>
+            <button t-else="" t-att-class="'disabled btn o_pms_pwa_default_button_name o_pms_pwa_abutton o_pms_pwa_button_' + str(keys[0]).lower()" type="button">
                 <t t-esc="keys[0]"/>
             </button>
             <span class="dropdown">
@@ -342,8 +350,15 @@
 <!--                    </t>-->
                     <t t-foreach="pwa_action_buttons" t-as="button">
                         <button
+                            t-if="pwa_action_buttons[button]"
                             t-att-url="pwa_action_buttons[button]"
                             t-att-class="'dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_' + str(button).lower()"
+                            type="button">
+                            <t t-esc="button"/>
+                        </button>
+                        <button
+                            t-else=""
+                            t-att-class="'disabled dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_' + str(button).lower()"
                             type="button">
                             <t t-esc="button"/>
                         </button>
