@@ -29,7 +29,7 @@ class PWAHome(Home):
             "pms_pwa.group_pms_property_user"
         ):
             return "/"
-        return super(Home, self)._login_redirect(uid, redirect=redirect)
+        return super(PWAHome, self)._login_redirect(uid, redirect=redirect)
 
 
 # Frontend controllers to test
