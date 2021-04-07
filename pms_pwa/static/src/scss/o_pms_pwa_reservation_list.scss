@@ -112,7 +112,7 @@ section.o_pms_pwa_roomdoo_list {
         // font: normal normal normal 16px/16px Barlow Condensed;
         font-family: "Barlow Condensed";
         letter-spacing: 0.02px;
-        font-size: 16px;
+        font-size: 18px;
         color: $table-text-color;
         line-height: 16px;
         & > thead {
@@ -122,7 +122,7 @@ section.o_pms_pwa_roomdoo_list {
                     border-top: none;
                     border-bottom-color: $theme-color;
                     font-family: "Barlow Condensed";
-                    font-size: 16px;
+                    font-size: 18px;
                     font-weight: 600;
                     //font: normal normal medium 16px/15px Barlow Condensed;
                     letter-spacing: 0.02px;
@@ -151,12 +151,16 @@ section.o_pms_pwa_roomdoo_list {
                         }
                         & div.dropdown-menu {
                             border: 1px solid $theme-color;
-                            min-width: 6.5rem;
+                            min-width: 7rem;
                             background-color: $white !important;
                             transform: none !important;
                             margin-left: -3rem;
+                            font-size: 16px;
+                            font-family: "Barlow";
+                            line-height: 1.1rem;
                             & button.dropdown-item {
                                 padding: 0.25rem 0.5rem;
+                                font-weight: 600;
                                 & :hover {
                                     background-color: $bg-theme-color-modal;
                                 }
@@ -199,7 +203,7 @@ section.o_pms_pwa_roomdoo_list {
                         .o_pms_pwa_info_name {
                             //font: normal normal bold 16px/16px Barlow Condensed;
                             font-family: "Barlow Condensed";
-                            font-size: 16px;
+                            font-size: 18px;
                             font-weight: bold;
                             letter-spacing: 0.02px;
                             margin-left: -0.5rem;

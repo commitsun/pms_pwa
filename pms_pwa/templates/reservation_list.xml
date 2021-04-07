@@ -209,10 +209,10 @@
 
             </td>
             <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
-                <t t-esc="folio.amount_total"/>
+                <!-- <t t-esc="folio.amount_total"/> -->
             </td>
             <td class="o_pms_pwa_lh45 text-center">
-                <t t-esc="folio.pending_amount"/>
+                <!-- <t t-esc="folio.pending_amount"/> -->
             </td>
             <!-- <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.number_of_rooms"/>
