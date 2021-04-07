@@ -584,7 +584,8 @@ class TestFrontEnd(http.Controller):
                     primary_button = (
                         "<button url='"
                         + buttons[keysList[counter]]
-                        + "' class='btn o_pms_pwa_abutton o_pms_pwa_button_"
+                        + "' class='btn o_pms_pwa_default_button_name"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
                         + "' type='button'>"
                         + keysList[counter]
@@ -593,7 +594,8 @@ class TestFrontEnd(http.Controller):
                 else:
                     primary_button = (
                         "<button"
-                        + "' class='disabled btn o_pms_pwa_abutton o_pms_pwa_button_"
+                        + " class='disabled btn o_pms_pwa_default_button_name"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
                         + "' type='button'>"
                         + keysList[counter]
