@@ -580,25 +580,45 @@ class TestFrontEnd(http.Controller):
         counter = 0
         for _key in keysList:
             if counter == 0 or keysList[counter] == "Ver Detalle":
-                primary_button = (
-                    "<button url='"
-                    + buttons[keysList[counter]]
-                    + "' class='btn o_pms_pwa_abutton o_pms_pwa_button_"
-                    + str(keysList[counter].lower())
-                    + "' type='button'>"
-                    + keysList[counter]
-                    + "</button>"
-                )
+                if buttons[keysList[counter]]:
+                    primary_button = (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' class='btn o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+                else:
+                    primary_button = (
+                        "<button"
+                        + "' class='disabled btn o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
             else:
-                secondary_buttons += (
-                    "<button url='"
-                    + buttons[keysList[counter]]
-                    + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
-                    + str(keysList[counter].lower())
-                    + "' type='button'>"
-                    + keysList[counter]
-                    + "</button>"
-                )
+                if buttons[keysList[counter]]:
+                    secondary_buttons += (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+                else:
+                    secondary_buttons += (
+                        "<button class='disabled dropdown-item"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
             counter += 1
 
         reservation_values = {

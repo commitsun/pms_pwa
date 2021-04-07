@@ -259,7 +259,7 @@
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
                                                 <option
-                                                    t-foreach="reservation_types"
+                                                    t-foreach="reservation.reservation_types"
                                                     t-as="key"
                                                     t-att-value="key.id"
                                                     t-att-selected="reservation.reservation_type === key.id ? 'selected' : None">
