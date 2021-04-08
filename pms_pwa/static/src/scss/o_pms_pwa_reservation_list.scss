@@ -402,6 +402,7 @@ div.o_pms_pwa_reservation_modal {
     div.o_pms_pwa_group_separation {
         border-bottom: 1px solid $table-text-color-lighter;
     }
+
     label.o_pms_pwa_checkbox_label {
         padding-top: 0;
     }
@@ -596,6 +597,7 @@ div.o_pms_pwa_reservation_modal {
     .o_pms_pwa_rb_box {
         max-width: 420px;
         margin: auto;
+        margin-top: -0.5rem;
     }
     .o_pms_pwa_rb {
         padding: 0.3rem 0;

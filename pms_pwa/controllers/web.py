@@ -561,6 +561,7 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def reservation_detail_json(self, reservation_id=None, **kw):
+        reservation = False
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
@@ -701,6 +702,7 @@ class TestFrontEnd(http.Controller):
     def reservation_onchange_data(self, reservation_id=None, **kw):
         old_reservation_type = None
         old_values = None
+        reservation = False
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]

@@ -338,6 +338,7 @@
                                                                                 <tr>
                                                                                     <th class="o_pms_pwa_detail_th">Fecha</th>
                                                                                     <th class="o_pms_pwa_detail_th">Cantidad</th>
+                                                                                    <th class="o_pms_pwa_detail_th">Precio</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -346,10 +347,10 @@
                                                                                         <td class="o_pms_pwa_detail_td">
                                                                                             <span t-field="s.date" t-options='{"format": "dd/MM/yyyy"}' />
                                                                                         </td>
-                                                                                        <td class="o_pms_pwa_detail_td">
+                                                                                        <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                                             <div class="o_pms_pwa_rb_box">
                                                                                                 <div class="o_pms_pwa_rb">
-                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ s.id}}">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ i.id}}">
                                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                                 X
@@ -372,6 +373,9 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="number" name="price" t-attf-value="{{s.price_unit}}" class="o_pms_pwa_modal_number"/>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </t>

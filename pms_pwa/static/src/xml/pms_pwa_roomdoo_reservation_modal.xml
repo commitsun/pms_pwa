@@ -288,12 +288,12 @@
                                             <input class="form-control" type="text" name="price_total" t-att-value="reservation.price_total" />
                                         </div> -->
                                         <div class="col-sm-12 mt-3">
-                                            <h4 data-toggle="collapse" data-target="#collapsePrecioNoche2">
+                                            <h4 data-toggle="collapse" data-target="#collapse_price_nights">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="false" /> Precio/Noche
                                                 <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
                                             </h4>
-                                            <div id="collapsePrecioNoche2" class="collapse" aria-labelledby="headingOne">
-                                                <table class="table">
+                                            <div id="collapse_price_nights" class="collapse" aria-labelledby="headingOne">
+                                                <table class="table table-condensed">
                                                     <thead>
 
                                                         <tr>
@@ -309,11 +309,11 @@
                                                                 <td>
                                                                     08/03/2021
                                                                 </td>
-                                                                <td class="black_text">
-                                                                    <input type="number" name="precio"/>
+                                                                <td>
+                                                                    <input type="number" name="precio" class="o_pms_pwa_modal_number"/>
                                                                 </td>
-                                                                <td class="black_text text-right">
-                                                                    <input type="number" name="descuento"/>
+                                                                <td>
+                                                                    <input type="number" name="descuento" class="o_pms_pwa_modal_number"/>
                                                                 </td>
 
 
@@ -322,16 +322,15 @@
                                                                 <td>
                                                                     09/03/2021
                                                                 </td>
-                                                                <td class="black_text">
-                                                                    <input type="number" name="precio"/>
+                                                                <td >
+                                                                    <input type="number" name="precio" class="o_pms_pwa_modal_number"/>
                                                                 </td>
-                                                                <td class="black_text text-right">
-                                                                    <input type="number" name="descuento"/>
+                                                                <td>
+                                                                    <input type="number" name="descuento" class="o_pms_pwa_modal_number"/>
                                                                 </td>
 
 
                                                             </tr>
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -395,6 +394,7 @@
                                                                     <tr>
                                                                         <th class="o_pms_pwa_detail_th">Fecha</th>
                                                                         <th class="o_pms_pwa_detail_th">Cantidad</th>
+                                                                        <th class="o_pms_pwa_detail_th">Precio</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -404,12 +404,12 @@
                                                                     >
                                                                     <tr>
                                                                         <td class="o_pms_pwa_detail_td">
-                                                                            <span t-field="s.date" t-options='{"format": "dd/MM/yyyy"}' />
+                                                                            <t t-esc="s.date" />
                                                                         </td>
-                                                                        <td class="o_pms_pwa_detail_td">
+                                                                        <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                             <div class="o_pms_pwa_rb_box">
                                                                                 <div class="o_pms_pwa_rb">
-                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ s.id}}">
+                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ service.id}}">
                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                 X
@@ -423,7 +423,7 @@
                                                                                             </span>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ s.id}}">
+                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ s.id }}">
                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                 <i class="fa fa-edit"></i>
@@ -433,7 +433,11 @@
                                                                                 </div>
                                                                             </div>
                                                                         </td>
+                                                                        <td>
+                                                                            <input type="number" name="price" t-attf-value="{{s.price_unit}}" class="o_pms_pwa_modal_number"/>
+                                                                        </td>
                                                                     </tr>
+
                                                                     </t>
                                                                 </tbody>
                                                             </table>
@@ -507,9 +511,9 @@
                                                         <strong
                                                             t-esc="reservation.folio_pending_amount"
                                                         />€
-<!--                                                        <span>(-->
-<!--                                                            <t t-esc="reservation.folio_id.outstanding_vat"/>€ vat)-->
-<!--                                                        </span>-->
+                                                        <span>(
+                                                            <t t-esc="reservation.folio_id.outstanding_vat"/>€ vat)
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -517,35 +521,35 @@
                                     </div>
 
                                     <div class="row mt-4" t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods">
-<!--                                        <div class="col-6 mb-2">-->
-<!--                                            <h4 t-esc="_t('Payment mode')"/>-->
-<!--                                            <t-->
-<!--                                                t-foreach="payment_methods"-->
-<!--                                                t-as="key"-->
-<!--                                            >-->
-<!--                                                <div class="o_pms_pwa_radiobox">-->
-<!--                                                        <input-->
-<!--                                                            type="radio"-->
-<!--                                                            t-att-value="key"-->
-<!--                                                            name="payment_methods"-->
-<!--                                                            t-att-id="key"-->
-<!--                                                        />-->
-<!--                                                        <label-->
-<!--                                                            class="control-label o_pms_pwa_radiobox_label"-->
-<!--                                                            t-att-for="key"-->
-<!--                                                        >-->
-<!--                                                            <span t-esc="key" />-->
-<!--                                                        </label>-->
-<!--                                                </div>-->
-<!--                                            </t>-->
-<!--                                        </div>-->
+                                        <div class="col-6 mb-2">
+                                            <h4 t-esc="_t('Payment mode')"/>
+                                            <t
+                                                t-foreach="payment_methods"
+                                                t-as="key"
+                                            >
+                                                <div class="o_pms_pwa_radiobox">
+                                                        <input
+                                                            type="radio"
+                                                            t-att-value="key"
+                                                            name="payment_methods"
+                                                            t-att-id="key"
+                                                        />
+                                                        <label
+                                                            class="control-label o_pms_pwa_radiobox_label"
+                                                            t-att-for="key"
+                                                        >
+                                                            <span t-esc="key" />
+                                                        </label>
+                                                </div>
+                                            </t>
+                                        </div>
                                         <div class="col-6">
                                             <button
                                                 class="btn btn-grey-900 btn-radius o_pms_pwa_pay"
                                                 special="cancel"
                                             >
                                                 <t
-                                                    t-esc="texts.pay_text || _t('Payssss')"
+                                                    t-esc="texts.pay_text || _t('Pay')"
                                                 />
                                             </button>
                                         </div>
@@ -561,28 +565,28 @@
                                     </div>
                                 </div>
                                 <hr/>
-<!--                                <div class="form-group">-->
-<!--                                    <div class="row mt-3">-->
-<!--                                        <div class="col-12 text-center">-->
-<!--                                            <button-->
-<!--                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"-->
-<!--                                                confirm="Current reservation will be cancelled, are you sure about that?"-->
-<!--                                                special="cancel"-->
-<!--                                                class="btn o_pms_pwa_btn_border">-->
-<!--                                                <t t-esc="_t('Cancel')" />-->
-<!--                                            </button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
+                                <div class="form-group">
+                                    <div class="row mt-3">
+                                        <div class="col-12 text-center">
+                                            <button
+                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
+                                                confirm="Current reservation will be cancelled, are you sure about that?"
+                                                special="cancel"
+                                                class="btn o_pms_pwa_btn_border">
+                                                <t t-esc="_t('Cancel')" />
+                                            </button>
+                                        </div>
+                                    </div>
 
-<!--                                    <div class="row mt-3 mb-3">-->
-<!--                                        <div class="col-12 text-center">-->
-<!--                                            <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>-->
-<!--                                            <input-->
-<!--                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"-->
-<!--                                                class="btn btn-message" type="submit" t-att-value="_t('Save')"/>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
+                                    <div class="row mt-3 mb-3">
+                                        <div class="col-12 text-center">
+                                            <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>
+                                            <input
+                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
+                                                class="btn btn-message" type="submit" t-att-value="_t('Save')"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
