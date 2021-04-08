@@ -359,12 +359,12 @@
                                                                                                     </div>
                                                                                                     <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_tab_active">
                                                                                                         <div class="o_pms_pwa_rb_spot">
-                                                                                                            <span class="o_pms_pwa_rb_txt o_pms_pwa_rb_value">
+                                                                                                            <span t-attf-class="o_pms_pwa_rb_txt o_pms_pwa_rb_value_{{s.id}}">
                                                                                                                 <t t-esc="s.day_qty" />
                                                                                                             </span>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ s.id}}">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" data-toggle="modal" data-target="#o_pms_pwa_editModal" t-attf-data-service-id="{{ i.id}}" t-attf-data-id="{{ s.id}}">
                                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                                 <i class="fa fa-edit"></i>

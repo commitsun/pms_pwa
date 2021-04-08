@@ -101,11 +101,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         element.classList.remove("show");
     });
 
-    $(document).on("click", ".o_pms_pwa_rb_edit", function (e) {
-        // Console.log("A por la modal");
-        e.stopPropagation();
-        $("#o_pms_pwa_editModal").modal("show");
-    });
     // /
     $(document).on("click", ".editable", function (e) {
         var currentEle = $(this).attr("id");
@@ -366,6 +361,32 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             });
             alert_div.append(alert);
             jQuery.ready();
+        });
+    });
+    // $(document).on("click", ".o_pms_pwa_rb_edit", function (e) {
+    //     // Console.log("A por la modal");
+    //     e.stopPropagation();
+    //     $("#o_pms_pwa_editModal").modal("show");
+    // });
+    $("#o_pms_pwa_editModal").on("show.bs.modal", function (event) {
+        console.log("Weee");
+        var element = $(event.relatedTarget);
+        var id = element.data("id");
+        var service = element.data("service-id");
+        console.log("data-id= " + id);
+        console.log("service-id= ", service);
+
+        // Click delete task in modal
+        $(document).on("click", "#edit-modal-save", function () {
+            console.log("wee");
+            var text_value = $("#new_val").val();
+
+            var change_id_span = "o_pms_pwa_rb_value_" + id;
+            console.log(change_id_span);
+            console.log(text_value);
+            $(change_id_span).text(String(text_value));
+
+            $("#o_pms_pwa_editModal").modal("toggle");
         });
     });
 });

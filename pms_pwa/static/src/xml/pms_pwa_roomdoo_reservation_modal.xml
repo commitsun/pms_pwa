@@ -290,7 +290,7 @@
                                         <div class="col-sm-12 mt-3">
                                             <h4 data-toggle="collapse" data-target="#collapse_price_nights">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="false" /> Precio/Noche
-                                                <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
+                                                <i class="fa fa-angle-down rotate-icon" />
                                             </h4>
                                             <div id="collapse_price_nights" class="collapse" aria-labelledby="headingOne">
                                                 <table class="table table-condensed">
@@ -404,7 +404,7 @@
                                                                     >
                                                                     <tr>
                                                                         <td class="o_pms_pwa_detail_td">
-                                                                            <t t-esc="s.date" />
+                                                                            <t t-esc="s.date"/>
                                                                         </td>
                                                                         <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                             <div class="o_pms_pwa_rb_box">
@@ -418,12 +418,12 @@
                                                                                     </div>
                                                                                     <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_tab_active">
                                                                                         <div class="o_pms_pwa_rb_spot">
-                                                                                            <span class="o_pms_pwa_rb_txt o_pms_pwa_rb_value">
+                                                                                            <span t-attf-class="o_pms_pwa_rb_txt o_pms_pwa_rb_value_{{ s.id }}">
                                                                                                 <t t-esc="s.day_qty" />
                                                                                             </span>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ s.id }}">
+                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" data-toggle="modal" data-target="#o_pms_pwa_editModal" t-attf-data-service-id="{{ service.id }}" t-attf-data-id="{{ s.id}}">
                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                 <i class="fa fa-edit"></i>
@@ -521,8 +521,8 @@
                                     </div>
 
                                     <div class="row mt-4" t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods">
-                                        <div class="col-6 mb-2">
-                                            <h4 t-esc="_t('Payment mode')"/>
+                                        <div class="col-6">
+                                            <h4 t-esc="_t('Payment mode')" class="mb-2"/>
                                             <t
                                                 t-foreach="payment_methods"
                                                 t-as="key"

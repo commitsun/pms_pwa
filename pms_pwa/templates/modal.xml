@@ -11,11 +11,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Total: <input type="number" name="new_val"/></p>
+                        <p>Total: <input type="number" id="new_val"/></p>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-pms_pwa btn-radius">Guardar</button>
+                        <button type="button" class="btn btn-pms_pwa btn-radius" id="edit-modal-save">Guardar</button>
                         <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>

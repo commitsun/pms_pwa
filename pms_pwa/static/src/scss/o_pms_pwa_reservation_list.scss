@@ -293,6 +293,15 @@ section.o_pms_pwa_roomdoo_list {
             }
         }
     }
+    #collapse_price_nights {
+        table th,
+        table td {
+            border-top: none !important;
+        }
+        table thead th {
+            border-bottom: none !important;
+        }
+    }
 }
 
 /*******************************
