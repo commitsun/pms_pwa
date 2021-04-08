@@ -349,7 +349,7 @@
                                                                                         <td class="o_pms_pwa_detail_td">
                                                                                             <div class="o_pms_pwa_rb_box">
                                                                                                 <div class="o_pms_pwa_rb">
-                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ i.id}}">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ s.id}}">
                                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                                 X
@@ -363,7 +363,7 @@
                                                                                                             </span>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ i.id}}">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ s.id}}">
                                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                                 <i class="fa fa-edit"></i>

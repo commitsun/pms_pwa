@@ -433,37 +433,37 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         );
 
                                         // On change qty on services
-                                        $(
-                                            "form.o_pms_pwa_reservation_form .o_pms_pwa_rb_tab"
-                                        ).click(function () {
-                                            // Spot switcher:
-                                            const selectors = [].slice.call(
-                                                this.parentElement.children
-                                            );
-                                            selectors.forEach((el) =>
-                                                el.classList.remove(
-                                                    "o_pms_pwa_rb_tab_active"
-                                                )
-                                            );
-                                            this.classList.add(
-                                                "o_pms_pwa_rb_tab_active"
-                                            );
-                                            ajax.jsonRpc(
-                                                "/reservation/" +
-                                                    reservation_id +
-                                                    "/onchange_data",
-                                                "call",
-                                                {
-                                                    board_service: {
-                                                        service_id: this.dataset
-                                                            .serviceid,
-                                                        service_line_id: this.dataset
-                                                            .servicelineid,
-                                                        qty: this.dataset.value,
-                                                    },
-                                                }
-                                            );
-                                        });
+                                        // $(
+                                        //     "form.o_pms_pwa_reservation_form .o_pms_pwa_rb_tab"
+                                        // ).click(function () {
+                                        //     // Spot switcher:
+                                        //     const selectors = [].slice.call(
+                                        //         this.parentElement.children
+                                        //     );
+                                        //     selectors.forEach((el) =>
+                                        //         el.classList.remove(
+                                        //             "o_pms_pwa_rb_tab_active"
+                                        //         )
+                                        //     );
+                                        //     this.classList.add(
+                                        //         "o_pms_pwa_rb_tab_active"
+                                        //     );
+                                        //     ajax.jsonRpc(
+                                        //         "/reservation/" +
+                                        //             reservation_id +
+                                        //             "/onchange_data",
+                                        //         "call",
+                                        //         {
+                                        //             board_service: {
+                                        //                 service_id: this.dataset
+                                        //                     .serviceid,
+                                        //                 service_line_id: this.dataset
+                                        //                     .servicelineid,
+                                        //                 qty: this.dataset.value,
+                                        //             },
+                                        //         }
+                                        //     );
+                                        // });
 
                                         // On confirm assign
                                         $(".o_pms_pwa_button_assign_confirm").on(

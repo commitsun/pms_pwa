@@ -93,13 +93,18 @@
         position: absolute;
         // z-index: 2;
         right: 0;
-        margin-top: -2.25rem;
+
         min-height: 80%;
         .o_pms_pwa_default_button_name {
             display: none;
         }
         .dropdown.show {
             z-index: 3;
+        }
+    }
+    @-moz-document url-prefix() {
+        section.o_pms_pwa_roomdoo_list .table-hover > tbody > tr > td:last-of-type {
+            margin-top: -2.3rem;
         }
     }
 }

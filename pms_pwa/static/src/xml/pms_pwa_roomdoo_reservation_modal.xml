@@ -222,7 +222,7 @@
                                             <label class="control-label col-12" for="nights">
                                                 <t t-esc="texts.nights_number_text || _t('Nights nº')"/>
                                             </label>
-                                            <input class="form-control" type="text" name="nights" t-att-value="reservation.nights" />
+                                            <input class="form-control" type="text" name="nights" t-att-value="reservation.nights" disabled="disabled" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -254,13 +254,13 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="reservation_type">
                                                 <t t-esc="_t('Reservation type')" />
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
                                                 <option
-                                                    name="reservation_type"
+
                                                     t-foreach="reservation.reservation_types"
                                                     t-as="key"
                                                     t-att-value="key.id"
@@ -269,19 +269,72 @@
                                                 </option>
                                             </select>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="board_service_room_id">
+                                                Board service
+                                            </label>
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
+                                                <option value="reservation.board_service_room_id">
+                                                    <t t-esc="reservation.board_service_room_id.display_name" />
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-6">
+                                        <!-- <div class="col-sm-6">
                                             <label class="control-label col-12" for="price_total">
                                                 <t t-esc="texts.total_text || _t('Total')"/>
                                             </label>
                                             <input class="form-control" type="text" name="price_total" t-att-value="reservation.price_total" />
-                                        </div>
-                                        <div class="col-sm-6 mt-3">
-                                            <a href="" class="o_pms_pwa_price_link">
-                                                <i class="fa fa-pencil-square-o" aria-hidden="false" />
-                                                <t t-esc="_t('Price')"/> / <t t-esc="_t('Night')"/>
-                                            </a>
+                                        </div> -->
+                                        <div class="col-sm-12 mt-3">
+                                            <h4 data-toggle="collapse" data-target="#collapsePrecioNoche2">
+                                                <i class="fa fa-pencil-square-o" aria-hidden="false" /> Precio/Noche
+                                                <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
+                                            </h4>
+                                            <div id="collapsePrecioNoche2" class="collapse" aria-labelledby="headingOne">
+                                                <table class="table">
+                                                    <thead>
+
+                                                        <tr>
+                                                            <th class="o_pms_pwa_theme_color">Día</th>
+                                                            <th class="o_pms_pwa_theme_color">Precio</th>
+                                                            <th class="o_pms_pwa_theme_color">Descuento</th>
+                                                        </tr>
+
+                                                    </thead>
+                                                    <tbody>
+
+                                                            <tr>
+                                                                <td>
+                                                                    08/03/2021
+                                                                </td>
+                                                                <td class="black_text">
+                                                                    <input type="number" name="precio"/>
+                                                                </td>
+                                                                <td class="black_text text-right">
+                                                                    <input type="number" name="descuento"/>
+                                                                </td>
+
+
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    09/03/2021
+                                                                </td>
+                                                                <td class="black_text">
+                                                                    <input type="number" name="precio"/>
+                                                                </td>
+                                                                <td class="black_text text-right">
+                                                                    <input type="number" name="descuento"/>
+                                                                </td>
+
+
+                                                            </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -347,38 +400,40 @@
                                                                 <tbody>
                                                                     <t
                                                                         t-foreach="service.service_line_ids"
-                                                                        t-as="service_line"
+                                                                        t-as="s"
                                                                     >
-                                                                        <tr>
-                                                                            <td class="o_pms_pwa_detail_td">
-                                                                                <span t-esc="service_line.date"/>
-                                                                            </td>
-                                                                            <td class="o_pms_pwa_detail_td">
-                                                                                <div class="o_pms_pwa_rb_box">
-                                                                                    <div
-                                                                                        t-attf-id='o_pms_pwa_rb_{{service.id}}'
-                                                                                        class="o_pms_pwa_rb"
-                                                                                    >
-                                                                                        <t
-                                                                                            t-foreach="reservation.adults+1"
-                                                                                            t-as="qty"
-                                                                                        >
-                                                                                            <div
-                                                                                                t-att-class="'o_pms_pwa_rb_tab ' + (qty==service_line.day_qty ? ' o_pms_pwa_rb_tab_active' : '')"
-                                                                                                t-att-data-serviceid="service.id"
-                                                                                                t-att-data-servicelineid="service_line.id"
-                                                                                                t-att-data-value="qty">
-                                                                                                <div class="o_pms_pwa_rb_spot">
-                                                                                                    <span class="o_pms_pwa_rb_txt">
-                                                                                                        <t t-esc="qty" />
-                                                                                                    </span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </t>
+                                                                    <tr>
+                                                                        <td class="o_pms_pwa_detail_td">
+                                                                            <span t-field="s.date" t-options='{"format": "dd/MM/yyyy"}' />
+                                                                        </td>
+                                                                        <td class="o_pms_pwa_detail_td">
+                                                                            <div class="o_pms_pwa_rb_box">
+                                                                                <div class="o_pms_pwa_rb">
+                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ s.id}}">
+                                                                                        <div class="o_pms_pwa_rb_spot">
+                                                                                            <span class="o_pms_pwa_rb_txt">
+                                                                                                X
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_tab_active">
+                                                                                        <div class="o_pms_pwa_rb_spot">
+                                                                                            <span class="o_pms_pwa_rb_txt o_pms_pwa_rb_value">
+                                                                                                <t t-esc="s.day_qty" />
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ s.id}}">
+                                                                                        <div class="o_pms_pwa_rb_spot">
+                                                                                            <span class="o_pms_pwa_rb_txt">
+                                                                                                <i class="fa fa-edit"></i>
+                                                                                            </span>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </td>
-                                                                        </tr>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
                                                                     </t>
                                                                 </tbody>
                                                             </table>
@@ -386,17 +441,34 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-check mt-2" t-if="service.service_line_ids==''">
+                                                <!-- <div class="form-check mt-2" t-if="service.service_line_ids==''">
                                                     <input class="o_pms_pwa_checkbox" type="checkbox" id="defaultCheck2" checked="checked" />
                                                     <label class="o_pms_pwa_checkbox_label" for="defaultCheck2">
                                                         <t t-esc="service.product_id.name" />
                                                     </label>
-                                                </div>
+                                                </div> -->
                                             </t>
                                             <input type="hidden" name="reservation_extras"/>
-                                            <div class="form-check mt-2">
+                                            <!-- <div class="form-check mt-2">
                                                 <a class="o_pms_pwa_extras" href="#">Más extras</a>
-                                            </div>
+                                            </div> -->
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="other_services">
+                                                Más extras
+                                            </label>
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="other_services">
+
+                                                <option
+                                                    t-foreach="reservation.service_ids"
+                                                    t-as="key"
+                                                    t-att-value="key.id">
+                                                    <t t-esc="key.name" />
+                                                </option>
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
