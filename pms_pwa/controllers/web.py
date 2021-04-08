@@ -677,6 +677,7 @@ class TestFrontEnd(http.Controller):
             "folio_internal_comment": reservation.folio_internal_comment,
             "payment_methods": self._get_allowed_payments_journals(),
             "reservation_types": self._get_reservation_types(),
+            "board_service_room_id": reservation.board_service_room_id,
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
@@ -696,6 +697,7 @@ class TestFrontEnd(http.Controller):
         methods=["POST"],
         website=True,
     )
+    # flake8: noqa: C901
     def reservation_onchange_data(self, reservation_id=None, **kw):
         old_reservation_type = None
         old_values = None

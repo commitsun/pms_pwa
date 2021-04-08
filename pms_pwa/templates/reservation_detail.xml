@@ -8,6 +8,7 @@
     <template id="roomdoo_reservation_detail" name="Reservation detail">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Reservation detail'" />
+            <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
                 <span class="o_pms_notification_title">
@@ -31,13 +32,10 @@
                                         <t t-esc="reservation.origin" />
                                     </span>
                                     <span class="agency">
-                                        <img t-if="reservation.agency_id" t-att-src="website.image_url(reservation.agency_id, 'image_128')"
-                                            width="100"
-                                            t-att-title="reservation.agency_id.name"
-                                            t-att-alt="reservation.agency_id.name"/>
+                                        <img t-if="reservation.agency_id" t-att-src="website.image_url(reservation.agency_id, 'image_128')" width="100" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
                                         <span t-else="">
-                                            <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name"/>
-                                            <span class="ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin"/>
+                                            <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
+                                            <span class="ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin" />
                                         </span>
 
                                     </span>
@@ -85,10 +83,7 @@
                                                             + ('bg-light ' if reservation.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
                                                             + ('bg-success ' if reservation.state in ('confirm') and reservation.ratio_checkin_data &gt; 75 else ' ')
                                                             + ('bg-warning ' if reservation.state in ('confirm') and  75 &gt; reservation.ratio_checkin_data &gt; 50 else ' ')
-                                                            + ('bg-danger ' if reservation.state in ('confirm') and  reservation.ratio_checkin_data &lt; 50 else ' ')"
-                                                            role="progressbar" t-att-style="'width:'+ str(reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data) + '%'"
-                                                            t-att-aria-valuenow="reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data" aria-valuemin="0"
-                                                            aria-valuemax="100"></div>
+                                                            + ('bg-danger ' if reservation.state in ('confirm') and  reservation.ratio_checkin_data &lt; 50 else ' ')" role="progressbar" t-att-style="'width:'+ str(reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data) + '%'" t-att-aria-valuenow="reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                     <div class="dropdown mx-2">
                                                         <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -208,7 +203,7 @@
                                                         <td class="text-right">
                                                             <t t-esc="i.room_type_id.code_type" />
                                                         </td>
-                                                        <td >
+                                                        <td>
                                                             <t t-esc="i.preferred_room_id.name" />
                                                         </td>
                                                     </tr>
@@ -264,9 +259,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-6">
-                                                        <button type="button"
-                                                            class="btn btn-message-form o_pms_pwa_button_assign_confirm"
-                                                            t-attf-url="/reservation/{{ reservation.id }}/assign">
+                                                        <button type="button" class="btn btn-message-form o_pms_pwa_button_assign_confirm" t-attf-url="/reservation/{{ reservation.id }}/assign">
                                                             <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
                                                             Confirmar
                                                         </button>
@@ -284,13 +277,13 @@
                                                         <label class="control-label col-12" for="nights">
                                                             Nº de noches
                                                         </label>
-                                                        <input class="form-control" type="text" name="nights" t-att-value="reservation.nights" />
+                                                        <input class="form-control" disabled="disabled" type="text" name="nights" t-att-value="reservation.nights" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <t t-set="date_checkin" t-value="reservation.checkin.strftime('%d/%m/%Y')" />
                                                     <t t-set="date_checkout" t-value="reservation.checkout.strftime('%d/%m/%Y')" />
-                                                    <div class="col-6">
+                                                    <div class="col-12">
                                                         <label class="control-label col-12" for="range_check_date">
                                                             Check in - Check out
                                                         </label>
@@ -300,30 +293,33 @@
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                         </span>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <label class="control-label col-12" for="check_in_hour">
-                                                            Hora Check in
-                                                        </label>
-                                                        <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
-                                                    </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
                                                         <input type="hidden" name="check_in_date" t-attf-value="{{ date_checkin }}" />
                                                         <input type="hidden" name="check_out_date" t-attf-value="{{ date_checkout }}" />
-                                                        <!-- <label class="control-label col-12" for="check_out_date">
-                                                            Check out
+                                                        <label class="control-label col-12" for="check_in_hour">
+                                                            Hora Check in
                                                         </label>
-                                                        <input class="form-control" type="text" name="check_out_date" t-att-value="reservation.checkout" />
-                                                        <span class="o_pms_pwa_calendar_icon">
-                                                            <span class="fa fa-calendar" />
-                                                        </span> -->
+                                                        <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="check_out_hour">
                                                             Hora Check out
                                                         </label>
                                                         <input class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="board_service_room_id">
+                                                            Tipo de reserva
+                                                        </label>
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
+                                                            <option value="reservation.board_service_room_id">
+                                                                <t t-esc="reservation.board_service_room_id.display_name" />
+                                                            </option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="row m-3">
@@ -352,17 +348,28 @@
                                                                                         </td>
                                                                                         <td class="o_pms_pwa_detail_td">
                                                                                             <div class="o_pms_pwa_rb_box">
-                                                                                                <div t-attf-id='o_pms_pwa_rb_{{i.id}}' class="o_pms_pwa_rb">
-                                                                                                    <t t-foreach="range(reservation.adults+1)" t-as="x">
-                                                                                                        <div t-att-class="'o_pms_pwa_rb_tab '
-                                                                                                            + ('o_pms_pwa_rb_tab_active ' if x==s.day_qty else ' ')" class="" t-att-data-value="x">
-                                                                                                            <div class="o_pms_pwa_rb_spot">
-                                                                                                                <span class="o_pms_pwa_rb_txt">
-                                                                                                                    <t t-esc="x" />
-                                                                                                                </span>
-                                                                                                            </div>
+                                                                                                <div class="o_pms_pwa_rb">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ i.id}}">
+                                                                                                        <div class="o_pms_pwa_rb_spot">
+                                                                                                            <span class="o_pms_pwa_rb_txt">
+                                                                                                                X
+                                                                                                            </span>
                                                                                                         </div>
-                                                                                                    </t>
+                                                                                                    </div>
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_tab_active">
+                                                                                                        <div class="o_pms_pwa_rb_spot">
+                                                                                                            <span class="o_pms_pwa_rb_txt o_pms_pwa_rb_value">
+                                                                                                                <t t-esc="s.day_qty" />
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" t-attf-data-id="{{ i.id}}">
+                                                                                                        <div class="o_pms_pwa_rb_spot">
+                                                                                                            <span class="o_pms_pwa_rb_txt">
+                                                                                                                <i class="fa fa-edit"></i>
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                    </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </td>
@@ -374,16 +381,30 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="form-check mt-2" t-if="i.service_line_ids==''">
+                                                            <!-- <div class="form-check mt-2" t-if="i.service_line_ids==''">
                                                                 <input class="o_pms_pwa_checkbox" type="checkbox" id="defaultCheck2" checked="checked" />
                                                                 <label class="o_pms_pwa_checkbox_label" for="defaultCheck2">
                                                                     <t t-esc="i.product_id.name" />
                                                                 </label>
-                                                            </div>
+                                                            </div> -->
                                                         </t>
-                                                        <div class="form-check mt-2">
-                                                            <a class="o_pms_pwa_extras" href="#">Más extras</a>
-                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-4">
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="other_services">
+                                                            Más extras
+                                                        </label>
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="other_services">
+
+                                                            <option
+                                                                t-foreach="reservation.service_ids"
+                                                                t-as="key"
+                                                                t-att-value="key.id">
+                                                                <t t-esc="key.name" />
+                                                            </option>
+
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <hr class="o_pms_pwa_black_hr" />
@@ -412,7 +433,7 @@
                                                 <div class="row mt-3">
                                                     <div class="col-12">
                                                         <div class="form-group text-center">
-                                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                             <input type="submit" class="btn btn-message" value="GUARDAR CAMBIOS" />
                                                         </div>
                                                     </div>
@@ -479,8 +500,7 @@
                                                     <th class="o_pms_pwa_theme_color text-right">importe(€)</th>
                                                 </tr>
                                             </thead>
-                                            <tbody id="reservation_list">
-                                            </tbody>
+                                            <tbody id="reservation_list"></tbody>
                                         </table>
                                         <!-- <div class="row">
                                             <div class="col-12">
@@ -518,123 +538,125 @@
                                             </div>
                                         </div>
                                         <t t-if="reservation.invoice_status == 'to invoice'">
-                                        <hr class="m-1" />
-                                        <!-- <div class="row pago-badge">
+                                            <hr class="m-1" />
+                                            <!-- <div class="row pago-badge">
                                             <div class="col-12">Nº tarjeta reserva</div>
                                             <div class="col-12 num">
                                                 <t t-esc="reservation.folio_id.credit_card_details" />
                                                 **** **** **** 2545
                                             </div>
                                         </div> -->
-                                        <div class="row m-1" id="facturacion">
-                                            <div class="col-12">
-                                                <h4 data-toggle="collapse" data-target="#collapseDatos">
-                                                    Datos de facturación
-                                                    <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
-                                                </h4>
-                                                <div id="collapseDatos" class="collapse" aria-labelledby="headingOne" data-parent="#facturacion">
-                                                    <div class="card-body">
-                                                        <form target="_self"
-                                                            t-attf-action="/reservation/{{ reservation.id }}"
-                                                            method="post" class="form-horizontal">
-                                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                                            <div class="form-group form-field mt8">
-                                                                <div class="row">
-                                                                    <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type">
+                                            <div class="row m-1" id="facturacion">
+                                                <div class="col-12">
+                                                    <h4 data-toggle="collapse" data-target="#collapseDatos">
+                                                        Datos de facturación
+                                                        <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
+                                                    </h4>
+                                                    <div id="collapseDatos" class="collapse" aria-labelledby="headingOne" data-parent="#facturacion">
+                                                        <div class="card-body">
+                                                            <form target="_self" t-attf-action="/reservation/{{ reservation.id }}" method="post" class="form-horizontal">
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                                <div class="form-group form-field mt8">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <label class="control-label col-12" for="rate_type">
                                                                             Invoice contact
                                                                         </label>
-                                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" id="partner_to_invoice">
-                                                                            <t t-foreach="reservation.folio_id.partner_invoice_ids" t-as="partner">
-                                                                                <t t-if="partner.id == reservation.folio_id.partner_id.id">
-                                                                                    <option t-attf-value="{{ partner.id }}" selected="selected"><t t-esc="partner.name"></t></option>
+                                                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" id="partner_to_invoice">
+                                                                                <t t-foreach="reservation.folio_id.partner_invoice_ids" t-as="partner">
+                                                                                    <t t-if="partner.id == reservation.folio_id.partner_id.id">
+                                                                                        <option t-attf-value="{{ partner.id }}" selected="selected">
+                                                                                            <t t-esc="partner.name"></t>
+                                                                                        </option>
+                                                                                    </t>
+                                                                                    <t t-else="">
+                                                                                        <option t-attf-value="{{ partner.id }}">
+                                                                                            <t t-esc="partner.name"></t>
+                                                                                        </option>
+                                                                                    </t>
                                                                                 </t>
-                                                                                <t t-else="">
-                                                                                    <option t-attf-value="{{ partner.id }}"><t t-esc="partner.name"></t></option>
-                                                                                </t>
-                                                                            </t>
-                                                                            <option value="False">New contact</option>
-                                                                        </select>
+                                                                                <option value="False">New contact</option>
+                                                                            </select>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type">
+                                                                    <div class="row mt-2">
+                                                                        <div class="col-sm-12">
+                                                                            <label class="control-label col-12" for="rate_type">
                                                                             Name
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
+                                                                            <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type" >
+                                                                    <div class="row mt-2">
+                                                                        <div class="col-sm-12">
+                                                                            <label class="control-label col-12" for="rate_type">
                                                                             NIF/CIF
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_vat" t-attf-value="{{ reservation.folio_id.partner_id.vat }}" required="required" />
+                                                                            <input class="form-control" type="text" name="invoice_vat" t-attf-value="{{ reservation.folio_id.partner_id.vat }}" required="required" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type">
+                                                                    <div class="row mt-2">
+                                                                        <div class="col-sm-12">
+                                                                            <label class="control-label col-12" for="rate_type">
                                                                             Address
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_street" t-attf-value="{{ reservation.folio_id.partner_id.street }}" required="required"/>
+                                                                            <input class="form-control" type="text" name="invoice_street" t-attf-value="{{ reservation.folio_id.partner_id.street }}" required="required" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type">
+                                                                    <div class="row mt-2">
+                                                                        <div class="col-sm-12">
+                                                                            <label class="control-label col-12" for="rate_type">
                                                                             City
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_city" t-attf-value="{{ reservation.folio_id.partner_id.city }}" required="required" />
+                                                                            <input class="form-control" type="text" name="invoice_city" t-attf-value="{{ reservation.folio_id.partner_id.city }}" required="required" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type">
+                                                                    <div class="row mt-2">
+                                                                        <div class="col-sm-12">
+                                                                            <label class="control-label col-12" for="rate_type">
                                                                             Postal code
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ reservation.folio_id.partner_id.zip }}" required="required"/>
+                                                                            <input class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ reservation.folio_id.partner_id.zip }}" required="required" />
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-sm-12">
-                                                                        <label class="control-label col-12" for="rate_type">
+                                                                    <div class="row mt-2">
+                                                                        <div class="col-sm-12">
+                                                                            <label class="control-label col-12" for="rate_type">
                                                                             Country
                                                                         </label>
-                                                                        <input class="form-control" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
+                                                                            <input class="form-control" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <!-- <input type="submit" class="btn btn-message" value="Actualizar" /> -->
-                                                        </form>
+                                                                <!-- <input type="submit" class="btn btn-message" value="Actualizar" /> -->
+                                                            </form>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row m-1">
-                                            <div class="col-12">
-                                                <h4>Métodos de pago</h4>
+                                            <div class="row m-1">
+                                                <div class="col-12">
+                                                    <h4>Métodos de pago</h4>
+                                                </div>
+                                                <div class="col-12">
+                                                    <t t-foreach="reservation.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
+
+                                                        <div class="form-check mt-1">
+                                                            <input type="radio" class="o_pms_pwa_checkbox" name="payment_method" t-attf-value="{{ payment.id }}" checked="checked" />
+                                                            <!-- <input class="o_pms_pwa_checkbox" type="checkbox" t-attf-id="{{ payment.id }}" checked="checked" /> -->
+                                                            <label class="o_pms_pwa_checkbox_label pl-1">
+                                                                <t t-esc="payment.name"></t>
+                                                            </label>
+                                                        </div>
+
+                                                    </t>
+                                                </div>
                                             </div>
+
+                                            <hr class="m-1" />
                                             <div class="col-12">
-                                                <t t-foreach="reservation.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
-
-                                                    <div class="form-check mt-1">
-                                                        <input type="radio" class="o_pms_pwa_checkbox" name="payment_method" t-attf-value="{{ payment.id }}" checked="checked" />
-                                                        <!-- <input class="o_pms_pwa_checkbox" type="checkbox" t-attf-id="{{ payment.id }}" checked="checked" /> -->
-                                                        <label class="o_pms_pwa_checkbox_label pl-1">
-                                                            <t t-esc="payment.name"></t>
-                                                        </label>
-                                                    </div>
-
-                                                </t>
-                                            </div>
-                                        </div>
-
-                                        <hr class="m-1" />
-                                        <div class="col-12">
-                                            <div class="form-group text-center">
-                                                <!-- <button class="btn btn-print">
+                                                <div class="form-group text-center">
+                                                    <!-- <button class="btn btn-print">
                                                     <i class="fa fa-print" aria-hidden="false" />
                                                     IMPRIMIR
                                                 </button> -->
@@ -644,8 +666,8 @@
                                                         FACTURAR
                                                     </button>
 
+                                                </div>
                                             </div>
-                                        </div>
                                         </t>
                                     </div>
                                 </div>
@@ -698,6 +720,7 @@
                     </div>
                 </section>
             </div>
+
         </t>
     </template>
 </odoo>

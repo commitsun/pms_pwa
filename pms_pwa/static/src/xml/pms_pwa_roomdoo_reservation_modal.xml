@@ -18,7 +18,7 @@
                                         <t
                                             t-esc="texts.reservation_text || _t('Reservation')"
                                         />
-                                        <span t-esc="reservation.id" />
+                                        <span t-esc="reservation.name" />
                                     </h4>
                                     <a
                                         t-att-href="'/reservation/' + reservation.id"

@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="o_pms_pwa_edit_modal" name="Edit reservation modal">
+        <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="o_pms_pwa_editModal" aria-labelledby="o_pms_pwa_editModal" aria-hidden="true">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modificar valor</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><span class="fa fa-times" /></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Total: <input type="number" name="new_val"/></p>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-pms_pwa btn-radius">Guardar</button>
+                        <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
     <template id="o_pms_pwa_new_reservation_modal" name="New reservation modal">
-        <div class="modal fade o_pms_pwa_right o_pms_pwa_new_reservation_modal"
-            tabindex="-1" role="dialog" id="o_pms_pwa_new_reservation_modal" aria-labelledby="o_pms_pwa_new_reservation_modal"
-            aria-hidden="true">
+        <div class="modal fade o_pms_pwa_right o_pms_pwa_new_reservation_modal" tabindex="-1" role="dialog" id="o_pms_pwa_new_reservation_modal" aria-labelledby="o_pms_pwa_new_reservation_modal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <div class="modal-title" id="modalLabel">Nueva reserva</div>
-                        <button class="close" data-dismiss="modal"><span><span class="fa fa-times" /></span></button>
+                        <button class="close" data-dismiss="modal">
+                            <span>
+                                <span class="fa fa-times" />
+                            </span>
+                        </button>
                     </div>
                     <div class="modal-body o_pms_pwa_modal_body">
                         <div class="container-fluid">
@@ -26,10 +50,10 @@
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane active" id="single" role="tabpanel" aria-labelledby="home-tab">
-                                    <t t-call="pms_pwa.single_reservation_form"/>
+                                    <t t-call="pms_pwa.single_reservation_form" />
                                 </div>
                                 <div class="tab-pane" id="multiple" role="tabpanel" aria-labelledby="profile-tab">
-                                    <t t-call="pms_pwa.multiple_reservation_form"/>
+                                    <t t-call="pms_pwa.multiple_reservation_form" />
                                 </div>
                             </div>
 
@@ -46,8 +70,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <input class="form-control" type="text" name="name" placeholder="Name"
-                            t-att-value="post['name'] if post and 'name' in post else None"/>
+                        <input class="form-control" type="text" name="name" placeholder="Name" t-att-value="post['name'] if post and 'name' in post else None" />
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -68,8 +91,8 @@
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="room_types" t-value="{'1': 'ECO', '2': 'DUAL'}"/>
-                    <t t-set="guest_numbers" t-value="[1,2,3,4,5,6]"/>
+                    <t t-set="room_types" t-value="{'1': 'ECO', '2': 'DUAL'}" />
+                    <t t-set="guest_numbers" t-value="[1,2,3,4,5,6]" />
                     <div class="col-sm-12">
                         <h4>Room </h4>
                     </div>
@@ -77,13 +100,8 @@
                         <label class="control-label col-12" for="room_type">
                             Room type
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="room_type">
-                            <option
-                                t-foreach="room_types"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
+                            <option t-foreach="room_types" t-as="key" t-att-value="key">
                                 <t t-esc="key_value" />
                             </option>
                         </select>
@@ -94,13 +112,8 @@
                         <label class="control-label col-12" for="guest_number">
                             Guest nº
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="guest_number">
-                            <option
-                                t-foreach="guest_numbers"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="guest_number">
+                            <option t-foreach="guest_numbers" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -110,8 +123,8 @@
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']"/>
-                    <t t-set="allowed_services" t-value="[1,2,3,4,5,6]"/>
+                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']" />
+                    <t t-set="allowed_services" t-value="[1,2,3,4,5,6]" />
                     <div class="col-sm-12">
                         <h4>Room and service</h4>
                     </div>
@@ -119,13 +132,8 @@
                         <label class="control-label col-12" for="room">
                             Room
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="room">
-                            <option
-                                t-foreach="allowed_rooms"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room">
+                            <option t-foreach="allowed_rooms" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -134,13 +142,8 @@
                         <label class="control-label col-12" for="service">
                             Broad service
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="service">
-                            <option
-                                t-foreach="allowed_services"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="service">
+                            <option t-foreach="allowed_services" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -150,8 +153,8 @@
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="allowed_channels" t-value="['Booking', 'Airbnb', 'Teléfono']"/>
-                    <t t-set="allowed_pricelist" t-value="{'1': 'Tarifa normal', '2': 'Tarifa reducida'}"/>
+                    <t t-set="allowed_channels" t-value="['Booking', 'Airbnb', 'Teléfono']" />
+                    <t t-set="allowed_pricelist" t-value="{'1': 'Tarifa normal', '2': 'Tarifa reducida'}" />
                     <div class="col-sm-12">
                         <h4>Channel and pricelist </h4>
                     </div>
@@ -159,13 +162,8 @@
                         <label class="control-label col-12" for="channel">
                             Channel
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="channel">
-                            <option
-                                t-foreach="allowed_channels"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel">
+                            <option t-foreach="allowed_channels" t-as="key" t-att-value="key">
                                 <t t-esc="key_value" />
                             </option>
                         </select>
@@ -174,14 +172,8 @@
                         <label class="control-label col-12" for="pricelist">
                             Pricelist
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="pricelist">
-                            <option
-
-                                t-foreach="allowed_pricelist"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist">
+                            <option t-foreach="allowed_pricelist" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -198,20 +190,20 @@
                         <label class="control-label col-12" for="discount">
                             Discount
                         </label>
-                        <input class="form-control" type="number" name="discount" placeholder="Discount"/>
+                        <input class="form-control" type="number" name="discount" placeholder="Discount" />
                     </div>
                     <div class="col-6">
                         <label class="control-label col-12" for="total">
                             Total
                         </label>
-                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled"/>
+                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled" />
                     </div>
                 </div>
             </div>
 
             <div class="row mt-3 mb-3">
                 <div class="col-12 text-center">
-                    <input class="btn btn-message" type="submit" value="Submit"/>
+                    <input class="btn btn-message" type="submit" value="Submit" />
                 </div>
             </div>
 
@@ -224,8 +216,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <input class="form-control" type="text" name="name" placeholder="Name"
-                            t-att-value="post['name'] if post and 'name' in post else None"/>
+                        <input class="form-control" type="text" name="name" placeholder="Name" t-att-value="post['name'] if post and 'name' in post else None" />
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -242,20 +233,14 @@
                         </span>
                     </div>
                 </div>
-                <t t-set="allowed_pricelist" t-value="['Tarifa normal', 'Tarifa reducida']"/>
+                <t t-set="allowed_pricelist" t-value="['Tarifa normal', 'Tarifa reducida']" />
                 <div class="row mt-3">
                     <div class="col-12">
                         <label class="control-label col-12" for="pricelist">
                             Pricelist
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="pricelist">
-                            <option
-
-                                t-foreach="allowed_pricelist"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist">
+                            <option t-foreach="allowed_pricelist" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -265,9 +250,9 @@
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="room_types" t-value="['ECO', 'DUAL']"/>
-                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']"/>
-                    <t t-set="allowed_numbers" t-value="[1,2,3,4,5,6]"/>
+                    <t t-set="room_types" t-value="['ECO', 'DUAL']" />
+                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']" />
+                    <t t-set="allowed_numbers" t-value="[1,2,3,4,5,6]" />
                     <div class="col-sm-12">
                         <h4>Room</h4>
                     </div>
@@ -275,13 +260,8 @@
                         <label class="control-label col-12" for="room_type">
                             Room type
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="room_type">
-                            <option
-                                t-foreach="room_types"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
+                            <option t-foreach="room_types" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -290,13 +270,8 @@
                         <label class="control-label col-12" for="room">
                             Room
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="room">
-                            <option
-                                t-foreach="allowed_rooms"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room">
+                            <option t-foreach="allowed_rooms" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -306,13 +281,8 @@
                         <label class="control-label col-12" for="room_number">
                             Nº of rooms
                         </label>
-                        <select
-                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
-                            name="room_number">
-                            <option
-                                t-foreach="allowed_numbers"
-                                t-as="key"
-                                t-att-value="key">
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
+                            <option t-foreach="allowed_numbers" t-as="key" t-att-value="key">
                                 <t t-esc="key" />
                             </option>
                         </select>
@@ -329,20 +299,20 @@
                         <label class="control-label col-12" for="discount">
                             Discount
                         </label>
-                        <input class="form-control" type="number" name="discount" placeholder="Discount"/>
+                        <input class="form-control" type="number" name="discount" placeholder="Discount" />
                     </div>
                     <div class="col-6">
                         <label class="control-label col-12" for="total">
                             Total
                         </label>
-                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled"/>
+                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled" />
                     </div>
                 </div>
             </div>
 
             <div class="row mt-3 mb-3">
                 <div class="col-12 text-center">
-                    <input class="btn btn-message" type="submit" value="Submit"/>
+                    <input class="btn btn-message" type="submit" value="Submit" />
                 </div>
             </div>
 

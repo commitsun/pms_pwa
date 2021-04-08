@@ -8,37 +8,37 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var _t = core._t;
     var folio_id = $("input[name='folio_id']").val();
     var reservation_id = $("input[name='reservation_id']").val();
-    var survey = [];
-    // Bidimensional array: [ [1,3], [2,4] ]
-    // Switcher function:
-    $(".o_pms_pwa_rb_tab").click(function () {
-        // Spot switcher:
-        $(this)
-            .parent()
-            .find(".o_pms_pwa_rb_tab")
-            .removeClass("o_pms_pwa_rb_tab_active");
-        $(this).addClass("o_pms_pwa_rb_tab_active");
-    });
+    // Var services_checks = [];
+    // // Bidimensional array: [ [1,3], [2,4] ]
+    // // Switcher function:
+    // $(".o_pms_pwa_rb_tab").click(function () {
+    //     // Spot switcher:
+    //     $(this)
+    //         .parent()
+    //         .find(".o_pms_pwa_rb_tab")
+    //         .removeClass("o_pms_pwa_rb_tab_active");
+    //     $(this).addClass("o_pms_pwa_rb_tab_active");
+    // });
 
-    // Save data:
-    $(".trigger").click(function () {
-        // Empty array:
-        survey = [];
-        // Push data:
-        for (var i = 1; i <= $(".o_pms_pwa_rb").length; i++) {
-            // Var rb = "o_pms_pwa_rb" + i;
-            var rbValue = parseInt(
-                $("#o_pms_pwa_rb-" + i)
-                    .find(".o_pms_pwa_rb_tab_active")
-                    .attr("data-value"),
-                10
-            );
-            // Bidimensional array push:
-            survey.push([i, rbValue]);
-            // Bidimensional array: [ [1,3], [2,4] ]
-        }
-        // Console.log(survey);
-    });
+    // // Save data:
+    // $(".trigger").click(function () {
+    //     // Empty array:
+    //     services_checks = [];
+    //     // Push data:
+    //     for (var i = 1; i <= $(".o_pms_pwa_rb").length; i++) {
+    //         // Var rb = "o_pms_pwa_rb" + i;
+    //         var rbValue = parseInt(
+    //             $("#o_pms_pwa_rb-" + i)
+    //                 .find(".o_pms_pwa_rb_tab_active")
+    //                 .attr("data-value"),
+    //             10
+    //         );
+    //         // Bidimensional array push:
+    //         services_checks.push([i, rbValue]);
+    //         // Bidimensional array: [ [1,3], [2,4] ]
+    //     }
+    //     console.log(services_checks);
+    // });
     $(function () {
         $('input[name="range_check_date"]').daterangepicker(
             {
@@ -90,7 +90,23 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             }
         );
     });
+    // Nuevo por cambio de las bolitas
+    $(document).on("click", ".o_pms_pwa_rb_remove", function (e) {
+        e.stopPropagation();
+        const check_name = "defaultCheck" + $(this).attr("data-id");
+        const inputs = document.getElementById(check_name);
+        inputs.checked = false;
+        const element_name = "collapsediv" + $(this).attr("data-id");
+        var element = document.getElementById(element_name);
+        element.classList.remove("show");
+    });
 
+    $(document).on("click", ".o_pms_pwa_rb_edit", function (e) {
+        // Console.log("A por la modal");
+        e.stopPropagation();
+        $("#o_pms_pwa_editModal").modal("show");
+    });
+    // /
     $(document).on("click", ".editable", function (e) {
         var currentEle = $(this).attr("id");
         // <-------stop the bubbling of the event here
@@ -161,6 +177,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             $("#reservation_list").html(html);
         });
     });
+
     $(document).on("change", "input[name='invoice_line']", function () {
         var checked = $(this).val();
         if ($(this).is(":checked")) {
