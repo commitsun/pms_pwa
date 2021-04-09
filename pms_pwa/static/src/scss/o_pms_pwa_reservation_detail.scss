@@ -445,9 +445,14 @@ section.o_pms_pwa_roomdoo {
         font-weight: 600;
         font-size: medium;
         img {
-            margin-left: 1rem;
-            margin-top: -0.2rem;
+            margin-left: 0.75rem;
+            margin-top: -0.75rem;
         }
+    }
+    span.o_pms_pwa_wler {
+        font-weight: lighter;
+        color: $table-text-color-lighter;
+        font-size: 16px;
     }
     .status-header {
         color: $red;

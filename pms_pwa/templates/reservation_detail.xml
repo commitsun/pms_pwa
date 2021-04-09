@@ -35,7 +35,8 @@
                                         <img t-if="reservation.agency_id" t-att-src="website.image_url(reservation.agency_id, 'image_128')" width="100" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
                                         <span t-else="">
                                             <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
-                                            <span class="ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin" />
+                                            <span t-if="reservation.channel_type_id" class="o_pms_pwa_wler ml-2" t-esc="reservation.partner_id.name"/>
+                                            <span class="o_pms_pwa_wler ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin"/>
                                         </span>
 
                                     </span>
