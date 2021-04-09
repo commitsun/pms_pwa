@@ -685,6 +685,7 @@ class TestFrontEnd(http.Controller):
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "service_ids": reservation._get_service_ids(),
+            "reservation_line_ids": reservation._get_reservation_line_ids(),
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
             "pricelist_id": reservation.pricelist_id.id,

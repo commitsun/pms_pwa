@@ -293,15 +293,6 @@ section.o_pms_pwa_roomdoo_list {
             }
         }
     }
-    #collapse_price_nights {
-        table th,
-        table td {
-            border-top: none !important;
-        }
-        table thead th {
-            border-bottom: none !important;
-        }
-    }
 }
 
 /*******************************
@@ -583,6 +574,7 @@ div.o_pms_pwa_reservation_modal {
     .o_pms_pwa_collapse {
         background-color: $bg-theme-color;
         margin-left: -1.5rem;
+        margin-right: -2rem;
     }
     .o_pms_pwa_collapse_content {
         margin: auto;

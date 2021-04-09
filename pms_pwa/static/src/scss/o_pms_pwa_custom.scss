@@ -261,12 +261,7 @@ select::-ms-expand {
         // }
     }
 }
-.o_pms_pwa_modal_number {
-    width: 80px;
-    min-height: 20px !important;
-    height: 35px;
-    padding-top: 0rem !important;
-}
+
 .o_pms_pwa_td_rb {
     min-width: 150px;
 }
@@ -453,6 +448,49 @@ input[type="time"]::-webkit-calendar-picker-indicator {
         margin-right: 0.5rem;
     }
 }
+// General para novedades
+.o_pms_pwa_modal_number {
+    width: 80px;
+    min-height: 20px !important;
+    height: 35px;
+    padding-top: 0rem !important;
+    text-align: center;
+}
 #o_pms_pwa_editModal {
     z-index: 9999 !important;
+}
+#collapse_price_nights {
+    font-family: "Barlow Semi Condensed";
+    font-size: 16px;
+    table {
+        border-collapse: collapse;
+        border-spacing: 0.5rem;
+        border: none;
+        width: 98%;
+        margin: auto;
+        overflow-x: auto;
+        th:first-child,
+        td:first-child {
+            min-width: 0;
+        }
+        tr {
+            border-bottom: 1px solid #84848453;
+            th {
+                padding: 0.5rem;
+                border: none;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            td {
+                padding: 0.5rem;
+                border: none;
+                vertical-align: middle;
+                a {
+                    font-weight: 600;
+                    letter-spacing: 0px;
+                    text-align: left;
+                }
+            }
+        }
+    }
 }

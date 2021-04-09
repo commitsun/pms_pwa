@@ -10,7 +10,7 @@
             <t t-set="page_title" t-value="'Reservation detail'" />
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
-            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
+            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-2">
                 <span class="o_pms_notification_title">
                     <i class="fa fa-info-circle mr-1" />
                     Updates
@@ -18,11 +18,11 @@
                 </span>
             </div>
             <div class="o_pms_pwa_roomdoo_alerts" />
-            <div id="o_pms_detail_reservation" class="oe_structure o_pms_pwa_structure mt-4">
+            <div id="o_pms_detail_reservation" class="oe_structure o_pms_pwa_structure mt-2">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <div class="justify-content-center ">
                         <div class="row ">
-                            <div class="col-sm-12 col-lg-6">
+                            <div class="col-lg-12 col-xl-6">
                                 <h1>
                                     <span class="title-header">Reserva</span>
                                     <span class="blue-header">
@@ -44,14 +44,14 @@
                                     </span>
                                 </h1>
                             </div>
-                            <div class="col-sm-12 col-lg-6 text-right o_pms_pwa_keypad_footer">
+                            <div class="col-lg-12 col-xl-6 text-right o_pms_pwa_keypad_footer">
                                 <button id="o_pms_pwa_button_cancel" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancelar reserva</button>
                                 <button id="o_pms_pwa_button_checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkin o_pms_pwa_disabled">Check in</button>
                                 <button id="o_pms_pwa_button_checkout" t-attf-url="/reservation/{{ reservation.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12 col-lg-4">
+                            <div class="col-lg-12 col-xl-4  mt-4">
                                 <div class="card shadow">
                                     <div class="container-fluid">
                                         <div class="bg-dark">
@@ -166,7 +166,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-lg-4" id="folio_reservation_ids">
+                            <div class="col-lg-12 col-xl-4 mt-4" id="folio_reservation_ids">
 
                                 <div t-if="reservation.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
                                     <div class="o_pms_pwa_table_reservation_list m-4">
@@ -322,6 +322,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
+
                                                 <div class="row m-3">
                                                     <div class="col-12">
                                                         <t t-foreach="reservation.service_ids" t-as="i">
@@ -332,7 +333,7 @@
                                                                 </label>
                                                                 <div t-attf-id='collapsediv{{i.id}}' class='o_pms_pwa_collapse collapse show'>
                                                                     <div class="o_pms_pwa_collapse_content mt-3">
-
+                                                                        <br />
                                                                         <table>
                                                                             <thead>
                                                                                 <tr>
@@ -381,7 +382,7 @@
                                                                                 </t>
                                                                             </tbody>
                                                                         </table>
-
+                                                                        <br />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -394,6 +395,7 @@
                                                         </t>
                                                     </div>
                                                 </div>
+
                                                 <div class="row mt-4">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="other_services">
@@ -468,17 +470,39 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-2">
-                                                    <div class="col-sm-6">
-                                                        <label class="control-label col-12" for="price_total">
-                                                            Precio total noches
-                                                        </label>
-                                                        <input class="form-control" type="text" name="price_total" t-att-value="reservation.price_total" />
-                                                    </div>
-                                                    <div class="col-sm-6 mt-3">
-                                                        <a href="" class="o_pms_pwa_price_link">
-                                                            <i class="fa fa-pencil-square-o" aria-hidden="false" />
-                                                            Precio / Noche
-                                                        </a>
+                                                    <div class="col-sm-12">
+                                                        <h4 data-toggle="collapse" data-target="#collapse_price_nights">
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="false" /> Precio/Noche
+                                                            <i class="fa fa-angle-down rotate-icon" />
+                                                        </h4>
+                                                        <div id="collapse_price_nights" class="collapse" aria-labelledby="headingOne">
+                                                            <table class="table table-condensed">
+                                                                <thead>
+
+                                                                    <tr>
+                                                                        <th class="o_pms_pwa_theme_color">Día</th>
+                                                                        <th class="o_pms_pwa_theme_color">Precio</th>
+                                                                        <th class="o_pms_pwa_theme_color">Descuento</th>
+                                                                    </tr>
+
+                                                                </thead>
+                                                                <tbody>
+                                                                    <t t-foreach="reservation._get_reservation_line_ids()" t-as="i">
+                                                                        <tr>
+                                                                            <td>
+                                                                                <t t-esc="i['date']" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="number" name="precio" t-att-value="i['price']" class="o_pms_pwa_modal_number"/>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input type="number" name="descuento" t-att-value="i['discount']" class="o_pms_pwa_modal_number"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </t>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -486,7 +510,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-lg-4" id="invoice_col">
+                            <div class="col-lg-12 col-xl-4 mt-4" id="invoice_col">
                                 <div class="card bg-dark shadow">
                                     <div class="card-header o_pms_pwa_card_header">
                                         <h3 class="mb-0">

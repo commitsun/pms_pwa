@@ -104,23 +104,30 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     // /
     $(document).on("click", ".editable", function (e) {
         var currentEle = $(this).attr("id");
+        var initial_qty = $(this).data("qty");
         // <-------stop the bubbling of the event here
+
         e.stopPropagation();
-        // Console.log("Current Element is " + currentEle);
+        // Var id =
 
         $("#" + currentEle).html(
-            '<input class="thVal o_pms_pwa_editinline" type="number" width="10" min="1" max="10" />'
+            '<input class="thVal o_pms_pwa_editinline" type="number" width="20" min="1" max="10" />'
         );
         $(".thVal").focus();
         $(".thVal").keyup(function (event) {
             if (event.keyCode === 13) {
-                $("#" + currentEle).html($(".thVal").val().trim());
+                // Console.log("TODO OK")
+
+                $("#" + currentEle).html(
+                    $(".thVal").val().trim() + '<i class="fa fa-edit"></i>'
+                );
             }
         });
 
         $(".thVal").focusout(function () {
             // You can use $('html')
-            $("#" + currentEle).html($(".thVal").val().trim());
+            // console.log("error?");
+            $("#" + currentEle).html(initial_qty + '<i class="fa fa-edit"></i>');
         });
     });
     $(document).on("change", "input[name='reservation_ids']", function () {
@@ -156,7 +163,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     "</td>" +
                     "<td id='my" +
                     lines[i].id +
-                    "' class='text-right editable'>" +
+                    "' class='text-right editable' data-qty='" +
+                    lines[i].qty_to_invoice +
+                    "'>" +
                     lines[i].qty_to_invoice +
                     "<i class='fa fa-edit'></i></td>" +
                     "<td class='text-right'>" +
@@ -251,7 +260,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         "</td>" +
                         "<td id='my" +
                         lines[i].id +
-                        "' class='text-right editable'>" +
+                        "' class='text-right editable' data-qty='" +
+                        lines[i].qty_to_invoice +
+                        "'>" +
                         lines[i].qty_to_invoice +
                         "<i class='fa fa-edit' ></i></td>" +
                         "<td class='text-right'>" +
@@ -363,29 +374,15 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             jQuery.ready();
         });
     });
-    // $(document).on("click", ".o_pms_pwa_rb_edit", function (e) {
-    //     // Console.log("A por la modal");
-    //     e.stopPropagation();
-    //     $("#o_pms_pwa_editModal").modal("show");
-    // });
     $("#o_pms_pwa_editModal").on("show.bs.modal", function (event) {
-        console.log("Weee");
         var element = $(event.relatedTarget);
         var id = element.data("id");
-        var service = element.data("service-id");
-        console.log("data-id= " + id);
-        console.log("service-id= ", service);
-
+        // Var service = element.data("service-id");
         // Click delete task in modal
         $(document).on("click", "#edit-modal-save", function () {
-            console.log("wee");
             var text_value = $("#new_val").val();
-
-            var change_id_span = "o_pms_pwa_rb_value_" + id;
-            console.log(change_id_span);
-            console.log(text_value);
+            var change_id_span = ".o_pms_pwa_rb_value_" + id;
             $(change_id_span).text(String(text_value));
-
             $("#o_pms_pwa_editModal").modal("toggle");
         });
     });

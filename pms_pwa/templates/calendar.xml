@@ -96,7 +96,7 @@
                                                 <td class="o_pms_pwa_table_cell">
                                                     <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible</p>
                                                     <div class="o_pms_pwa_content">
-                                                        <span class="o_pms_pwa_type">Estandar</span>
+                                                        <span class="o_pms_pwa_type"><t t-esc="obj.class_id.name"/></span>
                                                         <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
                                                         <span class="o_pms_pwa_info">
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" />

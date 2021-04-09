@@ -174,7 +174,7 @@
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
                                                 name="room_type_id">
                                                 <option
-                                                    name="room_type_id"
+
                                                     t-foreach="room_types"
                                                     t-as="key"
                                                     t-att-value="key.id"
@@ -193,7 +193,7 @@
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input"
                                                 name="preferred_room_id">
                                                 <option
-                                                    name="preferred_room_id"
+
                                                     t-foreach="room_numbers"
                                                     t-as="key"
                                                     t-att-value="key.id"
@@ -304,33 +304,19 @@
 
                                                     </thead>
                                                     <tbody>
-
+                                                        <t t-foreach="reservation.reservation_line_ids" t-as="i">
                                                             <tr>
                                                                 <td>
-                                                                    08/03/2021
+                                                                    <t t-esc="i['date']" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" name="precio" class="o_pms_pwa_modal_number"/>
+                                                                    <input type="number" name="precio" t-att-value="i['price']" class="o_pms_pwa_modal_number"/>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" name="descuento" class="o_pms_pwa_modal_number"/>
+                                                                    <input type="number" name="descuento" t-att-value="i['discount']" class="o_pms_pwa_modal_number"/>
                                                                 </td>
-
-
                                                             </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    09/03/2021
-                                                                </td>
-                                                                <td >
-                                                                    <input type="number" name="precio" class="o_pms_pwa_modal_number"/>
-                                                                </td>
-                                                                <td>
-                                                                    <input type="number" name="descuento" class="o_pms_pwa_modal_number"/>
-                                                                </td>
-
-
-                                                            </tr>
+                                                        </t>
                                                     </tbody>
                                                 </table>
                                             </div>
