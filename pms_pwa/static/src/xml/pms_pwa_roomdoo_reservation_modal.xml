@@ -299,7 +299,7 @@
                                                         <tr>
                                                             <th class="o_pms_pwa_theme_color">Día</th>
                                                             <th class="o_pms_pwa_theme_color">Precio</th>
-                                                            <th class="o_pms_pwa_theme_color">Descuento</th>
+                                                            <th class="o_pms_pwa_theme_color">Descuento (%)</th>
                                                         </tr>
 
                                                     </thead>
