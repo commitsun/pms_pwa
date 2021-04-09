@@ -274,8 +274,12 @@
                                                 Board service
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
-                                                <option value="reservation.board_service_room_id">
-                                                    <t t-esc="reservation.board_service_room_id.display_name" />
+                                                <option
+                                                    t-foreach="reservation.allowed_board_service_room_ids"
+                                                    t-as="key"
+                                                    t-att-value="key.id"
+                                                    t-att-selected="reservation.board_service_room_id.id === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
                                                 </option>
                                             </select>
                                         </div>

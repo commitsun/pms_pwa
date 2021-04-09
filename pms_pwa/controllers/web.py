@@ -678,7 +678,6 @@ class TestFrontEnd(http.Controller):
             "folio_internal_comment": reservation.folio_internal_comment,
             "payment_methods": self._get_allowed_payments_journals(),
             "reservation_types": self._get_reservation_types(),
-            "board_service_room_id": reservation.board_service_room_id,
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
@@ -686,6 +685,11 @@ class TestFrontEnd(http.Controller):
             "pms_property_id": reservation.pms_property_id.id,
             "service_ids": reservation._get_service_ids(),
             "reservation_line_ids": reservation._get_reservation_line_ids(),
+            "allowed_board_service_room_ids": self._get_allowed_board_service_room_ids(),
+            "board_service_room_id": {
+                "id": reservation.board_service_room_id.id,
+                "name": reservation.board_service_room_id.display_name,
+            },
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
             "pricelist_id": reservation.pricelist_id.id,
@@ -851,6 +855,12 @@ class TestFrontEnd(http.Controller):
             {"id": "out", "name": "Out of service"},
             {"id": "normal", "name": "Normal"},
             {"id": "staff", "name": "Staff"},
+        ]
+
+    def _get_allowed_board_service_room_ids(self):
+        return [
+            {"id": 15, "name": "Board service 1"},
+            {"id": 16, "name": "Board service 2"},
         ]
 
     def _get_allowed_payments_journals(self):
