@@ -65,14 +65,16 @@
                         </div>
                     </t>
                     <div class="col-12 o_pms_user_img">
-                        <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
+                        <a href="/web">
+                            <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
+                        </a>
                         <spam class="o_pms_user_name">
-                            <a href="">
+                            <a href="/my">
                                 <t t-esc="user_id.name"></t>
                             </a>
                         </spam>
                         <p class="o_pms_close_session">
-                            <a href="">Cerrar sesión</a>
+                            <a href="/web/session/logout">Cerrar sesión</a>
                         </p>
                     </div>
                 </div>

@@ -561,6 +561,7 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def reservation_detail_json(self, reservation_id=None, **kw):
+        reservation = False
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
@@ -683,6 +684,16 @@ class TestFrontEnd(http.Controller):
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "service_ids": reservation._get_service_ids(),
+            "reservation_line_ids": reservation._get_reservation_line_ids(),
+            "allowed_board_service_room_ids": self._get_allowed_board_service_room_ids(),
+            "board_service_room_id": {
+                "id": reservation.board_service_room_id.id,
+                "name": reservation.board_service_room_id.display_name,
+            },
+            "allowed_service_ids": {
+                "id": 1,
+                "name": "servicio 1",
+            },
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
             "pricelist_id": reservation.pricelist_id.id,
@@ -696,9 +707,11 @@ class TestFrontEnd(http.Controller):
         methods=["POST"],
         website=True,
     )
+    # flake8: noqa: C901
     def reservation_onchange_data(self, reservation_id=None, **kw):
         old_reservation_type = None
         old_values = None
+        reservation = False
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
@@ -846,6 +859,12 @@ class TestFrontEnd(http.Controller):
             {"id": "out", "name": "Out of service"},
             {"id": "normal", "name": "Normal"},
             {"id": "staff", "name": "Staff"},
+        ]
+
+    def _get_allowed_board_service_room_ids(self):
+        return [
+            {"id": 15, "name": "Board service 1"},
+            {"id": 16, "name": "Board service 2"},
         ]
 
     def _get_allowed_payments_journals(self):
