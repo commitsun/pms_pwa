@@ -375,9 +375,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     $("#o_pms_pwa_editModal").on("show.bs.modal", function (event) {
         var element = $(event.relatedTarget);
         var id = element.data("id");
-        console.log("id", id);
-        // Var service = element.data("service-id");
-        // Click delete task in modal
         $(document).on("click", "#edit-modal-save", function () {
             var text_value = $("#new_val").val();
             var change_id_span = ".o_pms_pwa_rb_value_" + id;

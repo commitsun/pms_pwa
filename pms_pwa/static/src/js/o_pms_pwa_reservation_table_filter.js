@@ -454,12 +454,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         //             "/onchange_data",
                                         //         "call",
                                         //         {
-                                        //             board_service: {
+                                        //             services_line_id: {
                                         //                 service_id: this.dataset
                                         //                     .serviceid,
                                         //                 service_line_id: this.dataset
                                         //                     .servicelineid,
                                         //                 qty: this.dataset.value,
+                                        //                 price: this.dataset.value,
                                         //             },
                                         //         }
                                         //     );
