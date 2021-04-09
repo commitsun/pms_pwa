@@ -251,7 +251,7 @@
 
                                             <t t-foreach="reservation.service_ids" t-as="service">
                                                 <div class="form-check" t-if="service.service_line_ids">
-                                                    <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-attf-id="defaultCheck{{service.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{service.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{service.id}}" />
+                                                    <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-att-data-service_id="service.id" t-attf-id="defaultCheck{{service.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{service.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{service.id}}" />
                                                     <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{service.id}}">
                                                         <t t-esc="service.product_id.name" />
                                                     </label>

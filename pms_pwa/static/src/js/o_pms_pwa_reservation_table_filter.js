@@ -214,6 +214,33 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         try {
                             $(String("#reservation_" + data_id)).find(
                                 "td"
+                            )[2].innerHTML =
+                                updated_data.preferred_room_id.name +
+                                "<br/> <span class='o_pms_pwa_wler'>" +
+                                updated_data.room_type_id.name +
+                                "</span>";
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[3].innerHTML =
+                                updated_data.checkin +
+                                "<br/> <span class='o_pms_pwa_wler'>" +
+                                updated_data.arrival_hour +
+                                "</span>";
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[4].innerHTML =
+                                updated_data.checkout +
+                                "<br/> <span class='o_pms_pwa_wler'>" +
+                                updated_data.departure_hour +
+                                "</span>";
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[7].innerHTML = updated_data.folio_id.amount_total;
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[7].innerHTML = updated_data.folio_id.outstanding_vat;
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
                             )[10].firstElementChild.outerHTML =
                                 updated_data.primary_button;
                             $(String("#reservation_" + data_id)).find(
@@ -333,7 +360,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         // On change inputs reservation modal
                                         $("form.o_pms_pwa_reservation_form").on(
                                             "change",
-                                            "input, select",
+                                            "select, input[type='checkbox'], input[type='radio']",
                                             function (new_event) {
                                                 // Reservation id
                                                 var values = {
@@ -356,7 +383,122 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             ":"
                                                         ) + 2
                                                     );
-                                                    console.log(values);
+                                                } else {
+                                                    if (
+                                                        new_event.currentTarget.dataset
+                                                            .service_id
+                                                    ) {
+                                                        var service_key = "add_service";
+                                                        if (
+                                                            !new_event.currentTarget
+                                                                .checked
+                                                        ) {
+                                                            service_key = "del_service";
+                                                        }
+                                                        values[service_key] =
+                                                            new_event.currentTarget.dataset.service_id;
+                                                    } else {
+                                                        values[
+                                                            new_event.currentTarget.name
+                                                        ] =
+                                                            new_event.currentTarget.value;
+                                                    }
+                                                }
+                                                // Call to set the new values
+                                                ajax.jsonRpc(
+                                                    "/reservation/" +
+                                                        reservation_id +
+                                                        "/onchange_data",
+                                                    "call",
+                                                    values
+                                                ).then(function (new_data) {
+                                                    setTimeout(function () {
+                                                        console.log(new_data);
+                                                        if (new_data) {
+                                                            if (
+                                                                !JSON.parse(new_data)
+                                                                    .result
+                                                            ) {
+                                                                self.displayDataAlert(
+                                                                    new_data
+                                                                );
+                                                            }
+                                                            // Refresh reservation modal values and sync with new data
+                                                            $.each(
+                                                                JSON.parse(new_data)
+                                                                    .reservation,
+                                                                function (key, value) {
+                                                                    console.log(
+                                                                        "-----"
+                                                                    );
+                                                                    console.log(key);
+                                                                    console.log(
+                                                                        "-----"
+                                                                    );
+                                                                    //                                                                if (key !== '')
+                                                                    var input = $(
+                                                                        "form.o_pms_pwa_reservation_form input[name='" +
+                                                                            key +
+                                                                            "']"
+                                                                    );
+                                                                    if (input) {
+                                                                        input.val(
+                                                                            value
+                                                                        );
+                                                                    } else {
+                                                                        $(
+                                                                            "form.o_pms_pwa_reservation_form select[name='" +
+                                                                                key +
+                                                                                "'] option[value='" +
+                                                                                value +
+                                                                                "']"
+                                                                        ).prop(
+                                                                            "selected",
+                                                                            true
+                                                                        );
+                                                                    }
+                                                                }
+                                                            );
+                                                            // refresh total
+                                                            let a = document.getElementsByClassName(
+                                                                "price_total"
+                                                            );
+                                                            console.log(a);
+                                                            a[0].innerText = JSON.parse(
+                                                                new_data
+                                                            ).reservation.price_total;
+                                                            //.value(JSON.parse(new_data).reservation.price_total)
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        );
+
+                                        $("form.o_pms_pwa_reservation_form").on(
+                                            "focusout",
+                                            "input[type='text'], input[type='number'], input[type='radio'], input[type='tel'], input[type='email'], input[type='time']",
+                                            function (new_event) {
+                                                // Reservation id
+                                                var values = {
+                                                    reservation_id: reservation_id,
+                                                };
+                                                // Set checkin & checkout separated
+                                                if (
+                                                    new_event.currentTarget.name ==
+                                                    "range_check_date_modal"
+                                                ) {
+                                                    let value_range_picker =
+                                                        new_event.currentTarget.value;
+
+                                                    values.checkin = value_range_picker.substr(
+                                                        0,
+                                                        value_range_picker.indexOf(":")
+                                                    );
+                                                    values.checkout = value_range_picker.substr(
+                                                        value_range_picker.indexOf(
+                                                            ":"
+                                                        ) + 2
+                                                    );
                                                 } else {
                                                     values[
                                                         new_event.currentTarget.name
@@ -371,7 +513,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     values
                                                 ).then(function (new_data) {
                                                     setTimeout(function () {
-                                                        console.log(new_data);
                                                         if (new_data) {
                                                             if (
                                                                 !JSON.parse(new_data)
@@ -484,7 +625,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         new_data,
                                                         reservation_data.id
                                                     );
-                                                    //Añadir llamada para refrescar tabla
                                                 });
                                             }
                                         );
