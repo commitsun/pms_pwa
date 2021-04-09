@@ -394,6 +394,7 @@ div.o_pms_pwa_reservation_modal {
         }
         > a.o_pms_pwa_btn_border {
             padding: unset;
+            max-height: 2rem;
         }
         > button.close {
             color: $theme-color;
@@ -575,6 +576,10 @@ div.o_pms_pwa_reservation_modal {
         background-color: $bg-theme-color;
         margin-left: -1.5rem;
         margin-right: -2rem;
+        @media (max-width: 464px) {
+            margin-left: -4.5rem;
+            margin-right: -3rem;
+        }
     }
     .o_pms_pwa_collapse_content {
         margin: auto;
