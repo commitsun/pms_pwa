@@ -71,6 +71,7 @@
                                                     <span class="mb-2" t-foreach="reservation.messages" t-as="key" t-att-value="key">
                                                         <h4 class="o_pms_pwa_blue">
                                                             <t t-esc="key[0]" />
+                                                            <i class="fa fa-check-square-o float-right"></i>
                                                         </h4>
                                                         <p>
                                                             <t t-esc="key[1]" />

@@ -26,7 +26,9 @@
 section.o_pms_pwa_roomdoo_list {
     .o_pms_pwa_abutton.disabled {
         color: $theme-color-text;
+        cursor: default;
     }
+
     .o_pms_pwa_w66 {
         width: 66%;
     }
@@ -161,9 +163,13 @@ section.o_pms_pwa_roomdoo_list {
                             & button.dropdown-item {
                                 padding: 0.25rem 0.5rem;
                                 font-weight: 600;
-                                & :hover {
-                                    background-color: $bg-theme-color-modal;
-                                }
+                            }
+                            & button.dropdown-item:hover {
+                                background-color: $bg-theme-color-modal !important;
+                            }
+                            & button.disabled.dropdown-item:hover {
+                                background-color: $bg-theme-color-modal !important;
+                                cursor: default;
                             }
                         }
                     }
