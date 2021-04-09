@@ -352,7 +352,7 @@
                                                                                         <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                                             <div class="o_pms_pwa_rb_box">
                                                                                                 <div class="o_pms_pwa_rb">
-                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ i.id}}">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ s.id}}">
                                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                                 X
@@ -399,10 +399,10 @@
 
                                                 <div class="row mt-4">
                                                     <div class="col-sm-12">
-                                                        <label class="control-label col-12" for="other_services">
-                                                            Más extras
+                                                        <label class="control-label col-12" for="add_service">
+                                                            Añadir servicio
                                                         </label>
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="other_services">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
 
                                                             <option
                                                                 t-foreach="reservation.service_ids"

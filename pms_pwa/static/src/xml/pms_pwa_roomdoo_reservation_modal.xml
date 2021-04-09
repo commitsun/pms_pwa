@@ -228,7 +228,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12">
                                             <label class="control-label col-12" for="checkin">
-                                                Check in - Check out
+                                                Check in : Check out
                                             </label>
                                             <input class="form-control" type="text" name="range_check_date_modal" t-att-value="reservation.checkin" />
                                             <input type="hidden" name="check_in_date" t-att-value="reservation.checkin" />
@@ -450,10 +450,10 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-sm-12">
-                                            <label class="control-label col-12" for="other_services">
-                                                Más extras
+                                            <label class="control-label col-12" for="add_service">
+                                                Añadir servicio
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="other_services">
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
 
                                                 <option
                                                     t-foreach="reservation.service_ids"
@@ -554,7 +554,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <hr/>
+                                <!-- <hr/>
                                 <div class="form-group">
                                     <div class="row mt-3">
                                         <div class="col-12 text-center">
@@ -576,7 +576,7 @@
                                                 class="btn btn-message" type="submit" t-att-value="_t('Save')"/>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </form>
                         </div>
                     </div>

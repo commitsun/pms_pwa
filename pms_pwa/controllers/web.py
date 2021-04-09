@@ -690,6 +690,10 @@ class TestFrontEnd(http.Controller):
                 "id": reservation.board_service_room_id.id,
                 "name": reservation.board_service_room_id.display_name,
             },
+            "allowed_service_ids": {
+                "id": 1,
+                "name": "servicio 1",
+            },
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
             "pricelist_id": reservation.pricelist_id.id,

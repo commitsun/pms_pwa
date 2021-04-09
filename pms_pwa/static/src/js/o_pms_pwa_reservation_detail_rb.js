@@ -90,16 +90,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             }
         );
     });
-    // Nuevo por cambio de las bolitas
-    $(document).on("click", ".o_pms_pwa_rb_remove", function (e) {
-        e.stopPropagation();
-        const check_name = "defaultCheck" + $(this).attr("data-id");
-        const inputs = document.getElementById(check_name);
-        inputs.checked = false;
-        const element_name = "collapsediv" + $(this).attr("data-id");
-        var element = document.getElementById(element_name);
-        element.classList.remove("show");
-    });
 
     // /
     $(document).on("click", ".editable", function (e) {
@@ -374,9 +364,18 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             jQuery.ready();
         });
     });
+    // Nuevo por cambio de las bolitas
+    $(document).on("click", ".o_pms_pwa_rb_remove", function (e) {
+        var id = $(this).attr("data-id");
+        e.stopPropagation();
+        var change_id_span = ".o_pms_pwa_rb_value_" + id;
+        $(change_id_span).text(String(0));
+    });
+
     $("#o_pms_pwa_editModal").on("show.bs.modal", function (event) {
         var element = $(event.relatedTarget);
         var id = element.data("id");
+        console.log("id", id);
         // Var service = element.data("service-id");
         // Click delete task in modal
         $(document).on("click", "#edit-modal-save", function () {

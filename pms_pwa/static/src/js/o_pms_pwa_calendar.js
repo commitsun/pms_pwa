@@ -32,7 +32,7 @@ odoo.define("pms_pwa.calendar", function (require) {
     });
 
     $(document).on("click", ".open-modalDialog", function () {
-        var date = $(this).data("date") + " - " + $(this).data("date");
+        var date = $(this).data("date") + " : " + $(this).data("date");
         var room = $(this).data("room");
         var pricelist = $(this).data("pricelist");
         $('input[name="range_check_date_modal"]').val(date);
