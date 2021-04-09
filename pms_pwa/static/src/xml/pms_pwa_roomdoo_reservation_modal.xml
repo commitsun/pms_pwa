@@ -103,7 +103,7 @@
                                                 <t t-esc="texts.room_number_text || _t('Room nº')" />
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
-                                                <option t-foreach="room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id === key.id ? 'selected' : None">
+                                                <option t-foreach="room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id.id === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>

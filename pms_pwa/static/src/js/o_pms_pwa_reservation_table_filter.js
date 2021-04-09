@@ -484,6 +484,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         new_data,
                                                         reservation_data.id
                                                     );
+                                                    $(
+                                                        "#o_pms_pwa_reservation_list_table"
+                                                    ).load(
+                                                        window.location.href +
+                                                            " #o_pms_pwa_reservation_list_table"
+                                                    );
                                                 });
                                             }
                                         );
