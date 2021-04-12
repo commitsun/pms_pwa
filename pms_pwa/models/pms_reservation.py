@@ -206,43 +206,77 @@ class PmsReservation(models.Model):
          ]
         """
         self.ensure_one()
-        service_ids = []
+        service_ids = {}
         for service in self.service_ids:
-            service_ids.append(
-                {
-                    "id": service.id,
-                    "product_id": {
-                        "id": service.product_id.id,
-                        "name": service.product_id.name,
-                    },
-                    "service_line_ids": service._get_service_line_ids(),
-                }
-            )
+            service_ids[service.id] = {
+                "product": service.product_id.name,
+                "service_line_ids": service._get_service_line_ids(),
+                "is_board_service": False,
+            }
+
         return service_ids
 
     def _get_reservation_line_ids(self):
         """
         @return: Return dict with nights, price, discount
-         [
-          {"date": date, "price": price, "discount": discount},
-          {"date": date, "price": price, "discount": discount},
+         {
+          id: {"date": date, "price": price, "discount": discount},
+          id: {"date": date, "price": price, "discount": discount},
           ...
-          {"date": date, "price": price, "discount": discount},
-         ]
+          id: {"date": date, "price": price, "discount": discount},
+         }
         """
         self.ensure_one()
-        reservation_lines = []
+        reservation_lines = {}
         for line in self.reservation_line_ids:
-            reservation_lines.append(
-                {
-                    "date": line.date,
-                    "price": line.price,
-                    "discount": line.discount,
-                }
-            )
+            reservation_lines[line.id] = {
+                "date": line.date,
+                "price": line.price,
+                "discount": line.discount,
+            }
             # TODO: Splitted Reservations has different rooms at line
             # TODO: Cancel Discount, calculate on discount or send separately??)
         return reservation_lines
+
+    def _get_allowed_board_service_room_ids(self):
+        self.ensure_one()
+        board_services = self.env["pms.board.service.room.type"].search(
+            [
+                ("pms_room_type_id", "=", self.room_type_id.id),
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", self.pms_property_id.id),
+            ]
+        )
+        allowed_board_services = []
+        for board_service in board_services:
+            allowed_board_services.append(
+                {
+                    "id": board_service.id,
+                    "name": board_service.pms_board_service_id.name,
+                }
+            )
+        return allowed_board_services
+
+    def _get_allowed_service_ids(self):
+        self.ensure_one()
+        services = self.env["product.product"].search(
+            [
+                ("sale_ok", "=", True),
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", self.pms_property_id.id),
+            ]
+        )
+        allowed_services = []
+        for service in services:
+            allowed_services.append(
+                {
+                    "id": service.id,
+                    "name": service.name,
+                }
+            )
+        return allowed_services
 
     @api.model
     def _get_allowed_rooms(

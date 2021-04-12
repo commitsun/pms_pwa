@@ -9,6 +9,7 @@ from datetime import datetime, timedelta
 from odoo import _, fields, http
 from odoo.exceptions import MissingError
 from odoo.http import request
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 from odoo.addons.web.controllers.main import Home
 
@@ -685,15 +686,12 @@ class TestFrontEnd(http.Controller):
             "pms_property_id": reservation.pms_property_id.id,
             "service_ids": reservation._get_service_ids(),
             "reservation_line_ids": reservation._get_reservation_line_ids(),
-            "allowed_board_service_room_ids": self._get_allowed_board_service_room_ids(),
+            "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
             "board_service_room_id": {
                 "id": reservation.board_service_room_id.id,
                 "name": reservation.board_service_room_id.display_name,
             },
-            "allowed_service_ids": {
-                "id": 1,
-                "name": "servicio 1",
-            },
+            "allowed_service_ids": reservation._get_allowed_service_ids(),
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
             "pricelist_id": reservation.pricelist_id.id,
@@ -723,19 +721,32 @@ class TestFrontEnd(http.Controller):
         if reservation:
             try:
                 params = http.request.jsonrequest.get("params")
+                _logger.info("DATOS")
+                _logger.info(params)
+                reservation_line_cmds = []
                 for param in params.keys():
                     # ADULTS
-                    if param == "adults":
+                    if (
+                        param == "adults"
+                        and int(params["adults"]) != reservation.adults
+                    ):
                         params["adults"] = int(params["adults"])
 
                     # ROOM TYPE
-                    elif param == "room_type_id":
+                    elif (
+                        param == "room_type_id"
+                        and int(params["room_type_id"]) != reservation.room_type_id
+                    ):
                         params["room_type_id"] = request.env["pms.room.type"].browse(
                             int(params["room_type_id"])
                         )
 
                     # PREFERRED ROOM ID
-                    elif param == "preferred_room_id":
+                    elif (
+                        param == "preferred_room_id"
+                        and int(params["preferred_room_id"])
+                        != reservation.preferred_room_id
+                    ):
                         params["preferred_room_id"] = request.env["pms.room"].browse(
                             int(params["preferred_room_id"])
                         )
@@ -745,12 +756,42 @@ class TestFrontEnd(http.Controller):
                         # params[param] = float(params[param])
                         pass
                     # CHECKIN & CHECKOUT TODO process both as an unit
-                    elif param in ["checkin", "checkout"]:
-                        pass
+                    elif (
+                        param == "checkin"
+                        and datetime.strptime(
+                            params["checkin"].strip(), DEFAULT_SERVER_DATE_FORMAT
+                        ).date()
+                        != reservation.checkin
+                    ):
+                        # TODO:  Delete Strip
+                        params["checkin"] = datetime.strptime(
+                            params["checkin"].strip(), DEFAULT_SERVER_DATE_FORMAT
+                        )
+                    elif (
+                        param == "checkout"
+                        and datetime.strptime(
+                            params["checkout"].strip(), DEFAULT_SERVER_DATE_FORMAT
+                        ).date()
+                        != reservation.checkout
+                    ):
+                        params["checkout"] = datetime.strptime(
+                            params["checkout"], DEFAULT_SERVER_DATE_FORMAT
+                        )
 
-                    # ARRIVAL HOUR, DEPARTURE HOUR TODO
-                    elif param in ["arrival_hour", "departure_hour"]:
-                        pass
+                    # BOARD_SERVICE
+                    elif (
+                        param == "board_service_room_id"
+                        and int(params["board_service_room_id"])
+                        != reservation.board_service_room_id
+                    ):
+                        params["board_service_room_id"] = request.env[
+                            "pms.room"
+                        ].browse(int(params["board_service_room_id"]))
+
+                    # RESERVATION_LINE
+                    elif param == "reservation_line_ids":
+                        for k, v in params["reservation_line_ids"]:
+                            reservation_line_cmds.append((1, k, v))
 
                     # ELIF CHANGE QTY BOARD SERVICES
                     elif param == "board_service":
@@ -771,10 +812,14 @@ class TestFrontEnd(http.Controller):
 
                     # RESERVATION TYPE
 
-                    elif param == "reservation_type":
+                    elif (
+                        param == "reservation_type"
+                        and params["reservation_type"] != reservation.reservation_type
+                    ):
                         old_reservation_type = reservation.folio_id.reservation_type
                         reservation.folio_id.reservation_type = params[param]
-
+                if reservation_line_cmds:
+                    params["reservation_line_ids"] = reservation_line_cmds
                 if "reservation_type" in params:
                     del params["reservation_type"]
                 if "board_service" in params:
@@ -849,22 +894,12 @@ class TestFrontEnd(http.Controller):
             }
         )
         reservation.flush()
-        # print(reservation.price_total)
-        # print("name", reservation.preferred_room_id.name)
-        # print(reservation.reservation_line_ids.mapped("room_id"))
-        # print(reservation.reservation_line_ids.mapped("price"))
 
     def _get_reservation_types(self):
         return [
             {"id": "out", "name": "Out of service"},
             {"id": "normal", "name": "Normal"},
             {"id": "staff", "name": "Staff"},
-        ]
-
-    def _get_allowed_board_service_room_ids(self):
-        return [
-            {"id": 15, "name": "Board service 1"},
-            {"id": 16, "name": "Board service 2"},
         ]
 
     def _get_allowed_payments_journals(self):
@@ -1186,6 +1221,12 @@ def parse_reservation(reservation):
     reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
     reservation_values["adults"] = reservation.adults
     reservation_values["reservation_type"] = reservation.folio_id.reservation_type
+    reservation_values["checkin"] = datetime.strftime(
+        reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+    )
+    reservation_values["checkout"] = datetime.strftime(
+        reservation.checkout, DEFAULT_SERVER_DATE_FORMAT
+    )
 
     reservation_values["arrival_hour"] = reservation.arrival_hour
     reservation_values["departure_hour"] = reservation.departure_hour
