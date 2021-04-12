@@ -360,7 +360,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         // On change inputs reservation modal
                                         $("form.o_pms_pwa_reservation_form").on(
                                             "change",
-                                            "select, input[type='checkbox'], input[type='radio']",
+                                            "select, input[type='checkbox'], input[type='radio'], input[type='text'][name='range_check_date_modal']",
                                             function (new_event) {
                                                 // Reservation id
                                                 var values = {
@@ -476,34 +476,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
                                         $("form.o_pms_pwa_reservation_form").on(
                                             "focusout",
-                                            "input[type='text'], input[type='number'], input[type='radio'], input[type='tel'], input[type='email'], input[type='time']",
+                                            "input[type='text'][name!='range_check_date_modal'], input[type='number'], input[type='radio'], input[type='tel'], input[type='email'], input[type='time']",
                                             function (new_event) {
                                                 // Reservation id
                                                 var values = {
                                                     reservation_id: reservation_id,
                                                 };
                                                 // Set checkin & checkout separated
-                                                if (
-                                                    new_event.currentTarget.name ==
-                                                    "range_check_date_modal"
-                                                ) {
-                                                    let value_range_picker =
-                                                        new_event.currentTarget.value;
-
-                                                    values.checkin = value_range_picker.substr(
-                                                        0,
-                                                        value_range_picker.indexOf(":")
-                                                    );
-                                                    values.checkout = value_range_picker.substr(
-                                                        value_range_picker.indexOf(
-                                                            ":"
-                                                        ) + 2
-                                                    );
-                                                } else {
-                                                    values[
-                                                        new_event.currentTarget.name
-                                                    ] = new_event.currentTarget.value;
-                                                }
+                                                values[new_event.currentTarget.name] =
+                                                    new_event.currentTarget.value;
                                                 // Call to set the new values
                                                 ajax.jsonRpc(
                                                     "/reservation/" +
