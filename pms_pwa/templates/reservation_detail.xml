@@ -490,13 +490,13 @@
                                                                     <t t-foreach="reservation._get_reservation_line_ids()" t-as="i">
                                                                         <tr>
                                                                             <td>
-                                                                                <t t-esc="i['date']" />
+                                                                                <t t-esc="i_value['date']" />
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" name="precio" t-att-value="i['price']" class="form-control o_pms_pwa_modal_number"/>
+                                                                                <input type="number" name="precio" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number"/>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" name="descuento" t-att-value="i['discount']" class="form-control o_pms_pwa_modal_number"/>
+                                                                                <input type="number" name="descuento" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number"/>
                                                                             </td>
                                                                         </tr>
                                                                     </t>
