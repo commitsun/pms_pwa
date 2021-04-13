@@ -7,38 +7,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var core = require("web.core");
     var _t = core._t;
     var folio_id = $("input[name='folio_id']").val();
-    var reservation_id = $("input[name='reservation_id']").val();
-    // Var services_checks = [];
-    // // Bidimensional array: [ [1,3], [2,4] ]
-    // // Switcher function:
-    // $(".o_pms_pwa_rb_tab").click(function () {
-    //     // Spot switcher:
-    //     $(this)
-    //         .parent()
-    //         .find(".o_pms_pwa_rb_tab")
-    //         .removeClass("o_pms_pwa_rb_tab_active");
-    //     $(this).addClass("o_pms_pwa_rb_tab_active");
-    // });
-
-    // // Save data:
-    // $(".trigger").click(function () {
-    //     // Empty array:
-    //     services_checks = [];
-    //     // Push data:
-    //     for (var i = 1; i <= $(".o_pms_pwa_rb").length; i++) {
-    //         // Var rb = "o_pms_pwa_rb" + i;
-    //         var rbValue = parseInt(
-    //             $("#o_pms_pwa_rb-" + i)
-    //                 .find(".o_pms_pwa_rb_tab_active")
-    //                 .attr("data-value"),
-    //             10
-    //         );
-    //         // Bidimensional array push:
-    //         services_checks.push([i, rbValue]);
-    //         // Bidimensional array: [ [1,3], [2,4] ]
-    //     }
-    //     console.log(services_checks);
-    // });
+    var reservation_id = $("input[name='id']").val();
     $(function () {
         $('input[name="range_check_date"]').daterangepicker(
             {
@@ -367,18 +336,49 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     // Nuevo por cambio de las bolitas
     $(document).on("click", ".o_pms_pwa_rb_remove", function (e) {
         var id = $(this).attr("data-id");
+        var service_id = $(this).attr("data-service-id");
+        var reservation_id_value = $(this).attr("data-reservation-id");
+        var price_input_name = String("price_" + service_id + "_" + id);
         e.stopPropagation();
         var change_id_span = ".o_pms_pwa_rb_value_" + id;
         $(change_id_span).text(String(0));
+        ajax.jsonRpc(
+            "/reservation/" + reservation_id_value + "/onchange_data",
+            "call",
+            {
+                services_line_id: {
+                    service_id: service_id,
+                    service_line_id: id,
+                    qty: 0,
+                    price: $(String("input[name=" + price_input_name)).val(),
+                },
+            }
+        );
     });
 
     $("#o_pms_pwa_editModal").on("show.bs.modal", function (event) {
         var element = $(event.relatedTarget);
         var id = element.data("id");
+        var service_id = element.data("service-id");
+        var reservation_id_value = element.data("reservation-id");
+        var price_input_name = String("price_" + service_id + "_" + id);
+
         $(document).on("click", "#edit-modal-save", function () {
             var text_value = $("#new_val").val();
             var change_id_span = ".o_pms_pwa_rb_value_" + id;
             $(change_id_span).text(String(text_value));
+            ajax.jsonRpc(
+                "/reservation/" + reservation_id_value + "/onchange_data",
+                "call",
+                {
+                    services_line_id: {
+                        service_id: service_id,
+                        service_line_id: id,
+                        qty: text_value,
+                        price: $(String("input[name=" + price_input_name)).val(),
+                    },
+                }
+            );
             $("#o_pms_pwa_editModal").modal("toggle");
         });
     });

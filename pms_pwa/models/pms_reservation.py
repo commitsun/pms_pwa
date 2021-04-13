@@ -209,7 +209,7 @@ class PmsReservation(models.Model):
         service_ids = {}
         for service in self.service_ids:
             service_ids[service.id] = {
-                "product": service.product_id.name,
+                "product_id": service.product_id.name,
                 "service_line_ids": service._get_service_line_ids(),
                 "is_board_service": False,
             }

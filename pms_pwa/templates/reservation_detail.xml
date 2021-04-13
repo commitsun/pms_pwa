@@ -156,7 +156,6 @@
                                                     <input type="hidden" name="model" value="pms.reservation" />
                                                     <input type="hidden" name="id" t-att-value="reservation.id" />
                                                     <input type="hidden" name="folio_id" t-att-value="reservation.folio_id.id" />
-                                                    <input type="hidden" name="reservation_id" t-att-value="reservation.id" />
                                                     <div class="form-group">
                                                         <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" required="" />
                                                         <input type="submit" class="btn btn-message" value="Enviar" />
@@ -352,7 +351,7 @@
                                                                                         <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                                             <div class="o_pms_pwa_rb_box">
                                                                                                 <div class="o_pms_pwa_rb">
-                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-id="{{ s.id}}">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-reservation-id="{{ reservation.id }}" t-attf-data-service-id="{{ i.id }}" t-attf-data-id="{{ s.id }}">
                                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                                 X
@@ -366,7 +365,7 @@
                                                                                                             </span>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" data-toggle="modal" data-target="#o_pms_pwa_editModal" t-attf-data-service-id="{{ i.id}}" t-attf-data-id="{{ s.id}}">
+                                                                                                    <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" data-toggle="modal" data-target="#o_pms_pwa_editModal" t-attf-data-reservation-id="{{ reservation.id }}" t-attf-data-service-id="{{ i.id }}" t-attf-data-id="{{ s.id }}">
                                                                                                         <div class="o_pms_pwa_rb_spot">
                                                                                                             <span class="o_pms_pwa_rb_txt">
                                                                                                                 <i class="fa fa-edit"></i>
@@ -377,7 +376,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="number" name="price" t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number"/>
+                                                                                            <input type="number" t-attf-name="price_{{ i.id}}_{{ s.id }}" t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number"/>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </t>
@@ -491,13 +490,13 @@
                                                                     <t t-foreach="reservation._get_reservation_line_ids()" t-as="i">
                                                                         <tr>
                                                                             <td>
-                                                                                <t t-esc="i['date']" />
+                                                                                <t t-esc="i_value['date']" />
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" name="precio" t-att-value="i['price']" class="form-control o_pms_pwa_modal_number"/>
+                                                                                <input type="number" name="precio" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number"/>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" name="descuento" t-att-value="i['discount']" class="form-control o_pms_pwa_modal_number"/>
+                                                                                <input type="number" name="descuento" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number"/>
                                                                             </td>
                                                                         </tr>
                                                                     </t>

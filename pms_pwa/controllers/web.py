@@ -902,6 +902,12 @@ class TestFrontEnd(http.Controller):
             {"id": "staff", "name": "Staff"},
         ]
 
+    def _get_allowed_board_service_room_ids(self):
+        return [
+            {"id": 15, "name": "Board service 1"},
+            {"id": 16, "name": "Board service 2"},
+        ]
+
     def _get_allowed_payments_journals(self):
         """
         @return: Return dict with journals
