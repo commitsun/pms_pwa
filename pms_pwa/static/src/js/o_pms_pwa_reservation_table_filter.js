@@ -413,7 +413,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     values
                                                 ).then(function (new_data) {
                                                     setTimeout(function () {
-                                                        console.log(new_data);
                                                         if (new_data) {
                                                             if (
                                                                 !JSON.parse(new_data)

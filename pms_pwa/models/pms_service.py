@@ -17,13 +17,10 @@ class PmsService(models.Model):
          ]
         """
         self.ensure_one()
-        service_line_ids = []
+        service_line_ids = {}
         for line in self.service_line_ids:
-            service_line_ids.append(
-                {
-                    "id": line.id,
-                    "day_qty": line.day_qty,
-                    "date": line.date,
-                }
-            )
+            service_line_ids[line.id] = {
+                "day_qty": line.day_qty,
+                "date": line.date,
+            }
         return service_line_ids
