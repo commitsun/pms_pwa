@@ -22,5 +22,6 @@ class PmsService(models.Model):
             service_line_ids[line.id] = {
                 "day_qty": line.day_qty,
                 "date": line.date,
+                "price": line.price_unit,
             }
         return service_line_ids
