@@ -363,9 +363,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "select, input[type='checkbox'], input[type='radio'], input[type='text'][name='range_check_date_modal']",
                                             function (new_event) {
                                                 // Reservation id
-                                                var values = {
-                                                    reservation_id: reservation_id,
-                                                };
+                                                var values = {};
                                                 console.log(
                                                     "new_event.currentTarget.dataset"
                                                 );
@@ -408,11 +406,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             new_event.currentTarget
                                                                 .dataset.main_field
                                                         ) {
-                                                            values[
-                                                                new_event.currentTarget.dataset.main_field
+                                                            var main_field =
+                                                                new_event.currentTarget
+                                                                    .dataset.main_field;
+                                                            var field_id =
+                                                                new_event.currentTarget
+                                                                    .dataset.field_id;
+                                                            values[main_field] = {};
+                                                            values[main_field][
+                                                                field_id
                                                             ] = {};
-                                                            values[
-                                                                new_event.currentTarget.dataset.main_field
+                                                            values[main_field][
+                                                                field_id
                                                             ][
                                                                 new_event.currentTarget.name
                                                             ] =
@@ -499,20 +504,22 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "input[type='text'][name!='range_check_date_modal'], input[type='number'], input[type='radio'], input[type='tel'], input[type='email'], input[type='time']",
                                             function (new_event) {
                                                 // Reservation id
-                                                var values = {
-                                                    reservation_id: reservation_id,
-                                                };
+                                                var values = {};
                                                 if (
                                                     new_event.currentTarget.dataset
                                                         .main_field
                                                 ) {
-                                                    values[
-                                                        new_event.currentTarget.dataset.main_field
-                                                    ] = {};
-                                                    values[
-                                                        new_event.currentTarget.dataset.main_field
-                                                    ][new_event.currentTarget.name] =
-                                                        new_event.currentTarget.value;
+                                                    var main_field =
+                                                        new_event.currentTarget.dataset
+                                                            .main_field;
+                                                    var field_id =
+                                                        new_event.currentTarget.dataset
+                                                            .field_id;
+                                                    values[main_field] = {};
+                                                    values[main_field][field_id] = {};
+                                                    values[main_field][field_id][
+                                                        new_event.currentTarget.name
+                                                    ] = new_event.currentTarget.value;
                                                 } else {
                                                     values[
                                                         new_event.currentTarget.name
