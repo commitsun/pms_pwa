@@ -363,12 +363,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "select, input[type='checkbox'], input[type='radio'], input[type='text'][name='range_check_date_modal']",
                                             function (new_event) {
                                                 var values = {};
-                                                console.log(
-                                                    "new_event.currentTarget.dataset"
-                                                );
-                                                console.log(
-                                                    new_event.currentTarget.dataset
-                                                );
                                                 // Set checkin & checkout separated
                                                 if (
                                                     new_event.currentTarget.name ==
