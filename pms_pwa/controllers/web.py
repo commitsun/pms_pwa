@@ -667,7 +667,7 @@ class TestFrontEnd(http.Controller):
             "folio_id": {
                 "id": reservation.folio_id.id,
                 "amount_total": reservation.folio_id.amount_total,
-                "outstanding_vat": 15.69,
+                "outstanding_vat": reservation.folio_pending_amount,
             },
             "state": reservation.state,
             "origin": reservation.origin,
@@ -695,7 +695,13 @@ class TestFrontEnd(http.Controller):
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
             "pricelist_id": reservation.pricelist_id.id,
+            "allowed_pricelists": reservation._get_allowed_pricelists(),
+            "allowed_segmentations": reservation._get_allowed_segmentations(),
         }
+        import pprint
+
+        pp = pprint.PrettyPrinter(indent=4)
+        pp.pprint(reservation_values)
         return reservation_values
 
     @http.route(
@@ -900,12 +906,6 @@ class TestFrontEnd(http.Controller):
             {"id": "out", "name": "Out of service"},
             {"id": "normal", "name": "Normal"},
             {"id": "staff", "name": "Staff"},
-        ]
-
-    def _get_allowed_board_service_room_ids(self):
-        return [
-            {"id": 15, "name": "Board service 1"},
-            {"id": 16, "name": "Board service 2"},
         ]
 
     def _get_allowed_payments_journals(self):
@@ -1238,5 +1238,10 @@ def parse_reservation(reservation):
     reservation_values["departure_hour"] = reservation.departure_hour
     reservation_values["price_total"] = reservation.price_total
     reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
-
+    reservation_values["pricelist_id"]: reservation.pricelist_id.id
+    reservation_values["allowed_pricelists"]: reservation._get_allowed_pricelists()
+    reservation_values["service_ids"]: reservation._get_service_ids()
+    reservation_values[
+        "allowed_board_service_room_ids"
+    ]: reservation._get_allowed_board_service_room_ids()
     return reservation_values

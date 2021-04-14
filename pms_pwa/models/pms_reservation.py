@@ -162,6 +162,7 @@ class PmsReservation(models.Model):
                         {
                             "date": line.date,
                             "day_qty": line.day_qty,
+                            "price_unit": line.price_unit,
                         }
                     )
                 reservation_extra[service.id]["lines"] = lines
@@ -176,33 +177,30 @@ class PmsReservation(models.Model):
         """
         @return: Return dict with checkin_partner_ids
          [
-          {"id": id, "name": name, "mobile": mobile, "email": email},
-          {"id": id, "name": name, "mobile": mobile, "email": email},
+          id: {"name": name, "mobile": mobile, "email": email},
+          id: {"name": name, "mobile": mobile, "email": email},
           ...
-          {"id": id, "name": name, "mobile": mobile, "email": email},
+          id: {"name": name, "mobile": mobile, "email": email},
          ]
         """
         self.ensure_one()
-        checkin_partner_ids = []
-        for partner in self.checkin_partner_ids:
-            checkin_partner_ids.append(
-                {
-                    "id": partner.id,
-                    "name": partner.name,
-                    "mobile": partner.mobile,
-                    "email": partner.email,
-                }
-            )
-        return checkin_partner_ids
+        checkin_partners = {}
+        for checkin in self.checkin_partner_ids:
+            checkin_partners[checkin.id] = {
+                "name": checkin.name,
+                "mobile": checkin.mobile,
+                "email": checkin.email,
+            }
+        return checkin_partners
 
     def _get_service_ids(self):
         """
         @return: Return dict with service_ids
          [
-          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
-          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+          id: {"name": "productname", "service_line_ids": service_line_ids},
+          id: {"name": "productname", "service_line_ids": service_line_ids},
           ...
-          {"id": id, "product_id": product_id, "service_line_ids": service_line_ids},
+          id: {"name": "productname", "service_line_ids": service_line_ids},
          ]
         """
         self.ensure_one()
@@ -211,7 +209,6 @@ class PmsReservation(models.Model):
             service_ids[service.id] = {
                 "product_id": service.product_id.name,
                 "service_line_ids": service._get_service_line_ids(),
-                "is_board_service": False,
             }
 
         return service_ids
@@ -249,6 +246,7 @@ class PmsReservation(models.Model):
             ]
         )
         allowed_board_services = []
+        board_services = board_services | self.board_service_room_id
         for board_service in board_services:
             allowed_board_services.append(
                 {
@@ -403,3 +401,37 @@ class PmsReservation(models.Model):
                     }
                 )
         return allowed_extras
+
+    @api.model
+    def _get_allowed_pricelists(self):
+        self.ensure_one()
+        pricelists = self.env["product.pricelist"].search(
+            [
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", self.pms_property_id.id),
+            ]
+        )
+        allowed_pricelists = []
+        for pricelist in pricelists:
+            allowed_pricelists.append(
+                {
+                    "id": pricelist.id,
+                    "name": pricelist.name,
+                }
+            )
+        return allowed_pricelists
+
+    @api.model
+    def _get_allowed_segmentations(self):
+        self.ensure_one()
+        segmentations = self.env["res.partner.category"].search([])
+        allowed_segmentations = []
+        for tag in segmentations:
+            allowed_segmentations.append(
+                {
+                    "id": tag.id,
+                    "name": tag.name,
+                }
+            )
+        return allowed_segmentations
