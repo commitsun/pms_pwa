@@ -362,7 +362,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "change",
                                             "select, input[type='checkbox'], input[type='radio'], input[type='text'][name='range_check_date_modal']",
                                             function (new_event) {
-                                                // Reservation id
                                                 var values = {};
                                                 console.log(
                                                     "new_event.currentTarget.dataset"
@@ -503,7 +502,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "focusout",
                                             "input[type='text'][name!='range_check_date_modal'], input[type='number'], input[type='radio'], input[type='tel'], input[type='email'], input[type='time']",
                                             function (new_event) {
-                                                // Reservation id
                                                 var values = {};
                                                 if (
                                                     new_event.currentTarget.dataset
