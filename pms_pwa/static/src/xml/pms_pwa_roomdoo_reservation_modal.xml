@@ -211,10 +211,10 @@
                                                                     <t t-esc="i_value['date']" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" name="precio" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number" />
+                                                                    <input type="number" t-attf-data-main_field="reservation_line_ids" name="price" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number" />
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" name="descuento" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number" />
+                                                                    <input type="number" t-attf-data-main_field="reservation_line_ids" name="discount" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number" />
                                                                 </td>
                                                             </tr>
                                                         </t>
@@ -300,7 +300,7 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" t-attf-name="price_{{ service}}_{{ s.id }}"  t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number" />
+                                                                                <input type="number" t-attf-data-main_field="service_ids" t-attf-name="price_{{ service}}_{{ s.id }}"  t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number" />
                                                                             </td>
                                                                         </tr>
 

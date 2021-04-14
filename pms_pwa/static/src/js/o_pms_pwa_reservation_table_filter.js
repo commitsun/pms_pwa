@@ -366,6 +366,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 var values = {
                                                     reservation_id: reservation_id,
                                                 };
+                                                console.log(
+                                                    "new_event.currentTarget.dataset"
+                                                );
+                                                console.log(
+                                                    new_event.currentTarget.dataset
+                                                );
                                                 // Set checkin & checkout separated
                                                 if (
                                                     new_event.currentTarget.name ==
@@ -398,10 +404,25 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         values[service_key] =
                                                             new_event.currentTarget.dataset.service_id;
                                                     } else {
-                                                        values[
-                                                            new_event.currentTarget.name
-                                                        ] =
-                                                            new_event.currentTarget.value;
+                                                        if (
+                                                            new_event.currentTarget
+                                                                .dataset.main_field
+                                                        ) {
+                                                            values[
+                                                                new_event.currentTarget.dataset.main_field
+                                                            ] = {};
+                                                            values[
+                                                                new_event.currentTarget.dataset.main_field
+                                                            ][
+                                                                new_event.currentTarget.name
+                                                            ] =
+                                                                new_event.currentTarget.value;
+                                                        } else {
+                                                            values[
+                                                                new_event.currentTarget.name
+                                                            ] =
+                                                                new_event.currentTarget.value;
+                                                        }
                                                     }
                                                 }
                                                 // Call to set the new values
@@ -481,9 +502,22 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 var values = {
                                                     reservation_id: reservation_id,
                                                 };
-                                                // Set checkin & checkout separated
-                                                values[new_event.currentTarget.name] =
-                                                    new_event.currentTarget.value;
+                                                if (
+                                                    new_event.currentTarget.dataset
+                                                        .main_field
+                                                ) {
+                                                    values[
+                                                        new_event.currentTarget.dataset.main_field
+                                                    ] = {};
+                                                    values[
+                                                        new_event.currentTarget.dataset.main_field
+                                                    ][new_event.currentTarget.name] =
+                                                        new_event.currentTarget.value;
+                                                } else {
+                                                    values[
+                                                        new_event.currentTarget.name
+                                                    ] = new_event.currentTarget.value;
+                                                }
                                                 // Call to set the new values
                                                 ajax.jsonRpc(
                                                     "/reservation/" +
