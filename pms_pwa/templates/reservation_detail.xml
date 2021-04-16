@@ -378,7 +378,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="number" t-attf-name="price_{{ i.id}}_{{ s.id }}" t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number" />
+                                                                                            <input type="number" t-attf-name="price" t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </t>
