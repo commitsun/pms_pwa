@@ -833,7 +833,7 @@ class TestFrontEnd(http.Controller):
                 old_values = parse_reservation(reservation)
                 if "price_total" in params:
                     del params["price_total"]
-                del params["reservation_id"]
+                # del params["reservation_id"]
                 reservation.write(params)
             except Exception as e:
                 # REVIEW

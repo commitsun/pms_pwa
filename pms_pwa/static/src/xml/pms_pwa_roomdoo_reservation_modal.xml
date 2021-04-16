@@ -247,9 +247,11 @@
 
                                 <div class="form-group form-field o_pms_pwa_group_separation">
                                     <div class="row m-3">
-                                        <div class="col-12">
 
-                                            <t t-foreach="reservation.service_ids" t-as="service">
+                                        <t t-foreach="reservation.service_ids" t-as="service">
+                                            <input type="hidden" t-attf-name="o_pms_pwa_service_line_{{service}}" t-attf-value="{{service}}"/>
+                                            <div class="col-12">
+
                                                 <div class="form-check" t-if="service_value.service_line_ids">
                                                     <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-att-data-service_id="service" t-attf-id="defaultCheck{{service}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{service}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{service}}" />
                                                     <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{service}}">
@@ -268,14 +270,15 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <t t-foreach="service_value.service_line_ids" t-as="s">
-                                                                        <tr>
+
+                                                                        <tr t-attf-class="o_roomdoo_hide_show_service_{{service}}">
                                                                             <td class="o_pms_pwa_detail_td">
                                                                                 <t t-esc="s.date" />
                                                                             </td>
                                                                             <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                                 <div class="o_pms_pwa_rb_box">
                                                                                     <div class="o_pms_pwa_rb">
-                                                                                        <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-reservation-id="{{ reservation.id }}" t-attf-data-id="{{ s.id}}" t-attf-data-service-id="{{ service }}">
+                                                                                        <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_remove" t-attf-data-reservation-id="{{ reservation.id }}" t-attf-data-id="{{ s }}" t-attf-data-service-id="{{ service }}">
                                                                                             <div class="o_pms_pwa_rb_spot">
                                                                                                 <span class="o_pms_pwa_rb_txt">
                                                                                                 X
@@ -284,12 +287,12 @@
                                                                                         </div>
                                                                                         <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_tab_active">
                                                                                             <div class="o_pms_pwa_rb_spot">
-                                                                                                <span t-attf-class="o_pms_pwa_rb_txt o_pms_pwa_rb_value_{{ s.id }}">
+                                                                                                <span t-attf-class="o_pms_pwa_rb_txt o_pms_pwa_rb_value_{{ s }}">
                                                                                                     <t t-esc="s.day_qty" />
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" data-toggle="modal" data-target="#o_pms_pwa_editModal" t-attf-data-reservation-id="{{ reservation.id }}" t-attf-data-service-id="{{ service }}" t-attf-data-id="{{ s.id}}">
+                                                                                        <div class="o_pms_pwa_rb_tab o_pms_pwa_rb_edit" data-toggle="modal" data-target="#o_pms_pwa_editModal" t-attf-data-reservation-id="{{ reservation.id }}" t-attf-data-service-id="{{ service }}" t-attf-data-id="{{ s }}">
                                                                                             <div class="o_pms_pwa_rb_spot">
                                                                                                 <span class="o_pms_pwa_rb_txt">
                                                                                                     <i class="fa fa-edit"></i>
@@ -300,7 +303,7 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" t-attf-data-main_field="service_ids" t-attf-data-field_id="{{service}}" t-attf-name="price_{{ service}}_{{ s.id }}"  t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number" />
+                                                                                <input type="number" t-attf-data-main_field="service_ids" t-attf-data-field_id="{{service}}" t-attf-name="price_{{ service}}_{{ s }}"  t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number" />
                                                                             </td>
                                                                         </tr>
 
@@ -317,12 +320,15 @@
                                                         <t t-esc="service.product_id.name" />
                                                     </label>
                                                 </div> -->
-                                            </t>
-                                            <input type="hidden" name="reservation_extras" />
-                                            <!-- <div class="form-check mt-2">
+                                            </div>
+                                            <div class="col-12 mt-2">
+                                                <div class="o_roomdoo_hide_show-services-more o_roomdoo_hide_show-more2" t-attf-data-service-id="{{service}}">Ver más</div>
+                                            </div>
+                                        </t>
+                                        <input type="hidden" name="reservation_extras" />
+                                        <!-- <div class="form-check mt-2">
                                                 <a class="o_pms_pwa_extras" href="#">Más extras</a>
                                             </div> -->
-                                        </div>
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-sm-12">

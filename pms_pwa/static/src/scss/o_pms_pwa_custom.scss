@@ -494,3 +494,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
         }
     }
 }
+
+.o_roomdoo_hide_show2 {
+    width: 100%;
+}
+.o_roomdoo_hide_show-more2 {
+    display: none;
+    cursor: pointer;
+    color: $theme-color;
+    text-align: "center";
+    margin-left: 40%;
+}

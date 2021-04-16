@@ -35,8 +35,8 @@
                                         <img t-if="reservation.agency_id" t-att-src="website.image_url(reservation.agency_id, 'image_128')" width="100" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
                                         <span t-else="">
                                             <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
-                                            <span t-if="reservation.channel_type_id" class="o_pms_pwa_wler ml-2" t-esc="reservation.partner_id.name"/>
-                                            <span class="o_pms_pwa_wler ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin"/>
+                                            <span t-if="reservation.channel_type_id" class="o_pms_pwa_wler ml-2" t-esc="reservation.partner_id.name" />
+                                            <span class="o_pms_pwa_wler ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin" />
                                         </span>
 
                                     </span>
@@ -213,7 +213,7 @@
 
                                         <div class="row">
                                             <div class="col-12 mt-2">
-                                                <div class="o_roomdoo_hide_show-more">Show more</div>
+                                                <div class="o_roomdoo_hide_show-more">Ver más</div>
                                             </div>
                                         </div>
 
@@ -324,8 +324,10 @@
                                                 </div>
 
                                                 <div class="row m-3">
-                                                    <div class="col-12">
-                                                        <t t-foreach="reservation.service_ids" t-as="i">
+
+                                                    <t t-foreach="reservation.service_ids" t-as="i">
+                                                        <input type="hidden" t-attf-name="o_pms_pwa_service_line_{{i.id}}" t-attf-value="{{i.id}}"/>
+                                                        <div class="col-12">
                                                             <div class="form-check mt-2" t-if="i.service_line_ids">
                                                                 <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-attf-id="defaultCheck{{i.id}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{i.id}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{i.id}}" />
                                                                 <label class="o_pms_pwa_checkbox_label" t-attf-for="defaultCheck{{i.id}}">
@@ -343,8 +345,8 @@
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
-                                                                                <t t-foreach="i.service_line_ids" t-as="s">
-                                                                                    <tr>
+                                                                                <t t-foreach="i.service_line_ids" t-as="s" >
+                                                                                    <tr t-attf-class="o_roomdoo_hide_show_service_{{i.id}}">
                                                                                         <td class="o_pms_pwa_detail_td">
                                                                                             <span t-field="s.date" t-options='{"format": "dd/MM/yyyy"}' />
                                                                                         </td>
@@ -376,7 +378,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="number" t-attf-name="price_{{ i.id}}_{{ s.id }}" t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number"/>
+                                                                                            <input type="number" t-attf-name="price_{{ i.id}}_{{ s.id }}" t-attf-value="{{s.price_unit}}" class="form-control o_pms_pwa_modal_number" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </t>
@@ -392,8 +394,11 @@
                                                                     <t t-esc="i.product_id.name" />
                                                                 </label>
                                                             </div> -->
-                                                        </t>
-                                                    </div>
+                                                        </div>
+                                                        <div class="col-12 mt-2">
+                                                            <div class="o_roomdoo_hide_show-services-more o_roomdoo_hide_show-more2" t-attf-data-service-id="{{i.id}}">Ver más</div>
+                                                        </div>
+                                                    </t>
                                                 </div>
 
                                                 <div class="row mt-4">
@@ -403,10 +408,7 @@
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
 
-                                                            <option
-                                                                t-foreach="reservation.service_ids"
-                                                                t-as="key"
-                                                                t-att-value="key.id">
+                                                            <option t-foreach="reservation.service_ids" t-as="key" t-att-value="key.id">
                                                                 <t t-esc="key.name" />
                                                             </option>
 
@@ -472,7 +474,8 @@
                                                 <div class="row mt-2">
                                                     <div class="col-sm-12">
                                                         <h4 data-toggle="collapse" data-target="#collapse_price_nights">
-                                                            <i class="fa fa-pencil-square-o" aria-hidden="false" /> Precio/Noche
+                                                            <i class="fa fa-pencil-square-o" aria-hidden="false" />
+                                                            Precio/Noche
                                                             <i class="fa fa-angle-down rotate-icon" />
                                                         </h4>
                                                         <div id="collapse_price_nights" class="collapse" aria-labelledby="headingOne">
@@ -493,10 +496,10 @@
                                                                                 <t t-esc="i_value['date']" />
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" name="precio" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number"/>
+                                                                                <input type="number" name="precio" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number" />
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" name="descuento" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number"/>
+                                                                                <input type="number" name="descuento" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number" />
                                                                             </td>
                                                                         </tr>
                                                                     </t>
