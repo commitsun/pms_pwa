@@ -159,6 +159,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         /**
          * @override
          */
+
         start: function () {
             var self = this;
             self.reservation_text = _t("Reservation");
@@ -356,7 +357,52 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 },
                                             }
                                         );
-
+                                        // Show more // less
+                                        try {
+                                            $(
+                                                "input[name^='o_pms_pwa_service_line_']"
+                                            ).map(function () {
+                                                var element_id = $(this).val();
+                                                if (
+                                                    $(
+                                                        ".o_roomdoo_hide_show_service_" +
+                                                            element_id +
+                                                            ""
+                                                    ).length > 3
+                                                ) {
+                                                    $(
+                                                        ".o_roomdoo_hide_show_service_" +
+                                                            element_id +
+                                                            ":gt(2)"
+                                                    ).hide();
+                                                    $(
+                                                        ".o_roomdoo_hide_show-more2"
+                                                    ).show();
+                                                }
+                                                return false;
+                                            });
+                                            $(".o_roomdoo_hide_show-services-more").on(
+                                                "click",
+                                                function () {
+                                                    var service_id = $(this).attr(
+                                                        "data-service-id"
+                                                    );
+                                                    $(
+                                                        ".o_roomdoo_hide_show_service_" +
+                                                            service_id +
+                                                            ":gt(2)"
+                                                    ).toggle();
+                                                    // Change text of show more element just for demonstration purposes to this demo
+                                                    if ($(this).text() === "Ver más") {
+                                                        $(this).text("Ver menos");
+                                                    } else {
+                                                        $(this).text("Ver más");
+                                                    }
+                                                }
+                                            );
+                                        } catch (error) {
+                                            console.log("Error ---", error);
+                                        }
                                         // On change inputs reservation modal
                                         $("form.o_pms_pwa_reservation_form").on(
                                             "change",
