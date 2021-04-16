@@ -189,7 +189,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
         },
-        displayDataAlert: function (result, data_id) {
+        displayDataAlert: function (result, data_id = false) {
             var data = JSON.parse(result);
             if (data && data.result === true) {
                 data.type = "success";
@@ -207,53 +207,55 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             });
             alert_div.append(alert);
 
-            ajax.jsonRpc("/reservation/json_data", "call", {
-                reservation_id: data_id,
-            }).then(function (updated_data) {
-                setTimeout(function () {
-                    if (updated_data) {
-                        try {
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[2].innerHTML =
-                                updated_data.preferred_room_id.name +
-                                "<br/> <span class='o_pms_pwa_wler'>" +
-                                updated_data.room_type_id.name +
-                                "</span>";
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[3].innerHTML =
-                                updated_data.checkin +
-                                "<br/> <span class='o_pms_pwa_wler'>" +
-                                updated_data.arrival_hour +
-                                "</span>";
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[4].innerHTML =
-                                updated_data.checkout +
-                                "<br/> <span class='o_pms_pwa_wler'>" +
-                                updated_data.departure_hour +
-                                "</span>";
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[7].innerHTML = updated_data.folio_id.amount_total;
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[7].innerHTML = updated_data.folio_id.outstanding_vat;
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[10].firstElementChild.outerHTML =
-                                updated_data.primary_button;
-                            $(String("#reservation_" + data_id)).find(
-                                "td"
-                            )[10].lastElementChild.lastElementChild.innerHTML =
-                                updated_data.secondary_buttons;
-                        } catch (error) {
-                            console.log(error);
+            if (data_id) {
+                ajax.jsonRpc("/reservation/json_data", "call", {
+                    reservation_id: data_id,
+                }).then(function (updated_data) {
+                    setTimeout(function () {
+                        if (updated_data) {
+                            try {
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[2].innerHTML =
+                                    updated_data.preferred_room_id.name +
+                                    "<br/> <span class='o_pms_pwa_wler'>" +
+                                    updated_data.room_type_id.name +
+                                    "</span>";
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[3].innerHTML =
+                                    updated_data.checkin +
+                                    "<br/> <span class='o_pms_pwa_wler'>" +
+                                    updated_data.arrival_hour +
+                                    "</span>";
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[4].innerHTML =
+                                    updated_data.checkout +
+                                    "<br/> <span class='o_pms_pwa_wler'>" +
+                                    updated_data.departure_hour +
+                                    "</span>";
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[7].innerHTML = updated_data.folio_id.amount_total;
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[7].innerHTML = updated_data.folio_id.outstanding_vat;
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[10].firstElementChild.outerHTML =
+                                    updated_data.primary_button;
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[10].lastElementChild.lastElementChild.innerHTML =
+                                    updated_data.secondary_buttons;
+                            } catch (error) {
+                                console.log(error);
+                            }
                         }
-                    }
+                    });
                 });
-            });
+            }
 
             /* $(String("#reservation_" + data_id)).load(
                 String(window.location.href + " #reservation_" + data_id + " td")
@@ -408,10 +410,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "change",
                                             "select, input[type='checkbox'], input[type='radio'], input[type='text'][name='range_check_date_modal']",
                                             function (new_event) {
-                                                // Reservation id
-                                                var values = {
-                                                    reservation_id: reservation_id,
-                                                };
+                                                var values = {};
                                                 // Set checkin & checkout separated
                                                 if (
                                                     new_event.currentTarget.name ==
@@ -444,10 +443,32 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         values[service_key] =
                                                             new_event.currentTarget.dataset.service_id;
                                                     } else {
-                                                        values[
-                                                            new_event.currentTarget.name
-                                                        ] =
-                                                            new_event.currentTarget.value;
+                                                        if (
+                                                            new_event.currentTarget
+                                                                .dataset.main_field
+                                                        ) {
+                                                            var main_field =
+                                                                new_event.currentTarget
+                                                                    .dataset.main_field;
+                                                            var field_id =
+                                                                new_event.currentTarget
+                                                                    .dataset.field_id;
+                                                            values[main_field] = {};
+                                                            values[main_field][
+                                                                field_id
+                                                            ] = {};
+                                                            values[main_field][
+                                                                field_id
+                                                            ][
+                                                                new_event.currentTarget.name
+                                                            ] =
+                                                                new_event.currentTarget.value;
+                                                        } else {
+                                                            values[
+                                                                new_event.currentTarget.name
+                                                            ] =
+                                                                new_event.currentTarget.value;
+                                                        }
                                                     }
                                                 }
                                                 // Call to set the new values
@@ -523,13 +544,27 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "focusout",
                                             "input[type='text'][name!='range_check_date_modal'], input[type='number'], input[type='radio'], input[type='tel'], input[type='email'], input[type='time']",
                                             function (new_event) {
-                                                // Reservation id
-                                                var values = {
-                                                    reservation_id: reservation_id,
-                                                };
-                                                // Set checkin & checkout separated
-                                                values[new_event.currentTarget.name] =
-                                                    new_event.currentTarget.value;
+                                                var values = {};
+                                                if (
+                                                    new_event.currentTarget.dataset
+                                                        .main_field
+                                                ) {
+                                                    var main_field =
+                                                        new_event.currentTarget.dataset
+                                                            .main_field;
+                                                    var field_id =
+                                                        new_event.currentTarget.dataset
+                                                            .field_id;
+                                                    values[main_field] = {};
+                                                    values[main_field][field_id] = {};
+                                                    values[main_field][field_id][
+                                                        new_event.currentTarget.name
+                                                    ] = new_event.currentTarget.value;
+                                                } else {
+                                                    values[
+                                                        new_event.currentTarget.name
+                                                    ] = new_event.currentTarget.value;
+                                                }
                                                 // Call to set the new values
                                                 ajax.jsonRpc(
                                                     "/reservation/" +
