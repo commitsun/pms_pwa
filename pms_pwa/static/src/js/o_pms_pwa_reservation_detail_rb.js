@@ -353,16 +353,17 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         e.stopPropagation();
         var change_id_span = ".o_pms_pwa_rb_value_" + id;
         $(change_id_span).text(String(0));
+
+        var service_ids = {};
+        service_ids[id] = {
+            qty: 0,
+            price: $("#" + price_input_name).val(),
+        };
         ajax.jsonRpc(
             "/reservation/" + reservation_id_value + "/onchange_data",
             "call",
             {
-                services_line_id: {
-                    service_id: service_id,
-                    service_line_id: id,
-                    qty: 0,
-                    price: $(String("input[name=" + price_input_name)).val(),
-                },
+                service_ids,
             }
         );
     });
@@ -373,21 +374,20 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         var service_id = element.data("service-id");
         var reservation_id_value = element.data("reservation-id");
         var price_input_name = String("price_" + service_id + "_" + id);
-
         $(document).on("click", "#edit-modal-save", function () {
             var text_value = $("#new_val").val();
             var change_id_span = ".o_pms_pwa_rb_value_" + id;
             $(change_id_span).text(String(text_value));
+            var service_ids = {};
+            service_ids[id] = {
+                qty: text_value,
+                price: $("#" + price_input_name).val(),
+            };
             ajax.jsonRpc(
                 "/reservation/" + reservation_id_value + "/onchange_data",
                 "call",
                 {
-                    services_line_id: {
-                        service_id: service_id,
-                        service_line_id: id,
-                        qty: text_value,
-                        price: $(String("input[name=" + price_input_name)).val(),
-                    },
+                    service_ids,
                 }
             );
             $("#o_pms_pwa_editModal").modal("toggle");
