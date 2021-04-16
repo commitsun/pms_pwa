@@ -107,8 +107,8 @@
                                             </t>
                                         </tr>
                                         <tr>
-                                            <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" data-parent="#calendar_table">>
-                                                <!-- Llamamos a json y pms_pwa_roomdoo_calendar_line.xml -->
+                                            <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" >
+                                                <!-- Llamamos a json y pms_pwa_roomdoo_calendar_line.xml data-parent="#calendar_table" -->
                                             </td>
                                         </tr>
                                     </t>
