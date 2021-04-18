@@ -10,10 +10,10 @@ class PmsService(models.Model):
         """
         @return: Return dict with service_line_ids
          [
-          {"id": id, "day_qty": day_qty, "date": date},
-          {"id": id, "day_qty": day_qty, "date": date},
+          id: {"day_qty": day_qty, "date": date, "price": price},
+          id: {"day_qty": day_qty, "date": date, "price": price},
           ...
-          {"id": id, "day_qty": day_qty, "date": date},
+          id: {"day_qty": day_qty, "date": date, "price": price},
          ]
         """
         self.ensure_one()

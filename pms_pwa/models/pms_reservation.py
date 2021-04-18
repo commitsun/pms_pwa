@@ -237,23 +237,12 @@ class PmsReservation(models.Model):
 
     def _get_allowed_board_service_room_ids(self):
         self.ensure_one()
-        board_services = self.env["pms.board.service.room.type"].search(
-            [
-                ("pms_room_type_id", "=", self.room_type_id.id),
-                "|",
-                ("pms_property_ids", "=", False),
-                ("pms_property_ids", "in", self.pms_property_id.id),
-            ]
+        allowed_board_services = self.env[
+            "pms.room.type"
+        ]._get_allowed_board_service_room_ids(
+            room_type_id=self.id,
+            pms_property_id=self.pms_property_id.id,
         )
-        allowed_board_services = []
-        board_services = board_services | self.board_service_room_id
-        for board_service in board_services:
-            allowed_board_services.append(
-                {
-                    "id": board_service.id,
-                    "name": board_service.pms_board_service_id.name,
-                }
-            )
         return allowed_board_services
 
     def _get_allowed_service_ids(self):
@@ -404,12 +393,15 @@ class PmsReservation(models.Model):
 
     @api.model
     def _get_allowed_pricelists(self):
-        self.ensure_one()
+        if self.pms_property_id:
+            pms_property_id = self.pms_property_id.id
+        else:
+            pms_property_id = self.env.user.get_active_property_ids()[0]
         pricelists = self.env["product.pricelist"].search(
             [
                 "|",
                 ("pms_property_ids", "=", False),
-                ("pms_property_ids", "in", self.pms_property_id.id),
+                ("pms_property_ids", "in", pms_property_id),
             ]
         )
         allowed_pricelists = []
@@ -424,7 +416,6 @@ class PmsReservation(models.Model):
 
     @api.model
     def _get_allowed_segmentations(self):
-        self.ensure_one()
         segmentations = self.env["res.partner.category"].search([])
         allowed_segmentations = []
         for tag in segmentations:
