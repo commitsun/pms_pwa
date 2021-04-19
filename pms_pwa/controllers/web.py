@@ -4,6 +4,7 @@
 
 import json
 import logging
+import pprint
 from datetime import datetime, timedelta
 
 from odoo import _, fields, http
@@ -12,6 +13,8 @@ from odoo.http import request
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 from odoo.addons.web.controllers.main import Home
+
+pp = pprint.PrettyPrinter(indent=4)
 
 _logger = logging.getLogger(__name__)
 
@@ -90,7 +93,7 @@ class TestFrontEnd(http.Controller):
             post.pop("original_search")
 
         # REVIEW: magic number
-        paginate_by = 10
+        paginate_by = 30
 
         # TODO: ORDER STUFF's
         # searchbar_sortings = {
@@ -741,9 +744,7 @@ class TestFrontEnd(http.Controller):
             "allowed_channel_type_ids": self._get_allowed_channel_type_ids(),
             "allowed_agency_ids": self._get_allowed_agency_ids(),
         }
-        import pprint
 
-        pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(reservation_values)
         return reservation_values
 
@@ -757,7 +758,6 @@ class TestFrontEnd(http.Controller):
     # flake8: noqa: C901
     def reservation_onchange_data(self, reservation_id=None, **kw):
         old_reservation_type = None
-        old_values = None
         reservation = False
         params = http.request.jsonrequest.get("params")
         _logger.info(params)
@@ -770,7 +770,6 @@ class TestFrontEnd(http.Controller):
         if not reservation:
             raise MissingError(_("This reservation does not exist."))
         if reservation:
-            old_values = parse_reservation(reservation)
             try:
                 params = http.request.jsonrequest.get("params")
                 reservation_line_cmds = []
@@ -849,7 +848,7 @@ class TestFrontEnd(http.Controller):
                     # RESERVATION_LINE
                     elif param == "reservation_line_ids":
                         params.update(
-                            parse_params_record(
+                            self.parse_params_record(
                                 origin_values={
                                     "reservation_line_ids": params[
                                         "reservation_line_ids"
@@ -862,7 +861,7 @@ class TestFrontEnd(http.Controller):
                     # ELIF CHANGE SERVICES LINES
                     elif param == "service_ids":
                         params.update(
-                            parse_params_record(
+                            self.parse_params_record(
                                 origin_values={"service_ids": params["service_ids"]},
                                 model=request.env["pms.reservation"],
                             )
@@ -871,14 +870,12 @@ class TestFrontEnd(http.Controller):
                 reservation.write(params)
             except Exception as e:
                 # REVIEW
-                reservation.write(old_values)
-                reservation.flush()
                 reservation.folio_id.reservation_type = old_reservation_type
                 return json.dumps(
                     {
                         "result": False,
                         "message": str(e),
-                        "reservation": parse_reservation(reservation),
+                        "reservation": self.parse_reservation(reservation),
                     }
                 )
             # print(parse_reservation(reservation))
@@ -886,7 +883,7 @@ class TestFrontEnd(http.Controller):
                 {
                     "result": True,
                     "message": _("Operation completed successfully."),
-                    "reservation": parse_reservation(reservation),
+                    "reservation": self.parse_reservation(reservation),
                 }
             )
         else:
@@ -1124,12 +1121,12 @@ class TestFrontEnd(http.Controller):
         # TODO: sustituir "save" por el indicador adecuado y enviarlo del modo adecuado
         if reservation_values.get("save"):
             reservation = request.env["pms.reservation"].create(vals)
-            return parse_reservation(reservation)
+            return self.parse_reservation(reservation)
             # TODO: return cargar modal normal de la reserva
         else:
             reservation = request.env["pms.reservation"].new(vals)
             reservation.flush()
-            return parse_reservation(reservation)
+            return self.parse_reservation(reservation)
 
     @http.route(
         ["/reservation/multiple_reservation_onchange"],
@@ -1141,11 +1138,9 @@ class TestFrontEnd(http.Controller):
     def multiple_reservation_onchange(self, **kw):
         params = http.request.jsonrequest.get("params")
         folio_wizard = False
-
+        # TODO: Review param checkin user error (param not exist)
         if params.get("id"):
-            folio_wizard = self.env["pms.folio.wizard"].browse(
-                params.get("id")
-            )
+            folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
         checkin = datetime.strptime(
             params["checkin"], DEFAULT_SERVER_DATE_FORMAT
         ).date()
@@ -1181,9 +1176,7 @@ class TestFrontEnd(http.Controller):
                 "pms_property_id": pms_property.id,
                 "partner_id": partner.id,
             }
-            folio_wizard = self.env["pms.folio.wizard"].browse(
-                params.get("id")
-            )
+            folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
             folio_wizard.write(vals)
 
         if params.get("lines"):
@@ -1193,7 +1186,7 @@ class TestFrontEnd(http.Controller):
                 ).value_num_rooms_selected = int(room_type["num_rooms_selected"])
                 # TODO: Board service
 
-        return parse_wizard_folio(folio_wizard)
+        return self.parse_wizard_folio(folio_wizard)
 
     @http.route(
         ["/reservation/multiple_reservation_new"],
@@ -1206,9 +1199,7 @@ class TestFrontEnd(http.Controller):
         params = http.request.jsonrequest.get("params")
         try:
             if params.get("id"):
-                folio_wizard = self.env["pms.folio.wizard"].browse(
-                    params.get("id")
-                )
+                folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
             folio_action = folio_wizard.create_folio()
             return json.dumps(
                 {
@@ -1262,104 +1253,105 @@ class TestFrontEnd(http.Controller):
             values,
         )
 
+    def parse_reservation(self, reservation):
+        reservation_values = dict()
+        reservation_values["id"] = reservation.id
+        reservation_values["room_type_id"] = int(reservation.room_type_id.id)
+        reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
+        reservation_values["adults"] = reservation.adults
+        reservation_values["reservation_type"] = reservation.folio_id.reservation_type
+        reservation_values["checkin"] = datetime.strftime(
+            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+        )
+        reservation_values["checkout"] = datetime.strftime(
+            reservation.checkout, DEFAULT_SERVER_DATE_FORMAT
+        )
+        reservation_values["arrival_hour"] = reservation.arrival_hour
+        reservation_values["departure_hour"] = reservation.departure_hour
+        reservation_values["price_total"] = reservation.price_room_services_set
+        reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
+        reservation_values["pricelist_id"] = reservation.pricelist_id.id
+        reservation_values["allowed_pricelists"] = reservation._get_allowed_pricelists()
+        reservation_values["service_ids"] = reservation._get_service_ids()
+        reservation_values[
+            "allowed_board_service_room_ids"
+        ] = reservation._get_allowed_board_service_room_ids()
+        reservation_values[
+            "allowed_segmentations"
+        ] = reservation._get_allowed_segmentations()
+        reservation_values[
+            "allowed_channel_type_ids"
+        ] = self._get_allowed_channel_type_ids()
+        reservation_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
+        _logger.info("Values from controller to Frontend (reservation onchange):")
+        pp.pprint(reservation_values)
+        return reservation_values
 
-def parse_reservation(reservation):
-    reservation_values = dict()
-    reservation_values["id"] = reservation.id
-    reservation_values["room_type_id"] = int(reservation.room_type_id.id)
-    reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
-    reservation_values["adults"] = reservation.adults
-    reservation_values["reservation_type"] = reservation.folio_id.reservation_type
-    reservation_values["checkin"] = datetime.strftime(
-        reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
-    )
-    reservation_values["checkout"] = datetime.strftime(
-        reservation.checkout, DEFAULT_SERVER_DATE_FORMAT
-    )
-    reservation_values["arrival_hour"] = reservation.arrival_hour
-    reservation_values["departure_hour"] = reservation.departure_hour
-    reservation_values["price_total"] = reservation.price_room_services_set
-    reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
-    reservation_values["pricelist_id"]: reservation.pricelist_id.id
-    reservation_values["allowed_pricelists"]: reservation._get_allowed_pricelists()
-    reservation_values["service_ids"]: reservation._get_service_ids()
-    reservation_values[
-        "allowed_board_service_room_ids"
-    ]: reservation._get_allowed_board_service_room_ids()
-    reservation_values[
-        "allowed_segmentations"
-    ] = reservation._get_allowed_segmentations()
-    reservation_values["allowed_channel_type_ids"] = _get_allowed_channel_type_ids()
-    reservation_values["allowed_agency_ids"] = _get_allowed_agency_ids()
-    return reservation_values
-
-
-def parse_params_record(origin_values, model):
-    new_values = {}
-    for k, v in origin_values.items():
-        field = model._fields[k]
-        if field.type == "float":
-            new_values[k] = float(v)
-        if field.type in ("int", "many2one", "monetary"):
-            new_values[k] = int(v)
-        if field.type == "date":
-            new_values[k] = datetime.strptime(v, DEFAULT_SERVER_DATE_FORMAT).date()
-        if field.type in ("one2many", "many2many"):
-            relational_model = request.env[field.comodel_name]
-            cmds = []
-            for record_id, value in v.items():
-                cmds.append(
-                    (
-                        1,
-                        int(record_id),
-                        parse_params_record(
-                            origin_values=value, model=relational_model
-                        ),
+    def parse_params_record(self, origin_values, model):
+        new_values = {}
+        for k, v in origin_values.items():
+            field = model._fields[k]
+            if field.type == "float":
+                new_values[k] = float(v)
+            if field.type in ("int", "many2one", "monetary"):
+                new_values[k] = int(v)
+            if field.type == "date":
+                new_values[k] = datetime.strptime(v, DEFAULT_SERVER_DATE_FORMAT).date()
+            if field.type in ("one2many", "many2many"):
+                relational_model = request.env[field.comodel_name]
+                cmds = []
+                for record_id, value in v.items():
+                    cmds.append(
+                        (
+                            1,
+                            int(record_id),
+                            self.parse_params_record(
+                                origin_values=value, model=relational_model
+                            ),
+                        )
                     )
-                )
-            new_values[k] = cmds
-    return new_values
+                new_values[k] = cmds
+        return new_values
 
+    def parse_wizard_folio(self, wizard):
+        wizard_values = dict()
+        wizard_values["id"] = wizard.id
+        wizard_values["checkin"] = datetime.strftime(
+            wizard.start_date, DEFAULT_SERVER_DATE_FORMAT
+        )
+        wizard_values["checkout"] = datetime.strftime(
+            wizard.end_date, DEFAULT_SERVER_DATE_FORMAT
+        )
+        wizard_values["total_price_folio"] = wizard.total_price_folio
+        wizard_values["discount"] = wizard.discount
+        wizard_values["pricelist_id"] = wizard.pricelist_id.id
+        wizard_values["allowed_pricelists"] = request.env[
+            "pms.reservation"
+        ]._get_allowed_pricelists()
+        wizard_values["allowed_segmentations"] = request.env[
+            "pms.reservation"
+        ]._get_allowed_segmentations()
+        wizard_values["allowed_channel_type_ids"] = self._get_allowed_channel_type_ids()
+        wizard_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
 
-def parse_wizard_folio(wizard):
-    wizard_values = dict()
-    wizard_values["id"] = wizard.id
-    wizard_values["checkin"] = datetime.strftime(
-        wizard.start_date, DEFAULT_SERVER_DATE_FORMAT
-    )
-    wizard_values["checkout"] = datetime.strftime(
-        wizard.end_date, DEFAULT_SERVER_DATE_FORMAT
-    )
-    wizard_values["total_price_folio"] = wizard.total_price_folio
-    wizard_values["discount"] = wizard.discount
-    wizard_values["pricelist_id"] = wizard.pricelist_id.id
-    wizard_values["allowed_pricelists"] = request.env[
-        "pms.reservation"
-    ]._get_allowed_pricelists()
-    wizard_values["allowed_segmentations"] = request.env[
-        "pms.reservation"
-    ]._get_allowed_segmentations()
-    wizard_values["allowed_channel_type_ids"] = self._get_allowed_channel_type_ids()
-    wizard_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
+        lines = {}
+        for line in wizard.availability_results:
+            lines[line.id] = {
+                "room_type_id": line.room_type_id.id,
+                "num_rooms_available": line.num_rooms_available,
+                "value_num_rooms_selected": line.value_num_rooms_selected,
+                "price_per_room": line.price_per_room,
+                "price_total": line.price_total,
+            }
+            # TODO: BoardService and boardservices allowed
+            # "board_service_id" = line.board_service_id.id,
+            # "allowed_board_service_room_ids" = \
+            #     request.env["pms.room.type"]._get_allowed_board_service_room_ids(
+            #         pms_room_type = line.room_type_id.id,
+            #         pms_property_id = wizard.pms_property_id,
+            #     ),
+        wizard_values["lines"] = lines
+        _logger.info("Values from controller to Frontend (multi reservation creation):")
+        pp.pprint(reservation_values)
 
-    lines = {}
-    for line in wizard.availability_results:
-        lines[line.id] = {
-            "room_type_id": line.room_type_id.id,
-            "num_rooms_available": line.num_rooms_available,
-            "value_num_rooms_selected": line.value_num_rooms_selected,
-            "price_per_room": line.price_per_room,
-            "price_total": line.price_total,
-        }
-        # TODO: BoardService and boardservices allowed
-        """
-        "board_service_id" = line.board_service_id.id,
-        "allowed_board_service_room_ids" = \
-            request.env["pms.room.type"]._get_allowed_board_service_room_ids(
-                pms_room_type = line.room_type_id.id,
-                pms_property_id = wizard.pms_property_id,
-            ),
-        """
-    wizard_values["lines"] = lines
-
-    return wizard_values
+        return wizard_values

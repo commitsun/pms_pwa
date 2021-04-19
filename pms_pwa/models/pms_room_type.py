@@ -40,4 +40,4 @@ class PmsPWARoomType(models.Model):
                     "name": board_service.pms_board_service_id.name,
                 }
             )
-        return allowed_board_services
+        return allowed_board_services if allowed_board_services else False
