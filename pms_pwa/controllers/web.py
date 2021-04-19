@@ -902,28 +902,40 @@ class TestFrontEnd(http.Controller):
         date_start = date + timedelta(days=-1)
         if post.get("next"):
             date = datetime.strptime(post.get("next"), "%Y-%m-%d")
-            date_start = date + timedelta(days=+7)
+            date_start = date + timedelta(days=+1)
         if post.get("previous"):
             date = datetime.strptime(post.get("previous"), "%Y-%m-%d")
-            date_start = date + timedelta(days=-7)
+            date_start = date + timedelta(days=-1)
 
-        Room = request.env["pms.room.type"]
-        rooms = Room.search([])
+        pms_property_id = request.env.user.get_active_property_ids()[0]
+        Room = request.env["pms.room"]
+        rooms = Room.search([("pms_property_id", "=", pms_property_id)])
+        room_types = request.env["pms.room.type"].browse(
+            rooms.mapped("room_type_id.id")
+        )
         date_list = [date_start + timedelta(days=x) for x in range(7)]
 
         Pricelist = request.env["product.pricelist"]
-        pricelist = Pricelist.search([])
-        default_pricelist = pricelist[0].id
+        pricelists = Pricelist.search(
+            [
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", pms_property_id),
+            ]
+        )
+        pricelist = (
+            request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
+        )
         if post and "pricelist" in post:
-            default_pricelist = int(post["pricelist"])
+            pricelist = int(post["pricelist"])
 
         values = {
             "today": datetime.now(),
             "date_start": date_start,
             "page_name": "Calendar",
-            "pricelist": pricelist,
-            "default_pricelist": default_pricelist,
-            "rooms_list": rooms,
+            "pricelist": pricelists,
+            "default_pricelist": pricelist,
+            "rooms_list": room_types,
             "date_list": date_list,
         }
         return http.request.render(
@@ -940,119 +952,104 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def calendar_list(self, date=False, search="", **post):
-        # if not date:
-        #     date = datetime.now()
-        # date_end = date + timedelta(days=7)
-        # Reservation = request.env["pms.reservation"]
-        # domain = self._get_search_domain(search, **post)
+        if not date:
+            date = datetime.now()
+        date_end = date + timedelta(days=7)
+        pms_property_id = request.env.user.get_active_property_ids()[0]
+        Reservation = request.env["pms.reservation"]
 
-        # domain += [
-        #     ("checkin", ">=", date),
-        #     ("checkout", "<=", date_end),
-        # ]
-        # reservations = Reservation.search(domain)
-        # Ejemplo json
+        domain = [
+            ("checkin", ">=", date),
+            ("checkout", "<=", date_end),
+            ("state", "!=", "cancelled"),
+        ]
+        reservations = Reservation.search(domain)
         values = {}
-        values.update(
-            {
-                "reservations": [
-                    {
-                        "room": {
-                            "id": "20",
-                            "name": "normal-101",
-                            "status": "Estado ahora",
-                        },
-                        "ocupation": [
-                            {
-                                "date": "22/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "23/03/2021",
-                                "reservation_info": {
-                                    "id": 58,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 240,
-                                    "status": "danger",
-                                    "nigths": 2,
-                                },
-                            },
-                            {
-                                "date": "25/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "26/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "27/03/2021",
-                                "reservation_info": {
-                                    "id": 10,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 120,
-                                    "status": "success",
-                                    "nigths": 1,
-                                },
-                            },
-                            {
-                                "date": "28/03/2021",
-                                "reservation_info": False,
-                            },
-                        ],
-                    },
-                    {
-                        "room": {
-                            "id": "20",
-                            "name": "doble-202",
-                            "status": "limpia",
-                        },
-                        "ocupation": [
-                            {
-                                "date": "22/03/2021",
-                                "reservation_info": {
-                                    "id": 52,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 240,
-                                    "status": "success",
-                                    "nigths": 2,
-                                },
-                            },
-                            {
-                                "date": "24/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "25/03/2021",
-                                "reservation_info": {
-                                    "id": 8,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 120,
-                                    "status": "warning",
-                                    "nigths": 1,
-                                },
-                            },
-                            {
-                                "date": "26/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "27/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "28/03/2021",
-                                "reservation_info": False,
-                            },
-                        ],
-                    },
-                ]
-            }
+        # REVIEW: revisar estructura
+        values["reservations"] = []
+        room_ids = (
+            request.env["pms.room"]
+            .search([("pms_property_id", "=", pms_property_id)])
+            .ids
         )
+        for room_id in room_ids:
+            room = request.env["pms.room"].browse(room_id)
+            rooms_reservation_values = []
+            for reservation in reservations.filtered(
+                lambda r: r.preferred_room_id.id == room_id
+            ):
+                rooms_reservation_values.append(
+                    {
+                        "date": datetime.strftime(
+                            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+                        ),
+                        "reservation_info": {
+                            "id": reservation.id,
+                            "partner_name": reservation.partner_id.name,
+                            "img": "/web/image/res.partner/"
+                            + str(reservation.partner_id.id)
+                            + "/image_128",
+                            "price": reservation.folio_pending_amount,
+                            "status": "success",  # TODO
+                            "nigths": reservation.nights,
+                        },
+                    }
+                )
+            splitted_reservations_lines = reservations.filtered(
+                lambda r: r.splitted
+            ).reservation_line_ids.filtered(lambda l: l.room_id == room_id)
+            for split in splitted_reservations_lines.sorted(date):
+                main_split = False
+                reservation = split.reservation_id
+                nights = 1
+                if split.date == reservation.checkin:
+                    main_split = True
+                for date_iterator in [
+                    split.date + datetime.timedelta(days=x)
+                    for x in range(0, (reservation.checkout - split.date).days)
+                ]:
+                    line = reservation.reservation_line.ids(
+                        lambda: l.date == date_iterator
+                    )
+                    if line and line.room_id == split.room_id:
+                        nights += 1
+                        splitted_reservations_lines.remove(line)
+                rooms_reservation_values.append(
+                    {
+                        "splitted": True,
+                        "main_split": main_split,
+                        "date": datetime.strftime(
+                            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+                        ),
+                        "reservation_info": {
+                            "id": reservation.id,
+                            "partner_name": reservation.partner_id.name
+                            if main_split
+                            else False,
+                            "img": "/web/image/res.partner/"
+                            + str(reservation.partner_id.id)
+                            + "/image_128"
+                            if main_split
+                            else False,
+                            "price": reservation.folio_pending_amount
+                            if main_split
+                            else False,
+                            "status": "danger",  # TODO
+                            "nigths": nights,
+                        },
+                    }
+                )
+            values["reservations"].append(
+                {
+                    "room": {
+                        "id": room.id,
+                        "name": room.name,
+                        "status": "Limpia",  # TODO
+                    },
+                    "ocupation": rooms_reservation_values,
+                }
+            )
+        pp.pprint(values)
         return values
 
     @http.route(
