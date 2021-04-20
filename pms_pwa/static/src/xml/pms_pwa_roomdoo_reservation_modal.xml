@@ -373,11 +373,11 @@
                                                     <div class="o_pms_pwa_total_price col-12" t-if="reservation.folio_pending_amount">
                                                         <strong t-esc="reservation.folio_pending_amount" />
                                                         €
-                                                        <span>
+                                                        <!-- <span>
                                                             (
                                                             <t t-esc="reservation.folio_id.outstanding_vat" />
                                                             € vat)
-                                                        </span>
+                                                        </span> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -404,12 +404,12 @@
                                     </div> -->
                                 </div>
 
-                                <div class="row mt-4">
+                                <div class="row mt-4" t-if="reservation.folio_internal_comment">
                                     <div class="col-12">
                                         <h4>
                                             <t t-esc="texts.notes_text || _t('Notes')" />
                                         </h4>
-                                        <div t-if="reservation.folio_internal_comment">
+                                        <div>
                                             <t t-esc="reservation.folio_internal_comment" />
                                         </div>
                                     </div>

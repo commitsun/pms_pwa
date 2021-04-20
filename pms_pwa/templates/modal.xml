@@ -203,7 +203,7 @@
 
             <div class="row mt-3 mb-3">
                 <div class="col-12 text-center">
-                    <input class="btn btn-message" type="submit" value="Submit" />
+                    <input class="btn btn-message" type="submit" name="submit" value="Guardar" />
                 </div>
             </div>
 
