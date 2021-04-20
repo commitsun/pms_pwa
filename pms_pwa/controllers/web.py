@@ -4,6 +4,7 @@
 
 import json
 import logging
+import pprint
 from datetime import datetime, timedelta
 
 from odoo import _, fields, http
@@ -12,6 +13,8 @@ from odoo.http import request
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 from odoo.addons.web.controllers.main import Home
+
+pp = pprint.PrettyPrinter(indent=4)
 
 _logger = logging.getLogger(__name__)
 
@@ -35,6 +38,47 @@ class PWAHome(Home):
 
 # Frontend controllers to test
 class TestFrontEnd(http.Controller):
+    def _get_reservation_types(self):
+        return [
+            {"id": "out", "name": "Out of service"},
+            {"id": "normal", "name": "Normal"},
+            {"id": "staff", "name": "Staff"},
+        ]
+
+    def _get_allowed_payments_journals(self):
+        """
+        @return: Return dict with journals
+         [
+          {"id": id, "name": name},
+          {"id": id, "name": name},
+          ...
+          {"id": id, "name": name},
+         ]
+        """
+        payment_methods = (
+            request.env["account.journal"]
+            .sudo()
+            .search([("type", "in", ["bank", "cash"])])
+        )
+        allowed_journals = []
+        for journal in payment_methods:
+            allowed_journals.append({"id": journal.id, "name": journal.name})
+        return allowed_journals
+
+    def _get_allowed_channel_type_ids(self):
+        channel_types = request.env["pms.sale.channel"].search([])
+        allowed_channel_types = []
+        for channel in channel_types:
+            allowed_channel_types.append({"id": channel.id, "name": channel.name})
+        return allowed_channel_types
+
+    def _get_allowed_agency_ids(self):
+        agencies = request.env["res.partner"].search([("is_agency", "=", True)])
+        allowed_agencies = []
+        for agency in agencies:
+            allowed_agencies.append({"id": agency.id, "name": agency.name})
+        return allowed_agencies
+
     @http.route(
         ["/reservation/list", "/reservation/list/page/<int:page>"],
         type="http",
@@ -49,7 +93,7 @@ class TestFrontEnd(http.Controller):
             post.pop("original_search")
 
         # REVIEW: magic number
-        paginate_by = 10
+        paginate_by = 30
 
         # TODO: ORDER STUFF's
         # searchbar_sortings = {
@@ -213,7 +257,7 @@ class TestFrontEnd(http.Controller):
                     partner_id = request.env["res.partner"].browse(
                         int(payment_partner_id)
                     )
-                    if reservation.folio_payment_state == "not_paid":
+                    if reservation.folio_payment_state != "paid":
                         reservation.folio_id.do_payment(
                             journal,
                             journal.suspense_account_id,
@@ -697,10 +741,10 @@ class TestFrontEnd(http.Controller):
             "pricelist_id": reservation.pricelist_id.id,
             "allowed_pricelists": reservation._get_allowed_pricelists(),
             "allowed_segmentations": reservation._get_allowed_segmentations(),
+            "allowed_channel_type_ids": self._get_allowed_channel_type_ids(),
+            "allowed_agency_ids": self._get_allowed_agency_ids(),
         }
-        import pprint
 
-        pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(reservation_values)
         return reservation_values
 
@@ -714,8 +758,9 @@ class TestFrontEnd(http.Controller):
     # flake8: noqa: C901
     def reservation_onchange_data(self, reservation_id=None, **kw):
         old_reservation_type = None
-        old_values = None
         reservation = False
+        params = http.request.jsonrequest.get("params")
+        _logger.info(params)
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
@@ -723,14 +768,24 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
         if not reservation:
-            raise MissingError(_("This document does not exist."))
+            raise MissingError(_("This reservation does not exist."))
         if reservation:
             try:
                 params = http.request.jsonrequest.get("params")
-                _logger.info("DATOS")
-                _logger.info(params)
                 reservation_line_cmds = []
                 for param in params.keys():
+                    # DEL SERVICE
+                    if param == "del_service":
+                        params["service_ids"] = [(2, params["del_service"])]
+                        del params["del_service"]
+
+                    # ADD SERVICE
+                    if param == "add_service":
+                        params["service_ids"] = [
+                            (0, 0, {"product_id": params["add_service"]})
+                        ]
+                        del params["add_service"]
+
                     # ADULTS
                     if (
                         param == "adults"
@@ -757,10 +812,6 @@ class TestFrontEnd(http.Controller):
                             int(params["preferred_room_id"])
                         )
 
-                    #  PRICE TOTAL REVIEW
-                    elif param == "price_total":
-                        # params[param] = float(params[param])
-                        pass
                     # CHECKIN & CHECKOUT TODO process both as an unit
                     elif (
                         param == "checkin"
@@ -796,27 +847,25 @@ class TestFrontEnd(http.Controller):
 
                     # RESERVATION_LINE
                     elif param == "reservation_line_ids":
-                        for k, v in params["reservation_line_ids"]:
-                            reservation_line_cmds.append((1, k, v))
-
-                    # ELIF CHANGE QTY BOARD SERVICES
-                    elif param == "board_service":
-                        # reservation_id, board_service_line, board_service_line_id, qty
-                        # get service_line & service_line_ids and change qty
-                        board_service = params["board_service"]
-                        service_id = board_service["service_id"]
-                        service_line_id = board_service["service_line_id"]
-                        qty = board_service["qty"]
-
-                        service = reservation.folio_id.service_ids.browse(
-                            int(service_id)
+                        params.update(
+                            self.parse_params_record(
+                                origin_values={
+                                    "reservation_line_ids": params[
+                                        "reservation_line_ids"
+                                    ]
+                                },
+                                model=request.env["pms.reservation"],
+                            )
                         )
-                        service_line = service.service_line_ids.browse(
-                            int(service_line_id)
-                        )
-                        service_line.day_qty = int(qty)
 
-                    # RESERVATION TYPE
+                    # ELIF CHANGE SERVICES LINES
+                    elif param == "service_ids":
+                        params.update(
+                            self.parse_params_record(
+                                origin_values={"service_ids": params["service_ids"]},
+                                model=request.env["pms.reservation"],
+                            )
+                        )
 
                     elif (
                         param == "reservation_type"
@@ -837,14 +886,12 @@ class TestFrontEnd(http.Controller):
                 reservation.write(params)
             except Exception as e:
                 # REVIEW
-                reservation.write(old_values)
-                reservation.flush()
                 reservation.folio_id.reservation_type = old_reservation_type
                 return json.dumps(
                     {
                         "result": False,
                         "message": str(e),
-                        "reservation": parse_reservation(reservation),
+                        "reservation": self.parse_reservation(reservation),
                     }
                 )
             # print(parse_reservation(reservation))
@@ -852,81 +899,11 @@ class TestFrontEnd(http.Controller):
                 {
                     "result": True,
                     "message": _("Operation completed successfully."),
-                    "reservation": parse_reservation(reservation),
+                    "reservation": self.parse_reservation(reservation),
                 }
             )
         else:
             return json.dumps({"result": False, "message": _("Reservation not found")})
-
-    @http.route(
-        ["/reservation/virtual"],
-        type="json",
-        auth="public",
-        methods=["POST"],
-        website=True,
-    )
-    def create_virtual_reservation(self):
-        reservation_values = http.request.jsonrequest.get("params")
-
-        # return reservation_values
-        checkin_date = datetime.strptime(
-            reservation_values["check_in_date"], "%d/%m/%Y"
-        )
-        checkout_date = datetime.strptime(
-            reservation_values["check_out_date"], "%d/%m/%Y"
-        )
-
-        pricelist_id = reservation_values["pricelist_id"]
-        room_type_id = reservation_values["room_type_id"]
-        pms_property_id = reservation_values["pms_property_id"]
-
-        pricelist = (
-            request.env["product.pricelist"].sudo().search([("id", "=", pricelist_id)])
-        )
-        room_type = (
-            request.env["pms.room.type"].sudo().search([("id", "=", room_type_id)])
-        )
-        pms_property = (
-            request.env["pms.property"].sudo().search([("id", "=", pms_property_id)])
-        )
-
-        reservation = request.env["pms.reservation"].new(
-            {
-                "checkin": checkin_date,
-                "checkout": checkout_date,
-                "room_type_id": room_type,
-                "pricelist_id": pricelist,
-                "pms_property_id": pms_property,
-            }
-        )
-        reservation.flush()
-
-    def _get_reservation_types(self):
-        return [
-            {"id": "out", "name": "Out of service"},
-            {"id": "normal", "name": "Normal"},
-            {"id": "staff", "name": "Staff"},
-        ]
-
-    def _get_allowed_payments_journals(self):
-        """
-        @return: Return dict with journals
-         [
-          {"id": id, "name": name},
-          {"id": id, "name": name},
-          ...
-          {"id": id, "name": name},
-         ]
-        """
-        payment_methods = (
-            request.env["account.journal"]
-            .sudo()
-            .search([("type", "in", ["bank", "cash"])])
-        )
-        allowed_journals = []
-        for journal in payment_methods:
-            allowed_journals.append({"id": journal.id, "name": journal.name})
-        return allowed_journals
 
     @http.route(
         "/calendar",
@@ -941,28 +918,40 @@ class TestFrontEnd(http.Controller):
         date_start = date + timedelta(days=-1)
         if post.get("next"):
             date = datetime.strptime(post.get("next"), "%Y-%m-%d")
-            date_start = date + timedelta(days=+7)
+            date_start = date + timedelta(days=+1)
         if post.get("previous"):
             date = datetime.strptime(post.get("previous"), "%Y-%m-%d")
-            date_start = date + timedelta(days=-7)
+            date_start = date + timedelta(days=-1)
 
-        Room = request.env["pms.room.type"]
-        rooms = Room.search([])
+        pms_property_id = request.env.user.get_active_property_ids()[0]
+        Room = request.env["pms.room"]
+        rooms = Room.search([("pms_property_id", "=", pms_property_id)])
+        room_types = request.env["pms.room.type"].browse(
+            rooms.mapped("room_type_id.id")
+        )
         date_list = [date_start + timedelta(days=x) for x in range(7)]
 
         Pricelist = request.env["product.pricelist"]
-        pricelist = Pricelist.search([])
-        default_pricelist = pricelist[0].id
+        pricelists = Pricelist.search(
+            [
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", pms_property_id),
+            ]
+        )
+        pricelist = (
+            request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
+        )
         if post and "pricelist" in post:
-            default_pricelist = int(post["pricelist"])
+            pricelist = int(post["pricelist"])
 
         values = {
             "today": datetime.now(),
             "date_start": date_start,
             "page_name": "Calendar",
-            "pricelist": pricelist,
-            "default_pricelist": default_pricelist,
-            "rooms_list": rooms,
+            "pricelist": pricelists,
+            "default_pricelist": pricelist,
+            "rooms_list": room_types,
             "date_list": date_list,
         }
         return http.request.render(
@@ -979,159 +968,105 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def calendar_list(self, date=False, search="", **post):
-        # if not date:
-        #     date = datetime.now()
-        # date_end = date + timedelta(days=7)
-        # Reservation = request.env["pms.reservation"]
-        # domain = self._get_search_domain(search, **post)
+        if not date:
+            date = datetime.now()
+        date_end = date + timedelta(days=7)
+        pms_property_id = request.env.user.get_active_property_ids()[0]
+        Reservation = request.env["pms.reservation"]
 
-        # domain += [
-        #     ("checkin", ">=", date),
-        #     ("checkout", "<=", date_end),
-        # ]
-        # reservations = Reservation.search(domain)
-        # Ejemplo json
+        domain = [
+            ("checkin", ">=", date),
+            ("checkout", "<=", date_end),
+            ("state", "!=", "cancelled"),
+        ]
+        reservations = Reservation.search(domain)
         values = {}
-        values.update(
-            {
-                "reservations": [
-                    {
-                        "room": {
-                            "id": "20",
-                            "name": "normal-101",
-                            "status": "Estado ahora",
-                        },
-                        "ocupation": [
-                            {
-                                "date": "22/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "23/03/2021",
-                                "reservation_info": {
-                                    "id": 58,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 240,
-                                    "status": "danger",
-                                    "nigths": 2,
-                                },
-                            },
-                            {
-                                "date": "25/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "26/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "27/03/2021",
-                                "reservation_info": {
-                                    "id": 10,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 120,
-                                    "status": "success",
-                                    "nigths": 1,
-                                },
-                            },
-                            {
-                                "date": "28/03/2021",
-                                "reservation_info": False,
-                            },
-                        ],
-                    },
-                    {
-                        "room": {
-                            "id": "20",
-                            "name": "doble-202",
-                            "status": "limpia",
-                        },
-                        "ocupation": [
-                            {
-                                "date": "22/03/2021",
-                                "reservation_info": {
-                                    "id": 52,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 240,
-                                    "status": "success",
-                                    "nigths": 2,
-                                },
-                            },
-                            {
-                                "date": "24/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "25/03/2021",
-                                "reservation_info": {
-                                    "id": 8,
-                                    "partner_name": "Sabela Gómez G",
-                                    "img": "/web/image/res.partner/3/image_128",
-                                    "price": 120,
-                                    "status": "warning",
-                                    "nigths": 1,
-                                },
-                            },
-                            {
-                                "date": "26/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "27/03/2021",
-                                "reservation_info": False,
-                            },
-                            {
-                                "date": "28/03/2021",
-                                "reservation_info": False,
-                            },
-                        ],
-                    },
-                ]
-            }
+        # REVIEW: revisar estructura
+        values["reservations"] = []
+        room_ids = (
+            request.env["pms.room"]
+            .search([("pms_property_id", "=", pms_property_id)])
+            .ids
         )
+        for room_id in room_ids:
+            room = request.env["pms.room"].browse(room_id)
+            rooms_reservation_values = []
+            for reservation in reservations.filtered(
+                lambda r: r.preferred_room_id.id == room_id
+            ):
+                rooms_reservation_values.append(
+                    {
+                        "date": datetime.strftime(
+                            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+                        ),
+                        "reservation_info": {
+                            "id": reservation.id,
+                            "partner_name": reservation.partner_id.name,
+                            "img": "/web/image/res.partner/"
+                            + str(reservation.partner_id.id)
+                            + "/image_128",
+                            "price": reservation.folio_pending_amount,
+                            "status": "success",  # TODO
+                            "nigths": reservation.nights,
+                        },
+                    }
+                )
+            splitted_reservations_lines = reservations.filtered(
+                lambda r: r.splitted
+            ).reservation_line_ids.filtered(lambda l: l.room_id == room_id)
+            for split in splitted_reservations_lines.sorted(date):
+                main_split = False
+                reservation = split.reservation_id
+                nights = 1
+                if split.date == reservation.checkin:
+                    main_split = True
+                for date_iterator in [
+                    split.date + datetime.timedelta(days=x)
+                    for x in range(0, (reservation.checkout - split.date).days)
+                ]:
+                    line = reservation.reservation_line.ids(
+                        lambda: l.date == date_iterator
+                    )
+                    if line and line.room_id == split.room_id:
+                        nights += 1
+                        splitted_reservations_lines.remove(line)
+                rooms_reservation_values.append(
+                    {
+                        "splitted": True,
+                        "main_split": main_split,
+                        "date": datetime.strftime(
+                            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+                        ),
+                        "reservation_info": {
+                            "id": reservation.id,
+                            "partner_name": reservation.partner_id.name
+                            if main_split
+                            else False,
+                            "img": "/web/image/res.partner/"
+                            + str(reservation.partner_id.id)
+                            + "/image_128"
+                            if main_split
+                            else False,
+                            "price": reservation.folio_pending_amount
+                            if main_split
+                            else False,
+                            "status": "danger",  # TODO
+                            "nigths": nights,
+                        },
+                    }
+                )
+            values["reservations"].append(
+                {
+                    "room": {
+                        "id": room.id,
+                        "name": room.name,
+                        "status": "Limpia",  # TODO
+                    },
+                    "ocupation": rooms_reservation_values,
+                }
+            )
+        pp.pprint(values)
         return values
-
-    @http.route(
-        ["/reservation/single_reservation_onchange"],
-        type="json",
-        auth="public",
-        methods=["POST"],
-        website=True,
-    )
-    def single_reservation_onchange(self, **kw):
-        # TODO something with the data and give back the new values
-        params = http.request.jsonrequest.get("params")
-        if "rooms" in params:
-            reservation_values = {}
-        else:
-            reservation_values = {
-                "total": 260,
-            }
-
-        return reservation_values
-
-    @http.route(
-        ["/reservation/multiple_reservation_onchange"],
-        type="json",
-        auth="public",
-        methods=["POST"],
-        website=True,
-    )
-    def multiple_reservation_onchange(self, **kw):
-        # TODO something with the data and give back the new values
-        params = http.request.jsonrequest.get("params")
-
-        if "rooms" in params:
-            reservation_values = {}
-        else:
-            reservation_values = {
-                "total": 260,
-            }
-
-        return reservation_values
 
     @http.route(
         ["/reservation/single_reservation_new"],
@@ -1141,19 +1076,130 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def single_reservation_new(self, **kw):
-        # TODO something with the data and give back the new values
+        reservation_values = http.request.jsonrequest.get("params")
+        checkin = datetime.strptime(
+            reservation_values["checkin"], DEFAULT_SERVER_DATE_FORMAT
+        ).date()
+        checkout = datetime.strptime(
+            reservation_values["checkout"], DEFAULT_SERVER_DATE_FORMAT
+        ).date()
+        pms_property = request.env.user.get_active_property_ids()[0]
+        pricelist = False
+        if reservation_values.get("pricelist_id"):
+            pricelist = request.env["product.pricelist"].search(
+                [("id", "=", int(reservation_values.get("pricelist_id")))]
+            )
+        if not pricelist:
+            pricelist = pms_property.default_pricelist_id.id
+        # TODO: allowed_room_types: "/room_types"??
+        # TODO: allowed_rooms: "/rooms"
+
+        room_type_id = False
+        if reservation_values.get("room_type_id"):
+            room_type = request.env["pms.room.type"].search(
+                [("id", "=", int(reservation_values.get("room_type_id")))]
+            )
+
+        vals = {
+            "checkin": checkin,
+            "checkout": checkout,
+            "room_type_id": room_type,
+            "pricelist_id": pricelist,
+            "pms_property_id": pms_property,
+        }
+
+        if reservation_values.get("room_id"):
+            vals["room_id"] = (
+                request.env["pms.room"]
+                .search([("id", "=", int(reservation_values.get("room_id")))])
+                .id
+            )
+
+        if reservation_values.get("board_service_id"):
+            vals["board_service_id"] = (
+                request.env["pms.board.service.room.type"]
+                .search([("id", "=", int(reservation_values.get("board_service_id")))])
+                .id
+            )
+
+        if reservation_values.get("adults"):
+            vals["adults"] = int(reservation_values.get("adults"))
+
+        if reservation_values.get("channel_type_id"):
+            vals["channel_type_id"] = int(reservation_values.get("channel_type_id"))
+
+        if reservation_values.get("agency_id"):
+            vals["channel_type_id"] = int(reservation_values.get("agency_id"))
+
+        # TODO: sustituir "save" por el indicador adecuado y enviarlo del modo adecuado
+        if reservation_values.get("save"):
+            reservation = request.env["pms.reservation"].create(vals)
+            return self.parse_reservation(reservation)
+            # TODO: return cargar modal normal de la reserva
+        else:
+            reservation = request.env["pms.reservation"].new(vals)
+            reservation.flush()
+            return self.parse_reservation(reservation)
+
+    @http.route(
+        ["/reservation/multiple_reservation_onchange"],
+        type="json",
+        auth="public",
+        methods=["POST"],
+        website=True,
+    )
+    def multiple_reservation_onchange(self, **kw):
         params = http.request.jsonrequest.get("params")
-        return json.dumps(
-            {
-                "result": True,
-                "message": _("Operation completed successfully."),
-                "id": 8,
+        folio_wizard = False
+        # TODO: Review param checkin user error (param not exist)
+        if params.get("id"):
+            folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
+        checkin = datetime.strptime(
+            params["checkin"], DEFAULT_SERVER_DATE_FORMAT
+        ).date()
+        checkout = datetime.strptime(
+            params["checkout"], DEFAULT_SERVER_DATE_FORMAT
+        ).date()
+        pms_property = request.env.user.get_active_property_ids()[0]
+        # TODO: partner_id, diferenciar entre nuevo partner y
+        # uno seleccionado (tipo direccion de facturacion en el detalle?)
+        partner = self.env["res.partner"].search([])[0]
+        pricelist = False
+        if params.get("pricelist_id"):
+            pricelist = request.env["product.pricelist"].search(
+                [("id", "=", int(params.get("pricelist_id")))]
+            )
+        if not pricelist:
+            pricelist = pms_property.default_pricelist_id.id
+
+        if not folio_wizard:
+            folio_wizard = self.env["pms.folio.wizard"].create(vals)
+
+        if (
+            checkin != folio_wizard.checkin
+            or checkout != folio_wizard.checkout
+            or pricelist.id != folio_wizard.pricelist_id.id
+            or pms_property.id != folio_wizard.pms_property_id.id
+            or partner != folio_wizard.partner_id.id
+        ):
+            vals = {
+                "checkin": checkin,
+                "checkout": checkout,
+                "pricelist_id": pricelist.id,
+                "pms_property_id": pms_property.id,
+                "partner_id": partner.id,
             }
-        )
-        # """ OR """
-        # return json.dumps(
-        #     {"result": False, "message": _("Unnable to create the reservation")}
-        # )
+            folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
+            folio_wizard.write(vals)
+
+        if params.get("lines"):
+            for line_id, values in params.get("lines").items():
+                folio_wizard.availability_results.filtered(
+                    lambda r: r.room_type_id.id == int(line_id)
+                ).value_num_rooms_selected = int(room_type["num_rooms_selected"])
+                # TODO: Board service
+
+        return self.parse_wizard_folio(folio_wizard)
 
     @http.route(
         ["/reservation/multiple_reservation_new"],
@@ -1163,19 +1209,20 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def multiple_reservation_new(self, **kw):
-        # TODO something with the data and give back the new values
         params = http.request.jsonrequest.get("params")
-        return json.dumps(
-            {
-                "result": True,
-                "message": _("Operation completed successfully."),
-                "id": 25,
-            }
-        )
-        # """ OR """
-        # return json.dumps(
-        #     {"result": False, "message": _("Unnable to create the reservation")}
-        # )
+        try:
+            if params.get("id"):
+                folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
+            folio_action = folio_wizard.create_folio()
+            return json.dumps(
+                {
+                    "result": True,
+                    "message": _("Operation completed successfully."),
+                    "id": folio_action["res_id"],
+                }
+            )
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
 
     @http.route(
         "/calendar/config",
@@ -1219,29 +1266,105 @@ class TestFrontEnd(http.Controller):
             values,
         )
 
+    def parse_reservation(self, reservation):
+        reservation_values = dict()
+        reservation_values["id"] = reservation.id
+        reservation_values["room_type_id"] = int(reservation.room_type_id.id)
+        reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
+        reservation_values["adults"] = reservation.adults
+        reservation_values["reservation_type"] = reservation.folio_id.reservation_type
+        reservation_values["checkin"] = datetime.strftime(
+            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+        )
+        reservation_values["checkout"] = datetime.strftime(
+            reservation.checkout, DEFAULT_SERVER_DATE_FORMAT
+        )
+        reservation_values["arrival_hour"] = reservation.arrival_hour
+        reservation_values["departure_hour"] = reservation.departure_hour
+        reservation_values["price_total"] = reservation.price_room_services_set
+        reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
+        reservation_values["pricelist_id"] = reservation.pricelist_id.id
+        reservation_values["allowed_pricelists"] = reservation._get_allowed_pricelists()
+        reservation_values["service_ids"] = reservation._get_service_ids()
+        reservation_values[
+            "allowed_board_service_room_ids"
+        ] = reservation._get_allowed_board_service_room_ids()
+        reservation_values[
+            "allowed_segmentations"
+        ] = reservation._get_allowed_segmentations()
+        reservation_values[
+            "allowed_channel_type_ids"
+        ] = self._get_allowed_channel_type_ids()
+        reservation_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
+        _logger.info("Values from controller to Frontend (reservation onchange):")
+        pp.pprint(reservation_values)
+        return reservation_values
 
-def parse_reservation(reservation):
-    reservation_values = dict()
-    reservation_values["id"] = reservation.id
-    reservation_values["room_type_id"] = int(reservation.room_type_id.id)
-    reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
-    reservation_values["adults"] = reservation.adults
-    reservation_values["reservation_type"] = reservation.folio_id.reservation_type
-    reservation_values["checkin"] = datetime.strftime(
-        reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
-    )
-    reservation_values["checkout"] = datetime.strftime(
-        reservation.checkout, DEFAULT_SERVER_DATE_FORMAT
-    )
+    def parse_params_record(self, origin_values, model):
+        new_values = {}
+        for k, v in origin_values.items():
+            field = model._fields[k]
+            if field.type == "float":
+                new_values[k] = float(v)
+            if field.type in ("int", "many2one", "monetary"):
+                new_values[k] = int(v)
+            if field.type == "date":
+                new_values[k] = datetime.strptime(v, DEFAULT_SERVER_DATE_FORMAT).date()
+            if field.type in ("one2many", "many2many"):
+                relational_model = request.env[field.comodel_name]
+                cmds = []
+                for record_id, value in v.items():
+                    cmds.append(
+                        (
+                            1,
+                            int(record_id),
+                            self.parse_params_record(
+                                origin_values=value, model=relational_model
+                            ),
+                        )
+                    )
+                new_values[k] = cmds
+        return new_values
 
-    reservation_values["arrival_hour"] = reservation.arrival_hour
-    reservation_values["departure_hour"] = reservation.departure_hour
-    reservation_values["price_total"] = reservation.price_total
-    reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
-    reservation_values["pricelist_id"]: reservation.pricelist_id.id
-    reservation_values["allowed_pricelists"]: reservation._get_allowed_pricelists()
-    reservation_values["service_ids"]: reservation._get_service_ids()
-    reservation_values[
-        "allowed_board_service_room_ids"
-    ]: reservation._get_allowed_board_service_room_ids()
-    return reservation_values
+    def parse_wizard_folio(self, wizard):
+        wizard_values = dict()
+        wizard_values["id"] = wizard.id
+        wizard_values["checkin"] = datetime.strftime(
+            wizard.start_date, DEFAULT_SERVER_DATE_FORMAT
+        )
+        wizard_values["checkout"] = datetime.strftime(
+            wizard.end_date, DEFAULT_SERVER_DATE_FORMAT
+        )
+        wizard_values["total_price_folio"] = wizard.total_price_folio
+        wizard_values["discount"] = wizard.discount
+        wizard_values["pricelist_id"] = wizard.pricelist_id.id
+        wizard_values["allowed_pricelists"] = request.env[
+            "pms.reservation"
+        ]._get_allowed_pricelists()
+        wizard_values["allowed_segmentations"] = request.env[
+            "pms.reservation"
+        ]._get_allowed_segmentations()
+        wizard_values["allowed_channel_type_ids"] = self._get_allowed_channel_type_ids()
+        wizard_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
+
+        lines = {}
+        for line in wizard.availability_results:
+            lines[line.id] = {
+                "room_type_id": line.room_type_id.id,
+                "num_rooms_available": line.num_rooms_available,
+                "value_num_rooms_selected": line.value_num_rooms_selected,
+                "price_per_room": line.price_per_room,
+                "price_total": line.price_total,
+            }
+            # TODO: BoardService and boardservices allowed
+            # "board_service_id" = line.board_service_id.id,
+            # "allowed_board_service_room_ids" = \
+            #     request.env["pms.room.type"]._get_allowed_board_service_room_ids(
+            #         pms_room_type = line.room_type_id.id,
+            #         pms_property_id = wizard.pms_property_id,
+            #     ),
+        wizard_values["lines"] = lines
+        _logger.info("Values from controller to Frontend (multi reservation creation):")
+        pp.pprint(reservation_values)
+
+        return wizard_values
