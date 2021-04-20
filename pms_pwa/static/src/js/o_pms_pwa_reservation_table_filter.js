@@ -189,6 +189,55 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
         },
+        reloadReservationInfo: function (data_id = false) {
+            ajax.jsonRpc("/reservation/json_data", "call", {
+                reservation_id: data_id,
+            }).then(function (updated_data) {
+                setTimeout(function () {
+                    if (updated_data) {
+                        try {
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[2].innerHTML =
+                                updated_data.preferred_room_id.name +
+                                "<br/> <span class='o_pms_pwa_wler'>" +
+                                updated_data.room_type_id.name +
+                                "</span>";
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[3].innerHTML =
+                                updated_data.checkin +
+                                "<br/> <span class='o_pms_pwa_wler'>" +
+                                updated_data.arrival_hour +
+                                "</span>";
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[4].innerHTML =
+                                updated_data.checkout +
+                                "<br/> <span class='o_pms_pwa_wler'>" +
+                                updated_data.departure_hour +
+                                "</span>";
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[7].innerHTML = updated_data.folio_id.amount_total;
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[7].innerHTML = updated_data.folio_id.outstanding_vat;
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[10].firstElementChild.outerHTML =
+                                updated_data.primary_button;
+                            $(String("#reservation_" + data_id)).find(
+                                "td"
+                            )[10].lastElementChild.lastElementChild.innerHTML =
+                                updated_data.secondary_buttons;
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                });
+            });
+        },
         displayDataAlert: function (result, data_id = false) {
             var data = JSON.parse(result);
             if (data && data.result === true) {
@@ -206,55 +255,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 alert: data,
             });
             alert_div.append(alert);
-
             if (data_id) {
-                ajax.jsonRpc("/reservation/json_data", "call", {
-                    reservation_id: data_id,
-                }).then(function (updated_data) {
-                    setTimeout(function () {
-                        if (updated_data) {
-                            try {
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[2].innerHTML =
-                                    updated_data.preferred_room_id.name +
-                                    "<br/> <span class='o_pms_pwa_wler'>" +
-                                    updated_data.room_type_id.name +
-                                    "</span>";
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[3].innerHTML =
-                                    updated_data.checkin +
-                                    "<br/> <span class='o_pms_pwa_wler'>" +
-                                    updated_data.arrival_hour +
-                                    "</span>";
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[4].innerHTML =
-                                    updated_data.checkout +
-                                    "<br/> <span class='o_pms_pwa_wler'>" +
-                                    updated_data.departure_hour +
-                                    "</span>";
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[7].innerHTML = updated_data.folio_id.amount_total;
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[7].innerHTML = updated_data.folio_id.outstanding_vat;
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[10].firstElementChild.outerHTML =
-                                    updated_data.primary_button;
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[10].lastElementChild.lastElementChild.innerHTML =
-                                    updated_data.secondary_buttons;
-                            } catch (error) {
-                                console.log(error);
-                            }
-                        }
-                    });
-                });
+                self.reloadReservationInfo(data_id);
             }
 
             /* $(String("#reservation_" + data_id)).load(
@@ -357,6 +359,24 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     pay_text: this.pay_text,
                                                     notes_text: this.notes_text,
                                                 },
+                                            }
+                                        );
+
+                                        $("#o_pms_pwa_reservation_modal").on(
+                                            "hidden.bs.modal",
+                                            function () {
+                                                try {
+                                                    var data_id = $(
+                                                        "#o_pms_pwa_reservation_modal"
+                                                    )[0].dataset.id;
+                                                    if (data_id) {
+                                                        self.reloadReservationInfo(
+                                                            data_id
+                                                        );
+                                                    }
+                                                } catch (error) {
+                                                    console.log("Error ---", error);
+                                                }
                                             }
                                         );
                                         // Show more // less
