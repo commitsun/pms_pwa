@@ -14,6 +14,8 @@ from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 from odoo.addons.web.controllers.main import Home
 
+from . import room_types, rooms
+
 pp = pprint.PrettyPrinter(indent=4)
 
 _logger = logging.getLogger(__name__)
@@ -93,7 +95,7 @@ class TestFrontEnd(http.Controller):
             post.pop("original_search")
 
         # REVIEW: magic number
-        paginate_by = 30
+        paginate_by = 20
 
         # TODO: ORDER STUFF's
         # searchbar_sortings = {
@@ -1280,6 +1282,28 @@ class TestFrontEnd(http.Controller):
             "allowed_channel_type_ids"
         ] = self._get_allowed_channel_type_ids()
         reservation_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
+        reservation_values["room_numbers"] = rooms.Rooms._get_available_rooms(
+            self=self,
+            payload={
+                "pms_property_id": reservation.pms_property_id.id,
+                "pricelist_id": reservation.pricelist_id.id,
+                "checkin": reservation_values["checkin"],
+                "checkout": reservation_values["checkout"],
+                "reservation_id": reservation.id,
+            },
+        )
+        reservation_values[
+            "room_types"
+        ] = room_types.RoomTypes._get_available_room_types(
+            self=self,
+            payload={
+                "pms_property_id": reservation.pms_property_id.id,
+                "pricelist_id": reservation.pricelist_id.id,
+                "checkin": reservation_values["checkin"],
+                "checkout": reservation_values["checkout"],
+                "reservation_id": reservation.id,
+            },
+        )
         _logger.info("Values from controller to Frontend (reservation onchange):")
         pp.pprint(reservation_values)
         return reservation_values
