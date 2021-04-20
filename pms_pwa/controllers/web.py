@@ -867,6 +867,22 @@ class TestFrontEnd(http.Controller):
                             )
                         )
 
+                    elif (
+                        param == "reservation_type"
+                        and params["reservation_type"] != reservation.reservation_type
+                    ):
+                        old_reservation_type = reservation.folio_id.reservation_type
+                        reservation.folio_id.reservation_type = params[param]
+                if reservation_line_cmds:
+                    params["reservation_line_ids"] = reservation_line_cmds
+                if "reservation_type" in params:
+                    del params["reservation_type"]
+                if "board_service" in params:
+                    del params["board_service"]
+                old_values = parse_reservation(reservation)
+                if "price_total" in params:
+                    del params["price_total"]
+                # del params["reservation_id"]
                 reservation.write(params)
             except Exception as e:
                 # REVIEW
