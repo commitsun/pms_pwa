@@ -987,7 +987,12 @@ class TestFrontEnd(http.Controller):
         values["reservations"] = []
         room_ids = (
             request.env["pms.room"]
-            .search([("pms_property_id", "=", pms_property_id)])
+            .search(
+                [
+                    ("pms_property_id", "=", pms_property_id),
+                    ("room_type_id", "=", int(post.get("room_type_id"))),
+                ]
+            )
             .ids
         )
         for room_id in room_ids:
@@ -1061,6 +1066,7 @@ class TestFrontEnd(http.Controller):
                 {
                     "room": {
                         "id": room.id,
+                        "room_type_id": room.room_type_id.id,
                         "name": room.name,
                         "status": "Limpia",  # TODO
                     },
@@ -1093,8 +1099,9 @@ class TestFrontEnd(http.Controller):
             )
         if not pricelist:
             pricelist = pms_property.default_pricelist_id.id
-        # TODO: allowed_room_types: "/room_types"??
-        # TODO: allowed_rooms: "/rooms"
+
+        # TODO Sustituir por busqueda o creación de partner
+        partner_id = request.env["res.partner"].search([])[0].id
 
         room_type_id = False
         if reservation_values.get("room_type_id"):
@@ -1108,6 +1115,7 @@ class TestFrontEnd(http.Controller):
             "room_type_id": room_type,
             "pricelist_id": pricelist,
             "pms_property_id": pms_property,
+            "partner_id": partner_id,
         }
 
         if reservation_values.get("room_id"):
@@ -1134,7 +1142,7 @@ class TestFrontEnd(http.Controller):
             vals["channel_type_id"] = int(reservation_values.get("agency_id"))
 
         # TODO: sustituir "save" por el indicador adecuado y enviarlo del modo adecuado
-        if reservation_values.get("save"):
+        if reservation_values.get("submit"):
             reservation = request.env["pms.reservation"].create(vals)
             return self.parse_reservation(reservation)
             # TODO: return cargar modal normal de la reserva
