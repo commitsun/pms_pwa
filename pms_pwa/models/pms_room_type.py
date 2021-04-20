@@ -21,3 +21,23 @@ class PmsPWARoomType(models.Model):
                 pricelist_id=self._context.get("pricelist_id") or False,
             )
         return avail
+
+    @api.model
+    def _get_allowed_board_service_room_ids(self, room_type_id, pms_property_id):
+        board_services = self.env["pms.board.service.room.type"].search(
+            [
+                ("pms_room_type_id", "=", room_type_id),
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", pms_property_id),
+            ]
+        )
+        allowed_board_services = []
+        for board_service in board_services:
+            allowed_board_services.append(
+                {
+                    "id": board_service.id,
+                    "name": board_service.pms_board_service_id.name,
+                }
+            )
+        return allowed_board_services if allowed_board_services else False
