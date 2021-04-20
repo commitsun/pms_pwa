@@ -3,7 +3,7 @@
     <t t-name="pms_pwa.roomdoo_reservation_modal">
         <!-- Modal -->
         <t t-if="reservation">
-            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal">
+            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_reservation_modal" t-att-data-id="reservation.id">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header o_pms_pwa_modal_header">
