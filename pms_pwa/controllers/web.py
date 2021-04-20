@@ -881,7 +881,6 @@ class TestFrontEnd(http.Controller):
                     del params["reservation_type"]
                 if "board_service" in params:
                     del params["board_service"]
-                old_values = parse_reservation(reservation)
                 if "price_total" in params:
                     del params["price_total"]
                 # del params["reservation_id"]
