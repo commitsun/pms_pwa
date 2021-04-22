@@ -930,7 +930,7 @@ class TestFrontEnd(http.Controller):
         room_types = request.env["pms.room.type"].browse(
             rooms.mapped("room_type_id.id")
         )
-        date_list = [date_start + timedelta(days=x) for x in range(7)]
+        date_list = [date_start + timedelta(days=x) for x in range(70)]
 
         Pricelist = request.env["product.pricelist"]
         pricelists = Pricelist.search(
@@ -1024,8 +1024,8 @@ class TestFrontEnd(http.Controller):
                 )
             splitted_reservations_lines = reservations.filtered(
                 lambda r: r.splitted
-            ).reservation_line_ids.filtered(lambda l: l.room_id == room_id)
-            for split in splitted_reservations_lines.sorted(date):
+            ).reservation_line_ids.filtered(lambda l: l.room_id.id == room_id)
+            for split in splitted_reservations_lines.sorted("date"):
                 main_split = False
                 reservation = split.reservation_id
                 nights = 0
