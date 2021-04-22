@@ -2,10 +2,11 @@
 
 # -*- coding: utf-8 -*-
 
+import datetime
 import json
 import logging
 import pprint
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from odoo import _, fields, http
 from odoo.exceptions import MissingError
@@ -816,7 +817,7 @@ class TestFrontEnd(http.Controller):
                     # CHECKIN & CHECKOUT TODO process both as an unit
                     elif (
                         param == "checkin"
-                        and datetime.strptime(
+                        and datetime.datetime.strptime(
                             params["checkin"].strip(), DEFAULT_SERVER_DATE_FORMAT
                         ).date()
                         != reservation.checkin
@@ -827,12 +828,12 @@ class TestFrontEnd(http.Controller):
                         )
                     elif (
                         param == "checkout"
-                        and datetime.strptime(
+                        and datetime.datetime.strptime(
                             params["checkout"].strip(), DEFAULT_SERVER_DATE_FORMAT
                         ).date()
                         != reservation.checkout
                     ):
-                        params["checkout"] = datetime.strptime(
+                        params["checkout"] = datetime.datetime.strptime(
                             params["checkout"], DEFAULT_SERVER_DATE_FORMAT
                         )
 
@@ -914,13 +915,13 @@ class TestFrontEnd(http.Controller):
     )
     def calendar(self, date=False, **post):
         if not date:
-            date = datetime.now()
+            date = datetime.datetime.now()
         date_start = date + timedelta(days=-1)
         if post.get("next"):
-            date = datetime.strptime(post.get("next"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(post.get("next"), "%Y-%m-%d")
             date_start = date + timedelta(days=+1)
         if post.get("previous"):
-            date = datetime.strptime(post.get("previous"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(post.get("previous"), "%Y-%m-%d")
             date_start = date + timedelta(days=-1)
 
         pms_property_id = request.env.user.get_active_property_ids()[0]
@@ -946,7 +947,7 @@ class TestFrontEnd(http.Controller):
             pricelist = int(post["pricelist"])
 
         values = {
-            "today": datetime.now(),
+            "today": datetime.datetime.now(),
             "date_start": date_start,
             "page_name": "Calendar",
             "pricelist": pricelists,
@@ -968,15 +969,16 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def calendar_list(self, date=False, search="", **post):
-        if not date:
-            date = datetime.now()
-        date_end = date + timedelta(days=7)
+        # TODO: Evitar el uso de eval
+        dates = [item.date() for item in eval(post.get("range_date"))]
+        from_date = min(dates)
+        to_date = max(dates)
         pms_property_id = request.env.user.get_active_property_ids()[0]
         Reservation = request.env["pms.reservation"]
 
         domain = [
-            ("checkin", ">=", date),
-            ("checkout", "<=", date_end),
+            ("checkin", ">=", from_date),
+            ("checkout", "<=", to_date),
             ("state", "!=", "cancelled"),
         ]
         reservations = Reservation.search(domain)
@@ -994,14 +996,18 @@ class TestFrontEnd(http.Controller):
             .ids
         )
         for room_id in room_ids:
+            free_dates = dates
             room = request.env["pms.room"].browse(room_id)
             rooms_reservation_values = []
             for reservation in reservations.filtered(
                 lambda r: r.preferred_room_id.id == room_id
             ):
+                for d in reservation.reservation_line_ids.mapped("date"):
+                    if d in free_dates:
+                        free_dates.remove(d)
                 rooms_reservation_values.append(
                     {
-                        "date": datetime.strftime(
+                        "date": datetime.datetime.strftime(
                             reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
                         ),
                         "reservation_info": {
@@ -1022,11 +1028,11 @@ class TestFrontEnd(http.Controller):
             for split in splitted_reservations_lines.sorted(date):
                 main_split = False
                 reservation = split.reservation_id
-                nights = 1
+                nights = 0
                 if split.date == reservation.checkin:
                     main_split = True
                 for date_iterator in [
-                    split.date + datetime.timedelta(days=x)
+                    split.date + timedelta(days=x)
                     for x in range(0, (reservation.checkout - split.date).days)
                 ]:
                     line = reservation.reservation_line.ids(
@@ -1034,12 +1040,13 @@ class TestFrontEnd(http.Controller):
                     )
                     if line and line.room_id == split.room_id:
                         nights += 1
+                        free_dates.remove(line.date)
                         splitted_reservations_lines.remove(line)
                 rooms_reservation_values.append(
                     {
                         "splitted": True,
                         "main_split": main_split,
-                        "date": datetime.strftime(
+                        "date": datetime.datetime.strftime(
                             reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
                         ),
                         "reservation_info": {
@@ -1060,6 +1067,18 @@ class TestFrontEnd(http.Controller):
                         },
                     }
                 )
+            for day in free_dates:
+                rooms_reservation_values.append(
+                    {
+                        "date": datetime.datetime.strftime(
+                            day, DEFAULT_SERVER_DATE_FORMAT
+                        ),
+                        "reservation_info": False,
+                    }
+                )
+            rooms_reservation_values = sorted(
+                rooms_reservation_values, key=lambda item: item["date"]
+            )
             values["reservations"].append(
                 {
                     "room": {
@@ -1083,10 +1102,10 @@ class TestFrontEnd(http.Controller):
     )
     def single_reservation_new(self, **kw):
         reservation_values = http.request.jsonrequest.get("params")
-        checkin = datetime.strptime(
+        checkin = datetime.datetime.strptime(
             reservation_values["checkin"], DEFAULT_SERVER_DATE_FORMAT
         ).date()
-        checkout = datetime.strptime(
+        checkout = datetime.datetime.strptime(
             reservation_values["checkout"], DEFAULT_SERVER_DATE_FORMAT
         ).date()
         pms_property = request.env.user.get_active_property_ids()[0]
@@ -1159,14 +1178,13 @@ class TestFrontEnd(http.Controller):
     def multiple_reservation_onchange(self, **kw):
         params = http.request.jsonrequest.get("params")
         folio_wizard = False
-        return
         # TODO: Review param checkin user error (param not exist)
         if params.get("id"):
             folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
-        checkin = datetime.strptime(
+        checkin = datetime.datetime.strptime(
             params["checkin"], DEFAULT_SERVER_DATE_FORMAT
         ).date()
-        checkout = datetime.strptime(
+        checkout = datetime.datetime.strptime(
             params["checkout"], DEFAULT_SERVER_DATE_FORMAT
         ).date()
         pms_property = request.env.user.get_active_property_ids()[0]
@@ -1242,13 +1260,13 @@ class TestFrontEnd(http.Controller):
     )
     def calendar_config(self, date=False, **post):
         if not date:
-            date = datetime.now()
+            date = datetime.datetime.now()
         date_start = date + timedelta(days=-1)
         if post.get("next"):
-            date = datetime.strptime(post.get("next"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(post.get("next"), "%Y-%m-%d")
             date_start = date + timedelta(days=+7)
         if post.get("previous"):
-            date = datetime.strptime(post.get("previous"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(post.get("previous"), "%Y-%m-%d")
             date_start = date + timedelta(days=-7)
 
         Room = request.env["pms.room.type"]
@@ -1262,7 +1280,7 @@ class TestFrontEnd(http.Controller):
             default_pricelist = int(post["pricelist"])
 
         values = {
-            "today": datetime.now(),
+            "today": datetime.datetime.now(),
             "date_start": date_start,
             "page_name": "Calendar config",
             "pricelist": pricelist,
@@ -1282,10 +1300,10 @@ class TestFrontEnd(http.Controller):
         reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
         reservation_values["adults"] = reservation.adults
         reservation_values["reservation_type"] = reservation.folio_id.reservation_type
-        reservation_values["checkin"] = datetime.strftime(
+        reservation_values["checkin"] = datetime.datetime.strftime(
             reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
         )
-        reservation_values["checkout"] = datetime.strftime(
+        reservation_values["checkout"] = datetime.datetime.strftime(
             reservation.checkout, DEFAULT_SERVER_DATE_FORMAT
         )
         reservation_values["arrival_hour"] = reservation.arrival_hour
@@ -1360,10 +1378,10 @@ class TestFrontEnd(http.Controller):
     def parse_wizard_folio(self, wizard):
         wizard_values = dict()
         wizard_values["id"] = wizard.id
-        wizard_values["checkin"] = datetime.strftime(
+        wizard_values["checkin"] = datetime.datetime.strftime(
             wizard.start_date, DEFAULT_SERVER_DATE_FORMAT
         )
-        wizard_values["checkout"] = datetime.strftime(
+        wizard_values["checkout"] = datetime.datetime.strftime(
             wizard.end_date, DEFAULT_SERVER_DATE_FORMAT
         )
         wizard_values["total_price_folio"] = wizard.total_price_folio
