@@ -930,7 +930,7 @@ class TestFrontEnd(http.Controller):
         room_types = request.env["pms.room.type"].browse(
             rooms.mapped("room_type_id.id")
         )
-        date_list = [date_start + timedelta(days=x) for x in range(70)]
+        date_list = [date_start + timedelta(days=x) for x in range(7)]
 
         Pricelist = request.env["product.pricelist"]
         pricelists = Pricelist.search(
