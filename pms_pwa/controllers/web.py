@@ -778,16 +778,15 @@ class TestFrontEnd(http.Controller):
                 for param in params.keys():
                     # DEL SERVICE
                     if param == "del_service":
-                        params["service_ids"] = [(2, params["del_service"])]
+                        params["service_ids"] = [(2, int(params["del_service"]))]
                         del params["del_service"]
 
                     # ADD SERVICE
                     if param == "add_service":
                         params["service_ids"] = [
-                            (0, 0, {"product_id": params["add_service"]})
+                            (0, 0, {"product_id": int(params["add_service"])})
                         ]
                         del params["add_service"]
-
                     # ADULTS
                     if (
                         param == "adults"
@@ -1160,6 +1159,7 @@ class TestFrontEnd(http.Controller):
     def multiple_reservation_onchange(self, **kw):
         params = http.request.jsonrequest.get("params")
         folio_wizard = False
+        return
         # TODO: Review param checkin user error (param not exist)
         if params.get("id"):
             folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
