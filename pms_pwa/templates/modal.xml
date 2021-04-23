@@ -91,92 +91,70 @@
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="room_types" t-value="{'1': 'ECO', '2': 'DUAL'}" />
-                    <t t-set="guest_numbers" t-value="[1,2,3,4,5,6]" />
                     <div class="col-sm-12">
                         <h4>Room </h4>
                     </div>
                     <div class="col-sm-12">
-                        <label class="control-label col-12" for="room_type">
+                        <label class="control-label col-12" for="room_type_id">
                             Room type
                         </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
-                            <option t-foreach="room_types" t-as="key" t-att-value="key">
-                                <t t-esc="key_value" />
-                            </option>
-                        </select>
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id"/>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-6">
-                        <label class="control-label col-12" for="guest_number">
+                        <label class="control-label col-12" for="adults">
                             Guest nº
                         </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="guest_number">
-                            <option t-foreach="guest_numbers" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
+                        <input class="form-control" type="number" name="adults" placeholder="Guest nº" />
                     </div>
                 </div>
             </div>
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']" />
-                    <t t-set="allowed_services" t-value="[1,2,3,4,5,6]" />
                     <div class="col-sm-12">
                         <h4>Room and service</h4>
                     </div>
                     <div class="col-6">
-                        <label class="control-label col-12" for="room">
+                        <label class="control-label col-12" for="preferred_room_id">
                             Room
                         </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room">
-                            <option t-foreach="allowed_rooms" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
+                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id"/>
                     </div>
                     <div class="col-6">
-                        <label class="control-label col-12" for="service">
-                            Broad service
+                        <label class="control-label col-12" for="board_service_room_id">
+                            Board service
                         </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="service">
-                            <option t-foreach="allowed_services" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
+                        <select t-attf-data-select="allowed_board_service_room_ids"  class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id"/>
                     </div>
                 </div>
             </div>
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="allowed_channels" t-value="['Booking', 'Airbnb', 'Teléfono']" />
-                    <t t-set="allowed_pricelist" t-value="{'1': 'Tarifa normal', '2': 'Tarifa reducida'}" />
                     <div class="col-sm-12">
-                        <h4>Channel and pricelist </h4>
+                        <h4>Channel type and pricelist </h4>
                     </div>
                     <div class="col-6">
-                        <label class="control-label col-12" for="channel">
-                            Channel
+                        <label class="control-label col-12" for="channel_type_id">
+                            Channel type
                         </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel">
-                            <option t-foreach="allowed_channels" t-as="key" t-att-value="key">
-                                <t t-esc="key_value" />
-                            </option>
-                        </select>
+                        <select t-attf-data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id"/>
                     </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="agency_id">
+                            Agency
+                        </label>
+                        <select t-attf-data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
+                    </div>
+                </div>
+                <div class="row mt-3">
                     <div class="col-6">
                         <label class="control-label col-12" for="pricelist">
                             Pricelist
                         </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist">
-                            <option t-foreach="allowed_pricelist" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
+                        <select t-attf-data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
                     </div>
                 </div>
             </div>
@@ -193,10 +171,10 @@
                         <input class="form-control" type="number" name="discount" placeholder="Discount" />
                     </div>
                     <div class="col-6">
-                        <label class="control-label col-12" for="total">
+                        <label class="control-label col-12" for="price_total">
                             Total
                         </label>
-                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled" />
+                        <input class="form-control" type="number" name="price_total" placeholder="Total" disabled="disabled" />
                     </div>
                 </div>
             </div>
@@ -233,60 +211,52 @@
                         </span>
                     </div>
                 </div>
-                <t t-set="allowed_pricelist" t-value="['Tarifa normal', 'Tarifa reducida']" />
+
+
                 <div class="row mt-3">
-                    <div class="col-12">
+                    <div class="col-sm-12">
+                        <h4>Channel type and pricelist </h4>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="channel_type_id">
+                            Channel type
+                        </label>
+                        <select t-attf-data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id"/>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="agency_id">
+                            Agency
+                        </label>
+                        <select t-attf-data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
                         <label class="control-label col-12" for="pricelist">
                             Pricelist
                         </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist">
-                            <option t-foreach="allowed_pricelist" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
+                        <select t-attf-data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
                     </div>
                 </div>
             </div>
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <t t-set="room_types" t-value="['ECO', 'DUAL']" />
-                    <t t-set="allowed_rooms" t-value="['101 - ECO', '203 - DUAL']" />
-                    <t t-set="allowed_numbers" t-value="[1,2,3,4,5,6]" />
                     <div class="col-sm-12">
-                        <h4>Room</h4>
+                        <h4>Rooms</h4>
                     </div>
-                    <div class="col-sm-12">
-                        <label class="control-label col-12" for="room_type">
-                            Room type
-                        </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
-                            <option t-foreach="room_types" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
-                    </div>
-                    <div class="col-6 mt-3">
-                        <label class="control-label col-12" for="room">
-                            Room
-                        </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room">
-                            <option t-foreach="allowed_rooms" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
-                    </div>
-
-                    <div class="col-6 mt-3">
-                        <label class="control-label col-12" for="room_number">
-                            Nº of rooms
-                        </label>
-                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
-                            <option t-foreach="allowed_numbers" t-as="key" t-att-value="key">
-                                <t t-esc="key" />
-                            </option>
-                        </select>
-                    </div>
+                    <table id="table_lines" class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th class="o_pms_pwa_theme_color">Tipo de habitación</th>
+                                <th class="o_pms_pwa_theme_color">Disponible</th>
+                                <th class="o_pms_pwa_theme_color">Seleccionado</th>
+                                <th class="o_pms_pwa_theme_color">Precio/hab</th>
+                                <th class="o_pms_pwa_theme_color">Precio total</th>
+                            </tr>
+                        </thead>
+                        <tbody/>
+                    </table>
                 </div>
             </div>
 
@@ -302,16 +272,17 @@
                         <input class="form-control" type="number" name="discount" placeholder="Discount" />
                     </div>
                     <div class="col-6">
-                        <label class="control-label col-12" for="total">
+                        <label class="control-label col-12" for="total_price_folio">
                             Total
                         </label>
-                        <input class="form-control" type="number" name="total" placeholder="Total" disabled="disabled" />
+                        <input class="form-control" type="number" name="total_price_folio" placeholder="Total" disabled="disabled" />
                     </div>
                 </div>
             </div>
 
             <div class="row mt-3 mb-3">
                 <div class="col-12 text-center">
+                    <input type="hidden" name="id"/>
                     <input class="btn btn-message" type="submit" value="Submit" />
                 </div>
             </div>

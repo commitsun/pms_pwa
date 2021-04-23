@@ -22,26 +22,74 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     $("form#single_reservation_form").on("change", "input, select", function (event) {
         var values = {};
+        var allowed_fields = [
+            "allowed_agency_ids",
+            "allowed_board_service_room_ids",
+            "allowed_channel_type_ids",
+            "allowed_pricelists",
+        ];
         values[event.currentTarget.name] = event.currentTarget.value;
-        ajax.jsonRpc("/reservation/single_reservation_onchange", "call", values).then(
+        /* if (
+            event.currentTarget.name ==
+            "range_check_date_modal"
+        ) {
+            let value_range_picker =
+                event.currentTarget.value;
+
+            values.checkin = value_range_picker.substr(
+                0,
+                value_range_picker.indexOf(" - ")
+            );
+            values.checkout = value_range_picker.substr(
+                value_range_picker.indexOf(
+                    " - "
+                ) + 2
+            );
+        } */
+        ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
             function (new_data) {
                 setTimeout(function () {
                     if (new_data) {
-                        console.log(new_data);
                         $.each(new_data, function (key, value) {
-                            var input = $(
-                                "form#single_reservation_form input[name='" + key + "']"
-                            );
-                            if (input) {
-                                input.val(value);
+                            if (allowed_fields.includes(key)) {
+                                try {
+                                    var select = $('[data-select="' + key + '"]');
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                                if (select) {
+                                    select.empty();
+                                    $.each(value, function (subkey, subvalue) {
+                                        var option = new Option(
+                                            subvalue["name"],
+                                            subvalue["id"]
+                                        );
+                                        $(option).html(subvalue["name"]);
+                                        select.append(option);
+                                    });
+                                }
                             } else {
-                                $(
-                                    "form#single_reservation_form select[name='" +
+                                var input = $(
+                                    "form#single_reservation_form input[name='" +
                                         key +
-                                        "'] option[value='" +
-                                        value +
                                         "']"
-                                ).prop("selected", true);
+                                );
+                                if (input) {
+                                    input.val(value);
+                                } else {
+                                    var select = $(
+                                        "form#single_reservation_form select[name='" +
+                                            key +
+                                            "'"
+                                    );
+                                    $(
+                                        "form#single_reservation_form select[name='" +
+                                            key +
+                                            "'] option[value='" +
+                                            value +
+                                            "']"
+                                    ).prop("selected", true);
+                                }
                             }
                         });
                     }
@@ -53,11 +101,27 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     $("form#single_reservation_form").on("submit", function (event) {
         event.preventDefault();
         var values = $("form#single_reservation_form").serializeArray();
+        /* if (
+            event.currentTarget.name ==
+            "range_check_date_modal"
+        ) {
+            let value_range_picker =
+                event.currentTarget.value;
+
+            values.checkin = value_range_picker.substr(
+                0,
+                value_range_picker.indexOf(" - ")
+            );
+            values.checkout = value_range_picker.substr(
+                value_range_picker.indexOf(
+                    " - "
+                ) + 2
+            );
+        } */
         ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
             function (new_data) {
                 setTimeout(function () {
                     if (new_data) {
-                        console.log(new_data);
                         var data = JSON.parse(new_data);
                         if (data && data.result === true) {
                             /* We need to integrate this into the public widget */
@@ -83,28 +147,107 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     $("form#multiple_reservation_form").on("change", "input, select", function (event) {
         var values = {};
+        var allowed_fields = [
+            "allowed_agency_ids",
+            "allowed_board_service_room_ids",
+            "allowed_channel_type_ids",
+            "allowed_pricelists",
+        ];
         values[event.currentTarget.name] = event.currentTarget.value;
+        /* if (
+            event.currentTarget.name ==
+            "range_check_date_modal"
+        ) {
+            let value_range_picker =
+                event.currentTarget.value;
+
+            values.checkin = value_range_picker.substr(
+                0,
+                value_range_picker.indexOf(" - ")
+            );
+            values.checkout = value_range_picker.substr(
+                value_range_picker.indexOf(
+                    " - "
+                ) + 2
+            );
+        } */
+        if (event.currentTarget.dataset.main_field) {
+            var main_field = event.currentTarget.dataset.main_field;
+            var field_id = event.currentTarget.dataset.field_id;
+            values[main_field] = {};
+            values[main_field][field_id] = {};
+            values[main_field][field_id][event.currentTarget.name] =
+                event.currentTarget.value;
+        } else {
+            values[event.currentTarget.name] = event.currentTarget.value;
+        }
         ajax.jsonRpc("/reservation/multiple_reservation_onchange", "call", values).then(
             function (new_data) {
                 setTimeout(function () {
                     if (new_data) {
-                        console.log(new_data);
                         $.each(new_data, function (key, value) {
-                            var input = $(
-                                "form#multiple_reservation_form input[name='" +
-                                    key +
-                                    "']"
-                            );
-                            if (input) {
-                                input.val(value);
+                            if (allowed_fields.includes(key)) {
+                                try {
+                                    var select = $('[data-select="' + key + '"]');
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                                if (select) {
+                                    select.empty();
+                                    $.each(value, function (subkey, subvalue) {
+                                        var option = new Option(
+                                            subvalue["name"],
+                                            subvalue["id"]
+                                        );
+                                        $(option).html(subvalue["name"]);
+                                        select.append(option);
+                                    });
+                                }
                             } else {
-                                $(
-                                    "form#multiple_reservation_form select[name='" +
-                                        key +
-                                        "'] option[value='" +
-                                        value +
-                                        "']"
-                                ).prop("selected", true);
+                                if (key == "lines") {
+                                    try {
+                                        var table_tbody_trs = $(
+                                            "#table_lines tbody tr"
+                                        );
+                                        table_tbody_trs.remove();
+                                    } catch (error) {
+                                        console.log(error);
+                                    }
+                                    $.each(value, function (linekey, linevalues) {
+                                        var tr =
+                                            "<tr><td>" +
+                                            linevalues["room_type_id"] +
+                                            "</td><td>" +
+                                            linevalues["num_rooms_available"] +
+                                            "</td><td><input type='number' data-main_field='lines' data-field_id='" +
+                                            linekey +
+                                            "' name='value_num_rooms_selected' value='" +
+                                            linevalues["value_num_rooms_selected"] +
+                                            "' class='form-control o_pms_pwa_modal_number'/></td><td>" +
+                                            linevalues["price_per_room"] +
+                                            "</td><td>" +
+                                            linevalues["price_total"] +
+                                            "</td></tr>";
+                                        $("#table_lines tbody").append(tr);
+                                    });
+                                } else {
+                                    var input = $(
+                                        "form#multiple_reservation_form input[name='" +
+                                            key +
+                                            "']"
+                                    );
+                                    if (input) {
+                                        input.val(value);
+                                    } else {
+                                        $(
+                                            "form#multiple_reservation_form select[name='" +
+                                                key +
+                                                "'] option[value='" +
+                                                value +
+                                                "']"
+                                        ).prop("selected", true);
+                                    }
+                                }
                             }
                         });
                     }
@@ -120,7 +263,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             function (new_data) {
                 setTimeout(function () {
                     if (new_data) {
-                        console.log(new_data);
                         var data = JSON.parse(new_data);
                         if (data && data.result === true) {
                             /* We need to integrate this into the public widget */

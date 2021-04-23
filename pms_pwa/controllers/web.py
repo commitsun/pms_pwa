@@ -1077,33 +1077,42 @@ class TestFrontEnd(http.Controller):
     )
     def single_reservation_new(self, **kw):
         reservation_values = http.request.jsonrequest.get("params")
+        print("reservation_values: {}".format(reservation_values))
+
         checkin = datetime.strptime(
-            reservation_values["checkin"], DEFAULT_SERVER_DATE_FORMAT
+            reservation_values["checkin"]
+            if "checkin" in reservation_values
+            else datetime.now().strftime("%Y-%m-%d"),
+            DEFAULT_SERVER_DATE_FORMAT,
         ).date()
         checkout = datetime.strptime(
-            reservation_values["checkout"], DEFAULT_SERVER_DATE_FORMAT
+            reservation_values["checkout"]
+            if "checkout" in reservation_values
+            else (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
+            DEFAULT_SERVER_DATE_FORMAT,
         ).date()
         pms_property = request.env.user.get_active_property_ids()[0]
+        pms_property_id = request.env["pms.property"].browse(pms_property)
         pricelist = False
         if reservation_values.get("pricelist_id"):
             pricelist = request.env["product.pricelist"].search(
                 [("id", "=", int(reservation_values.get("pricelist_id")))]
             )
         if not pricelist:
-            pricelist = pms_property.default_pricelist_id.id
+            pricelist = pms_property_id.default_pricelist_id.id
         # TODO: allowed_room_types: "/room_types"??
         # TODO: allowed_rooms: "/rooms"
 
         room_type_id = False
         if reservation_values.get("room_type_id"):
-            room_type = request.env["pms.room.type"].search(
+            room_type_id = request.env["pms.room.type"].search(
                 [("id", "=", int(reservation_values.get("room_type_id")))]
             )
 
         vals = {
             "checkin": checkin,
             "checkout": checkout,
-            "room_type_id": room_type,
+            "room_type_id": room_type_id,
             "pricelist_id": pricelist,
             "pms_property_id": pms_property,
         }
@@ -1150,46 +1159,55 @@ class TestFrontEnd(http.Controller):
     )
     def multiple_reservation_onchange(self, **kw):
         params = http.request.jsonrequest.get("params")
+        print("params: {}".format(params))
         folio_wizard = False
         # TODO: Review param checkin user error (param not exist)
         if params.get("id"):
-            folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
+            folio_wizard = request.env["pms.folio.wizard"].browse(params.get("id"))
         checkin = datetime.strptime(
-            params["checkin"], DEFAULT_SERVER_DATE_FORMAT
+            params["checkin"]
+            if "checkin" in params
+            else datetime.now().strftime("%Y-%m-%d"),
+            DEFAULT_SERVER_DATE_FORMAT,
         ).date()
         checkout = datetime.strptime(
-            params["checkout"], DEFAULT_SERVER_DATE_FORMAT
+            params["checkout"]
+            if "checkout" in params
+            else (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
+            DEFAULT_SERVER_DATE_FORMAT,
         ).date()
         pms_property = request.env.user.get_active_property_ids()[0]
+        pms_property_id = request.env["pms.property"].browse(pms_property)
         # TODO: partner_id, diferenciar entre nuevo partner y
         # uno seleccionado (tipo direccion de facturacion en el detalle?)
-        partner = self.env["res.partner"].search([])[0]
+        partner = request.env["res.partner"].search([])[0]
         pricelist = False
         if params.get("pricelist_id"):
             pricelist = request.env["product.pricelist"].search(
                 [("id", "=", int(params.get("pricelist_id")))]
             )
         if not pricelist:
-            pricelist = pms_property.default_pricelist_id.id
+            pricelist = pms_property_id.default_pricelist_id.id
 
+        vals = {
+            "start_date": checkin,
+            "end_date": checkout,
+            "pricelist_id": pricelist if pricelist else False,
+            "pms_property_id": pms_property_id.id,
+            "partner_id": partner.id if partner else False,
+        }
+        if params.get("id"):
+            folio_wizard = request.env["pms.folio.wizard"].browse(params.get("id"))
         if not folio_wizard:
-            folio_wizard = self.env["pms.folio.wizard"].create(vals)
+            folio_wizard = request.env["pms.folio.wizard"].create(vals)
 
-        if (
-            checkin != folio_wizard.checkin
-            or checkout != folio_wizard.checkout
+        """ if (
+            checkin != folio_wizard.start_date
+            or checkout != folio_wizard.end_date
             or pricelist.id != folio_wizard.pricelist_id.id
-            or pms_property.id != folio_wizard.pms_property_id.id
+            or pms_property_id.id != folio_wizard.pms_property_id.id
             or partner != folio_wizard.partner_id.id
         ):
-            vals = {
-                "checkin": checkin,
-                "checkout": checkout,
-                "pricelist_id": pricelist.id,
-                "pms_property_id": pms_property.id,
-                "partner_id": partner.id,
-            }
-            folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
             folio_wizard.write(vals)
 
         if params.get("lines"):
@@ -1197,7 +1215,7 @@ class TestFrontEnd(http.Controller):
                 folio_wizard.availability_results.filtered(
                     lambda r: r.room_type_id.id == int(line_id)
                 ).value_num_rooms_selected = int(room_type["num_rooms_selected"])
-                # TODO: Board service
+                # TODO: Board service """
 
         return self.parse_wizard_folio(folio_wizard)
 
@@ -1365,6 +1383,6 @@ class TestFrontEnd(http.Controller):
             #     ),
         wizard_values["lines"] = lines
         _logger.info("Values from controller to Frontend (multi reservation creation):")
-        pp.pprint(reservation_values)
+        pp.pprint(wizard_values)
 
         return wizard_values
