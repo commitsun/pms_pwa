@@ -983,7 +983,9 @@ class TestFrontEnd(http.Controller):
             ("state", "!=", "cancelled"),
         ]
         reservation_lines = ReservationLine.search(domain)
-        reservations = Reservation.browse(reservation_lines.mapped("reservation_id.id"))
+        reservations = Reservation.browse(
+            reservation_lines.mapped("reservation_id.id")
+        )
         values = {}
         # REVIEW: revisar estructura
         values["reservations"] = []
@@ -1030,11 +1032,9 @@ class TestFrontEnd(http.Controller):
                             + "/image_128",
                             "price": reservation.folio_pending_amount,
                             "status": "success",  # TODO
-                            "nigths": (
-                                max_reservation_date
-                                + timedelta(days=1)
-                                - min_reservation_date
-                            ).days,
+                            "nigths": (max_reservation_date + timedelta(days=1) - min_reservation_date).days,
+                            "checkin_in_range": False if min_reservation_date != reservation.checkin else True,
+                            "checkout_in_range": False if max_reservation_date != reservation.checkout else True,
                         },
                     }
                 )
