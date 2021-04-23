@@ -17,7 +17,7 @@ class PmsPWARoomType(models.Model):
                 checkin=self._context.get("checkin"),
                 checkout=self._context.get("checkout"),
                 room_type_id=self.id,
-                pms_property_id=self._context.get("pms_property_id") or False,
+                pms_property_id=self.env.user.get_active_property_ids()[0],# REVIEW: self._context.get("pms_property_id"),
                 pricelist_id=self._context.get("pricelist_id") or False,
             )
         return avail
