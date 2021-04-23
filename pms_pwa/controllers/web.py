@@ -975,13 +975,15 @@ class TestFrontEnd(http.Controller):
         to_date = max(dates)
         pms_property_id = request.env.user.get_active_property_ids()[0]
         Reservation = request.env["pms.reservation"]
+        ReservationLine = request.env["pms.reservation.line"]
 
         domain = [
-            ("checkin", ">=", from_date),
-            ("checkout", "<=", to_date),
+            ("date", ">=", from_date),
+            ("date", "<=", to_date),
             ("state", "!=", "cancelled"),
         ]
-        reservations = Reservation.search(domain)
+        reservation_lines = ReservationLine.search(domain)
+        reservations = Reservation.browse(reservation_lines.mapped("reservation_id.id"))
         values = {}
         # REVIEW: revisar estructura
         values["reservations"] = []
@@ -996,19 +998,29 @@ class TestFrontEnd(http.Controller):
             .ids
         )
         for room_id in room_ids:
-            free_dates = dates
+            free_dates = dates.copy()
             room = request.env["pms.room"].browse(room_id)
             rooms_reservation_values = []
             for reservation in reservations.filtered(
                 lambda r: r.preferred_room_id.id == room_id
             ):
+                min_reservation_date = min(
+                    reservation.reservation_line_ids.filtered(
+                        lambda d: d.date in dates
+                    ).mapped("date")
+                )
+                max_reservation_date = max(
+                    reservation.reservation_line_ids.filtered(
+                        lambda d: d.date in dates
+                    ).mapped("date")
+                )
                 for d in reservation.reservation_line_ids.mapped("date"):
                     if d in free_dates:
                         free_dates.remove(d)
                 rooms_reservation_values.append(
                     {
                         "date": datetime.datetime.strftime(
-                            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+                            min_reservation_date, DEFAULT_SERVER_DATE_FORMAT
                         ),
                         "reservation_info": {
                             "id": reservation.id,
@@ -1018,7 +1030,11 @@ class TestFrontEnd(http.Controller):
                             + "/image_128",
                             "price": reservation.folio_pending_amount,
                             "status": "success",  # TODO
-                            "nigths": reservation.nights,
+                            "nigths": (
+                                max_reservation_date
+                                + timedelta(days=1)
+                                - min_reservation_date
+                            ).days,
                         },
                     }
                 )
@@ -1035,7 +1051,7 @@ class TestFrontEnd(http.Controller):
                     split.date + timedelta(days=x)
                     for x in range(0, (reservation.checkout - split.date).days)
                 ]:
-                    line = reservation.reservation_line.ids(
+                    line = reservation.reservation_line_ids(
                         lambda: l.date == date_iterator
                     )
                     if line and line.room_id == split.room_id:
