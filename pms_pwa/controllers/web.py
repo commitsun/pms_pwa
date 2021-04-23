@@ -1368,7 +1368,7 @@ class TestFrontEnd(http.Controller):
         lines = {}
         for line in wizard.availability_results:
             lines[line.id] = {
-                "room_type_id": line.room_type_id.id,
+                "room_type_id": line.room_type_id.display_name,
                 "num_rooms_available": line.num_rooms_available,
                 "value_num_rooms_selected": line.value_num_rooms_selected,
                 "price_per_room": line.price_per_room,

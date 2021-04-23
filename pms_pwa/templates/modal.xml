@@ -249,10 +249,8 @@
                         <thead>
                             <tr>
                                 <th class="o_pms_pwa_theme_color">Tipo de habitación</th>
-                                <th class="o_pms_pwa_theme_color">Disponible</th>
                                 <th class="o_pms_pwa_theme_color">Seleccionado</th>
                                 <th class="o_pms_pwa_theme_color">Precio/hab</th>
-                                <th class="o_pms_pwa_theme_color">Precio total</th>
                             </tr>
                         </thead>
                         <tbody/>

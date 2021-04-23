@@ -28,24 +28,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "allowed_channel_type_ids",
             "allowed_pricelists",
         ];
-        values[event.currentTarget.name] = event.currentTarget.value;
-        /* if (
-            event.currentTarget.name ==
-            "range_check_date_modal"
-        ) {
-            let value_range_picker =
-                event.currentTarget.value;
+        if (event.currentTarget.name == "range_check_date_modal") {
+            let value_range_picker = event.currentTarget.value;
 
             values.checkin = value_range_picker.substr(
                 0,
                 value_range_picker.indexOf(" - ")
             );
             values.checkout = value_range_picker.substr(
-                value_range_picker.indexOf(
-                    " - "
-                ) + 2
+                value_range_picker.indexOf(" - ") + 2
             );
-        } */
+        } else {
+            values[event.currentTarget.name] = event.currentTarget.value;
+        }
         ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
             function (new_data) {
                 setTimeout(function () {
@@ -101,23 +96,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     $("form#single_reservation_form").on("submit", function (event) {
         event.preventDefault();
         var values = $("form#single_reservation_form").serializeArray();
-        /* if (
-            event.currentTarget.name ==
-            "range_check_date_modal"
-        ) {
-            let value_range_picker =
-                event.currentTarget.value;
+        if (event.currentTarget.name == "range_check_date_modal") {
+            let value_range_picker = event.currentTarget.value;
 
             values.checkin = value_range_picker.substr(
                 0,
                 value_range_picker.indexOf(" - ")
             );
             values.checkout = value_range_picker.substr(
-                value_range_picker.indexOf(
-                    " - "
-                ) + 2
+                value_range_picker.indexOf(" - ") + 2
             );
-        } */
+        }
         ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
             function (new_data) {
                 setTimeout(function () {
@@ -153,24 +142,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "allowed_channel_type_ids",
             "allowed_pricelists",
         ];
-        values[event.currentTarget.name] = event.currentTarget.value;
-        /* if (
-            event.currentTarget.name ==
-            "range_check_date_modal"
-        ) {
-            let value_range_picker =
-                event.currentTarget.value;
+        try {
+            var id = $("#multiple_reservation_form input[name='id']").val();
+            values["id"] = id;
+        } catch (error) {
+            console.log(error);
+        }
+        if (event.currentTarget.name == "range_check_date_modal") {
+            let value_range_picker = event.currentTarget.value;
 
             values.checkin = value_range_picker.substr(
                 0,
                 value_range_picker.indexOf(" - ")
             );
             values.checkout = value_range_picker.substr(
-                value_range_picker.indexOf(
-                    " - "
-                ) + 2
+                value_range_picker.indexOf(" - ") + 2
             );
-        } */
+        }
         if (event.currentTarget.dataset.main_field) {
             var main_field = event.currentTarget.dataset.main_field;
             var field_id = event.currentTarget.dataset.field_id;
@@ -217,16 +205,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         var tr =
                                             "<tr><td>" +
                                             linevalues["room_type_id"] +
-                                            "</td><td>" +
-                                            linevalues["num_rooms_available"] +
+                                            " (" +
+                                            +linevalues["num_rooms_available"] +
+                                            ")" +
                                             "</td><td><input type='number' data-main_field='lines' data-field_id='" +
                                             linekey +
                                             "' name='value_num_rooms_selected' value='" +
                                             linevalues["value_num_rooms_selected"] +
                                             "' class='form-control o_pms_pwa_modal_number'/></td><td>" +
                                             linevalues["price_per_room"] +
-                                            "</td><td>" +
-                                            linevalues["price_total"] +
                                             "</td></tr>";
                                         $("#table_lines tbody").append(tr);
                                     });
