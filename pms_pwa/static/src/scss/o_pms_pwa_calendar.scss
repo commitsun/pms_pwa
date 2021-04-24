@@ -229,6 +229,48 @@ section.o_pms_pwa_roomdoo {
             border: none;
             z-index: 1;
         }
+        .o_pms_pwa_line_before {
+            &_success::before {
+                content: "";
+                display: block;
+                width: 10px;
+                height: 0;
+                border-top: 4px solid var(--success);
+                position: relative;
+                top: 1.75em;
+                left: -10px;
+            }
+            &_warning::before {
+                content: "";
+                display: block;
+                width: 10px;
+                height: 0;
+                border-bottom: 4px solid var(--warning);
+                position: relative;
+                top: 1.75em;
+                left: -10px;
+            }
+            &_danger::before {
+                content: "";
+                display: block;
+                width: 10px;
+                height: 0;
+                border-bottom: 4px solid var(--danger);
+                position: relative;
+                top: 1.75em;
+                left: -10px;
+            }
+            &_info {
+                content: "";
+                display: block;
+                width: 10px;
+                height: 0;
+                border-bottom: 4px solid $theme-color;
+                position: relative;
+                top: 1.75em;
+                left: -10px;
+            }
+        }
         .o_pms_pwa_calendar_line {
             border-left: 3px solid $grey-900;
             background-color: $bg-theme-color;

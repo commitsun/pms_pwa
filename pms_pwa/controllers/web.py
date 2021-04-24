@@ -1037,7 +1037,7 @@ class TestFrontEnd(http.Controller):
                                 - min_reservation_date
                             ).days,
                             "checkin_in_range": False
-                            if min_reservation_date != reservation.checkin
+                            if min_reservation_date == reservation.checkin
                             else True,
                             "checkout_in_range": False
                             if max_reservation_date != reservation.checkout
@@ -1126,7 +1126,6 @@ class TestFrontEnd(http.Controller):
     def single_reservation_new(self, **kw):
         reservation_values = http.request.jsonrequest.get("params")
         print("reservation_values: {}".format(reservation_values))
-
         checkin = datetime.strptime(
             reservation_values["checkin"]
             if "checkin" in reservation_values

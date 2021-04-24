@@ -26,7 +26,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                     obj_list: data.reservations,
                     csrf_token: csrf_token,
                 });
-                $("td.o_pms_pwa_hiddenRow").html(html);
+                $(String("#collapse_accordion_" + room_type_id)).html(html);
             });
         },
     });
