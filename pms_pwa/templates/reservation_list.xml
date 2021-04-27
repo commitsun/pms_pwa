@@ -283,7 +283,7 @@
             <t t-if="obj.state" t-esc="obj.state"/>
         </td> -->
         <td>
-            <t t-esc="obj.checkin.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
+            <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
         </td>
         <td>
             <t t-esc="obj.checkout.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
