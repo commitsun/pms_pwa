@@ -9,7 +9,7 @@ class TestPwaFolio(TestHotel):
     def create_common_scenario(self):
         # create a room type availability
         self.room_type_availability = self.env[
-            "pms.room.type.availability.plan"
+            "pms.availability.plan"
         ].create({"name": "Availability plan for TEST"})
 
         # create a property
@@ -31,7 +31,7 @@ class TestPwaFolio(TestHotel):
             {
                 "pms_property_ids": [self.property.id],
                 "name": "Double Test",
-                "code_type": "DBL_Test",
+                "default_code": "DBL_Test",
                 "class_id": self.room_type_class.id,
             }
         )

@@ -44,7 +44,7 @@ class RoomTypes(http.Controller):
             reservation_line_ids = reservation.reservation_line_ids.ids
 
         rooms_avail = (
-            request.env["pms.room.type.availability.plan"]
+            request.env["pms.availability.plan"]
             .sudo()
             .rooms_available(
                 checkin=checkin,

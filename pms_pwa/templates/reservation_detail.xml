@@ -28,15 +28,11 @@
                                     <span class="blue-header">
                                         <t t-esc="reservation.name" />
                                     </span>
-                                    <span class="moreinfo-header">
-                                        <t t-esc="reservation.origin" />
-                                    </span>
                                     <span class="agency">
                                         <img t-if="reservation.agency_id" t-att-src="website.image_url(reservation.agency_id, 'image_128')" width="100" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
                                         <span t-else="">
                                             <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
                                             <span t-if="reservation.channel_type_id" class="o_pms_pwa_wler ml-2" t-esc="reservation.partner_id.name" />
-                                            <span class="o_pms_pwa_wler ml-2" t-if="reservation.detail_origin" t-esc="reservation.detail_origin" />
                                         </span>
 
                                     </span>
@@ -65,13 +61,13 @@
                                                         <t t-esc="reservation.partner_id.name" />
                                                     </h3>
                                                     <p class="ml-4 mb-0">
-                                                        <a t-attf-href="tel:{{reservation.phone}}" class="text-white">
-                                                            <t t-esc="reservation.phone" />
+                                                        <a t-attf-href="tel:{{reservation.partner_phone}}" class="text-white">
+                                                            <t t-esc="reservation.partner_phone" />
                                                         </a>
                                                     </p>
                                                     <p class="ml-4">
-                                                        <a t-attf-href="mailto:{{reservation.email}}" class="text-white font-italic">
-                                                            <t t-esc="reservation.email" />
+                                                        <a t-attf-href="mailto:{{reservation.partner_email}}" class="text-white font-italic">
+                                                            <t t-esc="reservation.partner_email" />
                                                         </a>
                                                     </p>
                                                 </div>
@@ -201,7 +197,7 @@
                                                             <t t-esc="i.partner_id.name" />
                                                         </td>
                                                         <td class="text-right">
-                                                            <t t-esc="i.room_type_id.code_type" />
+                                                            <t t-esc="i.room_type_id.default_code" />
                                                         </td>
                                                         <td>
                                                             <t t-esc="i.preferred_room_id.name" />

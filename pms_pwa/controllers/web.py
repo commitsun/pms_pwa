@@ -721,8 +721,6 @@ class TestFrontEnd(http.Controller):
                 "outstanding_vat": reservation.folio_pending_amount,
             },
             "state": reservation.state,
-            "origin": reservation.origin,
-            "detail_origin": reservation.detail_origin,
             "credit_card_details": reservation.credit_card_details,
             "price_total": reservation.price_total,
             "price_tax": reservation.price_tax,
