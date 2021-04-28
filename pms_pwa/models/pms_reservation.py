@@ -54,12 +54,12 @@ class PmsReservation(models.Model):
                     else:
                         active_buttons[k] = False
                 elif k == "Checkin":
-                    if reservation.left_for_checkin:
+                    if reservation.allowed_checkin:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
                     else:
                         active_buttons[k] = False
                 elif k == "Checkout":
-                    if reservation.left_for_checkout:
+                    if reservation.allowed_checkout:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
                     else:
                         active_buttons[k] = False
@@ -74,7 +74,7 @@ class PmsReservation(models.Model):
                     else:
                         active_buttons[k] = False
                 elif k == "Cancel":
-                    if reservation.left_for_cancel:
+                    if reservation.allowed_cancel:
                         active_buttons[k] = "/reservation/" + str(reservation.id) + v
                     else:
                         active_buttons[k] = False
@@ -292,10 +292,10 @@ class PmsReservation(models.Model):
          ]
          and [1] list with free room types
          [
-          {"id": id, "name": "room_name", "code_type": "code", "availability": qty},
-          {"id": id, "name": "room_name", "code_type": "code", "availability": qty},
+          {"id": id, "name": "room_name", "default_code": "code", "availability": qty},
+          {"id": id, "name": "room_name", "default_code": "code", "availability": qty},
           ... ,
-          {"id": id, "name": "room_name", "code_type": "code", "availability": qty},
+          {"id": id, "name": "room_name", "default_code": "code", "availability": qty},
          ]
         """
         if checkin and checkout:
@@ -325,7 +325,7 @@ class PmsReservation(models.Model):
                     {
                         "id": room_type.id,
                         "name": room_type.name,
-                        "code_type": room_type.code_type,
+                        "default_code": room_type.default_code,
                         "availability": len(
                             rooms_available.filtered(
                                 lambda r: r.room_type_id.id == room_type_id

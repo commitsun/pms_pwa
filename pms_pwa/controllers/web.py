@@ -11,7 +11,7 @@ from datetime import timedelta
 from odoo import _, fields, http
 from odoo.exceptions import MissingError
 from odoo.http import request
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools.misc import formatLang, format_date, get_lang
 
 from odoo.addons.web.controllers.main import Home
 
@@ -707,9 +707,13 @@ class TestFrontEnd(http.Controller):
                 "name": reservation.agency_id.name if reservation.agency_id else False,
             },
             "nights": reservation.nights,
-            "checkin": reservation.checkin,
+            "checkin": reservation.checkin.strftime(
+                get_lang(request.env).date_format
+            ),
             "arrival_hour": reservation.arrival_hour,
-            "checkout": reservation.checkout,
+            "checkout": reservation.checkout.strftime(
+                get_lang(request.env).date_format
+            ),
             "departure_hour": reservation.departure_hour,
             "folio_id": {
                 "id": reservation.folio_id.id,
@@ -717,8 +721,6 @@ class TestFrontEnd(http.Controller):
                 "outstanding_vat": reservation.folio_pending_amount,
             },
             "state": reservation.state,
-            "origin": reservation.origin,
-            "detail_origin": reservation.detail_origin,
             "credit_card_details": reservation.credit_card_details,
             "price_total": reservation.price_total,
             "price_tax": reservation.price_tax,
@@ -818,23 +820,23 @@ class TestFrontEnd(http.Controller):
                     elif (
                         param == "checkin"
                         and datetime.datetime.strptime(
-                            params["checkin"].strip(), DEFAULT_SERVER_DATE_FORMAT
+                            params["checkin"].strip(), get_lang(request.env).date_format
                         ).date()
                         != reservation.checkin
                     ):
                         # TODO:  Delete Strip
-                        params["checkin"] = datetime.strptime(
-                            params["checkin"].strip(), DEFAULT_SERVER_DATE_FORMAT
+                        params["checkin"] = datetime.datetime.strptime(
+                            params["checkin"].strip(), get_lang(request.env).date_format
                         )
                     elif (
                         param == "checkout"
                         and datetime.datetime.strptime(
-                            params["checkout"].strip(), DEFAULT_SERVER_DATE_FORMAT
+                            params["checkout"].strip(), get_lang(request.env).date_format
                         ).date()
                         != reservation.checkout
                     ):
                         params["checkout"] = datetime.datetime.strptime(
-                            params["checkout"], DEFAULT_SERVER_DATE_FORMAT
+                            params["checkout"], get_lang(request.env).date_format
                         )
 
                     # BOARD_SERVICE
@@ -919,10 +921,10 @@ class TestFrontEnd(http.Controller):
             date = datetime.datetime.now()
         date_start = date + timedelta(days=-1)
         if post.get("next"):
-            date = datetime.datetime.strptime(post.get("next"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(post.get("next"), get_lang(request.env).date_format).date()
             date_start = date + timedelta(days=+1)
         if post.get("previous"):
-            date = datetime.datetime.strptime(post.get("previous"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(post.get("previous"), get_lang(request.env).date_format).date()
             date_start = date + timedelta(days=-1)
 
         pms_property_id = request.env.user.get_active_property_ids()[0]
@@ -1020,8 +1022,8 @@ class TestFrontEnd(http.Controller):
                         free_dates.remove(d)
                 rooms_reservation_values.append(
                     {
-                        "date": datetime.datetime.strftime(
-                            min_reservation_date, DEFAULT_SERVER_DATE_FORMAT
+                        "date": min_reservation_date.strftime(
+                            get_lang(request.env).date_format
                         ),
                         "reservation_info": {
                             "id": reservation.id,
@@ -1040,7 +1042,7 @@ class TestFrontEnd(http.Controller):
                             if min_reservation_date == reservation.checkin
                             else True,
                             "checkout_in_range": False
-                            if max_reservation_date != reservation.checkout
+                            if max_reservation_date + timedelta(days=1) != reservation.checkout
                             else True,
                         },
                     }
@@ -1070,7 +1072,7 @@ class TestFrontEnd(http.Controller):
                         "splitted": True,
                         "main_split": main_split,
                         "date": datetime.datetime.strftime(
-                            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+                            reservation.checkin, get_lang(request.env).date_format
                         ),
                         "reservation_info": {
                             "id": reservation.id,
@@ -1094,7 +1096,7 @@ class TestFrontEnd(http.Controller):
                 rooms_reservation_values.append(
                     {
                         "date": datetime.datetime.strftime(
-                            day, DEFAULT_SERVER_DATE_FORMAT
+                            day, get_lang(request.env).date_format
                         ),
                         "reservation_info": False,
                     }
@@ -1126,29 +1128,30 @@ class TestFrontEnd(http.Controller):
     def single_reservation_new(self, **kw):
         reservation_values = http.request.jsonrequest.get("params")
         print("reservation_values: {}".format(reservation_values))
-        checkin = datetime.strptime(
-            reservation_values["checkin"]
-            if "checkin" in reservation_values
-            else datetime.now().strftime("%Y-%m-%d"),
-            DEFAULT_SERVER_DATE_FORMAT,
-        ).date()
-        checkout = datetime.strptime(
-            reservation_values["checkout"]
-            if "checkout" in reservation_values
-            else (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
-            DEFAULT_SERVER_DATE_FORMAT,
-        ).date()
-        pms_property = request.env.user.get_active_property_ids()[0]
-        pms_property_id = request.env["pms.property"].browse(pms_property)
+
+        checkin = datetime.datetime.strptime(
+            reservation_values["checkin"], get_lang(request.env).date_format
+            ).date if "checkin" in reservation_values else datetime.today()
+        checkout = datetime.datetime.strptime(
+            reservation_values["checkout"].strip(), get_lang(request.env).date_format
+            ).date if "checkout" in reservation_values else checkin + timedelta(days=1)
+
+        pms_property_id = False
+        pms_property = False
+        if request.env.user.get_active_property_ids():
+            pms_property_id = request.env.user.get_active_property_ids()[0]
+            pms_property = request.env["pms.property"].browse(pms_property)
+
         pricelist = False
         if reservation_values.get("pricelist_id"):
             pricelist = request.env["product.pricelist"].search(
                 [("id", "=", int(reservation_values.get("pricelist_id")))]
             )
-        if not pricelist:
-            pricelist = pms_property_id.default_pricelist_id.id
-        # TODO: allowed_room_types: "/room_types"??
-        # TODO: allowed_rooms: "/rooms"
+        if not pricelist and pms_property:
+            pricelist = pms_property.default_pricelist_id.id
+
+        #TODO: Search/create Partner
+        partner = request.env["res.partner"].search([])[0]
 
         room_type_id = False
         if reservation_values.get("room_type_id"):
@@ -1161,8 +1164,8 @@ class TestFrontEnd(http.Controller):
             "checkout": checkout,
             "room_type_id": room_type_id,
             "pricelist_id": pricelist,
-            "pms_property_id": pms_property,
-            "partner_id": partner_id,
+            "pms_property_id": pms_property.id if pms_property else False,
+            "partner_id": partner.id if partner else False,
         }
 
         if reservation_values.get("room_id"):
@@ -1188,11 +1191,9 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("agency_id"):
             vals["channel_type_id"] = int(reservation_values.get("agency_id"))
 
-        # TODO: sustituir "save" por el indicador adecuado y enviarlo del modo adecuado
         if reservation_values.get("submit"):
             reservation = request.env["pms.reservation"].create(vals)
             return self.parse_reservation(reservation)
-            # TODO: return cargar modal normal de la reserva
         else:
             reservation = request.env["pms.reservation"].new(vals)
             reservation.flush()
@@ -1212,20 +1213,20 @@ class TestFrontEnd(http.Controller):
         # TODO: Review param checkin user error (param not exist)
         if params.get("id"):
             folio_wizard = request.env["pms.folio.wizard"].browse(params.get("id"))
-        checkin = datetime.strptime(
-            params["checkin"]
-            if "checkin" in params
-            else datetime.now().strftime("%Y-%m-%d"),
-            DEFAULT_SERVER_DATE_FORMAT,
-        ).date()
-        checkout = datetime.strptime(
-            params["checkout"]
-            if "checkout" in params
-            else (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d"),
-            DEFAULT_SERVER_DATE_FORMAT,
-        ).date()
-        pms_property = request.env.user.get_active_property_ids()[0]
-        pms_property_id = request.env["pms.property"].browse(pms_property)
+
+        checkin = datetime.datetime.strptime(
+            reservation_values["checkin"], get_lang(request.env).date_format
+            ).date if "checkin" in reservation_values else datetime.today()
+        checkout = datetime.datetime.strptime(
+            reservation_values["checkout"].strip(), get_lang(request.env).date_format
+            ).date if "checkout" in reservation_values else checkin + timedelta(days=1)
+
+
+        pms_property = False
+        pms_property_id = False
+        if request.env.user.get_active_property_ids():
+            pms_property_id = request.env.user.get_active_property_ids()[0]
+            pms_property = request.env["pms.property"].browse(pms_property)
         # TODO: partner_id, diferenciar entre nuevo partner y
         # uno seleccionado (tipo direccion de facturacion en el detalle?)
         partner = request.env["res.partner"].search([])[0]
@@ -1234,14 +1235,14 @@ class TestFrontEnd(http.Controller):
             pricelist = request.env["product.pricelist"].search(
                 [("id", "=", int(params.get("pricelist_id")))]
             )
-        if not pricelist:
-            pricelist = pms_property_id.default_pricelist_id.id
+        if not pricelist and pms_property:
+            pricelist = pms_property.default_pricelist_id.id
 
         vals = {
             "start_date": checkin,
             "end_date": checkout,
             "pricelist_id": pricelist if pricelist else False,
-            "pms_property_id": pms_property_id.id,
+            "pms_property_id": pms_property.id if pms_property else False,
             "partner_id": partner.id if partner else False,
         }
         if params.get("id"):
@@ -1249,7 +1250,7 @@ class TestFrontEnd(http.Controller):
         if not folio_wizard:
             folio_wizard = request.env["pms.folio.wizard"].create(vals)
 
-        """ if (
+        if (
             checkin != folio_wizard.start_date
             or checkout != folio_wizard.end_date
             or pricelist.id != folio_wizard.pricelist_id.id
@@ -1263,7 +1264,7 @@ class TestFrontEnd(http.Controller):
                 folio_wizard.availability_results.filtered(
                     lambda r: r.room_type_id.id == int(line_id)
                 ).value_num_rooms_selected = int(room_type["num_rooms_selected"])
-                # TODO: Board service """
+                # TODO: Board service
 
         return self.parse_wizard_folio(folio_wizard)
 
@@ -1299,17 +1300,22 @@ class TestFrontEnd(http.Controller):
     )
     def calendar_config(self, date=False, **post):
         if not date:
-            date = datetime.datetime.now()
+            date = datetime.datetime.today()
         date_start = date + timedelta(days=-1)
         if post.get("next"):
-            date = datetime.datetime.strptime(post.get("next"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(
+                post.get("next"), get_lang(request.env).date_format
+            ).date
             date_start = date + timedelta(days=+7)
         if post.get("previous"):
-            date = datetime.datetime.strptime(post.get("previous"), "%Y-%m-%d")
+            date = datetime.datetime.strptime(
+                post.get("previous"), get_lang(request.env).date_format
+            ).date
             date_start = date + timedelta(days=-7)
 
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
+
         date_list = [date_start + timedelta(days=x) for x in range(7)]
 
         Pricelist = request.env["product.pricelist"]
@@ -1339,11 +1345,11 @@ class TestFrontEnd(http.Controller):
         reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
         reservation_values["adults"] = reservation.adults
         reservation_values["reservation_type"] = reservation.folio_id.reservation_type
-        reservation_values["checkin"] = datetime.datetime.strftime(
-            reservation.checkin, DEFAULT_SERVER_DATE_FORMAT
+        reservation_values["checkin"] = reservation.checkin.strftime(
+            get_lang(request.env).date_format
         )
-        reservation_values["checkout"] = datetime.datetime.strftime(
-            reservation.checkout, DEFAULT_SERVER_DATE_FORMAT
+        reservation_values["checkout"] = reservation.checkout.strftime(
+            get_lang(request.env).date_format
         )
         reservation_values["arrival_hour"] = reservation.arrival_hour
         reservation_values["departure_hour"] = reservation.departure_hour
@@ -1397,7 +1403,7 @@ class TestFrontEnd(http.Controller):
             if field.type in ("int", "many2one", "monetary"):
                 new_values[k] = int(v)
             if field.type == "date":
-                new_values[k] = datetime.strptime(v, DEFAULT_SERVER_DATE_FORMAT).date()
+                new_values[k] = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
             if field.type in ("one2many", "many2many"):
                 relational_model = request.env[field.comodel_name]
                 cmds = []
@@ -1417,11 +1423,11 @@ class TestFrontEnd(http.Controller):
     def parse_wizard_folio(self, wizard):
         wizard_values = dict()
         wizard_values["id"] = wizard.id
-        wizard_values["checkin"] = datetime.datetime.strftime(
-            wizard.start_date, DEFAULT_SERVER_DATE_FORMAT
+        wizard_values["checkin"] = wizard.start_date.strftime(
+            get_lang(request.env).date_format
         )
-        wizard_values["checkout"] = datetime.datetime.strftime(
-            wizard.end_date, DEFAULT_SERVER_DATE_FORMAT
+        wizard_values["checkout"] = wizard.end_date.strftime(
+            get_lang(request.env).date_format
         )
         wizard_values["total_price_folio"] = wizard.total_price_folio
         wizard_values["discount"] = wizard.discount

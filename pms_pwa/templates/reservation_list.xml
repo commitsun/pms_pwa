@@ -276,14 +276,14 @@
         </td>
         <td class="o_pms_pwa_lh45">
             <t t-esc="obj.rooms"/>
-            <br/><span class="o_pms_pwa_wler" t-esc="obj.room_type_id.code_type"/>
+            <br/><span class="o_pms_pwa_wler" t-esc="obj.room_type_id.default_code"/>
 
         </td>
         <!-- <td class="o_pms_pwa_lh45 text-center">
             <t t-if="obj.state" t-esc="obj.state"/>
         </td> -->
         <td>
-            <t t-esc="obj.checkin.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
+            <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
         </td>
         <td>
             <t t-esc="obj.checkout.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
@@ -296,7 +296,6 @@
             <span t-else="">
                 <span t-if="obj.channel_type_id" t-esc="obj.channel_type_id.name"/><br/>
                 <span t-if="obj.channel_type_id" class="o_pms_pwa_wler" t-esc="obj.partner_id.name"/><br/>
-                <span class="o_pms_pwa_wler ml-2" t-if="obj.detail_origin" t-esc="obj.detail_origin"/>
             </span>
         </td>
         <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
@@ -309,7 +308,7 @@
 
         </td> -->
         <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
-            <t t-if="obj.requests" t-esc="obj.requests"/>
+            <t t-if="obj.partner_requests" t-esc="obj.partner_requests"/>
         </td>
         <td class="o_pms_pwa_lh45 o_pms_pwa_priority-4">
             <t t-if="obj.board_service_room_id" t-esc="obj.board_service_room_id.display_name"/>
