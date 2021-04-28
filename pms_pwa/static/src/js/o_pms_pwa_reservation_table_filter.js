@@ -20,6 +20,30 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     /* Single reservation form */
 
+    $("#button_reservation_modal").on("click", function (e) {
+        setTimeout(function () {
+            var d = new Date();
+            var checkin_date =
+                d.getDate() +
+                "/" +
+                ("0" + (d.getMonth() + 1)).slice(-2) +
+                "/" +
+                d.getFullYear();
+            var checkout_date =
+                d.getDate() +
+                "/" +
+                ("0" + (d.getMonth() + 1)).slice(-2) +
+                "/" +
+                d.getFullYear();
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal']")
+                .val(checkin_date + " - " + checkout_date);
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal']")
+                .trigger("change");
+        }, 500);
+    });
+
     $("form#single_reservation_form").on("change", "input, select", function (event) {
         var values = {};
         var allowed_fields = [
