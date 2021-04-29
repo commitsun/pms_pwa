@@ -95,28 +95,29 @@
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
                                                 <td class="o_pms_pwa_table_cell">
                                                     <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible</p>
-                                                    <div class="o_pms_pwa_content">
+                                                    <!-- <div class="o_pms_pwa_content">
                                                         <span class="o_pms_pwa_type">Estandar</span>
                                                         <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
                                                         <span class="o_pms_pwa_info">
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" />
                                                         </span>
-                                                    </div>
+                                                    </div> -->
                                                 </td>
                                             </t>
                                         </tr>
                                         <tr>
                                             <td colspan="8" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" data-parent="#calendar_config_table">
-                                                <t t-foreach="obj.room_ids" t-as="room">
+                                                <t t-foreach="pricelist" t-as="price">
                                                     <div class="o_pms_pwa_calendar_line row">
                                                         <div class="o_pms_pwa_calendar_line_room_type">
-                                                            <p class="o_pms_pwa_calendar_line_title"><t t-esc="room.name" /></p>
+                                                            <p class="o_pms_pwa_calendar_line_title"><t t-esc="price.display_name" /></p>
                                                             <p class="o_pms_pwa_calendar_line_name">Price</p>
                                                             <p class="o_pms_pwa_calendar_line_name">Min. stay</p>
                                                             <p class="o_pms_pwa_calendar_line_name">Max. stay</p>
                                                             <p class="o_pms_pwa_calendar_line_name">Min. stay arrival</p>
                                                             <p class="o_pms_pwa_calendar_line_name">Max. stay arrival</p>
                                                             <p class="o_pms_pwa_calendar_line_name">Quota</p>
+                                                            <p class="o_pms_pwa_calendar_line_name">Block</p>
                                                         </div>
                                                         <t t-foreach="len(date_list)" t-as="room_day">
                                                             <div
@@ -130,6 +131,7 @@
                                                                 <p><input type="text" value="1" name="min_stay_arrival"/></p>
                                                                 <p><input type="text" value="7" name="max_stay_arrival"/></p>
                                                                 <p><input type="text" value="1" name="quota"/></p>
+                                                                <p><input type="checkbox"  name="block"/></p>
                                                             </div>
                                                         </t>
 

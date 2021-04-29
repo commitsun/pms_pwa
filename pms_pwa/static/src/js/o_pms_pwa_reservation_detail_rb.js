@@ -9,40 +9,40 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var folio_id = $("input[name='folio_id']").val();
     var reservation_id = $("input[name='id']").val();
     $(function () {
-        $('input[name="range_check_date"]').daterangepicker(
+        $('input[name="my_range_check_date"]').daterangepicker(
             {
-                locale: {
-                    direction: "ltr",
-                    format: "DD/MM/YYYY",
-                    separator: " - ",
-                    applyLabel: "Aplicar",
-                    cancelLabel: "Cancelar",
-                    fromLabel: "Desde",
-                    toLabel: "hasta",
-                    customRangeLabel: "Custom",
-                    daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                    monthNames: [
-                        "Enero",
-                        "Febrero",
-                        "Marzo",
-                        "Abril",
-                        "Mayo",
-                        "Junio",
-                        "Julio",
-                        "Agosto",
-                        "Septiembre",
-                        "Octubre",
-                        "Noviembre",
-                        "Diciembre",
-                    ],
-                    firstDay: 1,
-                },
+                // locale: {
+                //     direction: "ltr",
+                //     format: "DD/MM/YYYY",
+                //     separator: " - ",
+                //     applyLabel: "Aplicar",
+                //     cancelLabel: "Cancelar",
+                //     fromLabel: "Desde",
+                //     toLabel: "hasta",
+                //     customRangeLabel: "Custom",
+                //     daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                //     monthNames: [
+                //         "Enero",
+                //         "Febrero",
+                //         "Marzo",
+                //         "Abril",
+                //         "Mayo",
+                //         "Junio",
+                //         "Julio",
+                //         "Agosto",
+                //         "Septiembre",
+                //         "Octubre",
+                //         "Noviembre",
+                //         "Diciembre",
+                //     ],
+                //     firstDay: 1,
+                // },
 
                 opens: "left",
-                showCustomRangeLabel: false,
+                //showCustomRangeLabel: false,
             },
             function (start, end, label) {
-                console.log(label);
+                console.log("PINPAN PUN");
                 $('input[name="check_in_date"]').val(start);
                 $('input[name="check_out_date"]').val(end);
                 let nights = 1;

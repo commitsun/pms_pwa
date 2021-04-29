@@ -1188,7 +1188,7 @@ class TestFrontEnd(http.Controller):
             "pms_property_id": pms_property.id if pms_property else False,
             "partner_id": partner.id if partner else False,
         }
-
+        print(vals)
         if reservation_values.get("room_id"):
             vals["room_id"] = (
                 request.env["pms.room"]
@@ -1231,23 +1231,24 @@ class TestFrontEnd(http.Controller):
         params = http.request.jsonrequest.get("params")
         print("params: {}".format(params))
         folio_wizard = False
+
         # TODO: Review param checkin user error (param not exist)
         if params.get("id"):
             folio_wizard = request.env["pms.folio.wizard"].browse(params.get("id"))
 
         checkin = (
             datetime.datetime.strptime(
-                reservation_values["checkin"], get_lang(request.env).date_format
+                params["checkin"], get_lang(request.env).date_format
             ).date
-            if "checkin" in reservation_values
+            if "checkin" in params
             else datetime.today()
         )
         checkout = (
             datetime.datetime.strptime(
-                reservation_values["checkout"].strip(),
+                params["checkout"].strip(),
                 get_lang(request.env).date_format,
             ).date
-            if "checkout" in reservation_values
+            if "checkout" in params
             else checkin + timedelta(days=1)
         )
 
