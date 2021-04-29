@@ -45,7 +45,8 @@
                                         <option value="/calendar/config">Config</option>
                                     </select>
                                 </div>
-                                <div class="o_pms_pwa_month_select">
+
+                                <div class="o_pms_pwa_month_select float-right ml-4">
                                     <a t-att-href="'?previous='+date_start.strftime('%Y-%m-%d')" class="mx-2"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
@@ -53,6 +54,21 @@
                                     </span>
 
                                     <a t-att-href="'?next='+date_start.strftime('%Y-%m-%d')" class="mx-2"><i class="fa fa-angle-right"></i></a>
+                                </div>
+                                <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
+                                    <form method="post" action="">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <select id="dpr" name="dpr" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                            <t t-foreach="dpr_select_values" t-as="show_days">
+                                                <t t-if="int(dpr)==int(show_days)">
+                                                    <option t-attf-value="{{ show_days }}" selected="selected"><t t-esc="show_days" /></option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option t-attf-value="{{ show_days }}"><t t-esc="show_days" /></option>
+                                                </t>
+                                            </t>
+                                        </select>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +78,7 @@
                             <table id="calendar_table" class="table o_pms_pwa_reservation_list_table">
                                 <thead>
                                     <tr>
-                                        <th class="align-self-end o_pms_pwa_table_week"></th>
+                                        <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"></th>
 
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
@@ -76,7 +92,7 @@
                                 <tbody>
                                     <t t-foreach="rooms_list" t-as="obj">
                                         <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
-                                            <td>
+                                            <td class="o_pms_pwa_table_first_header_td">
                                                 <p class="o_pms_pwa_room_name">
                                                     <i class="fa fa-angle-down"></i>
                                                     <t
@@ -92,7 +108,7 @@
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
-                                                <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+datetime.timedelta(days=1), pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
+                                                <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
                                                 <td class="o_pms_pwa_table_cell">
                                                     <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible</p>
                                                     <div class="o_pms_pwa_content">
@@ -107,7 +123,7 @@
                                             </t>
                                         </tr>
                                         <tr>
-                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" >
+                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
                                                 <!-- Llamamos a json y pms_pwa_roomdoo_calendar_line.xml data-parent="#calendar_table" -->
                                             </td>
                                         </tr>

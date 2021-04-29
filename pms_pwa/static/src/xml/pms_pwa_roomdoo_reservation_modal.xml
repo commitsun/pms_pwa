@@ -132,9 +132,9 @@
                                     <div class="row mt-3">
                                         <div class="col-12">
                                             <label class="control-label col-12" for="checkin">
-                                                Check in : Check out
+                                                Check in - Check out
                                             </label>
-                                            <input class="form-control" type="text" name="range_check_date_modal" t-att-value="reservation.checkin" />
+                                            <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ reservation.checkin }} : {{ reservation.checkout }}" />
                                             <input type="hidden" name="check_in_date" t-att-value="reservation.checkin" />
                                             <input type="hidden" name="check_out_date" t-att-value="reservation.checkout" />
                                             <span class="o_pms_pwa_calendar_icon">
@@ -207,7 +207,7 @@
                                                         <t t-foreach="reservation.reservation_line_ids" t-as="i">
                                                             <tr>
                                                                 <td>
-                                                                    <t t-esc="i_value['date']" />
+                                                                    <t t-esc="i_value['date']" t-options='{"widget":"date"}'/>
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="price" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number" />
@@ -271,7 +271,7 @@
                                                                     <t t-foreach="service_value.service_line_ids" t-as="s">
                                                                         <tr t-attf-class="o_roomdoo_hide_show_service_{{service}}">
                                                                             <td class="o_pms_pwa_detail_td">
-                                                                                <t t-esc="s_value.date" />
+                                                                                <span t-esc="s_value.date" t-options='{"widget":"date"}'/>
                                                                             </td>
                                                                             <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                                 <div class="o_pms_pwa_rb_box">
@@ -335,8 +335,8 @@
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
 
-                                                <option t-foreach="reservation.allowed_service_ids" t-as="key" t-att-value="key">
-                                                    <t t-esc="key_value.name" />
+                                                <option t-foreach="reservation.allowed_service_ids" t-as="key" t-att-value="key_value.id">
+                                                    <t t-esc="key_value.name" t-att-data-service_id="key_value.id"/>
                                                 </option>
 
                                             </select>
@@ -354,12 +354,11 @@
                                                         <t t-esc="texts.total_text || _t('Precio total reserva')" />
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12">
-                                                        <strong class="price_total" t-esc="reservation.price_total" />
-                                                        €
+                                                        <strong t-esc="reservation.price_total" class="price_total"/>
                                                         <span>
                                                             (
-                                                            <t t-esc="reservation.price_tax" />
-                                                            € vat)
+                                                            <t t-esc="reservation.price_tax"/>
+                                                            vat)
                                                         </span>
                                                     </div>
                                                 </div>
@@ -371,7 +370,7 @@
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12" t-if="reservation.folio_pending_amount">
                                                         <strong t-esc="reservation.folio_pending_amount" />
-                                                        €
+
                                                         <!-- <span>
                                                             (
                                                             <t t-esc="reservation.folio_id.outstanding_vat" />

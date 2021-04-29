@@ -18,6 +18,7 @@
                                     </div>
                                 </div>
                                 <!-- Page Title -->
+                                <t t-set="page_title" t-value="'Calendar config'"/>
                                 <div t-if="page_title" class="o_pms_pwa_page_title">
                                     <t t-esc="page_title" />
                                     <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter" />
@@ -28,7 +29,7 @@
                             </div>
 
                             <div class="col-lg-6 d-none d-lg-block o_pms_icons">
-                                <button class="btn btn-radius btn-pms_pwa" href="#" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
+                                <button class="btn btn-radius btn-pms_pwa" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
                                     <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" />
                                     Nueva reserva
                                 </button>

@@ -116,14 +116,14 @@
                                                 <div class="o_pms_pwa_direct_chat_messages">
                                                     <t t-set="mesage_date" t-value="[]" />
                                                     <t t-foreach="reservation.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
-                                                        <t t-if="msg.date.strftime('%d %B %Y') not in mesage_date" t-set="mesage_date" t-value="mesage_date+[msg.date.strftime('%d %B %Y')]" />
+                                                        <t t-if="msg.date not in mesage_date" t-set="mesage_date" t-value="mesage_date+[msg.date]" />
                                                     </t>
                                                     <t t-foreach="mesage_date" t-as="date">
                                                         <div class="o_pms_pwa_direct_chat_timestamp text-center">
                                                             <strong t-esc="date" />
                                                         </div>
                                                         <t t-foreach="reservation.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
-                                                            <t t-if="date==msg.date.strftime('%d %B %Y')">
+                                                            <t t-if="date==msg.date">
                                                                 <div class="o_pms_pwa_direct_chat_msg m-2">
                                                                     <div class="o_pms_pwa_direct_direct_chat_info clearfix">
                                                                         <span class="pull-left">
@@ -277,13 +277,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <t t-set="date_checkin" t-value="reservation.checkin.strftime('%d/%m/%Y')" />
-                                                    <t t-set="date_checkout" t-value="reservation.checkout.strftime('%d/%m/%Y')" />
+                                                    <t t-set="date_checkin" t-value="reservation.checkin" />
+                                                    <t t-set="date_checkout" t-value="reservation.checkout" />
                                                     <div class="col-12">
-                                                        <label class="control-label col-12" for="range_check_date">
+                                                        <label class="control-label col-12" for="my_range_check_date">
                                                             Check in - Check out
                                                         </label>
-                                                        <input class="form-control" type="text" name="range_check_date" t-attf-value="{{ date_checkin }} - {{ date_checkout }}" />
+                                                        <input class="form-control" type="text" name="my_range_check_date" t-attf-value="{{ date_checkin }} : {{ date_checkout }}" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -344,7 +344,7 @@
                                                                                 <t t-foreach="i.service_line_ids" t-as="s" >
                                                                                     <tr t-attf-class="o_roomdoo_hide_show_service_{{i.id}}">
                                                                                         <td class="o_pms_pwa_detail_td">
-                                                                                            <span t-field="s.date" t-options='{"format": "dd/MM/yyyy"}' />
+                                                                                            <span t-field="s.date" />
                                                                                         </td>
                                                                                         <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                                             <div class="o_pms_pwa_rb_box">

@@ -6,7 +6,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     var _t = core._t;
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
-
+    const date_options = {year: "numeric", month: "2-digit", day: "numeric"};
     $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
         event.preventDefault();
         var input = event.currentTarget.parentNode.getAttribute("data-tag");
@@ -17,8 +17,28 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
         $("form").submit();
     });
-
     /* Single reservation form */
+    $("#button_reservation_modal").on("click", function (e) {
+        setTimeout(function () {
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            var checkin_date = today.toLocaleDateString(
+                document.documentElement.lang,
+                date_options
+            );
+            var checkout_date = tomorrow.toLocaleDateString(
+                document.documentElement.lang,
+                date_options
+            );
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal']")
+                .val(checkin_date + " - " + checkout_date);
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal']")
+                .trigger("change");
+        }, 500);
+    });
 
     $("form#single_reservation_form").on("change", "input, select", function (event) {
         var values = {};
@@ -30,14 +50,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         ];
         if (event.currentTarget.name == "range_check_date_modal") {
             let value_range_picker = event.currentTarget.value;
-
-            values.checkin = value_range_picker.substr(
-                0,
-                value_range_picker.indexOf(" - ")
-            );
-            values.checkout = value_range_picker.substr(
-                value_range_picker.indexOf(" - ") + 2
-            );
+            values.checkin = value_range_picker.split(" - ")[0];
+            values.checkout = value_range_picker.split(" - ")[1];
         } else {
             values[event.currentTarget.name] = event.currentTarget.value;
         }
@@ -101,13 +115,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         if (event.currentTarget.name == "range_check_date_modal") {
             let value_range_picker = event.currentTarget.value;
 
-            values.checkin = value_range_picker.substr(
-                0,
-                value_range_picker.indexOf(" - ")
-            );
-            values.checkout = value_range_picker.substr(
-                value_range_picker.indexOf(" - ") + 2
-            );
+            values.checkin = value_range_picker.split(" - ")[0];
+            values.checkout = value_range_picker.split(" - ")[1];
         }
         ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
             function (new_data) {
@@ -152,14 +161,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
         if (event.currentTarget.name == "range_check_date_modal") {
             let value_range_picker = event.currentTarget.value;
-
-            values.checkin = value_range_picker.substr(
-                0,
-                value_range_picker.indexOf(" - ")
-            );
-            values.checkout = value_range_picker.substr(
-                value_range_picker.indexOf(" - ") + 2
-            );
+            values.checkin = value_range_picker.split(" - ")[0];
+            values.checkout = value_range_picker.split(" - ")[1];
         }
         if (event.currentTarget.dataset.main_field) {
             var main_field = event.currentTarget.dataset.main_field;
@@ -282,7 +285,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         events: {
             "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
                 "_onClickReservationButton",
-            "click div.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
+            "click td.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
             "click .o_pms_pwa_button_assign": "_onClickAssingButton",
             "click tbody > tr > td:not(:last-child) a": "_onClickNotLastChildA",
             "click .o_pms_pwa_button_checkin": "_onClickCheckinButton",
@@ -574,15 +577,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     let value_range_picker =
                                                         new_event.currentTarget.value;
 
-                                                    values.checkin = value_range_picker.substr(
-                                                        0,
-                                                        value_range_picker.indexOf(":")
-                                                    );
-                                                    values.checkout = value_range_picker.substr(
-                                                        value_range_picker.indexOf(
-                                                            ":"
-                                                        ) + 2
-                                                    );
+                                                    values.checkin = value_range_picker.split(
+                                                        " - "
+                                                    )[0];
+                                                    values.checkout = value_range_picker.split(
+                                                        " - "
+                                                    )[1];
                                                 } else {
                                                     if (
                                                         new_event.currentTarget.dataset
@@ -847,75 +847,99 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
                                         // DATE RANGE MODAL
                                         $(function () {
-                                            $(
-                                                'input[name="range_check_date_modal"]'
-                                            ).daterangepicker(
-                                                {
-                                                    locale: {
-                                                        direction: "ltr",
-                                                        format: "YYYY-MM-DD",
-                                                        separator: " : ",
-                                                        applyLabel: "Aplicar",
-                                                        cancelLabel: "Cancelar",
-                                                        fromLabel: "Desde",
-                                                        toLabel: "hasta",
-                                                        customRangeLabel: "Custom",
-                                                        daysOfWeek: [
-                                                            "Do",
-                                                            "Lu",
-                                                            "Ma",
-                                                            "Mi",
-                                                            "Ju",
-                                                            "Vi",
-                                                            "Sa",
-                                                        ],
-                                                        monthNames: [
-                                                            "Enero",
-                                                            "Febrero",
-                                                            "Marzo",
-                                                            "Abril",
-                                                            "Mayo",
-                                                            "Junio",
-                                                            "Julio",
-                                                            "Agosto",
-                                                            "Septiembre",
-                                                            "Octubre",
-                                                            "Noviembre",
-                                                            "Diciembre",
-                                                        ],
-                                                        firstDay: 1,
+                                            if (
+                                                document.documentElement.lang == "es-ES"
+                                            ) {
+                                                $(
+                                                    'input[name="range_check_date_modal"]'
+                                                ).daterangepicker(
+                                                    {
+                                                        locale: {
+                                                            direction: "ltr",
+                                                            format: "DD/MM/YYYY",
+                                                            separator: " - ",
+                                                            applyLabel: "Aplicar",
+                                                            cancelLabel: "Cancelar",
+                                                        },
+                                                        opens: "left",
+                                                        showCustomRangeLabel: false,
                                                     },
-                                                    startDate: reservation_data.checkin,
-                                                    endDate: reservation_data.checkout,
-
-                                                    opens: "left",
-                                                    showCustomRangeLabel: false,
-                                                },
-                                                function (start, end) {
-                                                    $(
-                                                        'input[name="check_in_date"]'
-                                                    ).val(start);
-                                                    $(
-                                                        'input[name="check_out_date"]'
-                                                    ).val(end);
-                                                    let nights = 1;
-                                                    // Hours*minutes*seconds*milliseconds
-                                                    const oneDay = 24 * 60 * 60 * 1000;
-                                                    const firstDate = new Date(start);
-                                                    const secondDate = new Date(end);
-                                                    const diffDays = Math.round(
-                                                        Math.abs(
-                                                            (firstDate - secondDate) /
-                                                                oneDay
-                                                        )
-                                                    );
-                                                    nights = diffDays - 1;
-                                                    $('input[name="nights"]').val(
-                                                        nights
-                                                    );
-                                                    // $("form#reservation_detail").submit();
-                                                }
-                                            );
+                                                    function (start, end, label) {
+                                                        $(
+                                                            'input[name="check_in_date"]'
+                                                        ).val(start);
+                                                        $(
+                                                            'input[name="check_out_date"]'
+                                                        ).val(end);
+                                                        let nights = 1;
+                                                        // Hours*minutes*seconds*milliseconds
+                                                        const oneDay =
+                                                            24 * 60 * 60 * 1000;
+                                                        const firstDate = new Date(
+                                                            start
+                                                        );
+                                                        const secondDate = new Date(
+                                                            end
+                                                        );
+                                                        const diffDays = Math.round(
+                                                            Math.abs(
+                                                                (firstDate -
+                                                                    secondDate) /
+                                                                    oneDay
+                                                            )
+                                                        );
+                                                        nights = diffDays - 1;
+                                                        $('input[name="nights"]').val(
+                                                            nights
+                                                        );
+                                                        // $("form#reservation_detail").submit();
+                                                    }
+                                                );
+                                            } else {
+                                                $(
+                                                    'input[name="range_check_date_modal"]'
+                                                ).daterangepicker(
+                                                    {
+                                                        locale: {
+                                                            direction: "ltr",
+                                                            format: "MM/DD/YYYY",
+                                                            separator: " - ",
+                                                        },
+                                                        opens: "left",
+                                                        showCustomRangeLabel: false,
+                                                    },
+                                                    function (start, end, label) {
+                                                        $(
+                                                            'input[name="check_in_date"]'
+                                                        ).val(start);
+                                                        $(
+                                                            'input[name="check_out_date"]'
+                                                        ).val(end);
+                                                        let nights = 1;
+                                                        // Hours*minutes*seconds*milliseconds
+                                                        const oneDay =
+                                                            24 * 60 * 60 * 1000;
+                                                        const firstDate = new Date(
+                                                            start
+                                                        );
+                                                        const secondDate = new Date(
+                                                            end
+                                                        );
+                                                        const diffDays = Math.round(
+                                                            Math.abs(
+                                                                (firstDate -
+                                                                    secondDate) /
+                                                                    oneDay
+                                                            )
+                                                        );
+                                                        nights = diffDays - 1;
+                                                        $('input[name="nights"]').val(
+                                                            nights
+                                                        );
+                                                        // $("form#reservation_detail").submit();
+                                                    }
+                                                );
+                                            }
                                         });
                                     }, 0);
                                 });
