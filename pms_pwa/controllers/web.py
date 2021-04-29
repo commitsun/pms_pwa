@@ -6,12 +6,13 @@ import datetime
 import json
 import logging
 import pprint
+from calendar import monthrange
 from datetime import timedelta
 
 from odoo import _, fields, http
 from odoo.exceptions import MissingError
 from odoo.http import request
-from odoo.tools.misc import formatLang, format_date, get_lang
+from odoo.tools.misc import format_date, formatLang, get_lang
 
 from odoo.addons.web.controllers.main import Home
 
@@ -707,9 +708,7 @@ class TestFrontEnd(http.Controller):
                 "name": reservation.agency_id.name if reservation.agency_id else False,
             },
             "nights": reservation.nights,
-            "checkin": reservation.checkin.strftime(
-                get_lang(request.env).date_format
-            ),
+            "checkin": reservation.checkin.strftime(get_lang(request.env).date_format),
             "arrival_hour": reservation.arrival_hour,
             "checkout": reservation.checkout.strftime(
                 get_lang(request.env).date_format
@@ -831,7 +830,8 @@ class TestFrontEnd(http.Controller):
                     elif (
                         param == "checkout"
                         and datetime.datetime.strptime(
-                            params["checkout"].strip(), get_lang(request.env).date_format
+                            params["checkout"].strip(),
+                            get_lang(request.env).date_format,
                         ).date()
                         != reservation.checkout
                     ):
@@ -916,15 +916,18 @@ class TestFrontEnd(http.Controller):
         methods=["GET", "POST"],
         website=True,
     )
-    def calendar(self, date=False, **post):
-        if not date:
-            date = datetime.datetime.now()
+    def calendar(self, **post):
+        date = datetime.datetime.now()
         date_start = date + timedelta(days=-1)
         if post.get("next"):
-            date = datetime.datetime.strptime(post.get("next"), get_lang(request.env).date_format).date()
+            date = datetime.datetime.strptime(
+                post.get("next"), get_lang(request.env).date_format
+            ).date()
             date_start = date + timedelta(days=+1)
         if post.get("previous"):
-            date = datetime.datetime.strptime(post.get("previous"), get_lang(request.env).date_format).date()
+            date = datetime.datetime.strptime(
+                post.get("previous"), get_lang(request.env).date_format
+            ).date()
             date_start = date + timedelta(days=-1)
 
         pms_property_id = request.env.user.get_active_property_ids()[0]
@@ -933,8 +936,14 @@ class TestFrontEnd(http.Controller):
         room_types = request.env["pms.room.type"].browse(
             rooms.mapped("room_type_id.id")
         )
-        date_list = [date_start + timedelta(days=x) for x in range(7)]
-
+        # Add default dpr and dpr_select_values
+        dpr = 7
+        if post.get("dpr"):
+            dpr = int(post.get("dpr"))
+        date_list = [date_start + timedelta(days=x) for x in range(dpr)]
+        # get the days of the month
+        month_days = monthrange(date.year, date.month)[1]
+        dpr_select_values = {7, 15, month_days}
         Pricelist = request.env["product.pricelist"]
         pricelists = Pricelist.search(
             [
@@ -957,6 +966,8 @@ class TestFrontEnd(http.Controller):
             "default_pricelist": pricelist,
             "rooms_list": room_types,
             "date_list": date_list,
+            "dpr": dpr,
+            "dpr_select_values": dpr_select_values,
         }
         return http.request.render(
             "pms_pwa.roomdoo_calendar_page",
@@ -1042,7 +1053,8 @@ class TestFrontEnd(http.Controller):
                             if min_reservation_date == reservation.checkin
                             else True,
                             "checkout_in_range": False
-                            if max_reservation_date + timedelta(days=1) != reservation.checkout
+                            if max_reservation_date + timedelta(days=1)
+                            != reservation.checkout
                             else True,
                         },
                     }
@@ -1129,12 +1141,21 @@ class TestFrontEnd(http.Controller):
         reservation_values = http.request.jsonrequest.get("params")
         print("reservation_values: {}".format(reservation_values))
 
-        checkin = datetime.datetime.strptime(
-            reservation_values["checkin"], get_lang(request.env).date_format
-            ).date if "checkin" in reservation_values else datetime.today()
-        checkout = datetime.datetime.strptime(
-            reservation_values["checkout"].strip(), get_lang(request.env).date_format
-            ).date if "checkout" in reservation_values else checkin + timedelta(days=1)
+        checkin = (
+            datetime.datetime.strptime(
+                reservation_values["checkin"], get_lang(request.env).date_format
+            ).date
+            if "checkin" in reservation_values
+            else datetime.today()
+        )
+        checkout = (
+            datetime.datetime.strptime(
+                reservation_values["checkout"].strip(),
+                get_lang(request.env).date_format,
+            ).date
+            if "checkout" in reservation_values
+            else checkin + timedelta(days=1)
+        )
 
         pms_property_id = False
         pms_property = False
@@ -1150,7 +1171,7 @@ class TestFrontEnd(http.Controller):
         if not pricelist and pms_property:
             pricelist = pms_property.default_pricelist_id.id
 
-        #TODO: Search/create Partner
+        # TODO: Search/create Partner
         partner = request.env["res.partner"].search([])[0]
 
         room_type_id = False
@@ -1214,13 +1235,21 @@ class TestFrontEnd(http.Controller):
         if params.get("id"):
             folio_wizard = request.env["pms.folio.wizard"].browse(params.get("id"))
 
-        checkin = datetime.datetime.strptime(
-            reservation_values["checkin"], get_lang(request.env).date_format
-            ).date if "checkin" in reservation_values else datetime.today()
-        checkout = datetime.datetime.strptime(
-            reservation_values["checkout"].strip(), get_lang(request.env).date_format
-            ).date if "checkout" in reservation_values else checkin + timedelta(days=1)
-
+        checkin = (
+            datetime.datetime.strptime(
+                reservation_values["checkin"], get_lang(request.env).date_format
+            ).date
+            if "checkin" in reservation_values
+            else datetime.today()
+        )
+        checkout = (
+            datetime.datetime.strptime(
+                reservation_values["checkout"].strip(),
+                get_lang(request.env).date_format,
+            ).date
+            if "checkout" in reservation_values
+            else checkin + timedelta(days=1)
+        )
 
         pms_property = False
         pms_property_id = False
@@ -1403,7 +1432,9 @@ class TestFrontEnd(http.Controller):
             if field.type in ("int", "many2one", "monetary"):
                 new_values[k] = int(v)
             if field.type == "date":
-                new_values[k] = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+                new_values[k] = datetime.datetime.strptime(
+                    v, get_lang(request.env).date_format
+                ).date()
             if field.type in ("one2many", "many2many"):
                 relational_model = request.env[field.comodel_name]
                 cmds = []

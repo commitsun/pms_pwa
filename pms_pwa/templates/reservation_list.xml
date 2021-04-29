@@ -286,7 +286,7 @@
             <t t-esc="obj.checkin"/><br/><span class="o_pms_pwa_wler" t-esc="obj.arrival_hour"/>
         </td>
         <td>
-            <t t-esc="obj.checkout.strftime('%d/%m/%Y')"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
+            <t t-esc="obj.checkout"/><br/><span class="o_pms_pwa_wler" t-esc="obj.departure_hour"/>
         </td>
         <td class="text-center o_pms_pwa_priority-2">
             <img t-if="obj.agency_id" t-att-src="website.image_url(obj.agency_id, 'image_128')"

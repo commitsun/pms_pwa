@@ -98,9 +98,9 @@ section.o_pms_pwa_roomdoo {
             border: 1px solid $grey-300;
             border-radius: 0.25rem;
             min-height: 2rem;
-            position: sticky;
-            position: -webkit-sticky; /* for safari */
-            z-index: 1;
+            // position: sticky;
+            // position: -webkit-sticky; /* for safari */
+            // z-index: 1;
             .o_pms_pwa_title {
                 color: $black;
             }
@@ -150,7 +150,7 @@ section.o_pms_pwa_roomdoo {
             margin-left: -2rem;
         }
         .o_pms_pwa_open_calendar[aria-expanded="true"] {
-            background-color: #42dca3;
+            background-color: $white;
             .o_pms_pwa_room_name {
                 i {
                     -moz-transform: rotate(180deg);
@@ -199,30 +199,49 @@ section.o_pms_pwa_roomdoo {
             }
         }
         /* Table movil */
+        td.o_pms_pwa_line_cell_content {
+            width: 189.265px !important;
+            min-width: 189.265px !important;
+            border: none;
+        }
+        td.o_pms_pwa_line_cell_header {
+            width: 214.167px !important;
+            min-width: 214.167px !important;
+        }
+        th.o_pms_pwa_table_first_header_td,
+        td.o_pms_pwa_table_first_header_td {
+            background-color: $white;
+        }
         th:first-child,
         td:first-child {
             position: sticky;
             position: -webkit-sticky; /* for safari */
             left: 0px;
             z-index: 2;
-            min-width: 3rem;
+            // width: 10.75vw !important;
+            width: 206.4px !important;
+            min-width: 206.4px !important;
             border: none;
-            width: 16% !important;
+            //width: 16% !important;
         }
         tr:nth-child(odd) > td {
-            background-color: $white;
-            width: 12%;
-            min-width: 150px;
+            // background-color: $white;
+            //width: 12vw;
+            //width: 9.5vw;
+            width: 182.4px;
+            min-width: 182.4px;
         }
         tr:nth-child(even) > td {
-            background-color: $white;
-            width: 12%;
-            min-width: 150px;
+            // background-color: $white;
+            //width: 12vw;
+            width: 182.4px;
+            min-width: 182.4px;
         }
         tr:nth-child(odd) > th {
-            background-color: $white;
-            width: 12%;
-            min-width: 150px;
+            // background-color: $white;
+            //width: 12vw;
+            width: 182.4px;
+            min-width: 182.4px;
         }
         .o_pms_pwa_hiddenRow {
             padding: 0 !important;
@@ -274,11 +293,12 @@ section.o_pms_pwa_roomdoo {
         .o_pms_pwa_calendar_line {
             border-left: 3px solid $grey-900;
             background-color: $bg-theme-color;
-            min-height: 3rem;
-            margin-left: 1rem;
-            z-index: 1;
-            margin-right: 0.2rem;
-            margin-top: 0.3rem;
+            // min-height: 3rem;
+            // margin-left: 1rem;
+            // z-index: 1;
+            // margin-right: 0.2rem;
+            // margin-top: 0.3rem;
+            // min-width: 125px !important;
             .o_pms_pwa_calendar_reservation {
                 cursor: pointer;
             }
@@ -287,13 +307,13 @@ section.o_pms_pwa_roomdoo {
                 position: -webkit-sticky; /* for safari */
                 left: 0px;
                 z-index: 2;
-                min-width: 200px;
+                // min-width: 200px;
                 background-color: $bg-theme-color;
-                width: 14.25%;
-                @media (max-width: 991.98px) {
-                    width: 175px;
-                    min-width: 175px;
-                }
+                // width: 14.25%;
+                // @media (max-width: 991.98px) {
+                //     width: 175px;
+                //     min-width: 175px;
+                // }
             }
             &_title {
                 color: $theme-color;
@@ -310,37 +330,37 @@ section.o_pms_pwa_roomdoo {
                 text-align: center;
                 margin-top: 0.5rem;
             }
-            &_nigth_1 {
-                width: 12%;
-            }
-            &_nigth_2 {
-                width: 24%;
-            }
-            &_nigth_3 {
-                width: 36%;
-            }
-            &_nigth_4 {
-                width: 48%;
-            }
-            &_nigth_5 {
-                width: 60%;
-            }
-            &_nigth_6 {
-                width: 72%;
-            }
-            &_nigth_7 {
-                width: 84%;
-            }
+            // &_nigth_1 {
+            //     width: 12%;
+            // }
+            // &_nigth_2 {
+            //     width: 24%;
+            // }
+            // &_nigth_3 {
+            //     width: 36%;
+            // }
+            // &_nigth_4 {
+            //     width: 48%;
+            // }
+            // &_nigth_5 {
+            //     width: 60%;
+            // }
+            // &_nigth_6 {
+            //     width: 72%;
+            // }
+            // &_nigth_7 {
+            //     width: 84%;
+            // }
             &_img_bg {
                 background-color: $theme-color;
                 float: left;
-                margin-top: -0.2rem;
+                // margin-top: -0.2rem;
                 padding: 0.1rem;
             }
             &_hr {
                 &_success {
-                    margin-top: 0.7rem;
-                    margin-left: 0.75rem;
+                    // margin-top: 0.7rem;
+                    // margin-left: 0.75rem;
                     border-bottom: 4px solid var(--success);
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: 0.25rem;
@@ -349,8 +369,8 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
                 &_warning {
-                    margin-top: 0.7rem;
-                    margin-left: 0.75rem;
+                    // margin-top: 0.7rem;
+                    // margin-left: 0.75rem;
                     border-bottom: 4px solid var(--warning);
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: 0.25rem;
@@ -359,8 +379,8 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
                 &_danger {
-                    margin-top: 0.7rem;
-                    margin-left: 0.75rem;
+                    // margin-top: 0.7rem;
+                    // margin-left: 0.75rem;
                     border-bottom: 4px solid var(--danger);
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: 0.25rem;
@@ -369,8 +389,8 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
                 &_info {
-                    margin-top: 0.7rem;
-                    margin-left: 0.75rem;
+                    // margin-top: 0.7rem;
+                    // margin-left: 0.75rem;
                     border-bottom: 4px solid $theme-color;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: 0.25rem;
@@ -470,7 +490,7 @@ section.o_pms_pwa_roomdoo {
 
         // }
         &_td {
-            width: 12.2%;
+            // width: 12.2%;
 
             input {
                 width: 80%;
