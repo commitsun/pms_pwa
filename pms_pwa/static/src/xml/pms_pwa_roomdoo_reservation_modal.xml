@@ -132,7 +132,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12">
                                             <label class="control-label col-12" for="checkin">
-                                                Check in : Check out
+                                                Check in - Check out
                                             </label>
                                             <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ reservation.checkin }} : {{ reservation.checkout }}" />
                                             <input type="hidden" name="check_in_date" t-att-value="reservation.checkin" />

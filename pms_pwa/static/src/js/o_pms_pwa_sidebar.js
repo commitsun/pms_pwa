@@ -30,39 +30,10 @@ odoo.define("pms_pwa.sidebar", function () {
                         applyLabel: "Aplicar",
                         cancelLabel: "Cancelar",
                     },
-
-                    // locale: {
-                    //     direction: "ltr",
-                    //     format: "DD/MM/YYYY",
-                    //     separator: " - ",
-                    //     applyLabel: "Aplicar",
-                    //     cancelLabel: "Cancelar",
-                    //     fromLabel: "Desde",
-                    //     toLabel: "hasta",
-                    //     customRangeLabel: "Custom",
-                    //     daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                    //     monthNames: [
-                    //         "Enero",
-                    //         "Febrero",
-                    //         "Marzo",
-                    //         "Abril",
-                    //         "Mayo",
-                    //         "Junio",
-                    //         "Julio",
-                    //         "Agosto",
-                    //         "Septiembre",
-                    //         "Octubre",
-                    //         "Noviembre",
-                    //         "Diciembre",
-                    //     ],
-                    //     firstDay: 1,
-                    // },
-
                     opens: "left",
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-                    console.log("ER PEPEP 2");
                     $('input[name="check_in_date"]').val(start);
                     $('input[name="check_out_date"]').val(end);
                     let nights = 1;
@@ -86,39 +57,10 @@ odoo.define("pms_pwa.sidebar", function () {
                         format: "MM/DD/YYYY",
                         separator: " - ",
                     },
-
-                    // locale: {
-                    //     direction: "ltr",
-                    //     format: "DD/MM/YYYY",
-                    //     separator: " - ",
-                    //     applyLabel: "Aplicar",
-                    //     cancelLabel: "Cancelar",
-                    //     fromLabel: "Desde",
-                    //     toLabel: "hasta",
-                    //     customRangeLabel: "Custom",
-                    //     daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                    //     monthNames: [
-                    //         "Enero",
-                    //         "Febrero",
-                    //         "Marzo",
-                    //         "Abril",
-                    //         "Mayo",
-                    //         "Junio",
-                    //         "Julio",
-                    //         "Agosto",
-                    //         "Septiembre",
-                    //         "Octubre",
-                    //         "Noviembre",
-                    //         "Diciembre",
-                    //     ],
-                    //     firstDay: 1,
-                    // },
-
                     opens: "left",
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-                    console.log("ER PEPEP 2");
                     $('input[name="check_in_date"]').val(start);
                     $('input[name="check_out_date"]').val(end);
                     let nights = 1;

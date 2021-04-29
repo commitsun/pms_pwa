@@ -6,7 +6,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     var _t = core._t;
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
-    const date_options = { year: 'numeric', month: '2-digit', day: 'numeric' };
+    const date_options = {year: "numeric", month: "2-digit", day: "numeric"};
     $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
         event.preventDefault();
         var input = event.currentTarget.parentNode.getAttribute("data-tag");
@@ -23,8 +23,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             const today = new Date();
             const tomorrow = new Date(today);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            var checkin_date = today.toLocaleDateString(document.documentElement.lang, date_options);
-            var checkout_date = tomorrow.toLocaleDateString(document.documentElement.lang, date_options);
+            var checkin_date = today.toLocaleDateString(
+                document.documentElement.lang,
+                date_options
+            );
+            var checkout_date = tomorrow.toLocaleDateString(
+                document.documentElement.lang,
+                date_options
+            );
             $("#o_pms_pwa_new_reservation_modal")
                 .find("input[name='range_check_date_modal']")
                 .val(checkin_date + " - " + checkout_date);
@@ -32,7 +38,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 .find("input[name='range_check_date_modal']")
                 .trigger("change");
         }, 500);
-
     });
 
     $("form#single_reservation_form").on("change", "input, select", function (event) {
@@ -572,8 +577,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     let value_range_picker =
                                                         new_event.currentTarget.value;
 
-                                                    values.checkin = value_range_picker.split(" - ")[0];
-                                                    values.checkout = value_range_picker.split(" - ")[1];
+                                                    values.checkin = value_range_picker.split(
+                                                        " - "
+                                                    )[0];
+                                                    values.checkout = value_range_picker.split(
+                                                        " - "
+                                                    )[1];
                                                 } else {
                                                     if (
                                                         new_event.currentTarget.dataset
@@ -838,8 +847,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
                                         // DATE RANGE MODAL
                                         $(function () {
-                                            if (document.documentElement.lang == "es-ES") {
-                                                $('input[name="range_check_date_modal"]').daterangepicker(
+                                            if (
+                                                document.documentElement.lang == "es-ES"
+                                            ) {
+                                                $(
+                                                    'input[name="range_check_date_modal"]'
+                                                ).daterangepicker(
                                                     {
                                                         locale: {
                                                             direction: "ltr",
@@ -852,23 +865,40 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         showCustomRangeLabel: false,
                                                     },
                                                     function (start, end, label) {
-                                                        $('input[name="check_in_date"]').val(start);
-                                                        $('input[name="check_out_date"]').val(end);
+                                                        $(
+                                                            'input[name="check_in_date"]'
+                                                        ).val(start);
+                                                        $(
+                                                            'input[name="check_out_date"]'
+                                                        ).val(end);
                                                         let nights = 1;
                                                         // Hours*minutes*seconds*milliseconds
-                                                        const oneDay = 24 * 60 * 60 * 1000;
-                                                        const firstDate = new Date(start);
-                                                        const secondDate = new Date(end);
+                                                        const oneDay =
+                                                            24 * 60 * 60 * 1000;
+                                                        const firstDate = new Date(
+                                                            start
+                                                        );
+                                                        const secondDate = new Date(
+                                                            end
+                                                        );
                                                         const diffDays = Math.round(
-                                                            Math.abs((firstDate - secondDate) / oneDay)
+                                                            Math.abs(
+                                                                (firstDate -
+                                                                    secondDate) /
+                                                                    oneDay
+                                                            )
                                                         );
                                                         nights = diffDays - 1;
-                                                        $('input[name="nights"]').val(nights);
+                                                        $('input[name="nights"]').val(
+                                                            nights
+                                                        );
                                                         // $("form#reservation_detail").submit();
                                                     }
                                                 );
                                             } else {
-                                                $('input[name="range_check_date_modal"]').daterangepicker(
+                                                $(
+                                                    'input[name="range_check_date_modal"]'
+                                                ).daterangepicker(
                                                     {
                                                         locale: {
                                                             direction: "ltr",
@@ -879,18 +909,33 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         showCustomRangeLabel: false,
                                                     },
                                                     function (start, end, label) {
-                                                        $('input[name="check_in_date"]').val(start);
-                                                        $('input[name="check_out_date"]').val(end);
+                                                        $(
+                                                            'input[name="check_in_date"]'
+                                                        ).val(start);
+                                                        $(
+                                                            'input[name="check_out_date"]'
+                                                        ).val(end);
                                                         let nights = 1;
                                                         // Hours*minutes*seconds*milliseconds
-                                                        const oneDay = 24 * 60 * 60 * 1000;
-                                                        const firstDate = new Date(start);
-                                                        const secondDate = new Date(end);
+                                                        const oneDay =
+                                                            24 * 60 * 60 * 1000;
+                                                        const firstDate = new Date(
+                                                            start
+                                                        );
+                                                        const secondDate = new Date(
+                                                            end
+                                                        );
                                                         const diffDays = Math.round(
-                                                            Math.abs((firstDate - secondDate) / oneDay)
+                                                            Math.abs(
+                                                                (firstDate -
+                                                                    secondDate) /
+                                                                    oneDay
+                                                            )
                                                         );
                                                         nights = diffDays - 1;
-                                                        $('input[name="nights"]').val(nights);
+                                                        $('input[name="nights"]').val(
+                                                            nights
+                                                        );
                                                         // $("form#reservation_detail").submit();
                                                     }
                                                 );
@@ -946,67 +991,60 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             },
                         });
                         /* eslint-enable no-alert */
-                        $(".o_pms_pwa_button_checkin_confirm").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var guest_list = [];
-                                var selector =
-                                    "div.bs-stepper[guest-data-id=" +
-                                    reservation_id +
-                                    "] .content";
-                                var contents = $(selector);
-                                for (var i = 1; i <= contents.length; i++) {
-                                    var element = $(
-                                        "#" + contents[i - 1].getAttribute("id")
-                                    );
-                                    guest_list.push({
-                                        firstname: element
-                                            .find("input[name='firstname']")
-                                            .val(),
-                                        lastname: element
-                                            .find("input[name='lastname']")
-                                            .val(),
-                                        lastname2: element
-                                            .find("input[name='lastname2']")
-                                            .val(),
-                                        birthdate_date: element
-                                            .find("input[name='birthdate_date']")
-                                            .val(),
-                                        document_number: element
-                                            .find("input[name='document_number']")
-                                            .val(),
-                                        document_type: element
-                                            .find("select[name='document_type'] option")
-                                            .filter(":selected")
-                                            .val(),
-                                        document_expedition_date: element
-                                            .find(
-                                                "input[name='document_expedition_date']"
-                                            )
-                                            .val(),
-                                        gender: element
-                                            .find("select[name='gender'] option")
-                                            .filter(":selected")
-                                            .val(),
-                                        mobile: element
-                                            .find("input[name='mobile']")
-                                            .val(),
-                                        email: element
-                                            .find("input[name='email']")
-                                            .val(),
-                                        pms_property_id: element
-                                            .find("input[name='pms_property_id']")
-                                            .val(),
-                                    });
-                                }
-                                ajax.jsonRpc(button.attributes.url.value, "call", {
-                                    guests_list: guest_list,
-                                }).then(function (new_data) {
-                                    self.displayDataAlert(new_data, data.id);
+                        $(".o_pms_pwa_button_checkin_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var guest_list = [];
+                            var selector =
+                                "div.bs-stepper[guest-data-id=" +
+                                reservation_id +
+                                "] .content";
+                            var contents = $(selector);
+                            for (var i = 1; i <= contents.length; i++) {
+                                var element = $(
+                                    "#" + contents[i - 1].getAttribute("id")
+                                );
+                                guest_list.push({
+                                    firstname: element
+                                        .find("input[name='firstname']")
+                                        .val(),
+                                    lastname: element
+                                        .find("input[name='lastname']")
+                                        .val(),
+                                    lastname2: element
+                                        .find("input[name='lastname2']")
+                                        .val(),
+                                    birthdate_date: element
+                                        .find("input[name='birthdate_date']")
+                                        .val(),
+                                    document_number: element
+                                        .find("input[name='document_number']")
+                                        .val(),
+                                    document_type: element
+                                        .find("select[name='document_type'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    document_expedition_date: element
+                                        .find("input[name='document_expedition_date']")
+                                        .val(),
+                                    gender: element
+                                        .find("select[name='gender'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    mobile: element.find("input[name='mobile']").val(),
+                                    email: element.find("input[name='email']").val(),
+                                    pms_property_id: element
+                                        .find("input[name='pms_property_id']")
+                                        .val(),
                                 });
                             }
-                        );
+                            ajax.jsonRpc(button.attributes.url.value, "call", {
+                                guests_list: guest_list,
+                            }).then(function (new_data) {
+                                self.displayDataAlert(new_data, data.id);
+                            });
+                        });
                     }
                 });
             });
@@ -1029,20 +1067,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         self.displayContent("pms_pwa.reservation_cancel_modal", {
                             reservation: data,
                         });
-                        $(".o_pms_pwa_button_cancel_confirm").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var cur_button = new_event.currentTarget;
-                                ajax.jsonRpc(
-                                    cur_button.attributes.url.value,
-                                    "call",
-                                    {}
-                                ).then(function (new_data) {
-                                    self.displayDataAlert(new_data, data.id);
-                                });
-                            }
-                        );
+                        $(".o_pms_pwa_button_cancel_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var cur_button = new_event.currentTarget;
+                            ajax.jsonRpc(
+                                cur_button.attributes.url.value,
+                                "call",
+                                {}
+                            ).then(function (new_data) {
+                                self.displayDataAlert(new_data, data.id);
+                            });
+                        });
                     }
                 });
             });
@@ -1065,20 +1102,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         self.displayContent("pms_pwa.reservation_checkout_modal", {
                             reservation: data,
                         });
-                        $(".o_pms_pwa_button_checkout_confirm").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var cur_button = event.currentTarget;
-                                ajax.jsonRpc(
-                                    cur_button.attributes.url.value,
-                                    "call",
-                                    {}
-                                ).then(function (new_data) {
-                                    self.displayDataAlert(new_data, data.id);
-                                });
-                            }
-                        );
+                        $(".o_pms_pwa_button_checkout_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var cur_button = event.currentTarget;
+                            ajax.jsonRpc(
+                                cur_button.attributes.url.value,
+                                "call",
+                                {}
+                            ).then(function (new_data) {
+                                self.displayDataAlert(new_data, data.id);
+                            });
+                        });
                     }
                 });
             });
@@ -1100,28 +1136,25 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self.displayContent("pms_pwa.reservation_payment_modal", {
                         reservation: data,
                     });
-                    $(".o_pms_pwa_button_payment_confirm").on(
-                        "click",
-                        function (new_event) {
-                            new_event.preventDefault();
-                            var selector =
-                                "div.modal-dialog[payment-data-id=" +
-                                reservation_id +
-                                "]";
-                            var div = $(selector);
-                            var payment_method = div
-                                .find("select[name='payment_method'] option")
-                                .filter(":selected")
-                                .val();
-                            var payment_amount = div.find("input[name='amount']").val();
-                            ajax.jsonRpc(button.attributes.url.value, "call", {
-                                payment_method: payment_method,
-                                amount: payment_amount,
-                            }).then(function (new_data) {
-                                self.displayDataAlert(new_data, data.id);
-                            });
-                        }
-                    );
+                    $(".o_pms_pwa_button_payment_confirm").on("click", function (
+                        new_event
+                    ) {
+                        new_event.preventDefault();
+                        var selector =
+                            "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                        var div = $(selector);
+                        var payment_method = div
+                            .find("select[name='payment_method'] option")
+                            .filter(":selected")
+                            .val();
+                        var payment_amount = div.find("input[name='amount']").val();
+                        ajax.jsonRpc(button.attributes.url.value, "call", {
+                            payment_method: payment_method,
+                            amount: payment_amount,
+                        }).then(function (new_data) {
+                            self.displayDataAlert(new_data, data.id);
+                        });
+                    });
                 }
             });
         },

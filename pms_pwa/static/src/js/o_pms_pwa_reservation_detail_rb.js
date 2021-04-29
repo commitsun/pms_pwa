@@ -11,7 +11,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     $(function () {
         $('input[name="my_range_check_date"]').daterangepicker(
             {
-                // locale: {
+                // Locale: {
                 //     direction: "ltr",
                 //     format: "DD/MM/YYYY",
                 //     separator: " - ",
@@ -39,7 +39,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 // },
 
                 opens: "left",
-                //showCustomRangeLabel: false,
+                // ShowCustomRangeLabel: false,
             },
             function (start, end, label) {
                 console.log("PINPAN PUN");
