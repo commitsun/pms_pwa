@@ -335,8 +335,8 @@
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
 
-                                                <option t-foreach="reservation.allowed_service_ids" t-as="key" t-att-value="key">
-                                                    <t t-esc="key_value.name" />
+                                                <option t-foreach="reservation.allowed_service_ids" t-as="key" t-att-value="key_value.id">
+                                                    <t t-esc="key_value.name" t-att-data-service_id="key_value.id"/>
                                                 </option>
 
                                             </select>
