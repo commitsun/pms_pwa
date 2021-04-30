@@ -32,10 +32,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 date_options
             );
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal']")
+                .find("input[name='range_check_date_modal_reservation']")
                 .val(checkin_date + " - " + checkout_date);
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal']")
+                .find("input[name='range_check_date_modal_reservation_multi']")
+                .val(checkin_date + " - " + checkout_date);
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal_reservation']")
+                .trigger("change");
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal_reservation_multi']")
                 .trigger("change");
         }, 500);
     });
@@ -48,7 +54,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "allowed_channel_type_ids",
             "allowed_pricelists",
         ];
-        if (event.currentTarget.name == "range_check_date_modal") {
+        if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
             values.checkin = value_range_picker.split(" - ")[0];
             values.checkout = value_range_picker.split(" - ")[1];
@@ -112,7 +118,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     $("form#single_reservation_form").on("submit", function (event) {
         event.preventDefault();
         var values = $("form#single_reservation_form").serializeArray();
-        if (event.currentTarget.name == "range_check_date_modal") {
+        if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
 
             values.checkin = value_range_picker.split(" - ")[0];
@@ -159,7 +165,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         } catch (error) {
             console.log(error);
         }
-        if (event.currentTarget.name == "range_check_date_modal") {
+        if (event.currentTarget.name == "range_check_date_modal_reservation_multi") {
             let value_range_picker = event.currentTarget.value;
             values.checkin = value_range_picker.split(" - ")[0];
             values.checkout = value_range_picker.split(" - ")[1];
