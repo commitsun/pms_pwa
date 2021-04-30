@@ -364,8 +364,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         $(change_id_span).text(String(0));
         var service_ids = {};
         service_ids[service_id] = {};
-        service_ids[service_id][id] = {};
-        service_ids[service_id][id].qty = 0;
+        service_ids[service_id].service_line_ids = {};
+        service_ids[service_id].service_line_ids[id] = {};
+        service_ids[service_id].service_line_ids[id].qty = 0;
         ajax.jsonRpc(
             "/reservation/" + reservation_id_value + "/onchange_data",
             "call",
@@ -386,8 +387,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             $(change_id_span).text(String(text_value));
             var service_ids = {};
             service_ids[service_id] = {};
-            service_ids[service_id][id] = {};
-            service_ids[service_id][id].qty = text_value;
+            service_ids[service_id].service_line_ids = {};
+            service_ids[service_id].service_line_ids[id] = {};
+            service_ids[service_id].service_line_ids[id].qty = text_value;
             ajax.jsonRpc(
                 "/reservation/" + reservation_id_value + "/onchange_data",
                 "call",

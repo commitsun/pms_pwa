@@ -615,6 +615,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                 new_event.currentTarget
                                                                     .dataset.field_id;
                                                             values[main_field] = {};
+
                                                             values[main_field][
                                                                 field_id
                                                             ] = {};
@@ -716,16 +717,51 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     var field_id =
                                                         new_event.currentTarget.dataset
                                                             .field_id;
-                                                    values[main_field] = {};
-                                                    values[main_field][field_id] = {};
-                                                    values[main_field][field_id][
-                                                        new_event.currentTarget.name
-                                                    ] = new_event.currentTarget.value;
+                                                    if (
+                                                        new_event.currentTarget.dataset
+                                                            .subservice_name
+                                                    ) {
+                                                        var main_field_id =
+                                                            new_event.currentTarget
+                                                                .dataset.main_field_id;
+                                                        var subservice_name =
+                                                            new_event.currentTarget
+                                                                .dataset
+                                                                .subservice_name;
+                                                        values[main_field] = {};
+                                                        values[main_field][
+                                                            main_field_id
+                                                        ] = {};
+                                                        values[main_field][
+                                                            main_field_id
+                                                        ][subservice_name] = {};
+                                                        values[main_field][
+                                                            main_field_id
+                                                        ][subservice_name][
+                                                            field_id
+                                                        ] = {};
+                                                        values[main_field][
+                                                            main_field_id
+                                                        ][subservice_name][field_id][
+                                                            new_event.currentTarget.name
+                                                        ] =
+                                                            new_event.currentTarget.value;
+                                                    } else {
+                                                        values[main_field] = {};
+                                                        values[main_field][
+                                                            field_id
+                                                        ] = {};
+                                                        values[main_field][field_id][
+                                                            new_event.currentTarget.name
+                                                        ] =
+                                                            new_event.currentTarget.value;
+                                                    }
                                                 } else {
                                                     values[
                                                         new_event.currentTarget.name
                                                     ] = new_event.currentTarget.value;
                                                 }
+                                                console.log("Salgo");
                                                 // Call to set the new values
                                                 ajax.jsonRpc(
                                                     "/reservation/" +

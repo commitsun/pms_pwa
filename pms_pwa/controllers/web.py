@@ -1110,9 +1110,7 @@ class TestFrontEnd(http.Controller):
                 rooms_reservation_values, key=lambda item: item["date"]
             )
             for item in rooms_reservation_values:
-                item["date"] = item["date"].strftime(
-                    get_lang(request.env).date_format
-                )
+                item["date"] = item["date"].strftime(get_lang(request.env).date_format)
             values["reservations"].append(
                 {
                     "room": {
