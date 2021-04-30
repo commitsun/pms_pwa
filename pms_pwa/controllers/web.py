@@ -863,7 +863,6 @@ class TestFrontEnd(http.Controller):
 
                     # ELIF CHANGE SERVICES LINES
                     elif param == "service_ids":
-                        import wdb; wdb.set_trace()
                         reservation_values["service_ids"] = (
                             1,
                             reservation.service_ids.filtered(
@@ -1144,7 +1143,7 @@ class TestFrontEnd(http.Controller):
         checkin = (
             datetime.datetime.strptime(
                 reservation_values["checkin"], get_lang(request.env).date_format
-            ).date
+            ).date()
             if "checkin" in reservation_values
             else datetime.datetime.today()
         )
@@ -1152,16 +1151,15 @@ class TestFrontEnd(http.Controller):
             datetime.datetime.strptime(
                 reservation_values["checkout"].strip(),
                 get_lang(request.env).date_format,
-            ).date
+            ).date()
             if "checkout" in reservation_values
             else checkin + timedelta(days=1)
         )
-
         pms_property_id = False
         pms_property = False
         if request.env.user.get_active_property_ids():
             pms_property_id = request.env.user.get_active_property_ids()[0]
-            pms_property = request.env["pms.property"].browse(pms_property)
+            pms_property = request.env["pms.property"].browse(pms_property_id)
 
         pricelist = False
         if reservation_values.get("pricelist_id"):
@@ -1169,7 +1167,7 @@ class TestFrontEnd(http.Controller):
                 [("id", "=", int(reservation_values.get("pricelist_id")))]
             )
         if not pricelist and pms_property:
-            pricelist = pms_property.default_pricelist_id.id
+            pricelist = pms_property.default_pricelist_id
 
         # TODO: Search/create Partner
         partner = request.env["res.partner"].search([])[0]
@@ -1184,7 +1182,7 @@ class TestFrontEnd(http.Controller):
             "checkin": checkin,
             "checkout": checkout,
             "room_type_id": room_type_id,
-            "pricelist_id": pricelist,
+            "pricelist_id": pricelist.id,
             "pms_property_id": pms_property.id if pms_property else False,
             "partner_id": partner.id if partner else False,
         }
@@ -1229,34 +1227,38 @@ class TestFrontEnd(http.Controller):
     )
     def multiple_reservation_onchange(self, **kw):
         params = http.request.jsonrequest.get("params")
-        print("params: {}".format(params))
         folio_wizard = False
+        print("params: {}".format(params))
 
-        # TODO: Review param checkin user error (param not exist)
         if params.get("id"):
-            folio_wizard = request.env["pms.folio.wizard"].browse(params.get("id"))
+            folio_wizard = request.env["pms.folio.wizard"].browse(int(params.get("id")))
+        if folio_wizard:
+            checkin = folio_wizard.start_date
+            checkout = folio_wizard.end_date
 
-        checkin = (
-            datetime.datetime.strptime(
-                params["checkin"], get_lang(request.env).date_format
-            ).date
-            if "checkin" in params
-            else datetime.datetime.today()
-        )
-        checkout = (
-            datetime.datetime.strptime(
-                params["checkout"].strip(),
-                get_lang(request.env).date_format,
-            ).date
-            if "checkout" in params
-            else checkin + timedelta(days=1)
-        )
+        if not folio_wizard or params.get("checkin"):
+            checkin = (
+                datetime.datetime.strptime(
+                    params["checkin"], get_lang(request.env).date_format
+                ).date()
+                if "checkin" in params
+                else datetime.datetime.today().date()
+            )
+        if not folio_wizard or params.get("checkout"):
+            checkout = (
+                datetime.datetime.strptime(
+                    params["checkout"].strip(),
+                    get_lang(request.env).date_format,
+                ).date()
+                if "checkout" in params
+                else checkin + timedelta(days=1).date()
+            )
 
         pms_property = False
         pms_property_id = False
         if request.env.user.get_active_property_ids():
             pms_property_id = request.env.user.get_active_property_ids()[0]
-            pms_property = request.env["pms.property"].browse(pms_property)
+            pms_property = request.env["pms.property"].browse(pms_property_id)
         # TODO: partner_id, diferenciar entre nuevo partner y
         # uno seleccionado (tipo direccion de facturacion en el detalle?)
         partner = request.env["res.partner"].search([])[0]
@@ -1266,36 +1268,33 @@ class TestFrontEnd(http.Controller):
                 [("id", "=", int(params.get("pricelist_id")))]
             )
         if not pricelist and pms_property:
-            pricelist = pms_property.default_pricelist_id.id
-
+            pricelist = pms_property.default_pricelist_id
         vals = {
             "start_date": checkin,
             "end_date": checkout,
-            "pricelist_id": pricelist if pricelist else False,
+            "pricelist_id": pricelist.id if pricelist else False,
             "pms_property_id": pms_property.id if pms_property else False,
             "partner_id": partner.id if partner else False,
         }
-        if params.get("id"):
-            folio_wizard = request.env["pms.folio.wizard"].browse(params.get("id"))
         if not folio_wizard:
             folio_wizard = request.env["pms.folio.wizard"].create(vals)
-
+            folio_wizard.flush()
         if (
             checkin != folio_wizard.start_date
             or checkout != folio_wizard.end_date
             or pricelist.id != folio_wizard.pricelist_id.id
-            or pms_property_id.id != folio_wizard.pms_property_id.id
-            or partner != folio_wizard.partner_id.id
+            or pms_property.id != folio_wizard.pms_property_id.id
+            or partner.id != folio_wizard.partner_id.id
         ):
             folio_wizard.write(vals)
-
         if params.get("lines"):
             for line_id, values in params.get("lines").items():
                 folio_wizard.availability_results.filtered(
-                    lambda r: r.room_type_id.id == int(line_id)
-                ).value_num_rooms_selected = int(room_type["num_rooms_selected"])
+                    lambda r: r.id == int(line_id)
+                ).value_num_rooms_selected = int(values["value_num_rooms_selected"])
+                folio_wizard.flush()
                 # TODO: Board service
-
+        
         return self.parse_wizard_folio(folio_wizard)
 
     @http.route(
@@ -1335,12 +1334,12 @@ class TestFrontEnd(http.Controller):
         if post.get("next"):
             date = datetime.datetime.strptime(
                 post.get("next"), get_lang(request.env).date_format
-            ).date
+            ).date()
             date_start = date + timedelta(days=+7)
         if post.get("previous"):
             date = datetime.datetime.strptime(
                 post.get("previous"), get_lang(request.env).date_format
-            ).date
+            ).date()
             date_start = date + timedelta(days=-7)
 
         Room = request.env["pms.room.type"]
