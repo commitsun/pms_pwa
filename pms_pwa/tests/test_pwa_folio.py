@@ -80,8 +80,8 @@ class TestPwaFolio(TestHotel):
         )
         test_cases = [
             {
-                "test_case": "Flexible search by reservation localizator",
-                "value": reservation.localizator,
+                "test_case": "Flexible search by reservation name",
+                "value": reservation.name,
             },
             {"test_case": "Flexible search by host phone", "value": host.phone},
             {"test_case": "Flexible search by host mobile", "value": host.mobile},
@@ -526,7 +526,7 @@ class TestPwaFolio(TestHotel):
         )
         # ACT
         rdo = self.env["pms.folio"].search_folios_pwa(
-            reservation.localizator, **{"name": host1.name}
+            reservation.name, **{"name": host1.name}
         )
         # ASSERT
         self.assertIn(

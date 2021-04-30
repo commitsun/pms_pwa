@@ -9,7 +9,7 @@ def _get_search_domain(search=False, **post):
         search_exists = True
         for srch in search.split(" "):
             subdomains = [
-                [("reservation_ids.localizator", "in", [srch])],
+                [("reservation_ids.name", "in", [srch])],
                 [("reservation_ids.partner_id.phone", "ilike", srch)],
                 [("reservation_ids.partner_id.mobile", "ilike", srch)],
                 [("reservation_ids.partner_id.name", "ilike", srch)],

@@ -1143,7 +1143,7 @@ class TestFrontEnd(http.Controller):
                 reservation_values["checkin"], get_lang(request.env).date_format
             ).date
             if "checkin" in reservation_values
-            else datetime.today()
+            else datetime.datetime.today()
         )
         checkout = (
             datetime.datetime.strptime(
@@ -1238,7 +1238,7 @@ class TestFrontEnd(http.Controller):
                 params["checkin"], get_lang(request.env).date_format
             ).date
             if "checkin" in params
-            else datetime.today()
+            else datetime.datetime.today()
         )
         checkout = (
             datetime.datetime.strptime(
