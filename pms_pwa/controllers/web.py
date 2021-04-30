@@ -1032,9 +1032,7 @@ class TestFrontEnd(http.Controller):
                         free_dates.remove(d)
                 rooms_reservation_values.append(
                     {
-                        "date": min_reservation_date.strftime(
-                            get_lang(request.env).date_format
-                        ),
+                        "date": min_reservation_date,
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": reservation.partner_id.name,
@@ -1082,9 +1080,7 @@ class TestFrontEnd(http.Controller):
                     {
                         "splitted": True,
                         "main_split": main_split,
-                        "date": datetime.datetime.strftime(
-                            reservation.checkin, get_lang(request.env).date_format
-                        ),
+                        "date": reservation.checkin,
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": reservation.partner_id.name
@@ -1106,15 +1102,17 @@ class TestFrontEnd(http.Controller):
             for day in free_dates:
                 rooms_reservation_values.append(
                     {
-                        "date": datetime.datetime.strftime(
-                            day, get_lang(request.env).date_format
-                        ),
+                        "date": day,
                         "reservation_info": False,
                     }
                 )
             rooms_reservation_values = sorted(
                 rooms_reservation_values, key=lambda item: item["date"]
             )
+            for item in rooms_reservation_values:
+                item["date"] = item["date"].strftime(
+                    get_lang(request.env).date_format
+                )
             values["reservations"].append(
                 {
                     "room": {
