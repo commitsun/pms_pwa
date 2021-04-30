@@ -78,7 +78,7 @@
                         <label class="control-label col-12" for="checkin">
                             Check in
                         </label>
-                        <input class="form-control" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                        <input class="form-control" type="text" name="range_check_date_modal_reservation" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
                         <input type="hidden" name="check_in_date" value="" />
                         <input type="hidden" name="check_out_date" value="" />
                         <span class="o_pms_pwa_calendar_icon">
@@ -202,7 +202,7 @@
                         <label class="control-label col-12" for="checkin">
                             Check in
                         </label>
-                        <input class="form-control" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                        <input class="form-control" type="text" name="range_check_date_modal_reservation_multi" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
                         <input type="hidden" name="check_in_date" value="" />
                         <input type="hidden" name="check_out_date" value="" />
                         <span class="o_pms_pwa_calendar_icon">

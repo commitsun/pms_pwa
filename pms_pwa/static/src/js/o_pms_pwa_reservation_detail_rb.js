@@ -8,57 +8,66 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var _t = core._t;
     var folio_id = $("input[name='folio_id']").val();
     var reservation_id = $("input[name='id']").val();
-    $(function () {
-        $('input[name="my_range_check_date"]').daterangepicker(
-            {
-                // Locale: {
-                //     direction: "ltr",
-                //     format: "DD/MM/YYYY",
-                //     separator: " - ",
-                //     applyLabel: "Aplicar",
-                //     cancelLabel: "Cancelar",
-                //     fromLabel: "Desde",
-                //     toLabel: "hasta",
-                //     customRangeLabel: "Custom",
-                //     daysOfWeek: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
-                //     monthNames: [
-                //         "Enero",
-                //         "Febrero",
-                //         "Marzo",
-                //         "Abril",
-                //         "Mayo",
-                //         "Junio",
-                //         "Julio",
-                //         "Agosto",
-                //         "Septiembre",
-                //         "Octubre",
-                //         "Noviembre",
-                //         "Diciembre",
-                //     ],
-                //     firstDay: 1,
-                // },
 
-                opens: "left",
-                // ShowCustomRangeLabel: false,
-            },
-            function (start, end, label) {
-                console.log("PINPAN PUN");
-                $('input[name="check_in_date"]').val(start);
-                $('input[name="check_out_date"]').val(end);
-                let nights = 1;
-                // Hours*minutes*seconds*milliseconds
-                const oneDay = 24 * 60 * 60 * 1000;
-                const firstDate = new Date(start);
-                const secondDate = new Date(end);
-                const diffDays = Math.round(
-                    Math.abs((firstDate - secondDate) / oneDay)
-                );
-                nights = diffDays - 1;
-                $('input[name="nights"]').val(nights);
-                // $("form#reservation_detail").submit();
-            }
-        );
-    });
+    // $(function () {
+    //     if (document.documentElement.lang == "es-ES") {
+    //         $('input[name="range_check_date_detail_reservation"]').daterangepicker(
+    //             {
+    //                 locale: {
+    //                     direction: "ltr",
+    //                     format: "DD/MM/YYYY",
+    //                     separator: " - ",
+    //                     applyLabel: "Aplicar",
+    //                     cancelLabel: "Cancelar",
+    //                 },
+    //                 opens: "left",
+    //                 showCustomRangeLabel: false,
+    //             },
+    //             function (start, end, label) {
+    //                 $('input[name="check_in_date"]').val(start);
+    //                 $('input[name="check_out_date"]').val(end);
+    //                 let nights = 1;
+    //                 // Hours*minutes*seconds*milliseconds
+    //                 const oneDay = 24 * 60 * 60 * 1000;
+    //                 const firstDate = new Date(start);
+    //                 const secondDate = new Date(end);
+    //                 const diffDays = Math.round(
+    //                     Math.abs((firstDate - secondDate) / oneDay)
+    //                 );
+    //                 nights = diffDays - 1;
+    //                 $('input[name="nights"]').val(nights);
+    //                 // $("form#reservation_detail").submit();
+    //             }
+    //         );
+    //     } else {
+    //         $('input[name="range_check_date_detail_reservation"]').daterangepicker(
+    //             {
+    //                 locale: {
+    //                     direction: "ltr",
+    //                     format: "MM/DD/YYYY",
+    //                     separator: " - ",
+    //                 },
+    //                 opens: "left",
+    //                 showCustomRangeLabel: false,
+    //             },
+    //             function (start, end, label) {
+    //                 $('input[name="check_in_date"]').val(start);
+    //                 $('input[name="check_out_date"]').val(end);
+    //                 let nights = 1;
+    //                 // Hours*minutes*seconds*milliseconds
+    //                 const oneDay = 24 * 60 * 60 * 1000;
+    //                 const firstDate = new Date(start);
+    //                 const secondDate = new Date(end);
+    //                 const diffDays = Math.round(
+    //                     Math.abs((firstDate - secondDate) / oneDay)
+    //                 );
+    //                 nights = diffDays - 1;
+    //                 $('input[name="nights"]').val(nights);
+    //                 // $("form#reservation_detail").submit();
+    //             }
+    //         );
+    //     }
+    // });
 
     // /
     $(document).on("click", ".editable", function (e) {
@@ -353,15 +362,11 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         e.stopPropagation();
         var change_id_span = ".o_pms_pwa_rb_value_" + id;
         $(change_id_span).text(String(0));
-
         var service_ids = {};
-        var service_line_ids = {};
-        service_line_ids[id] = {
-            qty: 0,
-        };
-        service_ids[service_id] = {
-            service_line_ids,
-        };
+        service_ids[service_id] = {};
+        service_ids[service_id].service_line_ids = {};
+        service_ids[service_id].service_line_ids[id] = {};
+        service_ids[service_id].service_line_ids[id].qty = 0;
         ajax.jsonRpc(
             "/reservation/" + reservation_id_value + "/onchange_data",
             "call",
@@ -374,22 +379,17 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     $("#o_pms_pwa_editModal").on("show.bs.modal", function (event) {
         var element = $(event.relatedTarget);
         var id = element.data("id");
-        var service_id = element.data("service-id");
-        var reservation_id_value = element.data("reservation-id");
-        var price_input_name = String("price_" + service_id + "_" + id);
+        var service_id = String(element.data("service-id"));
+        var reservation_id_value = String(element.data("reservation-id"));
         $(document).on("click", "#edit-modal-save", function () {
             var text_value = $("#new_val").val();
             var change_id_span = ".o_pms_pwa_rb_value_" + id;
             $(change_id_span).text(String(text_value));
             var service_ids = {};
-            var service_line_ids = {};
-            service_line_ids[id] = {
-                qty: text_value,
-                price: $("#" + price_input_name).val(),
-            };
-            service_ids[service_id] = {
-                service_line_ids,
-            };
+            service_ids[service_id] = {};
+            service_ids[service_id].service_line_ids = {};
+            service_ids[service_id].service_line_ids[id] = {};
+            service_ids[service_id].service_line_ids[id].qty = text_value;
             ajax.jsonRpc(
                 "/reservation/" + reservation_id_value + "/onchange_data",
                 "call",
