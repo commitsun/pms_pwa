@@ -781,7 +781,9 @@ class TestFrontEnd(http.Controller):
                 for param in params.keys():
                     # DEL SERVICE
                     if param == "del_service":
-                        reservation_values["service_ids"] = [(2, int(params["del_service"]))]
+                        reservation_values["service_ids"] = [
+                            (2, int(params["del_service"]))
+                        ]
 
                     # ADD SERVICE
                     if param == "add_service":
@@ -800,9 +802,9 @@ class TestFrontEnd(http.Controller):
                         param == "room_type_id"
                         and int(params["room_type_id"]) != reservation.room_type_id
                     ):
-                        reservation_values["room_type_id"] = request.env["pms.room.type"].browse(
-                            int(params["room_type_id"])
-                        )
+                        reservation_values["room_type_id"] = request.env[
+                            "pms.room.type"
+                        ].browse(int(params["room_type_id"]))
 
                     # PREFERRED ROOM ID
                     elif (
@@ -810,9 +812,9 @@ class TestFrontEnd(http.Controller):
                         and int(params["preferred_room_id"])
                         != reservation.preferred_room_id
                     ):
-                        reservation_values["preferred_room_id"] = request.env["pms.room"].browse(
-                            int(params["preferred_room_id"])
-                        )
+                        reservation_values["preferred_room_id"] = request.env[
+                            "pms.room"
+                        ].browse(int(params["preferred_room_id"]))
 
                     # CHECKIN & CHECKOUT TODO process both as an unit
                     elif (
@@ -850,15 +852,13 @@ class TestFrontEnd(http.Controller):
 
                     # RESERVATION_LINE
                     elif param == "reservation_line_ids":
-                        reservation_values["reservation_line_ids"] = (
-                            self.parse_params_record(
-                                origin_values={
-                                    "reservation_line_ids": params[
-                                        "reservation_line_ids"
-                                    ]
-                                },
-                                model=request.env["pms.reservation"],
-                            )
+                        reservation_values[
+                            "reservation_line_ids"
+                        ] = self.parse_params_record(
+                            origin_values={
+                                "reservation_line_ids": params["reservation_line_ids"]
+                            },
+                            model=request.env["pms.reservation"],
                         )
 
                     # ELIF CHANGE SERVICES LINES
@@ -866,12 +866,15 @@ class TestFrontEnd(http.Controller):
                         reservation_values["service_ids"] = (
                             1,
                             reservation.service_ids.filtered(
-                                lambda s: s.service_line_ids.ids in [int(list(params["service_ids"].keys())[0])]
-                            ).id,                        
+                                lambda s: s.service_line_ids.ids
+                                in [int(list(params["service_ids"].keys())[0])]
+                            ).id,
                             self.parse_params_record(
-                                origin_values={"service_line_ids": params["service_ids"]},
+                                origin_values={
+                                    "service_line_ids": params["service_ids"]
+                                },
                                 model=request.env["pms.service"],
-                            )
+                            ),
                         )
                     elif (
                         param == "reservation_type"
@@ -1112,9 +1115,7 @@ class TestFrontEnd(http.Controller):
                 rooms_reservation_values, key=lambda item: item["date"]
             )
             for item in rooms_reservation_values:
-                item["date"] = item["date"].strftime(
-                    get_lang(request.env).date_format
-                )
+                item["date"] = item["date"].strftime(get_lang(request.env).date_format)
             values["reservations"].append(
                 {
                     "room": {
@@ -1294,7 +1295,7 @@ class TestFrontEnd(http.Controller):
                 ).value_num_rooms_selected = int(values["value_num_rooms_selected"])
                 folio_wizard.flush()
                 # TODO: Board service
-        
+
         return self.parse_wizard_folio(folio_wizard)
 
     @http.route(
