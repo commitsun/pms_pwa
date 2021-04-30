@@ -29,4 +29,6 @@ class PmsService(models.Model):
                 "date": line.date.strftime(get_lang(request.env).date_format),
                 "price": line.price_unit,
             }
+        print("LINES SERVICES")
+        print(service_line_ids)
         return service_line_ids

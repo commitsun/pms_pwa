@@ -777,31 +777,30 @@ class TestFrontEnd(http.Controller):
             try:
                 params = http.request.jsonrequest.get("params")
                 reservation_line_cmds = []
+                reservation_values = {}
                 for param in params.keys():
                     # DEL SERVICE
                     if param == "del_service":
-                        params["service_ids"] = [(2, int(params["del_service"]))]
-                        del params["del_service"]
+                        reservation_values["service_ids"] = [(2, int(params["del_service"]))]
 
                     # ADD SERVICE
                     if param == "add_service":
-                        params["service_ids"] = [
+                        reservation_values["service_ids"] = [
                             (0, 0, {"product_id": int(params["add_service"])})
                         ]
-                        del params["add_service"]
                     # ADULTS
                     if (
                         param == "adults"
                         and int(params["adults"]) != reservation.adults
                     ):
-                        params["adults"] = int(params["adults"])
+                        reservation_values["adults"] = int(params["adults"])
 
                     # ROOM TYPE
                     elif (
                         param == "room_type_id"
                         and int(params["room_type_id"]) != reservation.room_type_id
                     ):
-                        params["room_type_id"] = request.env["pms.room.type"].browse(
+                        reservation_values["room_type_id"] = request.env["pms.room.type"].browse(
                             int(params["room_type_id"])
                         )
 
@@ -811,7 +810,7 @@ class TestFrontEnd(http.Controller):
                         and int(params["preferred_room_id"])
                         != reservation.preferred_room_id
                     ):
-                        params["preferred_room_id"] = request.env["pms.room"].browse(
+                        reservation_values["preferred_room_id"] = request.env["pms.room"].browse(
                             int(params["preferred_room_id"])
                         )
 
@@ -824,7 +823,7 @@ class TestFrontEnd(http.Controller):
                         != reservation.checkin
                     ):
                         # TODO:  Delete Strip
-                        params["checkin"] = datetime.datetime.strptime(
+                        reservation_values["checkin"] = datetime.datetime.strptime(
                             params["checkin"].strip(), get_lang(request.env).date_format
                         )
                     elif (
@@ -835,7 +834,7 @@ class TestFrontEnd(http.Controller):
                         ).date()
                         != reservation.checkout
                     ):
-                        params["checkout"] = datetime.datetime.strptime(
+                        reservation_values["checkout"] = datetime.datetime.strptime(
                             params["checkout"], get_lang(request.env).date_format
                         )
 
@@ -845,13 +844,13 @@ class TestFrontEnd(http.Controller):
                         and int(params["board_service_room_id"])
                         != reservation.board_service_room_id
                     ):
-                        params["board_service_room_id"] = request.env[
+                        reservation_values["board_service_room_id"] = request.env[
                             "pms.room"
                         ].browse(int(params["board_service_room_id"]))
 
                     # RESERVATION_LINE
                     elif param == "reservation_line_ids":
-                        params.update(
+                        reservation_values["reservation_line_ids"] = (
                             self.parse_params_record(
                                 origin_values={
                                     "reservation_line_ids": params[
@@ -864,21 +863,27 @@ class TestFrontEnd(http.Controller):
 
                     # ELIF CHANGE SERVICES LINES
                     elif param == "service_ids":
-                        params.update(
+                        import wdb; wdb.set_trace()
+                        reservation_values["service_ids"] = (
+                            1,
+                            reservation.service_ids.filtered(
+                                lambda s: s.service_line_ids.ids in [int(list(params["service_ids"].keys())[0])]
+                            ).id,                        
                             self.parse_params_record(
-                                origin_values={"service_ids": params["service_ids"]},
-                                model=request.env["pms.reservation"],
+                                origin_values={"service_line_ids": params["service_ids"]},
+                                model=request.env["pms.service"],
                             )
                         )
-
                     elif (
                         param == "reservation_type"
                         and params["reservation_type"] != reservation.reservation_type
                     ):
-                        old_reservation_type = reservation.folio_id.reservation_type
-                        reservation.folio_id.reservation_type = params[param]
-                if reservation_line_cmds:
-                    params["reservation_line_ids"] = reservation_line_cmds
+                        reservation_values.folio_id.reservation_type = params[param]
+
+                if "add_service" in params:
+                    del params["add_service"]
+                if "del_service" in params:
+                    del params["del_service"]
                 if "reservation_type" in params:
                     del params["reservation_type"]
                 if "board_service" in params:
@@ -886,10 +891,8 @@ class TestFrontEnd(http.Controller):
                 if "price_total" in params:
                     del params["price_total"]
                 # del params["reservation_id"]
-                reservation.write(params)
+                reservation.write(reservation_values)
             except Exception as e:
-                # REVIEW
-                reservation.folio_id.reservation_type = old_reservation_type
                 return json.dumps(
                     {
                         "result": False,
@@ -1446,6 +1449,8 @@ class TestFrontEnd(http.Controller):
                             ),
                         )
                     )
+                print("PARSE SERVICE LINES----------------------------------")
+                print(cmds)
                 new_values[k] = cmds
         return new_values
 

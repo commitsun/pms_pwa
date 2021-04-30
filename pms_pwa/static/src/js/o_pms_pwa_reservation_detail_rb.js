@@ -385,7 +385,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             var service_line_ids = {};
             service_line_ids[id] = {
                 qty: text_value,
-                price: $("#" + price_input_name).val(),
+                price_unit: $("#" + price_input_name).val(),
             };
             service_ids[service_id] = {
                 service_line_ids,
