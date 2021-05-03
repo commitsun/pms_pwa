@@ -103,13 +103,18 @@ class PmsFolio(models.Model):
     @api.model
     def search_count_folios_pwa(self, search, **post):
         pms_property_id = self.env.user.get_active_property_ids()[0]
-        rdo = self.env["pms.folio"].search_count(_get_search_domain(pms_property_id, search, **post))
+        rdo = self.env["pms.folio"].search_count(
+            _get_search_domain(pms_property_id, search, **post)
+        )
         return rdo
 
     @api.model
     def search_folios_pwa(self, search, order=False, limit=False, offset=False, **post):
         pms_property_id = self.env.user.get_active_property_ids()[0]
         rdo = self.env["pms.folio"].search(
-            _get_search_domain(pms_property_id, search, **post), order=order, limit=limit, offset=offset
+            _get_search_domain(pms_property_id, search, **post),
+            order=order,
+            limit=limit,
+            offset=offset,
         )
         return rdo
