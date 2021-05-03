@@ -95,9 +95,8 @@ class TestFrontEnd(http.Controller):
             if not search:
                 search = post["original_search"]
             post.pop("original_search")
-
         # REVIEW: magic number
-        paginate_by = 20
+        paginate_by = 15
 
         # TODO: ORDER STUFF's
         # searchbar_sortings = {
@@ -765,6 +764,15 @@ class TestFrontEnd(http.Controller):
         reservation = False
         params = http.request.jsonrequest.get("params")
         _logger.info(params)
+        #TEMP FIX
+        ##############################################################################
+        if "checkin" in params and "checkout" in params and datetime.datetime.strptime(
+                params["checkin"].strip(), get_lang(request.env).date_format
+            ) >= datetime.datetime.strptime(
+                params["checkout"].strip(), get_lang(request.env).date_format
+            ):
+                return
+        ##############################################################################
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
@@ -852,28 +860,23 @@ class TestFrontEnd(http.Controller):
 
                     # RESERVATION_LINE
                     elif param == "reservation_line_ids":
-                        reservation_values[
-                            "reservation_line_ids"
-                        ] = self.parse_params_record(
-                            origin_values={
-                                "reservation_line_ids": params["reservation_line_ids"]
-                            },
-                            model=request.env["pms.reservation"],
+                        reservation_values.update(
+                            self.parse_params_record(
+                                origin_values={
+                                    "reservation_line_ids": params["reservation_line_ids"]
+                                },
+                                model=request.env["pms.reservation"],
+                            )
                         )
 
                     # ELIF CHANGE SERVICES LINES
                     elif param == "service_ids":
-                        reservation_values["service_ids"] = (
-                            1,
-                            reservation.service_ids.filtered(
-                                lambda s: s.service_line_ids.ids
-                                in [int(list(params["service_ids"].keys())[0])]
-                            ).id,
+                        reservation_values.update(
                             self.parse_params_record(
                                 origin_values={
-                                    "service_line_ids": params["service_ids"]
+                                    "service_ids": params["service_ids"]
                                 },
-                                model=request.env["pms.service"],
+                                model=request.env["pms.reservation"],
                             ),
                         )
                     elif (
@@ -893,6 +896,7 @@ class TestFrontEnd(http.Controller):
                 if "price_total" in params:
                     del params["price_total"]
                 # del params["reservation_id"]
+                pp.pprint(reservation_values)
                 reservation.write(reservation_values)
             except Exception as e:
                 return json.dumps(
@@ -1020,7 +1024,8 @@ class TestFrontEnd(http.Controller):
             room = request.env["pms.room"].browse(room_id)
             rooms_reservation_values = []
             for reservation in reservations.filtered(
-                lambda r: r.preferred_room_id.id == room_id
+                lambda r: r.preferred_room_id.id == room_id and \
+                r.pms_property_id.id == pms_property_id
             ):
                 min_reservation_date = min(
                     reservation.reservation_line_ids.filtered(
@@ -1428,9 +1433,9 @@ class TestFrontEnd(http.Controller):
         new_values = {}
         for k, v in origin_values.items():
             field = model._fields[k]
-            if field.type == "float":
+            if field.type in ("float", "monetary"):
                 new_values[k] = float(v)
-            if field.type in ("int", "many2one", "monetary"):
+            if field.type in ("integer", "many2one"):
                 new_values[k] = int(v)
             if field.type == "date":
                 new_values[k] = datetime.datetime.strptime(
