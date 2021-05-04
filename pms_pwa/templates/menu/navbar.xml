@@ -18,7 +18,6 @@
                                     </div>
                                 </div>
                                 <!-- Page Title -->
-                                <t t-set="page_title" t-value="'Calendar config'"/>
                                 <div t-if="page_title" class="o_pms_pwa_page_title">
                                     <t t-esc="page_title" />
                                     <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter" />
