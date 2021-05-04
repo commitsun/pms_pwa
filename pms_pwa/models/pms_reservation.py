@@ -5,6 +5,8 @@ import json
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+from odoo.tools.misc import get_lang
+
 
 class PmsReservation(models.Model):
     _inherit = "pms.reservation"
@@ -160,7 +162,7 @@ class PmsReservation(models.Model):
                 for line in service.service_line_ids:
                     lines.append(
                         {
-                            "date": line.date,
+                            "date": line.date.strftime(get_lang(self.env).date_format),
                             "day_qty": line.day_qty,
                             "price_unit": line.price_unit,
                         }
@@ -227,7 +229,7 @@ class PmsReservation(models.Model):
         reservation_lines = {}
         for line in self.reservation_line_ids:
             reservation_lines[line.id] = {
-                "date": line.date,
+                "date": line.date.strftime(get_lang(self.env).date_format),
                 "price": line.price,
                 "discount": line.discount,
             }

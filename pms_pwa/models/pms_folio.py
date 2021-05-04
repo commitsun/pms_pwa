@@ -2,14 +2,14 @@ from odoo import api, fields, models
 from odoo.osv import expression
 
 
-def _get_search_domain(search=False, **post):
+def _get_search_domain(pms_property_id, search=False, **post):
     domains = []
     search_exists = False
     if search:
         search_exists = True
         for srch in search.split(" "):
             subdomains = [
-                [("reservation_ids.localizator", "in", [srch])],
+                [("reservation_ids.name", "in", [srch])],
                 [("reservation_ids.partner_id.phone", "ilike", srch)],
                 [("reservation_ids.partner_id.mobile", "ilike", srch)],
                 [("reservation_ids.partner_id.name", "ilike", srch)],
@@ -17,7 +17,7 @@ def _get_search_domain(search=False, **post):
                 [("reservation_ids.partner_id.email", "ilike", srch)],
             ]
             domains.append(expression.OR(subdomains))
-    domain_fields = []
+    domain_fields = [("pms_property_id", "=", pms_property_id)]
     for k, v in post.items():
         if v and k in ["name", "vat", "email"]:
             domain_fields.append(("reservation_ids.partner_id." + k, "=", v))
@@ -102,13 +102,19 @@ class PmsFolio(models.Model):
 
     @api.model
     def search_count_folios_pwa(self, search, **post):
-        rdo = self.env["pms.folio"].search_count(_get_search_domain(search, **post))
+        pms_property_id = self.env.user.get_active_property_ids()[0]
+        rdo = self.env["pms.folio"].search_count(
+            _get_search_domain(pms_property_id, search, **post)
+        )
         return rdo
 
     @api.model
     def search_folios_pwa(self, search, order=False, limit=False, offset=False, **post):
-
+        pms_property_id = self.env.user.get_active_property_ids()[0]
         rdo = self.env["pms.folio"].search(
-            _get_search_domain(search, **post), order=order, limit=limit, offset=offset
+            _get_search_domain(pms_property_id, search, **post),
+            order=order,
+            limit=limit,
+            offset=offset,
         )
         return rdo
