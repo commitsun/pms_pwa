@@ -130,9 +130,9 @@
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
                                                 <td class="o_pms_pwa_table_cell">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible <t t-esc="current_property"></t>
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible
                                                         <span class="o_pms_pwa_info">
-                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="El texto que sea" />
+                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="Texto informativo del icono" />
                                                         </span>
                                                     </p>
                                                     <div class="o_pms_pwa_content">
