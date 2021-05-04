@@ -3,7 +3,17 @@
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Calendar'"/>
-
+            <t t-if="request.httprequest.cookies.get('pms_pids', false)">
+                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
+                </t>
+                <t t-else="">
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
+                </t>
+            </t>
+            <t t-else="">
+                <t t-set="current_property" t-value="1" />
+            </t>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
                 <span class="o_pms_notification_title">
@@ -11,6 +21,7 @@
                     Updates
                     <span class="o_pms_pwa_update_counter ml-1" />
                 </span>
+
             </div>
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
@@ -119,7 +130,7 @@
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
                                                 <td class="o_pms_pwa_table_cell">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible <t t-esc="current_property"></t>
                                                         <span class="o_pms_pwa_info">
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="El texto que sea" />
                                                         </span>

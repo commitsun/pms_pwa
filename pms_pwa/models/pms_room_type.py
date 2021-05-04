@@ -43,10 +43,8 @@ class PmsPWARoomType(models.Model):
         return allowed_board_services if allowed_board_services else False
 
     def _get_count_reservations_date(self):
-        print(self._context.get("pms_property_id"))
         self.ensure_one()
         if self._context.get("date") and self._context.get("pms_property_id"):
-            print("--------------------------- HOLA ---------------------")
             return self.env["pms.reservation.line"].search_count(
                 [
                     ("date", "=", self._context.get("date")),
