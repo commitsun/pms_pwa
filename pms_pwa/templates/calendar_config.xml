@@ -67,7 +67,7 @@
                                 <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
                                     <form method="post" action="">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                        <input type="submit" id="save" name="save" value="Guardar" class="btn btn-primary d-none"></input>
+                                        <input type="submit" id="save" name="save" style="min-width:100px;" value="Guardar" class="btn btn-radius btn-pms_pwa d-none"></input>
                                     </form>
                                 </div>
                             </div>
