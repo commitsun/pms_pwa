@@ -23,7 +23,7 @@
                                     </h2>
                                 </div>
                             </div>
-                            <div class="col-6 col-sm-2">
+                            <!-- <div class="col-6 col-sm-2">
                                 <form method="post" action="">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
@@ -41,8 +41,8 @@
                                         </t>
                                     </select>
                                 </form>
-                            </div>
-                            <div class="col-6 col-sm-8">
+                            </div> -->
+                            <div class="col-10 col-sm-10">
                                 <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
                                     <select id="calendar_select" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <option selected="selected" value="">Config</option>

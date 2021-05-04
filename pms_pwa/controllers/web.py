@@ -1110,9 +1110,7 @@ class TestFrontEnd(http.Controller):
                 rooms_reservation_values, key=lambda item: item["date"]
             )
             for item in rooms_reservation_values:
-                item["date"] = item["date"].strftime(
-                    get_lang(request.env).date_format
-                )
+                item["date"] = item["date"].strftime(get_lang(request.env).date_format)
             values["reservations"].append(
                 {
                     "room": {
@@ -1343,7 +1341,7 @@ class TestFrontEnd(http.Controller):
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
 
-        date_list = [date_start + timedelta(days=x) for x in range(7)]
+        date_list = [date_start + timedelta(days=x) for x in range(30)]
 
         Pricelist = request.env["product.pricelist"]
         pricelist = Pricelist.search([])
