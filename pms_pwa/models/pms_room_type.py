@@ -11,13 +11,13 @@ class PmsPWARoomType(models.Model):
     def _get_availability_rooms(self):
         avail = 0
         if self._context.get("checkin") and self._context.get("checkout"):
-            avail = self.env[
-                "pms.availability.plan"
-            ].get_count_rooms_available(
+            avail = self.env["pms.availability.plan"].get_count_rooms_available(
                 checkin=self._context.get("checkin"),
                 checkout=self._context.get("checkout"),
                 room_type_id=self.id,
-                pms_property_id=self.env.user.get_active_property_ids()[0],# REVIEW: self._context.get("pms_property_id"),
+                pms_property_id=self.env.user.get_active_property_ids()[
+                    0
+                ],  # REVIEW: self._context.get("pms_property_id"),
                 pricelist_id=self._context.get("pricelist_id") or False,
             )
         return avail
@@ -43,12 +43,17 @@ class PmsPWARoomType(models.Model):
         return allowed_board_services if allowed_board_services else False
 
     def _get_count_reservations_date(self):
+        print(self._context.get("pms_property_id"))
         self.ensure_one()
         if self._context.get("date") and self._context.get("pms_property_id"):
-            return self.env["pms.reservation.line"].search_count([
-                ("date", "=", self._context.get("date")),
-                ("room_id", "in", self.room_ids.ids),
-                ("pms_property_id", "=", self._context.get("pms_property_id")),
-                ("occupies_availability", "=", True),
-            ])
+            print("--------------------------- HOLA ---------------------")
+            return self.env["pms.reservation.line"].search_count(
+                [
+                    ("date", "=", self._context.get("date")),
+                    ("room_id", "in", self.room_ids.ids),
+                    ("pms_property_id", "=", self._context.get("pms_property_id")),
+                    ("occupies_availability", "=", True),
+                ]
+            )
+
         return False

@@ -59,6 +59,9 @@
                                         </t>
                                     </select>
                                 </t>
+                                <t t-else="">
+                                    <t t-set="current_property" t-value="1" />
+                                </t>
                             </div>
                             <div class="col-lg-2 d-none d-lg-block o_pms_user_img">
                                 <a href="/web">

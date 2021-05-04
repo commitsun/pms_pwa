@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="pms_pwa" xml:space="preserve">
     <t t-name="pms_pwa.calendar_line">
-        <table class="table o_pms_pwa_reservation_list_table">
+        <table class="table o_pms_pwa_reservation_list_table" style="margin-top: -0.5rem;">
             <t t-foreach="obj_list" t-as="obj">
-                <tr class="o_pms_pwa_calendar_line">
+                <tr class="o_pms_pwa_calendar_line spacer">
                     <td class="o_pms_pwa_calendar_line_room_type o_pms_pwa_line_cell_header">
                         <p class="o_pms_pwa_calendar_line_title">
                             <t t-esc="obj.room.name" />
