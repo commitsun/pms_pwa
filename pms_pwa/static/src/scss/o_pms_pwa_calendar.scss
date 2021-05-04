@@ -330,27 +330,7 @@ section.o_pms_pwa_roomdoo {
                 text-align: center;
                 margin-top: 0.5rem;
             }
-            // &_nigth_1 {
-            //     width: 12%;
-            // }
-            // &_nigth_2 {
-            //     width: 24%;
-            // }
-            // &_nigth_3 {
-            //     width: 36%;
-            // }
-            // &_nigth_4 {
-            //     width: 48%;
-            // }
-            // &_nigth_5 {
-            //     width: 60%;
-            // }
-            // &_nigth_6 {
-            //     width: 72%;
-            // }
-            // &_nigth_7 {
-            //     width: 84%;
-            // }
+
             &_img_bg {
                 background-color: $theme-color;
                 float: left;
@@ -489,16 +469,29 @@ section.o_pms_pwa_roomdoo {
         //     }
 
         // }
-        &_td {
-            // width: 12.2%;
-
+    }
+    #calendar_conf_table.table {
+        background-color: $bg-theme-color;
+        // td.o_pms_pwa_table_cell{
+        //     p.o_pms_pwa_title{
+        //         text-align: center !important;
+        //         height: 1rem;
+        //     }
+        // }
+        p {
+            text-align: center;
             input {
-                width: 80%;
+                width: 60px;
                 margin-left: 1rem;
-                // padding: 0;
+                margin: auto;
                 border: none;
                 text-align: center;
             }
+        }
+
+        .o_pms_pwa_show_table {
+            background-color: $bg-theme-color-modal;
+            text-align: center;
         }
     }
 }

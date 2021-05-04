@@ -90,6 +90,10 @@
             />
             <script
                 type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_calendar_config.js"
+            />
+            <script
+                type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_notify.js"
             />
             <script src="/pms_pwa/static/src/js/vendor/bs-stepper.min.js"></script>
