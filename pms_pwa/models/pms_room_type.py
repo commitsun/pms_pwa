@@ -41,3 +41,14 @@ class PmsPWARoomType(models.Model):
                 }
             )
         return allowed_board_services if allowed_board_services else False
+
+    def _get_count_reservations_date(self):
+        self.ensure_one()
+        if self._context.get("date") and self._context.get("pms_property_id"):
+            return self.env["pms.reservation.line"].search_count([
+                ("date", "=", self._context.get("date")),
+                ("room_id", "in", self.room_ids.ids),
+                ("pms_property_id", "=", self._context.get("pms_property_id")),
+                ("occupies_availability", "=", True),
+            ])
+        return False
