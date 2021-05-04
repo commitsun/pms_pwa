@@ -67,7 +67,7 @@
                                 <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
                                     <form method="post" action="">
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                        <input type="submit" name="save" value="Guardar" class="btn btn-primary"></input>
+                                        <input type="submit" id="save" name="save" value="Guardar" class="btn btn-primary d-none"></input>
                                     </form>
                                 </div>
                             </div>
@@ -127,12 +127,13 @@
                                             <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
                                                 <table class="table" id="calendar_conf_table">
                                                     <t t-foreach="pricelist" t-as="price">
+                                                        <tr data-toggle="collapse" t-att-data-target="'#collapse_2_accordion_'+str(obj.id)" aria-expanded="false">
+                                                            <td class="o_pms_pwa_show_table" t-att-colspan="len(date_list)+1" > <t t-esc="price.display_name" /> <i class="fa fa-angle-down"></i></td>
+                                                        </tr>
                                                         <tr>
                                                             <td class="o_pms_pwa_table_cell">
 
-                                                                <p class="o_pms_pwa_calendar_line_title">
-                                                                    <t t-esc="price.display_name" />
-                                                                </p>
+
                                                                 <p>Price</p>
                                                                 <p>Min. stay</p>
                                                                 <p>Quota</p>
@@ -146,7 +147,7 @@
                                                             </td>
                                                             <t t-foreach="len(date_list)" t-as="room_day">
                                                                 <td class="o_pms_pwa_table_cell" t-attf-id="room_{{room_day}}" t-attf-data-id="{{ room_day }}">
-                                                                    <p class="o_pms_pwa_calendar_line_title">Conf.</p>
+
                                                                     <p>
                                                                         <input t-attf-tabindex="{{ price.id }}1{{room_day}}" style="width:80px;" type="text" value="10" name="price" />
                                                                     </p>
@@ -173,9 +174,7 @@
                                                                 </td>
                                                             </t>
                                                         </tr>
-                                                        <tr data-toggle="collapse" t-att-data-target="'#collapse_2_accordion_'+str(obj.id)" aria-expanded="false">
-                                                            <td class="o_pms_pwa_show_table" t-att-colspan="len(date_list)+1" > Ver más </td>
-                                                        </tr>
+
                                                     </t>
                                                 </table>
                                             </td>

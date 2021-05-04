@@ -478,6 +478,13 @@ section.o_pms_pwa_roomdoo {
         //         height: 1rem;
         //     }
         // }
+        tr[aria-expanded="true"] {
+            i {
+                -moz-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
         p {
             text-align: center;
             input {
