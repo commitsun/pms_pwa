@@ -764,14 +764,19 @@ class TestFrontEnd(http.Controller):
         reservation = False
         params = http.request.jsonrequest.get("params")
         _logger.info(params)
-        #TEMP FIX
+        # TEMP FIX
         ##############################################################################
-        if "checkin" in params and "checkout" in params and datetime.datetime.strptime(
+        if (
+            "checkin" in params
+            and "checkout" in params
+            and datetime.datetime.strptime(
                 params["checkin"].strip(), get_lang(request.env).date_format
-            ) >= datetime.datetime.strptime(
+            )
+            >= datetime.datetime.strptime(
                 params["checkout"].strip(), get_lang(request.env).date_format
-            ):
-                return
+            )
+        ):
+            return
         ##############################################################################
         if reservation_id:
             reservation = (
@@ -863,7 +868,9 @@ class TestFrontEnd(http.Controller):
                         reservation_values.update(
                             self.parse_params_record(
                                 origin_values={
-                                    "reservation_line_ids": params["reservation_line_ids"]
+                                    "reservation_line_ids": params[
+                                        "reservation_line_ids"
+                                    ]
                                 },
                                 model=request.env["pms.reservation"],
                             )
@@ -873,9 +880,7 @@ class TestFrontEnd(http.Controller):
                     elif param == "service_ids":
                         reservation_values.update(
                             self.parse_params_record(
-                                origin_values={
-                                    "service_ids": params["service_ids"]
-                                },
+                                origin_values={"service_ids": params["service_ids"]},
                                 model=request.env["pms.reservation"],
                             ),
                         )
@@ -927,16 +932,26 @@ class TestFrontEnd(http.Controller):
     def calendar(self, **post):
         date = datetime.datetime.now()
         date_start = date + timedelta(days=-1)
-        if post.get("next"):
+        if post.get("next_day"):
             date = datetime.datetime.strptime(
-                post.get("next"), get_lang(request.env).date_format
+                post.get("next_day"), get_lang(request.env).date_format
             ).date()
             date_start = date + timedelta(days=+1)
-        if post.get("previous"):
+        if post.get("previous_day"):
             date = datetime.datetime.strptime(
-                post.get("previous"), get_lang(request.env).date_format
+                post.get("previous_day"), get_lang(request.env).date_format
             ).date()
             date_start = date + timedelta(days=-1)
+        if post.get("next_month"):
+            date = datetime.datetime.strptime(
+                post.get("next_month"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=30)
+        if post.get("previous_month"):
+            date = datetime.datetime.strptime(
+                post.get("previous_month"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=-30)
 
         pms_property_id = request.env.user.get_active_property_ids()[0]
         Room = request.env["pms.room"]
@@ -1024,8 +1039,8 @@ class TestFrontEnd(http.Controller):
             room = request.env["pms.room"].browse(room_id)
             rooms_reservation_values = []
             for reservation in reservations.filtered(
-                lambda r: r.preferred_room_id.id == room_id and \
-                r.pms_property_id.id == pms_property_id
+                lambda r: r.preferred_room_id.id == room_id
+                and r.pms_property_id.id == pms_property_id
             ):
                 min_reservation_date = min(
                     reservation.reservation_line_ids.filtered(

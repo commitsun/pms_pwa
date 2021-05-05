@@ -72,14 +72,26 @@ section.o_pms_pwa_roomdoo {
             border-spacing: 8px;
             overflow: auto;
             thead {
-                border-bottom: 1px solid $theme-color;
-                th {
-                    position: -webkit-sticky;
-                    position: sticky;
-                    top: 0;
-                    z-index: 99;
+                // border-bottom: 1px solid $theme-color;
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+                z-index: 99;
+                background-color: $white;
+                height: 20px;
+                tr {
                     background-color: $white;
-                    height: 20px;
+                    // transform: translate(8px);
+                    border-bottom: 1px solid $theme-color;
+                    //*border-collapse: expression('collapse', cellSpacing = '10px');
+                    th {
+                        background-color: $white;
+                        // border-bottom: 1px solid $theme-color;
+                        a {
+                            margin-left: -8px;
+                            height: 25px;
+                        }
+                    }
                 }
             }
             tbody {
@@ -93,6 +105,7 @@ section.o_pms_pwa_roomdoo {
             .o_pms_pwa_reservation_list_table {
                 border-collapse: separate;
                 border-spacing: 0 8px;
+                margin-bottom: 0px !important;
             }
         }
 
@@ -466,8 +479,9 @@ section.o_pms_pwa_roomdoo {
         .btn-add {
             display: none;
             margin-top: 0.5rem;
-            width: 80%;
-            margin-left: 1.5rem;
+            width: 90%;
+            //margin-left: 1.5rem;
+            margin-left: 0.5rem;
             border-radius: 1.5rem;
             border: none;
             background-image: linear-gradient(
