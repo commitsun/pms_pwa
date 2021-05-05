@@ -177,7 +177,12 @@ section.o_pms_pwa_roomdoo {
             border-bottom: 3px solid $dark;
             vertical-align: middle;
         }
-
+        td.o_pms_pwa_dispo_0 {
+            background-color: #f582a640;
+        }
+        td.o_pms_pwa_dispo_1 {
+            background-color: #ffe7712e;
+        }
         .o_pms_pwa_open_calendar[aria-expanded="true"] {
             background-color: $white;
             .o_pms_pwa_room_name {
@@ -358,6 +363,16 @@ section.o_pms_pwa_roomdoo {
                         width: 12px;
                         margin-left: 0.1rem;
                     }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: var(--success);
+                    }
                 }
                 &_warning {
                     border-bottom: 4px solid var(--warning);
@@ -367,6 +382,16 @@ section.o_pms_pwa_roomdoo {
                         margin-top: -3rem;
                         width: 8px;
                         margin-left: 0.1rem;
+                    }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: var(--warning);
                     }
                 }
                 &_danger {
@@ -378,6 +403,16 @@ section.o_pms_pwa_roomdoo {
                         width: 8px;
                         margin-left: 0.1rem;
                     }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: var(--danger);
+                    }
                 }
                 &_info {
                     border-bottom: 4px solid $theme-color;
@@ -387,6 +422,16 @@ section.o_pms_pwa_roomdoo {
                         margin-top: -3rem;
                         width: 12px;
                         margin-left: 0.1rem;
+                    }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: $theme-color;
                     }
                 }
             }
@@ -406,15 +451,6 @@ section.o_pms_pwa_roomdoo {
                     border-left: 1px solid var(--success);
                     margin-left: 0.35rem;
                 }
-                // &::after {
-                //     content: "";
-                //     position: absolute;
-                //     bottom: 20%;
-                //     height: 38%;
-                //     border-right: 1px solid var(--success);
-                //     margin-left: -0.35rem;
-                //     z-index: 0;
-                // }
             }
             &_price {
                 font-weight: bold;
