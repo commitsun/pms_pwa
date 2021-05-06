@@ -103,12 +103,154 @@ section.o_pms_pwa_roomdoo {
                         padding-bottom: 0;
                         height: 20px;
                     }
+                    td.o_pms_pwa_dispo_0 {
+                        background-color: #f582a640;
+                    }
+                    td.o_pms_pwa_dispo_1 {
+                        background-color: #ffe7712e;
+                    }
+                    td.o_pms_pwa_line_cell_content {
+                        width: 189.265px !important;
+                        min-width: 189.265px !important;
+                        border: none;
+                    }
+                    td.o_pms_pwa_line_cell_header {
+                        width: 214.167px !important;
+                        min-width: 214.167px !important;
+                        border-left: 3px solid $grey-900 !important;
+                    }
                 }
+
+
+            }
+
+            th.o_pms_pwa_table_first_header_td,
+            td.o_pms_pwa_table_first_header_td {
+                background-color: $white;
+            }
+            th:first-child,
+            td:first-child {
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
+                position: sticky;
+                left: 0px;
+                z-index: 2;
+                width: 206.4px !important;
+                min-width: 206.4px !important;
+                border: none;
+            }
+            tr:nth-child(odd) > td {
+                // background-color: $white;
+                width: 182.4px;
+                min-width: 182.4px;
+            }
+            tr:nth-child(even) > td {
+                // background-color: $white;
+                width: 182.4px;
+                min-width: 182.4px;
+            }
+            tr:nth-child(odd) > th {
+                // background-color: $white;
+                width: 182.4px;
+                min-width: 182.4px;
             }
             .o_pms_pwa_reservation_list_table {
                 border-collapse: separate;
                 border-spacing: 0 8px;
                 margin-bottom: 0px !important;
+
+                  td[colspan="2"] {
+                    width: calc(189.265px * 2) !important;
+                  }
+                  td[colspan="3"] {
+                    width: calc(189.265px * 3) !important;
+                  }
+                  td[colspan="4"] {
+                    width: calc(189.265px * 4) !important;
+                  }
+                  td[colspan="5"] {
+                    width: calc(189.265px * 5) !important;
+                  }
+                  td[colspan="6"] {
+                    width: calc(189.265px * 6) !important;
+                  }
+                  td[colspan="7"] {
+                    width: calc(189.265px* 7) !important;
+                  }
+                  td[colspan="8"] {
+                    width: calc(189.265px* 8) !important;
+                  }
+                  td[colspan="9"] {
+                    width: calc(189.265px* 9) !important;
+                  }
+                  td[colspan="10"] {
+                    width: calc(189.265px* 10) !important;
+                  }
+                  td[colspan="11"] {
+                    width: calc(189.265px* 11) !important;
+                  }
+                  td[colspan="12"] {
+                    width: calc(189.265px* 12) !important;
+                  }
+                  td[colspan="13"] {
+                    width: calc(189.265px* 13) !important;
+                  }
+                  td[colspan="14"] {
+                    width: calc(189.265px* 14) !important;
+                  }
+                  td[colspan="15"] {
+                    width: calc(189.265px* 15) !important;
+                  }
+                  td[colspan="16"] {
+                    width: calc(189.265px* 16) !important;
+                  }
+                  td[colspan="17"] {
+                    width: calc(189.265px* 17) !important;
+                  }
+                  td[colspan="18"] {
+                    width: calc(189.265px* 18) !important;
+                  }
+                  td[colspan="19"] {
+                    width: calc(189.265px* 19) !important;
+                  }
+                  td[colspan="20"] {
+                    width: calc(189.265px* 20) !important;
+                  }
+                  td[colspan="21"] {
+                    width: calc(189.265px* 21) !important;
+                  }
+                  td[colspan="22"] {
+                    width: calc(189.265px* 22) !important;
+                  }
+                  td[colspan="23"] {
+                    width: calc(189.265px* 23) !important;
+                  }
+                  td[colspan="24"] {
+                    width: calc(189.265px* 24) !important;
+                  }
+                  td[colspan="25"] {
+                    width: calc(189.265px* 25) !important;
+                  }
+                  td[colspan="26"] {
+                    width: calc(189.265px* 26) !important;
+                  }
+                  td[colspan="27"] {
+                    width: calc(189.265px* 27) !important;
+                  }
+                  td[colspan="28"] {
+                    width: calc(189.265px* 28) !important;
+                  }
+                  td[colspan="29"] {
+                    width: calc(189.265px* 29) !important;
+                  }
+                  td[colspan="30"] {
+                    width: calc(189.265px* 30) !important;
+                  }
+                  td[colspan="31"] {
+                    width: calc(189.265px* 31) !important;
+                  }
             }
         }
 
@@ -179,17 +321,17 @@ section.o_pms_pwa_roomdoo {
         .o_pms_pwa_today {
             border-bottom: 3px solid $theme-color;
             vertical-align: middle;
-            &::after {
-                content: "";
-                position: absolute;
-                margin-top: 47px;
-                top:0;
-                height: 525px;
-                border-right: 2px solid $theme-color;
-                margin-left: -3rem;
-                z-index: -1;
-                opacity: 0.2;
-            }
+            // &::after {
+            //     content: "";
+            //     position: absolute;
+            //     margin-top: 47px;
+            //     top:0;
+            //     height: 525px;
+            //     border-right: 2px solid $theme-color;
+            //     margin-left: -3rem;
+            //     z-index: -1;
+            //     opacity: 0.2;
+            // }
         }
         th.o_pms_pwa_weekend {
             border-bottom: 3px solid $dark;
@@ -205,12 +347,7 @@ section.o_pms_pwa_roomdoo {
             //     opacity: 0.2;
             // }
         }
-        td.o_pms_pwa_dispo_0 {
-            background-color: #f582a640;
-        }
-        td.o_pms_pwa_dispo_1 {
-            background-color: #ffe7712e;
-        }
+
         .o_pms_pwa_open_calendar[aria-expanded="true"] {
             background-color: $white;
             .o_pms_pwa_room_name {
@@ -260,49 +397,7 @@ section.o_pms_pwa_roomdoo {
                 width: 10px;
             }
         }
-        /* Table movil */
-        td.o_pms_pwa_line_cell_content {
-            width: 189.265px !important;
-            min-width: 189.265px !important;
-            border: none;
-        }
-        td.o_pms_pwa_line_cell_header {
-            width: 214.167px !important;
-            min-width: 214.167px !important;
-            border-left: 3px solid $grey-900 !important;
-        }
-        th.o_pms_pwa_table_first_header_td,
-        td.o_pms_pwa_table_first_header_td {
-            background-color: $white;
-        }
-        th:first-child,
-        td:first-child {
-            position: -webkit-sticky;
-            position: -moz-sticky;
-            position: -ms-sticky;
-            position: -o-sticky;
-            position: sticky;
-            left: 0px;
-            z-index: 2;
-            width: 206.4px !important;
-            min-width: 206.4px !important;
-            border: none;
-        }
-        tr:nth-child(odd) > td {
-            // background-color: $white;
-            width: 182.4px;
-            min-width: 182.4px;
-        }
-        tr:nth-child(even) > td {
-            // background-color: $white;
-            width: 182.4px;
-            min-width: 182.4px;
-        }
-        tr:nth-child(odd) > th {
-            // background-color: $white;
-            width: 182.4px;
-            min-width: 182.4px;
-        }
+
         .o_pms_pwa_hiddenRow {
             padding: 0 !important;
             border: none;
@@ -389,11 +484,11 @@ section.o_pms_pwa_roomdoo {
 
             }
             &_hr {
-                margin-left: 1.5rem;
+
                 &_success {
                     border-bottom: 4px solid var(--success);
-                    width: 105%;
-
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 12px;
@@ -412,8 +507,8 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_warning {
                     border-bottom: 4px solid var(--warning);
-                    width: 105%;
-                    margin-left: 1.5rem;
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 8px;
@@ -432,8 +527,8 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_danger {
                     border-bottom: 4px solid var(--danger);
-                    width: 105%;
-                    margin-left: 1.5rem;
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 8px;
@@ -452,8 +547,8 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_info {
                     border-bottom: 4px solid $theme-color;
-                    width: 105%;
-                    margin-left: 1.5rem;
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 12px;
@@ -491,7 +586,7 @@ section.o_pms_pwa_roomdoo {
             &_price {
                 font-weight: bold;
                 font-size: 14px;
-                margin-left: 0.2rem;
+                margin-left: 1.5rem;
             }
             &_name {
                 margin-left: 0.2rem;
@@ -502,9 +597,9 @@ section.o_pms_pwa_roomdoo {
         .btn-add {
             display: none;
             margin-top: 0.5rem;
-            width: 80%;
-            margin-left: 1.5rem;
-            //margin-left: 0.5rem;
+            width: 90%;
+            // margin-left: 1.5rem;
+            margin-left: 0.5rem;
             border-radius: 1.5rem;
             border: none;
             background-image: linear-gradient(
