@@ -1056,6 +1056,11 @@ class TestFrontEnd(http.Controller):
                                 + timedelta(days=1)
                                 - min_reservation_date
                             ).days,
+                            "days": (
+                                max_reservation_date
+                                + timedelta(days=1)
+                                - min_reservation_date
+                            ).days + 1,
                             "checkin_in_range": False
                             if min_reservation_date == reservation.checkin
                             else True,
