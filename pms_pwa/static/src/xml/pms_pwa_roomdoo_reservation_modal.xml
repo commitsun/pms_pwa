@@ -86,12 +86,22 @@
                             <form class="mt-2 o_pms_pwa_reservation_form" target="_self" t-att-action="'/reservation/'+reservation.id" method="post">
                                 <div class="form-group form-field mt8">
                                     <div class="row">
-                                        <div class="col-sm-12">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="room_type_id">
                                                 <t t-esc="texts.room_type_text || _t('Room type')" />
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id">
+                                            <select data-select="room_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id">
                                                 <option t-foreach="room_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.room_type_id.id === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="pricelist_id">
+                                                Tarifa
+                                            </label>
+                                            <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id">
+                                                <option t-foreach="reservation.allowed_pricelists" t-as="key" t-att-value="key.id" t-att-selected="reservation.pricelist_id === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>
@@ -102,7 +112,7 @@
                                             <label class="control-label col-12" for="preferred_room_id">
                                                 <t t-esc="texts.room_number_text || _t('Room nº')" />
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
+                                            <select data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
                                                 <option t-foreach="room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id.id === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
@@ -172,7 +182,7 @@
                                             <label class="control-label col-12" for="board_service_room_id">
                                                 Board service
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
+                                            <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
                                                 <option t-foreach="reservation.allowed_board_service_room_ids" t-as="key" t-att-value="key.id" t-att-selected="reservation.board_service_room_id.id === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
@@ -301,7 +311,7 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" t-attf-data-main_field="service_ids" t-attf-data-main_field_id="{{ service }}" data-subservice_name="service_line_ids" t-attf-data-field_id="{{s}}" t-attf-id="price_{{ service }}_{{ s }}" name="price_unit"  t-attf-value="{{s_value.price_unit}}" class="form-control o_pms_pwa_modal_number" />
+                                                                                <input type="number" t-attf-data-main_field="service_ids" t-attf-data-main_field_id="{{ service }}" data-subservice_name="service_line_ids" t-attf-data-field_id="{{s}}" t-attf-id="price_{{ service }}_{{ s }}" name="price"  t-attf-value="{{s_value.price}}" class="form-control o_pms_pwa_modal_number" />
                                                                             </td>
                                                                         </tr>
 
@@ -369,7 +379,7 @@
                                                         <t t-esc="texts.outstading_text || _t('Importe pendiente')" />
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12" t-if="reservation.folio_pending_amount">
-                                                        <strong t-esc="reservation.folio_pending_amount" />
+                                                        <strong t-esc="reservation.folio_pending_amount" class="pending_amount"/>
 
                                                         <!-- <span>
                                                             (

@@ -1,5 +1,6 @@
 section.o_pms_pwa_roomdoo {
     .o_pms_pwa_calendar {
+        overflow-x: none;
         @media (max-width: 991.98px) {
             margin-left: -3rem;
             margin-top: -4rem;
@@ -25,6 +26,10 @@ section.o_pms_pwa_roomdoo {
                 width: 200px;
                 font-size: 14px;
             }
+        }
+        .o_pms_pwa_calendar_arrow {
+            font-size: 16px;
+            font-weight: bold;
         }
         .o_pms_pwa_month_select {
             margin-right: 1rem;
@@ -58,19 +63,194 @@ section.o_pms_pwa_roomdoo {
                 }
             }
         }
+        .table-responsive {
+            height: calc(65vh - 25px);
+        }
         #calendar_table.table,
         #calendar_config_table.table {
             border-collapse: separate;
             border-spacing: 8px;
+            overflow: auto;
             thead {
-                border-bottom: 1px solid $theme-color;
+                // border-bottom: 1px solid $theme-color;
+                background-color: $white;
+                height: 20px;
+                tr {
+                    background-color: $white;
+                    // transform: translate(8px);
+                    border-bottom: 1px solid $theme-color;
+                    //*border-collapse: expression('collapse', cellSpacing = '10px');
+                    th {
+                        background-color: $white;
+                        position: -webkit-sticky;
+                        position: -moz-sticky;
+                        position: -ms-sticky;
+                        position: -o-sticky;
+                        position: sticky;
+                        top: 0;
+                        z-index: 99;
+                        // border-bottom: 1px solid $theme-color;
+                        a {
+                            margin-left: -8px;
+                            height: 25px;
+                        }
+                    }
+                }
             }
             tbody {
                 tr {
                     td {
                         padding-bottom: 0;
+                        height: 20px;
+                    }
+                    td.o_pms_pwa_dispo_0 {
+                        background-color: #f582a640;
+                    }
+                    td.o_pms_pwa_dispo_1 {
+                        background-color: #ffe7712e;
+                    }
+                    td.o_pms_pwa_line_cell_content {
+                        width: 189.265px !important;
+                        min-width: 189.265px !important;
+                        border: none;
+                    }
+                    td.o_pms_pwa_line_cell_header {
+                        width: 214.167px !important;
+                        min-width: 214.167px !important;
+                        border-left: 3px solid $grey-900 !important;
                     }
                 }
+
+
+            }
+
+            th.o_pms_pwa_table_first_header_td,
+            td.o_pms_pwa_table_first_header_td {
+                background-color: $white;
+            }
+            th:first-child,
+            td:first-child {
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
+                position: sticky;
+                left: 0px;
+                z-index: 2;
+                width: 206.4px !important;
+                min-width: 206.4px !important;
+                border: none;
+            }
+            tr:nth-child(odd) > td {
+                // background-color: $white;
+                width: 182.4px;
+                min-width: 182.4px;
+            }
+            tr:nth-child(even) > td {
+                // background-color: $white;
+                width: 182.4px;
+                min-width: 182.4px;
+            }
+            tr:nth-child(odd) > th {
+                // background-color: $white;
+                width: 182.4px;
+                min-width: 182.4px;
+            }
+            .o_pms_pwa_reservation_list_table {
+                border-collapse: separate;
+                border-spacing: 0 8px;
+                margin-bottom: 0px !important;
+
+                  td[colspan="2"] {
+                    width: calc(189.265px * 2) !important;
+                  }
+                  td[colspan="3"] {
+                    width: calc(189.265px * 3) !important;
+                  }
+                  td[colspan="4"] {
+                    width: calc(189.265px * 4) !important;
+                  }
+                  td[colspan="5"] {
+                    width: calc(189.265px * 5) !important;
+                  }
+                  td[colspan="6"] {
+                    width: calc(189.265px * 6) !important;
+                  }
+                  td[colspan="7"] {
+                    width: calc(189.265px* 7) !important;
+                  }
+                  td[colspan="8"] {
+                    width: calc(189.265px* 8) !important;
+                  }
+                  td[colspan="9"] {
+                    width: calc(189.265px* 9) !important;
+                  }
+                  td[colspan="10"] {
+                    width: calc(189.265px* 10) !important;
+                  }
+                  td[colspan="11"] {
+                    width: calc(189.265px* 11) !important;
+                  }
+                  td[colspan="12"] {
+                    width: calc(189.265px* 12) !important;
+                  }
+                  td[colspan="13"] {
+                    width: calc(189.265px* 13) !important;
+                  }
+                  td[colspan="14"] {
+                    width: calc(189.265px* 14) !important;
+                  }
+                  td[colspan="15"] {
+                    width: calc(189.265px* 15) !important;
+                  }
+                  td[colspan="16"] {
+                    width: calc(189.265px* 16) !important;
+                  }
+                  td[colspan="17"] {
+                    width: calc(189.265px* 17) !important;
+                  }
+                  td[colspan="18"] {
+                    width: calc(189.265px* 18) !important;
+                  }
+                  td[colspan="19"] {
+                    width: calc(189.265px* 19) !important;
+                  }
+                  td[colspan="20"] {
+                    width: calc(189.265px* 20) !important;
+                  }
+                  td[colspan="21"] {
+                    width: calc(189.265px* 21) !important;
+                  }
+                  td[colspan="22"] {
+                    width: calc(189.265px* 22) !important;
+                  }
+                  td[colspan="23"] {
+                    width: calc(189.265px* 23) !important;
+                  }
+                  td[colspan="24"] {
+                    width: calc(189.265px* 24) !important;
+                  }
+                  td[colspan="25"] {
+                    width: calc(189.265px* 25) !important;
+                  }
+                  td[colspan="26"] {
+                    width: calc(189.265px* 26) !important;
+                  }
+                  td[colspan="27"] {
+                    width: calc(189.265px* 27) !important;
+                  }
+                  td[colspan="28"] {
+                    width: calc(189.265px* 28) !important;
+                  }
+                  td[colspan="29"] {
+                    width: calc(189.265px* 29) !important;
+                  }
+                  td[colspan="30"] {
+                    width: calc(189.265px* 30) !important;
+                  }
+                  td[colspan="31"] {
+                    width: calc(189.265px* 31) !important;
+                  }
             }
         }
 
@@ -98,12 +278,20 @@ section.o_pms_pwa_roomdoo {
             border: 1px solid $grey-300;
             border-radius: 0.25rem;
             min-height: 2rem;
-            // position: sticky;
-            // position: -webkit-sticky; /* for safari */
-            // z-index: 1;
+            background-color: white;
             .o_pms_pwa_title {
                 color: $black;
+                .o_pms_pwa_info {
+                    color: $theme-color;
+                    position: relative;
+                    top: -1rem;
+                    right: -4rem;
+                    .o_pms_pwa_interrogante-calendar {
+                        width: 13px;
+                    }
+                }
             }
+
             .o_pms_pwa_content {
                 margin-top: -1rem;
                 text-align: right;
@@ -115,14 +303,6 @@ section.o_pms_pwa_roomdoo {
                     color: $black;
                     font-weight: bold;
                 }
-                .o_pms_pwa_info {
-                    color: $theme-color;
-                    .o_pms_pwa_interrogante-calendar {
-                        width: 13px;
-                        margin-left: 2px;
-                        margin-top: -3px;
-                    }
-                }
             }
         }
         .o_pms_pwa_table_week {
@@ -130,6 +310,7 @@ section.o_pms_pwa_roomdoo {
             border-bottom: 1px solid $theme-color;
             border-collapse: collapse;
             border-spacing: 0;
+            vertical-align: middle;
             &:after {
                 border-bottom: 1px solid $theme-color !important;
             }
@@ -140,15 +321,33 @@ section.o_pms_pwa_roomdoo {
         .o_pms_pwa_today {
             border-bottom: 3px solid $theme-color;
             vertical-align: middle;
+            // &::after {
+            //     content: "";
+            //     position: absolute;
+            //     margin-top: 47px;
+            //     top:0;
+            //     height: 525px;
+            //     border-right: 2px solid $theme-color;
+            //     margin-left: -3rem;
+            //     z-index: -1;
+            //     opacity: 0.2;
+            // }
         }
-        .o_pms_pwa_today:after {
-            content: "";
-            position: absolute;
-            top: 22%;
-            height: 78%;
-            border-right: 2px solid $theme-color;
-            margin-left: -2rem;
+        th.o_pms_pwa_weekend {
+            border-bottom: 3px solid $dark;
+            vertical-align: middle;
+            // &::after {
+            //     content: "";
+            //     position: absolute;
+            //     top: 99%;
+            //     height: 525px;
+            //     border-right: 2px solid $dark;
+            //     margin-left: -2rem;
+            //     //z-index: -2;
+            //     opacity: 0.2;
+            // }
         }
+
         .o_pms_pwa_open_calendar[aria-expanded="true"] {
             background-color: $white;
             .o_pms_pwa_room_name {
@@ -198,122 +397,68 @@ section.o_pms_pwa_roomdoo {
                 width: 10px;
             }
         }
-        /* Table movil */
-        td.o_pms_pwa_line_cell_content {
-            width: 189.265px !important;
-            min-width: 189.265px !important;
-            border: none;
-        }
-        td.o_pms_pwa_line_cell_header {
-            width: 214.167px !important;
-            min-width: 214.167px !important;
-        }
-        th.o_pms_pwa_table_first_header_td,
-        td.o_pms_pwa_table_first_header_td {
-            background-color: $white;
-        }
-        th:first-child,
-        td:first-child {
-            position: sticky;
-            position: -webkit-sticky; /* for safari */
-            left: 0px;
-            z-index: 2;
-            // width: 10.75vw !important;
-            width: 206.4px !important;
-            min-width: 206.4px !important;
-            border: none;
-            //width: 16% !important;
-        }
-        tr:nth-child(odd) > td {
-            // background-color: $white;
-            //width: 12vw;
-            //width: 9.5vw;
-            width: 182.4px;
-            min-width: 182.4px;
-        }
-        tr:nth-child(even) > td {
-            // background-color: $white;
-            //width: 12vw;
-            width: 182.4px;
-            min-width: 182.4px;
-        }
-        tr:nth-child(odd) > th {
-            // background-color: $white;
-            //width: 12vw;
-            width: 182.4px;
-            min-width: 182.4px;
-        }
+
         .o_pms_pwa_hiddenRow {
             padding: 0 !important;
             border: none;
             z-index: 1;
         }
         .o_pms_pwa_line_before {
-            &_success::before {
+            &_success::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-top: 4px solid var(--success);
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
-            &_warning::before {
+            &_warning::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-bottom: 4px solid var(--warning);
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
-            &_danger::before {
+            &_danger::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-bottom: 4px solid var(--danger);
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
-            &_info {
+            &_info::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-bottom: 4px solid $theme-color;
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
         }
         .o_pms_pwa_calendar_line {
-            border-left: 3px solid $grey-900;
             background-color: $bg-theme-color;
-            // min-height: 3rem;
-            // margin-left: 1rem;
-            // z-index: 1;
-            // margin-right: 0.2rem;
-            // margin-top: 0.3rem;
-            // min-width: 125px !important;
             .o_pms_pwa_calendar_reservation {
                 cursor: pointer;
             }
             &_room_type {
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
                 position: sticky;
-                position: -webkit-sticky; /* for safari */
                 left: 0px;
                 z-index: 2;
-                // min-width: 200px;
                 background-color: $bg-theme-color;
-                // width: 14.25%;
-                // @media (max-width: 991.98px) {
-                //     width: 175px;
-                //     min-width: 175px;
-                // }
             }
             &_title {
                 color: $theme-color;
@@ -330,72 +475,94 @@ section.o_pms_pwa_roomdoo {
                 text-align: center;
                 margin-top: 0.5rem;
             }
-            // &_nigth_1 {
-            //     width: 12%;
-            // }
-            // &_nigth_2 {
-            //     width: 24%;
-            // }
-            // &_nigth_3 {
-            //     width: 36%;
-            // }
-            // &_nigth_4 {
-            //     width: 48%;
-            // }
-            // &_nigth_5 {
-            //     width: 60%;
-            // }
-            // &_nigth_6 {
-            //     width: 72%;
-            // }
-            // &_nigth_7 {
-            //     width: 84%;
-            // }
+
             &_img_bg {
                 background-color: $theme-color;
                 float: left;
-                // margin-top: -0.2rem;
+
                 padding: 0.1rem;
+
             }
             &_hr {
+
                 &_success {
-                    // margin-top: 0.7rem;
-                    // margin-left: 0.75rem;
                     border-bottom: 4px solid var(--success);
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: 0.25rem;
+                        margin-top: -3rem;
                         width: 12px;
                         margin-left: 0.1rem;
+                    }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: var(--success);
                     }
                 }
                 &_warning {
-                    // margin-top: 0.7rem;
-                    // margin-left: 0.75rem;
                     border-bottom: 4px solid var(--warning);
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: 0.25rem;
+                        margin-top: -3rem;
                         width: 8px;
                         margin-left: 0.1rem;
+                    }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: var(--warning);
                     }
                 }
                 &_danger {
-                    // margin-top: 0.7rem;
-                    // margin-left: 0.75rem;
                     border-bottom: 4px solid var(--danger);
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: 0.25rem;
+                        margin-top: -3rem;
                         width: 8px;
                         margin-left: 0.1rem;
                     }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: var(--danger);
+                    }
                 }
                 &_info {
-                    // margin-top: 0.7rem;
-                    // margin-left: 0.75rem;
                     border-bottom: 4px solid $theme-color;
+                    // width: calc(105% / var(--n));
+                    // margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: 0.25rem;
+                        margin-top: -3rem;
                         width: 12px;
                         margin-left: 0.1rem;
+                    }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        margin-left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: $theme-color;
                     }
                 }
             }
@@ -406,11 +573,20 @@ section.o_pms_pwa_roomdoo {
                 text-align: center;
                 width: 1.5rem;
                 height: 1.5rem;
+                &:before {
+                    content: "";
+                    display: block;
+                    position: relative;
+                    top: -1.75rem;
+                    height: 26px;
+                    border-left: 1px solid var(--success);
+                    margin-left: 0.35rem;
+                }
             }
             &_price {
                 font-weight: bold;
                 font-size: 14px;
-                margin-left: 0.2rem;
+                margin-left: 1.5rem;
             }
             &_name {
                 margin-left: 0.2rem;
@@ -422,6 +598,8 @@ section.o_pms_pwa_roomdoo {
             display: none;
             margin-top: 0.5rem;
             width: 90%;
+            // margin-left: 1.5rem;
+            margin-left: 0.5rem;
             border-radius: 1.5rem;
             border: none;
             background-image: linear-gradient(
@@ -489,16 +667,43 @@ section.o_pms_pwa_roomdoo {
         //     }
 
         // }
-        &_td {
-            // width: 12.2%;
-
+        tr[aria-expanded="true"] {
+            i {
+                -moz-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
+    }
+    #calendar_conf_table_line.table {
+        background-color: $bg-theme-color;
+        // td.o_pms_pwa_table_cell{
+        //     p.o_pms_pwa_title{
+        //         text-align: center !important;
+        //         height: 1rem;
+        //     }
+        // }
+        tr[aria-expanded="true"] {
+            i {
+                -moz-transform: rotate(180deg);
+                -webkit-transform: rotate(180deg);
+                transform: rotate(180deg);
+            }
+        }
+        p {
+            text-align: center;
             input {
-                width: 80%;
+                width: 60px;
                 margin-left: 1rem;
-                // padding: 0;
-                border: none;
+                margin: auto;
+                border: 1px solid $theme-color;
                 text-align: center;
             }
+        }
+
+        .o_pms_pwa_show_table {
+            background-color: $bg-theme-color-modal;
+            text-align: center;
         }
     }
 }

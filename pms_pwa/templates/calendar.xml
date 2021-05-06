@@ -3,6 +3,17 @@
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Calendar'"/>
+            <t t-if="request.httprequest.cookies.get('pms_pids', false)">
+                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
+                </t>
+                <t t-else="">
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
+                </t>
+            </t>
+            <t t-else="">
+                <t t-set="current_property" t-value="1" />
+            </t>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
                 <span class="o_pms_notification_title">
@@ -10,6 +21,7 @@
                     Updates
                     <span class="o_pms_pwa_update_counter ml-1" />
                 </span>
+
             </div>
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
@@ -47,13 +59,13 @@
                                 </div>
 
                                 <div class="o_pms_pwa_month_select float-right ml-4">
-                                    <a t-att-href="'?previous='+date_start.strftime('%Y-%m-%d')" class="mx-2"><i class="fa fa-angle-left"></i></a>
+                                    <a t-att-href="'?previous_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
                                         <t t-esc="date_start.strftime('%B %Y')" />
                                     </span>
 
-                                    <a t-att-href="'?next='+date_start.strftime('%Y-%m-%d')" class="mx-2"><i class="fa fa-angle-right"></i></a>
+                                    <a t-att-href="'?next_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-right"></i></a>
                                 </div>
                                 <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
                                     <form method="post" action="">
@@ -73,17 +85,25 @@
                             </div>
                         </div>
                         <hr/>
-                        <div class="table-responsive">
+                        <div class="table-responsive" >
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
-                            <table id="calendar_table" class="table o_pms_pwa_reservation_list_table">
-                                <thead>
-                                    <tr>
+                            <table id="calendar_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
+                                <thead >
+                                    <tr >
                                         <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"></th>
-
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
-                                                    + ('o_pms_pwa_today vertical-line ' if today==day else ' ')" t-att-data-value="x">
+                                                    + ('o_pms_pwa_today ' if today.strftime('%d/%m/%Y')==day.strftime('%d/%m/%Y') else ' ')
+                                                    + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==0 else ' ')
+                                                    + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==6 else ' ')
+                                                    " t-att-data-value="x">
+                                                <t t-if="day_first">
+                                                    <a t-att-href="'?previous_day='+date_start.strftime('%d/%m/%Y')" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
+                                                </t>
                                                 <t t-esc="day.strftime('%A %d')" />
+                                                <t t-if="day_last">
+                                                    <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
+                                                </t>
                                             </th>
                                         </t>
                                     </tr>
@@ -103,20 +123,25 @@
                                                 <p class="o_pms_pwa_extra_info">
                                                     <span><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
                                                     <span><t t-esc="obj.total_rooms_count"/> hab</span>
-                                                    <span class="o_pms_pwa_restr"><img src="/pms_pwa/static/img/svg/palma_mano.svg" alt="user icon" title="user icon" /> Restricciones</span>
+                                                    <!-- <span class="o_pms_pwa_restr"><img src="/pms_pwa/static/img/svg/palma_mano.svg" alt="user icon" title="user icon" /> Restricciones</span> -->
 
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
-                                                <td class="o_pms_pwa_table_cell">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible</p>
-                                                    <div class="o_pms_pwa_content">
-                                                        <span class="o_pms_pwa_type"><t t-esc="obj.class_id.name"/></span>
-                                                        <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
+                                                <td t-att-class="'o_pms_pwa_table_cell '
+                                                    + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
+                                                    + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
+                                                ">
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible
                                                         <span class="o_pms_pwa_info">
-                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" />
+                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="Texto informativo del icono" />
                                                         </span>
+                                                    </p>
+                                                    <div class="o_pms_pwa_content">
+                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> ocupadas</span>
+                                                        <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
+
                                                     </div>
                                                     <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
                                                 </td>

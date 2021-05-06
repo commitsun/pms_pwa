@@ -1,64 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="pms_pwa" xml:space="preserve">
     <t t-name="pms_pwa.calendar_line">
-        <table class="table o_pms_pwa_reservation_list_table">
-            <t t-foreach="obj_list" t-as="obj">
-                <tr class="o_pms_pwa_calendar_line">
-                    <td class="o_pms_pwa_calendar_line_room_type o_pms_pwa_line_cell_header">
-                        <p class="o_pms_pwa_calendar_line_title">
-                            <t t-esc="obj.room.name" />
-                        </p>
-                        <p class="o_pms_pwa_calendar_line_content">
-                            <t t-esc="obj.room.status" />
-                        </p>
-                    </td>
-                    <t t-foreach="obj.ocupation" t-as="reservation">
-                        <td t-if="reservation.reservation_info"
-                            class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation"
-                            t-att-colspan="reservation.reservation_info.nigths"
-                            t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
-                            <t t-if="reservation.reservation_info.checkin_in_range">
-                                <p t-att-class="' '
-                                    + ('o_pms_pwa_line_before_'+reservation.reservation_info.status)
-                                    + (' o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status)">
-                                    <img t-att-src="reservation.reservation_info.img" width="50" t-att-class="'rounded-circle o_pms_pwa_calendar_line_img_bg '" title="image" alt="image" />
-                                    <span class="o_pms_pwa_calendar_line_price">
-                                        <t t-esc="reservation.reservation_info.price" />
-                                        €
-                                    </span>
+        <table class="table o_pms_pwa_reservation_list_table"  >
+            <tbody>
+                <t t-foreach="obj_list" t-as="obj">
+                    <tr class="o_pms_pwa_calendar_line" >
+                        <td class="o_pms_pwa_calendar_line_room_type o_pms_pwa_line_cell_header">
+                            <p class="o_pms_pwa_calendar_line_title">
+                                <t t-esc="obj.room.name" />
+                            </p>
+                            <p class="o_pms_pwa_calendar_line_content">
+                                <t t-esc="obj.room.status" />
+                            </p>
+                        </td>
+                        <t t-foreach="obj.ocupation" t-as="reservation">
+                            <t t-if="reservation.reservation_info">
+                                <t t-if="reservation.reservation_info.checkin_in_range">
+                                    <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation"  t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                        <p t-att-class="' '
+                                            + ('o_pms_pwa_line_before_'+reservation.reservation_info.status)
+                                            + (' o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status)">
+                                            <img t-att-src="reservation.reservation_info.img" width="50" t-att-class="'rounded-circle o_pms_pwa_calendar_line_img_bg '" title="image" alt="image" />
+                                            <span class="o_pms_pwa_calendar_line_price">
+                                                <t t-esc="reservation.reservation_info.price" />
+                                                €
+                                            </span>
 
-                                    <span t-if="reservation.reservation_info.checkout_in_range" t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
-                                        <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.status }}.svg" alt="check" title="check icon" />
-                                    </span>
-                                </p>
+                                            <span t-if="reservation.reservation_info.checkout_in_range" t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
+                                                <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.status }}.svg" alt="check" title="check icon" />
+                                            </span>
+                                        </p>
+                                        <p class="o_pms_pwa_calendar_line_name">
+                                            <t t-esc="reservation.reservation_info.partner_name" />
+                                        </p>
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <t t-if="reservation.reservation_info.nigths > 1">
+                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-colspan="reservation.reservation_info.nigths" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                            <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
+                                                <img t-att-src="reservation.reservation_info.img" width="50" t-att-class="'rounded-circle o_pms_pwa_calendar_line_img_bg '" title="image" alt="image" />
+                                                <span class="o_pms_pwa_calendar_line_price">
+                                                    <t t-esc="reservation.reservation_info.price" />
+                                                    €
+                                                </span>
+
+                                                <span t-if="reservation.reservation_info.checkout_in_range" t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
+                                                    <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.status }}.svg" alt="check" title="check icon" />
+                                                </span>
+                                            </p>
+                                            <p class="o_pms_pwa_calendar_line_name">
+                                                <t t-esc="reservation.reservation_info.partner_name" />
+                                            </p>
+                                        </td>
+                                    </t>
+                                    <t t-else="">
+                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                            <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
+                                                <img t-att-src="reservation.reservation_info.img" width="50" t-att-class="'rounded-circle o_pms_pwa_calendar_line_img_bg '" title="image" alt="image" />
+                                                <span class="o_pms_pwa_calendar_line_price">
+                                                    <t t-esc="reservation.reservation_info.price" />
+                                                    €
+                                                </span>
+
+                                                <span t-if="reservation.reservation_info.checkout_in_range" t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
+                                                    <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.status }}.svg" alt="check" title="check icon" />
+                                                </span>
+                                            </p>
+                                            <p class="o_pms_pwa_calendar_line_name">
+                                                <t t-esc="reservation.reservation_info.partner_name" />
+                                            </p>
+                                        </td>
+                                    </t>
+                                </t>
                             </t>
                             <t t-else="">
-                                <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
-                                    <img t-att-src="reservation.reservation_info.img" width="50" t-att-class="'rounded-circle o_pms_pwa_calendar_line_img_bg '" title="image" alt="image" />
-                                    <span class="o_pms_pwa_calendar_line_price">
-                                        <t t-esc="reservation.reservation_info.price" />
-                                        €
-                                    </span>
-
-                                    <span t-if="reservation.reservation_info.checkout_in_range" t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
-                                        <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.status }}.svg" alt="check" title="check icon" />
-                                    </span>
-                                </p>
+                                <td class="o_pms_pwa_calendar_line_event o_pms_pwa_line_cell_content">
+                                    <button type="button" class="btn btn-add open-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
+                                </td>
                             </t>
+                        </t>
 
-                            <p class="o_pms_pwa_calendar_line_name">
-                                <t t-esc="reservation.reservation_info.partner_name" />
-                            </p>
-
-                        </td>
-
-                        <td t-else="" class="o_pms_pwa_calendar_line_event o_pms_pwa_line_cell_content">
-                            <button type="button" class="btn btn-add open-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
-                        </td>
-                    </t>
-
-                </tr>
-            </t>
+                    </tr>
+                </t>
+            </tbody>
         </table>
     </t>
 </templates>
