@@ -404,44 +404,44 @@ section.o_pms_pwa_roomdoo {
             z-index: 1;
         }
         .o_pms_pwa_line_before {
-            &_success::before {
+            &_success::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-top: 4px solid var(--success);
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
-            &_warning::before {
+            &_warning::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-bottom: 4px solid var(--warning);
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
-            &_danger::before {
+            &_danger::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-bottom: 4px solid var(--danger);
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
-            &_info {
+            &_info::after {
                 content: "";
                 display: block;
                 width: 10px;
                 height: 0;
                 border-bottom: 4px solid $theme-color;
                 position: relative;
-                top: 1.75em;
+                top: 0.25em;
                 left: -10px;
             }
         }
