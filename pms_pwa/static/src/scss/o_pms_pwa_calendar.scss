@@ -410,7 +410,7 @@ section.o_pms_pwa_roomdoo {
         .o_pms_pwa_line_before {
             &_success::after {
                 top: 0.75em;
-                left: -150px;
+                left: -155px;
                 background-color: var(--success);
                 content: "";
                 display: inline-block;
@@ -419,9 +419,12 @@ section.o_pms_pwa_roomdoo {
                 vertical-align: middle;
                 width: 60px;
             }
+            &_success::before {
+                display: none;
+            }
             &_warning::after {
                 top: 0.75em;
-                left: -150px;
+                left: -155px;
                 background-color: var(--warning);
                 content: "";
                 display: inline-block;
@@ -430,9 +433,13 @@ section.o_pms_pwa_roomdoo {
                 vertical-align: middle;
                 width: 60px;
             }
+            &_warning::before {
+                display: none;
+            }
+
             &_danger::after {
                 top: 0.75em;
-                left: -150px;
+                left: -155px;
                 background-color: var(--danger);
                 content: "";
                 display: inline-block;
@@ -441,9 +448,12 @@ section.o_pms_pwa_roomdoo {
                 vertical-align: middle;
                 width: 60px;
             }
+            &_danger::before {
+                display: none;
+            }
             &_info::after {
                 top: 0.75em;
-                left: -150px;
+                left: -155px;
                 background-color: $theme-color;
                 content: "";
                 display: inline-block;
@@ -451,6 +461,9 @@ section.o_pms_pwa_roomdoo {
                 position: relative;
                 vertical-align: middle;
                 width: 60px;
+            }
+            &_info::before {
+                display: none;
             }
         }
         .o_pms_pwa_calendar_line {
@@ -506,7 +519,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-                        margin-left: -1.65rem;
+                        left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
                         color: var(--success);
@@ -527,7 +540,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-                        margin-left: -1.65rem;
+                        left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
                         color: var(--warning);
@@ -548,7 +561,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-                        margin-left: -1.65rem;
+                        left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
                         color: var(--danger);
@@ -569,7 +582,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-                        margin-left: -1.65rem;
+                        left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
                         color: $theme-color;
@@ -589,14 +602,14 @@ section.o_pms_pwa_roomdoo {
                     position: relative;
                     top: -1.75rem;
                     height: 26px;
-                    border-left: 1px solid var(--success);
+                    border-left: 1px solid currentColor;
                     margin-left: 0.35rem;
                 }
             }
             &_price {
                 font-weight: bold;
                 font-size: 14px;
-                margin-left: 1.5rem;
+                margin-left: 0.5rem;
             }
             &_name {
                 margin-left: 3.2rem;
@@ -605,11 +618,25 @@ section.o_pms_pwa_roomdoo {
                 width: 100%;
             }
         }
+        .bg {
+            &-success {
+                color: var(--success);
+            }
+            &-warning {
+                color: var(--warning);
+            }
+            &-danger {
+                color: var(--danger);
+            }
+            &-info {
+                color: $theme-color;
+            }
+        }
         .btn-add {
             display: none;
             margin-top: 0.5rem;
             width: 80%;
-            margin-left: 1.5rem;
+            margin-left: 2rem;
             //margin-left: 0.5rem;
             border-radius: 1.5rem;
             border: none;
