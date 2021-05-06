@@ -4,8 +4,8 @@
         <table class="table o_pms_pwa_reservation_list_table"  >
             <tbody>
                 <t t-foreach="obj_list" t-as="obj">
-                    <tr class="o_pms_pwa_calendar_line" style="border: 1px solid black">
-                        <td class="o_pms_pwa_calendar_line_room_type o_pms_pwa_line_cell_header" style="border: 1px solid black">
+                    <tr class="o_pms_pwa_calendar_line" >
+                        <td class="o_pms_pwa_calendar_line_room_type o_pms_pwa_line_cell_header">
                             <p class="o_pms_pwa_calendar_line_title">
                                 <t t-esc="obj.room.name" />
                             </p>
@@ -16,7 +16,7 @@
                         <t t-foreach="obj.ocupation" t-as="reservation">
                             <t t-if="reservation.reservation_info">
                                 <t t-if="reservation.reservation_info.checkin_in_range">
-                                    <td style="border: 1px solid black" class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation"  t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                    <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation"  t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
                                         <p t-att-class="' '
                                             + ('o_pms_pwa_line_before_'+reservation.reservation_info.status)
                                             + (' o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status)">
@@ -37,7 +37,7 @@
                                 </t>
                                 <t t-else="">
                                     <t t-if="reservation.reservation_info.nigths > 1">
-                                        <td style="border: 1px solid black" class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-colspan="reservation.reservation_info.nigths" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-colspan="reservation.reservation_info.nigths" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
                                             <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
                                                 <img t-att-src="reservation.reservation_info.img" width="50" t-att-class="'rounded-circle o_pms_pwa_calendar_line_img_bg '" title="image" alt="image" />
                                                 <span class="o_pms_pwa_calendar_line_price">
@@ -55,7 +55,7 @@
                                         </td>
                                     </t>
                                     <t t-else="">
-                                        <td style="border: 1px solid black" class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
                                             <p t-att-class="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status">
                                                 <img t-att-src="reservation.reservation_info.img" width="50" t-att-class="'rounded-circle o_pms_pwa_calendar_line_img_bg '" title="image" alt="image" />
                                                 <span class="o_pms_pwa_calendar_line_price">
@@ -75,7 +75,7 @@
                                 </t>
                             </t>
                             <t t-else="">
-                                <td style="border: 1px solid black" class="o_pms_pwa_calendar_line_event o_pms_pwa_line_cell_content">
+                                <td class="o_pms_pwa_calendar_line_event o_pms_pwa_line_cell_content">
                                     <button type="button" class="btn btn-add open-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
                                 </td>
                             </t>
