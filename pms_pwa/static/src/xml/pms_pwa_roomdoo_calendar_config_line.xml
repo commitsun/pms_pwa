@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="pms_pwa" xml:space="preserve">
+    <t t-name="pms_pwa.calendar_config_line">
+        <table class="table" id="calendar_conf_table_line">
+            <t t-foreach="obj_list" t-as="obj">
+                <tr date-toggle="collapse" t-attf-date-target="#collapse_{{room_type_id}}_accordion_{{obj.id}}" aria-expanded="false" t-attf-aria-controls="collapse_{{room_type_id}}_accordion_{{obj.id}}">
+                    <td class="o_pms_pwa_show_table" t-att-colspan="8" > <t t-esc="obj.name" /> <i class="fa fa-angle-down"></i></td>
+                </tr>
+                <tr>
+                    <td class="o_pms_pwa_table_cell">
+                        <p>Price</p>
+                        <p>Min. stay</p>
+                        <p>Quota</p>
+                        <div class="collapse" t-attf-id="collapse_{{room_type_id}}_accordion_{{obj.id}}" data-parent="#calendar_conf_table_line">
+                            <p>Max. stay</p>
+                            <p>Min. stay arrival</p>
+                            <p>Max. stay arrival</p>
+                            <p>Block</p>
+                        </div>
+                    </td>
+                    <t t-foreach="obj.date_list" t-as="date">
+
+                        <td class="o_pms_pwa_table_cell" t-attf-date="{{ date.date }}">
+                            <p>
+                                <input t-attf-tabindex="{{ obj.id }}1{{date_index}}" style="width:80px;" type="text" t-attf-value="{{ date.price }}" name="price" />
+                            </p>
+                            <p>
+                                <input t-attf-tabindex="{{ obj.id }}2{{date_index}}" style="width:80px;" type="text" t-attf-value="{{ date.min_stay }}" name="min_stay" />
+                            </p>
+                            <p>
+                                <input t-attf-tabindex="{{ obj.id }}3{{date_index}}" style="width:80px;" type="text" t-attf-value="{{ date.quota }}" name="quota" />
+                            </p>
+                            <div class="collapse" t-attf-id="collapse_{{room_type_id}}_accordion_{{obj.id}}" data-parent="#calendar_conf_table_line">
+                                <p>
+                                    <input t-attf-tabindex="{{ obj.id }}4{{date_index}}" style="width:80px;" type="text" t-attf-value="{{ date.max_stay }}" name="max_stay" />
+                                </p>
+                                <p>
+                                    <input t-attf-tabindex="{{ obj.id }}5{{date_index}}" style="width:80px;" type="text" t-attf-value="{{ date.min_arrrival_stay }}" name="min_arrrival_stay" />
+                                </p>
+                                <p>
+                                    <input t-attf-tabindex="{{ obj.id }}6{{date_index}}" style="width:80px;" type="text" t-attf-value="{{ date.max_arrival_stay }}" name="max_arrival_stay" />
+                                </p>
+                                <p>
+                                    <input t-attf-tabindex="{{ obj.id }}7{{date_index}}" style="width:80px;" type="checkbox" name="block" />
+                                </p>
+                            </div>
+                        </td>
+                    </t>
+                </tr>
+            </t>
+        </table>
+    </t>
+</templates>

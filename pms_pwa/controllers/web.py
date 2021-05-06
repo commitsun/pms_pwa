@@ -1349,24 +1349,40 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def calendar_config(self, date=False, **post):
-        if not date:
-            date = datetime.datetime.today()
+        date = datetime.datetime.now()
         date_start = date + timedelta(days=-1)
-        if post.get("next"):
+        if post.get("next_day"):
             date = datetime.datetime.strptime(
-                post.get("next"), get_lang(request.env).date_format
+                post.get("next_day"), get_lang(request.env).date_format
             ).date()
-            date_start = date + timedelta(days=+7)
-        if post.get("previous"):
+            date_start = date + timedelta(days=+1)
+        if post.get("previous_day"):
             date = datetime.datetime.strptime(
-                post.get("previous"), get_lang(request.env).date_format
+                post.get("previous_day"), get_lang(request.env).date_format
             ).date()
-            date_start = date + timedelta(days=-7)
+            date_start = date + timedelta(days=-1)
+        if post.get("next_month"):
+            date = datetime.datetime.strptime(
+                post.get("next_month"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=30)
+        if post.get("previous_month"):
+            date = datetime.datetime.strptime(
+                post.get("previous_month"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=-30)
+
+        # Add default dpr and dpr_select_values
+        dpr = 7
+        if post.get("dpr"):
+            dpr = int(post.get("dpr"))
+        date_list = [date_start + timedelta(days=x) for x in range(dpr)]
+        # get the days of the month
+        month_days = monthrange(date.year, date.month)[1]
+        dpr_select_values = {7, 15, month_days}
 
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
-
-        date_list = [date_start + timedelta(days=x) for x in range(30)]
 
         Pricelist = request.env["product.pricelist"]
         pricelist = Pricelist.search([])
@@ -1382,11 +1398,178 @@ class TestFrontEnd(http.Controller):
             "default_pricelist": default_pricelist,
             "rooms_list": rooms,
             "date_list": date_list,
+            "dpr": dpr,
+            "dpr_select_values": dpr_select_values,
         }
         return http.request.render(
             "pms_pwa.roomdoo_calendar_config_page",
             values,
         )
+
+    @http.route(
+        "/calendar/config/line",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def calendar_config_list(self, date=False, search="", **post):
+        values = [
+            {
+                "id": 1,
+                "name": "Pricelist",
+                "date_list": [
+                    {
+                        "date": "05/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "06/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "07/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "08/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": True,
+                    },
+                    {
+                        "date": "09/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "10/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "11/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                ],
+            },
+            {
+                "id": 2,
+                "name": "Other pricelist",
+                "date_list": [
+                    {
+                        "date": "05/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "06/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "07/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "08/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": True,
+                    },
+                    {
+                        "date": "09/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "10/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                    {
+                        "date": "11/05/2021",
+                        "price": 12,
+                        "min_stay": 1,
+                        "quota": 4,
+                        "max_stay": 1,
+                        "min_arrrival_stay": 1,
+                        "max_arrival_stay": 1,
+                        "block": False,
+                    },
+                ],
+            },
+        ]
+        return values
 
     def parse_reservation(self, reservation):
         reservation_values = dict()

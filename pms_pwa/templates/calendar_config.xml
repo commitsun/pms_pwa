@@ -1,8 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <template id="roomdoo_calendar_config_page" name="Calendar config">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendar config'" />
+            <t t-set="page_title" t-value="'Calendar config'"/>
+            <t t-if="request.httprequest.cookies.get('pms_pids', false)">
+                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
+                </t>
+                <t t-else="">
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
+                </t>
+            </t>
+            <t t-else="">
+                <t t-set="current_property" t-value="1" />
+            </t>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
                 <span class="o_pms_notification_title">
@@ -10,6 +21,7 @@
                     Updates
                     <span class="o_pms_pwa_update_counter ml-1" />
                 </span>
+
             </div>
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
@@ -18,72 +30,72 @@
                         <div class="row">
                             <div class="col-sm-2 d-none d-lg-block">
                                 <div class="d-flex align-items-center ml-4">
-                                    <h2 class="font-weight-bold mb-0 text-uppercase">
-                                        <t t-esc="date_start.strftime('%B %Y')" />
-                                    </h2>
+                                    <h2
+                                        class="font-weight-bold mb-0 text-uppercase"
+                                    ><t t-esc="date_start.strftime('%B %Y')" /></h2>
                                 </div>
                             </div>
-                            <!-- <div class="col-6 col-sm-2">
+                            <div class="col-6 col-sm-2">
                                 <form method="post" action="">
-                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                    <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
-                                        <t t-foreach="pricelist" t-as="price">
-                                            <t t-if="default_pricelist==price.id">
-                                                <option t-attf-value="{{ price.id }}" selected="selected">
-                                                    <t t-esc="price.name" />
-                                                </option>
-                                            </t>
-                                            <t t-else="">
-                                                <option t-attf-value="{{ price.id }}">
-                                                    <t t-esc="price.name" />
-                                                </option>
-                                            </t>
-                                        </t>
-                                    </select>
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="submit" id="save" name="save" style="min-width:100px;" value="Guardar" class="btn btn-radius btn-pms_pwa ml-4  d-none"></input>
                                 </form>
-                            </div> -->
-                            <div class="col-10 col-sm-10">
+                            </div>
+                            <div class="col-6 col-sm-8">
                                 <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
                                     <select id="calendar_select" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
-                                        <option selected="selected" value="">Config</option>
-                                        <option value="/calendar/">Default</option>
-
+                                        <option value="" selected="selected">Config</option>
+                                        <option value="/calendar">Default</option>
                                     </select>
                                 </div>
 
                                 <div class="o_pms_pwa_month_select float-right ml-4">
-                                    <a t-att-href="'?previous='+date_start.strftime('%Y-%m-%d')" class="mx-2">
-                                        <i class="fa fa-angle-left"></i>
-                                    </a>
+                                    <a t-att-href="'?previous_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
                                         <t t-esc="date_start.strftime('%B %Y')" />
                                     </span>
 
-                                    <a t-att-href="'?next='+date_start.strftime('%Y-%m-%d')" class="mx-2">
-                                        <i class="fa fa-angle-right"></i>
-                                    </a>
+                                    <a t-att-href="'?next_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-right"></i></a>
                                 </div>
                                 <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
                                     <form method="post" action="">
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                        <input type="submit" id="save" name="save" style="min-width:100px;" value="Guardar" class="btn btn-radius btn-pms_pwa d-none"></input>
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                        <select id="dpr" name="dpr" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                            <t t-foreach="dpr_select_values" t-as="show_days">
+                                                <t t-if="int(dpr)==int(show_days)">
+                                                    <option t-attf-value="{{ show_days }}" selected="selected"><t t-esc="show_days" /></option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option t-attf-value="{{ show_days }}"><t t-esc="show_days" /></option>
+                                                </t>
+                                            </t>
+                                        </select>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                        <hr />
-                        <div class="table-responsive">
+                        <hr/>
+                        <div class="table-responsive" >
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
-                            <table id="calendar_config_table" class="table o_pms_pwa_reservation_list_table">
-                                <thead>
-                                    <tr>
+                            <table id="calendar_config_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
+                                <thead >
+                                    <tr >
                                         <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"></th>
-
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
-                                                    + ('o_pms_pwa_today vertical-line ' if today==day else ' ')" t-att-data-value="x">
+                                                    + ('o_pms_pwa_today ' if today.strftime('%d/%m/%Y')==day.strftime('%d/%m/%Y') else ' ')
+                                                    + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==0 else ' ')
+                                                    + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==6 else ' ')
+                                                    " t-att-data-value="x">
+                                                <t t-if="day_first">
+                                                    <a t-att-href="'?previous_day='+date_start.strftime('%d/%m/%Y')" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
+                                                </t>
                                                 <t t-esc="day.strftime('%A %d')" />
+                                                <t t-if="day_last">
+                                                    <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
+                                                </t>
                                             </th>
                                         </t>
                                     </tr>
@@ -91,7 +103,7 @@
                                 </thead>
                                 <tbody>
                                     <t t-foreach="rooms_list" t-as="obj">
-                                        <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
+                                        <tr class="o_pms_pwa_open_calendar_config" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td class="o_pms_pwa_table_first_header_td">
                                                 <p class="o_pms_pwa_room_name">
                                                     <i class="fa fa-angle-down"></i>
@@ -115,7 +127,10 @@
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
-                                                <td class="o_pms_pwa_table_cell">
+                                                <td t-att-class="'o_pms_pwa_table_cell '
+                                                    + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
+                                                    + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
+                                                ">
                                                     <p class="o_pms_pwa_title" style="text-align: center !important;">
                                                         <t t-esc="availability_room" />
                                                         disponible
@@ -124,59 +139,8 @@
                                             </t>
                                         </tr>
                                         <tr>
-                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
-                                                <table class="table" id="calendar_conf_table">
-                                                    <t t-foreach="pricelist" t-as="price">
-                                                        <tr data-toggle="collapse" t-att-data-target="'#collapse_2_accordion_'+str(obj.id)" aria-expanded="false">
-                                                            <td class="o_pms_pwa_show_table" t-att-colspan="len(date_list)+1" > <t t-esc="price.display_name" /> <i class="fa fa-angle-down"></i></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="o_pms_pwa_table_cell">
+                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important" >
 
-
-                                                                <p>Price</p>
-                                                                <p>Min. stay</p>
-                                                                <p>Quota</p>
-
-                                                                <div class="collapse" t-att-id="'collapse_2_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}">
-                                                                    <p>Max. stay</p>
-                                                                    <p>Min. stay arrival</p>
-                                                                    <p>Max. stay arrival</p>
-                                                                    <p>Block</p>
-                                                                </div>
-                                                            </td>
-                                                            <t t-foreach="len(date_list)" t-as="room_day">
-                                                                <td class="o_pms_pwa_table_cell" t-attf-id="room_{{room_day}}" t-attf-data-id="{{ room_day }}">
-
-                                                                    <p>
-                                                                        <input t-attf-tabindex="{{ price.id }}1{{room_day}}" style="width:80px;" type="text" value="10" name="price" />
-                                                                    </p>
-                                                                    <p>
-                                                                        <input t-attf-tabindex="{{ price.id }}2{{room_day}}" style="width:80px;" type="text" value="1" name="min_stay" />
-                                                                    </p>
-                                                                    <p>
-                                                                        <input t-attf-tabindex="{{ price.id }}3{{room_day}}" style="width:80px;" type="text" value="7" name="max_avail" />
-                                                                    </p>
-                                                                    <div class="collapse" t-att-id="'collapse_2_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}">
-                                                                        <p>
-                                                                            <input t-attf-tabindex="{{ price.id }}4{{room_day}}" style="width:80px;" type="text" value="1" name="min_stay_arrival" />
-                                                                        </p>
-                                                                        <p>
-                                                                            <input t-attf-tabindex="{{ price.id }}5{{room_day}}" style="width:80px;" type="text" value="7" name="max_stay_arrival" />
-                                                                        </p>
-                                                                        <p>
-                                                                            <input t-attf-tabindex="{{ price.id }}6{{room_day}}" style="width:80px;" type="text" value="1" name="quota" />
-                                                                        </p>
-                                                                        <p>
-                                                                            <input t-attf-tabindex="{{ price.id }}7{{room_day}}" style="width:80px;" type="checkbox" name="block" />
-                                                                        </p>
-                                                                    </div>
-                                                                </td>
-                                                            </t>
-                                                        </tr>
-
-                                                    </t>
-                                                </table>
                                             </td>
                                         </tr>
                                     </t>
