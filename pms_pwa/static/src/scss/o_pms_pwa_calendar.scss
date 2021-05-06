@@ -73,10 +73,6 @@ section.o_pms_pwa_roomdoo {
             overflow: auto;
             thead {
                 // border-bottom: 1px solid $theme-color;
-                position: -webkit-sticky;
-                position: sticky;
-                top: 0;
-                z-index: 99;
                 background-color: $white;
                 height: 20px;
                 tr {
@@ -86,6 +82,13 @@ section.o_pms_pwa_roomdoo {
                     //*border-collapse: expression('collapse', cellSpacing = '10px');
                     th {
                         background-color: $white;
+                        position: -webkit-sticky;
+                        position: -moz-sticky;
+                        position: -ms-sticky;
+                        position: -o-sticky;
+                        position: sticky;
+                        top: 0;
+                        z-index: 99;
                         // border-bottom: 1px solid $theme-color;
                         a {
                             margin-left: -8px;
@@ -179,11 +182,12 @@ section.o_pms_pwa_roomdoo {
             &::after {
                 content: "";
                 position: absolute;
-                top: 99%;
+                margin-top: 47px;
+                top:0;
                 height: 525px;
                 border-right: 2px solid $theme-color;
                 margin-left: -3rem;
-                //z-index: -2;
+                z-index: -1;
                 opacity: 0.2;
             }
         }
@@ -273,8 +277,11 @@ section.o_pms_pwa_roomdoo {
         }
         th:first-child,
         td:first-child {
+            position: -webkit-sticky;
+            position: -moz-sticky;
+            position: -ms-sticky;
+            position: -o-sticky;
             position: sticky;
-            position: -webkit-sticky; /* for safari */
             left: 0px;
             z-index: 2;
             width: 206.4px !important;
@@ -349,8 +356,11 @@ section.o_pms_pwa_roomdoo {
                 cursor: pointer;
             }
             &_room_type {
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
                 position: sticky;
-                position: -webkit-sticky; /* for safari */
                 left: 0px;
                 z-index: 2;
                 background-color: $bg-theme-color;
@@ -374,14 +384,16 @@ section.o_pms_pwa_roomdoo {
             &_img_bg {
                 background-color: $theme-color;
                 float: left;
-                // margin-top: -0.2rem;
+
                 padding: 0.1rem;
+
             }
             &_hr {
+                margin-left: 1.5rem;
                 &_success {
                     border-bottom: 4px solid var(--success);
-                    // width: 105%;
-                    // margin-left: 1.5rem;
+                    width: 105%;
+
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 12px;
@@ -400,8 +412,8 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_warning {
                     border-bottom: 4px solid var(--warning);
-                    // width: 105%;
-                    // margin-left: 1.5rem;
+                    width: 105%;
+                    margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 8px;
@@ -420,8 +432,8 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_danger {
                     border-bottom: 4px solid var(--danger);
-                    // width: 105%;
-                    // margin-left: 1.5rem;
+                    width: 105%;
+                    margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 8px;
@@ -440,8 +452,8 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_info {
                     border-bottom: 4px solid $theme-color;
-                    // width: 105%;
-                    // margin-left: 1.5rem;
+                    width: 105%;
+                    margin-left: 1.5rem;
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 12px;
@@ -490,9 +502,9 @@ section.o_pms_pwa_roomdoo {
         .btn-add {
             display: none;
             margin-top: 0.5rem;
-            width: 90%;
-            //margin-left: 1.5rem;
-            margin-left: 0.5rem;
+            width: 80%;
+            margin-left: 1.5rem;
+            //margin-left: 0.5rem;
             border-radius: 1.5rem;
             border: none;
             background-image: linear-gradient(
