@@ -1065,7 +1065,7 @@ class TestFrontEnd(http.Controller):
                             + str(reservation.partner_id.id)
                             + "/image_128",
                             "price": reservation.folio_pending_amount,
-                            "status": "success",  # TODO
+                            "status": "danger",  # TODO
                             "nigths": (
                                 max_reservation_date
                                 + timedelta(days=1)
