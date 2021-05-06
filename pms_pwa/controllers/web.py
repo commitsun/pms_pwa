@@ -945,7 +945,7 @@ class TestFrontEnd(http.Controller):
             rooms.mapped("room_type_id.id")
         )
         # Add default dpr and dpr_select_values
-        dpr = 7
+        dpr = 15
         if post.get("dpr"):
             dpr = int(post.get("dpr"))
         date_list = [date_start + timedelta(days=x) for x in range(dpr)]
