@@ -1,6 +1,8 @@
 # Copyright 2017  Dario Lodeiros
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import datetime
+
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -55,24 +57,31 @@ class PmsPWARoomType(models.Model):
             )
         return False
 
-    def _get_rules_date(self, date, pricelist_id, pms_property_id):
+    def _get_rules_date(
+        self,
+    ):  # TODO: Modificado por Alejandro, date, pricelist_id, pms_property_id):
         self.ensure_one()
+
         if (
             self._context.get("date")
             and self._context.get("pms_property_id")
-            and self._context("pricelist_id")
+            and self._context.get("pricelist_id")
         ):
-            pricelist = self.env["product.pricelist"].browse(pricelist_id)
+
+            pricelist = self.env["product.pricelist"].browse(
+                self._context.get("pricelist_id")
+            )
             rule = self.env["pms.availability.plan.rule"].search(
                 [
-                    ("pms_property_id", "=", pms_property_id).id,
-                    ("date", "=", date),
+                    ("pms_property_id", "=", self._context.get("pms_property_id")),
+                    ("date", "=", self._context.get("date")),
                     ("availability_plan_id", "=", pricelist.availability_plan_id.id),
                 ]
             )
             if not rule:
                 avail = self.with_context(
-                    checkin=date, checkout=date + timedelta(days=1)
+                    checkin=self._context.get("date"),
+                    checkout=self._context.get("date") + datetime.timedelta(days=1),
                 )._get_availability_rooms()
             return {
                 "plan_avail": rule.plan_avail if rule else avail,
