@@ -47,6 +47,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "allowed_board_service_room_ids",
             "allowed_channel_type_ids",
             "allowed_pricelists",
+            "room_types",
+            "room_numbers",
         ];
         if (event.currentTarget.name == "range_check_date_modal") {
             let value_range_picker = event.currentTarget.value;
@@ -152,6 +154,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "allowed_board_service_room_ids",
             "allowed_channel_type_ids",
             "allowed_pricelists",
+            "room_types",
+            "room_numbers",
         ];
         try {
             var id = $("#multiple_reservation_form input[name='id']").val();
