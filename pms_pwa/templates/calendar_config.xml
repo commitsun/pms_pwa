@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="roomdoo_calendar_config_page" name="Calendar config">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendar config'"/>
+            <t t-set="page_title" t-value="'Calendar config'" />
             <t t-if="request.httprequest.cookies.get('pms_pids', false)">
-                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
+                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1">
                     <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
                 </t>
                 <t t-else="">
@@ -30,14 +30,14 @@
                         <div class="row">
                             <div class="col-sm-2 d-none d-lg-block">
                                 <div class="d-flex align-items-center ml-4">
-                                    <h2
-                                        class="font-weight-bold mb-0 text-uppercase"
-                                    ><t t-esc="date_start.strftime('%B %Y')" /></h2>
+                                    <h2 class="font-weight-bold mb-0 text-uppercase">
+                                        <t t-esc="date_start.strftime('%B %Y')" />
+                                    </h2>
                                 </div>
                             </div>
                             <div class="col-6 col-sm-2">
                                 <form method="post" action="">
-                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     <input type="submit" id="save" name="save" style="min-width:100px;" value="Guardar" class="btn btn-radius btn-pms_pwa ml-4  d-none"></input>
                                 </form>
                             </div>
@@ -50,25 +50,33 @@
                                 </div>
 
                                 <div class="o_pms_pwa_month_select float-right ml-4">
-                                    <a t-att-href="'?previous_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
+                                    <a t-att-href="'?previous_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow">
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
                                         <t t-esc="date_start.strftime('%B %Y')" />
                                     </span>
 
-                                    <a t-att-href="'?next_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-right"></i></a>
+                                    <a t-att-href="'?next_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
                                 </div>
                                 <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
                                     <form method="post" action="">
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
 
                                         <select id="dpr" name="dpr" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
                                             <t t-foreach="dpr_select_values" t-as="show_days">
                                                 <t t-if="int(dpr)==int(show_days)">
-                                                    <option t-attf-value="{{ show_days }}" selected="selected"><t t-esc="show_days" /></option>
+                                                    <option t-attf-value="{{ show_days }}" selected="selected">
+                                                        <t t-esc="show_days" />
+                                                    </option>
                                                 </t>
                                                 <t t-else="">
-                                                    <option t-attf-value="{{ show_days }}"><t t-esc="show_days" /></option>
+                                                    <option t-attf-value="{{ show_days }}">
+                                                        <t t-esc="show_days" />
+                                                    </option>
                                                 </t>
                                             </t>
                                         </select>
@@ -76,12 +84,12 @@
                                 </div>
                             </div>
                         </div>
-                        <hr/>
-                        <div class="table-responsive" >
+                        <hr />
+                        <div class="table-responsive">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
                             <table id="calendar_config_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
-                                <thead >
-                                    <tr >
+                                <thead>
+                                    <tr>
                                         <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"></th>
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
@@ -90,11 +98,15 @@
                                                     + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==6 else ' ')
                                                     " t-att-data-value="x">
                                                 <t t-if="day_first">
-                                                    <a t-att-href="'?previous_day='+date_start.strftime('%d/%m/%Y')" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
+                                                    <a t-att-href="'?previous_day='+date_start.strftime('%d/%m/%Y')" class="float-left o_pms_pwa_calendar_arrow">
+                                                        <i class="fa fa-2x fa-angle-left"></i>
+                                                    </a>
                                                 </t>
                                                 <t t-esc="day.strftime('%A %d')" />
                                                 <t t-if="day_last">
-                                                    <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
+                                                    <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow">
+                                                        <i class="fa fa-2x fa-angle-right"></i>
+                                                    </a>
                                                 </t>
                                             </th>
                                         </t>
@@ -139,8 +151,63 @@
                                             </t>
                                         </tr>
                                         <tr>
-                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important" >
-
+                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
+                                                <table class="table" id="calendar_conf_table_line">
+                                                    <t t-foreach="pricelist" t-as="price">
+                                                        <tr t-attf-data-id="{{ price.id }}" data-toggle="collapse" t-attf-data-target="#collapse_2_accordion_{{price.id}}" aria-expanded="false"  aria-controls="collapse_2_accordion_{{price.id}}">
+                                                            <td class="o_pms_pwa_show_table" t-att-colspan="8">
+                                                                <t t-esc="price.name" />
+                                                                <i class="fa fa-angle-down"></i>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="o_pms_pwa_table_cell">
+                                                                <p>Price</p>
+                                                                <p>Min. stay</p>
+                                                                <p>Quota</p>
+                                                                <div class="collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
+                                                                    <p>Max. stay</p>
+                                                                    <p>Min. stay arrival</p>
+                                                                    <p>Max. stay arrival</p>
+                                                                    <p>Block</p>
+                                                                </div>
+                                                            </td>
+                                                            <t t-foreach="len(date_list)" t-as="room_day">
+                                                                <t t-set="list_price" t-value="obj.with_context(date=date_list[room_day], pricelist_id=price.id, pms_property_id=current_property)._get_rules_date()"></t>
+                                                                <td class="o_pms_pwa_table_cell" t-attf-data="{{ room_day }}">
+                                                                    <p>
+                                                                        <input t-attf-tabindex="{{ price.id }}1{{room_day}}" style="width:80px;" type="text" t-att-value="obj.product_id.with_context(quantity=1, date=date_list[room_day], date_overnight=date_list[room_day], pricelist=price.id, property=current_property).price" name="price" />
+                                                                    </p>
+                                                                    <p>
+                                                                        <input t-attf-tabindex="{{ price.id }}2{{room_day}}" style="width:80px;" type="text" t-attf-value="{{ list_price['min_stay'] }}" name="min_stay" />
+                                                                    </p>
+                                                                    <p>
+                                                                        <input t-attf-tabindex="{{ price.id }}3{{room_day}}" style="width:80px;" type="text" t-attf-value="{{ list_price['quota'] }}" name="quota" />
+                                                                    </p>
+                                                                    <div class="collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
+                                                                        <p>
+                                                                            <input t-attf-tabindex="{{ price.id }}4{{room_day}}" style="width:80px;" type="text" t-attf-value="{{ list_price['max_stay'] }}" name="max_stay" />
+                                                                        </p>
+                                                                        <p>
+                                                                            <input t-attf-tabindex="{{ price.id }}5{{room_day}}" style="width:80px;" type="text" t-attf-value="{{ list_price['min_stay_arrival'] }}" name="min_stay_arrival" />
+                                                                        </p>
+                                                                        <p>
+                                                                            <input t-attf-tabindex="{{ price.id }}6{{room_day}}" style="width:80px;" type="text" t-attf-value="{{ list_price['max_stay_arrival'] }}" name="max_stay_arrival" />
+                                                                        </p>
+                                                                        <p>
+                                                                            <t t-if="list_price['closed']">
+                                                                                <input t-attf-tabindex="{{ price.id }}7{{room_day}}" style="width:80px;" type="checkbox" checked="checked" name="closed" />
+                                                                            </t>
+                                                                            <t t-else="">
+                                                                                <input t-attf-tabindex="{{ price.id }}7{{room_day}}" style="width:80px;" type="checkbox" name="closed" />
+                                                                            </t>
+                                                                        </p>
+                                                                    </div>
+                                                                </td>
+                                                            </t>
+                                                        </tr>
+                                                    </t>
+                                                </table>
                                             </td>
                                         </tr>
                                     </t>
