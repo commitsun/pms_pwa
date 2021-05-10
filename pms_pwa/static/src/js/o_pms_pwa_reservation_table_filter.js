@@ -32,10 +32,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 date_options
             );
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal']")
+                .find("input[name='range_check_date_modal_reservation']")
                 .val(checkin_date + " - " + checkout_date);
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal']")
+                .find("input[name='range_check_date_modal_reservation']")
+                .trigger("change");
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal_reservation_multi']")
+                .val(checkin_date + " - " + checkout_date);
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal_reservation_multi']")
                 .trigger("change");
         }, 500);
     });
@@ -50,7 +56,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "room_types",
             "room_numbers",
         ];
-        if (event.currentTarget.name == "range_check_date_modal") {
+        if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
             values.checkin = value_range_picker.split(" - ")[0];
             values.checkout = value_range_picker.split(" - ")[1];
@@ -114,7 +120,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     $("form#single_reservation_form").on("submit", function (event) {
         event.preventDefault();
         var values = $("form#single_reservation_form").serializeArray();
-        if (event.currentTarget.name == "range_check_date_modal") {
+        if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
 
             values.checkin = value_range_picker.split(" - ")[0];
@@ -163,7 +169,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         } catch (error) {
             console.log(error);
         }
-        if (event.currentTarget.name == "range_check_date_modal") {
+        if (event.currentTarget.name == "range_check_date_modal_reservation_multi") {
             let value_range_picker = event.currentTarget.value;
             values.checkin = value_range_picker.split(" - ")[0];
             values.checkout = value_range_picker.split(" - ")[1];
@@ -783,12 +789,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             ).reservation.price_total;
 
                                                             // refresh pending amount
-                                                            let b = document.getElementsByClassName(
-                                                                "pending_amount"
-                                                            );
-                                                            b[0].innerText = JSON.parse(
-                                                                new_data
-                                                            ).reservation.folio_pending_amount;
+                                                            try {
+                                                                let b = document.getElementsByClassName(
+                                                                    "pending_amount"
+                                                                );
+                                                                b[0].innerText = JSON.parse(
+                                                                    new_data
+                                                                ).reservation.folio_pending_amount;
+                                                            } catch (error) {
+                                                                console.log(error);
+                                                            }
                                                         }
                                                     });
                                                 });
@@ -941,13 +951,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                 new_data
                                                             ).reservation.price_total;
 
-                                                            // refresh pending amount
-                                                            let b = document.getElementsByClassName(
-                                                                "pending_amount"
-                                                            );
-                                                            b[0].innerText = JSON.parse(
-                                                                new_data
-                                                            ).reservation.folio_pending_amount;
+                                                            // refresh pending amount.
+                                                            try {
+                                                                let b = document.getElementsByClassName(
+                                                                    "pending_amount"
+                                                                );
+                                                                b[0].innerText = JSON.parse(
+                                                                    new_data
+                                                                ).reservation.folio_pending_amount;
+                                                            } catch (error) {
+                                                                console.log(error);
+                                                            }
                                                         }
                                                     });
                                                 });
