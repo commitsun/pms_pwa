@@ -126,29 +126,34 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             values.checkin = value_range_picker.split(" - ")[0];
             values.checkout = value_range_picker.split(" - ")[1];
         }
-        ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
-            function (new_data) {
-                setTimeout(function () {
-                    if (new_data) {
-                        var data = JSON.parse(new_data);
-                        if (data && data.result === true) {
-                            /* We need to integrate this into the public widget */
-                            location.href = "/reservation/" + data.id;
-                        } else {
-                            data.type = "warning";
-                            data.message = _t(
-                                "An undefined error has ocurred, please try again later."
-                            );
-                            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
-                                alert: data,
-                            });
-                            alert_div.append(alert);
+        if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
+            ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
+                function (new_data) {
+                    setTimeout(function () {
+                        if (new_data) {
+                            var data = JSON.parse(new_data);
+                            if (data && data.result === true) {
+                                /* We need to integrate this into the public widget */
+                                location.href = "/reservation/" + data.id;
+                            } else {
+                                data.type = "warning";
+                                data.message = _t(
+                                    "An undefined error has ocurred, please try again later."
+                                );
+                                var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                                var alert = core.qweb.render(
+                                    "pms_pwa.reservation_alerts",
+                                    {
+                                        alert: data,
+                                    }
+                                );
+                                alert_div.append(alert);
+                            }
                         }
-                    }
-                });
-            }
-        );
+                    });
+                }
+            );
+        }
     });
 
     /* Multiple reservation form */
@@ -265,26 +270,31 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     $("form#multiple_reservation_form").on("submit", function (event) {
         event.preventDefault();
         var values = $("form#multiple_reservation_form").serializeArray();
-        ajax.jsonRpc("/reservation/multiple_reservation_new", "call", values).then(
-            function (new_data) {
-                setTimeout(function () {
-                    if (new_data) {
-                        var data = JSON.parse(new_data);
-                        if (data && data.result === true) {
-                            /* We need to integrate this into the public widget */
-                            location.href = "/reservation/" + data.id;
-                        } else {
-                            data.type = "warning";
-                            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
-                                alert: data,
-                            });
-                            alert_div.append(alert);
+        if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
+            ajax.jsonRpc("/reservation/multiple_reservation_new", "call", values).then(
+                function (new_data) {
+                    setTimeout(function () {
+                        if (new_data) {
+                            var data = JSON.parse(new_data);
+                            if (data && data.result === true) {
+                                /* We need to integrate this into the public widget */
+                                location.href = "/reservation/" + data.id;
+                            } else {
+                                data.type = "warning";
+                                var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                                var alert = core.qweb.render(
+                                    "pms_pwa.reservation_alerts",
+                                    {
+                                        alert: data,
+                                    }
+                                );
+                                alert_div.append(alert);
+                            }
                         }
-                    }
-                });
-            }
-        );
+                    });
+                }
+            );
+        }
     });
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({

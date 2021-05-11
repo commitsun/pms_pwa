@@ -228,12 +228,20 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="room_type">
-                                                            Tipo de habitación
+                                                            Tipo de habitación <t t-esc="reservation.room_type_id.with_context(checkin=reservation.checkin, checkout=reservation.checkout, pricelist_id=1)._get_availability_rooms()"></t>
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
-                                                            <option name="room_type" t-att-value="reservation.room_type_id.id" selected="selected">
+                                                            <!-- <option name="room_type" t-att-value="reservation.room_type_id.id" selected="selected">
                                                                 <t t-esc="reservation.room_type_id.name" />
-                                                            </option>
+                                                            </option> -->
+                                                            <t t-foreach="reservation.room_type_id" t-as="i">
+                                                                <option name="room_type" t-att-value="i.id" selected="selected" t-if="reservation.room_type_id.id == i.id">
+                                                                    <t t-esc="i.name" />
+                                                                </option>
+                                                                <option name="room_type" t-att-value="i.id" t-if="reservation.preferred_room_id.id != i.id">
+                                                                    <t t-esc="i.name" />
+                                                                </option>
+                                                            </t>
                                                         </select>
                                                     </div>
                                                 </div>
