@@ -7,15 +7,40 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var core = require("web.core");
     var _t = core._t;
     var folio_id = $("input[name='folio_id']").val();
-    var reservation_id = $("input[name='id']").val();
-
+    var reservation_id = $("input[name='reservation_id']").val();
+    $(function () {
+        $('input[name="range_check_date_detail_reservation"]').daterangepicker(
+            {
+                locale: {
+                    direction: "ltr",
+                },
+                opens: "left",
+                showCustomRangeLabel: false,
+            },
+            function (start, end, label) {
+                $('input[name="check_in_date"]').val(start);
+                $('input[name="check_out_date"]').val(end);
+                let nights = 1;
+                // Hours*minutes*seconds*milliseconds
+                const oneDay = 24 * 60 * 60 * 1000;
+                const firstDate = new Date(start);
+                const secondDate = new Date(end);
+                const diffDays = Math.round(
+                    Math.abs((firstDate - secondDate) / oneDay)
+                );
+                nights = diffDays - 1;
+                $('input[name="nights"]').val(nights);
+                // $("form#reservation_detail").submit();
+            }
+        );
+    });
     // $(function () {
     //     if (document.documentElement.lang == "es-ES") {
     //         $('input[name="range_check_date_detail_reservation"]').daterangepicker(
     //             {
     //                 locale: {
     //                     direction: "ltr",
-    //                     format: "DD/MM/YYYY",
+    //                     //format: "DD/MM/YYYY",
     //                     separator: " - ",
     //                     applyLabel: "Aplicar",
     //                     cancelLabel: "Cancelar",
@@ -44,7 +69,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     //             {
     //                 locale: {
     //                     direction: "ltr",
-    //                     format: "MM/DD/YYYY",
+    //                     //format: "MM/DD/YYYY",
     //                     separator: " - ",
     //                 },
     //                 opens: "left",
@@ -85,7 +110,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         $(".thVal").keyup(function (event) {
             if (event.keyCode === 13) {
                 // Console.log("TODO OK")
-
                 $("#" + currentEle).html(
                     $(".thVal").val().trim() + '<i class="fa fa-edit"></i>'
                 );
@@ -114,6 +138,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             folio_id: folio_id,
         }).then(function (data) {
             var lines = data.reservation_lines;
+            console.log(data);
             $("#total_amount").html(parseFloat(data.total_amount).toFixed(2));
             var html = "";
             invoice_lines = [];
@@ -165,37 +190,46 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             $("#total_amount").html(parseFloat(data.total_amount).toFixed(2));
         });
     });
-    $(document).on(
-        "change",
-        "form#reservation_detail input, form#reservation_detail select",
-        function (new_event) {
-            var values = {reservation_id: reservation_id};
-            values[new_event.currentTarget.name] = new_event.currentTarget.value;
-            ajax.jsonRpc("/reservation/onchange_data", "call", values).then(function (
-                new_data
-            ) {
-                if (new_data) {
-                    $.each(new_data, function (key, value) {
-                        var input = $(
-                            "form.o_pms_pwa_reservation_form input[name='" + key + "']"
-                        );
-                        if (input) {
-                            input.val(value);
-                        } else {
-                            $(
-                                "form.o_pms_pwa_reservation_form select[name='" +
-                                    key +
-                                    "'] option[value='" +
-                                    value +
-                                    "']"
-                            ).prop("selected", true);
-                        }
-                    });
-                }
+    $("form#reservation_detail").on("change", "input, select", function (new_event) {
+        var values = {reservation_id: reservation_id};
+        values[new_event.currentTarget.name] = new_event.currentTarget.value;
+        console.log(reservation_id);
+        if (new_event.currentTarget.name != "range_check_date_detail_reservation") {
+            ajax.jsonRpc(
+                "/reservation/" + reservation_id + "/onchange_data",
+                "call",
+                values
+            ).then(function (new_data) {
+                console.log(new_data);
+                // If (new_data) {
+
+                //     $.each(new_data, function (key, value) {
+                //         console.log("UA");
+                //         var input = $(
+                //             "form.o_pms_pwa_reservation_form input[name='" +
+                //                 key +
+                //                 "']"
+                //         );
+                //         console.log("UA 2");
+                //         if (input) {
+                //             input.val(value);
+                //         } else {
+                //             console.log("UA 3");
+                //             $(
+                //                 "form.o_pms_pwa_reservation_form select[name='" +
+                //                     key +
+                //                     "'] option[value='" +
+                //                     value +
+                //                     "']"
+                //             ).prop("selected", true);
+                //         }
+                //     });
+                // }
+                console.log("PEPE");
             });
         }
-    );
-    // Daterangepicker
+    });
+
     $(document).ready(function () {
         if ($("input[name='reservation_ids']:checked").val()) {
             reservation_ids.push(
@@ -252,6 +286,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         //         window.location.href + " #o_pms_pwa_direct_chat_messages"
         //     );
         // }, 3000);
+
         if ($(".o_roomdoo_hide_show").length > 3) {
             $(".o_roomdoo_hide_show:gt(2)").hide();
             $(".o_roomdoo_hide_show-more").show();

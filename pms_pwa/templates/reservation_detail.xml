@@ -9,6 +9,7 @@
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Reservation detail'" />
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
+            <input type="hidden" name="reservation_id" t-attf-value="{{ reservation.id }}" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-2">
                 <span class="o_pms_notification_title">
@@ -286,10 +287,12 @@
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-12">
+                                                        <t t-set="checkin_date" t-value="reservation.checkin" t-options='{"widget":"date"}'/>
+                                                        <t t-set="checkout_date" t-value="reservation.checkout" t-options='{"widget":"date"}'/>
                                                         <label class="control-label col-12" for="range_check_date_detail_reservation">
-                                                            Check in - Check out
+                                                            Check in - Check out <t t-esc="checkin_date"></t> - <t t-esc="checkout_date"></t>
                                                         </label>
-                                                        <input class="form-control" type="text" name="range_check_date_detail_reservation" t-attf-value="{{ reservation.checkin }} : {{ reservation.checkout }}" />
+                                                        <input class="form-control" type="text" name="range_check_date_detail_reservation" t-attf-value="{{ reservation.checkin }} - {{ reservation.checkout }}" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
