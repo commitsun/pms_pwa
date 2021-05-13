@@ -598,6 +598,7 @@ class TestFrontEnd(http.Controller):
                     "total_amount": total_amount,
                 }
                 return data
+        print("PEPEPE")
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
