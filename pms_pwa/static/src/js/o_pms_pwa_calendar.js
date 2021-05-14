@@ -70,6 +70,9 @@ odoo.define("pms_pwa.calendar", function (require) {
             $("#o_pms_pwa_new_reservation_modal")
                 .find("input[name='range_check_date_modal_reservation']")
                 .trigger("change");
+            $("#o_pms_pwa_new_reservation_modal")
+                .find("input[name='range_check_date_modal_reservation_multi']")
+                .trigger("change");
         }, 300);
     });
 });
