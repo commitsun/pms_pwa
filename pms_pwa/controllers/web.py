@@ -569,10 +569,7 @@ class TestFrontEnd(http.Controller):
             if reservation_ids:
                 # TODO resisar si se puede hacer de otra forma.
                 reservation_lines = folio.sale_line_ids.filtered(
-                    lambda x: x.reservation_id.id in reservation_ids
-                )
-                reservation_lines += folio.sale_line_ids.filtered(
-                    lambda x: x.service_id.reservation_id.id in reservation_ids
+                    lambda x: x.reservation_id.id in reservation_ids and x.display_type == False
                 )
                 reservation_show_lines = [
                     {
@@ -597,8 +594,8 @@ class TestFrontEnd(http.Controller):
                     "reservation_lines": reservation_show_lines,
                     "total_amount": total_amount,
                 }
-
                 return data
+        print("PEPEPE")
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
@@ -819,6 +816,7 @@ class TestFrontEnd(http.Controller):
                             "pms.room.type"
                         ].browse(int(params["room_type_id"]))
 
+
                     # PREFERRED ROOM ID
                     elif (
                         param == "preferred_room_id"
@@ -862,6 +860,9 @@ class TestFrontEnd(http.Controller):
                         reservation_values["board_service_room_id"] = request.env[
                             "pms.room"
                         ].browse(int(params["board_service_room_id"]))
+
+                    # SEGMENTATION
+                    # TODO
 
                     # RESERVATION_LINE
                     elif param == "reservation_line_ids":
@@ -1203,7 +1204,7 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("room_type_id"):
             room_type_id = request.env["pms.room.type"].search(
                 [("id", "=", int(reservation_values.get("room_type_id")))]
-            )
+            ).id
 
         vals = {
             "checkin": checkin,
@@ -1214,10 +1215,10 @@ class TestFrontEnd(http.Controller):
             "partner_id": partner.id if partner else False,
         }
         print(vals)
-        if reservation_values.get("room_id"):
-            vals["room_id"] = (
+        if reservation_values.get("preferred_room_id"):
+            vals["preferred_room_id"] = (
                 request.env["pms.room"]
-                .search([("id", "=", int(reservation_values.get("room_id")))])
+                .search([("id", "=", int(reservation_values.get("preferred_room_id")))])
                 .id
             )
 
@@ -1234,8 +1235,12 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("channel_type_id"):
             vals["channel_type_id"] = int(reservation_values.get("channel_type_id"))
 
+        if reservation_values.get("segmentation_id"):
+            vals["segmentation_id"] = int(reservation_values.get("segmentation_id"))
+
         if reservation_values.get("agency_id"):
-            vals["channel_type_id"] = int(reservation_values.get("agency_id"))
+            vals["agency_id"] = int(reservation_values.get("agency_id"))
+            vals["channel_type_id"] = request.env["res.partner"].browse(agency_id).sale_channel_id.id
 
         if reservation_values.get("submit"):
             reservation = request.env["pms.reservation"].create(vals)
@@ -1413,7 +1418,7 @@ class TestFrontEnd(http.Controller):
         )
 
     @http.route(
-        "/calendar/config/line",
+        "/calendar/config/save",
         type="json",
         auth="public",
         csrf=False,
@@ -1421,161 +1426,9 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def calendar_config_list(self, date=False, search="", **post):
-        values = [
-            {
-                "id": 1,
-                "name": "Pricelist",
-                "date_list": [
-                    {
-                        "date": "05/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "06/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "07/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "08/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": True,
-                    },
-                    {
-                        "date": "09/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "10/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "11/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                ],
-            },
-            {
-                "id": 2,
-                "name": "Other pricelist",
-                "date_list": [
-                    {
-                        "date": "05/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "06/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "07/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "08/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": True,
-                    },
-                    {
-                        "date": "09/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "10/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                    {
-                        "date": "11/05/2021",
-                        "price": 12,
-                        "min_stay": 1,
-                        "quota": 4,
-                        "max_stay": 1,
-                        "min_arrrival_stay": 1,
-                        "max_arrival_stay": 1,
-                        "block": False,
-                    },
-                ],
-            },
-        ]
-        return values
+        params = http.request.jsonrequest.get("params")
+        _logger.info(params)
+        return True
 
     def parse_reservation(self, reservation):
         reservation_values = dict()
@@ -1600,13 +1453,17 @@ class TestFrontEnd(http.Controller):
         reservation_values[
             "allowed_board_service_room_ids"
         ] = reservation._get_allowed_board_service_room_ids()
+        reservation_values["board_service_id"] = reservation.board_service_room_id.id
         reservation_values[
             "allowed_segmentations"
         ] = reservation._get_allowed_segmentations()
+        reservation_values["segmentation_ids"] = reservation.segmentation_ids.ids
         reservation_values[
             "allowed_channel_type_ids"
         ] = self._get_allowed_channel_type_ids()
+        reservation_values["channel_type_id"] = reservation.channel_type_id.id
         reservation_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
+        reservation_values["agency_id"] = reservation.agency_id.id
         reservation_values["room_numbers"] = rooms.Rooms._get_available_rooms(
             self=self,
             payload={

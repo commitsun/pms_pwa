@@ -112,22 +112,6 @@ section.o_pms_pwa_roomdoo {
                     }
                     td.o_pms_pwa_dispo_0 {
                         background-color: #f582a640;
-<<<<<<< HEAD
-                    }
-                    td.o_pms_pwa_dispo_1 {
-                        background-color: #ffe7712e;
-                    }
-                    td.o_pms_pwa_line_cell_content {
-                        width: 189.265px !important;
-                        min-width: 189.265px !important;
-                        border: none;
-                    }
-                    td.o_pms_pwa_line_cell_header {
-                        width: 214.167px !important;
-                        min-width: 214.167px !important;
-                        border-left: 3px solid $grey-900 !important;
-=======
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                     }
                     td.o_pms_pwa_dispo_1 {
                         background-color: #ffe7712e;
@@ -271,137 +255,6 @@ section.o_pms_pwa_roomdoo {
                 td[colspan="31"] {
                     width: calc(189.265px * 31) !important;
                 }
-
-
-            }
-
-            th.o_pms_pwa_table_first_header_td,
-            td.o_pms_pwa_table_first_header_td {
-                background-color: $white;
-            }
-            th:first-child,
-            td:first-child {
-                position: -webkit-sticky;
-                position: -moz-sticky;
-                position: -ms-sticky;
-                position: -o-sticky;
-                position: sticky;
-                left: 0px;
-                z-index: 2;
-                width: 206.4px !important;
-                min-width: 206.4px !important;
-                border: none;
-            }
-            tr:nth-child(odd) > td {
-                // background-color: $white;
-                width: 182.4px;
-                min-width: 182.4px;
-            }
-            tr:nth-child(even) > td {
-                // background-color: $white;
-                width: 182.4px;
-                min-width: 182.4px;
-            }
-            tr:nth-child(odd) > th {
-                // background-color: $white;
-                width: 182.4px;
-                min-width: 182.4px;
-            }
-            .o_pms_pwa_reservation_list_table {
-                border-collapse: separate;
-                border-spacing: 0 8px;
-                margin-bottom: 0px !important;
-
-                  td[colspan="2"] {
-                    width: calc(189.265px * 2) !important;
-                  }
-                  td[colspan="3"] {
-                    width: calc(189.265px * 3) !important;
-                  }
-                  td[colspan="4"] {
-                    width: calc(189.265px * 4) !important;
-                  }
-                  td[colspan="5"] {
-                    width: calc(189.265px * 5) !important;
-                  }
-                  td[colspan="6"] {
-                    width: calc(189.265px * 6) !important;
-                  }
-                  td[colspan="7"] {
-                    width: calc(189.265px* 7) !important;
-                  }
-                  td[colspan="8"] {
-                    width: calc(189.265px* 8) !important;
-                  }
-                  td[colspan="9"] {
-                    width: calc(189.265px* 9) !important;
-                  }
-                  td[colspan="10"] {
-                    width: calc(189.265px* 10) !important;
-                  }
-                  td[colspan="11"] {
-                    width: calc(189.265px* 11) !important;
-                  }
-                  td[colspan="12"] {
-                    width: calc(189.265px* 12) !important;
-                  }
-                  td[colspan="13"] {
-                    width: calc(189.265px* 13) !important;
-                  }
-                  td[colspan="14"] {
-                    width: calc(189.265px* 14) !important;
-                  }
-                  td[colspan="15"] {
-                    width: calc(189.265px* 15) !important;
-                  }
-                  td[colspan="16"] {
-                    width: calc(189.265px* 16) !important;
-                  }
-                  td[colspan="17"] {
-                    width: calc(189.265px* 17) !important;
-                  }
-                  td[colspan="18"] {
-                    width: calc(189.265px* 18) !important;
-                  }
-                  td[colspan="19"] {
-                    width: calc(189.265px* 19) !important;
-                  }
-                  td[colspan="20"] {
-                    width: calc(189.265px* 20) !important;
-                  }
-                  td[colspan="21"] {
-                    width: calc(189.265px* 21) !important;
-                  }
-                  td[colspan="22"] {
-                    width: calc(189.265px* 22) !important;
-                  }
-                  td[colspan="23"] {
-                    width: calc(189.265px* 23) !important;
-                  }
-                  td[colspan="24"] {
-                    width: calc(189.265px* 24) !important;
-                  }
-                  td[colspan="25"] {
-                    width: calc(189.265px* 25) !important;
-                  }
-                  td[colspan="26"] {
-                    width: calc(189.265px* 26) !important;
-                  }
-                  td[colspan="27"] {
-                    width: calc(189.265px* 27) !important;
-                  }
-                  td[colspan="28"] {
-                    width: calc(189.265px* 28) !important;
-                  }
-                  td[colspan="29"] {
-                    width: calc(189.265px* 29) !important;
-                  }
-                  td[colspan="30"] {
-                    width: calc(189.265px* 30) !important;
-                  }
-                  td[colspan="31"] {
-                    width: calc(189.265px* 31) !important;
-                  }
             }
         }
 
@@ -556,93 +409,61 @@ section.o_pms_pwa_roomdoo {
         }
         .o_pms_pwa_line_before {
             &_success::after {
-<<<<<<< HEAD
-=======
                 top: 0.75em;
-                left: -155px;
+                left: -140px;
                 background-color: var(--success);
                 content: "";
                 display: inline-block;
                 height: 3px;
                 position: relative;
                 vertical-align: middle;
-                width: 60px;
+                width: 51px;
             }
             &_success::before {
-                display: none;
+                display: none !important;
             }
             &_warning::after {
                 top: 0.75em;
-                left: -155px;
+                left: -140px;
                 background-color: var(--warning);
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                 content: "";
                 display: inline-block;
                 height: 3px;
                 position: relative;
-<<<<<<< HEAD
-                top: 0.25em;
-                left: -10px;
-            }
-            &_warning::after {
-=======
                 vertical-align: middle;
-                width: 60px;
+                width: 51px;
             }
             &_warning::before {
-                display: none;
+                display: none !important;
             }
 
             &_danger::after {
                 top: 0.75em;
-                left: -155px;
+                left: -140px;
                 background-color: var(--danger);
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                 content: "";
                 display: inline-block;
                 height: 3px;
                 position: relative;
-<<<<<<< HEAD
-                top: 0.25em;
-                left: -10px;
-            }
-            &_danger::after {
-                content: "";
-                display: block;
-                width: 10px;
-                height: 0;
-                border-bottom: 4px solid var(--danger);
-                position: relative;
-                top: 0.25em;
-                left: -10px;
-            }
-            &_info::after {
-=======
                 vertical-align: middle;
-                width: 60px;
+                width: 51px;
             }
             &_danger::before {
-                display: none;
+                display: none !important;
             }
             &_info::after {
                 top: 0.75em;
-                left: -155px;
+                left: -140px;
                 background-color: $theme-color;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                 content: "";
                 display: inline-block;
                 height: 3px;
                 position: relative;
-<<<<<<< HEAD
-                top: 0.25em;
-                left: -10px;
-=======
                 vertical-align: middle;
-                width: 60px;
+                width: 51px;
             }
             &_info::before {
-                display: none;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
+                display: none !important;
             }
         }
         .o_pms_pwa_calendar_line {
@@ -681,20 +502,13 @@ section.o_pms_pwa_roomdoo {
                 float: left;
 
                 padding: 0.1rem;
-
             }
             &_hr {
-
                 &_success {
                     border-bottom: 4px solid var(--success);
-<<<<<<< HEAD
-                    // width: calc(105% / var(--n));
-                    // margin-left: 1.5rem;
-=======
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 12px;
@@ -705,11 +519,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-<<<<<<< HEAD
-                        margin-left: -1.65rem;
-=======
                         left: -1.65rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                         display: ruby-base-container;
                         z-index: 0;
                         color: var(--success);
@@ -717,14 +527,9 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_warning {
                     border-bottom: 4px solid var(--warning);
-<<<<<<< HEAD
-                    // width: calc(105% / var(--n));
-                    // margin-left: 1.5rem;
-=======
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 8px;
@@ -735,11 +540,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-<<<<<<< HEAD
-                        margin-left: -1.65rem;
-=======
                         left: -1.65rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                         display: ruby-base-container;
                         z-index: 0;
                         color: var(--warning);
@@ -747,14 +548,9 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_danger {
                     border-bottom: 4px solid var(--danger);
-<<<<<<< HEAD
-                    // width: calc(105% / var(--n));
-                    // margin-left: 1.5rem;
-=======
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 8px;
@@ -765,11 +561,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-<<<<<<< HEAD
-                        margin-left: -1.65rem;
-=======
                         left: -1.65rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                         display: ruby-base-container;
                         z-index: 0;
                         color: var(--danger);
@@ -777,14 +569,9 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_info {
                     border-bottom: 4px solid $theme-color;
-<<<<<<< HEAD
-                    // width: calc(105% / var(--n));
-                    // margin-left: 1.5rem;
-=======
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                     .o_pms_pwa_calendar_line_icon {
                         margin-top: -3rem;
                         width: 12px;
@@ -795,11 +582,7 @@ section.o_pms_pwa_roomdoo {
                         position: relative;
                         top: -1.15rem;
                         font-size: 16px;
-<<<<<<< HEAD
-                        margin-left: -1.65rem;
-=======
                         left: -1.65rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                         display: ruby-base-container;
                         z-index: 0;
                         color: $theme-color;
@@ -819,22 +602,14 @@ section.o_pms_pwa_roomdoo {
                     position: relative;
                     top: -1.75rem;
                     height: 26px;
-<<<<<<< HEAD
-                    border-left: 1px solid var(--success);
-=======
                     border-left: 1px solid currentColor;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
                     margin-left: 0.35rem;
                 }
             }
             &_price {
                 font-weight: bold;
                 font-size: 14px;
-<<<<<<< HEAD
-                margin-left: 1.5rem;
-=======
                 margin-left: 0.5rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
             }
             &_name {
                 margin-left: 3.2rem;
@@ -860,15 +635,9 @@ section.o_pms_pwa_roomdoo {
         .btn-add {
             display: none;
             margin-top: 0.5rem;
-<<<<<<< HEAD
-            width: 90%;
-            // margin-left: 1.5rem;
-            margin-left: 0.5rem;
-=======
             width: 80%;
             margin-left: 2rem;
             //margin-left: 0.5rem;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
             border-radius: 1.5rem;
             border: none;
             background-image: linear-gradient(
@@ -963,10 +732,6 @@ section.o_pms_pwa_roomdoo {
             }
         }
         p {
-<<<<<<< HEAD
-            text-align: center;
-=======
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
             input {
                 width: 60px;
                 margin-left: 1rem;
@@ -978,13 +743,9 @@ section.o_pms_pwa_roomdoo {
 
         .o_pms_pwa_show_table {
             background-color: $bg-theme-color-modal;
-<<<<<<< HEAD
-            text-align: center;
-=======
             margin-left: 2rem;
             margin-bottom: 1rem;
             font-size: 18px;
->>>>>>> b1c036d71b5092c7d4653e635915859dc281abbd
         }
     }
 }
