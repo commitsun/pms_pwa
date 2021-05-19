@@ -466,7 +466,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     "</span>";
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
-                                )[7].innerHTML = updated_data.folio_id.amount_total;
+                                )[6].innerHTML = updated_data.folio_id.amount_total;
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[7].innerHTML = updated_data.folio_id.outstanding_vat;
@@ -487,6 +487,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             });
         },
         displayDataAlert: function (result, data_id = false) {
+            var self = this;
             var data = JSON.parse(result);
             if (data && data.result === true) {
                 data.type = "success";
