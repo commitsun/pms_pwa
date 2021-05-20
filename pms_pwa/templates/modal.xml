@@ -156,6 +156,12 @@
                         </label>
                         <select t-attf-data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
                     </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="segmentation_ids">
+                            Segmentation
+                        </label>
+                        <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/>
+                    </div>
                 </div>
             </div>
 
@@ -236,6 +242,12 @@
                             Pricelist
                         </label>
                         <select t-attf-data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="segmentation_ids">
+                            Segmentation
+                        </label>
+                        <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/>
                     </div>
                 </div>
             </div>

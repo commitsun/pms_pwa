@@ -17,6 +17,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
         $("form").submit();
     });
+    /* Function form to json*/
+    function form_to_json(formData) {
+        var form_object = {};
+        $.each(formData,
+            function(i, v) {
+                form_object[v.name] = v.value;
+            }
+        );
+        return form_object;
+    }
+
     /* Single reservation form */
     $("#button_reservation_modal").on("click", function (e) {
         setTimeout(function () {
@@ -47,12 +58,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     });
 
     $("form#single_reservation_form").on("change", "input, select", function (event) {
-        var values = {};
+        var values = $("form#single_reservation_form").serializeArray();
+        values = form_to_json(values);
         var allowed_fields = [
             "allowed_agency_ids",
             "allowed_board_service_room_ids",
             "allowed_channel_type_ids",
             "allowed_pricelists",
+            "allowed_segmentations",
             "room_types",
             "room_numbers",
         ];
@@ -149,6 +162,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     $("form#single_reservation_form").on("submit", function (event) {
         event.preventDefault();
         var values = $("form#single_reservation_form").serializeArray();
+        values = form_to_json(values);
         if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
 
@@ -194,6 +208,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "allowed_board_service_room_ids",
             "allowed_channel_type_ids",
             "allowed_pricelists",
+            "allowed_segmentations",
             "room_types",
             "room_numbers",
         ];
