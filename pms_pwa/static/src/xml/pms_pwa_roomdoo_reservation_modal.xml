@@ -791,7 +791,7 @@
                                                         <label class="control-label col-12" for="birthdate_date">
                                                             Birthdate date
                                                         </label>
-                                                        <input class="form-control" type="date" name="birthdate_date" t-att-value="partner.birthdate_date ? partner.birthdate_date : ''" />
+                                                        <input class="form-control o_pms_pwa_daterangepicker" type="date" name="birthdate_date" t-att-value="partner.birthdate_date ? partner.birthdate_date : ''" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -835,7 +835,7 @@
                                                         <label class="control-label col-12" for="document_expedition_date">
                                                             Document expedition date
                                                         </label>
-                                                        <input class="form-control" type="date" name="document_expedition_date" t-att-value="partner.document_expedition_date ? partner.document_expedition_date : ''" />
+                                                        <input class="form-control o_pms_pwa_daterangepicker" type="date" name="document_expedition_date" t-att-value="partner.document_expedition_date ? partner.document_expedition_date : ''" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />

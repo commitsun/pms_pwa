@@ -21,6 +21,19 @@ odoo.define("pms_pwa.sidebar", function () {
     // DATE RANGE MODAL
     $(function () {
         if (document.documentElement.lang === "es-ES") {
+            $(".o_pms_pwa_daterangepicker").daterangepicker(
+                {
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    this.element.val(start.format("DD/MM/YYYY"));
+                }
+            );
+
             $('input[name="range_check_date_modal_reservation"]').daterangepicker(
                 {
                     locale: {
@@ -80,6 +93,19 @@ odoo.define("pms_pwa.sidebar", function () {
                 }
             );
         } else {
+            $(".o_pms_pwa_daterangepicker").daterangepicker(
+                {
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    this.element.val(start.format("MM/DD/YYYY"));
+                }
+            );
+
             $('input[name="range_check_date_modal_reservation"]').daterangepicker(
                 {
                     locale: {

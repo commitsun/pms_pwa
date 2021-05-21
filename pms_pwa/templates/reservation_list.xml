@@ -58,7 +58,7 @@
                             </t>
                         </div>
 
-                        <div class="table-wrapper table-responsive">
+                        <div class="table-wrapper table-responsive" style="min-height: 300px;">
                             <table class="table table-hover o_pms_pwa_reservation_list_table" id="o_pms_pwa_reservation_list_table">
                                 <thead>
                                     <tr>
@@ -389,8 +389,8 @@
                                             <label class="control-label col-12" for="checkin">
                                                 Check in
                                             </label>
-                                            <input class="form-control"
-                                                type="date" name="checkin"
+                                            <input class="form-control o_pms_pwa_daterangepicker"
+                                                type="text" name="checkin"
                                                 t-att-value="post['checkin'] if post and 'checkin' in post else None"/>
                                             <span class="o_pms_pwa_calendar_icon">
                                                 <!-- <span class="fa fa-calendar"/> -->
@@ -401,8 +401,8 @@
                                             <label class="control-label col-12" for="checkout">
                                                 Check out
                                             </label>
-                                            <input class="form-control"
-                                                type="date" name="checkout"
+                                            <input class="form-control o_pms_pwa_daterangepicker"
+                                                type="text" name="checkout"
                                                 t-att-value="post['checkout'] if post and 'checkout' in post else None"/>
                                             <span class="o_pms_pwa_calendar_icon">
                                                 <!-- <span class="fa fa-calendar"/> -->
@@ -451,7 +451,7 @@
                                                 <label class="control-label col-12" for="checkin_from">
                                                     From
                                                 </label>
-                                                <input class="form-control" type="date" name="checkin_from"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="checkin_from"
                                                     t-att-value="post['checkin_from'] if post and 'checkin_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
@@ -462,7 +462,7 @@
                                                 <label class="control-label col-12" for="checkin_to">
                                                     To
                                                 </label>
-                                                <input class="form-control" type="date" name="checkin_to"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="checkin_to"
                                                     t-att-value="post['checkin_to'] if post and 'checkin_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
@@ -479,7 +479,7 @@
                                                 <label class="control-label col-12" for="checkout_from">
                                                     From
                                                 </label>
-                                                <input class="form-control" type="date" name="checkout_from"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="checkout_from"
                                                     t-att-value="post['checkout_from'] if post and 'checkout_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
@@ -488,9 +488,9 @@
                                             </div>
                                             <div class="col-6">
                                                 <label class="control-label col-12" for="checkout_to">
-                                                    From
+                                                    to
                                                 </label>
-                                                <input class="form-control" type="date" name="checkout_to"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="checkout_to"
                                                     t-att-value="post['checkout_to'] if post and 'checkout_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
@@ -507,7 +507,7 @@
                                                 <label class="control-label col-12" for="created_from">
                                                     From
                                                 </label>
-                                                <input class="form-control" type="date" name="created_from"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="created_from"
                                                     t-att-value="post['created_from'] if post and 'created_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
@@ -518,7 +518,7 @@
                                                 <label class="control-label col-12" for="created_to">
                                                     From
                                                 </label>
-                                                <input class="form-control" type="date" name="created_to"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="created_to"
                                                     t-att-value="post['created_to'] if post and 'created_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
@@ -535,7 +535,7 @@
                                                 <label class="control-label col-12" for="modified_from">
                                                     From
                                                 </label>
-                                                <input class="form-control" type="date" name="modified_from"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="modified_from"
                                                     t-att-value="post['modified_from'] if post and 'modified_from' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
@@ -546,7 +546,7 @@
                                                 <label class="control-label col-12" for="modified_to">
                                                     From
                                                 </label>
-                                                <input class="form-control" type="date" name="modified_to"
+                                                <input class="form-control o_pms_pwa_daterangepicker" type="text" name="modified_to"
                                                     t-att-value="post['modified_to'] if post and 'modified_to' in post else None"/>
                                                 <span class="o_pms_pwa_calendar_icon">
                                                     <!-- <span class="fa fa-calendar"/> -->
