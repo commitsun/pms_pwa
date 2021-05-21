@@ -58,6 +58,7 @@
             />
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/bs-stepper.min.css"/>
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/daterangepicker.css"/>
+            <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/bootstrap-select.min.css" />
         </xpath>
     </template>
     <template id="website_roomdoo_js" inherit_id="website.assets_frontend">
@@ -100,6 +101,8 @@
             <script src="/pms_pwa/static/src/js/vendor/daterangepicker.js"></script>
             <script src="/pms_pwa/static/src/js/o_pms_pwa_dashboard.js"></script>
             <script src="/web/static/lib/Chart/Chart.js"></script>
+
+            <script src="/pms_pwa/static/src/js/vendor/bootstrap-select.min.js"></script>
         </xpath>
     </template>
 </odoo>

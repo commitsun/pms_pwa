@@ -434,10 +434,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-12 o_pms_pwa_selectpicker">
-                                                        <label class="control-label col-12" for="allowed_segmentations">
-                                                            Motivo del viaje ( CTRL + click para seleccionar varios )
-                                                        </label>
-                                                        <select multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="segmentation_ids" size="3" >
+                                                        <!-- <label class="control-label col-12" for="allowed_segmentations">
+                                                            Motivo del viaje
+                                                        </label> -->
+                                                        <!-- <select multiple="true" data-live-search="true" name="segmentation_ids"  class="selectpicker"> -->
+
+                                                        <select multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo del viaje" >
                                                             <!-- t-att-selected="reservation.service_ids in key['id'] ? 'selected' : None" -->
                                                             <option name="segmentation_ids" t-foreach="reservation._get_allowed_segmentations()" t-as="key" t-att-value="key['id']">
                                                                 <t t-esc="key['name']" />

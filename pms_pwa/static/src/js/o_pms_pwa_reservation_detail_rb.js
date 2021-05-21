@@ -313,7 +313,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             });
         }
     });
-
+    $(function () {
+        $(".selectpicker").selectpicker();
+    });
     // Cargamos la página y las líneas
     $(document).ready(function () {
         if ($("input[name='reservation_ids']:checked").val()) {

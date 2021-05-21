@@ -722,3 +722,44 @@ section.o_pms_pwa_roomdoo {
         margin-top: -0.5rem;
     }
 }
+
+.bootstrap-select .bs-ok-default::after {
+    width: 0.3em;
+    height: 0.6em;
+    border-width: 0 0.1em 0.1em 0;
+    transform: rotate(45deg) translateY(0.5rem);
+}
+
+.btn.dropdown-toggle:focus {
+    outline: none !important;
+}
+.bootstrap-select > .dropdown-toggle.bs-placeholder {
+    color: $dark !important;
+    .filter-option-inner-inner {
+        color: $theme-color !important;
+    }
+}
+.o_pms_pwa_multiselect {
+    min-height: 3rem;
+    font-weight: 500;
+    font-size: 16px;
+    padding-top: 0.75rem;
+    width: 100%;
+    background-color: $white;
+    color: $dark;
+    border: 1px $theme-color solid;
+    // margin-top: 1rem;
+    // margin-bottom: 1rem;
+    text-align: left;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") $white no-repeat
+        98.5% !important;
+    background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg") $white no-repeat
+        calc(100% - 10px) !important;
+
+    &::after {
+        display: none !important;
+    }
+}
