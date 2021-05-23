@@ -8,6 +8,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var _t = core._t;
     var folio_id = $("input[name='folio_id']").val();
     var reservation_id = $("input[name='reservation_id']").val();
+
     // Calendario
     function new_displayDataAlert(result, data_id = false) {
         var data = JSON.parse(result);
@@ -34,9 +35,10 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             String(window.location.href + " #reservation_" + data_id + " td")
         ); */
     }
+
     $(function () {
         const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
-        if (document.documentElement.lang == "es-ES") {
+        if (document.documentElement.lang === "es-ES") {
             $('input[name="range_check_date_detail_reservation"]').daterangepicker(
                 {
                     locale: {
@@ -50,6 +52,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -90,6 +93,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -137,6 +141,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 $("#" + currentEle).html(
                     $(".thVal").val().trim() + '<i class="fa fa-edit"></i>'
                 );
+                // Window.location.href = window.location.href;
             }
         });
 
@@ -216,23 +221,24 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     });
 
     // Cambios en formulario
-    $("form#reservation_detail").on("change", "input, select", function (new_event) {
+    $("form#reservation_detail").on("focusout", "input, select", function (new_event) {
+        var values = {};
         if (
             !new_event.currentTarget.checked &&
             new_event.currentTarget.dataset.service_id
         ) {
-            var values = {};
+            values = {};
             values.del_service = new_event.currentTarget.dataset.service_id;
-        } else if (new_event.currentTarget.name == "nights") {
-            var values = {reservation_id: reservation_id};
+        } else if (new_event.currentTarget.name === "nights") {
+            values = {reservation_id: reservation_id};
             values.checkin = $('input[name="check_in_date"]').val();
             values.checkout = $('input[name="check_out_date"]').val();
         } else {
-            var values = {reservation_id: reservation_id};
+            values = {reservation_id: reservation_id};
             values[new_event.currentTarget.name] = new_event.currentTarget.value;
         }
 
-        if (new_event.currentTarget.name != "range_check_date_detail_reservation") {
+        if (new_event.currentTarget.name !== "range_check_date_detail_reservation") {
             ajax.jsonRpc(
                 "/reservation/" + reservation_id + "/onchange_data",
                 "call",
@@ -242,7 +248,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 if (!JSON.parse(new_data).result) {
                     new_displayDataAlert(new_data);
                 } else {
-                    window.location.href = window.location.href;
+                    window.location = window.location.href;
                 }
 
                 // If (new_data) {
@@ -307,7 +313,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             });
         }
     });
-
+    $(function () {
+        $(".selectpicker").selectpicker();
+    });
     // Cargamos la página y las líneas
     $(document).ready(function () {
         if ($("input[name='reservation_ids']:checked").val()) {

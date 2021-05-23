@@ -507,3 +507,14 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     font-size: 16px;
     font-weight: 600;
 }
+
+// Multi select
+.o_pms_pwa_selectpicker {
+    label {
+        position: relative !important;
+    }
+    select {
+        background: none !important;
+        padding-top: 0rem !important;
+    }
+}
