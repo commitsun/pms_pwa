@@ -682,6 +682,7 @@ class TestFrontEnd(http.Controller):
             "room_type_id": {
                 "id": reservation.room_type_id.id,
                 "name": reservation.room_type_id.name,
+                "default_code": reservation.room_type_id.default_code,
             },
             "preferred_room_id": {
                 "id": reservation.preferred_room_id.id

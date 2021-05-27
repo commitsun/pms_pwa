@@ -445,6 +445,22 @@
                                         </div>
                                     </div>
                                 </div> -->
+
+                                <!-- We need to create new buttons on the controller or set checks to show/hide them. TODO -->
+
+                                <!-- <div class="row mt-4" t-if="reservation.primary_button">
+                                    <div class="col-6">
+                                        <t t-raw="reservation.primary_button"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="dropdown">
+                                            <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                                            <div class="dropdown-menu" aria-labelledby="dLabel">
+                                                <t t-raw="reservation.secondary_buttons"/>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div> -->
                             </form>
                         </div>
                     </div>
