@@ -1239,7 +1239,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                reservation_id = button.getAttribute("data-id")
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -1326,7 +1326,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                reservation_id = button.getAttribute("data-id")
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -1361,7 +1361,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                reservation_id = button.getAttribute("data-id")
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,

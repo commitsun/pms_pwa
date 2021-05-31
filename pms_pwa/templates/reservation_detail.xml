@@ -43,9 +43,9 @@
                                 </h1>
                             </div>
                             <div class="col-lg-12 col-xl-6 text-right o_pms_pwa_keypad_footer">
-                                <button id="o_pms_pwa_button_cancel" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancelar reserva</button>
-                                <button id="o_pms_pwa_button_checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkin o_pms_pwa_disabled">Check in</button>
-                                <button id="o_pms_pwa_button_checkout" t-attf-url="/reservation/{{ reservation.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
+                                <button id="o_pms_pwa_button_cancel" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancelar reserva</button>
+                                <button id="o_pms_pwa_button_checkin" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkin o_pms_pwa_disabled">Check in</button>
+                                <button id="o_pms_pwa_button_checkout" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
                             </div>
                         </div>
                         <div class="row">
@@ -92,7 +92,7 @@
                                                         </button>
                                                         <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
                                                             <t t-foreach="reservation.checkin_partner_ids" t-as="person">
-                                                                <a class="dropdown-item o_pms_pwa_button_checkin" href="#">
+                                                                <a class="dropdown-item o_pms_pwa_button_checkin" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin">
                                                                     <t t-if="person.partner_id.name">
                                                                         <t t-esc="person.partner_id.name" />
                                                                     </t>
