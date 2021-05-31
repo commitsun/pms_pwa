@@ -70,7 +70,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <input class="form-control" type="text" name="name" placeholder="Name" t-att-value="post['name'] if post and 'name' in post else None" />
+                        <input class="form-control o_pms_pwa_search_partner" type="text" name="name" placeholder="Name" t-att-value="post['name'] if post and 'name' in post else None" />
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -201,7 +201,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <input class="form-control" type="text" name="name" placeholder="Name" t-att-value="post['name'] if post and 'name' in post else None" />
+                        <input class="form-control o_pms_pwa_search_partner" type="text" name="name" placeholder="Name" t-att-value="post['name'] if post and 'name' in post else None" />
                     </div>
                 </div>
                 <div class="row mt-3">
