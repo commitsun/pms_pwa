@@ -460,7 +460,10 @@
                                         </form>
                                     </div>
                                 </div>
-                                <div class="card shadow mt-4">
+
+                            </div>
+                            <div class="col-lg-12 col-xl-4" id="invoice_col">
+                                <div class="card shadow my-4">
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
                                             DETALLES DE LA TARIFA
@@ -522,8 +525,6 @@
                                         </form>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-12 col-xl-4 mt-4" id="invoice_col">
                                 <div class="card bg-dark shadow">
                                     <div class="card-header o_pms_pwa_card_header">
                                         <h3 class="mb-0">
