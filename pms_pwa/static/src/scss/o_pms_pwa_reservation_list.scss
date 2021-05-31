@@ -473,8 +473,8 @@ div.o_pms_pwa_reservation_modal {
         }
     }
     .o_pms_pwa_img_rounded_bg {
-        background-color: $theme-color;
-        padding: 0.15rem;
+        background-color: $white;
+        //padding: 0.15rem;
     }
     .progress {
         height: 0.25rem;
@@ -699,6 +699,13 @@ div.o_pms_pwa_new_reservation_modal {
     }
 }
 
-/*******************************
-* MEDIAS
-*******************************/
+.o_pms_pwa_button_filter {
+    background-color: $bg-theme-color;
+    border: 1px solid $theme-color;
+    i {
+        color: $theme-color;
+    }
+    @media screen and (max-width: 767px) {
+        display: none;
+    }
+}

@@ -31,6 +31,9 @@
                                             <i class="fa fa-filter d-lg-none"></i>
                                         </a>
                                     </span>
+                                    <a t-attf-href="?checkin={{today}}" class="btn o_pms_pwa_button_filter"><i class="fa fa-plane"></i></a>
+                                    <a t-attf-href="?checkout={{today}}" class="btn o_pms_pwa_button_filter"><i class="fa fa-home"></i></a>
+                                    <a t-attf-href="?checkout={{today}}" class="btn o_pms_pwa_button_filter"><i class="fa fa-plane"></i></a>
                                 </div>
                                 <t t-call="pms_pwa.roomdoo_filters_modal">
                                     <t t-set="post" t-value="post"/>

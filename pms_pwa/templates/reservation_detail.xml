@@ -55,7 +55,7 @@
                                         <div class="bg-dark">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(reservation.partner_id, 'image_128')" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="100" />
+                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(reservation.partner_id, 'image_128')" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="100" style="background-color: white;"/>
                                                 </div>
                                                 <div class="col-12">
                                                     <h3 class="text-white ml-4">

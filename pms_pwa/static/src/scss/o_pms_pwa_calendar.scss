@@ -492,10 +492,9 @@ section.o_pms_pwa_roomdoo {
             }
 
             &_img_bg {
-                background-color: $theme-color;
+                background-color: $white;
                 float: left;
-
-                padding: 0.1rem;
+                //padding: 0.1rem;
             }
             &_hr {
                 &_success {

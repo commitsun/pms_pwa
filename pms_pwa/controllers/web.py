@@ -119,8 +119,10 @@ class TestFrontEnd(http.Controller):
             step=paginate_by,
             url_args=post,
         )
+        today = datetime.datetime.today().strftime(get_lang(request.env).date_format)
 
         values = {
+            "today": today,
             "folios": request.env["pms.folio"].search_folios_pwa(
                 search=search,
                 # order=sort_folio,  #TODO: REVIEW SORTING
