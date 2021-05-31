@@ -31,7 +31,7 @@
                                             <i class="fa fa-filter d-lg-none"></i>
                                         </a>
                                     </span>
-                                    <a t-attf-href="?checkin={{today}}" class="btn o_pms_pwa_button_filter"><i class="fa fa-plane"></i></a>
+                                    <a t-attf-href="?checkin={{today}}" class="btn o_pms_pwa_button_filter"><i class="fa fa-check"></i></a>
                                     <a t-attf-href="?checkout={{today}}" class="btn o_pms_pwa_button_filter"><i class="fa fa-home"></i></a>
                                     <a t-attf-href="?checkout={{today}}" class="btn o_pms_pwa_button_filter"><i class="fa fa-plane"></i></a>
                                 </div>
