@@ -118,7 +118,7 @@
                                                     <i class="fa fa-angle-down"></i>
                                                     <t t-if="obj.name" t-esc="obj.name" />
                                                 </p>
-                                                <p class="o_pms_pwa_extra_info">
+                                                <!-- <p class="o_pms_pwa_extra_info">
                                                     <span>
                                                         <t t-esc="obj.get_capacity()" />
                                                         <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" />
@@ -132,7 +132,7 @@
                                                         Restricciones
                                                     </span>
 
-                                                </p>
+                                                </p> -->
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>

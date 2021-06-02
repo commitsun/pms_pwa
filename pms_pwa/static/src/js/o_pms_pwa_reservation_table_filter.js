@@ -163,6 +163,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         event.preventDefault();
         var values = $("form#single_reservation_form").serializeArray();
         values = form_to_json(values);
+        values['submit'] = true;
         if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
 
@@ -174,8 +175,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 function (new_data) {
                     setTimeout(function () {
                         if (new_data) {
-                            var data = JSON.parse(new_data);
-                            if (data && data.result === true) {
+                            var data = new_data;
+                            if (data && data.id) {
                                 /* We need to integrate this into the public widget */
                                 location.href = "/reservation/" + data.id;
                             } else {
@@ -353,8 +354,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 function (new_data) {
                     setTimeout(function () {
                         if (new_data) {
-                            var data = JSON.parse(new_data);
-                            if (data && data.result === true) {
+                            var data = new_data;
+                            if (data && data.id) {
                                 /* We need to integrate this into the public widget */
                                 location.href = "/reservation/" + data.id;
                             } else {
@@ -463,7 +464,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 )[2].innerHTML =
                                     updated_data.preferred_room_id.name +
                                     "<br/> <span class='o_pms_pwa_wler'>" +
-                                    updated_data.room_type_id.name +
+                                    updated_data.room_type_id.default_code +
                                     "</span>";
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
@@ -1238,7 +1239,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                reservation_id = button.getAttribute("data-id")
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -1325,7 +1326,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                reservation_id = button.getAttribute("data-id")
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -1360,7 +1361,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                reservation_id = button.getAttribute("data-id")
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,

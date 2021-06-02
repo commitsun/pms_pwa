@@ -119,8 +119,10 @@ class TestFrontEnd(http.Controller):
             step=paginate_by,
             url_args=post,
         )
+        today = datetime.datetime.today().strftime(get_lang(request.env).date_format)
 
         values = {
+            "today": today,
             "folios": request.env["pms.folio"].search_folios_pwa(
                 search=search,
                 # order=sort_folio,  #TODO: REVIEW SORTING
@@ -569,7 +571,8 @@ class TestFrontEnd(http.Controller):
             if reservation_ids:
                 # TODO resisar si se puede hacer de otra forma.
                 reservation_lines = folio.sale_line_ids.filtered(
-                    lambda x: x.reservation_id.id in reservation_ids and x.display_type == False
+                    lambda x: x.reservation_id.id in reservation_ids
+                    and x.display_type == False
                 )
                 reservation_show_lines = [
                     {
@@ -682,6 +685,7 @@ class TestFrontEnd(http.Controller):
             "room_type_id": {
                 "id": reservation.room_type_id.id,
                 "name": reservation.room_type_id.name,
+                "default_code": reservation.room_type_id.default_code,
             },
             "preferred_room_id": {
                 "id": reservation.preferred_room_id.id
@@ -815,7 +819,6 @@ class TestFrontEnd(http.Controller):
                         reservation_values["room_type_id"] = request.env[
                             "pms.room.type"
                         ].browse(int(params["room_type_id"]))
-
 
                     # PREFERRED ROOM ID
                     elif (
@@ -1202,9 +1205,11 @@ class TestFrontEnd(http.Controller):
 
         room_type_id = False
         if reservation_values.get("room_type_id"):
-            room_type_id = request.env["pms.room.type"].search(
-                [("id", "=", int(reservation_values.get("room_type_id")))]
-            ).id
+            room_type_id = (
+                request.env["pms.room.type"]
+                .search([("id", "=", int(reservation_values.get("room_type_id")))])
+                .id
+            )
 
         vals = {
             "checkin": checkin,
@@ -1240,7 +1245,9 @@ class TestFrontEnd(http.Controller):
 
         if reservation_values.get("agency_id"):
             vals["agency_id"] = int(reservation_values.get("agency_id"))
-            vals["channel_type_id"] = request.env["res.partner"].browse(agency_id).sale_channel_id.id
+            vals["channel_type_id"] = (
+                request.env["res.partner"].browse(agency_id).sale_channel_id.id
+            )
 
         if reservation_values.get("submit"):
             reservation = request.env["pms.reservation"].create(vals)
@@ -1562,3 +1569,25 @@ class TestFrontEnd(http.Controller):
         pp.pprint(wizard_values)
 
         return wizard_values
+
+    @http.route(
+        "/partner/search",
+        csrf=False,
+        auth="public",
+        website=True,
+        type="http",
+        methods=["GET"],
+    )
+    def suggest_search(self, keywords, **params):
+        if not keywords:
+            return json.dumps([])
+
+        Partner = request.env["res.partner"].with_context(bin_size=True)
+
+        domain = []
+        domain += [("name", "ilike", keywords)]
+
+        partners = Partner.search(domain, limit=10)
+        partners = [dict(id=p.id, name=p.name, type="p") for p in partners]
+
+        return json.dumps(partners)

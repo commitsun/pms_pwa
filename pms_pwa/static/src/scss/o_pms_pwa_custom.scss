@@ -432,8 +432,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .o_pms_pwa_img_rounded_bg {
-    background-color: $theme-color;
-    padding: 0.15rem;
+    background-color: $white;
+    padding: 0rem;
 }
 input[type="time"]::-webkit-calendar-picker-indicator {
     background: none;
@@ -517,4 +517,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
         background: none !important;
         padding-top: 0rem !important;
     }
+}
+.rounded-circle {
+    border: 2px solid $theme-color;
 }

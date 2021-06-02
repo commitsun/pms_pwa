@@ -445,6 +445,22 @@
                                         </div>
                                     </div>
                                 </div> -->
+
+                                <!-- We need to create new buttons on the controller or set checks to show/hide them. TODO -->
+
+                                <!-- <div class="row mt-4" t-if="reservation.primary_button">
+                                    <div class="col-6">
+                                        <t t-raw="reservation.primary_button"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="dropdown">
+                                            <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                                            <div class="dropdown-menu" aria-labelledby="dLabel">
+                                                <t t-raw="reservation.secondary_buttons"/>
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div> -->
                             </form>
                         </div>
                     </div>
@@ -747,9 +763,9 @@
                                 <div class="bs-stepper-header" role="tablist">
                                     <!-- your steps here -->
                                     <t t-set="step_counter" t-value="1" />
-                                    <t t-foreach="reservation.checkin_partner_ids" t-as="partner">
-                                        <div class="step" t-att-data-target="'#checkin_partner_'+partner.id">
-                                            <button type="button" class="step-trigger" role="tab" t-att-aria-controls="'#checkin_partner_'+partner.id" t-att-id="'checkin_partner_'+partner.id+'-trigger'">
+                                    <t t-foreach="reservation.checkin_partner_ids" t-as="partner_id">
+                                        <div class="step" t-att-data-target="'#checkin_partner_'+partner_id">
+                                            <button type="button" class="step-trigger" role="tab" t-att-aria-controls="'#checkin_partner_'+partner_id" t-att-id="'checkin_partner_'+partner_id+'-trigger'">
                                                 <span class="bs-stepper-circle">
                                                     <t t-esc="step_counter" />
                                                 </span>
@@ -761,9 +777,9 @@
                                 </div>
                                 <div class="bs-stepper-content">
                                     <!-- your steps content here -->
-                                    <t t-set="step_counter" t-value="1" />
+                                    <!-- <t t-set="step_counter" t-value="1" /> -->
                                     <t t-foreach="reservation.checkin_partner_ids" t-as="partner">
-                                        <div t-att-id="'checkin_partner_'+partner.id" class="content" role="tabpanel" t-att-aria-labelledby="'checkin_partner_'+partner.id+'-trigger'">
+                                        <div t-att-id="'checkin_partner_'+partner" class="content" role="tabpanel" t-att-aria-labelledby="'checkin_partner_'+partner+'-trigger'">
                                             <div class="form-group form-field mt8">
                                                 <div class="row">
                                                     <div class="col-sm-12">

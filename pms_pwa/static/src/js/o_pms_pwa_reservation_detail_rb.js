@@ -456,6 +456,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             var data = JSON.parse(result);
             if (data && data.result === true) {
                 data.type = "success";
+                window.location = window.location.href;
             } else if (data && data.result === false) {
                 data.type = "warning";
             } else {
@@ -470,6 +471,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             });
             alert_div.append(alert);
             jQuery.ready();
+
         });
     });
 
