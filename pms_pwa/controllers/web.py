@@ -1246,7 +1246,7 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("agency_id"):
             vals["agency_id"] = int(reservation_values.get("agency_id"))
             vals["channel_type_id"] = (
-                request.env["res.partner"].browse(agency_id).sale_channel_id.id
+                request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
             )
 
         if reservation_values.get("submit"):
