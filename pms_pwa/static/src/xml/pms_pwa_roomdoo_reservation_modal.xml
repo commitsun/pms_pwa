@@ -119,6 +119,11 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
+                                            <!-- Modificar el botón para poner el primary-button que vendrá en controllers -->
+                                            <!-- <t t-if="reservation.primary_button">
+                                                    <t t-raw="reservation.primary_button"/>
+                                                </t>
+                                            -->
                                             <button type="button" class="btn btn-message o_pms_pwa_button_assign_confirm" t-att-url="'/reservation/' + reservation.id +'/assign'">
                                                 <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
                                                 <t t-esc="_t('Confirm')" />
@@ -446,7 +451,7 @@
                                     </div>
                                 </div> -->
 
-                                <!-- We need to create new buttons on the controller or set checks to show/hide them. TODO -->
+                                <!-- TODO  Aquí se añadirán los secondary buttons que vengan en el controlador -->
 
                                 <!-- <div class="row mt-4" t-if="reservation.primary_button">
                                     <div class="col-6">
