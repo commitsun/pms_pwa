@@ -12,8 +12,12 @@
                                 <div id="menu-toggle">
                                     <img src="/pms_pwa/static/img/logo_mobil.png" alt="logo menu roomdoo" class="img-responsive mobile" />
                                     <div class="o_pms_pwa_options">
-                                        <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive mobile" />
-                                        <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive mobile" />
+                                        <button class="btn btn-radius btn-pms_pwa mobile" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
+                                            <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
+                                            Nueva reserva
+                                        </button>
+                                        <!-- <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive mobile" />
+                                        <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive mobile" /> -->
                                         <img src="/pms_pwa/static/img/menu_img.png" alt="notificaciones" class="img-responsive mobile navbar-toggler-icon" />
                                     </div>
                                 </div>
@@ -29,7 +33,7 @@
 
                             <div class="col-lg-6 d-none d-lg-block o_pms_icons">
                                 <button class="btn btn-radius btn-pms_pwa" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
-                                    <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" />
+                                    <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
                                     Nueva reserva
                                 </button>
                                 <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />

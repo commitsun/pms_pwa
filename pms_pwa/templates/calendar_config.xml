@@ -180,9 +180,9 @@
                                                                             <input t-attf-data-room="{{ obj.id }}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}3{{room_day}}" style="width:40px;float:left; margin-left: 1rem;" type="text" t-attf-value="{{ list_price['quota'] }}" name="quota" />
                                                                             <br />
                                                                         </p>
-                                                                        <p style="margin-top:-1rem;"><span style="width:40px;float:left; margin-left: 0.75rem;">€</span><span style="width:40px;float:left; margin-left: 0.75rem;">Uds.</span><span style="width:40px;float:left; margin-left: 0.75rem;">Min.</span></p>
+                                                                        <p style="margin-top:-1rem;"><span style="width:40px;float:left;margin-left: 0.75rem;">€</span><span style="width:40px;float:left; margin-left: 0.75rem;">Uds.</span><span style="width:40px;float:left; margin-left: 0.75rem;">Min.</span></p>
                                                                     <div class="collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
-                                                                        <p style="text-align:right; margin-top:2rem;"><span style="font-size:small; text-align:left">Max. stay:</span>
+                                                                        <p style="text-align:right; margin-top:2rem;margin-right: 1rem;"><span style="font-size:small; text-align:left">Max. stay:</span>
                                                                             <input t-attf-data-room="{{ obj.id }}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}4{{room_day}}" style="width:50px;" type="text" t-attf-value="{{ list_price['max_stay'] }}" name="max_stay" />
                                                                         </p>
                                                                         <p style="text-align:right"><span style="font-size:small; text-align:left">Min. stay arrival:</span>
@@ -193,7 +193,7 @@
                                                                         </p>
                                                                         <p style="text-align:center">
                                                                             <label class="switch">
-                                                                                <input t-attf-data-room="{{ obj.id }}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}7{{room_day}}" name="closed" type="checkbox" />
+                                                                                <input t-attf-data-room="{{ obj.id }}" t-attf-value="{{list_price['closed']}}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}7{{room_day}}" name="closed" type="checkbox" />
                                                                                 <span class="slider round"></span>
                                                                             </label>
                                                                         </p>
