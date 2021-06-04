@@ -817,6 +817,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                 "allowed_board_service_room_ids",
                                                                 "allowed_channel_type_ids",
                                                                 "allowed_pricelists",
+                                                                "allowed_segmentations",
                                                                 "room_types",
                                                                 "room_numbers",
                                                             ];
@@ -982,6 +983,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                 "allowed_board_service_room_ids",
                                                                 "allowed_channel_type_ids",
                                                                 "allowed_pricelists",
+                                                                "allowed_segmentations",
                                                                 "room_types",
                                                                 "room_numbers",
                                                             ];

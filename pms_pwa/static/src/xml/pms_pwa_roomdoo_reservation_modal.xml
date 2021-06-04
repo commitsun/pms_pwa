@@ -344,7 +344,7 @@
                                             </div> -->
                                     </div>
                                     <div class="row mt-4">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-12">
                                             <label class="control-label col-12" for="add_service">
                                                 Añadir servicio
                                             </label>
@@ -356,12 +356,10 @@
 
                                             </select>
                                         </div>
-                                        <div class="col-6">
-                                            <!-- <label class="control-label col-12" for="segmentation_ids">
-                                                Segmentation
-                                            </label> -->
-                                            <select t-attf-data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
-                                            <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
                                         </div>
                                     </div>
                                 </div>
