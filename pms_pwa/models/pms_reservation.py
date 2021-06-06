@@ -242,7 +242,7 @@ class PmsReservation(models.Model):
         allowed_board_services = self.env[
             "pms.room.type"
         ]._get_allowed_board_service_room_ids(
-            room_type_id=self.id,
+            room_type_id=self.room_type_id.id,
             pms_property_id=self.pms_property_id.id,
         )
         if not allowed_board_services:

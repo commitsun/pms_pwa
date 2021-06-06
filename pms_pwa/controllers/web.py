@@ -860,7 +860,7 @@ class TestFrontEnd(http.Controller):
                         != reservation.board_service_room_id
                     ):
                         reservation_values["board_service_room_id"] = request.env[
-                            "pms.room"
+                            "pms.board.service.room.type"
                         ].browse(int(params["board_service_room_id"]))
 
                     # SEGMENTATION
