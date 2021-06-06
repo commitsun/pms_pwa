@@ -119,6 +119,11 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
+                                            <!-- Modificar el botón para poner el primary-button que vendrá en controllers -->
+                                            <!-- <t t-if="reservation.primary_button">
+                                                    <t t-raw="reservation.primary_button"/>
+                                                </t>
+                                            -->
                                             <button type="button" class="btn btn-message o_pms_pwa_button_assign_confirm" t-att-url="'/reservation/' + reservation.id +'/assign'">
                                                 <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
                                                 <t t-esc="_t('Confirm')" />
@@ -352,6 +357,11 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row mt-4">
+                                        <div class="col-12">
+                                            <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="form-group form-field o_pms_pwa_group_separation">
@@ -446,7 +456,7 @@
                                     </div>
                                 </div> -->
 
-                                <!-- We need to create new buttons on the controller or set checks to show/hide them. TODO -->
+                                <!-- TODO  Aquí se añadirán los secondary buttons que vengan en el controlador -->
 
                                 <!-- <div class="row mt-4" t-if="reservation.primary_button">
                                     <div class="col-6">

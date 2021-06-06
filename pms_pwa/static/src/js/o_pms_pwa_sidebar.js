@@ -10,6 +10,7 @@ odoo.define("pms_pwa.sidebar", function () {
         e.preventDefault();
         $("body").toggleClass("toggled");
     });
+    const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     // TOAST
     $(document).on("click", ".o_pms_pwa_toast-close", function (event) {
         // Console.log("close toast");
@@ -47,9 +48,19 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-                    console.log(label);
-                    $('input[name="check_in_date"]').val(start);
-                    $('input[name="check_out_date"]').val(end);
+                    const start_date = new Date(start);
+                    var checkin_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    const end_date = new Date(end);
+                    var checkout_date = end_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="check_in_date"]').val(checkin_date);
+                    $('input[name="check_out_date"]').val(checkout_date);
+
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -76,9 +87,18 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-                    console.log(label);
-                    $('input[name="check_in_date"]').val(start);
-                    $('input[name="check_out_date"]').val(end);
+                    const start_date = new Date(start);
+                    var checkin_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    const end_date = new Date(end);
+                    var checkout_date = end_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="check_in_date"]').val(checkin_date);
+                    $('input[name="check_out_date"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -102,7 +122,12 @@ odoo.define("pms_pwa.sidebar", function () {
                     maxYear: parseInt(moment().format("YYYY"), 10),
                 },
                 function (start) {
-                    this.element.val(start.format("MM/DD/YYYY"));
+                    const start_date = new Date(start);
+                    var checkin_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    this.element.val(checkin_date);
                 }
             );
 
@@ -117,9 +142,19 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-                    console.log(label);
-                    $('input[name="check_in_date"]').val(start);
-                    $('input[name="check_out_date"]').val(end);
+
+                    const start_date = new Date(start);
+                    var checkin_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    const end_date = new Date(end);
+                    var checkout_date = end_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="check_in_date"]').val(checkin_date);
+                    $('input[name="check_out_date"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -146,9 +181,19 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-                    console.log(label);
-                    $('input[name="check_in_date"]').val(start);
-                    $('input[name="check_out_date"]').val(end);
+
+                    const start_date = new Date(start);
+                    var checkin_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    const end_date = new Date(end);
+                    var checkout_date = end_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="check_in_date"]').val(checkin_date);
+                    $('input[name="check_out_date"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -166,11 +211,11 @@ odoo.define("pms_pwa.sidebar", function () {
     });
 
     $(document).on("change", "#o_pms_pwa_user_property", function () {
-        // Console.log("AQUI CAMBIAR LAS COOKIES");
+
         const new_property = $(this).val();
-        // Console.log(new_property);
+
         const allowed_pms_properties = $('input[name="allowed_properties"]').val();
-        // Console.log(allowed_pms_properties);
+
         const pms_pids_array = allowed_pms_properties.split(",");
         const index = pms_pids_array.indexOf(new_property);
         if (index > -1) {
@@ -179,7 +224,6 @@ odoo.define("pms_pwa.sidebar", function () {
         // Session.setPmsProperties(1, allowed_pms_property_ids);
 
         const new_pms_pids_order = new_property + "," + pms_pids_array.toString();
-        // Console.log(new_pms_pids_order);
         document.cookie = "pms_pids=" + new_pms_pids_order;
         location.reload();
     });

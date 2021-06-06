@@ -31,9 +31,15 @@
                                             <i class="fa fa-filter d-lg-none"></i>
                                         </a>
                                     </span>
-                                    <a t-attf-href="?ready_for_checkin=true" label="Checkins" class="btn o_pms_pwa_button_filter"><i class="fa fa-check"></i></a>
-                                    <a t-attf-href="?in_house=true" label="Dentro" class="btn o_pms_pwa_button_filter"><i class="fa fa-home"></i></a>
-                                    <a t-attf-href="?ready_for_checkout=true" label="Checkouts" class="btn o_pms_pwa_button_filter"><i class="fa fa-plane"></i></a>
+                                    <a t-attf-href="?ready_for_checkin=true" label="Checkins" class="btn o_pms_pwa_button_filter">
+                                        <img src="/pms_pwa/static/img/svg/icon_arrival.svg" width="18px" alt="Checkins" class="img-responsive"/>
+                                    </a>
+                                    <a t-attf-href="?in_house=true" label="Dentro" class="btn o_pms_pwa_button_filter">
+                                        <img src="/pms_pwa/static/img/svg/icon_house.svg" width="18px" alt="Dentro" class="img-responsive" />
+                                    </a>
+                                    <a t-attf-href="?ready_for_checkout=true" label="Checkouts" class="btn o_pms_pwa_button_filter">
+                                        <img src="/pms_pwa/static/img/svg/icon_exit.svg" width="18px" alt="Checkouts" class="img-responsive" />
+                                    </a>
                                 </div>
                                 <t t-call="pms_pwa.roomdoo_filters_modal">
                                     <t t-set="post" t-value="post"/>
@@ -51,15 +57,29 @@
                                     aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
                             </span>
                             <t t-if="post" t-foreach="post" t-as="val">
-                                <span t-if="post[val] != '' and post[val] != 'ready_for_checkin'">
+                                <span t-if="post[val] != '' and val != 'ready_for_checkin' and val != 'in_house' and val != 'ready_for_checkout'">
                                     <span class="o_pms_tag_index" t-esc="val"/> <span t-esc="post[val]"/>
                                     <button
                                         type="button" class="close"
                                         t-att-data-tag="val" data-dismiss="modal"
                                         aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
                                 </span>
-                                <span t-if="post[val] != '' and post[val] == 'ready_for_checkin'">
-                                    <span class="o_pms_tag_index">Checkins</span>
+                                <span t-if="post[val] != '' and val == 'ready_for_checkin'">
+                                    <span class="o_pms_tag_index">Checkins</span> <span t-esc="post[val]"/>
+                                    <button
+                                        type="button" class="close"
+                                        t-att-data-tag="val" data-dismiss="modal"
+                                        aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
+                                </span>
+                                <span t-if="post[val] != '' and val == 'in_house'">
+                                    <span class="o_pms_tag_index">Dentro</span> <span t-esc="post[val]"/>
+                                    <button
+                                        type="button" class="close"
+                                        t-att-data-tag="val" data-dismiss="modal"
+                                        aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
+                                </span>
+                                <span t-if="post[val] != '' and val == 'ready_for_checkout'">
+                                    <span class="o_pms_tag_index">Checkouts</span> <span t-esc="post[val]"/>
                                     <button
                                         type="button" class="close"
                                         t-att-data-tag="val" data-dismiss="modal"
