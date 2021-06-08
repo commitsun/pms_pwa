@@ -381,7 +381,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     $("form#multiple_reservation_form").on("submit", function (event) {
         event.preventDefault();
-        var values = $("form#multiple_reservation_form").serializeArray();
+        //var values = $("form#multiple_reservation_form").serializeArray();
+        var values = {};
+        try {
+            var id = $("#multiple_reservation_form input[name='id']").val();
+            values["id"] = id;
+        } catch (error) {
+            console.log(error);
+        }
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
             ajax.jsonRpc("/reservation/multiple_reservation_new", "call", values).then(
                 function (new_data) {

@@ -1296,13 +1296,14 @@ class TestFrontEnd(http.Controller):
         print("params: {}".format(params))
         try:
             if params.get("id"):
-                folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
+                folio_wizard = request.env["pms.folio.wizard"].browse(int(params.get("id")))
             folio_action = folio_wizard.create_folio()
+            id_reservation = request.env["pms.folio"].browse(folio_action["res_id"]).reservation_ids[0].id
             return json.dumps(
                 {
                     "result": True,
                     "message": _("Operation completed successfully."),
-                    "id": folio_action["res_id"],
+                    "id": id_reservation,
                 }
             )
         except Exception as e:
