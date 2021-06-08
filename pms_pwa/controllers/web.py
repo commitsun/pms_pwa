@@ -618,58 +618,7 @@ class TestFrontEnd(http.Controller):
         if not reservation:
             raise MissingError(_("This document does not exist."))
 
-        buttons = json.loads(reservation.pwa_action_buttons)
-        keys = buttons.keys()
-        keysList = [key for key in keys]
-
-        primary_button = ""
-        secondary_buttons = ""
-
-        counter = 0
-        for _key in keysList:
-            if counter == 0 or keysList[counter] == "Ver Detalle":
-                if buttons[keysList[counter]]:
-                    primary_button = (
-                        "<button url='"
-                        + buttons[keysList[counter]]
-                        + "' class='btn o_pms_pwa_default_button_name"
-                        + " o_pms_pwa_abutton o_pms_pwa_button_"
-                        + str(keysList[counter].lower())
-                        + "' type='button'>"
-                        + keysList[counter]
-                        + "</button>"
-                    )
-                else:
-                    primary_button = (
-                        "<button"
-                        + " class='disabled btn o_pms_pwa_default_button_name"
-                        + " o_pms_pwa_abutton o_pms_pwa_button_"
-                        + str(keysList[counter].lower())
-                        + "' type='button'>"
-                        + keysList[counter]
-                        + "</button>"
-                    )
-            else:
-                if buttons[keysList[counter]]:
-                    secondary_buttons += (
-                        "<button url='"
-                        + buttons[keysList[counter]]
-                        + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
-                        + str(keysList[counter].lower())
-                        + "' type='button'>"
-                        + keysList[counter]
-                        + "</button>"
-                    )
-                else:
-                    secondary_buttons += (
-                        "<button class='disabled dropdown-item"
-                        + " o_pms_pwa_abutton o_pms_pwa_button_"
-                        + str(keysList[counter].lower())
-                        + "' type='button'>"
-                        + keysList[counter]
-                        + "</button>"
-                    )
-            counter += 1
+        primary_button, secondary_buttons = self.generate_reservation_style_buttons(reservation)
 
         reservation_values = {
             "id": reservation.id,
@@ -860,7 +809,7 @@ class TestFrontEnd(http.Controller):
                         != reservation.board_service_room_id
                     ):
                         reservation_values["board_service_room_id"] = request.env[
-                            "pms.room"
+                            "pms.board.service.room.type"
                         ].browse(int(params["board_service_room_id"]))
 
                     # SEGMENTATION
@@ -1245,7 +1194,7 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("agency_id"):
             vals["agency_id"] = int(reservation_values.get("agency_id"))
             vals["channel_type_id"] = (
-                request.env["res.partner"].browse(agency_id).sale_channel_id.id
+                request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
             )
 
         if reservation_values.get("submit"):
@@ -1344,6 +1293,7 @@ class TestFrontEnd(http.Controller):
     )
     def multiple_reservation_new(self, **kw):
         params = http.request.jsonrequest.get("params")
+        print("params: {}".format(params))
         try:
             if params.get("id"):
                 folio_wizard = self.env["pms.folio.wizard"].browse(params.get("id"))
@@ -1356,7 +1306,8 @@ class TestFrontEnd(http.Controller):
                 }
             )
         except Exception as e:
-            return json.dumps({"result": False, "message": str(e)})
+            _logger.critical(e)
+            #return json.dumps({"result": False, "message": str(e)})
 
     @http.route(
         "/calendar/config",
@@ -1431,10 +1382,74 @@ class TestFrontEnd(http.Controller):
         methods=["POST"],
         website=True,
     )
-    def calendar_config_list(self, date=False, search="", **post):
+    def calendar_config_list(self, search="", **post):
         params = http.request.jsonrequest.get("params")
+        pms_property_id = request.env.user.get_active_property_ids()[0]
         _logger.info(params)
-        return True
+        for room_type_id, pricelists in params["room_type"].items():
+            room_type = request.env["pms.room.type"].browse(int(room_type_id))
+            for pricelist_id, dates in pricelists["pricelist_id"].items():
+                pricelist = request.env["pms.room.type"].browse(int(pricelist_id))
+                for date_str, items in dates["date"].items():
+                    item_date = datetime.datetime.strptime(
+                        date_str, get_lang(request.env).date_format
+                    ).date()
+                    availability_plan = pricelist.availability_plan_id
+                    #price
+                    if "price" in items:
+                        #REVIEW: Necesary date (sale) start/end = False???
+                        price_item = request.env["product.pricelist.item"].search([
+                            ("product_id","=",room_type.product_id.id),
+                            ("date_start_consumption", "=", item_date),
+                            ("date_end_consumption", "=", item_date),
+                            ("pricelist_id", "=", pricelist.id),
+                            ("pms_property_id", "=", pms_property_id),
+                        ])
+                        if price_item:
+                            price_item.write({
+                                "price": float(items["price"])
+                            })
+                        else:
+                            price_item.create({
+                                "product_id": room_type.product_id.id,
+                                "date_start_consumption": item_date,
+                                "date_end_consumption": item_date,
+                                "pricelist_id": pricelist.id,
+                                "pms_property_id": pms_property_id,
+                                "price": float(items["price"]),
+                            })
+                    if availability_plan:
+                        avail_vals = {}
+                        if "quota" in items:
+                            avail_vals["quota"] = int(items["quota"])
+                        if "min_stay" in items:
+                            avail_vals["min_stay"] = int(items["min_stay"])
+                        if "max_stay" in items:
+                            avail_vals["max_stay"] = int(items["max_stay"])
+                        if "closed" in items:
+                            avail_vals["closed"] = bool(items["closed"])
+                        if "min_stay_arrival" in items:
+                            avail_vals["min_stay_arrival"] = bool(items["min_stay_arrival"])
+                        if "max_stay_arrival" in items:
+                            avail_vals["max_stay_arrival"] = bool(items["max_stay_arrival"])
+                        if any(avail_vals):
+                            avail_rule_item = request.env["product.pricelist.item"].search([
+                                ("room_type_id","=",room_type.id),
+                                ("date", "=", item_date),
+                                ("availability_plan_id", "=", availability_plan.id),
+                                ("pms_property_id", "=", pms_property_id),
+                            ])
+                            if avail_rule_item:
+                                avail_rule_item.write(avail_vals)
+                            else:
+                                avail_vals.update({
+                                    "room_type_id": room_type.id,
+                                    "date": item_date,
+                                    "availability_plan_id": availability_plan.id,
+                                    "pms_property_id": pms_property_id,
+                                })
+                                avail_rule_item.create(avail_vals)
+
 
     def parse_reservation(self, reservation):
         reservation_values = dict()
@@ -1590,3 +1605,58 @@ class TestFrontEnd(http.Controller):
         partners = [dict(id=p.id, name=p.name, type="p") for p in partners]
 
         return json.dumps(partners)
+
+    def generate_reservation_style_buttons(self, reservation):
+        buttons = json.loads(reservation.pwa_action_buttons)
+        keys = buttons.keys()
+        keysList = [key for key in keys]
+
+        primary_button = ""
+        secondary_buttons = ""
+
+        counter = 0
+        for _key in keysList:
+            if counter == 0 or keysList[counter] == "Ver Detalle":
+                if buttons[keysList[counter]]:
+                    primary_button = (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' class='btn o_pms_pwa_default_button_name"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+                else:
+                    primary_button = (
+                        "<button"
+                        + " class='disabled btn o_pms_pwa_default_button_name"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+            else:
+                if buttons[keysList[counter]]:
+                    secondary_buttons += (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+                else:
+                    secondary_buttons += (
+                        "<button class='disabled dropdown-item"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+            counter += 1
+        return(primary_button, secondary_buttons)
