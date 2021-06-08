@@ -1390,49 +1390,50 @@ class TestFrontEnd(http.Controller):
         for room_type_id, pricelists in params["room_type"].items():
             room_type = request.env["pms.room.type"].browse(int(room_type_id))
             for pricelist_id, dates in pricelists["pricelist_id"].items():
-                pricelist = request.env["pms.room.type"].browse(int(pricelist_id))
+                pricelist = request.env["product.pricelist"].browse(int(pricelist_id))
                 for date_str, items in dates["date"].items():
                     item_date = datetime.datetime.strptime(
                         date_str, get_lang(request.env).date_format
                     ).date()
                     availability_plan = pricelist.availability_plan_id
                     #price
-                    if "price" in items:
+                    if "price" in items[0]:
                         #REVIEW: Necesary date (sale) start/end = False???
                         price_item = request.env["product.pricelist.item"].search([
                             ("product_id","=",room_type.product_id.id),
                             ("date_start_consumption", "=", item_date),
                             ("date_end_consumption", "=", item_date),
                             ("pricelist_id", "=", pricelist.id),
-                            ("pms_property_id", "=", pms_property_id),
+                            ("pms_property_ids", "in", pms_property_id),
                         ])
                         if price_item:
                             price_item.write({
-                                "price": float(items["price"])
+                                "fixed_price": float(items[0]["price"])
                             })
                         else:
                             price_item.create({
+                                "applied_on": "0_product_variant",
                                 "product_id": room_type.product_id.id,
                                 "date_start_consumption": item_date,
                                 "date_end_consumption": item_date,
                                 "pricelist_id": pricelist.id,
-                                "pms_property_id": pms_property_id,
-                                "price": float(items["price"]),
+                                "pms_property_ids": [pms_property_id],
+                                "fixed_price": float(items[0]["price"]),
                             })
                     if availability_plan:
                         avail_vals = {}
-                        if "quota" in items:
-                            avail_vals["quota"] = int(items["quota"])
-                        if "min_stay" in items:
-                            avail_vals["min_stay"] = int(items["min_stay"])
-                        if "max_stay" in items:
-                            avail_vals["max_stay"] = int(items["max_stay"])
-                        if "closed" in items:
-                            avail_vals["closed"] = bool(items["closed"])
-                        if "min_stay_arrival" in items:
-                            avail_vals["min_stay_arrival"] = bool(items["min_stay_arrival"])
-                        if "max_stay_arrival" in items:
-                            avail_vals["max_stay_arrival"] = bool(items["max_stay_arrival"])
+                        if "quota" in items[0]:
+                            avail_vals["quota"] = int(items[0]["quota"])
+                        if "min_stay" in items[0]:
+                            avail_vals["min_stay"] = int(items[0]["min_stay"])
+                        if "max_stay" in items[0]:
+                            avail_vals["max_stay"] = int(items[0]["max_stay"])
+                        if "closed" in items[0]:
+                            avail_vals["closed"] = bool(items[0]["closed"])
+                        if "min_stay_arrival" in items[0]:
+                            avail_vals["min_stay_arrival"] = bool(items[0]["min_stay_arrival"])
+                        if "max_stay_arrival" in items[0]:
+                            avail_vals["max_stay_arrival"] = bool(items[0]["max_stay_arrival"])
                         if any(avail_vals):
                             avail_rule_item = request.env["product.pricelist.item"].search([
                                 ("room_type_id","=",room_type.id),

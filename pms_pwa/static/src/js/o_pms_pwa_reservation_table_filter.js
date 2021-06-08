@@ -392,6 +392,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
             ajax.jsonRpc("/reservation/multiple_reservation_new", "call", values).then(
                 function (new_data) {
+                    console.log(new_data);
                     setTimeout(function () {
                         if (new_data) {
                             var data = new_data;
