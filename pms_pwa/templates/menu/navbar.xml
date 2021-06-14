@@ -3,6 +3,7 @@
     <template id="roomdoo_remove_items_navbar" inherit_id="website.layout" name="Template roomdoo Default">
         <xpath expr="//header//nav" position="replace">
             <t t-set="is_connected" t-value="not user_id._is_public()" />
+            <div id="loadingmask" style="width: 100%; height: 100%; position: fixed; background: #fff;">Cargando...</div>
             <nav t-if="is_connected" data-name="Navbar" class="navbar navbar-expand-lg navbar-light o_colored_level o_cc">
                 <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between mt-2">
                     <!-- Navbar Collapse -->

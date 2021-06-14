@@ -18,6 +18,11 @@ odoo.define("pms_pwa.sidebar", function () {
         event.stopImmediatePropagation();
         $(".toast").toast("hide");
     });
+    // Preload
+    $(document).ready(function () {
+        console.log("LOADING MASK");
+        $("#loadingmask").fadeOut();
+    });
 
     // DATE RANGE MODAL
     $(function () {
@@ -48,6 +53,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -87,6 +93,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -142,7 +149,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -181,7 +188,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -211,7 +218,6 @@ odoo.define("pms_pwa.sidebar", function () {
     });
 
     $(document).on("change", "#o_pms_pwa_user_property", function () {
-
         const new_property = $(this).val();
 
         const allowed_pms_properties = $('input[name="allowed_properties"]').val();

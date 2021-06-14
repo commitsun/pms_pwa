@@ -120,22 +120,23 @@
                                         </div>
                                         <div class="col-6">
                                             <!-- Modificar el botón para poner el primary-button que vendrá en controllers -->
-<<<<<<< HEAD
                                             <!-- <t t-if="reservation.primary_button">
                                                     <t t-raw="reservation.primary_button"/>
                                                 </t>
                                             -->
-                                            <button type="button" class="btn btn-message o_pms_pwa_button_assign_confirm" t-att-url="'/reservation/' + reservation.id +'/assign'">
-=======
-                                            <t t-if="reservation.primary_button">
+                                            <div class="row" t-if="reservation.primary_button">
+                                                <div class="col-6">
                                                     <t t-raw="reservation.primary_button"/>
-                                                </t>
-
-                                            <!-- <button type="button" class="btn btn-message o_pms_pwa_button_assign_confirm" t-att-url="'/reservation/' + reservation.id +'/assign'">
->>>>>>> upstream/14.0
-                                                <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
-                                                <t t-esc="_t('Confirm')" />
-                                            </button> -->
+                                                </div>
+                                                <div class="col-6">
+                                                    <span class="dropdown">
+                                                        <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                                                        <div class="dropdown-menu" aria-labelledby="dLabel">
+                                                            <t t-raw="reservation.secondary_buttons"/>
+                                                        </div>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -463,26 +464,7 @@
                                         </div>
                                     </div>
                                 </div> -->
-<<<<<<< HEAD
 
-                                <!-- TODO  Aquí se añadirán los secondary buttons que vengan en el controlador -->
-
-                                <!-- <div class="row mt-4" t-if="reservation.primary_button">
-=======
-                                <div class="row mt-4" t-if="reservation.primary_button">
->>>>>>> upstream/14.0
-                                    <div class="col-6">
-                                        <t t-raw="reservation.primary_button"/>
-                                    </div>
-                                    <div class="col-6">
-                                        <span class="dropdown">
-                                            <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
-                                            <div class="dropdown-menu" aria-labelledby="dLabel">
-                                                <t t-raw="reservation.secondary_buttons"/>
-                                            </div>
-                                        </span>
-                                    </div>
-                                </div>
                             </form>
                         </div>
                     </div>
