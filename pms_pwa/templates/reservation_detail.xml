@@ -248,7 +248,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <div class="col-6">
+                                                    <div class="col-12">
                                                         <label class="control-label col-12" for="room_number">
                                                             Nº de habitaciones
                                                         </label>
@@ -264,13 +264,13 @@
                                                             </t>
                                                         </select>
                                                     </div>
-                                                    <div class="col-6">
+                                                    <!-- <div class="col-6">
                                                         <button type="button" class="btn btn-message-form o_pms_pwa_button_assign_confirm" t-attf-url="/reservation/{{ reservation.id }}/assign">
                                                             <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
                                                             Confirmar
                                                         </button>
 
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
@@ -430,7 +430,7 @@
                                                     <div class="col-12">
                                                         <h4>Observaciones</h4>
                                                         <div>
-                                                            <p>Aut possimus enim molestiae eaque. Dicta suscipit ea ut. Enim qui dolor ut voluptatem odio corporis. Occaecati occaecati rerum aliquid. Eligendi expedita eligendi illo nisi ipsum a qui. Et aut est ut.…</p>
+                                                            <p></p>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 o_pms_pwa_selectpicker">

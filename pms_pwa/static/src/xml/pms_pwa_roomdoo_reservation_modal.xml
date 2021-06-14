@@ -124,7 +124,7 @@
                                                     <t t-raw="reservation.primary_button"/>
                                                 </t>
                                             -->
-                                            <div class="row" t-if="reservation.primary_button">
+                                            <div class="row o_pms_pwa_modal_buttons" t-if="reservation.primary_button">
                                                 <div class="col-6">
                                                     <t t-raw="reservation.primary_button"/>
                                                 </div>
