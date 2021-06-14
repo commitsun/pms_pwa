@@ -19,11 +19,12 @@ odoo.define("pms_pwa.sidebar", function () {
         $(".toast").toast("hide");
     });
     // Preload
-    $(document).ready(function () {
-        console.log("LOADING MASK");
-        $("#loadingmask").fadeOut();
-    });
-
+    // $(document).ready(function () {
+    //     // makes sure the whole site is loaded
+    //     $("#status").fadeOut(); // will first fade out the loading animation
+    //     $("#preloader").delay(150).fadeOut(150); // will fade out the white DIV that covers the website.
+    //     $("body").delay(150).css({overflow: "visible"});
+    // });
     // DATE RANGE MODAL
     $(function () {
         if (document.documentElement.lang === "es-ES") {

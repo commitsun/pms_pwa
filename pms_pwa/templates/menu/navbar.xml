@@ -3,83 +3,85 @@
     <template id="roomdoo_remove_items_navbar" inherit_id="website.layout" name="Template roomdoo Default">
         <xpath expr="//header//nav" position="replace">
             <t t-set="is_connected" t-value="not user_id._is_public()" />
-            <div id="loadingmask" style="width: 100%; height: 100%; position: fixed; background: #fff;">Cargando...</div>
+            <!-- <div id="preloader">
+                <div id="status"></div>
+            </div> -->
             <nav t-if="is_connected" data-name="Navbar" class="navbar navbar-expand-lg navbar-light o_colored_level o_cc">
                 <div id="top_menu_container" class="container-fluid justify-content-start justify-content-lg-between mt-2">
                     <!-- Navbar Collapse -->
                     <div id="top_menu_collapse" class="collapse navbar-collapse order-last order-lg-0 row">
 
-                            <div class="col-lg-4 col-md-12 col-sm-12">
-                                <div id="menu-toggle">
-                                    <img src="/pms_pwa/static/img/logo_mobil.png" alt="logo menu roomdoo" class="img-responsive mobile" />
-                                    <div class="o_pms_pwa_options">
-                                        <!-- <button class="btn btn-radius btn-pms_pwa mobile" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
+                        <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div id="menu-toggle">
+                                <img src="/pms_pwa/static/img/logo_mobil.png" alt="logo menu roomdoo" class="img-responsive mobile" />
+                                <div class="o_pms_pwa_options">
+                                    <!-- <button class="btn btn-radius btn-pms_pwa mobile" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
                                             <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
                                             Nueva reserva
                                         </button> -->
-                                        <!-- <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive mobile" />
+                                    <!-- <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive mobile" />
                                         <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive mobile" /> -->
-                                        <img src="/pms_pwa/static/img/menu_img.png" alt="notificaciones" class="img-responsive mobile navbar-toggler-icon" />
-                                    </div>
+                                    <img src="/pms_pwa/static/img/menu_img.png" alt="notificaciones" class="img-responsive mobile navbar-toggler-icon" />
                                 </div>
-                                <!-- Page Title -->
-                                <div t-if="page_title" class="o_pms_pwa_page_title">
-                                    <t t-esc="page_title" />
-                                    <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter" />
-                                </div>
-                                <div t-else="" class="o_pms_pwa_page_title">
+                            </div>
+                            <!-- Page Title -->
+                            <div t-if="page_title" class="o_pms_pwa_page_title">
+                                <t t-esc="page_title" />
+                                <span t-if="page_counter" t-esc="page_counter" class="o_pms_pwa_navbar_counter" />
+                            </div>
+                            <div t-else="" class="o_pms_pwa_page_title">
                                     Portal
                                 </div>
-                            </div>
+                        </div>
 
-                            <div class="col-lg-6 d-none d-lg-block o_pms_icons">
-                                <button class="btn btn-radius btn-pms_pwa" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
-                                    <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
-                                    Nueva reserva
-                                </button>
-                                <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
-                                <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
+                        <div class="col-lg-6 d-none d-lg-block o_pms_icons">
+                            <button class="btn btn-radius btn-pms_pwa" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
+                                <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
+                                Nueva reserva
+                            </button>
+                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
+                            <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
 
-                                <t t-if="request.httprequest.cookies.get('pms_pids', false)">
-                                    <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
-                                        <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
-                                    </t>
-                                    <t t-else="">
-                                        <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
-                                    </t>
-                                    <input type="hidden" name="allowed_properties" t-att-value="request.httprequest.cookies['pms_pids']" />
-                                    <select id="o_pms_pwa_user_property" name="user_property">
-                                        <t t-foreach="user_id.pms_property_ids" t-as="i">
-                                            <t t-if="current_property == i.id">
-                                                <option t-attf-value="{{ i.id }}" selected="selected">
-                                                    <t t-esc="i.name" />
-                                                </option>
-                                            </t>
-                                            <t t-else="">
-                                                <option t-attf-value="{{i.id}}">
-                                                    <t t-esc="i.name" />
-                                                </option>
-                                            </t>
-                                        </t>
-                                    </select>
+                            <t t-if="request.httprequest.cookies.get('pms_pids', false)">
+                                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1">
+                                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
                                 </t>
                                 <t t-else="">
-                                    <t t-set="current_property" t-value="1" />
+                                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
                                 </t>
-                            </div>
-                            <div class="col-lg-2 d-none d-lg-block o_pms_user_img">
-                                <a href="/web">
-                                    <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
+                                <input type="hidden" name="allowed_properties" t-att-value="request.httprequest.cookies['pms_pids']" />
+                                <select id="o_pms_pwa_user_property" name="user_property">
+                                    <t t-foreach="user_id.pms_property_ids" t-as="i">
+                                        <t t-if="current_property == i.id">
+                                            <option t-attf-value="{{ i.id }}" selected="selected">
+                                                <t t-esc="i.name" />
+                                            </option>
+                                        </t>
+                                        <t t-else="">
+                                            <option t-attf-value="{{i.id}}">
+                                                <t t-esc="i.name" />
+                                            </option>
+                                        </t>
+                                    </t>
+                                </select>
+                            </t>
+                            <t t-else="">
+                                <t t-set="current_property" t-value="1" />
+                            </t>
+                        </div>
+                        <div class="col-lg-2 d-none d-lg-block o_pms_user_img">
+                            <a href="/web">
+                                <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
+                            </a>
+                            <span class="o_pms_user_name">
+                                <a href="/my">
+                                    <t t-esc="user_id.name"></t>
                                 </a>
-                                <span class="o_pms_user_name">
-                                    <a href="/my">
-                                        <t t-esc="user_id.name"></t>
-                                    </a>
-                                    <span class="o_pms_close_session">
-                                        <a href="/web/session/logout">Cerrar sesión</a>
-                                    </span>
+                                <span class="o_pms_close_session">
+                                    <a href="/web/session/logout">Cerrar sesión</a>
                                 </span>
-                            </div>
+                            </span>
+                        </div>
 
 
                         <!-- <t t-call="website.navbar_nav">
