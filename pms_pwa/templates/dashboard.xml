@@ -169,7 +169,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" t-esc="departures['today']['to_leave']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['today']['to_leave']"/>
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
@@ -185,7 +185,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" t-esc="departures['today']['to_check_out']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['today']['to_check_out']"/>
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
@@ -206,7 +206,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" t-esc="departures['tomorrow']['to_leave']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['tomorrow']['to_leave']"/>
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
@@ -249,7 +249,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" t-esc="rooms['available']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['available']"/>
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
@@ -265,7 +265,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" t-esc="rooms['out_of_service']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['out_of_service']"/>
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
@@ -281,7 +281,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" t-esc="rooms['taken']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['taken']"/>
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
