@@ -28,10 +28,10 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     var input_name = input.attr("name");
                     var current_datetime = new Date(date);
                     const formatted_date =
-                        current_datetime.getDate() +
-                        "-" +
                         (current_datetime.getMonth() + 1) +
-                        "-" +
+                        "/" +
+                        current_datetime.getDate() +
+                        "/" +
                         current_datetime.getFullYear();
                     console.log(formatted_date);
                     // Console.log("price ", price);

@@ -172,7 +172,7 @@ odoo.define("pms_pwa.sidebar", function () {
                 {
                     locale: {
                         direction: "ltr",
-                        format: "DD/MM/YYYY",
+                        format: "MM/DD/YYYY",
                         separator: " - ",
                         applyLabel: "Aplicar",
                         cancelLabel: "Cancelar",

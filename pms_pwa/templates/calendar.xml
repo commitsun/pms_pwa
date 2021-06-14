@@ -140,7 +140,7 @@
                                                     </p>
                                                     <div class="o_pms_pwa_content">
                                                         <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> ocupadas</span>
-                                                        <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, date_overnight=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
+                                                        <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
 
                                                     </div>
                                                     <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
