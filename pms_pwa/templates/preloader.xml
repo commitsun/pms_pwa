@@ -5,7 +5,7 @@
     <template id="user_navbar_odooitnow" inherit_id="web.layout">
         <xpath expr="//body" position="inside">
             <div id="preloader">
-                <div id="status">&amp;nbsp;</div>
+                <div id="status"></div>
             </div>
         </xpath>
     </template>

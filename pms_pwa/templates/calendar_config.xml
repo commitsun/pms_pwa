@@ -36,6 +36,21 @@
                                 </div>
                             </div>
                             <div id="buttom_save" class="col-6 col-sm-2">
+                                <form method="post" action="">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                        <option t-if="select_pricelist==0" selected="selected" value="">Todas</option>
+                                        <option t-if="select_pricelist==1" value="">Todas</option>
+                                        <t t-foreach="pricelist" t-as="price">
+                                            <t t-if="select_pricelist==price.id">
+                                                <option t-attf-value="{{ price.id }}" selected="selected"><t t-esc="price.name" /></option>
+                                            </t>
+                                            <t t-else="">
+                                                <option t-attf-value="{{ price.id }}"><t t-esc="price.name" /></option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </form>
                                 <button id="save" name="save" style="min-width:100px;" class="btn btn-radius btn-pms_pwa ml-4 d-none">Guardar</button>
                             </div>
                             <div class="col-6 col-sm-8">

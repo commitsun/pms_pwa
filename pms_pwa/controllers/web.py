@@ -1364,11 +1364,25 @@ class TestFrontEnd(http.Controller):
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
 
+        pms_property_id = request.env.user.get_active_property_ids()[0]
         Pricelist = request.env["product.pricelist"]
-        pricelist = Pricelist.search([])
+
+        pricelist = Pricelist.search(
+            [
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", pms_property_id),
+            ]
+        )
+        select_pricelist = 0
         default_pricelist = pricelist[0].id
-        if post and "pricelist" in post:
+        if post and post["pricelist"]:
             default_pricelist = int(post["pricelist"])
+            # pricelist = (
+            #     request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
+            # )
+            select_pricelist = int(post["pricelist"])
+
 
         values = {
             "today": datetime.datetime.now(),
@@ -1376,6 +1390,7 @@ class TestFrontEnd(http.Controller):
             "page_name": "Calendar config",
             "pricelist": pricelist,
             "default_pricelist": default_pricelist,
+            "select_pricelist": select_pricelist,
             "rooms_list": rooms,
             "date_list": date_list,
             "dpr": dpr,
