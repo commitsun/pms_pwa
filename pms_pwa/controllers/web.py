@@ -643,6 +643,8 @@ class TestFrontEnd(http.Controller):
                 if reservation.preferred_room_id
                 else reservation.rooms,
             },
+
+
             "channel_type_id": {
                 "id": reservation.channel_type_id.id
                 if reservation.channel_type_id

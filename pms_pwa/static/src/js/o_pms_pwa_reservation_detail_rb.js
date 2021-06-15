@@ -74,6 +74,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         Math.abs((firstDate - secondDate) / oneDay)
                     );
                     nights = diffDays - 1;
+
                     $('input[name="nights"]').val(nights);
                     // $("form#reservation_detail").submit();
                     $("form#reservation_detail")
@@ -115,6 +116,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         Math.abs((firstDate - secondDate) / oneDay)
                     );
                     nights = diffDays - 1;
+
                     $('input[name="nights"]').val(nights);
                     // $("form#reservation_detail").submit();
                     $("form#reservation_detail")

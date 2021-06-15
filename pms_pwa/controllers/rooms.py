@@ -19,6 +19,7 @@ class Rooms(http.Controller):
         return self._get_available_rooms(payload)
 
     def _get_available_rooms(self, payload):
+
         rooms = []
         checkin = payload["checkin"]
         checkin = datetime.datetime.strptime(checkin, get_lang(request.env).date_format).date()

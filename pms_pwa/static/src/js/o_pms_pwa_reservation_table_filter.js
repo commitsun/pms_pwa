@@ -90,7 +90,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
 
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-            console.log("envio--->  ", values);
+
             ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
                 function (new_data) {
                     setTimeout(function () {
@@ -105,7 +105,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 } catch (error) {
                                     console.log(error);
                                 }
-                                console.log("select length");
+
                                 if (select.length != 0) {
                                     select.empty();
                                     if (
@@ -240,8 +240,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 setTimeout(function () {
                     if (new_data) {
                         $.each(allowed_fields, function (key, value) {
-                            console.log("key ->", key);
-                            console.log("value ->", value);
+
                             try {
                                 var select = $(
                                     'form#multiple_reservation_form [data-select="' +
@@ -273,8 +272,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             delete new_data[value];
                         });
                         $.each(new_data, function (key, value) {
-                            console.log("key 2 ->", key);
-                            console.log("value 2 ->", value);
+
                             if (key == "lines") {
                                 try {
                                     var table_tbody_trs = $("#table_lines tbody tr");
@@ -516,7 +514,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 reservation_id = event.currentTarget.getAttribute("data-id");
             }
             var reservation_data = false;
-
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -527,7 +524,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         var room_types = [];
                         var room_numbers = [];
                         var payment_methods = ["Credit card", "Cash"];
-
                         ajax.jsonRpc("/room_types", "call", {
                             pms_property_id: reservation_data.pms_property_id,
                             pricelist_id: reservation_data.pricelist_id,
@@ -714,6 +710,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 }
 
                                                 // Call to set the new values
+
                                                 ajax.jsonRpc(
                                                     "/reservation/" +
                                                         reservation_id +
@@ -917,6 +914,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     ] = new_event.currentTarget.value;
                                                 }
                                                 // Call to set the new values
+
                                                 ajax.jsonRpc(
                                                     "/reservation/" +
                                                         reservation_id +

@@ -416,9 +416,9 @@
                                 <div class="form-group form-field">
                                     <div class="row">
                                         <div class="col-12 my-4">
-                                            <a t-attf-href="?ready_for_checkin=true" class="btn o_pms_pwa_button_filter"><i class="fa fa-check"></i></a>
-                                            <a t-attf-href="?in_house=true" class="btn o_pms_pwa_button_filter o_pms_pwa_button_filter_margin"><i class="fa fa-home"></i></a>
-                                            <a t-attf-href="?ready_for_checkout=true" class="btn o_pms_pwa_button_filter o_pms_pwa_button_filter_margin"><i class="fa fa-plane"></i></a>
+                                            <a t-attf-href="?ready_for_checkin=true" class="btn o_pms_pwa_button_filter"><img src="/pms_pwa/static/img/svg/icon_arrival.svg" width="18px" alt="Checkins" class="img-responsive"/></a>
+                                            <a t-attf-href="?in_house=true" class="btn o_pms_pwa_button_filter o_pms_pwa_button_filter_margin"><img src="/pms_pwa/static/img/svg/icon_house.svg" width="18px" alt="Dentro" class="img-responsive" /></a>
+                                            <a t-attf-href="?ready_for_checkout=true" class="btn o_pms_pwa_button_filter o_pms_pwa_button_filter_margin"><img src="/pms_pwa/static/img/svg/icon_exit.svg" width="18px" alt="Checkouts" class="img-responsive" /></a>
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="checkin">
