@@ -39,8 +39,8 @@
                                 <button id="save" name="save" style="min-width:100px;" class="btn btn-radius btn-pms_pwa ml-4 d-none">Guardar</button>
                             </div>
                             <div class="col-6 col-sm-8">
-                                <button id="open_collapse" name="open_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_open_collapse">Abrir</button>
-                                <button id="close_collapse" name="close_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_close_collapse" style="display:none;">Cerrar</button>
+                                <button id="open_collapse" name="open_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_open_collapse" style="min-width:100px;">Abrir</button>
+                                <button id="close_collapse" name="close_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_close_collapse" style="min-width:100px;display:none;">Cerrar</button>
                                 <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
                                     <select id="calendar_select" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <option value="" selected="selected">Config</option>
