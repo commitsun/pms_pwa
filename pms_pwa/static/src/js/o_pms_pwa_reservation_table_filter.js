@@ -349,6 +349,31 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
     });
 
+    $("#o_pms_pwa_new_reservation_modal").on("hidden.bs.modal", function () {
+        $("form#single_reservation_form")[0].reset();
+        $("form#multiple_reservation_form")[0].reset();
+
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        var checkin_date = today.toLocaleDateString(
+            document.documentElement.lang,
+            date_options
+        );
+        var checkout_date = tomorrow.toLocaleDateString(
+            document.documentElement.lang,
+            date_options
+        );
+
+        $("form#single_reservation_form").find("input[name='check_in_date']").val(checkin_date);
+        $("form#single_reservation_form").find("input[name='check_out_date']").val(checkout_date);
+        $("form#multiple_reservation_form").find("input[name='check_in_date']").val(checkin_date);
+        $("form#multiple_reservation_form").find("input[name='check_out_date']").val(checkout_date);
+        $("#o_pms_pwa_new_reservation_modal")
+            .find("input[name='range_check_date_modal_reservation']")
+            .val(checkin_date + " - " + checkout_date);     
+    });
+
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
         selector: "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation",
         xmlDependencies: [
