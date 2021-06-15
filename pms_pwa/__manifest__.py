@@ -29,6 +29,7 @@
         "templates/rooms.xml",
         "templates/rates.xml",
         "templates/configuration.xml",
+        "templates/preloader.xml",
         "views/inherited_form_view.xml",
         "security/pms_pwa_security.xml",
         # data

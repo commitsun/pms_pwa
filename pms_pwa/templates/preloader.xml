@@ -7,14 +7,7 @@
             <div id="preloader">
                 <div id="status">&amp;nbsp;</div>
             </div>
-            <script language="javascript" type="text/javascript">
-$(window).on('load', function() {
-  $('#status').fadeOut();
-  $('#preloader').delay(350).fadeOut('slow');
-  $('body').delay(350).css({'overflow':'visible'});
-})
-            </script>
         </xpath>
     </template>
 
- </odoo>
+</odoo>

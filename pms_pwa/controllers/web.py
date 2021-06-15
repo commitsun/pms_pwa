@@ -30,7 +30,9 @@ class PWAHome(Home):
             request.session.uid
         ).has_group("pms_pwa.group_pms_property_user"):
             return http.local_redirect("/", query=request.params, keep_hash=True)
-        return super(Home, self).index(*args, **kw)
+
+        return http.redirect_with_hash("/web/login")
+        # return super(PWAHome, self).index(*args, **kw)
 
     def _login_redirect(self, uid, redirect=None):
         if not redirect and request.env["res.users"].sudo().browse(uid).has_group(

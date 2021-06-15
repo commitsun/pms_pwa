@@ -20,12 +20,17 @@ odoo.define("pms_pwa.sidebar", function () {
     });
 
     // Preload
-    // $(document).ready(function () {
-    //     // makes sure the whole site is loaded
-    //     $("#status").fadeOut(); // will first fade out the loading animation
-    //     $("#preloader").delay(150).fadeOut(150); // will fade out the white DIV that covers the website.
-    //     $("body").delay(150).css({overflow: "visible"});
-    // });
+    $(document).ready(function () {
+        $("#status").fadeOut();
+        $("#preloader").delay(20).fadeOut(150);
+        $("body").delay(20).css({overflow: "visible"});
+    });
+    $("li.o_pms_pwa_nav_item a").click(function () {
+        $("#status").toggle();
+        $("#preloader").toggle();
+        // $("#preloader").fadeOut(150);
+    });
+
     // DATE RANGE MODAL
     $(function () {
         if (document.documentElement.lang === "es-ES") {
