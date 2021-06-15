@@ -112,4 +112,15 @@ odoo.define("pms_pwa.calendar_config", function (require) {
         $(this).data("edit", true);
         element.classList.remove("d-none");
     });
+
+    $(".o_pms_pwa_open_collapse").on("click", function () {
+        $(".o_pms_pwa_hiddenRow").addClass("show");
+        $("#open_collapse").hide();
+        $("#close_collapse").show();
+    });
+    $(".o_pms_pwa_close_collapse").on("click", function () {
+        $(".o_pms_pwa_hiddenRow").removeClass("show");
+        $("#close_collapse").hide();
+        $("#open_collapse").show();
+    });
 });
