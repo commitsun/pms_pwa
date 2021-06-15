@@ -8,14 +8,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     const relation_values = {
-        'allowed_agency_ids': "agency_id",
-        'allowed_board_service_room_ids': "board_service_id",
-        'allowed_channel_type_ids': "channel_type_id",
-        'allowed_pricelists': "pricelist_id",
-        'allowed_segmentations': "segmentation_ids",
-        'room_numbers': "preferred_room_id",
-        'room_types': 'room_type_id',
-    }
+        allowed_agency_ids: "agency_id",
+        allowed_board_service_room_ids: "board_service_id",
+        allowed_channel_type_ids: "channel_type_id",
+        allowed_pricelists: "pricelist_id",
+        allowed_segmentations: "segmentation_ids",
+        room_numbers: "preferred_room_id",
+        room_types: "room_type_id",
+    };
     $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
         event.preventDefault();
         var input = event.currentTarget.parentNode.getAttribute("data-tag");
@@ -29,11 +29,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     /* Function form to json*/
     function form_to_json(formData) {
         var form_object = {};
-        $.each(formData,
-            function(i, v) {
-                form_object[v.name] = v.value;
-            }
-        );
+        $.each(formData, function (i, v) {
+            form_object[v.name] = v.value;
+        });
         return form_object;
     }
 
@@ -54,7 +52,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             $("#o_pms_pwa_new_reservation_modal")
                 .find("input[name='check_in_date']")
                 .val(checkin_date);
-                $("#o_pms_pwa_new_reservation_modal")
+            $("#o_pms_pwa_new_reservation_modal")
                 .find("input[name='check_out_date']")
                 .val(checkout_date);
             $("#o_pms_pwa_new_reservation_modal")
@@ -97,67 +95,42 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 function (new_data) {
                     setTimeout(function () {
                         if (new_data) {
-                            $.each(
-                                allowed_fields,
-                                function (key, value) {
-
-                                    try {
-                                        var select = $(
-                                            'form#single_reservation_form [data-select="' +
-                                                value +
-                                                '"]'
-                                        );
-                                    } catch (error) {
-                                        console.log(
-                                            error
-                                        );
-                                    }
-                                    console.log("select length");
-                                    if (
-                                        select.length !=
-                                        0
-                                    ) {
-                                        select.empty();
-                                        if(!new_data[relation_values[value]] & new_data[relation_values[value]] == 0){
-                                            select.append(
-                                                '<option value="" selected></option>'
-                                            );
-                                        };
-
-                                        $.each(
-                                            new_data[
-                                                value
-                                            ],
-                                            function (
-                                                subkey,
-                                                subvalue
-                                            ) {
-                                                var option = new Option(
-                                                    subvalue[
-                                                        "name"
-                                                    ],
-                                                    subvalue[
-                                                        "id"
-                                                    ]
-                                                );
-                                                $(
-                                                    option
-                                                ).html(
-                                                    subvalue[
-                                                        "name"
-                                                    ]
-                                                );
-                                                select.append(
-                                                    option
-                                                );
-                                            }
-                                        );
-                                    }
-                                    delete new_data[
-                                        value
-                                    ];
+                            $.each(allowed_fields, function (key, value) {
+                                try {
+                                    var select = $(
+                                        'form#single_reservation_form [data-select="' +
+                                            value +
+                                            '"]'
+                                    );
+                                } catch (error) {
+                                    console.log(error);
                                 }
-                            );
+                                console.log("select length");
+                                if (select.length != 0) {
+                                    select.empty();
+                                    if (
+                                        !new_data[relation_values[value]] &
+                                        (new_data[relation_values[value]] == 0)
+                                    ) {
+                                        select.append(
+                                            '<option value="" selected></option>'
+                                        );
+                                    }
+
+                                    $.each(new_data[value], function (
+                                        subkey,
+                                        subvalue
+                                    ) {
+                                        var option = new Option(
+                                            subvalue["name"],
+                                            subvalue["id"]
+                                        );
+                                        $(option).html(subvalue["name"]);
+                                        select.append(option);
+                                    });
+                                }
+                                delete new_data[value];
+                            });
                             $.each(new_data, function (key, value) {
                                 var input = $(
                                     "form#single_reservation_form input[name='" +
@@ -187,7 +160,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         event.preventDefault();
         var values = $("form#single_reservation_form").serializeArray();
         values = form_to_json(values);
-        values['submit'] = true;
+        values["submit"] = true;
         if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
 
@@ -266,74 +239,45 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             ).then(function (new_data) {
                 setTimeout(function () {
                     if (new_data) {
-                        $.each(
-                            allowed_fields,
-                            function (key, value) {
-                                console.log("key ->", key);
-                                console.log("value ->", value);
-                                try {
-                                    var select = $(
-                                        'form#multiple_reservation_form [data-select="' +
-                                            value +
-                                            '"]'
-                                    );
-                                } catch (error) {
-                                    console.log(
-                                        error
-                                    );
-                                }
-                                if (
-                                    select.length !=
-                                    0
-                                ) {
-                                    select.empty();
-                                    if(!new_data[relation_values[value]] & new_data[relation_values[value]] == 0){
-                                        select.append(
-                                            '<option value="" selected></option>'
-                                        );
-                                    };
-                                    $.each(
-                                        new_data[
-                                            value
-                                        ],
-                                        function (
-                                            subkey,
-                                            subvalue
-                                        ) {
-                                            var option = new Option(
-                                                subvalue[
-                                                    "name"
-                                                ],
-                                                subvalue[
-                                                    "id"
-                                                ]
-                                            );
-                                            $(
-                                                option
-                                            ).html(
-                                                subvalue[
-                                                    "name"
-                                                ]
-                                            );
-                                            select.append(
-                                                option
-                                            );
-                                        }
-                                    );
-                                }
-                                delete new_data[
-                                    value
-                                ];
+                        $.each(allowed_fields, function (key, value) {
+                            console.log("key ->", key);
+                            console.log("value ->", value);
+                            try {
+                                var select = $(
+                                    'form#multiple_reservation_form [data-select="' +
+                                        value +
+                                        '"]'
+                                );
+                            } catch (error) {
+                                console.log(error);
                             }
-                        );
+                            if (select.length != 0) {
+                                select.empty();
+                                if (
+                                    !new_data[relation_values[value]] &
+                                    (new_data[relation_values[value]] == 0)
+                                ) {
+                                    select.append(
+                                        '<option value="" selected></option>'
+                                    );
+                                }
+                                $.each(new_data[value], function (subkey, subvalue) {
+                                    var option = new Option(
+                                        subvalue["name"],
+                                        subvalue["id"]
+                                    );
+                                    $(option).html(subvalue["name"]);
+                                    select.append(option);
+                                });
+                            }
+                            delete new_data[value];
+                        });
                         $.each(new_data, function (key, value) {
                             console.log("key 2 ->", key);
                             console.log("value 2 ->", value);
                             if (key == "lines") {
                                 try {
-                                    var table_tbody_trs = $(
-                                        "#table_lines tbody tr"
-                                    );
+                                    var table_tbody_trs = $("#table_lines tbody tr");
                                     table_tbody_trs.remove();
                                 } catch (error) {
                                     console.log(error);
@@ -392,24 +336,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
             ajax.jsonRpc("/reservation/multiple_reservation_new", "call", values).then(
                 function (new_data) {
-                    console.log(new_data);
                     setTimeout(function () {
-                        if (new_data) {
-                            var data = new_data;
-                            if (data && data.id) {
-                                /* We need to integrate this into the public widget */
-                                location.href = "/reservation/" + data.id;
-                            } else {
-                                data.type = "warning";
-                                var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                                var alert = core.qweb.render(
-                                    "pms_pwa.reservation_alerts",
-                                    {
-                                        alert: data,
-                                    }
-                                );
-                                alert_div.append(alert);
-                            }
+                        var data = JSON.parse(new_data);
+                        if (!data.result) {
+                            data.type = "warning";
+                            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                                alert: data,
+                            });
+                            alert_div.append(alert);
+                        } else {
+                            location.href = "/reservation/" + data.id;
                         }
                     });
                 }
@@ -848,11 +785,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                         0
                                                                     ) {
                                                                         select.empty();
-                                                                        if(!reservation_data[relation_values[value]] & reservation_data[relation_values[value]] == 0){
+                                                                        if (
+                                                                            !reservation_data[
+                                                                                relation_values[
+                                                                                    value
+                                                                                ]
+                                                                            ] &
+                                                                            (reservation_data[
+                                                                                relation_values[
+                                                                                    value
+                                                                                ]
+                                                                            ] ==
+                                                                                0)
+                                                                        ) {
                                                                             select.append(
                                                                                 '<option value="" selected></option>'
                                                                             );
-                                                                        };
+                                                                        }
                                                                         $.each(
                                                                             reservation_data[
                                                                                 value
@@ -1017,11 +966,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                         0
                                                                     ) {
                                                                         select.empty();
-                                                                        if(!reservation_data[relation_values[value]] & reservation_data[relation_values[value]] == 0){
+                                                                        if (
+                                                                            !reservation_data[
+                                                                                relation_values[
+                                                                                    value
+                                                                                ]
+                                                                            ] &
+                                                                            (reservation_data[
+                                                                                relation_values[
+                                                                                    value
+                                                                                ]
+                                                                            ] ==
+                                                                                0)
+                                                                        ) {
                                                                             select.append(
                                                                                 '<option value="" selected></option>'
                                                                             );
-                                                                        };
+                                                                        }
                                                                         $.each(
                                                                             reservation_data[
                                                                                 value
@@ -1292,7 +1253,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = button.getAttribute("data-id")
+                reservation_id = button.getAttribute("data-id");
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -1379,7 +1340,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = button.getAttribute("data-id")
+                reservation_id = button.getAttribute("data-id");
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -1414,7 +1375,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = button.getAttribute("data-id")
+                reservation_id = button.getAttribute("data-id");
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
