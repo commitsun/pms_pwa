@@ -18,6 +18,7 @@ odoo.define("pms_pwa.sidebar", function () {
         event.stopImmediatePropagation();
         $(".toast").toast("hide");
     });
+
     // Preload
     // $(document).ready(function () {
     //     // makes sure the whole site is loaded

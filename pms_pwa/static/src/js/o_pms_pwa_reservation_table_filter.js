@@ -90,7 +90,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
 
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-
             ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
                 function (new_data) {
                     setTimeout(function () {
@@ -240,7 +239,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 setTimeout(function () {
                     if (new_data) {
                         $.each(allowed_fields, function (key, value) {
-
                             try {
                                 var select = $(
                                     'form#multiple_reservation_form [data-select="' +
@@ -272,7 +270,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             delete new_data[value];
                         });
                         $.each(new_data, function (key, value) {
-
                             if (key == "lines") {
                                 try {
                                     var table_tbody_trs = $("#table_lines tbody tr");

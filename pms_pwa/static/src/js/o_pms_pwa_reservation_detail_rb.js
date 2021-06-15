@@ -473,7 +473,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             });
             alert_div.append(alert);
             jQuery.ready();
-
         });
     });
 

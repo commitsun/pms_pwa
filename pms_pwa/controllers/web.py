@@ -618,7 +618,9 @@ class TestFrontEnd(http.Controller):
         if not reservation:
             raise MissingError(_("This document does not exist."))
 
-        primary_button, secondary_buttons = self.generate_reservation_style_buttons(reservation)
+        primary_button, secondary_buttons = self.generate_reservation_style_buttons(
+            reservation
+        )
 
         reservation_values = {
             "id": reservation.id,
@@ -643,8 +645,6 @@ class TestFrontEnd(http.Controller):
                 if reservation.preferred_room_id
                 else reservation.rooms,
             },
-
-
             "channel_type_id": {
                 "id": reservation.channel_type_id.id
                 if reservation.channel_type_id
@@ -1298,9 +1298,16 @@ class TestFrontEnd(http.Controller):
         print("params: {}".format(params))
         try:
             if params.get("id"):
-                folio_wizard = request.env["pms.folio.wizard"].browse(int(params.get("id")))
+                folio_wizard = request.env["pms.folio.wizard"].browse(
+                    int(params.get("id"))
+                )
             folio_action = folio_wizard.create_folio()
-            id_reservation = request.env["pms.folio"].browse(folio_action["res_id"]).reservation_ids[0].id
+            id_reservation = (
+                request.env["pms.folio"]
+                .browse(folio_action["res_id"])
+                .reservation_ids[0]
+                .id
+            )
             return json.dumps(
                 {
                     "result": True,
@@ -1310,7 +1317,7 @@ class TestFrontEnd(http.Controller):
             )
         except Exception as e:
             _logger.critical(e)
-            #return json.dumps({"result": False, "message": str(e)})
+            # return json.dumps({"result": False, "message": str(e)})
 
     @http.route(
         "/calendar/config",
@@ -1393,36 +1400,42 @@ class TestFrontEnd(http.Controller):
             for room_type_id, pricelists in params["room_type"].items():
                 room_type = request.env["pms.room.type"].browse(int(room_type_id))
                 for pricelist_id, dates in pricelists["pricelist_id"].items():
-                    pricelist = request.env["product.pricelist"].browse(int(pricelist_id))
+                    pricelist = request.env["product.pricelist"].browse(
+                        int(pricelist_id)
+                    )
                     for date_str, items in dates["date"].items():
                         item_date = datetime.datetime.strptime(
                             date_str, get_lang(request.env).date_format
                         ).date()
                         availability_plan = pricelist.availability_plan_id
-                        #price
+                        # price
                         if "price" in items[0]:
-                            #REVIEW: Necesary date (sale) start/end = False???
-                            price_item = request.env["product.pricelist.item"].search([
-                                ("product_id","=",room_type.product_id.id),
-                                ("date_start_consumption", "=", item_date),
-                                ("date_end_consumption", "=", item_date),
-                                ("pricelist_id", "=", pricelist.id),
-                                ("pms_property_ids", "in", pms_property_id),
-                            ])
+                            # REVIEW: Necesary date (sale) start/end = False???
+                            price_item = request.env["product.pricelist.item"].search(
+                                [
+                                    ("product_id", "=", room_type.product_id.id),
+                                    ("date_start_consumption", "=", item_date),
+                                    ("date_end_consumption", "=", item_date),
+                                    ("pricelist_id", "=", pricelist.id),
+                                    ("pms_property_ids", "in", pms_property_id),
+                                ]
+                            )
                             if price_item:
-                                price_item.write({
-                                    "fixed_price": float(items[0]["price"])
-                                })
+                                price_item.write(
+                                    {"fixed_price": float(items[0]["price"])}
+                                )
                             else:
-                                price_item.create({
-                                    "applied_on": "0_product_variant",
-                                    "product_id": room_type.product_id.id,
-                                    "date_start_consumption": item_date,
-                                    "date_end_consumption": item_date,
-                                    "pricelist_id": pricelist.id,
-                                    "pms_property_ids": [pms_property_id],
-                                    "fixed_price": float(items[0]["price"]),
-                                })
+                                price_item.create(
+                                    {
+                                        "applied_on": "0_product_variant",
+                                        "product_id": room_type.product_id.id,
+                                        "date_start_consumption": item_date,
+                                        "date_end_consumption": item_date,
+                                        "pricelist_id": pricelist.id,
+                                        "pms_property_ids": [pms_property_id],
+                                        "fixed_price": float(items[0]["price"]),
+                                    }
+                                )
                         if availability_plan:
                             avail_vals = {}
                             if "quota" in items[0]:
@@ -1434,35 +1447,48 @@ class TestFrontEnd(http.Controller):
                             if "closed" in items[0]:
                                 avail_vals["closed"] = bool(items[0]["closed"])
                             if "min_stay_arrival" in items[0]:
-                                avail_vals["min_stay_arrival"] = bool(items[0]["min_stay_arrival"])
+                                avail_vals["min_stay_arrival"] = bool(
+                                    items[0]["min_stay_arrival"]
+                                )
                             if "max_stay_arrival" in items[0]:
-                                avail_vals["max_stay_arrival"] = bool(items[0]["max_stay_arrival"])
+                                avail_vals["max_stay_arrival"] = bool(
+                                    items[0]["max_stay_arrival"]
+                                )
                             if any(avail_vals):
-                                avail_rule_item = request.env["product.pricelist.item"].search([
-                                    ("room_type_id","=",room_type.id),
-                                    ("date", "=", item_date),
-                                    ("availability_plan_id", "=", availability_plan.id),
-                                    ("pms_property_id", "=", pms_property_id),
-                                ])
+                                avail_rule_item = request.env[
+                                    "product.pricelist.item"
+                                ].search(
+                                    [
+                                        ("room_type_id", "=", room_type.id),
+                                        ("date", "=", item_date),
+                                        (
+                                            "availability_plan_id",
+                                            "=",
+                                            availability_plan.id,
+                                        ),
+                                        ("pms_property_id", "=", pms_property_id),
+                                    ]
+                                )
                                 if avail_rule_item:
                                     avail_rule_item.write(avail_vals)
                                 else:
-                                    avail_vals.update({
-                                        "room_type_id": room_type.id,
-                                        "date": item_date,
-                                        "availability_plan_id": availability_plan.id,
-                                        "pms_property_id": pms_property_id,
-                                    })
+                                    avail_vals.update(
+                                        {
+                                            "room_type_id": room_type.id,
+                                            "date": item_date,
+                                            "availability_plan_id": availability_plan.id,
+                                            "pms_property_id": pms_property_id,
+                                        }
+                                    )
                                     avail_rule_item.create(avail_vals)
             return json.dumps(
-                    {
-                        "result": True,
-                        "message": _("Operation completed successfully."),
-                    }
-                )
+                {
+                    "result": True,
+                    "message": _("Operation completed successfully."),
+                }
+            )
         except Exception as e:
             return json.dumps({"result": False, "message": str(e)})
-
 
     def parse_reservation(self, reservation):
         reservation_values = dict()
@@ -1672,4 +1698,4 @@ class TestFrontEnd(http.Controller):
                         + "</button>"
                     )
             counter += 1
-        return(primary_button, secondary_buttons)
+        return (primary_button, secondary_buttons)
