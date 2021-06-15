@@ -54,6 +54,7 @@ section.o_pms_pwa_dashboard {
     }
     div.o_pms_pwa_card_header {
         border-bottom: none;
+        padding-top: 1.5rem;
         &:not(.bg-dark) {
             padding-bottom: 0px;
         }
@@ -131,6 +132,7 @@ section.o_pms_pwa_dashboard {
             text-align: center;
             .col-4 {
                 font: normal normal bold 17px Barlow;
+                margin-top: -0.5rem;
                 span {
                     text-align: right;
                     font: normal normal bold 36px Barlow;

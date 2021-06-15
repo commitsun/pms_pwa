@@ -279,7 +279,7 @@
                                             Out of service
                                         </div>
                                     </div>
-                                    <div class="row mt-2">
+                                    <!-- <div class="row mt-2">
                                         <div class="col-1 pr-0">
                                             <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['taken']"/>
                                         </div>
@@ -294,7 +294,7 @@
                                         <div class="col-12 text-right">
                                             Taken
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="card-body o_pms_pwa_blue">
                                     <div class="row">
