@@ -15,8 +15,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-pms_pwa btn-radius" id="edit-modal-save">Guardar</button>
-                        <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-pms_pwa btn-radius" id="edit-modal-save">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
                         <!-- <label class="control-label col-12" for="segmentation_ids">
                             Segmentation
                         </label> -->
-                        <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
+                        <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
                         <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                     </div>
 
@@ -190,7 +190,7 @@
 
             <div class="row mt-3 mb-3">
                 <div class="col-12 text-center">
-                    <input class="btn btn-message" type="submit" name="submit" value="Guardar" />
+                    <input class="btn btn-message" type="submit" name="submit" value="Save" />
                 </div>
             </div>
 

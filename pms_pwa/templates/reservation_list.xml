@@ -2,7 +2,7 @@
 <odoo>
     <template id="roomdoo_reservation_list" name="Reservation list">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Bookings'"/>
+            <t t-set="page_title" t-value="'Reservas'"/>
             <t t-set="page_counter" t-value="str(len(folios))"/>
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />

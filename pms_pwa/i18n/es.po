@@ -6,19 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 06:43+0000\n"
-"PO-Revision-Date: 2021-06-16 06:43+0000\n"
+"POT-Creation-Date: 2021-06-16 07:23+0000\n"
+"PO-Revision-Date: 2021-06-16 07:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.user_navbar_odooitnow
-msgid "&amp;nbsp;"
-msgstr ""
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
@@ -54,16 +49,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 msgid ""
 "<i class=\"fa fa-file-text-o\" aria-hidden=\"false\"/>\n"
-"                                                        FACTURAR"
+"                                                        Bill"
 msgstr ""
+"<i class=\"fa fa-file-text-o\" aria-hidden=\"false\"/>\n"
+"                                                        Facturar"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 msgid ""
 "<i class=\"fa fa-pencil-square-o\" aria-hidden=\"false\"/>\n"
-"                                                            Precio/Noche\n"
+"                                                            Price/Nights\n"
 "                                                            <i class=\"fa fa-angle-down rotate-icon\"/>"
 msgstr ""
+"<i class=\"fa fa-pencil-square-o\" aria-hidden=\"false\"/>\n"
+"                                                            Precio/Noche\n"
+"                                                            <i class=\"fa fa-angle-down rotate-icon\"/>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
@@ -74,6 +74,10 @@ msgid ""
 "                                            </span>\n"
 "                                            <i class=\"fa fa-filter d-lg-none\"/>"
 msgstr ""
+"<span class=\"d-none d-lg-flex align-self-center\">\n"
+"                                                FILTROS <i class=\"fa fa-angle-left\"/>\n"
+"                                            </span>\n"
+"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
@@ -95,44 +99,46 @@ msgid ""
 "<span class=\"o_pms_notification_title\"><i class=\"fa fa-info-circle "
 "mr-1\"/> Updates <span class=\"o_pms_pwa_update_counter ml-1\"/></span>"
 msgstr ""
+"<span class=\"o_pms_notification_title\"><i class=\"fa fa-info-circle "
+"mr-1\"/> Actualizaciones <span class=\"o_pms_pwa_update_counter ml-1\"/></span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
 msgid "<span class=\"o_pms_tag_index\">Checkins</span>"
-msgstr ""
+msgstr "<span class=\"o_pms_tag_index\">Entradas</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
 msgid "<span class=\"o_pms_tag_index\">Checkouts</span>"
-msgstr ""
+msgstr "<span class=\"o_pms_tag_index\">Salidas</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
 msgid "<span class=\"o_pms_tag_index\">Dentro</span>"
-msgstr ""
+msgstr "<span class=\"o_pms_tag_index\">Dentro</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "<span class=\"title-header\">Reserva</span>"
-msgstr ""
+msgid "<span class=\"title-header\">Reservation</span>"
+msgstr "<span class=\"title-header\">Reserva</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
 msgid "<span style=\"font-size:small; text-align:left\">Max. stay arrival:</span>"
-msgstr ""
+msgstr "<span style=\"font-size:small; text-align:left\">Max. stay arrival:</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
 msgid "<span style=\"font-size:small; text-align:left\">Max. stay:</span>"
-msgstr ""
+msgstr "<span style=\"font-size:small; text-align:left\">Max. stay:</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
 msgid "<span style=\"font-size:small; text-align:left\">Min. stay arrival:</span>"
-msgstr ""
+msgstr "<span style=\"font-size:small; text-align:left\">Min. stay arrival:</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
@@ -141,16 +147,24 @@ msgid ""
 "                                                                        <span style=\"width:40px;float:left; margin-left: 0.75rem;\">Uds.</span>\n"
 "                                                                        <span style=\"width:40px;float:left; margin-left: 0.75rem;\">Min.</span>"
 msgstr ""
+"<span style=\"width:40px;float:left;margin-left: 0.75rem;\">€</span>\n"
+"                                                                        <span style=\"width:40px;float:left; margin-left: 0.75rem;\">Uds.</span>\n"
+"                                                                        <span style=\"width:40px;float:left; margin-left: 0.75rem;\">Min.</span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 msgid ""
+"<span>\n"
+"                                                    Earring\n"
+"                                                    <br/>\n"
+"                                                    payment\n"
+"                                                </span>"
+msgstr ""
 "<span>\n"
 "                                                    Pendiente\n"
 "                                                    <br/>\n"
 "                                                    de pago\n"
 "                                                </span>"
-msgstr ""
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
@@ -158,9 +172,14 @@ msgid ""
 "<span>\n"
 "                                                    Total\n"
 "                                                    <br/>\n"
-"                                                    a facturar\n"
+"                                                    to invoice\n"
 "                                                </span>"
 msgstr ""
+"<span>\n"
+"                                                    Total\n"
+"                                                    <br/>\n"
+"                                                    a facturar\n"
+"                                                </span>"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
@@ -169,6 +188,9 @@ msgid ""
 "                                                    Total\n"
 "                                                </span>"
 msgstr ""
+"<span>\n"
+"                                                    Total\n"
+"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
@@ -178,8 +200,16 @@ msgstr "LLEGADAS"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
-msgid "Abrir"
-msgstr ""
+msgid "Open"
+msgstr "Abrir"
+
+#. module: pms_pwa
+#. openerp-web
+#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+#, python-format
+msgid "Add service"
+msgstr "Añadir servicio"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
@@ -208,10 +238,6 @@ msgstr "Filtros avanzados <i class=\"fa fa-angle-down rotate-icon float-right\"/
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-msgid "Agencia"
-msgstr "Agencia"
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
 msgid "Agency"
 msgstr "Agencia"
@@ -231,8 +257,8 @@ msgstr "Importe"
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
 #, python-format
-msgid "Se ha producido un error indefinido, inténtelo de nuevo más tarde."
-msgstr ""
+msgid "An undefined error has ocurred, please try again later."
+msgstr "Se ha producido un error, inténtelo más tarde."
 
 #. module: pms_pwa
 #. openerp-web
@@ -261,12 +287,13 @@ msgid "Available"
 msgstr "Disponible"
 
 #. module: pms_pwa
-#. openerp-web
-#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-#, python-format
-msgid "Añadir servicio"
+msgid ""
+"Billing information\n"
+"                                                        <i class=\"fa fa-angle-down o_pms_pwa_rotate-icon\"/>"
 msgstr ""
+"Información de facturación\n"
+"                                                        <i class=\"fa fa-angle-down o_pms_pwa_rotate-icon\"/>"
 
 #. module: pms_pwa
 #. openerp-web
@@ -284,19 +311,19 @@ msgid "Board service"
 msgstr "Servicio de mesa"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_new_reservation_modal
+msgid "By room number"
+msgstr "Por número de habitración"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_new_reservation_modal
+msgid "By room type"
+msgstr "Por tipo de habitación"
+
+#. module: pms_pwa
 #: model:website.menu,name:pms_pwa.menu_calendar
 msgid "Calendar"
 msgstr "Calendario"
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-msgid "Canal de venta"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-msgid "Canal de venta y tarifa"
-msgstr ""
 
 #. module: pms_pwa
 #. openerp-web
@@ -308,32 +335,28 @@ msgstr "Cancelar"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Cancelar reserva"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Cantidad"
-msgstr ""
+msgid "Cancel booking"
+msgstr "Cancelar reserva"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_edit_modal
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
-msgid "Cerrar"
-msgstr ""
+msgid "Close"
+msgstr "Cerrar"
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_remove_items_navbar
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_sidebar_menu
-msgid "Cerrar sesión"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_edit_modal
+msgid "Change value"
+msgstr "Cambiar valor"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
 msgid "Channel type"
 msgstr "Canal de ventas"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
 msgid "Channel type and pricelist"
 msgstr "Canal de ventas y tarifas"
@@ -372,6 +395,7 @@ msgstr "Entrada - Salida"
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 #, python-format
 msgid "Check in time"
 msgstr "Hora de entrada"
@@ -390,6 +414,7 @@ msgstr "Salida"
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 #, python-format
 msgid "Check out time"
 msgstr "Hora de salida"
@@ -484,21 +509,16 @@ msgid "DEPARTURES"
 msgstr "SALIDAS"
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "DETALLES DE LA TARIFA"
-msgstr ""
-
-#. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #, python-format
 msgid "DNI"
-msgstr ""
+msgstr "DNI"
 
 #. module: pms_pwa
 #: model:website.menu,name:pms_pwa.menu_dashboard
 msgid "Dashboard"
-msgstr ""
+msgstr "Dashboard"
 
 #. module: pms_pwa
 #. openerp-web
@@ -515,23 +535,19 @@ msgid "Dates"
 msgstr "Fechas"
 
 #. module: pms_pwa
+#. openerp-web
+#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid ""
-"Datos de facturación\n"
-"                                                        <i class=\"fa fa-angle-down o_pms_pwa_rotate-icon\"/>"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Datos personales huéspedes"
-msgstr ""
+#, python-format
+msgid "Day"
+msgstr "Día"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page
 #: model_terms:website.page,arch_db:pms_pwa.calendar_page
 msgid "Default"
-msgstr "Defecto"
+msgstr "General"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_filters_modal
@@ -543,7 +559,7 @@ msgstr "Borrar todo"
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
 msgid "Dentro"
-msgstr ""
+msgstr "Dentro"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
@@ -552,28 +568,18 @@ msgid "Departures"
 msgstr "Salidas"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
-msgid "Descuento"
-msgstr ""
+msgid "Discount"
+msgstr "Descuento"
 
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 #, python-format
-msgid "Descuento (%)"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Detalles de pago"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-#: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
-msgid "Discount"
-msgstr "Descuento"
+msgid "Discount (%)"
+msgstr "Descuento (%)"
 
 #. module: pms_pwa
 #: model:ir.model.fields,field_description:pms_pwa.field_pms_folio__display_name
@@ -606,18 +612,10 @@ msgid "Driving license"
 msgstr "Licencia de conducir"
 
 #. module: pms_pwa
-#. openerp-web
-#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-#, python-format
-msgid "Día"
-msgstr ""
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
 #: model_terms:website.page,arch_db:pms_pwa.dashboard_page
 msgid "EMPLOYEE CLOCKIN IN"
-msgstr ""
+msgstr "CONTROL DE ACCESO"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
@@ -630,7 +628,7 @@ msgstr "EVOLUCIÓN"
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #, python-format
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
@@ -652,16 +650,6 @@ msgid "Extras"
 msgstr ""
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Facturas"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Fecha"
-msgstr ""
-
-#. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #, python-format
@@ -671,7 +659,7 @@ msgstr "Mujer"
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_filters_modal
 msgid "Filtros"
-msgstr ""
+msgstr "Filtros"
 
 #. module: pms_pwa
 #. openerp-web
@@ -700,8 +688,8 @@ msgstr "Género"
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_edit_modal
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
-msgid "Guardar"
-msgstr ""
+msgid "Save"
+msgstr "Guardar"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
@@ -716,29 +704,14 @@ msgstr "Nº huéspedes"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "HABITACIÓN"
-msgstr ""
+msgid "Guest personal data"
+msgstr "Información del huésped"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
 #: model_terms:website.page,arch_db:pms_pwa.dashboard_page
 msgid "HISTORY"
 msgstr "HISTORIA"
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Hora Check in"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Hora Check out"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Huéspedes"
-msgstr ""
 
 #. module: pms_pwa
 #: model:ir.model.fields,field_description:pms_pwa.field_pms_folio__id
@@ -761,7 +734,7 @@ msgstr ""
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #, python-format
 msgid "Identification Document"
-msgstr ""
+msgstr "Documento de identificación"
 
 #. module: pms_pwa
 #: model:ir.model.fields,field_description:pms_pwa.field_website_menu__img
@@ -772,6 +745,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 msgid "Invoice contact"
 msgstr "Contacto de facturación"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Invoices"
+msgstr "Facturas"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
@@ -801,6 +779,12 @@ msgid "Last name"
 msgstr "Apellidos"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_remove_items_navbar
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_sidebar_menu
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_filters_modal
 msgid "Mail"
 msgstr "Email"
@@ -826,35 +810,17 @@ msgid "Mobile"
 msgstr "Móvil"
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_edit_modal
-msgid "Modificar valor"
-msgstr ""
-
-#. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
 #, python-format
 msgid "More info"
-msgstr "Más info"
+msgstr "Más información"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Motivo del viaje"
-msgstr ""
-
-#. module: pms_pwa
-#. openerp-web
-#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
-#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
-#, python-format
-msgid "Motivo viaje"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Métodos de pago"
-msgstr ""
+msgid "Segmentation"
+msgstr "Motivo viaje"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
@@ -889,6 +855,17 @@ msgid "New contact"
 msgstr "Nuevo contacto"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_new_reservation_modal
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_remove_items_navbar
+msgid "New reservation"
+msgstr "Nueva reserva"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Nights"
+msgstr "Noches"
+
+#. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
 #, python-format
@@ -905,46 +882,16 @@ msgstr "Noches:"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "No indicado"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Nombre"
-msgstr ""
+msgid "Not indicated"
+msgstr "No indicado"
 
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 #, python-format
 msgid "Notes"
-msgstr "Notas"
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_new_reservation_modal
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_remove_items_navbar
-msgid "Nueva reserva"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Nº de habitaciones"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Nº de noches"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Nº de personas"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Observaciones"
-msgstr ""
+msgstr "Observaciones"
 
 #. module: pms_pwa
 #: model:ir.model.fields,help:pms_pwa.field_pms_folio__checkin_folio
@@ -991,15 +938,11 @@ msgstr "Fuera de servicio"
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
-#, python-format
-msgid "Outstanding"
-msgstr "Saldo pendiente"
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
-msgid "Outstanding(€)"
-msgstr "Saldo pendiente"
+#, python-format
+msgid "Outstanding"
+msgstr "Pendiente"
 
 #. module: pms_pwa
 #: model:ir.model,name:pms_pwa.model_pms_folio
@@ -1016,7 +959,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
 msgid "Page"
-msgstr ""
+msgstr "Página"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
@@ -1040,10 +983,20 @@ msgid "Pay"
 msgstr "Pagar"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Payment details"
+msgstr "Detalles de pago"
+
+#. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #, python-format
 msgid "Payment method"
+msgstr "Método de pago"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Payment methods"
 msgstr "Métodos de pago"
 
 #. module: pms_pwa
@@ -1067,19 +1020,14 @@ msgid "Pending check out"
 msgstr "Pendientes checkout"
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_new_reservation_modal
-msgid "Por nº de habitación"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_new_reservation_modal
-msgid "Por tipo de habitación"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "People"
+msgstr "Personas"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_remove_items_navbar
 msgid "Portal"
-msgstr ""
+msgstr "Portal"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
@@ -1089,32 +1037,30 @@ msgstr "Código postal"
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
+#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-#, python-format
-msgid "Precio"
-msgstr ""
-
-#. module: pms_pwa
-#. openerp-web
-#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
-#, python-format
-msgid "Precio/Noche"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-msgid "Precio/hab"
-msgstr ""
-
-#. module: pms_pwa
-#. openerp-web
-#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #, python-format
 msgid "Price"
 msgstr "Precio"
 
 #. module: pms_pwa
+#. openerp-web
+#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
+#, python-format
+msgid "Price/Night"
+msgstr "Precio/Noche"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
+msgid "Price/room"
+msgstr "Precio/hab."
+
+#. module: pms_pwa
+#. openerp-web
+#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
+#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
+#, python-format
 msgid "Pricelist"
 msgstr "Tarifa"
 
@@ -1136,15 +1082,31 @@ msgstr ""
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 #, python-format
 msgid "Quantity"
 msgstr "Cantidad"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "RATE DETAILS"
+msgstr "DETALLES DE TARIFA"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "ROOM"
+msgstr "HABITACIÓN"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
 #: model_terms:website.page,arch_db:pms_pwa.dashboard_page
 msgid "ROOMS"
 msgstr "HABITACIONES"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Rate type"
+msgstr "Tipo de tarifa"
 
 #. module: pms_pwa
 #: model:website.menu,name:pms_pwa.menu_rates
@@ -1185,7 +1147,7 @@ msgstr "Cancelar reserva"
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
 #, python-format
 msgid "Reservation card number"
-msgstr "Tarjeda asociada a la reserva"
+msgstr "Tarjeta asociada"
 
 #. module: pms_pwa
 #. openerp-web
@@ -1227,6 +1189,11 @@ msgid "Reservation payment:"
 msgstr "Pago de reserva:"
 
 #. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Reservation type"
+msgstr "Tipo de reserva"
+
+#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
 #: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
@@ -1242,6 +1209,11 @@ msgstr "Tipo de Habitación"
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
 msgid "Room and service"
 msgstr "Habitación y servicios"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Room number"
+msgstr "Número de habitación"
 
 #. module: pms_pwa
 #. openerp-web
@@ -1260,6 +1232,8 @@ msgstr "Precio habitación"
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
+#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
 #, python-format
 msgid "Room type"
@@ -1301,9 +1275,17 @@ msgid "Second last name"
 msgstr "Apellidos"
 
 #. module: pms_pwa
+#. openerp-web
+#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
 #: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-msgid "Seleccionado"
-msgstr ""
+#, python-format
+msgid "Segmentation"
+msgstr "Motivo viaje"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
+msgid "Selected"
+msgstr "Seleccionado"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
@@ -1330,14 +1312,6 @@ msgid "TASKS"
 msgstr "Tareas"
 
 #. module: pms_pwa
-#. openerp-web
-#: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml:0
-#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-#, python-format
-msgid "Tarifa"
-msgstr ""
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_filters_modal
 msgid "Text in dialogs"
 msgstr "Texto en dialogos"
@@ -1351,7 +1325,7 @@ msgstr ""
 #. module: pms_pwa
 #: code:addons/pms_pwa/models/pms_reservation.py:0
 #, python-format
-msgid "La lista de huespedes es mayor que la capacidad "
+msgid "The list of guests is greater than the capacity"
 msgstr ""
 
 #. module: pms_pwa
@@ -1360,7 +1334,7 @@ msgstr ""
 #: code:addons/pms_pwa/controllers/web.py:0
 #, python-format
 msgid "This document does not exist."
-msgstr "El documento no existe"
+msgstr ""
 
 #. module: pms_pwa
 #: code:addons/pms_pwa/controllers/web.py:0
@@ -1369,30 +1343,14 @@ msgid "This reservation does not exist."
 msgstr "La reserva no existe"
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Tipo"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Tipo de habitación"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Tipo de reserva"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "Tipo de tarifa"
-msgstr ""
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_filters_modal
 msgid "To"
 msgstr "a"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_config_page
+msgid "Todas"
+msgstr ""
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_dashboard_page
@@ -1409,7 +1367,9 @@ msgstr "Mañana"
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.multiple_reservation_form
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
 #: model_terms:ir.ui.view,arch_db:pms_pwa.single_reservation_form
+#: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
 msgid "Total"
 msgstr ""
 
@@ -1428,16 +1388,14 @@ msgid "Total reservation price"
 msgstr "Precio total reserva"
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_list
-#: model_terms:website.page,arch_db:pms_pwa.reservation_list_page
-msgid "Total(€)"
-msgstr ""
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.o_pms_pwa_edit_modal
 msgid "Total:"
 msgstr ""
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "Type"
+msgstr "Tipo"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_filters_modal
@@ -1457,7 +1415,7 @@ msgstr "NIF/CIF"
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
 #, python-format
 msgid "Ver más"
-msgstr ""
+msgstr "Ver más"
 
 #. module: pms_pwa
 #: model:ir.model,name:pms_pwa.model_website_menu
@@ -1465,14 +1423,20 @@ msgid "Website Menu"
 msgstr "Menú del sitio web"
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "a facturar"
-msgstr ""
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_item
 msgid "adults"
 msgstr "adultos"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "amount"
+msgstr "importe"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page
+#: model_terms:website.page,arch_db:pms_pwa.calendar_page
+msgid "available"
+msgstr "disponible"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page
@@ -1480,6 +1444,12 @@ msgstr "adultos"
 #: model_terms:website.page,arch_db:pms_pwa.calendar_page
 msgid "ayuda"
 msgstr ""
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page
+#: model_terms:website.page,arch_db:pms_pwa.calendar_page
+msgid "busy"
+msgstr "ocupada"
 
 #. module: pms_pwa
 #. openerp-web
@@ -1512,7 +1482,7 @@ msgstr "calendario"
 #: model_terms:website.page,arch_db:pms_pwa.dashboard_page
 #, python-format
 msgid "calendar icon"
-msgstr ""
+msgstr "icono calendario"
 
 #. module: pms_pwa
 #. openerp-web
@@ -1521,7 +1491,7 @@ msgstr ""
 #: code:addons/pms_pwa/static/src/xml/pms_pwa_roomdoo_calendar_line.xml:0
 #, python-format
 msgid "check"
-msgstr ""
+msgstr "verificado"
 
 #. module: pms_pwa
 #. openerp-web
@@ -1534,19 +1504,8 @@ msgstr ""
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "concepto"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page
-#: model_terms:website.page,arch_db:pms_pwa.calendar_page
-msgid "disponible"
-msgstr ""
-
-#. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "facturado/total"
-msgstr ""
+msgid "concept"
+msgstr "concepto"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page
@@ -1573,8 +1532,8 @@ msgstr ""
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
-msgid "importe(€)"
-msgstr ""
+msgid "invoiced / total"
+msgstr "facturado / total"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_remove_items_navbar
@@ -1603,22 +1562,21 @@ msgid "nº"
 msgstr ""
 
 #. module: pms_pwa
-#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page
-#: model_terms:website.page,arch_db:pms_pwa.calendar_page
-msgid "ocupadas"
-msgstr ""
-
-#. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_filters_modal
 msgid "to"
-msgstr "a"
+msgstr "hasta"
+
+#. module: pms_pwa
+#: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_reservation_detail
+msgid "to invoice"
+msgstr "a facturar"
 
 #. module: pms_pwa
 #. openerp-web
 #: code:addons/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js:0
 #, python-format
 msgid "unread message(s)"
-msgstr "mensajes sin leer"
+msgstr "menajses no leidos"
 
 #. module: pms_pwa
 #: model_terms:ir.ui.view,arch_db:pms_pwa.roomdoo_calendar_page

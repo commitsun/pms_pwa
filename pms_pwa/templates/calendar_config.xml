@@ -2,7 +2,7 @@
 <odoo>
     <template id="roomdoo_calendar_config_page" name="Calendar config">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendar config'" />
+            <t t-set="page_title" t-value="'Calendario de configuración'" />
             <t t-if="request.httprequest.cookies.get('pms_pids', false)">
                 <t t-if="len(request.httprequest.cookies['pms_pids']) > 1">
                     <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
@@ -51,11 +51,11 @@
                                         </t>
                                     </select>
                                 </form>
-                                <button id="save" name="save" style="min-width:100px;" class="btn btn-radius btn-pms_pwa ml-4 d-none">Guardar</button>
+                                <button id="save" name="save" style="min-width:100px;" class="btn btn-radius btn-pms_pwa ml-4 d-none">Save</button>
                             </div>
                             <div class="col-6 col-sm-8">
-                                <button id="open_collapse" name="open_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_open_collapse" style="min-width:100px;">Abrir</button>
-                                <button id="close_collapse" name="close_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_close_collapse" style="min-width:100px;display:none;">Cerrar</button>
+                                <button id="open_collapse" name="open_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_open_collapse" style="min-width:100px;">Open</button>
+                                <button id="close_collapse" name="close_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_close_collapse" style="min-width:100px;display:none;">Close</button>
                                 <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
                                     <select id="calendar_select" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <option value="" selected="selected">Config</option>

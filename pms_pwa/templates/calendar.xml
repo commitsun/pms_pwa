@@ -2,7 +2,7 @@
 <odoo>
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendar'"/>
+            <t t-set="page_title" t-value="'Calendario'"/>
             <t t-if="request.httprequest.cookies.get('pms_pids', false)">
                 <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
                     <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />

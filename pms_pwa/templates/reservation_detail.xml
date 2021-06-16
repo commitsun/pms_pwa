@@ -435,7 +435,7 @@
                                                         </label> -->
                                                         <!-- <select multiple="true" data-live-search="true" name="segmentation_ids"  class="selectpicker"> -->
 
-                                                        <select multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo del viaje" >
+                                                        <select multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" >
                                                             <!-- t-att-selected="reservation.service_ids in key['id'] ? 'selected' : None" -->
                                                             <option name="segmentation_ids" t-foreach="reservation._get_allowed_segmentations()" t-as="key" t-att-value="key['id']">
                                                                 <t t-esc="key['name']" />
@@ -448,7 +448,7 @@
                                                     <div class="col-12">
                                                         <div class="form-group text-center">
                                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                                            <input type="submit" class="btn btn-message" value="GUARDAR CAMBIOS" />
+                                                            <input type="submit" class="btn btn-message" value="Save changes" />
                                                         </div>
                                                     </div>
                                                 </div>
