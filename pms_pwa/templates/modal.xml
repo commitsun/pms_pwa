@@ -5,7 +5,7 @@
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modificar valor</h5>
+                        <h5 class="modal-title">Change value</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true"><span class="fa fa-times" /></span>
                         </button>
@@ -15,8 +15,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-pms_pwa btn-radius" id="edit-modal-save">Guardar</button>
-                        <button type="button" class="btn" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-pms_pwa btn-radius" id="edit-modal-save">Save</button>
+                        <button type="button" class="btn" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="modal-title" id="modalLabel">Nueva reserva</div>
+                        <div class="modal-title" id="modalLabel">New reservation</div>
                         <button class="close" data-dismiss="modal">
                             <span>
                                 <span class="fa fa-times" />
@@ -40,21 +40,23 @@
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="true">Single</a>
+                                    <a class="nav-link active" id="multiple-tab" data-toggle="tab" href="#multiple" role="tab" aria-controls="multiple" aria-selected="false">By room type</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="multiple-tab" data-toggle="tab" href="#multiple" role="tab" aria-controls="multiple" aria-selected="false">Multiple</a>
+                                    <a class="nav-link" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="true">By room number</a>
                                 </li>
+
                             </ul>
 
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div class="tab-pane active" id="single" role="tabpanel" aria-labelledby="home-tab">
-                                    <t t-call="pms_pwa.single_reservation_form" />
-                                </div>
-                                <div class="tab-pane" id="multiple" role="tabpanel" aria-labelledby="profile-tab">
+                                <div class="tab-pane active" id="multiple" role="tabpanel" aria-labelledby="profile-tab">
                                     <t t-call="pms_pwa.multiple_reservation_form" />
                                 </div>
+                                <div class="tab-pane" id="single" role="tabpanel" aria-labelledby="home-tab">
+                                    <t t-call="pms_pwa.single_reservation_form" />
+                                </div>
+
                             </div>
 
                         </div>
@@ -87,12 +89,45 @@
                         </span>
                     </div>
                 </div>
-            </div>
 
+                <div class="row mt-3">
+                    <div class="col-sm-12">
+                        <h4>Channel type and pricelist</h4>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="channel_type_id">
+                            Channel type
+                        </label>
+                        <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id"/>
+                    </div>
+                    <div class="col-6">
+                        <label class="control-label col-12" for="agency_id">
+                            Agency
+                        </label>
+                        <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        <label class="control-label col-12" for="pricelist">
+                            Pricelist
+                        </label>
+                        <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
+                    </div>
+                    <div class="col-6">
+                        <!-- <label class="control-label col-12" for="segmentation_ids">
+                            Segmentation
+                        </label> -->
+                        <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
+                        <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
+                    </div>
+
+                </div>
+            </div>
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
                     <div class="col-sm-12">
-                        <h4>Room </h4>
+                        <h4>Room</h4>
                     </div>
                     <div class="col-sm-12">
                         <label class="control-label col-12" for="room_type_id">
@@ -131,41 +166,7 @@
                 </div>
             </div>
 
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                <div class="row mt-3">
-                    <div class="col-sm-12">
-                        <h4>Channel type and pricelist </h4>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="channel_type_id">
-                            Channel type
-                        </label>
-                        <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id"/>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="agency_id">
-                            Agency
-                        </label>
-                        <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="pricelist">
-                            Pricelist
-                        </label>
-                        <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
-                    </div>
-                    <div class="col-6">
-                        <!-- <label class="control-label col-12" for="segmentation_ids">
-                            Segmentation
-                        </label> -->
-                        <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
-                        <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
-                    </div>
 
-                </div>
-            </div>
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="col-sm-12">
@@ -189,7 +190,7 @@
 
             <div class="row mt-3 mb-3">
                 <div class="col-12 text-center">
-                    <input class="btn btn-message" type="submit" name="submit" value="Guardar" />
+                    <input class="btn btn-message" type="submit" name="submit" value="Save" />
                 </div>
             </div>
 
@@ -198,7 +199,7 @@
 
     <template id="multiple_reservation_form" name="Multiple reservation form">
         <form id="multiple_reservation_form" class="form-horizontal mt-3" method="post">
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+            <div class="form-group form-field pb-3 ">
 
                 <div class="row">
                     <div class="col-12">
@@ -223,7 +224,7 @@
 
                 <div class="row mt-3">
                     <div class="col-sm-12">
-                        <h4>Channel type and pricelist </h4>
+                        <h4>Channel type and pricelist</h4>
                     </div>
                     <div class="col-6">
                         <label class="control-label col-12" for="channel_type_id">
@@ -249,7 +250,7 @@
                         <!-- <label class="control-label col-12" for="segmentation_ids">
                             Segmentation
                         </label> -->
-                        <select t-attf-data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
+                        <select t-attf-data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
                         <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                     </div>
                 </div>
@@ -257,15 +258,15 @@
 
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
-                    <div class="col-sm-12">
+                    <!-- <div class="col-sm-12">
                         <h4>Rooms</h4>
-                    </div>
+                    </div> -->
                     <table id="table_lines" class="table table-condensed">
                         <thead>
                             <tr>
-                                <th class="o_pms_pwa_theme_color">Tipo de habitación</th>
-                                <th class="o_pms_pwa_theme_color">Seleccionado</th>
-                                <th class="o_pms_pwa_theme_color">Precio/hab</th>
+                                <th class="o_pms_pwa_theme_color">Room type</th>
+                                <th class="o_pms_pwa_theme_color">Selected</th>
+                                <th class="o_pms_pwa_theme_color">Price/room</th>
                             </tr>
                         </thead>
                         <tbody/>

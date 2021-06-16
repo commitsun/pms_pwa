@@ -2,7 +2,7 @@
 <odoo>
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendar'"/>
+            <t t-set="page_title" t-value="'Calendario'"/>
             <t t-if="request.httprequest.cookies.get('pms_pids', false)">
                 <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
                     <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
@@ -133,13 +133,13 @@
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
                                                 ">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponible
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> available
                                                         <span class="o_pms_pwa_info">
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="Texto informativo del icono" />
                                                         </span>
                                                     </p>
                                                     <div class="o_pms_pwa_content">
-                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> ocupadas</span>
+                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> busy</span>
                                                         <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
 
                                                     </div>

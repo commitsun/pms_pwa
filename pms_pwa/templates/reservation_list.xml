@@ -2,7 +2,7 @@
 <odoo>
     <template id="roomdoo_reservation_list" name="Reservation list">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'My bookings'"/>
+            <t t-set="page_title" t-value="'Reservas'"/>
             <t t-set="page_counter" t-value="str(len(folios))"/>
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
@@ -99,8 +99,8 @@
                                         <th>Check in</th>
                                         <th>Check out</th>
                                         <th class="text-center o_pms_pwa_priority-2">Sales channel</th>
-                                        <th class="text-center o_pms_pwa_priority-3">Total(€)</th>
-                                        <th class="text-center">Outstanding(€)</th>
+                                        <th class="text-center o_pms_pwa_priority-3">Total</th>
+                                        <th class="text-center">Outstanding</th>
                                         <!-- <th class="text-center">Room qty</th> -->
                                         <th class="o_pms_pwa_priority-5">Requests</th>
                                         <th class="o_pms_pwa_priority-4">Services</th>
@@ -325,7 +325,7 @@
                 t-att-alt="obj.agency_id.name"/>
             <span t-else="">
                 <span t-if="obj.channel_type_id" t-esc="obj.channel_type_id.name"/><br/>
-                <span t-if="obj.channel_type_id" class="o_pms_pwa_wler" t-esc="obj.partner_id.name"/><br/>
+                <span t-if="obj.channel_type_id" class="o_pms_pwa_wler" t-esc="obj.user_id.name"/><br/>
             </span>
         </td>
         <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
@@ -415,10 +415,10 @@
                             <form class="form-horizontal" method="post">
                                 <div class="form-group form-field">
                                     <div class="row">
-                                        <div class="col-12 m-2">
-                                            <a t-attf-href="?ready_for_checkin=true" class="btn o_pms_pwa_button_filter"><i class="fa fa-check"></i></a>
-                                            <a t-attf-href="?in_house=true" class="btn o_pms_pwa_button_filter"><i class="fa fa-home"></i></a>
-                                            <a t-attf-href="?ready_for_checkout=true" class="btn o_pms_pwa_button_filter"><i class="fa fa-plane"></i></a>
+                                        <div class="col-12 my-4">
+                                            <a t-attf-href="?ready_for_checkin=true" class="btn o_pms_pwa_button_filter"><img src="/pms_pwa/static/img/svg/icon_arrival.svg" width="18px" alt="Checkins" class="img-responsive"/></a>
+                                            <a t-attf-href="?in_house=true" class="btn o_pms_pwa_button_filter o_pms_pwa_button_filter_margin"><img src="/pms_pwa/static/img/svg/icon_house.svg" width="18px" alt="Dentro" class="img-responsive" /></a>
+                                            <a t-attf-href="?ready_for_checkout=true" class="btn o_pms_pwa_button_filter o_pms_pwa_button_filter_margin"><img src="/pms_pwa/static/img/svg/icon_exit.svg" width="18px" alt="Checkouts" class="img-responsive" /></a>
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="checkin">

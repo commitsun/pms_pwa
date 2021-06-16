@@ -459,6 +459,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 #o_pms_pwa_editModal {
     z-index: 9999 !important;
 }
+h4.collapsed {
+    cursor: pointer !important;
+}
 #collapse_price_nights {
     font-family: "Barlow Semi Condensed";
     font-size: 16px;
@@ -485,6 +488,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
                 padding: 0.5rem;
                 border: none;
                 vertical-align: middle;
+                color: black !important;
                 a {
                     font-weight: 600;
                     letter-spacing: 0px;
@@ -521,3 +525,51 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .rounded-circle {
     border: 2px solid $theme-color;
 }
+
+.o_pms_pwa_reservation_form {
+    .o_pms_pwa_modal_buttons {
+        .o_pms_pwa_button_assign {
+            background-image: linear-gradient(
+                to right,
+                $theme-color 80%,
+                $bg-theme-color
+            );
+            color: $white;
+            border: none;
+            border-radius: 1.5rem;
+            font-weight: 600;
+            font-size: medium;
+            width: 100px;
+            &:hover {
+                color: $white;
+            }
+        }
+        span.dropdown {
+            margin-left: 3rem;
+        }
+    }
+}
+
+/*PRELOADING------------ */
+// #preloader {
+//     position: fixed;
+//     top:0;
+//     left:0;
+//     right:0;
+//     bottom:0;
+//     background-color:#FFF; /* change if the mask should have another color then white */
+//     z-index:99999; /* makes sure it stays on top */
+// }
+// #status {
+//     width:100px;
+//     height:100px;
+//     position:absolute;
+//     left:50%; /* centers the loading animation horizontally one the screen */
+//     top:50%; /* centers the loading animation vertically one the screen */
+//     background-image:url("/pms_pwa/static/img/loader.gif");
+//     z-index:9999; /* path to your loading animation */
+//     background-repeat:no-repeat;
+//     background-position:center;
+//     background-size: cover;
+//     margin:-50px 0 0 -50px; /* is width and height divided by two */
+// }

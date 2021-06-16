@@ -25,10 +25,8 @@
                             <div class="col-lg-4 footer-legal">
                                 <h5 class="text-uppercase">Menu</h5>
                                 <ul class="list-unstyled">
-                                    <li><a href="#avisos-legales" alt="Enlace avisos legales" title="Avisos Legales" rel="noindex, nofollow" target="_blank">Avisos Legales</a></li>
-                                    <li><a href="#politica-de-cookies" alt="Enlace política de cookies" title="Política de Cookies" rel="noindex, nofollow" target="_blank">Política de Cookies</a></li>
-                                    <li><a href="#politica-de-privacidad" alt="Enlace política de privacidad" title="Política de Privacidad" rel="noindex, nofollow" target="_blank">Política de Privacidad</a></li>
-                                    <li><a href="#condiciones-del-servicio" alt="Enlace Condiciones del Servicio" title="Condiciones del Servicio" rel="noindex, nofollow" target="_blank">Condiciones del Servicio</a></li>
+                                    <li><a href="#avisos-legales" alt="Legal notices" title="Legal notices " rel="noindex, nofollow" target="_blank">Legal notices </a></li>
+                                    <li><a href="#politica-de-cookies" alt="Cookies policy" title="Cookies policy" rel="noindex, nofollow" target="_blank">Cookies policy</a></li>
                                 </ul>
                             </div>
                             <div class="col-lg-4 footer-social">
@@ -56,7 +54,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 text-muted text-center text-md-left">
-                            <span>&amp;copy; </span><span t-esc="time.strftime('%Y')"/><span class="text-uppercase"> Roomdoo. Todos los derechos reservados.</span>
+                            <span>&amp;copy; </span><span t-esc="time.strftime('%Y')"/><span class="text-uppercase"> Roomdoo. All rights reserved.</span>
                         </div>
                     </div>
                 </div>

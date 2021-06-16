@@ -25,7 +25,7 @@
                         <div class="row ">
                             <div class="col-lg-12 col-xl-6">
                                 <h1>
-                                    <span class="title-header">Reserva</span>
+                                    <span class="title-header">Reservation</span>
                                     <span class="blue-header">
                                         <t t-esc="reservation.name" />
                                     </span>
@@ -33,7 +33,7 @@
                                         <img t-if="reservation.agency_id" t-att-src="website.image_url(reservation.agency_id, 'image_128')" width="100" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
                                         <span t-else="">
                                             <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
-                                            <span t-if="reservation.channel_type_id" class="o_pms_pwa_wler ml-2" t-esc="reservation.partner_id.name" />
+                                            <span t-if="reservation.channel_type_id" class="o_pms_pwa_wler ml-2" t-esc="reservation.user_id.name" />
                                         </span>
 
                                     </span>
@@ -43,7 +43,7 @@
                                 </h1>
                             </div>
                             <div class="col-lg-12 col-xl-6 text-right o_pms_pwa_keypad_footer">
-                                <button id="o_pms_pwa_button_cancel" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancelar reserva</button>
+                                <button id="o_pms_pwa_button_cancel" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancel booking</button>
                                 <button id="o_pms_pwa_button_checkin" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkin o_pms_pwa_disabled">Check in</button>
                                 <button id="o_pms_pwa_button_checkout" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
                             </div>
@@ -85,10 +85,10 @@
                                                     </div>
                                                     <div class="dropdown mx-2">
                                                         <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <span data-toggle="tooltip" title="Huéspedes" class="badge bg-red mr-2" data-original-title="Huéspedes">
+                                                            <span data-toggle="tooltip" title="Guest personal data" class="badge bg-red mr-2" data-original-title="Guest personal data">
                                                                 <t t-esc="reservation.adults" />
                                                             </span>
-                                                            Datos personales huéspedes
+                                                            Guest personal data
                                                         </button>
                                                         <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
                                                             <t t-foreach="reservation.checkin_partner_ids" t-as="person">
@@ -97,7 +97,7 @@
                                                                         <t t-esc="person.partner_id.name" />
                                                                     </t>
                                                                     <t t-else="">
-                                                                        No indicado
+                                                                        Not indicated
                                                                     </t>
                                                                 </a>
                                                             </t>
@@ -172,9 +172,9 @@
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
                                                     <th class="o_pms_pwa_theme_color">ID</th>
-                                                    <th class="o_pms_pwa_theme_color">Total(€)</th>
-                                                    <th class="o_pms_pwa_theme_color">Nombre</th>
-                                                    <th class="o_pms_pwa_theme_color">Tipo</th>
+                                                    <th class="o_pms_pwa_theme_color">Total</th>
+                                                    <th class="o_pms_pwa_theme_color">Name</th>
+                                                    <th class="o_pms_pwa_theme_color">Type</th>
                                                     <th class="o_pms_pwa_theme_color">nº</th>
                                                 </tr>
 
@@ -220,7 +220,7 @@
                                 <div class="card shadow">
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
-                                            HABITACIÓN
+                                            ROOM
                                         </h3>
                                     </div>
                                     <div class="card-body">
@@ -229,13 +229,9 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="room_type">
-                                                            <!-- <t t-esc="reservation.room_type_id.with_context(checkin=reservation.checkin, checkout=reservation.checkout, pricelist_id=1)._get_availability_rooms()"></t> -->
-                                                            Tipo de habitación
+                                                            Room type
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
-                                                            <!-- <option name="room_type" t-att-value="reservation.room_type_id.id" selected="selected">
-                                                                <t t-esc="reservation.room_type_id.name" />
-                                                            </option> -->
                                                             <t t-foreach="reservation.room_type_id" t-as="i">
                                                                 <option name="room_type" t-att-value="i.id" selected="selected" t-if="reservation.room_type_id.id == i.id">
                                                                     <t t-esc="i.name" />
@@ -248,9 +244,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <div class="col-6">
+                                                    <div class="col-12">
                                                         <label class="control-label col-12" for="room_number">
-                                                            Nº de habitaciones
+                                                            Room number
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
                                                             <!-- TODO Cambiar por? ._get_allowed_rooms(reservation.checkin, reservation.checkout, reservation.state) -->
@@ -264,24 +260,24 @@
                                                             </t>
                                                         </select>
                                                     </div>
-                                                    <div class="col-6">
+                                                    <!-- <div class="col-6">
                                                         <button type="button" class="btn btn-message-form o_pms_pwa_button_assign_confirm" t-attf-url="/reservation/{{ reservation.id }}/assign">
                                                             <img src="/pms_pwa/static/img/svg/check-blanco.svg" alt="Confirm" title="Confirm" class="mr-1 pb-1" width="15" />
                                                             Confirmar
                                                         </button>
 
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="adults">
-                                                            Nº de personas
+                                                            People
                                                         </label>
                                                         <input class="form-control" type="text" name="adults" t-att-value="reservation.adults" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="nights">
-                                                            Nº de noches
+                                                            Nights
                                                         </label>
                                                         <input class="form-control" disabled="disabled" type="text" name="nights" t-att-value="reservation.nights" />
                                                     </div>
@@ -311,13 +307,13 @@
                                                         <input type="hidden" name="checkin" t-attf-value="{{ checkin_date }}" />
                                                         <input type="hidden" name="checkout" t-attf-value="{{ checkout_date }}" />
                                                         <label class="control-label col-12" for="check_in_hour">
-                                                            Hora Check in
+                                                            Check in time
                                                         </label>
                                                         <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="check_out_hour">
-                                                            Hora Check out
+                                                            Check out time
                                                         </label>
                                                         <input class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
                                                     </div>
@@ -325,7 +321,7 @@
                                                 <div class="row mt-3">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="allowed_board_service_room_ids">
-                                                            Tipo de reserva
+                                                            Reservation type
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="allowed_board_service_room_ids">
                                                             <option name="allowed_board_service_room_ids" t-foreach="reservation._get_allowed_board_service_room_ids()" t-as="key" t-att-value="key['id']">
@@ -351,9 +347,9 @@
                                                                         <table>
                                                                             <thead>
                                                                                 <tr>
-                                                                                    <th class="o_pms_pwa_detail_th">Fecha</th>
-                                                                                    <th class="o_pms_pwa_detail_th">Cantidad</th>
-                                                                                    <th class="o_pms_pwa_detail_th">Precio</th>
+                                                                                    <th class="o_pms_pwa_detail_th">Date</th>
+                                                                                    <th class="o_pms_pwa_detail_th">Quantity</th>
+                                                                                    <th class="o_pms_pwa_detail_th">Price</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -416,7 +412,7 @@
                                                 <div class="row mt-4">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="add_service">
-                                                            Añadir servicio
+                                                            Add service
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
                                                             <option t-foreach="reservation._get_allowed_service_ids()" t-as="key" t-att-value="key['id']">
@@ -428,9 +424,9 @@
                                                 <hr class="o_pms_pwa_black_hr" />
                                                 <div class="row mt-3">
                                                     <div class="col-12">
-                                                        <h4>Observaciones</h4>
+                                                        <h4>Notes</h4>
                                                         <div>
-                                                            <p>Aut possimus enim molestiae eaque. Dicta suscipit ea ut. Enim qui dolor ut voluptatem odio corporis. Occaecati occaecati rerum aliquid. Eligendi expedita eligendi illo nisi ipsum a qui. Et aut est ut.…</p>
+                                                            <p></p>
                                                         </div>
                                                     </div>
                                                     <div class="col-12 o_pms_pwa_selectpicker">
@@ -439,7 +435,7 @@
                                                         </label> -->
                                                         <!-- <select multiple="true" data-live-search="true" name="segmentation_ids"  class="selectpicker"> -->
 
-                                                        <select multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo del viaje" >
+                                                        <select multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" >
                                                             <!-- t-att-selected="reservation.service_ids in key['id'] ? 'selected' : None" -->
                                                             <option name="segmentation_ids" t-foreach="reservation._get_allowed_segmentations()" t-as="key" t-att-value="key['id']">
                                                                 <t t-esc="key['name']" />
@@ -452,7 +448,7 @@
                                                     <div class="col-12">
                                                         <div class="form-group text-center">
                                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                                            <input type="submit" class="btn btn-message" value="GUARDAR CAMBIOS" />
+                                                            <input type="submit" class="btn btn-message" value="Save changes" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -466,7 +462,7 @@
                                 <div class="card shadow my-4">
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
-                                            DETALLES DE LA TARIFA
+                                            RATE DETAILS
                                         </h3>
                                     </div>
                                     <div class="card-body">
@@ -475,7 +471,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="allowed_pricelists">
-                                                            Tipo de tarifa
+                                                            Rate type
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="allowed_pricelists">
                                                             <option name="allowed_pricelists" t-foreach="reservation._get_allowed_pricelists()" t-as="key" t-att-value="key['id']">
@@ -488,7 +484,7 @@
                                                     <div class="col-sm-12">
                                                         <h4 data-toggle="collapse" data-target="#collapse_price_nights">
                                                             <i class="fa fa-pencil-square-o" aria-hidden="false" />
-                                                            Precio/Noche
+                                                            Price/Nights
                                                             <i class="fa fa-angle-down rotate-icon" />
                                                         </h4>
                                                         <div id="collapse_price_nights" class="collapse" aria-labelledby="headingOne">
@@ -496,9 +492,9 @@
                                                                 <thead>
 
                                                                     <tr>
-                                                                        <th class="o_pms_pwa_theme_color">Día</th>
-                                                                        <th class="o_pms_pwa_theme_color">Precio</th>
-                                                                        <th class="o_pms_pwa_theme_color">Descuento (%)</th>
+                                                                        <th class="o_pms_pwa_theme_color">Day</th>
+                                                                        <th class="o_pms_pwa_theme_color">Price</th>
+                                                                        <th class="o_pms_pwa_theme_color">Discount (%)</th>
                                                                     </tr>
 
                                                                 </thead>
@@ -528,7 +524,7 @@
                                 <div class="card bg-dark shadow">
                                     <div class="card-header o_pms_pwa_card_header">
                                         <h3 class="mb-0">
-                                            Detalles de pago
+                                            Payment details
                                         </h3>
                                     </div>
                                     <div class="card-body bg-dark">
@@ -536,10 +532,10 @@
                                             <thead>
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
-                                                    <th class="o_pms_pwa_theme_color">concepto</th>
-                                                    <th class="o_pms_pwa_theme_color text-right">a facturar</th>
-                                                    <th class="o_pms_pwa_theme_color text-right">facturado/total</th>
-                                                    <th class="o_pms_pwa_theme_color text-right">importe(€)</th>
+                                                    <th class="o_pms_pwa_theme_color">concept</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">to invoice</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">invoiced / total </th>
+                                                    <th class="o_pms_pwa_theme_color text-right">amount</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="reservation_list"></tbody>
@@ -554,7 +550,7 @@
                                                 <span>
                                                     Total
                                                     <br />
-                                                    a facturar
+                                                    to invoice
                                                 </span>
                                                 <span class="pt" id="total_amount">
                                                     <t t-esc="reservation.folio_id.amount_total" />
@@ -570,9 +566,9 @@
                                             </div>
                                             <div class="col-4">
                                                 <span>
-                                                    Pendiente
+                                                    Earring
                                                     <br />
-                                                    de pago
+                                                    payment
                                                 </span>
                                                 <span class="price2">
                                                     <t t-esc="reservation.folio_id.pending_amount" />
@@ -591,7 +587,7 @@
                                             <div class="row m-1" id="facturacion">
                                                 <div class="col-12">
                                                     <h4 data-toggle="collapse" data-target="#collapseDatos">
-                                                        Datos de facturación
+                                                        Billing information
                                                         <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
                                                     </h4>
                                                     <div id="collapseDatos" class="collapse" aria-labelledby="headingOne" data-parent="#facturacion">
@@ -678,7 +674,7 @@
                                             </div>
                                             <div class="row m-1">
                                                 <div class="col-12">
-                                                    <h4>Métodos de pago</h4>
+                                                    <h4>Payment methods</h4>
                                                 </div>
                                                 <div class="col-12">
                                                     <t t-foreach="reservation.folio_id.pms_property_id._get_payment_methods()" t-as="payment">
@@ -705,7 +701,7 @@
 
                                                     <button id="payment_button" class="btn btn-message">
                                                         <i class="fa fa-file-text-o" aria-hidden="false" />
-                                                        FACTURAR
+                                                        Bill
                                                     </button>
 
                                                 </div>
@@ -717,7 +713,7 @@
                                     <div class="card bg-white shadow mt-4">
                                         <div class="card-header bg-white o_pms_pwa_card_header">
                                             <h3 class="mb-0">
-                                                Facturas
+                                                Invoices
                                             </h3>
                                         </div>
                                         <div class="card-body bg-white o_pms_pwa_table_reservation_list">

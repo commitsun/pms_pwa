@@ -19,6 +19,23 @@ odoo.define("pms_pwa.sidebar", function () {
         $(".toast").toast("hide");
     });
 
+    // Preload
+    $(document).ready(function () {
+        $("#status").fadeOut();
+        $("#preloader").delay(20).fadeOut(150);
+        $("body").delay(20).css({overflow: "visible"});
+    });
+    $("li.o_pms_pwa_nav_item a").click(function () {
+        $("#status").toggle();
+        $("#preloader").toggle();
+        // $("#preloader").fadeOut(150);
+    });
+    $(".o_pms_pwa_preloader").click(function () {
+        $("#status").toggle();
+        $("#preloader").toggle();
+        // $("#preloader").fadeOut(150);
+    });
+
     // DATE RANGE MODAL
     $(function () {
         if (document.documentElement.lang === "es-ES") {
@@ -48,6 +65,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -87,6 +105,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -142,7 +161,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -181,7 +200,7 @@ odoo.define("pms_pwa.sidebar", function () {
                     showCustomRangeLabel: false,
                 },
                 function (start, end, label) {
-
+                    console.log(label);
                     const start_date = new Date(start);
                     var checkin_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -211,7 +230,6 @@ odoo.define("pms_pwa.sidebar", function () {
     });
 
     $(document).on("change", "#o_pms_pwa_user_property", function () {
-
         const new_property = $(this).val();
 
         const allowed_pms_properties = $('input[name="allowed_properties"]').val();
