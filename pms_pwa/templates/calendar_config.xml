@@ -135,21 +135,6 @@
                                                     <i class="fa fa-angle-down"></i>
                                                     <t t-if="obj.name" t-esc="obj.name" />
                                                 </p>
-                                                <!-- <p class="o_pms_pwa_extra_info">
-                                                    <span>
-                                                        <t t-esc="obj.get_capacity()" />
-                                                        <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" />
-                                                    </span>
-                                                    <span>
-                                                        <t t-esc="obj.total_rooms_count" />
-                                                        hab
-                                                    </span>
-                                                    <span class="o_pms_pwa_restr">
-                                                        <img src="/pms_pwa/static/img/svg/palma_mano.svg" alt="user icon" title="user icon" />
-                                                        Restricciones
-                                                    </span>
-
-                                                </p> -->
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
@@ -177,17 +162,6 @@
 
                                                             </td>
 
-                                                            <!-- <td class="o_pms_pwa_table_cell">
-                                                                <p>Price</p>
-                                                                <p>Min. stay</p>
-                                                                <p>Quota</p>
-                                                                <div class="collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
-                                                                    <p>Max. stay</p>
-                                                                    <p>Min. stay arrival</p>
-                                                                    <p>Max. stay arrival</p>
-                                                                    <p>Block</p>
-                                                                </div>
-                                                            </td> -->
                                                             <t t-foreach="len(date_list)" t-as="room_day">
                                                                 <t t-set="list_price" t-value="obj.with_context(date=date_list[room_day], pricelist_id=price.id, pms_property_id=current_property)._get_rules_date()"></t>
                                                                 <td t-att-class="'o_pms_pwa_table_cell '

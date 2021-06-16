@@ -5,7 +5,7 @@
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modificar valor</h5>
+                        <h5 class="modal-title">Change value</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true"><span class="fa fa-times" /></span>
                         </button>
@@ -27,7 +27,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="modal-title" id="modalLabel">Nueva reserva</div>
+                        <div class="modal-title" id="modalLabel">New reservation</div>
                         <button class="close" data-dismiss="modal">
                             <span>
                                 <span class="fa fa-times" />
@@ -40,10 +40,10 @@
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="multiple-tab" data-toggle="tab" href="#multiple" role="tab" aria-controls="multiple" aria-selected="false">Por tipo de habitación</a>
+                                    <a class="nav-link active" id="multiple-tab" data-toggle="tab" href="#multiple" role="tab" aria-controls="multiple" aria-selected="false">By room type</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="true">Por nº de habitación</a>
+                                    <a class="nav-link" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="true">By room number</a>
                                 </li>
 
                             </ul>
@@ -92,7 +92,7 @@
 
                 <div class="row mt-3">
                     <div class="col-sm-12">
-                        <h4>Channel type and pricelist </h4>
+                        <h4>Channel type and pricelist</h4>
                     </div>
                     <div class="col-6">
                         <label class="control-label col-12" for="channel_type_id">
@@ -127,7 +127,7 @@
             <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
                 <div class="row mt-3">
                     <div class="col-sm-12">
-                        <h4>Room </h4>
+                        <h4>Room</h4>
                     </div>
                     <div class="col-sm-12">
                         <label class="control-label col-12" for="room_type_id">
@@ -175,7 +175,7 @@
                 <div class="row mt-3">
                     <div class="col-6">
                         <label class="control-label col-12" for="discount">
-                            Descuento
+                            Discount
                         </label>
                         <input class="form-control" type="number" name="discount" placeholder="Discount" />
                     </div>
@@ -224,17 +224,17 @@
 
                 <div class="row mt-3">
                     <div class="col-sm-12">
-                        <h4>Canal de venta y tarifa</h4>
+                        <h4>Channel type and pricelist</h4>
                     </div>
                     <div class="col-6">
                         <label class="control-label col-12" for="channel_type_id">
-                            Canal de venta
+                            Channel type
                         </label>
                         <select t-attf-data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id"/>
                     </div>
                     <div class="col-6">
                         <label class="control-label col-12" for="agency_id">
-                            Agencia
+                            Agency
                         </label>
                         <select t-attf-data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
                     </div>
@@ -242,7 +242,7 @@
                 <div class="row mt-3">
                     <div class="col-6">
                         <label class="control-label col-12" for="pricelist">
-                            Tarifa
+                            Pricelist
                         </label>
                         <select t-attf-data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
                     </div>
@@ -250,7 +250,7 @@
                         <!-- <label class="control-label col-12" for="segmentation_ids">
                             Segmentation
                         </label> -->
-                        <select t-attf-data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
+                        <select t-attf-data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
                         <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                     </div>
                 </div>
@@ -264,9 +264,9 @@
                     <table id="table_lines" class="table table-condensed">
                         <thead>
                             <tr>
-                                <th class="o_pms_pwa_theme_color">Tipo de habitación</th>
-                                <th class="o_pms_pwa_theme_color">Seleccionado</th>
-                                <th class="o_pms_pwa_theme_color">Precio/hab</th>
+                                <th class="o_pms_pwa_theme_color">Room type</th>
+                                <th class="o_pms_pwa_theme_color">Selected</th>
+                                <th class="o_pms_pwa_theme_color">Price/room</th>
                             </tr>
                         </thead>
                         <tbody/>

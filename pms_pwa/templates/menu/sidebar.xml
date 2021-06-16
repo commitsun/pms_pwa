@@ -74,7 +74,7 @@
                             </a>
                         </spam>
                         <p class="o_pms_close_session">
-                            <a href="/web/session/logout">Cerrar sesión</a>
+                            <a href="/web/session/logout">Logout</a>
                         </p>
                     </div>
                 </div>

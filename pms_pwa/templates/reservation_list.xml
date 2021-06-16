@@ -2,7 +2,7 @@
 <odoo>
     <template id="roomdoo_reservation_list" name="Reservation list">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'My bookings'"/>
+            <t t-set="page_title" t-value="'Bookings'"/>
             <t t-set="page_counter" t-value="str(len(folios))"/>
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
@@ -99,8 +99,8 @@
                                         <th>Check in</th>
                                         <th>Check out</th>
                                         <th class="text-center o_pms_pwa_priority-2">Sales channel</th>
-                                        <th class="text-center o_pms_pwa_priority-3">Total(€)</th>
-                                        <th class="text-center">Outstanding(€)</th>
+                                        <th class="text-center o_pms_pwa_priority-3">Total</th>
+                                        <th class="text-center">Outstanding</th>
                                         <!-- <th class="text-center">Room qty</th> -->
                                         <th class="o_pms_pwa_priority-5">Requests</th>
                                         <th class="o_pms_pwa_priority-4">Services</th>

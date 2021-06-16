@@ -30,7 +30,7 @@ odoo.define("pms_pwa.sidebar", function () {
         $("#preloader").toggle();
         // $("#preloader").fadeOut(150);
     });
-    $("div.o_pms_pwa_modal_header_pad a.o_pms_pwa_btn_border").click(function () {
+    $(".o_pms_pwa_preloader").click(function () {
         $("#status").toggle();
         $("#preloader").toggle();
         // $("#preloader").fadeOut(150);

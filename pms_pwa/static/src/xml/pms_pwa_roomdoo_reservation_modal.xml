@@ -13,7 +13,7 @@
                                         <t t-esc="texts.reservation_text || _t('Reservation')" />
                                         <span t-esc="reservation.name" />
                                     </h4>
-                                    <a t-att-href="'/reservation/' + reservation.id" class="col-4 btn o_pms_pwa_btn_border float-right" t-att-data-id="reservation.id">
+                                    <a t-att-href="'/reservation/' + reservation.id" class="col-4 btn o_pms_pwa_btn_border float-right o_pms_pwa_preloader" t-att-data-id="reservation.id">
                                         <t t-esc="texts.info_text || _t('More info')" />
                                     </a>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -98,7 +98,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="pricelist_id">
-                                                Tarifa
+                                                Pricelist
                                             </label>
                                             <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id">
                                                 <option t-foreach="reservation.allowed_pricelists" t-as="key" t-att-value="key.id" t-att-selected="reservation.pricelist_id === key.id ? 'selected' : None">
@@ -213,7 +213,7 @@
                                         <div class="col-sm-12 mt-3">
                                             <h4 data-toggle="collapse" data-target="#collapse_price_nights">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="false" />
-                                                Precio/Noche
+                                                Price/Night
                                                 <i class="fa fa-angle-down rotate-icon" />
                                             </h4>
                                             <div id="collapse_price_nights" class="collapse" aria-labelledby="headingOne">
@@ -221,9 +221,9 @@
                                                     <thead>
 
                                                         <tr>
-                                                            <th class="o_pms_pwa_theme_color">Día</th>
-                                                            <th class="o_pms_pwa_theme_color">Precio</th>
-                                                            <th class="o_pms_pwa_theme_color">Descuento (%)</th>
+                                                            <th class="o_pms_pwa_theme_color">Day</th>
+                                                            <th class="o_pms_pwa_theme_color">Price</th>
+                                                            <th class="o_pms_pwa_theme_color">Discount (%)</th>
                                                         </tr>
 
                                                     </thead>
@@ -286,9 +286,9 @@
                                                             <table>
                                                                 <thead>
                                                                     <tr>
-                                                                        <th class="o_pms_pwa_detail_th">Fecha</th>
-                                                                        <th class="o_pms_pwa_detail_th">Cantidad</th>
-                                                                        <th class="o_pms_pwa_detail_th">Precio</th>
+                                                                        <th class="o_pms_pwa_detail_th">Date</th>
+                                                                        <th class="o_pms_pwa_detail_th">Quantity</th>
+                                                                        <th class="o_pms_pwa_detail_th">Price</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -355,7 +355,7 @@
                                     <div class="row mt-4">
                                         <div class="col-sm-12">
                                             <label class="control-label col-12" for="add_service">
-                                                Añadir servicio
+                                                Add service
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
 
@@ -368,7 +368,7 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-12">
-                                            <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
+                                            <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
                                         </div>
                                     </div>
                                 </div>
@@ -411,24 +411,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- <div class="row mt-4" t-if="reservation.folio_pending_amount and reservation.folio_pending_amount &gt; 0 and payment_methods">
-                                        <div class="col-6">
-                                            <h4 t-esc="_t('Payment mode')" class="mb-2" />
-                                            <t t-foreach="payment_methods" t-as="key">
-                                                <div class="o_pms_pwa_radiobox">
-                                                    <input type="radio" t-att-value="key" name="payment_methods" t-att-id="key" />
-                                                    <label class="control-label o_pms_pwa_radiobox_label" t-att-for="key">
-                                                        <span t-esc="key" />
-                                                    </label>
-                                                </div>
-                                            </t>
-                                        </div>
-                                        <div class="col-6">
-                                            <button class="btn btn-grey-900 btn-radius o_pms_pwa_pay" special="cancel">
-                                                <t t-esc="texts.pay_text || _t('Pay')" />
-                                            </button>
-                                        </div>
-                                    </div> -->
+
                                 </div>
 
                                 <div class="row mt-4" t-if="reservation.folio_internal_comment">
@@ -441,29 +424,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- <hr/>
-                                <div class="form-group">
-                                    <div class="row mt-3">
-                                        <div class="col-12 text-center">
-                                            <button
-                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
-                                                confirm="Current reservation will be cancelled, are you sure about that?"
-                                                special="cancel"
-                                                class="btn o_pms_pwa_btn_border">
-                                                <t t-esc="_t('Cancel')" />
-                                            </button>
-                                        </div>
-                                    </div>
 
-                                    <div class="row mt-3 mb-3">
-                                        <div class="col-12 text-center">
-                                            <input type="hidden" name="csrf_token" t-att-value="csrf_token"/>
-                                            <input
-                                                t-att-disabled="reservation.state.value == 'cancelled' ? 'disabled' : undefined"
-                                                class="btn btn-message" type="submit" t-att-value="_t('Save')"/>
-                                        </div>
-                                    </div>
-                                </div> -->
 
                             </form>
                         </div>
