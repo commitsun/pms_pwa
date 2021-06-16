@@ -1022,7 +1022,7 @@ class TestFrontEnd(http.Controller):
                             + str(reservation.partner_id.id)
                             + "/image_128",
                             "price": reservation.folio_pending_amount,
-                            "status": "danger",  # TODO
+                            "status": "success",  # TODO
                             "nigths": (
                                 max_reservation_date
                                 + timedelta(days=1)
@@ -1383,7 +1383,6 @@ class TestFrontEnd(http.Controller):
             #     request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
             # )
             select_pricelist = int(post["pricelist"])
-
 
         values = {
             "today": datetime.datetime.now(),
