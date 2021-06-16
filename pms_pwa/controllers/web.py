@@ -97,6 +97,7 @@ class TestFrontEnd(http.Controller):
             if not search:
                 search = post["original_search"]
             post.pop("original_search")
+
         # REVIEW: magic number
         paginate_by = 15
 
