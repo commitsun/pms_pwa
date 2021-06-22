@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.osv import expression
+from odoo.exceptions import UserError
 
 
 def _get_search_domain(pms_property_id, search=False, **post):
@@ -41,8 +42,15 @@ def _get_search_domain(pms_property_id, search=False, **post):
             domain_fields.append(("reservation_ids.write_date", "<=", v))
         elif v and k == "origin":
             domain_fields.extend(
-                ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]
-            )
+                ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]            )
+        elif v and k == "ready_for_checkin":
+            domain_fields.append(("reservation_ids.checkin", "=", fields.date.today()))
+        elif v and k == "ready_for_checkout":
+            domain_fields.append(("reservation_ids.checkout", "=", fields.date.today()))
+        elif v and k == "in_house":
+            domain_fields.append(("reservation_ids.state", "=", "onboard"))
+
+
     # TODO: text_dialog  (chatter)
     domain_fields.append(("reservation_ids", "!=", False))
 

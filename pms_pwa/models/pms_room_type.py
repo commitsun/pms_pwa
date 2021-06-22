@@ -76,6 +76,7 @@ class PmsPWARoomType(models.Model):
                     ("pms_property_id", "=", self._context.get("pms_property_id")),
                     ("date", "=", self._context.get("date")),
                     ("availability_plan_id", "=", pricelist.availability_plan_id.id),
+                    ("room_type_id", "=", self.id)
                 ]
             )
             if not rule:
