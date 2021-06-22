@@ -197,7 +197,7 @@
                                                 Servicios
                                             </label>
                                             <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
-                                                <option t-foreach="reservation.allowed_board_service_room_ids" t-as="key" t-att-value="key.id" t-att-selected="reservation.board_service_room_id.id === key.id ? 'selected' : None">
+                                                <option name="board_service_room_id" t-foreach="reservation.allowed_board_service_room_ids" t-as="key" t-att-value="key.id" t-att-selected="reservation.board_service_room_id === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>
