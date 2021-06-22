@@ -234,7 +234,7 @@
                                                                     <t t-esc="i_value['date']" t-options='{"widget":"date"}'/>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="price" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number" />
+                                                                    <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="price" t-att-value="i" class="form-control o_pms_pwa_modal_number" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="discount" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number" />
@@ -749,30 +749,30 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="firstname">
-                                                            Nombre
+                                                            Nombre <t t-esc="partner_value['email']"></t>
                                                         </label>
-                                                        <input class="form-control" type="text" name="firstname" t-att-value="partner.firstname ? partner.firstname : ''" />
+                                                        <input class="form-control" type="text" name="firstname" t-att-value="partner_value['firstname'] ? partner_value['firstname'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="lastname">
                                                             Primer apellido
                                                         </label>
-                                                        <input class="form-control" type="text" name="lastname" t-att-value="partner.lastname ? partner.lastname : ''" />
+                                                        <input class="form-control" type="text" name="lastname" t-att-value="partner_value['lastname'] ? partner_value['lastname'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="lastname2">
                                                             Segundo apellido
                                                         </label>
-                                                        <input class="form-control" type="text" name="lastname2" t-att-value="partner.lastname2 ? partner.lastname2 : ''" />
+                                                        <input class="form-control" type="text" name="lastname2" t-att-value="partner_value['lastname2'] ? partner_value['lastname2'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="birthdate_date">
                                                             Fecha de nacimiento
                                                         </label>
-                                                        <input class="form-control o_pms_pwa_daterangepicker" type="date" name="birthdate_date" t-att-value="partner.birthdate_date ? partner.birthdate_date : ''" />
+                                                        <input class="form-control o_pms_pwa_daterangepicker" type="date" name="birthdate_date" t-att-value="partner_value['birthdate_date'] ? partner_value['birthdate_date'] : ''" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -783,7 +783,7 @@
                                                         <label class="control-label col-12" for="document_number">
                                                             NIF/CIF
                                                         </label>
-                                                        <input class="form-control" type="text" name="document_number" t-att-value="partner.document_number ? partner.document_number : ''" />
+                                                        <input class="form-control" type="text" name="document_number" t-att-value="partner_value['document_number'] ? partner_value['document_number'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
@@ -791,22 +791,22 @@
                                                             Tipo de documento
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
-                                                            <option value="D" t-att-selected="partner.document_type == D ? 'selected' : None">
+                                                            <option value="D" t-att-selected="partner_value['document_type'] == D ? 'selected' : None">
                                                                 DNI
                                                             </option>
-                                                            <option value="P" t-att-selected="partner.document_type == P ? 'selected' : None">
+                                                            <option value="P" t-att-selected="partner_value['document_type'] == P ? 'selected' : None">
                                                                 Pasaporte
                                                             </option>
-                                                            <option value="C" t-att-selected="partner.document_type == C ? 'selected' : None">
+                                                            <option value="C" t-att-selected="partner_value['document_type'] == C ? 'selected' : None">
                                                                 Carnet de conducir
                                                             </option>
-                                                            <option value="I" t-att-selected="partner.document_type == I ? 'selected' : None">
+                                                            <option value="I" t-att-selected="partner_value['document_type'] == I ? 'selected' : None">
                                                                 Documento de identificación
                                                             </option>
-                                                            <option value="N" t-att-selected="partner.document_type == N ? 'selected' : None">
+                                                            <option value="N" t-att-selected="partner_value['document_type'] == N ? 'selected' : None">
                                                                 Permiso de residencia española
                                                             </option>
-                                                            <option value="X" t-att-selected="partner.document_type == X ? 'selected' : None">
+                                                            <option value="X" t-att-selected="partner_value['document_type'] == X ? 'selected' : None">
                                                                 Permiso de residencia europea
                                                             </option>
                                                         </select>
@@ -816,50 +816,51 @@
                                                         <label class="control-label col-12" for="document_expedition_date">
                                                             Fecha de caducidad del documento
                                                         </label>
-                                                        <input class="form-control o_pms_pwa_daterangepicker" type="date" name="document_expedition_date" t-att-value="partner.document_expedition_date ? partner.document_expedition_date : ''" />
+                                                        <input class="form-control o_pms_pwa_daterangepicker" type="date" name="document_expedition_date" t-att-value="partner_value['document_expedition_date'] ? partner_value['document_expedition_date'] : ''" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                         </span>
                                                     </div>
 
-                                                    <div class="col-sm-12 mt-2">
+                                                    <!-- <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="gender">
                                                             Género
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="gender">
-                                                            <option value="male" t-att-selected="partner.gender == 'male' ? 'selected' : None">
+                                                            <option value="male" t-att-selected="partner_value['gender'] == 'male' ? 'selected' : None">
                                                                 Hombre
                                                             </option>
-                                                            <option value="female" t-att-selected="partner.gender == 'female' ? 'selected' : None">
+                                                            <option value="female" t-att-selected="partner_value['gender'] == 'female' ? 'selected' : None">
                                                                 Mujer
                                                             </option>
-                                                            <option name="gender" value="other" t-att-selected="partner.gender == 'other' ? 'selected' : None">
+                                                            <option name="gender" value="other" t-att-selected="partner_value['gender'] == 'other' ? 'selected' : None">
                                                                 Otro
                                                             </option>
                                                         </select>
-                                                    </div>
+                                                    </div> -->
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="mobile">
                                                             Móvil
                                                         </label>
-                                                        <input class="form-control" type="tel" name="mobile" t-att-value="partner.mobile ? partner.mobile : ''" />
+                                                        <input class="form-control" type="tel" name="mobile" t-att-value="partner_value['mobile'] ? partner_value['mobile'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="email">
                                                             Email
                                                         </label>
-                                                        <input class="form-control" type="email" name="email" t-att-value="partner.email ? partner.email : ''" />
+                                                        <input class="form-control" type="email" name="email" t-att-value="partner_value['email'] ? partner_value['email'] : ''" />
 
                                                         <input class="form-control" type="hidden" name="pms_property_id" t-att-value="reservation.pms_property_id" />
+                                                        <input class="form-control" type="hidden" name="id" t-att-value="partner" />
                                                     </div>
 
                                                 </div>
                                             </div>
                                         </div>
-                                        <t t-set="step_counter" t-value="step_counter + 1" />
+                                        <!-- <t t-set="step_counter" t-value="step_counter + 1" /> -->
                                     </t>
                                 </div>
                             </div>
