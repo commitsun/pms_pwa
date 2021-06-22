@@ -365,13 +365,21 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             date_options
         );
 
-        $("form#single_reservation_form").find("input[name='check_in_date']").val(checkin_date);
-        $("form#single_reservation_form").find("input[name='check_out_date']").val(checkout_date);
-        $("form#multiple_reservation_form").find("input[name='check_in_date']").val(checkin_date);
-        $("form#multiple_reservation_form").find("input[name='check_out_date']").val(checkout_date);
+        $("form#single_reservation_form")
+            .find("input[name='check_in_date']")
+            .val(checkin_date);
+        $("form#single_reservation_form")
+            .find("input[name='check_out_date']")
+            .val(checkout_date);
+        $("form#multiple_reservation_form")
+            .find("input[name='check_in_date']")
+            .val(checkin_date);
+        $("form#multiple_reservation_form")
+            .find("input[name='check_out_date']")
+            .val(checkout_date);
         $("#o_pms_pwa_new_reservation_modal")
             .find("input[name='range_check_date_modal_reservation']")
-            .val(checkin_date + " - " + checkout_date);     
+            .val(checkin_date + " - " + checkout_date);
     });
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
@@ -484,6 +492,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[7].innerHTML = updated_data.folio_id.outstanding_vat;
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[9].innerHTML = updated_data.board_service_id.name;
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[10].firstElementChild.outerHTML =

@@ -224,9 +224,7 @@ class TestFrontEnd(http.Controller):
             try:
                 params = http.request.jsonrequest.get("params")
                 reservation.pwa_action_checkin(
-                    params["guests_list"],
-                    reservation_id,
-                    params.get("action_on_board")
+                    params["guests_list"], reservation_id, params.get("action_on_board")
                 )
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
@@ -545,7 +543,7 @@ class TestFrontEnd(http.Controller):
             "page_name": "Reservation",
             "reservation": reservation,
         }
-        print(values);
+        print(values)
         if post and "message" in post:
             try:
                 reservation.message_post(
@@ -698,7 +696,7 @@ class TestFrontEnd(http.Controller):
             "service_ids": reservation._get_service_ids(),
             "reservation_line_ids": reservation._get_reservation_line_ids(),
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_room_id": {
+            "board_service_id": {
                 "id": reservation.board_service_room_id.id,
                 "name": reservation.board_service_room_id.display_name,
             },
@@ -1271,7 +1269,7 @@ class TestFrontEnd(http.Controller):
             pms_property_id = request.env.user.get_active_property_ids()[0]
             pms_property = request.env["pms.property"].browse(pms_property_id)
 
-        partner_name = booking_engine.partner_name if booking_engine else ''
+        partner_name = booking_engine.partner_name if booking_engine else ""
         if params.get("name"):
             partner_name = params.get("name")
 
@@ -1700,7 +1698,9 @@ class TestFrontEnd(http.Controller):
         counter = 0
         primary = 0
         for _key in keysList:
-            if (primary == 0 and buttons[keysList[counter]]) or keysList[counter] == "Ver Detalle":
+            if (primary == 0 and buttons[keysList[counter]]) or keysList[
+                counter
+            ] == "Ver Detalle":
                 if buttons[keysList[counter]]:
                     primary_button = (
                         "<button url='"
