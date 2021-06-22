@@ -126,16 +126,15 @@ class PmsReservation(models.Model):
                 and x["document_type"]
                 and x["document_expedition_date"]
                 and x["gender"]
-                and x["mobile"],
+                and x["mobile"]
+                and x["id"],
                 checkin_partner_list,
             ):
                 document_type = self.env["res.partner.id_category"].search([
                     ("code", "=", guest["document_type"])
                 ])
-                checkin_partner = self.env["pms.checkin.partner"].create(
+                checkin_partner = self.env["pms.checkin.partner"].browse(guest["pms_property_id"]).write(
                     {
-                        "reservation_id": reservation_id,
-                        "pms_property_id": guest["pms_property_id"],
                         "name": guest["firstname"],
                         "firstname": guest["firstname"],
                         "lastname": guest["lastname"],
