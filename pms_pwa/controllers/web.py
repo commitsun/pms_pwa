@@ -696,7 +696,7 @@ class TestFrontEnd(http.Controller):
             "service_ids": reservation._get_service_ids(),
             "reservation_line_ids": reservation._get_reservation_line_ids(),
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_id": {
+            "board_service_room_id": {
                 "id": reservation.board_service_room_id.id,
                 "name": reservation.board_service_room_id.display_name,
             },
@@ -1194,10 +1194,10 @@ class TestFrontEnd(http.Controller):
                 .id
             )
 
-        if reservation_values.get("board_service_id"):
-            vals["board_service_id"] = (
+        if reservation_values.get("board_service_room_id"):
+            vals["board_service_room_id"] = (
                 request.env["pms.board.service.room.type"]
-                .search([("id", "=", int(reservation_values.get("board_service_id")))])
+                .search([("id", "=", int(reservation_values.get("board_service_room_id")))])
                 .id
             )
 
@@ -1555,7 +1555,7 @@ class TestFrontEnd(http.Controller):
         reservation_values[
             "allowed_board_service_room_ids"
         ] = reservation._get_allowed_board_service_room_ids()
-        reservation_values["board_service_id"] = reservation.board_service_room_id.id
+        reservation_values["board_service_room_id"] = reservation.board_service_room_id.id
         reservation_values[
             "allowed_segmentations"
         ] = reservation._get_allowed_segmentations()

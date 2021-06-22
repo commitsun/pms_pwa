@@ -9,7 +9,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     const relation_values = {
         allowed_agency_ids: "agency_id",
-        allowed_board_service_room_ids: "board_service_id",
+        allowed_board_service_room_ids: "board_service_room_id",
         allowed_channel_type_ids: "channel_type_id",
         allowed_pricelists: "pricelist_id",
         allowed_segmentations: "segmentation_ids",
@@ -494,7 +494,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 )[7].innerHTML = updated_data.folio_id.outstanding_vat;
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
-                                )[9].innerHTML = updated_data.board_service_id.name;
+                                )[9].innerHTML = updated_data.board_service_room_id.name;
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[10].firstElementChild.outerHTML =

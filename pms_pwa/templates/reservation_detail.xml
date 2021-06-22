@@ -322,17 +322,17 @@
                                                 <div class="row mt-3">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="allowed_board_service_room_ids">
-                                                            Reservation type <t t-esc="reservation.board_service_room_id"></t>
+                                                            Reservation type
                                                         </label>
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_id">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
                                                             <t t-foreach="reservation._get_allowed_board_service_room_ids()" t-as="key">
                                                                 <t t-if="key['id'] == reservation.board_service_room_id.id">
-                                                                    <option name="board_service_id" t-att-value="key['id']" selected="selected">
+                                                                    <option name="board_service_room_id" t-att-value="key['id']" selected="selected">
                                                                         <t t-esc="key['name']" />
                                                                     </option>
                                                                 </t>
                                                                 <t t-else="">
-                                                                    <option name="board_service_id" t-att-value="key['id']">
+                                                                    <option name="board_service_room_id" t-att-value="key['id']">
                                                                         <t t-esc="key['name']" />
                                                                     </option>
                                                                 </t>
