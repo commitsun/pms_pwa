@@ -137,14 +137,15 @@
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
-                                                <t t-set="availability_room" t-value="obj.with_context(checkin=today, checkout=today, pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
+                                                <t t-set="total_rooms" t-value="obj._get_total_rooms()"></t>
+                                                <t t-set="availability_room" t-value="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
                                                 ">
                                                     <p class="o_pms_pwa_title" style="text-align: center !important;">
-                                                        <t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> / <t t-esc="availability_room" />
-                                                        habitaciones
+                                                        <t t-esc="availability_room"/> de <t t-esc="total_rooms" />
+                                                        libres
                                                     </p>
                                                 </td>
                                             </t>

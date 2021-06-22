@@ -10,6 +10,10 @@ from odoo.exceptions import ValidationError
 class PmsPWARoomType(models.Model):
     _inherit = "pms.room.type"
 
+    def _get_total_rooms(self):
+        pms_property_id = self.env.user.get_active_property_ids()[0]
+        return len(self.room_ids.filtered(lambda r: r.pms_property_id.id == pms_property_id))
+
     def _get_availability_rooms(self):
         avail = 0
         if self._context.get("checkin") and self._context.get("checkout"):
