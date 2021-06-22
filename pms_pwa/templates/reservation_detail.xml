@@ -61,12 +61,12 @@
                                                     <h3 class="text-white ml-4">
                                                         <t t-esc="reservation.partner_id.name" />
                                                     </h3>
-                                                    <p class="ml-4 mb-0">
-                                                        <a t-attf-href="tel:{{reservation.partner_phone}}" class="text-white">
-                                                            <t t-esc="reservation.partner_phone" />
+                                                    <p t-if="reservation.partner_mobile" class="ml-4 mb-0">
+                                                        <a t-attf-href="tel:{{reservation.partner_mobile}}" class="text-white">
+                                                            <t t-esc="reservation.partner_mobile" />
                                                         </a>
                                                     </p>
-                                                    <p class="ml-4">
+                                                    <p t-if="reservation.partner_email" class="ml-4">
                                                         <a t-attf-href="mailto:{{reservation.partner_email}}" class="text-white font-italic">
                                                             <t t-esc="reservation.partner_email" />
                                                         </a>
