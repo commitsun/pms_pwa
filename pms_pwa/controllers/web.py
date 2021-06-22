@@ -545,6 +545,7 @@ class TestFrontEnd(http.Controller):
             "page_name": "Reservation",
             "reservation": reservation,
         }
+        print(values);
         if post and "message" in post:
             try:
                 reservation.message_post(
