@@ -1697,8 +1697,9 @@ class TestFrontEnd(http.Controller):
         secondary_buttons = ""
 
         counter = 0
+        primary = 0
         for _key in keysList:
-            if counter == 0 or keysList[counter] == "Ver Detalle":
+            if (primary == 0 and buttons[keysList[counter]]) or keysList[counter] == "Ver Detalle":
                 if buttons[keysList[counter]]:
                     primary_button = (
                         "<button url='"
@@ -1710,6 +1711,7 @@ class TestFrontEnd(http.Controller):
                         + keysList[counter]
                         + "</button>"
                     )
+                    primary = 1
                 else:
                     primary_button = (
                         "<button"
