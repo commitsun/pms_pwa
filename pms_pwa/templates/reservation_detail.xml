@@ -181,7 +181,8 @@
                                             </thead>
                                             <tbody>
                                                 <t t-foreach="reservation.folio_id.reservation_ids" t-as="i">
-                                                    <tr class="o_roomdoo_hide_show">
+                                                    <tr t-att-class="'o_roomdoo_hide_show '
+                                                        + ('o_pms_pwa_background_grey' if reservation.id == i.id else ' ')">
                                                         <td>
                                                             <input type="checkbox" name="reservation_ids" checked="checked" t-if="reservation.id == i.id" t-attf-value="{{ i.id }}" />
                                                             <input type="checkbox" name="reservation_ids" t-if="reservation.id != i.id" t-attf-value="{{ i.id }}" />
