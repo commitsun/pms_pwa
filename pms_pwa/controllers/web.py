@@ -97,6 +97,7 @@ class TestFrontEnd(http.Controller):
             if not search:
                 search = post["original_search"]
             post.pop("original_search")
+
         # REVIEW: magic number
         paginate_by = 15
 
@@ -1057,7 +1058,7 @@ class TestFrontEnd(http.Controller):
                     for x in range(0, (reservation.checkout - split.date).days)
                 ]:
                     line = reservation.reservation_line_ids(
-                        lambda: l.date == date_iterator
+                        lambda l: l.date == date_iterator
                     )
                     if line and line.room_id == split.room_id:
                         nights += 1
@@ -1218,16 +1219,16 @@ class TestFrontEnd(http.Controller):
     )
     def multiple_reservation_onchange(self, **kw):
         params = http.request.jsonrequest.get("params")
-        folio_wizard = False
+        booking_engine = False
         print("params: {}".format(params))
 
         if params.get("id"):
-            folio_wizard = request.env["pms.folio.wizard"].browse(int(params.get("id")))
-        if folio_wizard:
-            checkin = folio_wizard.start_date
-            checkout = folio_wizard.end_date
+            booking_engine = request.env["pms.booking.engine"].browse(int(params.get("id")))
+        if booking_engine:
+            checkin = booking_engine.start_date
+            checkout = booking_engine.end_date
 
-        if not folio_wizard or params.get("checkin"):
+        if not booking_engine or params.get("checkin"):
             checkin = (
                 datetime.datetime.strptime(
                     params["checkin"], get_lang(request.env).date_format
@@ -1235,7 +1236,7 @@ class TestFrontEnd(http.Controller):
                 if "checkin" in params
                 else datetime.datetime.today().date()
             )
-        if not folio_wizard or params.get("checkout"):
+        if not booking_engine or params.get("checkout"):
             checkout = (
                 datetime.datetime.strptime(
                     params["checkout"].strip(),
@@ -1267,26 +1268,26 @@ class TestFrontEnd(http.Controller):
             "pms_property_id": pms_property.id if pms_property else False,
             "partner_id": partner.id if partner else False,
         }
-        if not folio_wizard:
-            folio_wizard = request.env["pms.folio.wizard"].create(vals)
-            folio_wizard.flush()
+        if not booking_engine:
+            booking_engine = request.env["pms.booking.engine"].create(vals)
+            booking_engine.flush()
         if (
-            checkin != folio_wizard.start_date
-            or checkout != folio_wizard.end_date
-            or pricelist.id != folio_wizard.pricelist_id.id
-            or pms_property.id != folio_wizard.pms_property_id.id
-            or partner.id != folio_wizard.partner_id.id
+            checkin != booking_engine.start_date
+            or checkout != booking_engine.end_date
+            or pricelist.id != booking_engine.pricelist_id.id
+            or pms_property.id != booking_engine.pms_property_id.id
+            or partner.id != booking_engine.partner_id.id
         ):
-            folio_wizard.write(vals)
+            booking_engine.write(vals)
         if params.get("lines"):
             for line_id, values in params.get("lines").items():
-                folio_wizard.availability_results.filtered(
+                booking_engine.availability_results.filtered(
                     lambda r: r.id == int(line_id)
                 ).value_num_rooms_selected = int(values["value_num_rooms_selected"])
-                folio_wizard.flush()
+                booking_engine.flush()
                 # TODO: Board service
 
-        return self.parse_wizard_folio(folio_wizard)
+        return self.parse_booking_engine(booking_engine)
 
     @http.route(
         ["/reservation/multiple_reservation_new"],
@@ -1300,10 +1301,10 @@ class TestFrontEnd(http.Controller):
         print("params: {}".format(params))
         try:
             if params.get("id"):
-                folio_wizard = request.env["pms.folio.wizard"].browse(
+                booking_engine = request.env["pms.booking.engine"].browse(
                     int(params.get("id"))
                 )
-            folio_action = folio_wizard.create_folio()
+            folio_action = booking_engine.create_folio()
             id_reservation = (
                 request.env["pms.folio"]
                 .browse(folio_action["res_id"])
@@ -1376,7 +1377,7 @@ class TestFrontEnd(http.Controller):
         )
         select_pricelist = 0
         default_pricelist = pricelist[0].id
-        if post and post["pricelist"]:
+        if post and post.get("pricelist"):
             default_pricelist = int(post["pricelist"])
             # pricelist = (
             #     request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
@@ -1596,7 +1597,7 @@ class TestFrontEnd(http.Controller):
                 new_values[k] = cmds
         return new_values
 
-    def parse_wizard_folio(self, wizard):
+    def parse_booking_engine(self, wizard):
         wizard_values = dict()
         wizard_values["id"] = wizard.id
         wizard_values["checkin"] = wizard.start_date.strftime(
