@@ -101,19 +101,15 @@ class TestFrontEnd(http.Controller):
         # REVIEW: magic number
         paginate_by = 15
 
-        # TODO: ORDER STUFF's
         # searchbar_sortings = {
         #     "priority":
         #         {
         #             "label": _("Priority"),
-        #             "order": "priority"
+        #             "order": "max_reservation_priority"
         #         },
         #     }
-        # if not sortby:
-        #     sortby = "priority"
-        # sort_folio = searchbar_sortings[sortby]["order"]
-        # sortby = 'priority'
-        # / ORDER STUFF's
+        if not sortby:
+            sortby = "max_reservation_priority"
 
         pager = request.website.pager(
             url="/reservation/list",
@@ -128,7 +124,7 @@ class TestFrontEnd(http.Controller):
             "today": today,
             "folios": request.env["pms.folio"].search_folios_pwa(
                 search=search,
-                # order=sort_folio,  #TODO: REVIEW SORTING
+                order=sortby,
                 limit=paginate_by,
                 offset=pager["offset"],
                 **post
@@ -227,7 +223,11 @@ class TestFrontEnd(http.Controller):
             )
             try:
                 params = http.request.jsonrequest.get("params")
-                reservation.pwa_action_checkin(params["guests_list"], reservation_id)
+                reservation.pwa_action_checkin(
+                    params["guests_list"],
+                    reservation_id,
+                    params.get("action_on_board")
+                )
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
             return json.dumps(
@@ -625,14 +625,23 @@ class TestFrontEnd(http.Controller):
             reservation
         )
 
-        reservation_values = {
-            "id": reservation.id,
-            "name": reservation.name,
-            "partner_id": {
+        if reservation.partner_id:
+            partner_vals = {
                 "id": reservation.partner_id.id,
                 "name": reservation.partner_id.name,
                 "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
-            },
+            }
+        else:
+            partner_vals = {
+                "id": False,
+                "name": reservation.partner_name,
+                "mobile": reservation.partner_mobile,
+            }
+
+        reservation_values = {
+            "id": reservation.id,
+            "name": reservation.name,
+            "partner_id": partner_vals,
             "unread_msg": 2,
             "messages": ["Lorem ipsum", "Unread short message"],
             "room_type_id": {
@@ -887,7 +896,7 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def calendar(self, **post):
-        date = datetime.datetime.now()
+        date = datetime.date.today()
         date_start = date + timedelta(days=-1)
         if post.get("next_day"):
             date = datetime.datetime.strptime(
@@ -937,7 +946,6 @@ class TestFrontEnd(http.Controller):
         )
         if post and "pricelist" in post:
             pricelist = int(post["pricelist"])
-
         values = {
             "today": datetime.datetime.now(),
             "date_start": date_start,
@@ -964,8 +972,7 @@ class TestFrontEnd(http.Controller):
     )
     def calendar_list(self, date=False, search="", **post):
         # TODO: Evitar el uso de eval
-        print(post.get("range_date"))
-        dates = [item.date() for item in eval(post.get("range_date"))]
+        dates = [item for item in eval(post.get("range_date"))]
         from_date = min(dates)
         to_date = max(dates)
         pms_property_id = request.env.user.get_active_property_ids()[0]
@@ -1018,7 +1025,7 @@ class TestFrontEnd(http.Controller):
                         "date": min_reservation_date,
                         "reservation_info": {
                             "id": reservation.id,
-                            "partner_name": reservation.partner_id.name,
+                            "partner_name": reservation.partner_name,
                             "img": "/web/image/res.partner/"
                             + str(reservation.partner_id.id)
                             + "/image_128",
@@ -1072,7 +1079,7 @@ class TestFrontEnd(http.Controller):
                         "date": reservation.checkin,
                         "reservation_info": {
                             "id": reservation.id,
-                            "partner_name": reservation.partner_id.name
+                            "partner_name": reservation.partner_name
                             if main_split
                             else False,
                             "img": "/web/image/res.partner/"
@@ -1160,8 +1167,9 @@ class TestFrontEnd(http.Controller):
         if not pricelist and pms_property:
             pricelist = pms_property.default_pricelist_id
 
-        # TODO: Search/create Partner
-        partner = request.env["res.partner"].search([])[0]
+        partner_name = False
+        if reservation_values.get("pricelist_id"):
+            partner_name = reservation_values.get("name")
 
         room_type_id = False
         if reservation_values.get("room_type_id"):
@@ -1177,7 +1185,7 @@ class TestFrontEnd(http.Controller):
             "room_type_id": room_type_id,
             "pricelist_id": pricelist.id,
             "pms_property_id": pms_property.id if pms_property else False,
-            "partner_id": partner.id if partner else False,
+            "partner_name": partner_name,
         }
         print(vals)
         if reservation_values.get("preferred_room_id"):
@@ -1257,13 +1265,20 @@ class TestFrontEnd(http.Controller):
 
         pms_property = False
         pms_property_id = False
+
         if request.env.user.get_active_property_ids():
             pms_property_id = request.env.user.get_active_property_ids()[0]
             pms_property = request.env["pms.property"].browse(pms_property_id)
-        # TODO: partner_id, diferenciar entre nuevo partner y
-        # uno seleccionado (tipo direccion de facturacion en el detalle?)
-        partner = request.env["res.partner"].search([])[0]
-        pricelist = False
+
+        partner_name = booking_engine.partner_name if booking_engine else ''
+        if params.get("name"):
+            partner_name = params.get("name")
+
+        channel_type_id = booking_engine.channel_type_id.id if booking_engine else False
+        if params.get("channel_type_id"):
+            channel_type_id = int(params.get("channel_type_id"))
+
+        pricelist = booking_engine.pricelist_id if booking_engine else False
         if params.get("pricelist_id"):
             pricelist = request.env["product.pricelist"].search(
                 [("id", "=", int(params.get("pricelist_id")))]
@@ -1275,7 +1290,8 @@ class TestFrontEnd(http.Controller):
             "end_date": checkout,
             "pricelist_id": pricelist.id if pricelist else False,
             "pms_property_id": pms_property.id if pms_property else False,
-            "partner_id": partner.id if partner else False,
+            "partner_name": partner_name,
+            "channel_type_id": channel_type_id,
         }
         if not booking_engine:
             booking_engine = request.env["pms.booking.engine"].create(vals)
@@ -1285,7 +1301,8 @@ class TestFrontEnd(http.Controller):
             or checkout != booking_engine.end_date
             or pricelist.id != booking_engine.pricelist_id.id
             or pms_property.id != booking_engine.pms_property_id.id
-            or partner.id != booking_engine.partner_id.id
+            or partner_name != booking_engine.partner_name
+            or channel_type_id != booking_engine.channel_type_id.id
         ):
             booking_engine.write(vals)
         if params.get("lines"):
@@ -1339,7 +1356,7 @@ class TestFrontEnd(http.Controller):
         website=True,
     )
     def calendar_config(self, date=False, **post):
-        date = datetime.datetime.now()
+        date = datetime.date.today()
         date_start = date + timedelta(days=-1)
         if post.get("next_day"):
             date = datetime.datetime.strptime(
@@ -1473,16 +1490,16 @@ class TestFrontEnd(http.Controller):
                             if "closed" in items[0]:
                                 avail_vals["closed"] = bool(items[0]["closed"])
                             if "min_stay_arrival" in items[0]:
-                                avail_vals["min_stay_arrival"] = bool(
+                                avail_vals["min_stay_arrival"] = int(
                                     items[0]["min_stay_arrival"]
                                 )
                             if "max_stay_arrival" in items[0]:
-                                avail_vals["max_stay_arrival"] = bool(
+                                avail_vals["max_stay_arrival"] = int(
                                     items[0]["max_stay_arrival"]
                                 )
                             if any(avail_vals):
                                 avail_rule_item = request.env[
-                                    "product.pricelist.item"
+                                    "pms.availability.plan.rule"
                                 ].search(
                                     [
                                         ("room_type_id", "=", room_type.id),
@@ -1601,14 +1618,13 @@ class TestFrontEnd(http.Controller):
                             ),
                         )
                     )
-                print("PARSE SERVICE LINES----------------------------------")
-                print(cmds)
                 new_values[k] = cmds
         return new_values
 
     def parse_booking_engine(self, wizard):
         wizard_values = dict()
         wizard_values["id"] = wizard.id
+        wizard_values["name"] = wizard.partner_name
         wizard_values["checkin"] = wizard.start_date.strftime(
             get_lang(request.env).date_format
         )
@@ -1624,6 +1640,7 @@ class TestFrontEnd(http.Controller):
         wizard_values["allowed_segmentations"] = request.env[
             "pms.reservation"
         ]._get_allowed_segmentations()
+        wizard_values["channel_type_id"] = wizard.channel_type_id.id
         wizard_values["allowed_channel_type_ids"] = self._get_allowed_channel_type_ids()
         wizard_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
 
