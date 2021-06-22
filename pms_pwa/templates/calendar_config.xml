@@ -31,7 +31,7 @@
                             <div class="col-sm-2 d-none d-lg-block">
                                 <div class="d-flex align-items-center ml-4">
                                     <h2 class="font-weight-bold mb-0 text-uppercase">
-                                        <t t-esc="date_start.strftime('%B %Y')" />
+                                        <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
                                     </h2>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@
                                     </a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
-                                        <t t-esc="date_start.strftime('%B %Y')" />
+                                        <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
                                     </span>
 
                                     <a t-att-href="'?next_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow">
@@ -116,7 +116,7 @@
                                                         <i class="fa fa-2x fa-angle-left"></i>
                                                     </a>
                                                 </t>
-                                                <t t-esc="day.strftime('%A %d')" />
+                                                <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
                                                 <t t-if="day_last">
                                                     <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow">
                                                         <i class="fa fa-2x fa-angle-right"></i>

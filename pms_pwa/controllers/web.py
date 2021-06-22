@@ -964,6 +964,7 @@ class TestFrontEnd(http.Controller):
     )
     def calendar_list(self, date=False, search="", **post):
         # TODO: Evitar el uso de eval
+        print(post.get("range_date"))
         dates = [item.date() for item in eval(post.get("range_date"))]
         from_date = min(dates)
         to_date = max(dates)
@@ -1123,22 +1124,28 @@ class TestFrontEnd(http.Controller):
     def single_reservation_new(self, **kw):
         reservation_values = http.request.jsonrequest.get("params")
         print("reservation_values: {}".format(reservation_values))
+        if reservation_values["checkin"]:
+            checkin = (
+                datetime.datetime.strptime(
+                    reservation_values["checkin"], get_lang(request.env).date_format
+                ).date()
+                if "checkin" in reservation_values
+                else datetime.datetime.today()
+            )
+        else:
+            checkin = datetime.datetime.today()
+        if reservation_values["checkout"]:
+            checkout = (
+                datetime.datetime.strptime(
+                    reservation_values["checkout"].strip(),
+                    get_lang(request.env).date_format,
+                ).date()
+                if "checkout" in reservation_values
+                else checkin + timedelta(days=1)
+            )
+        else:
+            checkout = checkin + timedelta(days=1)
 
-        checkin = (
-            datetime.datetime.strptime(
-                reservation_values["checkin"], get_lang(request.env).date_format
-            ).date()
-            if "checkin" in reservation_values
-            else datetime.datetime.today()
-        )
-        checkout = (
-            datetime.datetime.strptime(
-                reservation_values["checkout"].strip(),
-                get_lang(request.env).date_format,
-            ).date()
-            if "checkout" in reservation_values
-            else checkin + timedelta(days=1)
-        )
         pms_property_id = False
         pms_property = False
         if request.env.user.get_active_property_ids():
@@ -1223,7 +1230,9 @@ class TestFrontEnd(http.Controller):
         print("params: {}".format(params))
 
         if params.get("id"):
-            booking_engine = request.env["pms.booking.engine"].browse(int(params.get("id")))
+            booking_engine = request.env["pms.booking.engine"].browse(
+                int(params.get("id"))
+            )
         if booking_engine:
             checkin = booking_engine.start_date
             checkout = booking_engine.end_date
