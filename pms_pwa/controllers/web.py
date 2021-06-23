@@ -223,6 +223,7 @@ class TestFrontEnd(http.Controller):
             )
             try:
                 params = http.request.jsonrequest.get("params")
+                _logger.info(params)
                 reservation.pwa_action_checkin(
                     params["guests_list"], reservation_id, params.get("action_on_board")
                 )
@@ -1197,7 +1198,9 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("board_service_room_id"):
             vals["board_service_room_id"] = (
                 request.env["pms.board.service.room.type"]
-                .search([("id", "=", int(reservation_values.get("board_service_room_id")))])
+                .search(
+                    [("id", "=", int(reservation_values.get("board_service_room_id")))]
+                )
                 .id
             )
 
@@ -1555,7 +1558,9 @@ class TestFrontEnd(http.Controller):
         reservation_values[
             "allowed_board_service_room_ids"
         ] = reservation._get_allowed_board_service_room_ids()
-        reservation_values["board_service_room_id"] = reservation.board_service_room_id.id
+        reservation_values[
+            "board_service_room_id"
+        ] = reservation.board_service_room_id.id
         reservation_values[
             "allowed_segmentations"
         ] = reservation._get_allowed_segmentations()

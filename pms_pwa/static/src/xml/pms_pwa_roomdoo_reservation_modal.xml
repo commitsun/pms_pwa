@@ -742,14 +742,15 @@
                                 </div>
                                 <div class="bs-stepper-content">
                                     <!-- your steps content here -->
-                                    <!-- <t t-set="step_counter" t-value="1" /> -->
+                                    <t t-set="step_counter" t-value="1" />
                                     <t t-foreach="reservation.checkin_partner_ids" t-as="partner">
                                         <div t-att-id="'checkin_partner_'+partner" class="content" role="tabpanel" t-att-aria-labelledby="'checkin_partner_'+partner+'-trigger'">
                                             <div class="form-group form-field mt8">
+                                                <input type="hidden" name="guest_id" t-att-value="partner"/>
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="firstname">
-                                                            Nombre <t t-esc="partner_value['email']"></t>
+                                                            Nombre
                                                         </label>
                                                         <input class="form-control" type="text" name="firstname" t-att-value="partner_value['firstname'] ? partner_value['firstname'] : ''" />
                                                     </div>
@@ -860,14 +861,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- <t t-set="step_counter" t-value="step_counter + 1" /> -->
+                                        <t t-set="step_counter" t-value="step_counter + 1" />
                                     </t>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
+                            <button type="button" t-attf-data-id="reservation.id" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                 <span>Cerrar</span>
                             </button>
-                            <button type="button" class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkin">
+                            <button type="button" t-attf-data-id="reservation.id" class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkin">
                                 <span>Checkin</span>
                             </button>
                         </div>

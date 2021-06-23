@@ -1304,22 +1304,26 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 stepper: ".bs-stepper",
                             },
                         });
-                        /* eslint-enable no-alert */
-                        $(".o_pms_pwa_button_checkin_confirm").on("click", function (
-                            new_event
-                        ) {
-                            new_event.preventDefault();
+                        $(".bs-stepper-content").on("change", "input", function (new_event) {
+                            new_event.preventDefault(reservation_id);
+
                             var guest_list = [];
                             var selector =
                                 "div.bs-stepper[guest-data-id=" +
                                 reservation_id +
                                 "] .content";
+
                             var contents = $(selector);
+
                             for (var i = 1; i <= contents.length; i++) {
+
                                 var element = $(
                                     "#" + contents[i - 1].getAttribute("id")
                                 );
                                 guest_list.push({
+                                    id: element
+                                        .find("input[name='guest_id']")
+                                        .val(),
                                     firstname: element
                                         .find("input[name='firstname']")
                                         .val(),
@@ -1342,10 +1346,73 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     document_expedition_date: element
                                         .find("input[name='document_expedition_date']")
                                         .val(),
-                                    gender: element
-                                        .find("select[name='gender'] option")
+                                    // gender: element
+                                    //     .find("select[name='gender'] option")
+                                    //     .filter(":selected")
+                                    //     .val(),
+                                    mobile: element.find("input[name='mobile']").val(),
+                                    email: element.find("input[name='email']").val(),
+                                    pms_property_id: element
+                                        .find("input[name='pms_property_id']")
+                                        .val(),
+                                });
+                            }
+
+                            ajax.jsonRpc('/reservation/'+reservation_id+'/checkin', "call", {
+                                guests_list: guest_list,
+                                action_on_board: false,
+                            }).then(function (new_data) {
+                                self.displayDataAlert(new_data, data.id);
+                            });
+
+                        });
+                        /* eslint-enable no-alert */
+                        $(".o_pms_pwa_button_checkin_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var guest_list = [];
+                            var selector =
+                                "div.bs-stepper[guest-data-id=" +
+                                reservation_id +
+                                "] .content";
+
+                            var contents = $(selector);
+
+                            for (var i = 1; i <= contents.length; i++) {
+                                var element = $(
+                                    "#" + contents[i - 1].getAttribute("id")
+                                );
+                                guest_list.push({
+                                    id: element
+                                        .find("input[name='guest_id']")
+                                        .val(),
+                                    firstname: element
+                                        .find("input[name='firstname']")
+                                        .val(),
+                                    lastname: element
+                                        .find("input[name='lastname']")
+                                        .val(),
+                                    lastname2: element
+                                        .find("input[name='lastname2']")
+                                        .val(),
+                                    birthdate_date: element
+                                        .find("input[name='birthdate_date']")
+                                        .val(),
+                                    document_number: element
+                                        .find("input[name='document_number']")
+                                        .val(),
+                                    document_type: element
+                                        .find("select[name='document_type'] option")
                                         .filter(":selected")
                                         .val(),
+                                    document_expedition_date: element
+                                        .find("input[name='document_expedition_date']")
+                                        .val(),
+                                    // gender: element
+                                    //     .find("select[name='gender'] option")
+                                    //     .filter(":selected")
+                                    //     .val(),
                                     mobile: element.find("input[name='mobile']").val(),
                                     email: element.find("input[name='email']").val(),
                                     pms_property_id: element
@@ -1355,6 +1422,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
                             ajax.jsonRpc(button.attributes.url.value, "call", {
                                 guests_list: guest_list,
+                                action_on_board: true,
                             }).then(function (new_data) {
                                 self.displayDataAlert(new_data, data.id);
                             });
@@ -1486,4 +1554,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     });
 
     return publicWidget.registry.ReservationTableWidget;
+
+
+
 });
