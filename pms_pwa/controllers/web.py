@@ -1197,7 +1197,9 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("board_service_room_id"):
             vals["board_service_room_id"] = (
                 request.env["pms.board.service.room.type"]
-                .search([("id", "=", int(reservation_values.get("board_service_room_id")))])
+                .search(
+                    [("id", "=", int(reservation_values.get("board_service_room_id")))]
+                )
                 .id
             )
 
@@ -1555,7 +1557,9 @@ class TestFrontEnd(http.Controller):
         reservation_values[
             "allowed_board_service_room_ids"
         ] = reservation._get_allowed_board_service_room_ids()
-        reservation_values["board_service_room_id"] = reservation.board_service_room_id.id
+        reservation_values[
+            "board_service_room_id"
+        ] = reservation.board_service_room_id.id
         reservation_values[
             "allowed_segmentations"
         ] = reservation._get_allowed_segmentations()
@@ -1705,6 +1709,8 @@ class TestFrontEnd(http.Controller):
                     primary_button = (
                         "<button url='"
                         + buttons[keysList[counter]]
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' class='btn o_pms_pwa_default_button_name"
                         + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
@@ -1719,6 +1725,8 @@ class TestFrontEnd(http.Controller):
                         + " class='disabled btn o_pms_pwa_default_button_name"
                         + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' type='button'>"
                         + keysList[counter]
                         + "</button>"
@@ -1730,6 +1738,8 @@ class TestFrontEnd(http.Controller):
                         + buttons[keysList[counter]]
                         + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' type='button'>"
                         + keysList[counter]
                         + "</button>"
@@ -1739,6 +1749,8 @@ class TestFrontEnd(http.Controller):
                         "<button class='disabled dropdown-item"
                         + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' type='button'>"
                         + keysList[counter]
                         + "</button>"
