@@ -1359,13 +1359,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         });
                         $(".bs-stepper-content").on("change", "input", function (new_event) {
                             new_event.preventDefault(reservation_id);
-
                             var guest_list = [];
                             var selector =
                                 "div.bs-stepper[guest-data-id=" +
                                 reservation_id +
                                 "] .content";
-
                             var contents = $(selector);
 
                             for (var i = 1; i <= contents.length; i++) {
