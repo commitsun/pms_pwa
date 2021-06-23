@@ -432,6 +432,56 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
         },
+        modalButtonsOnChange: function () {
+            var self = this;
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_assign").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    /* var reservation_id = $("#o_pms_pwa_reservation_modal")[0].getAttribute("data-id"); */
+                }
+            );
+
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkin").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickCheckinButton(event);
+                }
+            );
+
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkout").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickCheckoutButton(event);
+                }
+            );
+
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_payment").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickPaymentButton(event);
+                }
+            );
+
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_invoice").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickInvoiceButton(event);
+                }
+            );
+
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_cancel").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickCancelButton(event);
+                }
+            );
+        },
         reloadReservationInfo: function (data_id = false) {
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: data_id,
@@ -494,7 +544,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 )[7].innerHTML = updated_data.folio_id.outstanding_vat;
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
-                                )[9].innerHTML = updated_data.board_service_room_id.name;
+                                )[9].innerHTML =
+                                    updated_data.board_service_room_id.name;
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[10].firstElementChild.outerHTML =
@@ -614,6 +665,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 },
                                             }
                                         );
+
+                                        self.modalButtonsOnChange();
 
                                         $("#o_pms_pwa_reservation_modal").on(
                                             "hidden.bs.modal",
@@ -1509,7 +1562,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                try {
+                    reservation_id = button.getAttribute("data-id");
+                } catch (error) {
+                    reservation_id = $("input[name='id']").val();
+                }
             }
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
@@ -1547,7 +1604,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 reservation_id = button.closest("tr").getAttribute("data-id");
             } catch (error) {
-                reservation_id = $("input[name='id']").val();
+                try {
+                    reservation_id = button.getAttribute("data-id");
+                } catch (error) {
+                    reservation_id = $("input[name='id']").val();
+                }
             }
             location.href = "/reservation/" + reservation_id;
         },

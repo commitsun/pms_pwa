@@ -1710,6 +1710,8 @@ class TestFrontEnd(http.Controller):
                     primary_button = (
                         "<button url='"
                         + buttons[keysList[counter]]
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' class='btn o_pms_pwa_default_button_name"
                         + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
@@ -1724,6 +1726,8 @@ class TestFrontEnd(http.Controller):
                         + " class='disabled btn o_pms_pwa_default_button_name"
                         + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' type='button'>"
                         + keysList[counter]
                         + "</button>"
@@ -1735,6 +1739,8 @@ class TestFrontEnd(http.Controller):
                         + buttons[keysList[counter]]
                         + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' type='button'>"
                         + keysList[counter]
                         + "</button>"
@@ -1744,6 +1750,8 @@ class TestFrontEnd(http.Controller):
                         "<button class='disabled dropdown-item"
                         + " o_pms_pwa_abutton o_pms_pwa_button_"
                         + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(reservation.id)
                         + "' type='button'>"
                         + keysList[counter]
                         + "</button>"
