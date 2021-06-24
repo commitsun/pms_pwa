@@ -65,22 +65,22 @@
                                         aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
                                 </span>
                                 <span t-if="post[val] != '' and val == 'ready_for_checkin'">
-                                    <span class="o_pms_tag_index">Checkins</span> <span t-esc="post[val]"/>
-                                    <button
+                                    <span class="o_pms_tag_index">Checkins</span>
+                                    <button onclick="location.href='/reservation/list'"
                                         type="button" class="close"
                                         t-att-data-tag="val" data-dismiss="modal"
                                         aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
                                 </span>
                                 <span t-if="post[val] != '' and val == 'in_house'">
-                                    <span class="o_pms_tag_index">Dentro</span> <span t-esc="post[val]"/>
-                                    <button
+                                    <span class="o_pms_tag_index">Dentro</span>
+                                    <button onclick="location.href='/reservation/list'"
                                         type="button" class="close"
                                         t-att-data-tag="val" data-dismiss="modal"
                                         aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
                                 </span>
                                 <span t-if="post[val] != '' and val == 'ready_for_checkout'">
-                                    <span class="o_pms_tag_index">Checkouts</span> <span t-esc="post[val]"/>
-                                    <button
+                                    <span class="o_pms_tag_index">Checkouts</span>
+                                    <button onclick="location.href='/reservation/list'"
                                         type="button" class="close"
                                         t-att-data-tag="val" data-dismiss="modal"
                                         aria-label="Close"><span class="fa fa-times o_pms_pwa_tag_close" /></button>
