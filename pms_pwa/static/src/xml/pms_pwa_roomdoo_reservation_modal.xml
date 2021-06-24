@@ -234,7 +234,7 @@
                                                                     <t t-esc="i_value['date']" t-options='{"widget":"date"}'/>
                                                                 </td>
                                                                 <td>
-                                                                    <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="price" t-att-value="i" class="form-control o_pms_pwa_modal_number" />
+                                                                    <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="price" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number" />
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="discount" t-att-value="i_value['discount']" class="form-control o_pms_pwa_modal_number" />
