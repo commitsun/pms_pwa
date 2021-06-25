@@ -225,8 +225,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             var field_id = event.currentTarget.dataset.field_id;
             values[main_field] = {};
             values[main_field][field_id] = {};
-            values[main_field][field_id][event.currentTarget.name] =
-                event.currentTarget.value;
+            if (event.currentTarget.dataset.subservice_name) {
+                var subservice_name = event.currentTarget.dataset.subservice_name;
+                var subservice_field_id =
+                    event.currentTarget.dataset.subservice_field_id;
+                values[main_field][field_id][subservice_name] = {};
+                values[main_field][field_id][subservice_name][subservice_field_id] = {};
+                values[main_field][field_id][subservice_name][subservice_field_id][
+                    event.currentTarget.name
+                ] = event.currentTarget.value;
+            } else {
+                values[main_field][field_id][event.currentTarget.name] =
+                    event.currentTarget.value;
+            }
         } else {
             values[event.currentTarget.name] = event.currentTarget.value;
         }
@@ -542,10 +553,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[7].innerHTML = updated_data.folio_id.outstanding_vat;
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[9].innerHTML =
-                                    updated_data.board_service_room_id.name;
+                                if (
+                                    updated_data.board_service_room_id &&
+                                    updated_data.board_service_room_id.name
+                                ) {
+                                    $(String("#reservation_" + data_id)).find(
+                                        "td"
+                                    )[9].innerHTML =
+                                        updated_data.board_service_room_id.name;
+                                }
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[10].firstElementChild.outerHTML =
@@ -780,12 +796,45 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             values[main_field][
                                                                 field_id
                                                             ] = {};
-                                                            values[main_field][
-                                                                field_id
-                                                            ][
-                                                                new_event.currentTarget.name
-                                                            ] =
-                                                                new_event.currentTarget.value;
+                                                            if (
+                                                                new_event.currentTarget
+                                                                    .dataset
+                                                                    .subservice_name
+                                                            ) {
+                                                                var subservice_name =
+                                                                    new_event
+                                                                        .currentTarget
+                                                                        .dataset
+                                                                        .subservice_name;
+                                                                var subservice_field_id =
+                                                                    new_event
+                                                                        .currentTarget
+                                                                        .dataset
+                                                                        .subservice_field_id;
+                                                                values[main_field][
+                                                                    field_id
+                                                                ][subservice_name] = {};
+                                                                values[main_field][
+                                                                    field_id
+                                                                ][subservice_name][
+                                                                    subservice_field_id
+                                                                ] = {};
+                                                                values[main_field][
+                                                                    field_id
+                                                                ][subservice_name][
+                                                                    subservice_field_id
+                                                                ][
+                                                                    new_event.currentTarget.name
+                                                                ] =
+                                                                    new_event.currentTarget.value;
+                                                            } else {
+                                                                values[main_field][
+                                                                    field_id
+                                                                ][
+                                                                    new_event.currentTarget.name
+                                                                ] =
+                                                                    new_event.currentTarget.value;
+                                                            }
                                                         } else {
                                                             values[
                                                                 new_event.currentTarget.name
@@ -991,9 +1040,36 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             .field_id;
                                                     values[main_field] = {};
                                                     values[main_field][field_id] = {};
-                                                    values[main_field][field_id][
-                                                        new_event.currentTarget.name
-                                                    ] = new_event.currentTarget.value;
+                                                    if (
+                                                        new_event.currentTarget.dataset
+                                                            .subservice_name
+                                                    ) {
+                                                        var subservice_name =
+                                                            new_event.currentTarget
+                                                                .dataset
+                                                                .subservice_name;
+                                                        var subservice_field_id =
+                                                            new_event.currentTarget
+                                                                .dataset
+                                                                .subservice_field_id;
+                                                        values[main_field][field_id][
+                                                            subservice_name
+                                                        ] = {};
+                                                        values[main_field][field_id][
+                                                            subservice_name
+                                                        ][subservice_field_id] = {};
+                                                        values[main_field][field_id][
+                                                            subservice_name
+                                                        ][subservice_field_id][
+                                                            new_event.currentTarget.name
+                                                        ] =
+                                                            new_event.currentTarget.value;
+                                                    } else {
+                                                        values[main_field][field_id][
+                                                            new_event.currentTarget.name
+                                                        ] =
+                                                            new_event.currentTarget.value;
+                                                    }
                                                 } else {
                                                     values[
                                                         new_event.currentTarget.name
@@ -1357,7 +1433,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 stepper: ".bs-stepper",
                             },
                         });
-                        $(".bs-stepper-content").on("change", "input", function (new_event) {
+                        $(".bs-stepper-content").on("change", "input", function (
+                            new_event
+                        ) {
                             new_event.preventDefault(reservation_id);
                             var guest_list = [];
                             var selector =
@@ -1367,14 +1445,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             var contents = $(selector);
 
                             for (var i = 1; i <= contents.length; i++) {
-
                                 var element = $(
                                     "#" + contents[i - 1].getAttribute("id")
                                 );
                                 guest_list.push({
-                                    id: element
-                                        .find("input[name='guest_id']")
-                                        .val(),
+                                    id: element.find("input[name='guest_id']").val(),
                                     firstname: element
                                         .find("input[name='firstname']")
                                         .val(),
@@ -1409,13 +1484,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 });
                             }
 
-                            ajax.jsonRpc('/reservation/'+reservation_id+'/checkin', "call", {
-                                guests_list: guest_list,
-                                action_on_board: false,
-                            }).then(function (new_data) {
+                            ajax.jsonRpc(
+                                "/reservation/" + reservation_id + "/checkin",
+                                "call",
+                                {
+                                    guests_list: guest_list,
+                                    action_on_board: false,
+                                }
+                            ).then(function (new_data) {
                                 self.displayDataAlert(new_data, data.id);
                             });
-
                         });
                         /* eslint-enable no-alert */
                         $(".o_pms_pwa_button_checkin_confirm").on("click", function (
@@ -1435,9 +1513,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     "#" + contents[i - 1].getAttribute("id")
                                 );
                                 guest_list.push({
-                                    id: element
-                                        .find("input[name='guest_id']")
-                                        .val(),
+                                    id: element.find("input[name='guest_id']").val(),
                                     firstname: element
                                         .find("input[name='firstname']")
                                         .val(),
@@ -1613,7 +1689,4 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     });
 
     return publicWidget.registry.ReservationTableWidget;
-
-
-
 });
