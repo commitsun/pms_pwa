@@ -553,10 +553,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[7].innerHTML = updated_data.folio_id.outstanding_vat;
-                                $(String("#reservation_" + data_id)).find(
-                                    "td"
-                                )[9].innerHTML =
-                                    updated_data.board_service_room_id.name;
+                                if (
+                                    updated_data.board_service_room_id &&
+                                    updated_data.board_service_room_id.name
+                                ) {
+                                    $(String("#reservation_" + data_id)).find(
+                                        "td"
+                                    )[9].innerHTML =
+                                        updated_data.board_service_room_id.name;
+                                }
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
                                 )[10].firstElementChild.outerHTML =
