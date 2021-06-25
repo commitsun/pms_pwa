@@ -421,8 +421,8 @@
                                             Dates
                                         </label>
                                         <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
-                                        <input type="hidden" name="check_in_date" value="" />
-                                        <input type="hidden" name="check_out_date" value="" />
+                                        <input type="hidden" name="checkin" value="" />
+                                        <input type="hidden" name="checkout" value="" />
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                         <span class="o_pms_pwa_calendar_icon">
                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -483,8 +483,8 @@
                                             Dates
                                         </label>
                                         <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
-                                        <input type="hidden" name="check_in_date" value="" />
-                                        <input type="hidden" name="check_out_date" value="" />
+                                        <input type="hidden" name="checkin" value="" />
+                                        <input type="hidden" name="checkout" value="" />
                                         <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                         <span class="o_pms_pwa_calendar_icon">
                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />

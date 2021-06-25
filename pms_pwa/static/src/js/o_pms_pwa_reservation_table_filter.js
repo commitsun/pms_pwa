@@ -50,10 +50,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 date_options
             );
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='check_in_date']")
+                .find("input[name='checkin']")
                 .val(checkin_date);
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='check_out_date']")
+                .find("input[name='checkout']")
                 .val(checkout_date);
             $("#o_pms_pwa_new_reservation_modal")
                 .find("input[name='range_check_date_modal_reservation']")
@@ -83,8 +83,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
 
-            values.checkin = $('input[name="check_in_date"]').val();
-            values.checkout = $('input[name="check_out_date"]').val();
+            values.checkin = $('input[name="checkin"]').val();
+            values.checkout = $('input[name="checkout"]').val();
         } else {
             values[event.currentTarget.name] = event.currentTarget.value;
         }
@@ -377,16 +377,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         );
 
         $("form#single_reservation_form")
-            .find("input[name='check_in_date']")
+            .find("input[name='checkin']")
             .val(checkin_date);
         $("form#single_reservation_form")
-            .find("input[name='check_out_date']")
+            .find("input[name='checkout']")
             .val(checkout_date);
         $("form#multiple_reservation_form")
-            .find("input[name='check_in_date']")
+            .find("input[name='checkin']")
             .val(checkin_date);
         $("form#multiple_reservation_form")
-            .find("input[name='check_out_date']")
+            .find("input[name='checkout']")
             .val(checkout_date);
         $("#o_pms_pwa_new_reservation_modal")
             .find("input[name='range_check_date_modal_reservation']")
@@ -1309,10 +1309,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     },
                                                     function (start, end, label) {
                                                         $(
-                                                            'input[name="check_in_date"]'
+                                                            'input[name="checkin"]'
                                                         ).val(start);
                                                         $(
-                                                            'input[name="check_out_date"]'
+                                                            'input[name="checkout"]'
                                                         ).val(end);
                                                         let nights = 1;
                                                         // Hours*minutes*seconds*milliseconds
@@ -1353,10 +1353,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     },
                                                     function (start, end, label) {
                                                         $(
-                                                            'input[name="check_in_date"]'
+                                                            'input[name="checkin"]'
                                                         ).val(start);
                                                         $(
-                                                            'input[name="check_out_date"]'
+                                                            'input[name="checkout"]'
                                                         ).val(end);
                                                         let nights = 1;
                                                         // Hours*minutes*seconds*milliseconds

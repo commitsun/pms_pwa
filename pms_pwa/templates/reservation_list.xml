@@ -330,10 +330,10 @@
         </td>
         <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
             <!-- t-field-options='{"widget": "monetary", "display_currency": "currency"}' -->
-            <span t-field="obj.folio_id.amount_total" />
+            <t t-esc="obj.folio_id.amount_total" />
         </td>
         <td class="o_pms_pwa_lh45 text-center">
-            <span t-field="obj.folio_id.pending_amount" />
+            <t t-esc="obj.folio_id.pending_amount" />
         </td>
         <!-- <td class="o_pms_pwa_lh45 text-center">
 

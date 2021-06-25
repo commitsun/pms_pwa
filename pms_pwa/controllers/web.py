@@ -29,7 +29,7 @@ class PWAHome(Home):
         if request.session.uid and request.env["res.users"].sudo().browse(
             request.session.uid
         ).has_group("pms_pwa.group_pms_property_user"):
-            return http.local_redirect("/", query=request.params, keep_hash=True)
+            return http.local_redirect("/reservation/list", query=request.params, keep_hash=True)
 
         return http.redirect_with_hash("/web/login")
         # return super(PWAHome, self).index(*args, **kw)
@@ -38,7 +38,7 @@ class PWAHome(Home):
         if not redirect and request.env["res.users"].sudo().browse(uid).has_group(
             "pms_pwa.group_pms_property_user"
         ):
-            return "/"
+            return "/reservation/list"
         return super(PWAHome, self)._login_redirect(uid, redirect=redirect)
 
 
@@ -230,8 +230,13 @@ class TestFrontEnd(http.Controller):
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
             return json.dumps(
-                {"result": True, "message": _("Operation completed successfully.")}
+                {
+                    "result": True,
+                    "message": _("Operation completed successfully."),
+                    "reservation": self.parse_reservation(reservation),
+                }
             )
+
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
@@ -337,7 +342,7 @@ class TestFrontEnd(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
-        "/",
+        "/dashboard",
         type="http",
         auth="user",
         methods=["GET", "POST"],
@@ -1548,6 +1553,7 @@ class TestFrontEnd(http.Controller):
         reservation_values["checkout"] = reservation.checkout.strftime(
             get_lang(request.env).date_format
         )
+        reservation_values["reservation_line_ids"] = reservation._get_reservation_line_ids()
         reservation_values["arrival_hour"] = reservation.arrival_hour
         reservation_values["departure_hour"] = reservation.departure_hour
         reservation_values["price_total"] = reservation.price_room_services_set

@@ -76,8 +76,8 @@ odoo.define("pms_pwa.sidebar", function () {
                         document.documentElement.lang,
                         date_options
                     );
-                    $('input[name="check_in_date"]').val(checkin_date);
-                    $('input[name="check_out_date"]').val(checkout_date);
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
 
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
@@ -116,8 +116,8 @@ odoo.define("pms_pwa.sidebar", function () {
                         document.documentElement.lang,
                         date_options
                     );
-                    $('input[name="check_in_date"]').val(checkin_date);
-                    $('input[name="check_out_date"]').val(checkout_date);
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -172,8 +172,8 @@ odoo.define("pms_pwa.sidebar", function () {
                         document.documentElement.lang,
                         date_options
                     );
-                    $('input[name="check_in_date"]').val(checkin_date);
-                    $('input[name="check_out_date"]').val(checkout_date);
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -211,8 +211,8 @@ odoo.define("pms_pwa.sidebar", function () {
                         document.documentElement.lang,
                         date_options
                     );
-                    $('input[name="check_in_date"]').val(checkin_date);
-                    $('input[name="check_out_date"]').val(checkout_date);
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;

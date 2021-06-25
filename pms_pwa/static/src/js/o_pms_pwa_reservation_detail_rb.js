@@ -63,8 +63,8 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         document.documentElement.lang,
                         date_options
                     );
-                    $('input[name="check_in_date"]').val(checkin_date);
-                    $('input[name="check_out_date"]').val(checkout_date);
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -105,8 +105,8 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         document.documentElement.lang,
                         date_options
                     );
-                    $('input[name="check_in_date"]').val(checkin_date);
-                    $('input[name="check_out_date"]').val(checkout_date);
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
                     let nights = 1;
                     // Hours*minutes*seconds*milliseconds
                     const oneDay = 24 * 60 * 60 * 1000;
@@ -233,8 +233,8 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             values.del_service = new_event.currentTarget.dataset.service_id;
         } else if (new_event.currentTarget.name === "nights") {
             values = {reservation_id: reservation_id};
-            values.checkin = $('input[name="check_in_date"]').val();
-            values.checkout = $('input[name="check_out_date"]').val();
+            values.checkin = $('input[name="checkin"]').val();
+            values.checkout = $('input[name="checkout"]').val();
         } else {
             if (new_event.currentTarget.dataset.main_field) {
                 var main_field = new_event.currentTarget.dataset.main_field;
@@ -512,7 +512,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         service_ids[service_id] = {};
         service_ids[service_id].service_line_ids = {};
         service_ids[service_id].service_line_ids[id] = {};
-        service_ids[service_id].service_line_ids[id].qty = 0;
+        service_ids[service_id].service_line_ids[id].day_qty = 0;
         ajax.jsonRpc(
             "/reservation/" + reservation_id_value + "/onchange_data",
             "call",
@@ -535,7 +535,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             service_ids[service_id] = {};
             service_ids[service_id].service_line_ids = {};
             service_ids[service_id].service_line_ids[id] = {};
-            service_ids[service_id].service_line_ids[id].qty = text_value;
+            service_ids[service_id].service_line_ids[id].day_qty = text_value;
             ajax.jsonRpc(
                 "/reservation/" + reservation_id_value + "/onchange_data",
                 "call",
