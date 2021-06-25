@@ -1200,7 +1200,8 @@ class TestFrontEnd(http.Controller):
                 .id
             )
 
-        if reservation_values.get("board_service_room_id"):
+        # REVIEW: Avoid send 'false' to controller
+        if reservation_values.get("board_service_room_id") and reservation_values.get("board_service_room_id") != 'false':
             vals["board_service_room_id"] = (
                 request.env["pms.board.service.room.type"]
                 .search(
@@ -1553,14 +1554,18 @@ class TestFrontEnd(http.Controller):
         reservation_values["checkout"] = reservation.checkout.strftime(
             get_lang(request.env).date_format
         )
-        reservation_values["reservation_line_ids"] = reservation._get_reservation_line_ids()
+        # avoid send reservation_line_ids on new single reservation modal
+        if isinstance(reservation.id, int):
+            reservation_values["reservation_line_ids"] = reservation._get_reservation_line_ids()
         reservation_values["arrival_hour"] = reservation.arrival_hour
         reservation_values["departure_hour"] = reservation.departure_hour
         reservation_values["price_total"] = reservation.price_room_services_set
         reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
         reservation_values["pricelist_id"] = reservation.pricelist_id.id
         reservation_values["allowed_pricelists"] = reservation._get_allowed_pricelists()
-        reservation_values["service_ids"] = reservation._get_service_ids()
+        # avoid send reservation_line_ids on new single reservation modal
+        if isinstance(reservation.id, int):
+            reservation_values["service_ids"] = reservation._get_service_ids()
         reservation_values[
             "allowed_board_service_room_ids"
         ] = reservation._get_allowed_board_service_room_ids()
