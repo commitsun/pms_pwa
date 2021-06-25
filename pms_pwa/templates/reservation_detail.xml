@@ -396,7 +396,7 @@
                                                                                             </div>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="number" t-attf-data-main_field="service_ids" t-attf-data-subservice_field_id="{{s.id}}" data-subservice_name="service_line_ids" t-attf-data-field_id="{{ i.id }}" t-attf-id="price_{{ i.id }}_{{ s.id }}" name="price"  t-attf-value="{{ s.price_unit }}" class="form-control o_pms_pwa_modal_number" />
+                                                                                            <input type="number" t-attf-data-main_field="service_ids" t-attf-data-subservice_field_id="{{s.id}}" data-subservice_name="service_line_ids" t-attf-data-field_id="{{ i.id }}" t-attf-id="price_{{ i.id }}_{{ s.id }}" name="price_unit"  t-attf-value="{{ s.price_unit }}" class="form-control o_pms_pwa_modal_number" />
                                                                                         </td>
                                                                                     </tr>
                                                                                 </t>
