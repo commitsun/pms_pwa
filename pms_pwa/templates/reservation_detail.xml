@@ -55,11 +55,11 @@
                                         <div class="bg-dark">
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(reservation.partner_id, 'image_128')" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="100" style="background-color: white;"/>
+                                                    <img class="ml-4 my-4 rounded-circle img-fluid o_pms_pwa_img_rounded" t-att-src="website.image_url(reservation, 'partner_image_128')" t-att-title="reservation.partner_name" t-att-alt="reservation.partner_name" width="100" style="background-color: white;"/>
                                                 </div>
                                                 <div class="col-12">
                                                     <h3 class="text-white ml-4">
-                                                        <t t-esc="reservation.partner_id.name" />
+                                                        <t t-esc="reservation.partner_name" />
                                                     </h3>
                                                     <p t-if="reservation.partner_mobile" class="ml-4 mb-0">
                                                         <a t-attf-href="tel:{{reservation.partner_mobile}}" class="text-white">

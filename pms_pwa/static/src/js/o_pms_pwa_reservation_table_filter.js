@@ -1472,10 +1472,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     document_expedition_date: element
                                         .find("input[name='document_expedition_date']")
                                         .val(),
-                                    // gender: element
-                                    //     .find("select[name='gender'] option")
-                                    //     .filter(":selected")
-                                    //     .val(),
+                                    gender: element
+                                        .find("select[name='gender'] option")
+                                        .filter(":selected")
+                                        .val(),
                                     mobile: element.find("input[name='mobile']").val(),
                                     email: element.find("input[name='email']").val(),
                                     pms_property_id: element
@@ -1536,10 +1536,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     document_expedition_date: element
                                         .find("input[name='document_expedition_date']")
                                         .val(),
-                                    // gender: element
-                                    //     .find("select[name='gender'] option")
-                                    //     .filter(":selected")
-                                    //     .val(),
+                                    gender: element
+                                        .find("select[name='gender'] option")
+                                        .filter(":selected")
+                                        .val(),
                                     mobile: element.find("input[name='mobile']").val(),
                                     email: element.find("input[name='email']").val(),
                                     pms_property_id: element

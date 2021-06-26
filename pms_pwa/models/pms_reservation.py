@@ -133,6 +133,7 @@ class PmsReservation(models.Model):
                         "document_expedition_date": guest["document_expedition_date"],
                         "gender": guest["gender"],
                         "mobile": guest["mobile"],
+                        "email": guest["email"],
                     }
                 )
                 if action_on_board:
