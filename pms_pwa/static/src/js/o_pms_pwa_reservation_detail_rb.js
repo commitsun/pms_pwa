@@ -242,13 +242,11 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 values[main_field] = {};
                 values[main_field][field_id] = {};
                 if (new_event.currentTarget.dataset.subservice_name) {
-                    var subservice_name =
-                        new_event.currentTarget.dataset.subservice_name;
+                    var subservice_name = new_event.currentTarget.dataset.subservice_name;
                     var subservice_field_id =
-                        new_event.currentTarget.dataset.subservice_field_id;
+                    new_event.currentTarget.dataset.subservice_field_id;
                     values[main_field][field_id][subservice_name] = {};
-                    values[main_field][field_id][subservice_name][subservice_field_id] =
-                        {};
+                    values[main_field][field_id][subservice_name][subservice_field_id] = {};
                     values[main_field][field_id][subservice_name][subservice_field_id][
                         new_event.currentTarget.name
                     ] = new_event.currentTarget.value;

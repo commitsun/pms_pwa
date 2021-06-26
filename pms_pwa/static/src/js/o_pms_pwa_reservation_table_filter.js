@@ -1418,11 +1418,55 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (data) {
+
                 setTimeout(function () {
+
                     if (data) {
                         self.displayContent("pms_pwa.reservation_checkin_modal", {
                             reservation: data,
                         });
+
+                        if (document.documentElement.lang === "es-ES") {
+                            $(".o_pms_pwa_daterangepicker").daterangepicker(
+                                {
+                                    locale: {
+                                        direction: "ltr",
+                                        format: "DD/MM/YYYY",
+                                        applyLabel: "Aplicar",
+                                        cancelLabel: "Cancelar",
+                                    },
+                                    opens: "left",
+                                    showCustomRangeLabel: false,
+                                    singleDatePicker: true,
+                                    autoUpdateInput: true,
+                                    minYear: 1901,
+                                    maxYear: parseInt(moment().format("YYYY"), 10),
+                                },
+                                function (start) {
+                                    this.element.val(start.format("DD/MM/YYYY"));
+                                }
+                            );
+                        }else{
+                            $(".o_pms_pwa_daterangepicker").daterangepicker(
+                                {
+                                    locale: {
+                                        direction: "ltr",
+                                        format: "MM/DD/YYYY",
+                                    },
+                                    opens: "left",
+                                    showCustomRangeLabel: false,
+                                    singleDatePicker: true,
+                                    showDropdowns: true,
+                                    autoUpdateInput: true,
+                                    minYear: 1901,
+                                    maxYear: parseInt(moment().format("YYYY"), 10),
+                                },
+                                function (start) {
+                                    this.element.val(start.format("MM/DD/YYYY"));
+                                }
+                            );
+                        }
+
                         /* eslint-disable no-alert, no-console */
                         new Stepper($(".bs-stepper")[0], {
                             linear: false,
@@ -1472,10 +1516,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     document_expedition_date: element
                                         .find("input[name='document_expedition_date']")
                                         .val(),
-                                    // gender: element
-                                    //     .find("select[name='gender'] option")
-                                    //     .filter(":selected")
-                                    //     .val(),
+                                    gender: element
+                                        .find("select[name='gender'] option")
+                                        .filter(":selected")
+                                        .val(),
                                     mobile: element.find("input[name='mobile']").val(),
                                     email: element.find("input[name='email']").val(),
                                     pms_property_id: element
@@ -1536,10 +1580,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     document_expedition_date: element
                                         .find("input[name='document_expedition_date']")
                                         .val(),
-                                    // gender: element
-                                    //     .find("select[name='gender'] option")
-                                    //     .filter(":selected")
-                                    //     .val(),
+                                    gender: element
+                                        .find("select[name='gender'] option")
+                                        .filter(":selected")
+                                        .val(),
                                     mobile: element.find("input[name='mobile']").val(),
                                     email: element.find("input[name='email']").val(),
                                     pms_property_id: element
