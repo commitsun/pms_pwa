@@ -229,13 +229,16 @@ class TestFrontEnd(http.Controller):
                 )
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
-            return json.dumps(
-                {
-                    "result": True,
-                    "message": _("Operation completed successfully."),
-                    "reservation": self.parse_reservation(reservation),
-                }
-            )
+            if params.get("action_on_board"):
+                return json.dumps(
+                    {
+                        "result": True,
+                        "message": _("Operation completed successfully."),
+                        "reservation": self.parse_reservation(reservation),
+                    }
+                )
+            else:
+                return self.parse_reservation(reservation)
 
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
