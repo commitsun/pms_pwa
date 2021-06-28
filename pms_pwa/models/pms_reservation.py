@@ -338,7 +338,7 @@ class PmsReservation(models.Model):
          ]
         """
         if checkin and checkout:
-            if overbooking or state in ("cancelled"):
+            if overbooking or state in ("cancel"):
                 rooms_available = self.env["pms.room"].search([])
             else:
                 rooms_available = self.env[

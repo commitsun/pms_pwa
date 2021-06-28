@@ -78,7 +78,7 @@
                                                     <div class="progress o_pms_pwa_progress mx-2">
                                                         <div t-att-class="'progress-bar '
                                                             + ('bg-success ' if reservation.state in ('onboard') else ' ')
-                                                            + ('bg-light ' if reservation.state in ('done', 'cancelled', 'no_show', 'no_checkout') else ' ')
+                                                            + ('bg-light ' if reservation.state in ('done', 'cancel', 'no_show', 'no_checkout') else ' ')
                                                             + ('bg-success ' if reservation.state in ('confirm') and reservation.ratio_checkin_data &gt; 75 else ' ')
                                                             + ('bg-warning ' if reservation.state in ('confirm') and  75 &gt; reservation.ratio_checkin_data &gt; 50 else ' ')
                                                             + ('bg-danger ' if reservation.state in ('confirm') and  reservation.ratio_checkin_data &lt; 50 else ' ')" role="progressbar" t-att-style="'width:'+ str(reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data) + '%'" t-att-aria-valuenow="reservation.checkins_ratio if reservation.state in ('onboard') else reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
