@@ -48,7 +48,13 @@ odoo.define("pms_pwa.sidebar", function () {
                     maxYear: parseInt(moment().format("YYYY"), 10),
                 },
                 function (start) {
-                    this.element.val(start.format("DD/MM/YYYY"));
+                    console.log(start);
+                    const start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    this.element.val(select_date);
                 }
             );
 
@@ -141,12 +147,13 @@ odoo.define("pms_pwa.sidebar", function () {
                     maxYear: parseInt(moment().format("YYYY"), 10),
                 },
                 function (start) {
+                    console.log(start);
                     const start_date = new Date(start);
-                    var checkin_date = start_date.toLocaleDateString(
+                    var select_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
                         date_options
                     );
-                    this.element.val(checkin_date);
+                    this.element.val(select_date);
                 }
             );
 
