@@ -792,6 +792,8 @@
                                                             Tipo de documento
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
+                                                            <option value="False" t-att-selected="partner_value['document_type'] == false ? 'selected' : None">
+                                                            </option>
                                                             <option value="D" t-att-selected="partner_value['document_type'] == D ? 'selected' : None">
                                                                 DNI
                                                             </option>
@@ -829,6 +831,8 @@
                                                             Género
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="gender">
+                                                            <option name="gender" value="false" t-att-selected="partner_value['gender'] == false ? 'selected' : None">
+                                                            </option>
                                                             <option name="gender" value="male" t-att-selected="partner_value['gender'] == 'male' ? 'selected' : None">
                                                                 Hombre
                                                             </option>
