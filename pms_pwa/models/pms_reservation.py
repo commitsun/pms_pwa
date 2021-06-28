@@ -1,10 +1,12 @@
 # Copyright 2017  Dario Lodeiros
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import json
+from pprint import pprint
 import avinit
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+import datetime
 
 from odoo.tools.misc import get_lang
 
@@ -117,24 +119,40 @@ class PmsReservation(models.Model):
                     _("The list of guests is greater than the capacity")
                 )
             for guest in checkin_partner_list:
-                document_type = self.env["res.partner.id_category"].search([
-                    ("code", "=", guest["document_type"])
-                ])
+                if guest.get("document_type"):
+                    guest["document_type"] = self.env["res.partner.id_category"].search([
+                        ("code", "=", guest["document_type"])
+                    ]).id
+
+                if guest.get("birthdate_date"):
+                    guest["birthdate_date"] = datetime.datetime.strptime(
+                        guest["birthdate_date"], get_lang(self.env).date_format
+                    )
+                    # TODO: Temp FIX (avoid default date value on checkin modal)
+                    if guest["birthdate_date"].date() == fields.date.today():
+                        guest["birthdate_date"] = False
+
+                if guest.get("document_expedition_date"):
+                    guest["document_expedition_date"] = datetime.datetime.strptime(
+                        guest["document_expedition_date"], get_lang(self.env).date_format
+                    )
+                    # TODO: Temp FIX (avoid default date value on checkin modal)
+                    if guest["document_expedition_date"].date() == fields.date.today():
+                        guest["document_expedition_date"] = False
+
                 checkin_partner = self.env["pms.checkin.partner"].browse(int(guest["id"]))
-                checkin_partner.write(
-                    {
-                        "name": guest["firstname"],
-                        "firstname": guest["firstname"],
-                        "lastname": guest["lastname"],
-                        "lastname2": guest["lastname2"],
-                        "birthdate_date": guest["birthdate_date"],
-                        "document_number": guest["document_number"],
-                        "document_type": document_type.id,
-                        "document_expedition_date": guest["document_expedition_date"],
-                        "gender": guest["gender"],
-                        "mobile": guest["mobile"],
-                    }
-                )
+                guest.pop("id")
+                if guest.get("pms_property_id"):
+                    guest.pop("pms_property_id")
+
+                vals = {}
+                for checkin_field in guest:
+                    if guest.get(checkin_field):
+                        vals[checkin_field] = guest[checkin_field]
+                pprint(vals)
+                checkin_partner.write(vals)
+                checkin_partner.flush()
+
                 if action_on_board:
                     checkin_partner.action_on_board()
 
@@ -204,9 +222,9 @@ class PmsReservation(models.Model):
                 "firstname": checkin.firstname,
                 "lastname": checkin.lastname,
                 "lastname2": checkin.lastname2,
-                "birthdate_date": checkin.birthdate_date,
+                "birthdate_date": checkin.birthdate_date.strftime(get_lang(self.env).date_format) if checkin.birthdate_date else False,
                 "document_number": checkin.document_number,
-                "document_expedition_date": checkin.document_expedition_date,
+                "document_expedition_date": checkin.document_expedition_date.strftime(get_lang(self.env).date_format) if checkin.document_expedition_date else False,
                 "document_type": checkin.document_type.code,
                 "mobile": checkin.mobile,
                 "email": checkin.email,

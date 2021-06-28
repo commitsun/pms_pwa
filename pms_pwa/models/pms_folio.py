@@ -11,7 +11,7 @@ def _get_search_domain(pms_property_id, search=False, **post):
         search_exists = True
         for srch in search.split(" "):
             subdomains = [
-                [("reservation_ids.name", "in", [srch])],
+                [("reservation_ids.name", "ilike", srch)],
                 [("reservation_ids.partner_id.phone", "ilike", srch)],
                 [("reservation_ids.partner_id.mobile", "ilike", srch)],
                 [("reservation_ids.partner_id.name", "ilike", srch)],
@@ -43,7 +43,7 @@ def _get_search_domain(pms_property_id, search=False, **post):
             domain_fields.append(("reservation_ids.write_date", "<=", v))
         elif v and k == "origin":
             domain_fields.extend(
-                ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]            )
+                ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)])
         elif v and k == "ready_for_checkin":
             domain_fields.append(("reservation_ids.checkin", "=", fields.date.today()))
         elif v and k == "ready_for_checkout":

@@ -229,13 +229,16 @@ class TestFrontEnd(http.Controller):
                 )
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
-            return json.dumps(
-                {
-                    "result": True,
-                    "message": _("Operation completed successfully."),
-                    "reservation": self.parse_reservation(reservation),
-                }
-            )
+            if params.get("action_on_board"):
+                return json.dumps(
+                    {
+                        "result": True,
+                        "message": _("Operation completed successfully."),
+                        "reservation": self.parse_reservation(reservation),
+                    }
+                )
+            else:
+                return self.parse_reservation(reservation)
 
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
@@ -642,13 +645,30 @@ class TestFrontEnd(http.Controller):
                 "name": reservation.partner_name,
                 "mobile": reservation.partner_mobile,
             }
+        notifications=[]
+        if reservation.partner_internal_comment:
+            notifications.append({
+                "title": "Notas sobre Cliente",
+                "content": reservation.partner_internal_comment
+            })
+        if reservation.folio_internal_comment:
+            notifications.append({
+                "title": "Notas sobre Reserva",
+                "content": reservation.folio_internal_comment
+            })
+
+        if reservation.partner_requests:
+            notifications.append({
+                "title": "Peticiones de Cliente",
+                "content": reservation.partner_requests
+            })
 
         reservation_values = {
             "id": reservation.id,
             "name": reservation.name,
             "partner_id": partner_vals,
-            "unread_msg": 2,
-            "messages": ["Lorem ipsum", "Unread short message"],
+            "unread_msg": len(notifications),
+            "messages": notifications,
             "room_type_id": {
                 "id": reservation.room_type_id.id,
                 "name": reservation.room_type_id.name,
