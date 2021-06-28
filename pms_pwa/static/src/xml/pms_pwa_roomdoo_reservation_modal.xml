@@ -794,22 +794,22 @@
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
                                                             <option value="" t-att-selected="partner_value['document_type'] == false ? 'selected' : None">
                                                             </option>
-                                                            <option value="D" t-att-selected="partner_value['document_type'] == D ? 'selected' : None">
+                                                            <option value="D" t-att-selected="partner_value['document_type'] == 'D' ? 'selected' : None">
                                                                 DNI
                                                             </option>
-                                                            <option value="P" t-att-selected="partner_value['document_type'] == P ? 'selected' : None">
+                                                            <option value="P" t-att-selected="partner_value['document_type'] == 'P' ? 'selected' : None">
                                                                 Pasaporte
                                                             </option>
-                                                            <option value="C" t-att-selected="partner_value['document_type'] == C ? 'selected' : None">
+                                                            <option value="C" t-att-selected="partner_value['document_type'] == 'C' ? 'selected' : None">
                                                                 Carnet de conducir
                                                             </option>
-                                                            <option value="I" t-att-selected="partner_value['document_type'] == I ? 'selected' : None">
+                                                            <option value="I" t-att-selected="partner_value['document_type'] == 'I' ? 'selected' : None">
                                                                 Documento de identificación
                                                             </option>
-                                                            <option value="N" t-att-selected="partner_value['document_type'] == N ? 'selected' : None">
+                                                            <option value="N" t-att-selected="partner_value['document_type'] == 'N' ? 'selected' : None">
                                                                 Permiso de residencia española
                                                             </option>
-                                                            <option value="X" t-att-selected="partner_value['document_type'] == X ? 'selected' : None">
+                                                            <option value="X" t-att-selected="partner_value['document_type'] == 'X' ? 'selected' : None">
                                                                 Permiso de residencia europea
                                                             </option>
                                                         </select>

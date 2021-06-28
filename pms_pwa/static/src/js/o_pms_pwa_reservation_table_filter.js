@@ -1549,8 +1549,44 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     action_on_board: false,
                                 }
                             ).then(function (new_data) {
-                                console.log("new_data -->", new_data);
-                                self.displayDataAlert(new_data, data.id);
+                                try {
+                                    var checkin_persons = new_data.checkin_partner_ids;
+
+                                    $.each(checkin_persons, function (key, value) {
+                                        var check_partner_id =
+                                            "#checkin_partner_" + key;
+                                        $.each(value, function (key2, value2) {
+                                            if (
+                                                key2 != "gender" &&
+                                                key2 != "document_type"
+                                            ) {
+                                                var input = $(
+                                                    check_partner_id +
+                                                        " input[name='" +
+                                                        key2 +
+                                                        "']"
+                                                );
+                                                if (value2) {
+                                                    input.val(value2);
+                                                }
+                                            } else {
+                                                if (value2) {
+                                                    $(
+                                                        check_partner_id +
+                                                            " select[name='" +
+                                                            key2 +
+                                                            "'] option[value='" +
+                                                            value2 +
+                                                            "']"
+                                                    ).prop("selected", true);
+                                                }
+                                            }
+                                        });
+                                    });
+                                } catch (err) {
+                                    console.log(err);
+                                }
+                                //self.displayDataAlert(new_data, data.id);
                             });
                         });
                         /* eslint-enable no-alert */
