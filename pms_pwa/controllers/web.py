@@ -29,7 +29,9 @@ class PWAHome(Home):
         if request.session.uid and request.env["res.users"].sudo().browse(
             request.session.uid
         ).has_group("pms_pwa.group_pms_property_user"):
-            return http.local_redirect("/reservation/list", query=request.params, keep_hash=True)
+            return http.local_redirect(
+                "/reservation/list", query=request.params, keep_hash=True
+            )
 
         return http.redirect_with_hash("/web/login")
         # return super(PWAHome, self).index(*args, **kw)
@@ -645,23 +647,29 @@ class TestFrontEnd(http.Controller):
                 "name": reservation.partner_name,
                 "mobile": reservation.partner_mobile,
             }
-        notifications=[]
+        notifications = []
         if reservation.partner_internal_comment:
-            notifications.append({
-                "title": "Notas sobre Cliente",
-                "content": reservation.partner_internal_comment
-            })
+            notifications.append(
+                {
+                    "title": "Notas sobre Cliente",
+                    "content": reservation.partner_internal_comment,
+                }
+            )
         if reservation.folio_internal_comment:
-            notifications.append({
-                "title": "Notas sobre Reserva",
-                "content": reservation.folio_internal_comment
-            })
+            notifications.append(
+                {
+                    "title": "Notas sobre Reserva",
+                    "content": reservation.folio_internal_comment,
+                }
+            )
 
         if reservation.partner_requests:
-            notifications.append({
-                "title": "Peticiones de Cliente",
-                "content": reservation.partner_requests
-            })
+            notifications.append(
+                {
+                    "title": "Peticiones de Cliente",
+                    "content": reservation.partner_requests,
+                }
+            )
 
         reservation_values = {
             "id": reservation.id,
@@ -1221,7 +1229,10 @@ class TestFrontEnd(http.Controller):
             )
 
         # REVIEW: Avoid send 'false' to controller
-        if reservation_values.get("board_service_room_id") and reservation_values.get("board_service_room_id") != 'false':
+        if (
+            reservation_values.get("board_service_room_id")
+            and reservation_values.get("board_service_room_id") != "false"
+        ):
             vals["board_service_room_id"] = (
                 request.env["pms.board.service.room.type"]
                 .search(
@@ -1576,7 +1587,9 @@ class TestFrontEnd(http.Controller):
         )
         # avoid send reservation_line_ids on new single reservation modal
         if isinstance(reservation.id, int):
-            reservation_values["reservation_line_ids"] = reservation._get_reservation_line_ids()
+            reservation_values[
+                "reservation_line_ids"
+            ] = reservation._get_reservation_line_ids()
         reservation_values["arrival_hour"] = reservation.arrival_hour
         reservation_values["departure_hour"] = reservation.departure_hour
         reservation_values["price_total"] = reservation.price_room_services_set
@@ -1624,6 +1637,9 @@ class TestFrontEnd(http.Controller):
                 "reservation_id": reservation.id,
             },
         )
+        reservation_values[
+            "checkin_partner_ids"
+        ] = reservation._get_checkin_partner_ids()
         _logger.info("Values from controller to Frontend (reservation onchange):")
         pp.pprint(reservation_values)
         return reservation_values

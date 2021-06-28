@@ -1308,12 +1308,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         showCustomRangeLabel: false,
                                                     },
                                                     function (start, end, label) {
-                                                        $(
-                                                            'input[name="checkin"]'
-                                                        ).val(start);
-                                                        $(
-                                                            'input[name="checkout"]'
-                                                        ).val(end);
+                                                        $('input[name="checkin"]').val(
+                                                            start
+                                                        );
+                                                        $('input[name="checkout"]').val(
+                                                            end
+                                                        );
                                                         let nights = 1;
                                                         // Hours*minutes*seconds*milliseconds
                                                         const oneDay =
@@ -1352,12 +1352,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         showCustomRangeLabel: false,
                                                     },
                                                     function (start, end, label) {
-                                                        $(
-                                                            'input[name="checkin"]'
-                                                        ).val(start);
-                                                        $(
-                                                            'input[name="checkout"]'
-                                                        ).val(end);
+                                                        $('input[name="checkin"]').val(
+                                                            start
+                                                        );
+                                                        $('input[name="checkout"]').val(
+                                                            end
+                                                        );
                                                         let nights = 1;
                                                         // Hours*minutes*seconds*milliseconds
                                                         const oneDay =
@@ -1418,9 +1418,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (data) {
-
                 setTimeout(function () {
-
                     if (data) {
                         self.displayContent("pms_pwa.reservation_checkin_modal", {
                             reservation: data,
@@ -1438,15 +1436,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     opens: "left",
                                     showCustomRangeLabel: false,
                                     singleDatePicker: true,
-                                    autoUpdateInput: true,
+                                    showDropdowns: true,
+                                    autoUpdateInput: false,
                                     minYear: 1901,
                                     maxYear: parseInt(moment().format("YYYY"), 10),
                                 },
                                 function (start) {
-                                    this.element.val(start.format("DD/MM/YYYY"));
+                                    console.log(start);
+                                    const start_date = new Date(start);
+                                    var select_date = start_date.toLocaleDateString(
+                                        document.documentElement.lang,
+                                        date_options
+                                    );
+                                    this.element.val(select_date);
+                                    this.element.trigger("change");
                                 }
                             );
-                        }else{
+                        } else {
                             $(".o_pms_pwa_daterangepicker").daterangepicker(
                                 {
                                     locale: {
@@ -1457,12 +1463,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     showCustomRangeLabel: false,
                                     singleDatePicker: true,
                                     showDropdowns: true,
-                                    autoUpdateInput: true,
+                                    autoUpdateInput: false,
                                     minYear: 1901,
                                     maxYear: parseInt(moment().format("YYYY"), 10),
                                 },
                                 function (start) {
-                                    this.element.val(start.format("MM/DD/YYYY"));
+                                    console.log(start);
+                                    const start_date = new Date(start);
+                                    var select_date = start_date.toLocaleDateString(
+                                        document.documentElement.lang,
+                                        date_options
+                                    );
+                                    this.element.val(select_date);
+                                    this.element.trigger("change");
                                 }
                             );
                         }
@@ -1536,6 +1549,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     action_on_board: false,
                                 }
                             ).then(function (new_data) {
+                                console.log("new_data -->", new_data);
                                 self.displayDataAlert(new_data, data.id);
                             });
                         });
