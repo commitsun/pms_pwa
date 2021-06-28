@@ -1007,7 +1007,7 @@ class TestFrontEnd(http.Controller):
         domain = [
             ("date", ">=", from_date),
             ("date", "<=", to_date),
-            ("state", "!=", "cancelled"),
+            ("state", "!=", "cancel"),
         ]
         reservation_lines = ReservationLine.search(domain)
         reservations = Reservation.browse(reservation_lines.mapped("reservation_id.id"))
