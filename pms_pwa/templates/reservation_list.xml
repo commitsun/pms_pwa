@@ -192,8 +192,8 @@
                         <img t-att-src="website.image_url(folio, 'partner_image_128')"
                             width="40px"
                             class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
-                            t-att-title="folio.partner_id.name if folio.partner_id else folio_partner_id.name"
-                            t-att-alt="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
+                            t-att-title="folio.partner_name"
+                            t-att-alt="folio.partner_name"/>
                         <t t-set="pending_nots" t-value="len(folio.message_ids.filtered(lambda x: user_id.partner_id in x.notified_partner_ids).sorted(key=lambda x: x.date))"/>
                         <sup t-att-class="'o_pms_pwa_badge_position' + (' visible' if (pending_nots and pending_nots > 0) else ' invisible')">
                             <t t-esc="pending_nots"/>
@@ -201,14 +201,13 @@
                     </div>
                     <div class="o_pms_pwa_w66">
                         <span class="text-left o_pms_pwa_info_name">
-                            <t t-esc="folio.partner_id.name if folio.partner_id else folio_partner_id.name"/>
+                            <t t-esc="folio.partner_name"/>
                         </span>
                         <br />
                         <span class="text-left">
-                            <a class="text-left" t-att-href="'tel:' + str(folio.partner_id.mobile or folio.partner_id.phone)
-                                if folio.partner_id else str(folio_partner_id.mobile or folio_partner_id.phone)">
-                                <t t-esc="(folio.partner_id.mobile or folio.partner_id.phone)
-                                    if folio.partner_id else (folio_partner_id.mobile or folio_partner_id.phone)"/>
+                            <a class="text-left" t-att-href="'tel:' + str(folio.mobile)
+                                if folio.partner_id else str(folio_mobile)">
+                                <t t-esc="(folio.mobile)"/>
                             </a>
 
                         </span>
