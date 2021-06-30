@@ -33,7 +33,7 @@ class PWAHome(Home):
                 "/reservation/list", query=request.params, keep_hash=True
             )
 
-        return http.redirect_with_hash("/web/login")
+        return http.redirect_with_hash("/web/reservation")
         # return super(PWAHome, self).index(*args, **kw)
 
     def _login_redirect(self, uid, redirect=None):
