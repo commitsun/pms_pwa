@@ -84,7 +84,7 @@
             <field name="is_mega_menu">False</field>
             <field name="new_window">False</field>
             <field name="group_ids" eval="[(4, ref('base.group_user'))]"/>
-            <field name="page_id" ref="configuration_page"/>
+            <!-- <field name="page_id" ref="configuration_page"/> -->
             <field name="website_id" ref="website.default_website"/>
             <field name="img" type="base64" file="pms_pwa/static/img/svg/config.svg" />
         </record>
