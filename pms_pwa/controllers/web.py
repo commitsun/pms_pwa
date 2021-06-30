@@ -716,9 +716,9 @@ class TestFrontEnd(http.Controller):
             },
             "state": reservation.state,
             "credit_card_details": reservation.credit_card_details,
-            "price_total": reservation.price_total,
+            "price_total": round(reservation.price_total, 2),
             "price_tax": reservation.price_tax,
-            "folio_pending_amount": reservation.folio_pending_amount,
+            "folio_pending_amount": round(reservation.folio_pending_amount, 2),
             "folio_internal_comment": reservation.folio_internal_comment,
             "payment_methods": self._get_allowed_payments_journals(),
             "reservation_types": self._get_reservation_types(),
@@ -1062,7 +1062,7 @@ class TestFrontEnd(http.Controller):
                             "img": "/web/image/res.partner/"
                             + str(reservation.partner_id.id)
                             + "/image_128",
-                            "price": reservation.folio_pending_amount,
+                            "price": round(reservation.folio_pending_amount, 2),
                             "status": "success",  # TODO
                             "nigths": (
                                 max_reservation_date
@@ -1120,7 +1120,7 @@ class TestFrontEnd(http.Controller):
                             + "/image_128"
                             if main_split
                             else False,
-                            "price": reservation.folio_pending_amount
+                            "price": round(reservation.folio_pending_amount, 2)
                             if main_split
                             else False,
                             "status": "danger",  # TODO
