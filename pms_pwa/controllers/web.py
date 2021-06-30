@@ -1059,9 +1059,9 @@ class TestFrontEnd(http.Controller):
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": reservation.partner_name,
-                            "img": "/web/image/res.partner/"
-                            + str(reservation.partner_id.id)
-                            + "/image_128",
+                            "img": "/web/image/pms.reservation/"
+                            + str(reservation.id)
+                            + "/partner_image_128",
                             "price": reservation.folio_pending_amount,
                             "status": "success",  # TODO
                             "nigths": (
@@ -1115,9 +1115,9 @@ class TestFrontEnd(http.Controller):
                             "partner_name": reservation.partner_name
                             if main_split
                             else False,
-                            "img": "/web/image/res.partner/"
-                            + str(reservation.partner_id.id)
-                            + "/image_128"
+                            "img": "/web/image/pms.reservation/"
+                            + str(reservation.id)
+                            + "/partner_image_128"
                             if main_split
                             else False,
                             "price": reservation.folio_pending_amount
