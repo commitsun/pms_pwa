@@ -1062,11 +1062,11 @@ class TestFrontEnd(http.Controller):
                         "date": min_reservation_date,
                         "reservation_info": {
                             "id": reservation.id,
-                            "partner_name": reservation.partner_name,
+                            "partner_name": reservation.partner_name[:8]+"...",
                             "img": "/web/image/pms.reservation/"
                             + str(reservation.id)
                             + "/partner_image_128",
-                            "price": reservation.folio_pending_amount,
+                            "price": round(reservation.folio_pending_amount, 2),
                             "status": "success",  # TODO
                             "nigths": (
                                 max_reservation_date
