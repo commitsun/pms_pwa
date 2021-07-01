@@ -819,11 +819,13 @@ class TestFrontEnd(http.Controller):
                     elif (
                         param == "preferred_room_id"
                         and int(params["preferred_room_id"])
-                        != reservation.preferred_room_id
+                        != reservation.preferred_room_id.id
                     ):
-                        reservation_values["preferred_room_id"] = request.env[
-                            "pms.room"
-                        ].browse(int(params["preferred_room_id"]))
+                        reservation_values["preferred_room_id"] = (
+                            request.env["pms.room"]
+                            .browse(int(params["preferred_room_id"]))
+                            .id
+                        )
 
                     # CHECKIN & CHECKOUT TODO process both as an unit
                     elif (
@@ -853,11 +855,13 @@ class TestFrontEnd(http.Controller):
                     elif (
                         param == "board_service_room_id"
                         and int(params["board_service_room_id"])
-                        != reservation.board_service_room_id
+                        != reservation.board_service_room_id.id
                     ):
-                        reservation_values["board_service_room_id"] = request.env[
-                            "pms.board.service.room.type"
-                        ].browse(int(params["board_service_room_id"]))
+                        reservation_values["board_service_room_id"] = (
+                            request.env["pms.board.service.room.type"]
+                            .browse(int(params["board_service_room_id"]))
+                            .id
+                        )
 
                     # SEGMENTATION
                     # TODO
