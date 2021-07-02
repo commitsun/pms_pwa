@@ -12,11 +12,12 @@ def _get_search_domain(pms_property_id, search=False, **post):
         for srch in search.split(" "):
             subdomains = [
                 [("reservation_ids.name", "ilike", srch)],
-                [("reservation_ids.partner_id.phone", "ilike", srch)],
-                [("reservation_ids.partner_id.mobile", "ilike", srch)],
-                [("reservation_ids.partner_id.name", "ilike", srch)],
+                [("reservation_ids.partner_name", "ilike", srch)],
+                [("reservation_ids.partner_mobile", "ilike", srch)],
+                [("reservation_ids.partner_email", "ilike", srch)],
                 [("reservation_ids.partner_id.vat", "ilike", srch)],
-                [("reservation_ids.partner_id.email", "ilike", srch)],
+                [("reservation_ids.partner_name", "ilike", srch)],
+                [("reservation_origin_code", "ilike", srch)],
             ]
             domains.append(expression.OR(subdomains))
     domain_fields = [("pms_property_id", "=", pms_property_id)]

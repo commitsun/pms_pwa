@@ -138,7 +138,7 @@
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <t t-set="total_rooms" t-value="obj._get_total_rooms()"></t>
-                                                <t t-set="availability_room" t-value="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/>
+                                                <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pms_property_id=current_property)._get_availability_rooms()"/>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
