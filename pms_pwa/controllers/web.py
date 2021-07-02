@@ -962,6 +962,9 @@ class TestFrontEnd(http.Controller):
         room_types = request.env["pms.room.type"].browse(
             rooms.mapped("room_type_id.id")
         )
+        ubications = request.env["pms.ubication"].browse(
+            rooms.mapped("ubication_id.id")
+        )
         # Add default dpr and dpr_select_values
         dpr = 15
         if post.get("dpr"):
@@ -990,6 +993,7 @@ class TestFrontEnd(http.Controller):
             "pricelist": pricelists,
             "default_pricelist": pricelist,
             "rooms_list": room_types,
+            "ubications": ubications,
             "date_list": date_list,
             "dpr": dpr,
             "dpr_select_values": dpr_select_values,
@@ -1026,16 +1030,28 @@ class TestFrontEnd(http.Controller):
         values = {}
         # REVIEW: revisar estructura
         values["reservations"] = []
-        room_ids = (
-            request.env["pms.room"]
-            .search(
-                [
-                    ("pms_property_id", "=", pms_property_id),
-                    ("room_type_id", "=", int(post.get("room_type_id"))),
-                ]
+        if post.get("room_type_id"):
+            room_ids = (
+                request.env["pms.room"]
+                .search(
+                    [
+                        ("pms_property_id", "=", pms_property_id),
+                        ("room_type_id", "=", int(post.get("room_type_id"))),
+                    ]
+                )
+                .ids
             )
-            .ids
-        )
+        if post.get("ubication_id"):
+            room_ids = (
+                request.env["pms.room"]
+                .search(
+                    [
+                        ("pms_property_id", "=", pms_property_id),
+                        ("ubication_id", "=", int(post.get("ubication_id"))),
+                    ]
+                )
+                .ids
+            )
         for room_id in room_ids:
             free_dates = dates.copy()
             room = request.env["pms.room"].browse(room_id)
