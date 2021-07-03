@@ -247,8 +247,8 @@
             <!-- <td class="o_pms_pwa_lh45 text-center">
                 <t t-esc="folio.number_of_rooms"/>
             </td> -->
-            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
-                <t t-if="folio.internal_comment" t-esc="folio.internal_comment"/>
+            <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5" data-toggle="tooltip" t-attf-title="{{ folio.internal_comment }}" t-attf-data-original-title="{{ folio.internal_comment }}">
+                <t t-if="folio.internal_comment" t-esc="folio.internal_comment[0:25]"/>
             </td>
             <td class="o_pms_pwa_lh45 o_pms_pwa_priority-4">
             </td>
@@ -329,16 +329,16 @@
         </td>
         <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">
             <!-- t-field-options='{"widget": "monetary", "display_currency": "currency"}' -->
-            <t t-esc="obj.folio_id.amount_total" />
+            <t t-esc="round(obj.folio_id.amount_total, 2)" />
         </td>
         <td class="o_pms_pwa_lh45 text-center">
-            <t t-esc="obj.folio_id.pending_amount" />
+            <t t-esc="round(obj.folio_id.pending_amount, 2)" />
         </td>
         <!-- <td class="o_pms_pwa_lh45 text-center">
 
         </td> -->
-        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5">
-            <t t-if="obj.partner_requests" t-esc="obj.partner_requests"/>
+        <td class="o_pms_pwa_lh45 o_pms_pwa_priority-5" data-toggle="tooltip" t-attf-title="{{ obj.partner_requests }}" t-attf-data-original-title="{{ obj.partner_requests }}">
+            <t t-if="obj.partner_requests" t-esc="obj.partner_requests[0:25]"/>
         </td>
         <td class="o_pms_pwa_lh45 o_pms_pwa_priority-4">
             <t t-if="obj.board_service_room_id" t-esc="obj.board_service_room_id.display_name"/>
