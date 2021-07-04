@@ -749,6 +749,65 @@
                                                 <input type="hidden" name="guest_id" t-att-value="partner"/>
                                                 <div class="row">
                                                     <div class="col-sm-12">
+                                                        <label class="control-label col-12" for="document_type">
+                                                            Tipo de documento
+                                                        </label>
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
+                                                            <option value="" t-att-selected="partner_value['document_type'] == false ? 'selected' : None">
+                                                            </option>
+                                                            <option value="D" t-att-selected="partner_value['document_type'] == 'D' ? 'selected' : None">
+                                                                DNI
+                                                            </option>
+                                                            <option value="P" t-att-selected="partner_value['document_type'] == 'P' ? 'selected' : None">
+                                                                Pasaporte
+                                                            </option>
+                                                            <option value="C" t-att-selected="partner_value['document_type'] == 'C' ? 'selected' : None">
+                                                                Carnet de conducir
+                                                            </option>
+                                                            <option value="I" t-att-selected="partner_value['document_type'] == 'I' ? 'selected' : None">
+                                                                Documento de identificación
+                                                            </option>
+                                                            <option value="N" t-att-selected="partner_value['document_type'] == 'N' ? 'selected' : None">
+                                                                Permiso de residencia española
+                                                            </option>
+                                                            <option value="X" t-att-selected="partner_value['document_type'] == 'X' ? 'selected' : None">
+                                                                Permiso de residencia europea
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="document_number">
+                                                            NIF/CIF
+                                                        </label>
+                                                        <input class="form-control" type="text" name="document_number" t-att-value="partner_value['document_number'] ? partner_value['document_number'] : ''" />
+                                                    </div>
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="document_expedition_date">
+                                                            Fecha de expdición del documento
+                                                        </label>
+                                                        <input class="form-control o_pms_pwa_daterangepicker" type="text" name="document_expedition_date" t-att-value="partner_value['document_expedition_date'] ? partner_value['document_expedition_date'] : ''" />
+                                                        <span class="o_pms_pwa_calendar_icon">
+                                                            <!-- <span class="fa fa-calendar" /> -->
+                                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="mobile">
+                                                            Móvil
+                                                        </label>
+                                                        <input class="form-control" type="tel" name="mobile" t-att-value="partner_value['mobile'] ? partner_value['mobile'] : ''" />
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="email">
+                                                            Email
+                                                        </label>
+                                                        <input class="form-control" type="email" name="email" t-att-value="partner_value['email'] ? partner_value['email'] : ''" />
+
+                                                        <input class="form-control" type="hidden" name="pms_property_id" t-att-value="reservation.pms_property_id" />
+                                                        <input class="form-control" type="hidden" name="id" t-att-value="partner" />
+                                                    </div>
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="firstname">
                                                             Nombre
                                                         </label>
@@ -779,53 +838,6 @@
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                         </span>
                                                     </div>
-
-                                                    <div class="col-sm-12 mt-2">
-                                                        <label class="control-label col-12" for="document_number">
-                                                            NIF/CIF
-                                                        </label>
-                                                        <input class="form-control" type="text" name="document_number" t-att-value="partner_value['document_number'] ? partner_value['document_number'] : ''" />
-                                                    </div>
-
-                                                    <div class="col-sm-12 mt-2">
-                                                        <label class="control-label col-12" for="document_type">
-                                                            Tipo de documento
-                                                        </label>
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
-                                                            <option value="" t-att-selected="partner_value['document_type'] == false ? 'selected' : None">
-                                                            </option>
-                                                            <option value="D" t-att-selected="partner_value['document_type'] == 'D' ? 'selected' : None">
-                                                                DNI
-                                                            </option>
-                                                            <option value="P" t-att-selected="partner_value['document_type'] == 'P' ? 'selected' : None">
-                                                                Pasaporte
-                                                            </option>
-                                                            <option value="C" t-att-selected="partner_value['document_type'] == 'C' ? 'selected' : None">
-                                                                Carnet de conducir
-                                                            </option>
-                                                            <option value="I" t-att-selected="partner_value['document_type'] == 'I' ? 'selected' : None">
-                                                                Documento de identificación
-                                                            </option>
-                                                            <option value="N" t-att-selected="partner_value['document_type'] == 'N' ? 'selected' : None">
-                                                                Permiso de residencia española
-                                                            </option>
-                                                            <option value="X" t-att-selected="partner_value['document_type'] == 'X' ? 'selected' : None">
-                                                                Permiso de residencia europea
-                                                            </option>
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="col-sm-12 mt-2">
-                                                        <label class="control-label col-12" for="document_expedition_date">
-                                                            Fecha de caducidad del documento
-                                                        </label>
-                                                        <input class="form-control o_pms_pwa_daterangepicker" type="text" name="document_expedition_date" t-att-value="partner_value['document_expedition_date'] ? partner_value['document_expedition_date'] : ''" />
-                                                        <span class="o_pms_pwa_calendar_icon">
-                                                            <!-- <span class="fa fa-calendar" /> -->
-                                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
-                                                        </span>
-                                                    </div>
-
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="gender">
                                                             Género
@@ -843,23 +855,6 @@
                                                                 Otro
                                                             </option>
                                                         </select>
-                                                    </div>
-
-                                                    <div class="col-sm-12 mt-2">
-                                                        <label class="control-label col-12" for="mobile">
-                                                            Móvil
-                                                        </label>
-                                                        <input class="form-control" type="tel" name="mobile" t-att-value="partner_value['mobile'] ? partner_value['mobile'] : ''" />
-                                                    </div>
-
-                                                    <div class="col-sm-12 mt-2">
-                                                        <label class="control-label col-12" for="email">
-                                                            Email
-                                                        </label>
-                                                        <input class="form-control" type="email" name="email" t-att-value="partner_value['email'] ? partner_value['email'] : ''" />
-
-                                                        <input class="form-control" type="hidden" name="pms_property_id" t-att-value="reservation.pms_property_id" />
-                                                        <input class="form-control" type="hidden" name="id" t-att-value="partner" />
                                                     </div>
 
                                                 </div>

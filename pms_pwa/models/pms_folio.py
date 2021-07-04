@@ -13,8 +13,8 @@ def _get_search_domain(pms_property_id, search=False, **post):
             subdomains = [
                 [("reservation_ids.name", "ilike", srch)],
                 [("reservation_ids.partner_name", "ilike", srch)],
-                [("reservation_ids.partner_mobile", "ilike", srch)],
-                [("reservation_ids.partner_email", "ilike", srch)],
+                [("reservation_ids.mobile", "ilike", srch)],
+                [("reservation_ids.email", "ilike", srch)],
                 [("reservation_ids.partner_id.vat", "ilike", srch)],
                 [("reservation_ids.partner_name", "ilike", srch)],
                 [("reservation_origin_code", "ilike", srch)],

@@ -21,10 +21,16 @@ class RoomTypes(http.Controller):
     def _get_available_room_types(self, payload):
         room_types = []
         checkin = payload["checkin"]
-        checkin = datetime.datetime.strptime(checkin, get_lang(request.env).date_format).date()
+        if isinstance(checkin, str):
+            checkin = datetime.datetime.strptime(
+                checkin, get_lang(request.env).date_format
+            ).date()
 
         checkout = payload["checkout"]
-        checkout = datetime.datetime.strptime(checkout, get_lang(request.env).date_format).date()
+        if isinstance(checkin, str):
+            checkin = datetime.datetime.strptime(
+                checkin, get_lang(request.env).date_format
+            ).date()
 
         pms_property_id = int(payload["pms_property_id"])
         pricelist_id = int(payload["pricelist_id"])

@@ -645,7 +645,7 @@ class TestFrontEnd(http.Controller):
             partner_vals = {
                 "id": False,
                 "name": reservation.partner_name,
-                "mobile": reservation.partner_mobile,
+                "mobile": reservation.mobile,
             }
         notifications = []
         if reservation.partner_internal_comment:
@@ -712,7 +712,7 @@ class TestFrontEnd(http.Controller):
             "folio_id": {
                 "id": reservation.folio_id.id,
                 "amount_total": reservation.folio_id.amount_total,
-                "outstanding_vat": reservation.folio_pending_amount,
+                "outstanding_vat": round(reservation.folio_pending_amount, 2)
             },
             "state": reservation.state,
             "credit_card_details": reservation.credit_card_details,
@@ -1079,9 +1079,9 @@ class TestFrontEnd(http.Controller):
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": reservation.partner_name,
-                            "img": "/web/image/res.partner/"
-                            + str(reservation.partner_id.id)
-                            + "/image_128",
+                            "img": "/web/image/pms.reservation/"
+                            + str(reservation.id)
+                            + "/partner_image_128",
                             "price": round(reservation.folio_pending_amount, 2),
                             "status": "success",  # TODO
                             "nigths": (
@@ -1109,6 +1109,13 @@ class TestFrontEnd(http.Controller):
                 lambda r: r.splitted
             ).reservation_line_ids.filtered(lambda l: l.room_id.id == room_id)
             for split in splitted_reservations_lines.sorted("date"):
+                rooms_reservation_values.append(
+                    {
+                        "date": day,
+                        "reservation_info": False,
+                    }
+                )
+                continue
                 main_split = False
                 reservation = split.reservation_id
                 nights = 0
@@ -1593,73 +1600,145 @@ class TestFrontEnd(http.Controller):
             return json.dumps({"result": False, "message": str(e)})
 
     def parse_reservation(self, reservation):
+        primary_button, secondary_buttons = self.generate_reservation_style_buttons(
+            reservation
+        )
+
+        if reservation.partner_id:
+            partner_vals = {
+                "id": reservation.partner_id.id,
+                "name": reservation.partner_id.name,
+                "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
+            }
+        else:
+            partner_vals = {
+                "id": False,
+                "name": reservation.partner_name,
+                "mobile": reservation.mobile,
+            }
+        notifications = []
+        if reservation.partner_internal_comment:
+            notifications.append(
+                {
+                    "title": "Notas sobre Cliente",
+                    "content": reservation.partner_internal_comment,
+                }
+            )
+        if reservation.folio_internal_comment:
+            notifications.append(
+                {
+                    "title": "Notas sobre Reserva",
+                    "content": reservation.folio_internal_comment,
+                }
+            )
+        if reservation.partner_requests:
+            notifications.append(
+                {
+                    "title": "Peticiones de Cliente",
+                    "content": reservation.partner_requests,
+                }
+            )
         reservation_values = dict()
-        reservation_values["id"] = reservation.id
-        reservation_values["room_type_id"] = int(reservation.room_type_id.id)
-        reservation_values["preferred_room_id"] = int(reservation.preferred_room_id.id)
-        reservation_values["adults"] = reservation.adults
-        reservation_values["reservation_type"] = reservation.folio_id.reservation_type
-        reservation_values["checkin"] = reservation.checkin.strftime(
-            get_lang(request.env).date_format
-        )
-        reservation_values["checkout"] = reservation.checkout.strftime(
-            get_lang(request.env).date_format
-        )
+
+        reservation_values = {
+            "id": reservation.id,
+            "name": reservation.name,
+            "partner_id": partner_vals,
+            "unread_msg": len(notifications),
+            "messages": notifications,
+            "room_type_id": {
+                "id": reservation.room_type_id.id,
+                "name": reservation.room_type_id.name,
+                "default_code": reservation.room_type_id.default_code,
+            },
+            "preferred_room_id": reservation.preferred_room_id.id,
+            "channel_type_id": {
+                "id": reservation.channel_type_id.id
+                if reservation.channel_type_id
+                else False,
+                "name": reservation.channel_type_id.name
+                if reservation.channel_type_id
+                else False,
+            },
+            "agency_id": {
+                "id": reservation.agency_id.id if reservation.agency_id else False,
+                "name": reservation.agency_id.name if reservation.agency_id else False,
+            },
+            "nights": reservation.nights,
+            "checkin": reservation.checkin.strftime(
+                get_lang(request.env).date_format
+            ),
+            "arrival_hour": reservation.arrival_hour,
+            "checkout": reservation.checkout.strftime(
+                get_lang(request.env).date_format
+            ),
+            "departure_hour": reservation.departure_hour,
+            "folio_id": {
+                "id": reservation.folio_id.id,
+                "amount_total": reservation.folio_id.amount_total,
+                "outstanding_vat": round(reservation.folio_pending_amount, 2),
+            },
+            "state": reservation.state,
+            "credit_card_details": reservation.credit_card_details,
+            "price_total": reservation.price_room_services_set,
+            "price_tax": reservation.price_tax,
+            "folio_pending_amount": round(reservation.folio_pending_amount, 2),
+            "folio_internal_comment": reservation.folio_internal_comment,
+            "reservation_type": reservation.folio_id.reservation_type,
+            "payment_methods": self._get_allowed_payments_journals(),
+            "reservation_types": self._get_reservation_types(),
+            "checkins_ratio": reservation.checkins_ratio,
+            "ratio_checkin_data": reservation.ratio_checkin_data,
+            "adults": reservation.adults,
+            "checkin_partner_ids": reservation._get_checkin_partner_ids(),
+            "pms_property_id": reservation.pms_property_id.id,
+            "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
+            "board_service_room_id": {
+                "id": reservation.board_service_room_id.id,
+                "name": reservation.board_service_room_id.display_name,
+            },
+            "allowed_service_ids": reservation._get_allowed_service_ids(),
+            # TODO: Review error buttons view
+            # "primary_button": primary_button,
+            # "secondary_buttons": secondary_buttons,
+            "pricelist_id": reservation.pricelist_id.id,
+            "allowed_pricelists": reservation._get_allowed_pricelists(),
+            "allowed_segmentations": reservation._get_allowed_segmentations(),
+            "allowed_channel_type_ids": self._get_allowed_channel_type_ids(),
+            "allowed_agency_ids": self._get_allowed_agency_ids(),
+            "segmentation_ids": reservation.segmentation_ids.ids,
+            "room_numbers": rooms.Rooms._get_available_rooms(
+                self=self,
+                payload={
+                    "pms_property_id": reservation.pms_property_id.id,
+                    "pricelist_id": reservation.pricelist_id.id,
+                    "checkin": reservation.checkin,
+                    "checkout": reservation.checkout,
+                    "reservation_id": reservation.id,
+                },
+            ),
+            "room_types": room_types.RoomTypes._get_available_room_types(
+                self=self,
+                payload={
+                    "pms_property_id": reservation.pms_property_id.id,
+                    "pricelist_id": reservation.pricelist_id.id,
+                    "checkin": reservation.checkin,
+                    "checkout": reservation.checkout,
+                    "reservation_id": reservation.id,
+                },
+            ),
+        }
+
         # avoid send reservation_line_ids on new single reservation modal
         if isinstance(reservation.id, int):
             reservation_values[
                 "reservation_line_ids"
             ] = reservation._get_reservation_line_ids()
-        reservation_values["arrival_hour"] = reservation.arrival_hour
-        reservation_values["departure_hour"] = reservation.departure_hour
-        reservation_values["price_total"] = reservation.price_room_services_set
-        reservation_values["folio_pending_amount"] = reservation.folio_pending_amount
-        reservation_values["pricelist_id"] = reservation.pricelist_id.id
-        reservation_values["allowed_pricelists"] = reservation._get_allowed_pricelists()
+
         # avoid send reservation_line_ids on new single reservation modal
         if isinstance(reservation.id, int):
             reservation_values["service_ids"] = reservation._get_service_ids()
-        reservation_values[
-            "allowed_board_service_room_ids"
-        ] = reservation._get_allowed_board_service_room_ids()
-        reservation_values[
-            "board_service_room_id"
-        ] = reservation.board_service_room_id.id
-        reservation_values[
-            "allowed_segmentations"
-        ] = reservation._get_allowed_segmentations()
-        reservation_values["segmentation_ids"] = reservation.segmentation_ids.ids
-        reservation_values[
-            "allowed_channel_type_ids"
-        ] = self._get_allowed_channel_type_ids()
-        reservation_values["channel_type_id"] = reservation.channel_type_id.id
-        reservation_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
-        reservation_values["agency_id"] = reservation.agency_id.id
-        reservation_values["room_numbers"] = rooms.Rooms._get_available_rooms(
-            self=self,
-            payload={
-                "pms_property_id": reservation.pms_property_id.id,
-                "pricelist_id": reservation.pricelist_id.id,
-                "checkin": reservation_values["checkin"],
-                "checkout": reservation_values["checkout"],
-                "reservation_id": reservation.id,
-            },
-        )
-        reservation_values[
-            "room_types"
-        ] = room_types.RoomTypes._get_available_room_types(
-            self=self,
-            payload={
-                "pms_property_id": reservation.pms_property_id.id,
-                "pricelist_id": reservation.pricelist_id.id,
-                "checkin": reservation_values["checkin"],
-                "checkout": reservation_values["checkout"],
-                "reservation_id": reservation.id,
-            },
-        )
-        reservation_values[
-            "checkin_partner_ids"
-        ] = reservation._get_checkin_partner_ids()
+
         _logger.info("Values from controller to Frontend (reservation onchange):")
         pp.pprint(reservation_values)
         return reservation_values
