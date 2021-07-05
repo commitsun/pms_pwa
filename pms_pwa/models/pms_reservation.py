@@ -116,58 +116,55 @@ class PmsReservation(models.Model):
     def pwa_action_checkin(
         self, checkin_partner_list, reservation_id, action_on_board=False
     ):
-        reservation = self.browse(reservation_id)
-        if reservation:
-            if len(checkin_partner_list) > reservation.adults:
-                raise ValidationError(
-                    _("The list of guests is greater than the capacity")
-                )
-            for guest in checkin_partner_list:
-                if guest.get("document_type"):
-                    guest["document_type"] = (
-                        self.env["res.partner.id_category"]
-                        .search([("code", "=", guest["document_type"])])
-                        .id
+        try:
+            reservation = self.browse(reservation_id)
+            if reservation:
+                if len(checkin_partner_list) > reservation.adults:
+                    raise ValidationError(
+                        _("The list of guests is greater than the capacity")
                     )
+                for guest in checkin_partner_list:
+                    if guest.get("document_type"):
+                        guest["document_type"] = (
+                            self.env["res.partner.id_category"]
+                            .search([("code", "=", guest["document_type"])])
+                            .id
+                        ).id
 
-                if guest.get("birthdate_date"):
-                    guest["birthdate_date"] = datetime.datetime.strptime(
-                        guest["birthdate_date"], get_lang(self.env).date_format
+                    if guest.get("birthdate_date"):
+                        guest["birthdate_date"] = datetime.datetime.strptime(
+                            guest["birthdate_date"], get_lang(self.env).date_format
+                        )
+
+                    if guest.get("document_expedition_date"):
+                        guest["document_expedition_date"] = datetime.datetime.strptime(
+                            guest["document_expedition_date"],
+                            get_lang(self.env).date_format,
+                        )
+
+                    checkin_partner = self.env["pms.checkin.partner"].browse(
+                        int(guest["id"])
                     )
-                    # TODO: Temp FIX (avoid default date value on checkin modal)
-                    if guest["birthdate_date"].date() == fields.date.today():
-                        guest["birthdate_date"] = False
+                    guest.pop("id")
+                    if guest.get("pms_property_id"):
+                        guest.pop("pms_property_id")
 
-                if guest.get("document_expedition_date"):
-                    guest["document_expedition_date"] = datetime.datetime.strptime(
-                        guest["document_expedition_date"],
-                        get_lang(self.env).date_format,
-                    )
-                    # TODO: Temp FIX (avoid default date value on checkin modal)
-                    if guest["document_expedition_date"].date() == fields.date.today():
-                        guest["document_expedition_date"] = False
+                    vals = {}
+                    for checkin_field in guest:
+                        if (
+                            guest.get(checkin_field)
+                            and guest.get(checkin_field) != checkin_partner[checkin_field]
+                        ):
+                            vals[checkin_field] = guest[checkin_field]
+                    pprint(vals)
+                    if len(vals) >= 1:
+                        checkin_partner.write(vals)
+                    checkin_partner.flush()
 
-                checkin_partner = self.env["pms.checkin.partner"].browse(
-                    int(guest["id"])
-                )
-                guest.pop("id")
-                if guest.get("pms_property_id"):
-                    guest.pop("pms_property_id")
-
-                vals = {}
-                for checkin_field in guest:
-                    if (
-                        guest.get(checkin_field)
-                        and guest.get(checkin_field) != checkin_partner[checkin_field]
-                    ):
-                        vals[checkin_field] = guest[checkin_field]
-                pprint(vals)
-                if len(vals) >= 1:
-                    checkin_partner.write(vals)
-                checkin_partner.flush()
-
-                if action_on_board:
-                    checkin_partner.action_on_board()
+                    if action_on_board:
+                        checkin_partner.action_on_board()
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
 
     def _get_reservation_services(self):
         """

@@ -277,8 +277,8 @@
                     </span>
                     <br />
                     <span class="text-left">
-                        <a t-att-href="'tel:' + str(obj.partner_mobile)">
-                            <t t-esc="obj.partner_mobile"/>
+                        <a t-att-href="'tel:' + str(obj.mobile)">
+                            <t t-esc="obj.mobile"/>
                         </a>
                     </span>
                     <span class="o_pms_pwa_info_num">
