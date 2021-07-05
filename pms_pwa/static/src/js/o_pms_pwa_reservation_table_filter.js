@@ -1306,6 +1306,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         },
                                                         opens: "left",
                                                         showCustomRangeLabel: false,
+                                                        autoUpdateInput: false,
                                                     },
                                                     function (start, end, label) {
                                                         $('input[name="checkin"]').val(
@@ -1350,6 +1351,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         },
                                                         opens: "left",
                                                         showCustomRangeLabel: false,
+                                                        autoUpdateInput: false,
                                                     },
                                                     function (start, end, label) {
                                                         $('input[name="checkin"]').val(
