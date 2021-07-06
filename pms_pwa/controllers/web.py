@@ -974,6 +974,7 @@ class TestFrontEnd(http.Controller):
             rooms.mapped("ubication_id.id")
         )
         # Add default dpr and dpr_select_values
+
         dpr = 15
         if post.get("dpr"):
             dpr = int(post.get("dpr"))
@@ -992,6 +993,20 @@ class TestFrontEnd(http.Controller):
         pricelist = (
             request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
         )
+        display_select_options = [
+            {'name': "Room type", 'value': "room_type"},
+            {'name': "Ubications", 'value': "ubication"},
+        ]
+        obj_list = room_types
+        selected_display = "room_type"
+        if post and "display_option" in post:
+            if post["display_option"] == "room_type":
+                obj_list = room_types
+                selected_display = "room_type"
+            elif post["display_option"] == "ubication":
+                obj_list = ubications
+                selected_display = "ubication"
+
         if post and "pricelist" in post:
             pricelist = int(post["pricelist"])
         values = {
@@ -1000,10 +1015,11 @@ class TestFrontEnd(http.Controller):
             "page_name": "Calendar",
             "pricelist": pricelists,
             "default_pricelist": pricelist,
-            "rooms_list": room_types,
-            "ubications": ubications,
+            "obj_list": obj_list,
             "date_list": date_list,
             "dpr": dpr,
+            "display_select_options": display_select_options,
+            "selected_display": selected_display,
             "dpr_select_values": dpr_select_values,
         }
         return http.request.render(

@@ -53,12 +53,23 @@
                             </div>
                             <div class="col-6 col-sm-8">
                                 <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
-                                    <select id="calendar_select" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
+                                    <select id="calendar_select" name="display_option" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
+                                        <t t-foreach="display_select_options" t-as="display_item">
+                                            <t t-if="selected_display==display_item['value']">
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}" selected="selected"><t t-esc="display_item['name']" /></option>
+                                            </t>
+                                            <t t-else="">
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}"><t t-esc="display_item['name']" /></option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="o_pms_pwa_calendar_select  d-none d-lg-block ml-4">
+                                    <select id="display_obj_option" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <option value="" selected="selected">Default</option>
                                         <option value="/calendar/config">Config</option>
                                     </select>
                                 </div>
-
                                 <div class="o_pms_pwa_month_select float-right ml-4">
                                     <a t-att-href="'?previous_month='+date_start.strftime('%d/%m/%Y')" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
@@ -102,7 +113,10 @@
                                                     <a t-att-href="'?previous_day='+date_start.strftime('%d/%m/%Y')" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
                                                 </t>
                                                 <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
-                                                <span class="float-right"><img src="/pms_pwa/static/img/svg/icon_house.svg" alt="avail icon" title="avail icon" /> 8</span>
+                                                <span class="float-right">
+                                                    <img src="/pms_pwa/static/img/svg/icon_house.svg" alt="avail icon" title="avail icon" />
+                                                    8
+                                                </span>
                                                 <t t-if="day_last">
                                                     <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
                                                 </t>
@@ -112,7 +126,7 @@
 
                                 </thead>
                                 <tbody>
-                                    <t t-foreach="ubications" t-as="obj">
+                                    <t t-foreach="obj_list" t-as="obj">
                                         <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td class="o_pms_pwa_table_first_header_td">
                                                 <p class="o_pms_pwa_room_name">
@@ -123,50 +137,7 @@
                                                     />
                                                 </p>
                                                 <p class="o_pms_pwa_extra_info">
-                                                    <!-- <span><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span> -->
-                                                    <span><t t-esc="obj.total_rooms_count"/> hab</span>
-                                                    <!-- <span class="o_pms_pwa_restr"><img src="/pms_pwa/static/img/svg/palma_mano.svg" alt="user icon" title="user icon" /> Restricciones</span> -->
-
-                                                </p>
-                                            </td>
-                                            <t t-foreach="len(date_list)" t-as="l">
-                                                <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
-                                                <td t-att-class="'o_pms_pwa_table_cell '
-                                                    + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
-                                                    + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
-                                                ">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> available
-                                                        <span class="o_pms_pwa_info">
-                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="Texto informativo del icono" />
-                                                        </span>
-                                                    </p>
-                                                    <!-- <div class="o_pms_pwa_content">
-                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> busy</span>
-                                                        <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
-
-                                                    </div> -->
-                                                    <!-- <span class="o_pms_pwa_event bg-success">Event with Long Name</span> -->
-                                                </td>
-                                            </t>
-                                        </tr>
-                                        <tr>
-                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
-                                                <!-- Llamamos a json y pms_pwa_roomdoo_calendar_line.xml data-parent="#calendar_table" -->
-                                            </td>
-                                        </tr>
-                                    </t>
-                                    <!-- <t t-foreach="rooms_list" t-as="obj">
-                                        <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
-                                            <td class="o_pms_pwa_table_first_header_td">
-                                                <p class="o_pms_pwa_room_name">
-                                                    <i class="fa fa-angle-down"></i>
-                                                    <t
-                                                        t-if="obj.name"
-                                                        t-esc="obj.name"
-                                                    />
-                                                </p>
-                                                <p class="o_pms_pwa_extra_info">
-                                                    <span><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
+                                                    <span t-if="selected_display == 'room_type'"><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
                                                     <span><t t-esc="obj.total_rooms_count"/> hab</span>
                                                 </p>
                                             </td>
@@ -182,8 +153,8 @@
                                                         </span>
                                                     </p>
                                                     <div class="o_pms_pwa_content">
-                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> busy</span>
-                                                        <span class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
+                                                        <span t-if="current_property and selected_display == 'room_type'" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> busy</span>
+                                                        <span t-if="selected_display == 'room_type'" class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
 
                                                     </div>
                                                 </td>
@@ -193,7 +164,7 @@
                                             <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
                                             </td>
                                         </tr>
-                                    </t> -->
+                                    </t>
                                 </tbody>
                             </table>
                         </div>
