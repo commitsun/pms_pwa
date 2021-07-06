@@ -1859,6 +1859,26 @@ class TestFrontEnd(http.Controller):
 
         return json.dumps(partners)
 
+    @http.route(
+        "/print-checkins",
+        csrf=False,
+        auth="public",
+        website=True,
+        type="http",
+        methods=["GET"],
+    )
+    def print_checkint(self, reservation_ids=None, **kw):
+        reservations = False
+        if reservation_ids:
+            reservations = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "in", reservation_ids)])
+            )
+        reservations.print_all_checkins()
+
+
+
     def generate_reservation_style_buttons(self, reservation):
         buttons = json.loads(reservation.pwa_action_buttons)
         keys = buttons.keys()
