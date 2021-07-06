@@ -1735,6 +1735,17 @@ class TestFrontEnd(http.Controller):
                     "reservation_id": reservation.id,
                 },
             ),
+            # TODO: pass allowed countries/states & id country selected
+            "allowed_country_ids": [
+                {"id": 3, "name": "España"},
+                {"id": 4, "name": "France"},
+            ],
+            "country_id": 3,
+            "allowed_state_ids": [
+                {"id": 5, "name": "Lugo"},
+                {"id": 6, "name": "Ourense"},
+            ],
+            "state_id": 5,
         }
 
         # avoid send reservation_line_ids on new single reservation modal
