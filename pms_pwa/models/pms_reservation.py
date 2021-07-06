@@ -129,7 +129,7 @@ class PmsReservation(models.Model):
                             self.env["res.partner.id_category"]
                             .search([("code", "=", guest["document_type"])])
                             .id
-                        ).id
+                        )
 
                     if guest.get("birthdate_date"):
                         guest["birthdate_date"] = datetime.datetime.strptime(

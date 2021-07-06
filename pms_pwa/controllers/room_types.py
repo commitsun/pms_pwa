@@ -2,6 +2,8 @@ import datetime
 
 from odoo import _, http
 from odoo.http import request
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+
 
 from odoo.tools.misc import formatLang, format_date, get_lang
 
@@ -27,9 +29,9 @@ class RoomTypes(http.Controller):
             ).date()
 
         checkout = payload["checkout"]
-        if isinstance(checkin, str):
-            checkin = datetime.datetime.strptime(
-                checkin, get_lang(request.env).date_format
+        if isinstance(checkout, str):
+            checkout = datetime.datetime.strptime(
+                checkout, get_lang(request.env).date_format
             ).date()
 
         pms_property_id = int(payload["pms_property_id"])
