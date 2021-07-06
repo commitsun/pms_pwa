@@ -74,14 +74,22 @@ class TestFrontEnd(http.Controller):
         return allowed_journals
 
     def _get_allowed_channel_type_ids(self):
-        channel_types = request.env["pms.sale.channel"].search([])
+        channel_types = request.env["pms.sale.channel"].search([
+            ("is_on_line", "=", False)
+        ])
         allowed_channel_types = []
         for channel in channel_types:
             allowed_channel_types.append({"id": channel.id, "name": channel.name})
         return allowed_channel_types
 
     def _get_allowed_agency_ids(self):
-        agencies = request.env["res.partner"].search([("is_agency", "=", True)])
+        channel_types_ids = request.env["pms.sale.channel"].search([
+            ("is_on_line", "=", False)
+        ]).ids
+        agencies = request.env["res.partner"].search([
+            ("is_agency", "=", True),
+            ("sale_channel_id", "in", channel_types_ids),
+        ])
         allowed_agencies = []
         for agency in agencies:
             allowed_agencies.append({"id": agency.id, "name": agency.name})
@@ -1675,13 +1683,13 @@ class TestFrontEnd(http.Controller):
             "departure_hour": reservation.departure_hour,
             "folio_id": {
                 "id": reservation.folio_id.id,
-                "amount_total": reservation.folio_id.amount_total,
+                "amount_total": round(reservation.folio_id.amount_total, 2),
                 "outstanding_vat": round(reservation.folio_pending_amount, 2),
             },
             "state": reservation.state,
             "credit_card_details": reservation.credit_card_details,
-            "price_total": reservation.price_room_services_set,
-            "price_tax": reservation.price_tax,
+            "price_total": round(reservation.price_room_services_set, 2),
+            "price_tax": round(reservation.price_tax, 2),
             "folio_pending_amount": round(reservation.folio_pending_amount, 2),
             "folio_internal_comment": reservation.folio_internal_comment,
             "reservation_type": reservation.folio_id.reservation_type,
