@@ -1746,6 +1746,8 @@ class TestFrontEnd(http.Controller):
                 {"id": 6, "name": "Ourense"},
             ],
             "state_id": 5,
+            "readonly_fields": ["arrival_hour","departure_hour"],
+            "required_fields": ["room_type_id"],
         }
 
         # avoid send reservation_line_ids on new single reservation modal
