@@ -58,8 +58,33 @@
                                     <div t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &lt; 50" class="progress-bar bg-danger" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
                                     <div t-else="" class="progress-bar" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="dropdown mx-2">
+                                            <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <span data-toggle="tooltip" title="Guest personal data" class="badge bg-red mr-2" data-original-title="Guest personal data">
+                                                    <t t-esc="reservation.adults" />
+                                                </span>
+                                                Guest personal data
+                                            </button>
+                                            <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
+                                                <t t-foreach="reservation.checkin_partner_ids" t-as="person">
+                                                    <a class="dropdown-item o_pms_pwa_button_checkin" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" t-attf-data-target="#checkin_partner_{{person.id}}">
+                                                        <t t-if="person.firstname">
+                                                            <t t-esc="person.firstname" /> <t t-esc="person.lastname" />
+                                                        </t>
+                                                        <t t-else="">
+                                                            Not indicated
+                                                        </t>
+                                                    </a>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div t-if="reservation.unread_msg and reservation.unread_msg &gt; 0 and reservation.messages" class="row">
                                     <div class="col-12">
+
                                         <button class="btn o_pms_pwa_messages collapsed mt-2" aria-controls="#collapseMessages" data-target="#collapseMessages" type="button" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
                                             <span data-toggle="tooltip" t-att-title="texts.unread_text || _t('mensajes no leidos')" class="badge bg-red mr-2" t-att-data-original-title="texts.unread_text || _t('mensajes no leidos')">
                                                 <t t-esc="reservation.unread_msg" />
@@ -126,13 +151,13 @@
                                             -->
                                             <div class="row o_pms_pwa_modal_buttons" t-if="reservation.primary_button">
                                                 <div class="col-6">
-                                                    <t t-raw="reservation.primary_button"/>
+                                                    <t t-raw="reservation.primary_button" />
                                                 </div>
                                                 <div class="col-6">
                                                     <span class="dropdown">
-                                                        <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#"/>
+                                                        <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#" />
                                                         <div class="dropdown-menu" aria-labelledby="dLabel">
-                                                            <t t-raw="reservation.secondary_buttons"/>
+                                                            <t t-raw="reservation.secondary_buttons" />
                                                         </div>
                                                     </span>
                                                 </div>
@@ -231,7 +256,7 @@
                                                         <t t-foreach="reservation.reservation_line_ids" t-as="i">
                                                             <tr>
                                                                 <td>
-                                                                    <t t-esc="i_value['date']" t-options='{"widget":"date"}'/>
+                                                                    <t t-esc="i_value['date']" t-options='{"widget":"date"}' />
                                                                 </td>
                                                                 <td>
                                                                     <input type="number" t-attf-data-main_field="reservation_line_ids" t-attf-data-field_id="{{i}}" name="price" t-att-value="i_value['price']" class="form-control o_pms_pwa_modal_number" />
@@ -272,7 +297,7 @@
                                     <div class="row m-3">
 
                                         <t t-foreach="reservation.service_ids" t-as="service">
-                                            <input type="hidden" t-attf-name="o_pms_pwa_service_line_{{service}}" t-attf-value="{{service}}"/>
+                                            <input type="hidden" t-attf-name="o_pms_pwa_service_line_{{service}}" t-attf-value="{{service}}" />
                                             <div class="col-12">
 
                                                 <div class="form-check" t-if="service_value.service_line_ids">
@@ -295,7 +320,7 @@
                                                                     <t t-foreach="service_value.service_line_ids" t-as="s">
                                                                         <tr t-attf-class="o_roomdoo_hide_show_service_{{service}}">
                                                                             <td class="o_pms_pwa_detail_td">
-                                                                                <span t-esc="s_value.date" t-options='{"widget":"date"}'/>
+                                                                                <span t-esc="s_value.date" t-options='{"widget":"date"}' />
                                                                             </td>
                                                                             <td class="o_pms_pwa_detail_td o_pms_pwa_td_rb">
                                                                                 <div class="o_pms_pwa_rb_box">
@@ -325,7 +350,7 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td>
-                                                                                <input type="number" t-attf-data-main_field="service_ids" t-attf-data-subservice_field_id="{{s}}" data-subservice_name="service_line_ids" t-attf-data-field_id="{{ service }}" t-attf-id="price_{{ service }}_{{ s }}" name="price_unit"  t-attf-value="{{ s_value.price_unit }}" class="form-control o_pms_pwa_modal_number" />
+                                                                                <input type="number" t-attf-data-main_field="service_ids" t-attf-data-subservice_field_id="{{s}}" data-subservice_name="service_line_ids" t-attf-data-field_id="{{ service }}" t-attf-id="price_{{ service }}_{{ s }}" name="price_unit" t-attf-value="{{ s_value.price_unit }}" class="form-control o_pms_pwa_modal_number" />
                                                                             </td>
                                                                         </tr>
 
@@ -360,7 +385,7 @@
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
 
                                                 <option t-foreach="reservation.allowed_service_ids" t-as="key" t-att-value="key_value.id">
-                                                    <t t-esc="key_value.name" t-att-data-service_id="key_value.id"/>
+                                                    <t t-esc="key_value.name" t-att-data-service_id="key_value.id" />
                                                 </option>
 
                                             </select>
@@ -383,10 +408,10 @@
                                                         <t t-esc="texts.total_text || _t('Precio total reserva')" />
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12">
-                                                        <strong t-esc="reservation.price_total" class="price_total"/>
+                                                        <strong t-esc="reservation.price_total" class="price_total" />
                                                         <span>
                                                             (
-                                                            <t t-esc="reservation.price_tax"/>
+                                                            <t t-esc="reservation.price_tax" />
                                                             iva)
                                                         </span>
                                                     </div>
@@ -398,7 +423,7 @@
                                                         <t t-esc="texts.outstading_text || _t('Importe pendiente')" />
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12" t-if="reservation.folio_pending_amount">
-                                                        <strong t-esc="reservation.folio_pending_amount" class="pending_amount"/>
+                                                        <strong t-esc="reservation.folio_pending_amount" class="pending_amount" />
 
                                                         <!-- <span>
                                                             (
@@ -724,6 +749,13 @@
                             </div>
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <button t-attf-url="/print-checkins" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" data-dismiss="modal" aria-label="Print checkin">
+                                        <span>Print checkin</span>
+                                    </button>
+                                </div>
+                            </div>
                             <div class="bs-stepper" t-att-guest-data-id="reservation.id">
                                 <div class="bs-stepper-header" role="tablist">
                                     <!-- your steps here -->
@@ -746,15 +778,14 @@
                                     <t t-foreach="reservation.checkin_partner_ids" t-as="partner">
                                         <div t-att-id="'checkin_partner_'+partner" class="content" role="tabpanel" t-att-aria-labelledby="'checkin_partner_'+partner+'-trigger'">
                                             <div class="form-group form-field mt8">
-                                                <input type="hidden" name="guest_id" t-att-value="partner"/>
+                                                <input type="hidden" name="guest_id" t-att-value="partner" />
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="document_type">
                                                             Tipo de documento
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
-                                                            <option value="" t-att-selected="partner_value['document_type'] == false ? 'selected' : None">
-                                                            </option>
+                                                            <option value="" t-att-selected="partner_value['document_type'] == false ? 'selected' : None"></option>
                                                             <option value="D" t-att-selected="partner_value['document_type'] == 'D' ? 'selected' : None">
                                                                 DNI
                                                             </option>
@@ -843,8 +874,7 @@
                                                             Género
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="gender">
-                                                            <option name="gender" value="" t-att-selected="partner_value['gender'] == false ? 'selected' : None">
-                                                            </option>
+                                                            <option name="gender" value="" t-att-selected="partner_value['gender'] == false ? 'selected' : None"></option>
                                                             <option name="gender" value="male" t-att-selected="partner_value['gender'] == 'male' ? 'selected' : None">
                                                                 Hombre
                                                             </option>
@@ -853,6 +883,28 @@
                                                             </option>
                                                             <option name="gender" value="other" t-att-selected="partner_value['gender'] == 'other' ? 'selected' : None">
                                                                 Otro
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="gender">
+                                                            País
+                                                        </label>
+                                                        <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
+                                                            <option t-foreach="partner_value['allowed_country_ids']" t-as="country" t-att-value="country_value['id']" t-att-selected="partner_value['country_id'] === country_value['id'] ? 'selected' : None">
+                                                                <t t-esc="country_value['name']" />
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="gender">
+                                                            Provincia
+                                                        </label>
+                                                        <select data-select="allowed_state_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="state_id">
+                                                            <option t-foreach="partner_value['allowed_state_ids']" t-as="state" t-att-value="state_value['id']" t-att-selected="partner_value['state_id'] === state_value['id'] ? 'selected' : None">
+                                                                <t t-esc="state_value['name']" />
                                                             </option>
                                                         </select>
                                                     </div>

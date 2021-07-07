@@ -15,6 +15,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         allowed_segmentations: "segmentation_ids",
         room_numbers: "preferred_room_id",
         room_types: "room_type_id",
+        allowed_country_ids: "country_id",
+        allowed_state_ids: "state_id",
     };
     $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
         event.preventDefault();
@@ -453,7 +455,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 }
             );
 
-            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkin").on(
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkin, a.o_pms_pwa_button_checkin").on(
                 "click",
                 function (event) {
                     event.preventDefault();
@@ -1494,7 +1496,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 stepper: ".bs-stepper",
                             },
                         });
-                        $(".bs-stepper-content").on("change", "input", function (
+                        $(".bs-stepper-content").on("change", "input, select", function (
                             new_event
                         ) {
                             new_event.preventDefault(reservation_id);
@@ -1542,6 +1544,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     pms_property_id: element
                                         .find("input[name='pms_property_id']")
                                         .val(),
+                                    country_id: element
+                                        .find("select[name='country_id'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    state_id: element
+                                        .find("select[name='state_id'] option")
+                                        .filter(":selected")
+                                        .val(),
                                 });
                             }
 
@@ -1559,7 +1569,53 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     $.each(checkin_persons, function (key, value) {
                                         var check_partner_id =
                                             "#checkin_partner_" + key;
+
+                                        var allowed_fields = [
+                                            "allowed_country_ids",
+                                            "allowed_state_ids",
+                                        ];
+    
+                                        $.each(allowed_fields, function (akey, avalue) {
+                                            
+                                            try {
+                                                var select = $(
+                                                    check_partner_id +
+                                                        " select[data-select='" +
+                                                        avalue +
+                                                        "']"
+                                                );
+                                                console.log(select);
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
+            
+                                            if (select.length != 0) {
+                                                select.empty();
+                                                if (
+                                                    !value[relation_values[avalue]] &
+                                                    (value[relation_values[avalue]] == 0)
+                                                ) {
+                                                    select.append(
+                                                        '<option value="" selected></option>'
+                                                    );
+                                                }
+            
+                                                $.each(value[avalue], function (
+                                                    subkey,
+                                                    subvalue
+                                                ) {
+                                                    var option = new Option(
+                                                        subvalue["name"],
+                                                        subvalue["id"]
+                                                    );
+                                                    $(option).html(subvalue["name"]);
+                                                    select.append(option);
+                                                });
+                                            }
+                                        });
+
                                         $.each(value, function (key2, value2) {
+
                                             if (
                                                 key2 != "gender" &&
                                                 key2 != "document_type"
@@ -1643,6 +1699,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     pms_property_id: element
                                         .find("input[name='pms_property_id']")
                                         .val(),
+                                    country_id: element
+                                        .find("select[name='country_id'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    state_id: element
+                                        .find("select[name='state_id'] option")
+                                        .filter(":selected")
+                                        .val(),
                                 });
                             }
                             ajax.jsonRpc(button.attributes.url.value, "call", {
@@ -1652,7 +1716,32 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 self.displayDataAlert(new_data, data.id);
                             });
                         });
-                    }
+                        $(".o_pms_pwa_button_print_checkin").on("click", function (
+                            new_event
+                        ) {
+
+                            new_event.preventDefault();
+                            var self = this;
+                            var button = new_event.currentTarget;
+                            var reservation_id = false;
+                            // var reservation_ids = {};
+                            try {
+                                reservation_id = button.closest("tr").getAttribute("data-id");
+                            } catch (error) {
+                                try {
+                                    reservation_id = button.getAttribute("data-id");
+                                } catch (error) {
+                                    reservation_id = $("input[name='id']").val();
+                                }
+                            }
+
+                            ajax.jsonRpc("/print-checkins", "call", {
+                                reservation_ids: reservation_id,
+                            }).then(function (data) {
+                                console.log("OK");
+                            });
+                        });
+                    };
                 });
             });
         },
@@ -1784,6 +1873,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
             location.href = "/reservation/" + reservation_id;
         },
+
     });
 
     return publicWidget.registry.ReservationTableWidget;

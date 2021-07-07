@@ -516,12 +516,46 @@ div.o_pms_pwa_reservation_modal {
             }
         }
     }
+    .btn-persona-info{
+        width: 100%;
+        background-color: $bg-theme-color;
+        color: $black;
+        border: 1px $theme-color solid;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        text-align: left;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        > span.bg-red {
+            color: $white;
+            background-color: $red;
+            border-radius: 1rem;
+        }
+        > div {
+            background: unset;
+            background-color: $bg-theme-color;
+            > div.card.card-body {
+                background-color: transparent !important;
+                border: unset;
+            }
+        }
+
+    }
+    .btn-persona-info.dropdown-toggle::after {
+        margin-top: 0.55rem;
+        float:right;
+    }
+    .btn-persona-info-item.dropdown-menu {
+        width: 100%;
+    }
     .o_pms_pwa_messages::before {
         display: none;
     }
     .o_pms_pwa_messages::after {
         display: none;
     }
+
     .o_pms_pwa_messages {
         &.collapsed {
             background: url("/pms_pwa/static/img/svg/flecha-dropdown.svg")
@@ -558,6 +592,9 @@ div.o_pms_pwa_reservation_modal {
     }
     .o_pms_pwa_30w {
         width: 30%;
+    }
+    .o_pms_pwa_50w {
+        width: 50%;
     }
     .o_pms_pwa_price_link {
         color: $theme-color-text;
