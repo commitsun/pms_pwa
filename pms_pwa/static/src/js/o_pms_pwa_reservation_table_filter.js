@@ -1652,7 +1652,32 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 self.displayDataAlert(new_data, data.id);
                             });
                         });
-                    }
+                        $(".o_pms_pwa_button_print_checkin").on("click", function (
+                            new_event
+                        ) {
+
+                            new_event.preventDefault();
+                            var self = this;
+                            var button = new_event.currentTarget;
+                            var reservation_id = false;
+                            // var reservation_ids = {};
+                            try {
+                                reservation_id = button.closest("tr").getAttribute("data-id");
+                            } catch (error) {
+                                try {
+                                    reservation_id = button.getAttribute("data-id");
+                                } catch (error) {
+                                    reservation_id = $("input[name='id']").val();
+                                }
+                            }
+
+                            ajax.jsonRpc("/print-checkins", "call", {
+                                reservation_ids: reservation_id,
+                            }).then(function (data) {
+                                console.log("OK");
+                            });
+                        });
+                    };
                 });
             });
         },
@@ -1784,6 +1809,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
             location.href = "/reservation/" + reservation_id;
         },
+
     });
 
     return publicWidget.registry.ReservationTableWidget;

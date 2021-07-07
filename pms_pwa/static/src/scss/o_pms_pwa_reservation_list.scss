@@ -540,6 +540,14 @@ div.o_pms_pwa_reservation_modal {
                 border: unset;
             }
         }
+
+    }
+    .btn-persona-info.dropdown-toggle::after {
+        margin-top: 0.55rem;
+        float:right;
+    }
+    .btn-persona-info-item.dropdown-menu {
+        width: 100%;
     }
     .o_pms_pwa_messages::before {
         display: none;
@@ -584,6 +592,9 @@ div.o_pms_pwa_reservation_modal {
     }
     .o_pms_pwa_30w {
         width: 30%;
+    }
+    .o_pms_pwa_50w {
+        width: 50%;
     }
     .o_pms_pwa_price_link {
         color: $theme-color-text;

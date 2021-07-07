@@ -1880,8 +1880,8 @@ class TestFrontEnd(http.Controller):
         csrf=False,
         auth="public",
         website=True,
-        type="http",
-        methods=["GET"],
+        type="json",
+        methods=["POST"],
     )
     def print_checkint(self, reservation_ids=None, **kw):
         reservations = False
