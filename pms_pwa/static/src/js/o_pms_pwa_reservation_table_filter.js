@@ -453,7 +453,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 }
             );
 
-            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkin").on(
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkin, a.o_pms_pwa_button_checkin").on(
                 "click",
                 function (event) {
                     event.preventDefault();
