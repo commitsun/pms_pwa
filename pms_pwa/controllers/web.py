@@ -1057,7 +1057,7 @@ class TestFrontEnd(http.Controller):
         values = {}
         # REVIEW: revisar estructura
         values["reservations"] = []
-        room_ids = False
+        room_ids = []
         if post.get("selected_display") == "room_type":
             room_ids = (
                 request.env["pms.room"]
