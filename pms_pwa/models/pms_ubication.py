@@ -24,17 +24,3 @@ class PmsUbication(models.Model):
         pms_property_id = self.env.user.get_active_property_ids()[0]
         return len(self.room_ids.filtered(lambda r: r.pms_property_id.id == pms_property_id))
 
-    def _get_availability_rooms(self):
-        avail = 0
-        return 5
-        if self._context.get("checkin") and self._context.get("checkout"):
-            avail = self.env["pms.availability.plan"].get_count_rooms_available(
-                checkin=self._context.get("checkin"),
-                checkout=self._context.get("checkout"),
-                ubication_id=self.id,
-                pms_property_id=self.env.user.get_active_property_ids()[
-                    0
-                ],  # REVIEW: self._context.get("pms_property_id"),
-                pricelist_id=self._context.get("pricelist_id") or False,
-            )
-        return avail

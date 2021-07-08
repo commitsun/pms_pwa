@@ -130,6 +130,9 @@ class PmsReservation(models.Model):
                             .search([("code", "=", guest["document_type"])])
                             .id
                         )
+                    if guest.get("country_id"):
+                        guest["nationality_id"] = guest["country_id"])])
+                        guest.pop("country_id")
 
                     if guest.get("birthdate_date"):
                         guest["birthdate_date"] = datetime.datetime.strptime(
@@ -227,7 +230,22 @@ class PmsReservation(models.Model):
         """
         self.ensure_one()
         checkin_partners = {}
+        allowed_countries = []
+        for country in self.env["res.country"].search([]):
+            allowed_countries.append({
+                "id": country.id,
+                "name": country.name,
+            })
         for checkin in self.checkin_partner_ids:
+            allowed_states = []
+            if checkin.nationality_id:
+                for state in self.env["res.country.state"].search([
+                    ('country_id', '=', checkin.nationality_id.id)
+                ]):
+                    allowed_states.append({
+                        "id": state.id,
+                        "name": state.name,
+                    })
             checkin_partners[checkin.id] = {
                 "firstname": checkin.firstname,
                 "lastname": checkin.lastname,
@@ -248,16 +266,10 @@ class PmsReservation(models.Model):
                 "email": checkin.email,
                 "gender": checkin.gender,
                 "state": checkin.state,
-                 # TODO: pass allowed countries/states & id country selected
-                "allowed_country_ids": [
-                    {"id": 3, "name": "España"},
-                    {"id": 4, "name": "France"},
-                ],
-                "country_id": 3,
-                "allowed_state_ids": [
-                    {"id": 5, "name": "Lugo"},
-                    {"id": 6, "name": "Ourense"},
-                ],
+                # TODO: pass allowed countries/states & id country selected
+                "allowed_country_ids": allowed_countries,
+                "country_id": checkin.nationality_id.id,
+                "allowed_state_ids": allowed_states,
                 "state_id": 5,
                 }
         return checkin_partners
@@ -371,14 +383,19 @@ class PmsReservation(models.Model):
             if overbooking or state in ("cancel"):
                 rooms_available = self.env["pms.room"].search([])
             else:
-                rooms_available = self.env[
-                    "pms.room.type.availability"
-                ].rooms_available(
+                if self.pms_property_id:
+                    pms_property = self.pms_property_id
+                else:
+                    pms_property = self.env["pms.property"].browse(
+                        self.env.user.get_active_property_ids()[0]
+                    )
+                pms_property = pms_property.with_context(
                     checkin=checkin,
                     checkout=checkout,
                     room_type_id=False,  # Allow chosen any available room
                     current_lines=line_ids,
                 )
+                rooms_available = pms_property.free_room_ids
             allowed_rooms = []
             for room in rooms_available:
                 allowed_rooms.append(

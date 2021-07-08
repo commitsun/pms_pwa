@@ -1009,11 +1009,14 @@ class TestFrontEnd(http.Controller):
 
         if post and "pricelist" in post:
             pricelist = int(post["pricelist"])
+
+        pms_property = request.env["pms.property"].browse(pms_property_id)
         values = {
             "today": datetime.datetime.now(),
             "date_start": date_start,
             "page_name": "Calendar",
             "pricelist": pricelists,
+            "pms_property": pms_property,
             "default_pricelist": pricelist,
             "obj_list": obj_list,
             "date_list": date_list,
@@ -1054,24 +1057,25 @@ class TestFrontEnd(http.Controller):
         values = {}
         # REVIEW: revisar estructura
         values["reservations"] = []
-        if post.get("room_type_id"):
+        room_ids = False
+        if post.get("selected_display") == "room_type":
             room_ids = (
                 request.env["pms.room"]
                 .search(
                     [
                         ("pms_property_id", "=", pms_property_id),
-                        ("room_type_id", "=", int(post.get("room_type_id"))),
+                        ("room_type_id", "=", int(post.get("data_id"))),
                     ]
                 )
                 .ids
             )
-        if post.get("ubication_id"):
+        elif post.get("selected_display") == "ubication":
             room_ids = (
                 request.env["pms.room"]
                 .search(
                     [
                         ("pms_property_id", "=", pms_property_id),
-                        ("ubication_id", "=", int(post.get("ubication_id"))),
+                        ("ubication_id", "=", int(post.get("data_id"))),
                     ]
                 )
                 .ids

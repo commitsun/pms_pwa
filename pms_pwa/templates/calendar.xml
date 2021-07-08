@@ -99,6 +99,7 @@
                         <hr/>
                         <div class="table-responsive" >
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
+                            <input type="hidden" name="selected_display" t-attf-value="{{ selected_display }}" />
                             <table id="calendar_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
                                 <thead >
                                     <tr >
@@ -113,9 +114,10 @@
                                                     <a t-att-href="'?previous_day='+date_start.strftime('%d/%m/%Y')" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
                                                 </t>
                                                 <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
+                                                <t t-set="availability_day" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
                                                 <span class="float-right">
                                                     <img src="/pms_pwa/static/img/svg/icon_house.svg" alt="avail icon" title="avail icon" />
-                                                    8
+                                                    <t t-esc="availability_day"/>
                                                 </span>
                                                 <t t-if="day_last">
                                                     <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
@@ -142,7 +144,12 @@
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
-                                                <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, pms_property_id=current_property)._get_availability_rooms()"></t>
+                                                <span t-if="selected_display == 'room_type'">
+                                                    <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), room_type_id=obj.id, pricelist_id=default_pricelist).availability"></t>
+                                                </span>
+                                                <span t-if="selected_display == 'ubication'">
+                                                    <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), ubication_id=obj.id, pricelist_id=default_pricelist).availability"></t>
+                                                </span>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
@@ -153,7 +160,7 @@
                                                         </span>
                                                     </p>
                                                     <div class="o_pms_pwa_content">
-                                                        <span t-if="current_property and selected_display == 'room_type'" class="o_pms_pwa_type"><t t-esc="obj.with_context(date=date_list[l], pms_property_id=current_property)._get_count_reservations_date()"/> busy</span>
+                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.total_rooms_count - availability_room"/> busy</span>
                                                         <span t-if="selected_display == 'room_type'" class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
 
                                                     </div>

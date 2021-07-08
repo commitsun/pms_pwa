@@ -32,18 +32,20 @@ odoo.define("pms_pwa.calendar", function (require) {
 
         _onClickGetCalendarLine: function (event) {
             event.preventDefault();
-            var ubication_id = event.currentTarget.getAttribute("data-id");
+            var data_id = event.currentTarget.getAttribute("data-id");
             var date_list = $('input[name="date_list"]').val();
+            var selected_display = $('input[name="selected_display"]').val();
             ajax.jsonRpc("/calendar/line", "call", {
-                ubication_id: ubication_id,
+                data_id: data_id,
                 range_date: date_list,
+                selected_display: selected_display,
             }).then(function (data) {
                 var html = core.qweb.render("pms_pwa.calendar_line", {
-                    ubication_id: ubication_id,
+                    data_id: data_id,
                     obj_list: data.reservations,
                     csrf_token: csrf_token,
                 });
-                $(String("#collapse_accordion_" + ubication_id)).html(html);
+                $(String("#collapse_accordion_" + data_id)).html(html);
             });
         },
     });

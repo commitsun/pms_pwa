@@ -50,18 +50,14 @@ class RoomTypes(http.Controller):
             reservation_line_ids = False
         else:
             reservation_line_ids = reservation.reservation_line_ids.ids
-
-        rooms_avail = (
-            request.env["pms.availability.plan"]
-            .sudo()
-            .rooms_available(
-                checkin=checkin,
-                checkout=checkout,
-                current_lines=reservation_line_ids,
-                pricelist_id=pricelist_id,
-                pms_property_id=pms_property_id,
-            )
+        pms_property = request.env["pms.property"].browse(pms_property_id)
+        pms_property = pms_property.with_context(
+            checkin=checkin,
+            checkout=checkout,
+            current_lines=reservation_line_ids,
+            pricelist_id=pricelist_id,
         )
+        rooms_avail = pms_property.free_room_ids
 
         pms_room_types = request.env["pms.room.type"].sudo().search([])
 
