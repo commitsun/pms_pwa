@@ -131,8 +131,11 @@ class PmsReservation(models.Model):
                             .id
                         )
                     if guest.get("country_id"):
-                        guest["nationality_id"] = guest["country_id"]
+                        guest["nationality_id"] = int(guest["country_id"])
                         guest.pop("country_id")
+
+                    if guest.get("state_id"):
+                        guest["state_id"] = int(guest["state_id"])
 
                     if guest.get("birthdate_date"):
                         guest["birthdate_date"] = datetime.datetime.strptime(
@@ -266,12 +269,11 @@ class PmsReservation(models.Model):
                 "email": checkin.email,
                 "gender": checkin.gender,
                 "state": checkin.state,
-                # TODO: pass allowed countries/states & id country selected
                 "allowed_country_ids": allowed_countries,
-                "country_id": checkin.nationality_id.id,
+                "country_id": checkin.nationality_id.id or False,
                 "allowed_state_ids": allowed_states,
-                "state_id": 5,
-                }
+                "state_id": checkin.state_id.id or False,
+            }
         return checkin_partners
 
     def _get_service_ids(self):

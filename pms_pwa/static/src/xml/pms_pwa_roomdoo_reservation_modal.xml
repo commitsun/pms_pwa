@@ -888,7 +888,7 @@
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
-                                                        <label class="control-label col-12" for="gender">
+                                                        <label class="control-label col-12" for="country">
                                                             País
                                                         </label>
                                                         <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
@@ -899,7 +899,7 @@
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
-                                                        <label class="control-label col-12" for="gender">
+                                                        <label class="control-label col-12" for="state">
                                                             Provincia
                                                         </label>
                                                         <select data-select="allowed_state_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="state_id">
