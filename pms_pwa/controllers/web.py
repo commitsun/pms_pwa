@@ -30,7 +30,7 @@ class PWAHome(Home):
             request.session.uid
         ).has_group("pms_pwa.group_pms_property_user"):
             return http.local_redirect(
-                "/reservation/list", query=request.params, keep_hash=True
+                "/calendar", query=request.params, keep_hash=True
             )
 
         return http.redirect_with_hash("/web/login")
@@ -40,7 +40,7 @@ class PWAHome(Home):
         if not redirect and request.env["res.users"].sudo().browse(uid).has_group(
             "pms_pwa.group_pms_property_user"
         ):
-            return "/reservation/list"
+            return "/calendar"
         return super(PWAHome, self)._login_redirect(uid, redirect=redirect)
 
 
