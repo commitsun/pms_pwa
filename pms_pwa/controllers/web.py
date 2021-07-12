@@ -1674,24 +1674,10 @@ class TestFrontEnd(http.Controller):
             "partner_id": partner_vals,
             "unread_msg": len(notifications),
             "messages": notifications,
-            "room_type_id": {
-                "id": reservation.room_type_id.id,
-                "name": reservation.room_type_id.name,
-                "default_code": reservation.room_type_id.default_code,
-            },
+            "room_type_id": reservation.room_type_id.id,
             "preferred_room_id": reservation.preferred_room_id.id,
-            "channel_type_id": {
-                "id": reservation.channel_type_id.id
-                if reservation.channel_type_id
-                else False,
-                "name": reservation.channel_type_id.name
-                if reservation.channel_type_id
-                else False,
-            },
-            "agency_id": {
-                "id": reservation.agency_id.id if reservation.agency_id else False,
-                "name": reservation.agency_id.name if reservation.agency_id else False,
-            },
+            "channel_type_id": reservation.channel_type_id.id if reservation.channel_type_id else False,
+            "agency_id": reservation.agency_id.id if reservation.agency_id else False,
             "nights": reservation.nights,
             "checkin": reservation.checkin.strftime(
                 get_lang(request.env).date_format
@@ -1721,10 +1707,7 @@ class TestFrontEnd(http.Controller):
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_room_id": {
-                "id": reservation.board_service_room_id.id,
-                "name": reservation.board_service_room_id.display_name,
-            },
+            "board_service_room_id": reservation.board_service_room_id.id,
             "allowed_service_ids": reservation._get_allowed_service_ids(),
             # TODO: Review error buttons view
             # "primary_button": primary_button,
