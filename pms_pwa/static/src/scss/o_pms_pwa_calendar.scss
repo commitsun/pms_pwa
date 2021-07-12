@@ -827,14 +827,14 @@ section.o_pms_pwa_roomdoo {
                 }
             }
             &_price {
-                font-weight: bold;
-                font-size: 14px;
+                font-size: 12px;
                 //margin-left: 0.5rem;
             }
             &_name {
+                font-weight: bold;
+                font-size: 14px;
                 margin-left: 3.2rem;
                 margin-top: -1rem;
-                font-size: 12px;
                 width: 100%;
                 // overflow
                 white-space: nowrap;

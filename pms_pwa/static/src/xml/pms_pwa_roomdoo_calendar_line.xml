@@ -33,6 +33,7 @@
                                             </span>
 
                                         </p>
+
                                         <p class="o_pms_pwa_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
                                             <t t-esc="reservation.reservation_info.partner_name" />
                                         </p>
@@ -51,14 +52,14 @@
                                                     <t t-esc="reservation.reservation_info.price" />
                                                     €
                                                 </span>
-
                                                 <span t-if="reservation.reservation_info.checkout_in_range == true and reservation_last == false" t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
                                                     <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.icon_payment }}.svg" alt="check" title="check icon" />
                                                 </span>
+                                                <p class="o_pms_pwa_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
+                                                    <t t-esc="reservation.reservation_info.partner_name" />
+                                                </p>
                                             </p>
-                                            <p class="o_pms_pwa_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
-                                                <t t-esc="reservation.reservation_info.partner_name" />
-                                            </p>
+
                                         </td>
                                     </t>
                                     <t t-else="">
@@ -74,7 +75,6 @@
                                                     <t t-esc="reservation.reservation_info.price" />
                                                     €
                                                 </span>
-
                                                 <span t-if="reservation.reservation_info.checkout_in_range == true and reservation_last == false" t-att-class="'badge o_pms_pwa_calendar_line_badge bg-'+reservation.reservation_info.status">
                                                     <img class="o_pms_pwa_calendar_line_icon" t-attf-src="/pms_pwa/static/img/svg/calendar-{{ reservation.reservation_info.icon_payment }}.svg" alt="check" title="check icon" />
                                                 </span>
@@ -82,6 +82,7 @@
                                             <p class="o_pms_pwa_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
                                                 <t t-esc="reservation.reservation_info.partner_name" />
                                             </p>
+
                                         </td>
                                     </t>
                                 </t>
