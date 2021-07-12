@@ -625,7 +625,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         /* End missin data */
                         var room_types = [];
                         var room_numbers = [];
-                        var payment_methods = ["Credit card", "Cash"];
+                        // var payment_methods = ["Credit card", "Cash"];
                         ajax.jsonRpc("/room_types", "call", {
                             pms_property_id: reservation_data.pms_property_id,
                             pricelist_id: reservation_data.pricelist_id,
@@ -649,7 +649,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             {
                                                 reservation: reservation_data,
                                                 room_types: room_types,
-                                                payment_methods: payment_methods,
+                                                payment_methods: reservation_data.payment_methods,
                                                 room_numbers: room_numbers,
                                                 texts: {
                                                     reservation_text: this
@@ -1574,9 +1574,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "allowed_country_ids",
                                             "allowed_state_ids",
                                         ];
-    
+
                                         $.each(allowed_fields, function (akey, avalue) {
-                                            
+
                                             try {
                                                 var select = $(
                                                     check_partner_id +
@@ -1588,7 +1588,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             } catch (error) {
                                                 console.log(error);
                                             }
-            
+
                                             if (select.length != 0) {
                                                 select.empty();
                                                 if (
@@ -1599,7 +1599,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         '<option value="" selected></option>'
                                                     );
                                                 }
-            
+
                                                 $.each(value[avalue], function (
                                                     subkey,
                                                     subvalue
