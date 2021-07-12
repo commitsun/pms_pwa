@@ -28,6 +28,16 @@ class PmsReservation(models.Model):
         help="Indicates if the image was auto-generated to overwrite if renamed",
         default=False,
     )
+    color_state = fields.Char(
+        string="Color state",
+        help="Define state to color in PWA",
+        compute="_compute_color_state"
+    )
+    icon_payment = fields.Char(
+        string="Icon Payment state",
+        help="Define payment to icon in PWA",
+        compute="_compute_icon_payment"
+    )
 
     def _compute_pwa_board_service_tags(self):
         for record in self:
@@ -526,3 +536,31 @@ class PmsReservation(models.Model):
                 }
             )
         return allowed_segmentations
+
+    def _compute_color_state(self):
+        for record in self:
+            if record.to_assign:
+                record.color_state = "to-assign"
+            elif record.reservation_type == "out":
+                record.color_state = "out-service"
+            elif record.reservation_type == "staff":
+                record.color_state = "staff"
+            elif record.state == "draft":
+                record.color_state = "prereservation"
+            elif record.state == "confirm":
+                record.color_state = "confirmed"
+            elif record.state == "onboard":
+                record.color_state = "checkin"
+            elif record.state == "done":
+                record.color_state = "checkout"
+            else:
+                record.color_state = "danger"
+
+    def _compute_icon_payment(self):
+        for record in self:
+            if record.folio_payment_state == "paid":
+                record.icon_payment = "paid"
+            else:
+                record.icon_payment = "pending"
+
+

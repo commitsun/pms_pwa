@@ -525,6 +525,34 @@ h4.collapsed {
 .rounded-circle {
     border: 2px solid $theme-color;
 }
+.rounded-circle_prereservation {
+    border: 2px solid #A24680;
+    border-radius: 50% !important;
+}
+.rounded-circle_confirmed {
+    border: 2px solid $theme-color;
+    border-radius: 50% !important;
+}
+.rounded-circle_checkin {
+    border: 2px solid #00BA39;
+    border-radius: 50% !important;
+}
+.rounded-circle_checkout {
+    border: 2px solid #7E7E7E;
+    border-radius: 50% !important;
+}
+.rounded-circle_out-service {
+    border: 2px solid #000000;
+    border-radius: 50% !important;
+}
+.rounded-circle_staff {
+    border: 2px solid #C08686;
+    border-radius: 50% !important;
+}
+.rounded-circle_to-assign {
+    border: 2px solid #ED722E;
+    border-radius: 50% !important;
+}
 
 .o_pms_pwa_reservation_form {
     .o_pms_pwa_modal_buttons {
