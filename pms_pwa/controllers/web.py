@@ -730,6 +730,7 @@ class TestFrontEnd(http.Controller):
             "folio_internal_comment": reservation.folio_internal_comment,
             "payment_methods": self._get_allowed_payments_journals(),
             "reservation_types": self._get_reservation_types(),
+            "reservation_type": reservation.folio_id.reservation_type,
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
@@ -738,10 +739,7 @@ class TestFrontEnd(http.Controller):
             "service_ids": reservation._get_service_ids(),
             "reservation_line_ids": reservation._get_reservation_line_ids(),
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_room_id": {
-                "id": reservation.board_service_room_id.id,
-                "name": reservation.board_service_room_id.display_name,
-            },
+            "board_service_room_id": reservation.board_service_room_id.id if reservation.board_service_room_id else False,
             "allowed_service_ids": reservation._get_allowed_service_ids(),
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
@@ -1707,7 +1705,7 @@ class TestFrontEnd(http.Controller):
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_room_id": reservation.board_service_room_id.id,
+            "board_service_room_id": reservation.board_service_room_id.id if reservation.board_service_room_id else False,
             "allowed_service_ids": reservation._get_allowed_service_ids(),
             # TODO: Review error buttons view
             # "primary_button": primary_button,

@@ -335,7 +335,7 @@ class PmsReservation(models.Model):
             allowed_board_services.append(
                 {
                     "id": self.board_service_room_id.id,
-                    "name": self.board_service_room_id.pms_board_service_id.name,
+                    "name": self.board_service_room_id.pms_board_service_id.name if self.board_service_room_id else '',
                 }
             )
         return allowed_board_services or False
