@@ -167,9 +167,13 @@ class PmsReservation(models.Model):
 
                     vals = {}
                     for checkin_field in guest:
+                        relational = checkin_partner._fields[checkin_field].relational
+                        record_value = checkin_partner[checkin_field]
+                        if relational:
+                            record_value = record_value.id
                         if (
                             guest.get(checkin_field)
-                            and guest.get(checkin_field) != checkin_partner[checkin_field]
+                            and guest.get(checkin_field) != record_value
                         ):
                             vals[checkin_field] = guest[checkin_field]
                     pprint(vals)
