@@ -1655,7 +1655,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             $.each(value, function (key2, value2) {
                                                 if (
                                                     key2 != "gender" &&
-                                                    key2 != "document_type"
+                                                    key2 != "document_type" &&
+                                                    key2 != "country_id" &&
+                                                    key2 != "state_id"
                                                 ) {
                                                     var input = $(
                                                         check_partner_id +
