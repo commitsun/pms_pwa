@@ -125,7 +125,6 @@
                                             </th>
                                         </t>
                                     </tr>
-
                                 </thead>
                                 <tbody>
                                     <t t-foreach="obj_list" t-as="obj">
