@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="13"
+   height="9.692"
+   viewBox="0 0 13 9.692"
+   version="1.1"
+   id="svg57"
+   sodipodi:docname="calendar-paid.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <metadata
+     id="metadata63">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs61" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1720"
+     inkscape:window-height="1403"
+     id="namedview59"
+     showgrid="false"
+     inkscape:zoom="24.349978"
+     inkscape:cx="6.5"
+     inkscape:cy="4.8460002"
+     inkscape:window-x="1720"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg57" />
+  <path
+     id="Trazado_2410"
+     data-name="Trazado 2410"
+     d="m 5.9260678,9.2089322 a 1.51,1.51 0 0 1 -2.135,0 l -3.308,-3.308 a 1.5093195,1.5093195 0 0 1 2.135,-2.134 l 1.971,1.97 a 0.382,0.382 0 0 0 0.539,0 l 5.3360002,-5.336 a 1.509673,1.509673 0 1 1 2.135,2.135 z"
+     inkscape:connector-curvature="0"
+     style="fill:#daf7fc;fill-opacity:1" />
+</svg>

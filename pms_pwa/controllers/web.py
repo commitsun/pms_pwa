@@ -1109,7 +1109,8 @@ class TestFrontEnd(http.Controller):
                             + str(reservation.id)
                             + "/partner_image_128",
                             "price": round(reservation.folio_pending_amount, 2),
-                            "status": "success",  # TODO
+                            "status": reservation.color_state,
+                            "icon_payment": reservation.icon_payment,
                             "nigths": (
                                 max_reservation_date
                                 + timedelta(days=1)
@@ -1176,7 +1177,8 @@ class TestFrontEnd(http.Controller):
                             "price": round(reservation.folio_pending_amount, 2)
                             if main_split
                             else False,
-                            "status": "danger",  # TODO
+                            "status": color_state,
+                            "icon_payment": reservation.icon_payment,
                             "nigths": nights,
                         },
                     }
