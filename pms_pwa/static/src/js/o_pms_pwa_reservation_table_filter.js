@@ -455,13 +455,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 }
             );
 
-            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkin, a.o_pms_pwa_button_checkin").on(
-                "click",
-                function (event) {
-                    event.preventDefault();
-                    self._onClickCheckinButton(event);
-                }
-            );
+            $(
+                "div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkin, a.o_pms_pwa_button_checkin"
+            ).on("click", function (event) {
+                event.preventDefault();
+                self._onClickCheckinButton(event);
+            });
 
             $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_checkout").on(
                 "click",
@@ -551,10 +550,20 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     "</span>";
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
-                                )[6].innerHTML = Math.round((updated_data.folio_id.amount_total + Number.EPSILON) * 100) / 100;
+                                )[6].innerHTML =
+                                    Math.round(
+                                        (updated_data.folio_id.amount_total +
+                                            Number.EPSILON) *
+                                            100
+                                    ) / 100;
                                 $(String("#reservation_" + data_id)).find(
                                     "td"
-                                )[7].innerHTML = Math.round((updated_data.folio_id.outstanding_vat + Number.EPSILON) * 100) / 100;
+                                )[7].innerHTML =
+                                    Math.round(
+                                        (updated_data.folio_id.outstanding_vat +
+                                            Number.EPSILON) *
+                                            100
+                                    ) / 100;
                                 if (
                                     updated_data.board_service_room_id &&
                                     updated_data.board_service_room_id.name
@@ -649,7 +658,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             {
                                                 reservation: reservation_data,
                                                 room_types: room_types,
-                                                payment_methods: reservation_data.payment_methods,
+                                                payment_methods:
+                                                    reservation_data.payment_methods,
                                                 room_numbers: room_numbers,
                                                 texts: {
                                                     reservation_text: this
@@ -870,7 +880,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             ).reservation;
                                                             if (
                                                                 values &&
-                                                                "add_service" in values
+                                                                ("add_service" in
+                                                                    values ||
+                                                                    "board_service_room_id" in
+                                                                        values)
                                                             ) {
                                                                 self.displayDataAlert(
                                                                     new_data
@@ -1308,8 +1321,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         },
                                                         opens: "left",
                                                         showCustomRangeLabel: false,
-                                                        startDate: reservation_data.checkin,
-                                                        endDate: reservation_data.checkout,
+                                                        startDate:
+                                                            reservation_data.checkin,
+                                                        endDate:
+                                                            reservation_data.checkout,
                                                     },
                                                     function (start, end, label) {
                                                         $('input[name="checkin"]').val(
@@ -1354,8 +1369,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         },
                                                         opens: "left",
                                                         showCustomRangeLabel: false,
-                                                        startDate: reservation_data.checkin,
-                                                        endDate: reservation_data.checkout,
+                                                        startDate:
+                                                            reservation_data.checkin,
+                                                        endDate:
+                                                            reservation_data.checkout,
                                                     },
                                                     function (start, end, label) {
                                                         $('input[name="checkin"]').val(
@@ -1496,159 +1513,178 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 stepper: ".bs-stepper",
                             },
                         });
-                        $(".bs-stepper-content").on("change", "input, select", function (
-                            new_event
-                        ) {
-                            new_event.preventDefault(reservation_id);
-                            var guest_list = [];
-                            var selector =
-                                "div.bs-stepper[guest-data-id=" +
-                                reservation_id +
-                                "] .content";
-                            var contents = $(selector);
+                        $(".bs-stepper-content").on(
+                            "change",
+                            "input, select",
+                            function (new_event) {
+                                new_event.preventDefault(reservation_id);
+                                var guest_list = [];
+                                var selector =
+                                    "div.bs-stepper[guest-data-id=" +
+                                    reservation_id +
+                                    "] .content";
+                                var contents = $(selector);
 
-                            for (var i = 1; i <= contents.length; i++) {
-                                var element = $(
-                                    "#" + contents[i - 1].getAttribute("id")
-                                );
-                                guest_list.push({
-                                    id: element.find("input[name='guest_id']").val(),
-                                    firstname: element
-                                        .find("input[name='firstname']")
-                                        .val(),
-                                    lastname: element
-                                        .find("input[name='lastname']")
-                                        .val(),
-                                    lastname2: element
-                                        .find("input[name='lastname2']")
-                                        .val(),
-                                    birthdate_date: element
-                                        .find("input[name='birthdate_date']")
-                                        .val(),
-                                    document_number: element
-                                        .find("input[name='document_number']")
-                                        .val(),
-                                    document_type: element
-                                        .find("select[name='document_type'] option")
-                                        .filter(":selected")
-                                        .val(),
-                                    document_expedition_date: element
-                                        .find("input[name='document_expedition_date']")
-                                        .val(),
-                                    gender: element
-                                        .find("select[name='gender'] option")
-                                        .filter(":selected")
-                                        .val(),
-                                    mobile: element.find("input[name='mobile']").val(),
-                                    email: element.find("input[name='email']").val(),
-                                    pms_property_id: element
-                                        .find("input[name='pms_property_id']")
-                                        .val(),
-                                    country_id: element
-                                        .find("select[name='country_id'] option")
-                                        .filter(":selected")
-                                        .val(),
-                                    state_id: element
-                                        .find("select[name='state_id'] option")
-                                        .filter(":selected")
-                                        .val(),
+                                for (var i = 1; i <= contents.length; i++) {
+                                    var element = $(
+                                        "#" + contents[i - 1].getAttribute("id")
+                                    );
+                                    guest_list.push({
+                                        id: element
+                                            .find("input[name='guest_id']")
+                                            .val(),
+                                        firstname: element
+                                            .find("input[name='firstname']")
+                                            .val(),
+                                        lastname: element
+                                            .find("input[name='lastname']")
+                                            .val(),
+                                        lastname2: element
+                                            .find("input[name='lastname2']")
+                                            .val(),
+                                        birthdate_date: element
+                                            .find("input[name='birthdate_date']")
+                                            .val(),
+                                        document_number: element
+                                            .find("input[name='document_number']")
+                                            .val(),
+                                        document_type: element
+                                            .find("select[name='document_type'] option")
+                                            .filter(":selected")
+                                            .val(),
+                                        document_expedition_date: element
+                                            .find(
+                                                "input[name='document_expedition_date']"
+                                            )
+                                            .val(),
+                                        gender: element
+                                            .find("select[name='gender'] option")
+                                            .filter(":selected")
+                                            .val(),
+                                        mobile: element
+                                            .find("input[name='mobile']")
+                                            .val(),
+                                        email: element
+                                            .find("input[name='email']")
+                                            .val(),
+                                        pms_property_id: element
+                                            .find("input[name='pms_property_id']")
+                                            .val(),
+                                        country_id: element
+                                            .find("select[name='country_id'] option")
+                                            .filter(":selected")
+                                            .val(),
+                                        state_id: element
+                                            .find("select[name='state_id'] option")
+                                            .filter(":selected")
+                                            .val(),
+                                    });
+                                }
+
+                                ajax.jsonRpc(
+                                    "/reservation/" + reservation_id + "/checkin",
+                                    "call",
+                                    {
+                                        guests_list: guest_list,
+                                        action_on_board: false,
+                                    }
+                                ).then(function (new_data) {
+                                    try {
+                                        var checkin_persons =
+                                            new_data.checkin_partner_ids;
+
+                                        $.each(checkin_persons, function (key, value) {
+                                            var check_partner_id =
+                                                "#checkin_partner_" + key;
+
+                                            var allowed_fields = [
+                                                "allowed_country_ids",
+                                                "allowed_state_ids",
+                                            ];
+
+                                            $.each(allowed_fields, function (
+                                                akey,
+                                                avalue
+                                            ) {
+                                                try {
+                                                    var select = $(
+                                                        check_partner_id +
+                                                            " select[data-select='" +
+                                                            avalue +
+                                                            "']"
+                                                    );
+                                                    console.log(select);
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+
+                                                if (select.length != 0) {
+                                                    select.empty();
+                                                    if (
+                                                        !value[
+                                                            relation_values[avalue]
+                                                        ] &
+                                                        (value[
+                                                            relation_values[avalue]
+                                                        ] ==
+                                                            0)
+                                                    ) {
+                                                        select.append(
+                                                            '<option value="" selected></option>'
+                                                        );
+                                                    }
+
+                                                    $.each(value[avalue], function (
+                                                        subkey,
+                                                        subvalue
+                                                    ) {
+                                                        var option = new Option(
+                                                            subvalue["name"],
+                                                            subvalue["id"]
+                                                        );
+                                                        $(option).html(
+                                                            subvalue["name"]
+                                                        );
+                                                        select.append(option);
+                                                    });
+                                                }
+                                            });
+
+                                            $.each(value, function (key2, value2) {
+                                                if (
+                                                    key2 != "gender" &&
+                                                    key2 != "document_type"
+                                                ) {
+                                                    var input = $(
+                                                        check_partner_id +
+                                                            " input[name='" +
+                                                            key2 +
+                                                            "']"
+                                                    );
+                                                    if (value2) {
+                                                        input.val(value2);
+                                                    }
+                                                } else {
+                                                    if (value2) {
+                                                        $(
+                                                            check_partner_id +
+                                                                " select[name='" +
+                                                                key2 +
+                                                                "'] option[value='" +
+                                                                value2 +
+                                                                "']"
+                                                        ).prop("selected", true);
+                                                    }
+                                                }
+                                            });
+                                        });
+                                    } catch (err) {
+                                        console.log(err);
+                                    }
+                                    //self.displayDataAlert(new_data, data.id);
                                 });
                             }
-
-                            ajax.jsonRpc(
-                                "/reservation/" + reservation_id + "/checkin",
-                                "call",
-                                {
-                                    guests_list: guest_list,
-                                    action_on_board: false,
-                                }
-                            ).then(function (new_data) {
-                                try {
-                                    var checkin_persons = new_data.checkin_partner_ids;
-
-                                    $.each(checkin_persons, function (key, value) {
-                                        var check_partner_id =
-                                            "#checkin_partner_" + key;
-
-                                        var allowed_fields = [
-                                            "allowed_country_ids",
-                                            "allowed_state_ids",
-                                        ];
-
-                                        $.each(allowed_fields, function (akey, avalue) {
-
-                                            try {
-                                                var select = $(
-                                                    check_partner_id +
-                                                        " select[data-select='" +
-                                                        avalue +
-                                                        "']"
-                                                );
-                                                console.log(select);
-                                            } catch (error) {
-                                                console.log(error);
-                                            }
-
-                                            if (select.length != 0) {
-                                                select.empty();
-                                                if (
-                                                    !value[relation_values[avalue]] &
-                                                    (value[relation_values[avalue]] == 0)
-                                                ) {
-                                                    select.append(
-                                                        '<option value="" selected></option>'
-                                                    );
-                                                }
-
-                                                $.each(value[avalue], function (
-                                                    subkey,
-                                                    subvalue
-                                                ) {
-                                                    var option = new Option(
-                                                        subvalue["name"],
-                                                        subvalue["id"]
-                                                    );
-                                                    $(option).html(subvalue["name"]);
-                                                    select.append(option);
-                                                });
-                                            }
-                                        });
-
-                                        $.each(value, function (key2, value2) {
-
-                                            if (
-                                                key2 != "gender" &&
-                                                key2 != "document_type"
-                                            ) {
-                                                var input = $(
-                                                    check_partner_id +
-                                                        " input[name='" +
-                                                        key2 +
-                                                        "']"
-                                                );
-                                                if (value2) {
-                                                    input.val(value2);
-                                                }
-                                            } else {
-                                                if (value2) {
-                                                    $(
-                                                        check_partner_id +
-                                                            " select[name='" +
-                                                            key2 +
-                                                            "'] option[value='" +
-                                                            value2 +
-                                                            "']"
-                                                    ).prop("selected", true);
-                                                }
-                                            }
-                                        });
-                                    });
-                                } catch (err) {
-                                    console.log(err);
-                                }
-                                //self.displayDataAlert(new_data, data.id);
-                            });
-                        });
+                        );
                         /* eslint-enable no-alert */
                         $(".o_pms_pwa_button_checkin_confirm").on("click", function (
                             new_event
@@ -1719,14 +1755,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         $(".o_pms_pwa_button_print_checkin").on("click", function (
                             new_event
                         ) {
-
                             new_event.preventDefault();
                             var self = this;
                             var button = new_event.currentTarget;
                             var reservation_id = false;
                             // var reservation_ids = {};
                             try {
-                                reservation_id = button.closest("tr").getAttribute("data-id");
+                                reservation_id = button
+                                    .closest("tr")
+                                    .getAttribute("data-id");
                             } catch (error) {
                                 try {
                                     reservation_id = button.getAttribute("data-id");
@@ -1741,7 +1778,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 console.log("OK");
                             });
                         });
-                    };
+                    }
                 });
             });
         },
@@ -1873,7 +1910,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
             location.href = "/reservation/" + reservation_id;
         },
-
     });
 
     return publicWidget.registry.ReservationTableWidget;
