@@ -1472,7 +1472,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         date_options
                                     );
                                     this.element.val(select_date);
-                                    this.element.trigger("change");
+                                    // this.element.trigger("change");
                                 }
                             );
                         } else {
@@ -1498,7 +1498,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         date_options
                                     );
                                     this.element.val(select_date);
-                                    this.element.trigger("change");
+                                    // this.element.trigger("change");
                                 }
                             );
                         }

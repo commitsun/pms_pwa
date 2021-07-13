@@ -234,12 +234,12 @@ class TestFrontEnd(http.Controller):
             try:
                 params = http.request.jsonrequest.get("params")
                 _logger.info(params)
-                reservation.pwa_action_checkin(
+                res = reservation.pwa_action_checkin(
                     params["guests_list"], reservation_id, params.get("action_on_board")
                 )
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
-            if params.get("action_on_board"):
+            if res and params.get("action_on_board"):
                 return json.dumps(
                     {
                         "result": True,

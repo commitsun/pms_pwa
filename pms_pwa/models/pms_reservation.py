@@ -150,13 +150,13 @@ class PmsReservation(models.Model):
                     if guest.get("birthdate_date"):
                         guest["birthdate_date"] = datetime.datetime.strptime(
                             guest["birthdate_date"], get_lang(self.env).date_format
-                        )
+                        ).date()
 
                     if guest.get("document_expedition_date"):
                         guest["document_expedition_date"] = datetime.datetime.strptime(
                             guest["document_expedition_date"],
                             get_lang(self.env).date_format,
-                        )
+                        ).date()
 
                     checkin_partner = self.env["pms.checkin.partner"].browse(
                         int(guest["id"])
@@ -179,10 +179,11 @@ class PmsReservation(models.Model):
                     pprint(vals)
                     if len(vals) >= 1:
                         checkin_partner.write(vals)
-                    checkin_partner.flush()
+                        checkin_partner.flush()
 
                     if action_on_board:
                         checkin_partner.action_on_board()
+            return True
         except Exception as e:
             return json.dumps({"result": False, "message": str(e)})
 
@@ -364,7 +365,10 @@ class PmsReservation(models.Model):
                 ("pms_property_ids", "in", self.pms_property_id.id),
             ]
         )
-        allowed_services = []
+        allowed_services = [{
+            "id": False,
+            "name": '',
+        }]
         for service in services:
             allowed_services.append(
                 {
