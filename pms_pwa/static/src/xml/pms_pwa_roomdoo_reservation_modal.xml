@@ -116,7 +116,7 @@
                                                 <t t-esc="texts.room_type_text || _t('Tipo de habitación')" />
                                             </label>
                                             <select
-                                                t-att-required='reservation.required_fields.indexOf("room_type_id") != -1 ? "required" : None'
+                                                t-att-disabled='reservation.required_fields.indexOf("room_type_id") != -1 ? "disabled" : None'
                                                 t-att-readonly='reservation.readonly_fields.indexOf("room_type_id") != -1 ? "readonly" : None'
                                                 data-select="room_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id">
                                                 <option t-foreach="room_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.room_type_id.id === key.id ? 'selected' : None">
@@ -129,7 +129,7 @@
                                                 Tarifa
                                             </label>
                                             <select
-                                                t-att-required='reservation.required_fields.indexOf("pricelist_id") != -1 ? "required" : None'
+                                                t-att-disabled='reservation.required_fields.indexOf("pricelist_id") != -1 ? "disabled" : None'
                                                 t-att-readonly='reservation.readonly_fields.indexOf("pricelist_id") != -1 ? "readonly" : None'
                                                 data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id">
                                                 <option t-foreach="reservation.allowed_pricelists" t-as="key" t-att-value="key.id" t-att-selected="reservation.pricelist_id === key.id ? 'selected' : None">
@@ -144,7 +144,7 @@
                                                 <t t-esc="texts.room_number_text || _t('Nº habitación')" />
                                             </label>
                                             <select
-                                                t-att-required='reservation.required_fields.indexOf("preferred_room_id") != -1 ? "required" : None'
+                                                t-att-disabled='reservation.required_fields.indexOf("preferred_room_id") != -1 ? "disabled" : None'
                                                 t-att-readonly='reservation.readonly_fields.indexOf("preferred_room_id") != -1 ? "readonly" : None'
                                                 data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
                                                 <option t-foreach="room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id.id === key.id ? 'selected' : None">
@@ -233,7 +233,7 @@
                                                 <t t-esc="_t('Tipo de reserva')" />
                                             </label>
                                             <select
-                                                t-att-required='reservation.required_fields.indexOf("reservation_type") != -1 ? "required" : None'
+                                                t-att-disabled='reservation.required_fields.indexOf("reservation_type") != -1 ? "disabled" : None'
                                                 t-att-readonly='reservation.readonly_fields.indexOf("reservation_type") != -1 ? "readonly" : None'
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
                                                 <option t-foreach="reservation.reservation_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.reservation_type === key.id ? 'selected' : None">
@@ -246,7 +246,7 @@
                                                 Servicios
                                             </label>
                                             <select
-                                                t-att-required='reservation.required_fields.indexOf("board_service_room_id") != -1 ? "required" : None'
+                                                t-att-disabled='reservation.required_fields.indexOf("board_service_room_id") != -1 ? "disabled" : None'
                                                 t-att-readonly='reservation.readonly_fields.indexOf("board_service_room_id") != -1 ? "readonly" : None'
                                                 data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
                                                 <option name="board_service_room_id" t-foreach="reservation.allowed_board_service_room_ids" t-as="key" t-att-value="key.id" t-att-selected="reservation.board_service_room_id === key.id ? 'selected' : None">
