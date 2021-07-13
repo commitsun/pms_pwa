@@ -740,7 +740,7 @@
 
                                     </div>
                                 </div>
-                                <t t-if="reservation.folio_id.invoice_count != -1">
+                                <t t-if="reservation.folio_id.invoice_count > 0">
                                     <div class="card bg-white shadow mt-4">
                                         <div class="card-header bg-white o_pms_pwa_card_header">
                                             <h3 class="mb-0">
