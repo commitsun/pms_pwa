@@ -232,7 +232,10 @@
                                                         <label class="control-label col-12" for="room_type">
                                                             Room type
                                                         </label>
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
+                                                        <select
+                                                            t-att-required='"required" if "room_type_id" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "room_type_id" in readonly_fields else None'
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
                                                             <t t-foreach="reservation.room_type_id" t-as="i">
                                                                 <option name="room_type" t-att-value="i.id" selected="selected" t-if="reservation.room_type_id.id == i.id">
                                                                     <t t-esc="i.name" />
@@ -249,7 +252,10 @@
                                                         <label class="control-label col-12" for="room_number">
                                                             Room number
                                                         </label>
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
+                                                        <select
+                                                            t-att-required='"required" if "preferred_room_id" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "preferred_room_id" in readonly_fields else None'
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
                                                             <!-- TODO Cambiar por? ._get_allowed_rooms(reservation.checkin, reservation.checkout, reservation.state) -->
                                                             <t t-foreach="reservation.allowed_room_ids" t-as="i">
                                                                 <option name="room_number" t-att-value="i.id" selected="selected" t-if="reservation.preferred_room_id.id == i.id">
@@ -274,13 +280,19 @@
                                                         <label class="control-label col-12" for="adults">
                                                             People
                                                         </label>
-                                                        <input class="form-control" type="text" name="adults" t-att-value="reservation.adults" />
+                                                        <input
+                                                            t-att-required='"required" if "adults" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "adults" in readonly_fields else None'
+                                                            class="form-control" type="text" name="adults" t-att-value="reservation.adults" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="nights">
                                                             Nights
                                                         </label>
-                                                        <input class="form-control" disabled="disabled" type="text" name="nights" t-att-value="reservation.nights" />
+                                                        <input
+                                                            t-att-required='"required" if "nights" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "nights" in readonly_fields else None'
+                                                            class="form-control" disabled="disabled" type="text" name="nights" t-att-value="reservation.nights" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
@@ -310,13 +322,19 @@
                                                         <label class="control-label col-12" for="check_in_hour">
                                                             Check in time
                                                         </label>
-                                                        <input class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
+                                                        <input
+                                                            t-att-required='"required" if "arrival_hour" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "arrival_hour" in readonly_fields else None'
+                                                            class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="check_out_hour">
                                                             Check out time
                                                         </label>
-                                                        <input class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
+                                                        <input
+                                                            t-att-required='"required" if "departure_hour" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "departure_hour" in readonly_fields else None'
+                                                            class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
@@ -324,7 +342,10 @@
                                                         <label class="control-label col-12" for="allowed_board_service_room_ids">
                                                             Reservation type
                                                         </label>
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
+                                                        <select
+                                                            t-att-required='"required" if "board_service_room_id" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "board_service_room_id" in readonly_fields else None'
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
                                                             <t t-foreach="reservation._get_allowed_board_service_room_ids()" t-as="key">
                                                                 <t t-if="key['id'] == reservation.board_service_room_id.id">
                                                                     <option name="board_service_room_id" t-att-value="key['id']" selected="selected">
@@ -719,7 +740,7 @@
 
                                     </div>
                                 </div>
-                                <t t-if="reservation.folio_id.invoice_count > 0">
+                                <t t-if="reservation.folio_id.invoice_count != -1">
                                     <div class="card bg-white shadow mt-4">
                                         <div class="card-header bg-white o_pms_pwa_card_header">
                                             <h3 class="mb-0">

@@ -74,22 +74,24 @@ class TestFrontEnd(http.Controller):
         return allowed_journals
 
     def _get_allowed_channel_type_ids(self):
-        channel_types = request.env["pms.sale.channel"].search([
-            ("is_on_line", "=", False)
-        ])
+        channel_types = request.env["pms.sale.channel"].search(
+            [("is_on_line", "=", False)]
+        )
         allowed_channel_types = []
         for channel in channel_types:
             allowed_channel_types.append({"id": channel.id, "name": channel.name})
         return allowed_channel_types
 
     def _get_allowed_agency_ids(self):
-        channel_types_ids = request.env["pms.sale.channel"].search([
-            ("is_on_line", "=", False)
-        ]).ids
-        agencies = request.env["res.partner"].search([
-            ("is_agency", "=", True),
-            ("sale_channel_id", "in", channel_types_ids),
-        ])
+        channel_types_ids = (
+            request.env["pms.sale.channel"].search([("is_on_line", "=", False)]).ids
+        )
+        agencies = request.env["res.partner"].search(
+            [
+                ("is_agency", "=", True),
+                ("sale_channel_id", "in", channel_types_ids),
+            ]
+        )
         allowed_agencies = []
         for agency in agencies:
             allowed_agencies.append({"id": agency.id, "name": agency.name})
@@ -561,6 +563,8 @@ class TestFrontEnd(http.Controller):
         values = {
             "page_name": "Reservation",
             "reservation": reservation,
+            "readonly_fields": ["arrival_hour", "departure_hour"],
+            "required_fields": ["room_type_id"],
         }
         print(values)
         if post and "message" in post:
@@ -720,7 +724,7 @@ class TestFrontEnd(http.Controller):
             "folio_id": {
                 "id": reservation.folio_id.id,
                 "amount_total": reservation.folio_id.amount_total,
-                "outstanding_vat": round(reservation.folio_pending_amount, 2)
+                "outstanding_vat": round(reservation.folio_pending_amount, 2),
             },
             "state": reservation.state,
             "credit_card_details": reservation.credit_card_details,
@@ -739,7 +743,9 @@ class TestFrontEnd(http.Controller):
             "service_ids": reservation._get_service_ids(),
             "reservation_line_ids": reservation._get_reservation_line_ids(),
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_room_id": reservation.board_service_room_id.id if reservation.board_service_room_id else False,
+            "board_service_room_id": reservation.board_service_room_id.id
+            if reservation.board_service_room_id
+            else False,
             "allowed_service_ids": reservation._get_allowed_service_ids(),
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
@@ -748,6 +754,8 @@ class TestFrontEnd(http.Controller):
             "allowed_segmentations": reservation._get_allowed_segmentations(),
             "allowed_channel_type_ids": self._get_allowed_channel_type_ids(),
             "allowed_agency_ids": self._get_allowed_agency_ids(),
+            "readonly_fields": ["arrival_hour", "departure_hour"],
+            "required_fields": ["room_type_id"],
         }
 
         pp.pprint(reservation_values)
@@ -992,8 +1000,8 @@ class TestFrontEnd(http.Controller):
             request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
         )
         display_select_options = [
-            {'name': "Room type", 'value': "room_type"},
-            {'name': "Ubications", 'value': "ubication"},
+            {"name": "Room type", "value": "room_type"},
+            {"name": "Ubications", "value": "ubication"},
         ]
         obj_list = room_types
         selected_display = "room_type"
@@ -1676,12 +1684,12 @@ class TestFrontEnd(http.Controller):
             "messages": notifications,
             "room_type_id": reservation.room_type_id.id,
             "preferred_room_id": reservation.preferred_room_id.id,
-            "channel_type_id": reservation.channel_type_id.id if reservation.channel_type_id else False,
+            "channel_type_id": reservation.channel_type_id.id
+            if reservation.channel_type_id
+            else False,
             "agency_id": reservation.agency_id.id if reservation.agency_id else False,
             "nights": reservation.nights,
-            "checkin": reservation.checkin.strftime(
-                get_lang(request.env).date_format
-            ),
+            "checkin": reservation.checkin.strftime(get_lang(request.env).date_format),
             "arrival_hour": reservation.arrival_hour,
             "checkout": reservation.checkout.strftime(
                 get_lang(request.env).date_format
@@ -1707,7 +1715,9 @@ class TestFrontEnd(http.Controller):
             "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_room_id": reservation.board_service_room_id.id if reservation.board_service_room_id else False,
+            "board_service_room_id": reservation.board_service_room_id.id
+            if reservation.board_service_room_id
+            else False,
             "allowed_service_ids": reservation._get_allowed_service_ids(),
             # TODO: Review error buttons view
             # "primary_button": primary_button,
@@ -1738,7 +1748,7 @@ class TestFrontEnd(http.Controller):
                     "reservation_id": reservation.id,
                 },
             ),
-            "readonly_fields": ["arrival_hour","departure_hour"],
+            "readonly_fields": ["arrival_hour", "departure_hour"],
             "required_fields": ["room_type_id"],
         }
 
@@ -1868,8 +1878,6 @@ class TestFrontEnd(http.Controller):
                 .search([("id", "in", reservation_ids)])
             )
         reservations.print_all_checkins()
-
-
 
     def generate_reservation_style_buttons(self, reservation):
         buttons = json.loads(reservation.pwa_action_buttons)
