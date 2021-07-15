@@ -495,7 +495,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             );
         },
         reloadReservationInfo: function (data_id = false) {
-            if(String(window.location.href).includes(String("/reservation/list"))) {
+            if (String(window.location.href).includes(String("/reservation/list"))) {
                 ajax.jsonRpc("/reservation/json_data", "call", {
                     reservation_id: data_id,
                 }).then(function (updated_data) {
@@ -894,13 +894,33 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                     "div.o_pms_pwa_reservation_modal"
                                                                 ).modal("toggle");
                                                                 try {
-                                                                    var selector = "tr[data-id=" +reservation_data["id"] +"]";
-                                                                    var test = $(selector);
-                                                                    if (test.length != 0) {
-                                                                        $(selector).find("td.first-col").click();
+                                                                    var selector =
+                                                                        "tr[data-id=" +
+                                                                        reservation_data[
+                                                                            "id"
+                                                                        ] +
+                                                                        "]";
+                                                                    var test = $(
+                                                                        selector
+                                                                    );
+                                                                    if (
+                                                                        test.length != 0
+                                                                    ) {
+                                                                        $(selector)
+                                                                            .find(
+                                                                                "td.first-col"
+                                                                            )
+                                                                            .click();
                                                                     } else {
-                                                                        var selector = "td[data-id=" +reservation_data["id"] +"]";
-                                                                        $(selector).click();
+                                                                        var selector =
+                                                                            "td[data-id=" +
+                                                                            reservation_data[
+                                                                                "id"
+                                                                            ] +
+                                                                            "]";
+                                                                        $(
+                                                                            selector
+                                                                        ).click();
                                                                     }
                                                                 } catch (error) {
                                                                     console.log(error);
@@ -1468,7 +1488,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     maxYear: parseInt(moment().format("YYYY"), 10),
                                 },
                                 function (start) {
-
                                     const start_date = new Date(start);
                                     var select_date = start_date.toLocaleDateString(
                                         document.documentElement.lang,
@@ -1494,7 +1513,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     maxYear: parseInt(moment().format("YYYY"), 10),
                                 },
                                 function (start) {
-
                                     const start_date = new Date(start);
                                     var select_date = start_date.toLocaleDateString(
                                         document.documentElement.lang,

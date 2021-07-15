@@ -191,7 +191,7 @@
                     <div>
                         <img t-att-src="website.image_url(folio, 'partner_image_128')"
                             width="40px"
-                            class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                            class="img-thumbnail rounded-circle_folio"
                             t-att-title="folio.partner_name"
                             t-att-alt="folio.partner_name"/>
                         <t t-set="pending_nots" t-value="len(folio.message_ids.filtered(lambda x: user_id.partner_id in x.notified_partner_ids).sorted(key=lambda x: x.date))"/>
@@ -264,7 +264,10 @@
                 <div>
                     <img t-att-src="website.image_url(obj, 'partner_image_128')"
                         width="40px"
-                        class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg"
+                        t-att-class="' '
+                        + 'img-thumbnail '
+                        + ('rounded-circle_'+ obj.color_state)
+                        + ' o_pms_pwa_img_rounded_bg'"
                         t-att-title="obj.partner_name" t-att-alt="obj.partner_name"/>
                     <t t-set="pending_nots" t-value="len(obj.message_ids.filtered(lambda x: user_id.partner_id in x.notified_partner_ids).sorted(key=lambda x: x.date))"/>
                     <sup t-att-class="'o_pms_pwa_badge_position' + (' visible' if (pending_nots and pending_nots > 0) else ' invisible')">

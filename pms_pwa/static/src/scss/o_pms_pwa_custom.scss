@@ -525,6 +525,43 @@ h4.collapsed {
 .rounded-circle {
     border: 2px solid $theme-color;
 }
+.rounded-circle_prereservation {
+    border: 2px solid #a24680;
+    border-radius: 50% !important;
+}
+.rounded-circle_confirmed {
+    border: 2px solid $theme-color;
+    border-radius: 50% !important;
+}
+.rounded-circle_checkin {
+    border: 2px solid #00ba39;
+    border-radius: 50% !important;
+}
+.rounded-circle_checkout {
+    border: 2px solid #7e7e7e;
+    border-radius: 50% !important;
+}
+.rounded-circle_out-service {
+    border: 2px solid #000000;
+    border-radius: 50% !important;
+}
+.rounded-circle_staff {
+    border: 2px solid #c08686;
+    border-radius: 50% !important;
+}
+.rounded-circle_to-assign {
+    border: 2px solid #ed722e;
+    border-radius: 50% !important;
+}
+.rounded-circle_danger {
+    border: 2px solid #ed2e2e;
+    border-radius: 50% !important;
+}
+.rounded-circle_folio {
+    border: 1px solid #ffffff;
+    border-radius: 10% !important;
+    padding: 0rem !important;
+}
 
 .o_pms_pwa_reservation_form {
     .o_pms_pwa_modal_buttons {
@@ -574,6 +611,6 @@ h4.collapsed {
 //     margin:-50px 0 0 -50px; /* is width and height divided by two */
 // }
 
-.bg-danger{
+.bg-danger {
     background-color: #01b6e3 !important;
 }
