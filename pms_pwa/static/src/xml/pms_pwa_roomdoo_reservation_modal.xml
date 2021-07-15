@@ -919,9 +919,17 @@
                                                             País
                                                         </label>
                                                         <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
-                                                            <option t-foreach="partner_value['allowed_country_ids']" t-as="country" t-att-value="country_value['id']" t-att-selected="partner_value['country_id'] == country_value['id'] ? 'selected' : None">
-                                                                <t t-esc="country_value['name']" />
-                                                            </option>
+                                                            <t t-if="partner_value['country_id']">
+                                                                <option t-foreach="partner_value['allowed_country_ids']" t-as="country" t-att-value="country_value['id']" t-att-selected="partner_value['country_id'] === country_value['id'] ? 'selected' : None">
+                                                                    <t t-esc="country_value['name']" />
+                                                                </option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option value="" selected="selected"></option>
+                                                                <option t-foreach="partner_value['allowed_country_ids']" t-as="country" t-att-value="country_value['id']" t-att-selected="partner_value['country_id'] === country_value['id'] ? 'selected' : None">
+                                                                    <t t-esc="country_value['name']" />
+                                                                </option>
+                                                            </t>
                                                         </select>
                                                     </div>
 
@@ -930,9 +938,17 @@
                                                             Provincia
                                                         </label>
                                                         <select data-select="allowed_state_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="state_id">
-                                                            <option t-foreach="partner_value['allowed_state_ids']" t-as="state" t-att-value="state_value['id']" t-att-selected="partner_value['state_id'] == state_value['id'] ? 'selected' : None">
-                                                                <t t-esc="state_value['name']" />
-                                                            </option>
+                                                            <t t-if="partner_value['state_id']">
+                                                                <option t-foreach="partner_value['allowed_state_ids']" t-as="state" t-att-value="state_value['id']" t-att-selected="partner_value['state_id'] == state_value['id'] ? 'selected' : None">
+                                                                    <t t-esc="state_value['name']" /><t t-esc="state_value['id']" />
+                                                                </option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option value="" selected="selected"></option>
+                                                                <option t-foreach="partner_value['allowed_state_ids']" t-as="state" t-att-value="state_value['id']" t-att-selected="partner_value['state_id'] == state_value['id'] ? 'selected' : None">
+                                                                    <t t-esc="state_value['name']" /><t t-esc="state_value['id']" />
+                                                                </option>
+                                                            </t>
                                                         </select>
                                                     </div>
 

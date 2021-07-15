@@ -64,7 +64,7 @@ section.o_pms_pwa_roomdoo {
             }
         }
         .table-responsive {
-            min-height: calc(65vh - 25px);
+            height: calc(70vh - 25px);
         }
         #calendar_table.table,
         #calendar_config_table.table {
@@ -96,6 +96,7 @@ section.o_pms_pwa_roomdoo {
                         position: sticky;
                         top: 0;
                         z-index: 99;
+
                         // border-bottom: 1px solid $theme-color;
                         a {
                             margin-left: -8px;
@@ -411,7 +412,7 @@ section.o_pms_pwa_roomdoo {
             &_prereservation::before {
                 top: 0.75em !important;
                 left: -100px !important;
-                background-color: #A24680;
+                background-color: #a24680;
                 content: "" !important;
                 display: inline-block;
                 height: 4px;
@@ -437,7 +438,7 @@ section.o_pms_pwa_roomdoo {
             &_checkin::before {
                 top: 0.75em !important;
                 left: -100px !important;
-                background-color: #00BA39;
+                background-color: #00ba39;
                 content: "" !important;
                 display: inline-block;
                 height: 4px;
@@ -450,7 +451,7 @@ section.o_pms_pwa_roomdoo {
             &_checkout::before {
                 top: 0.75em !important;
                 left: -100px !important;
-                background-color: #7E7E7E;
+                background-color: #7e7e7e;
                 content: "" !important;
                 display: inline-block;
                 height: 4px;
@@ -476,7 +477,7 @@ section.o_pms_pwa_roomdoo {
             &_staff::before {
                 top: 0.75em !important;
                 left: -100px !important;
-                background-color: #C08686;
+                background-color: #c08686;
                 content: "" !important;
                 display: inline-block;
                 height: 4px;
@@ -489,7 +490,7 @@ section.o_pms_pwa_roomdoo {
             &_to-assign::before {
                 top: 0.75em !important;
                 left: -100px !important;
-                background-color: #ED722E;
+                background-color: #ed722e;
                 content: "" !important;
                 display: inline-block;
                 height: 4px;
@@ -517,7 +518,7 @@ section.o_pms_pwa_roomdoo {
                 &_prereservation::before {
                     top: 0.7rem !important;
                     left: -69px !important;
-                    background-color: #A24680;
+                    background-color: #a24680;
                     content: "----------------" !important;
                     display: inline-block;
                     position: relative;
@@ -543,7 +544,7 @@ section.o_pms_pwa_roomdoo {
                 &_checkin::before {
                     top: 0.7rem !important;
                     left: -69px !important;
-                    background-color: #00BA39;
+                    background-color: #00ba39;
                     content: "----------------" !important;
                     display: inline-block;
                     position: relative;
@@ -556,7 +557,7 @@ section.o_pms_pwa_roomdoo {
                 &_checkout::before {
                     top: 0.7rem !important;
                     left: -69px !important;
-                    background-color: #7E7E7E;
+                    background-color: #7e7e7e;
                     content: "----------------" !important;
                     display: inline-block;
                     position: relative;
@@ -582,7 +583,7 @@ section.o_pms_pwa_roomdoo {
                 &_staff::before {
                     top: 0.7rem !important;
                     left: -69px !important;
-                    background-color: #C08686;
+                    background-color: #c08686;
                     content: "----------------" !important;
                     display: inline-block;
                     position: relative;
@@ -595,7 +596,7 @@ section.o_pms_pwa_roomdoo {
                 &_to-assign::before {
                     top: 0.7rem !important;
                     left: -69px !important;
-                    background-color: #ED722E;
+                    background-color: #ed722e;
                     content: "----------------" !important;
                     display: inline-block;
                     position: relative;
@@ -617,7 +618,6 @@ section.o_pms_pwa_roomdoo {
                     margin-right: -40px;
                     font-size: 3.5px !important;
                 }
-
             }
         }
         .o_pms_pwa_calendar_line {
@@ -658,7 +658,7 @@ section.o_pms_pwa_roomdoo {
             }
             &_hr {
                 &_prereservation {
-                    border-bottom: 4px solid #584D76;
+                    border-bottom: 4px solid #584d76;
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
@@ -675,7 +675,7 @@ section.o_pms_pwa_roomdoo {
                         left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
-                        color: #584D76;
+                        color: #584d76;
                     }
                 }
                 &_confirmed {
@@ -701,7 +701,7 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_checkin {
-                    border-bottom: 4px solid #00BA39;
+                    border-bottom: 4px solid #00ba39;
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
@@ -718,12 +718,12 @@ section.o_pms_pwa_roomdoo {
                         left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
-                        color: #00BA39;
+                        color: #00ba39;
                     }
                 }
 
                 &_checkout {
-                    border-bottom: 4px solid #7E7E7E;
+                    border-bottom: 4px solid #7e7e7e;
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
@@ -740,7 +740,7 @@ section.o_pms_pwa_roomdoo {
                         left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
-                        color: #7E7E7E;
+                        color: #7e7e7e;
                     }
                 }
 
@@ -767,7 +767,7 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_staff {
-                    border-bottom: 4px solid #C08686;
+                    border-bottom: 4px solid #c08686;
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
@@ -784,11 +784,11 @@ section.o_pms_pwa_roomdoo {
                         left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
-                        color: #C08686;
+                        color: #c08686;
                     }
                 }
                 &_to-assign {
-                    border-bottom: 4px solid #ED722E;
+                    border-bottom: 4px solid #ed722e;
                     position: relative;
                     width: 100%;
                     margin-left: 3rem;
@@ -805,7 +805,7 @@ section.o_pms_pwa_roomdoo {
                         left: -1.65rem;
                         display: ruby-base-container;
                         z-index: 0;
-                        color: #ED722E;
+                        color: #ed722e;
                     }
                 }
             }
@@ -845,32 +845,32 @@ section.o_pms_pwa_roomdoo {
         }
         .bg {
             &-prereservation {
-                color: #A24680;
-                background-color: #A24680;
+                color: #a24680;
+                background-color: #a24680;
             }
             &-confirmed {
                 color: $theme-color;
                 background-color: $theme-color;
             }
             &-checkin {
-                color: #00BA39;
-                background-color: #00BA39;
+                color: #00ba39;
+                background-color: #00ba39;
             }
             &-checkout {
-                color: #7E7E7E;
-                background-color: #7E7E7E;
+                color: #7e7e7e;
+                background-color: #7e7e7e;
             }
             &-out-service {
                 color: #000000;
                 background-color: #000000;
             }
             &-staff {
-                color: #C08686;
-                background-color: #C08686;
+                color: #c08686;
+                background-color: #c08686;
             }
             &-to-assign {
-                color: #ED722E;
-                background-color: #ED722E;
+                color: #ed722e;
+                background-color: #ed722e;
             }
             &-to-assign {
                 color: var(--danger);
