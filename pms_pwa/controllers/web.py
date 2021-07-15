@@ -713,7 +713,9 @@ class TestFrontEnd(http.Controller):
             "agency_id": {
                 "id": reservation.agency_id.id if reservation.agency_id else False,
                 "name": reservation.agency_id.name if reservation.agency_id else False,
+                "url": request.website.image_url(reservation.agency_id, 'image_128') if reservation.agency_id else False,
             },
+            "user_name": reservation.user_id.name if reservation.user_id else False,
             "nights": reservation.nights,
             "checkin": reservation.checkin.strftime(get_lang(request.env).date_format),
             "arrival_hour": reservation.arrival_hour,
@@ -745,6 +747,9 @@ class TestFrontEnd(http.Controller):
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
             "board_service_room_id": reservation.board_service_room_id.id
             if reservation.board_service_room_id
+            else False,
+            "board_service_room_id_name": reservation.board_service_room_id.pms_board_service_id.name
+            if reservation.board_service_room_id and reservation.board_service_room_id.pms_board_service_id
             else False,
             "allowed_service_ids": reservation._get_allowed_service_ids(),
             "primary_button": primary_button,

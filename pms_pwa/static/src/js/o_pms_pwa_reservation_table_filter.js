@@ -549,6 +549,29 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         "<br/> <span class='o_pms_pwa_wler'>" +
                                         updated_data.departure_hour +
                                         "</span>";
+                                    if (updated_data.agency_id && updated_data.agency_id.url) {
+                                        $(String("#reservation_" + data_id)).find(
+                                            "td"
+                                        )[5].innerHTML =
+                                            "<img src="+ updated_data.agency_id.url +" width='80' title='"+ updated_data.agency_id.name +"' alt='"+ updated_data.agency_id.name +"'/>";
+                                    } else {
+                                        if (
+                                            updated_data.channel_type_id &&
+                                            updated_data.user_name
+                                        ) {
+                                            var chan_name = '';
+                                            if (updated_data.channel_type_id.name) {
+                                                var chan_name = updated_data.channel_type_id.name;
+                                            }
+                                            $(String("#reservation_" + data_id)).find(
+                                                "td"
+                                            )[5].innerHTML =
+                                                chan_name +
+                                                "<br/> <span class='o_pms_pwa_wler'>" +
+                                                updated_data.user_name +
+                                                "</span>";
+                                        }
+                                    }
                                     $(String("#reservation_" + data_id)).find(
                                         "td"
                                     )[6].innerHTML =
@@ -565,14 +588,20 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 Number.EPSILON) *
                                                 100
                                         ) / 100;
+                                    if (updated_data.partner_requests) {
+                                        $(String("#reservation_" + data_id)).find(
+                                            "td"
+                                        )[8].innerHTML = updated_data.partner_requests.substring(0,25);
+                                    }
                                     if (
                                         updated_data.board_service_room_id &&
-                                        updated_data.board_service_room_id.name
+                                        updated_data.board_service_room_id_name
                                     ) {
+                                        console.log($(String("#reservation_" + data_id)).find("td")[9]);
                                         $(String("#reservation_" + data_id)).find(
                                             "td"
                                         )[9].innerHTML =
-                                            updated_data.board_service_room_id.name;
+                                            updated_data.board_service_room_id_name;
                                     }
                                     $(String("#reservation_" + data_id)).find(
                                         "td"
