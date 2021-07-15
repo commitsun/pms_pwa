@@ -50,6 +50,59 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-12 col-xl-4  mt-4">
+                                <div t-if="reservation.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
+                                    <div class="o_pms_pwa_table_reservation_list m-4">
+                                        <table class="table table-condensed">
+                                            <thead>
+                                                <tr>
+                                                    <th class="o_pms_pwa_theme_color"></th>
+                                                    <th class="o_pms_pwa_theme_color">ID</th>
+                                                    <th class="o_pms_pwa_theme_color">Total</th>
+                                                    <th class="o_pms_pwa_theme_color">Name</th>
+                                                    <th class="o_pms_pwa_theme_color">Type</th>
+                                                    <th class="o_pms_pwa_theme_color">nº</th>
+                                                </tr>
+
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="reservation.folio_id.reservation_ids" t-as="i">
+                                                    <tr t-att-class="'o_roomdoo_hide_show '
+                                                        + ('o_pms_pwa_background_grey' if reservation.id == i.id else ' ')">
+                                                        <td>
+                                                            <input type="checkbox" name="reservation_ids" checked="checked" t-if="reservation.id == i.id" t-attf-value="{{ i.id }}" />
+                                                            <input type="checkbox" name="reservation_ids" t-if="reservation.id != i.id" t-attf-value="{{ i.id }}" />
+                                                        </td>
+                                                        <td>
+                                                            <a t-att-href="'/reservation/' + str(i.id)">
+                                                                <t t-esc="i.name" />
+                                                            </a>
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <t t-esc="i.price_total" />
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="i.partner_id.name" />
+                                                        </td>
+                                                        <td class="text-right">
+                                                            <t t-esc="i.room_type_id.default_code" />
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="i.preferred_room_id.name" />
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+
+                                        <div class="row">
+                                            <div class="col-12 mt-2">
+                                                <div class="o_roomdoo_hide_show-more">Ver más</div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
                                 <div class="card shadow">
                                     <div class="container-fluid">
                                         <div class="bg-dark">
@@ -164,60 +217,6 @@
                                 </div>
                             </div>
                             <div class="col-lg-12 col-xl-4 mt-4" id="folio_reservation_ids">
-
-                                <div t-if="reservation.folio_id.number_of_rooms > 1" class="card mb-4 shadow">
-                                    <div class="o_pms_pwa_table_reservation_list m-4">
-                                        <table class="table table-condensed">
-                                            <thead>
-                                                <tr>
-                                                    <th class="o_pms_pwa_theme_color"></th>
-                                                    <th class="o_pms_pwa_theme_color">ID</th>
-                                                    <th class="o_pms_pwa_theme_color">Total</th>
-                                                    <th class="o_pms_pwa_theme_color">Name</th>
-                                                    <th class="o_pms_pwa_theme_color">Type</th>
-                                                    <th class="o_pms_pwa_theme_color">nº</th>
-                                                </tr>
-
-                                            </thead>
-                                            <tbody>
-                                                <t t-foreach="reservation.folio_id.reservation_ids" t-as="i">
-                                                    <tr t-att-class="'o_roomdoo_hide_show '
-                                                        + ('o_pms_pwa_background_grey' if reservation.id == i.id else ' ')">
-                                                        <td>
-                                                            <input type="checkbox" name="reservation_ids" checked="checked" t-if="reservation.id == i.id" t-attf-value="{{ i.id }}" />
-                                                            <input type="checkbox" name="reservation_ids" t-if="reservation.id != i.id" t-attf-value="{{ i.id }}" />
-                                                        </td>
-                                                        <td>
-                                                            <a t-att-href="'/reservation/' + str(i.id)">
-                                                                <t t-esc="i.name" />
-                                                            </a>
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <t t-esc="i.price_total" />
-                                                        </td>
-                                                        <td>
-                                                            <t t-esc="i.partner_id.name" />
-                                                        </td>
-                                                        <td class="text-right">
-                                                            <t t-esc="i.room_type_id.default_code" />
-                                                        </td>
-                                                        <td>
-                                                            <t t-esc="i.preferred_room_id.name" />
-                                                        </td>
-                                                    </tr>
-                                                </t>
-                                            </tbody>
-                                        </table>
-
-                                        <div class="row">
-                                            <div class="col-12 mt-2">
-                                                <div class="o_roomdoo_hide_show-more">Ver más</div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
                                 <div class="card shadow">
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
@@ -249,19 +248,19 @@
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-12">
-                                                        <label class="control-label col-12" for="room_number">
+                                                        <label class="control-label col-12" for="preferred_room_id">
                                                             Room number
                                                         </label>
                                                         <select
                                                             t-att-disabled='"disabled" if "preferred_room_id" in required_fields else None'
                                                             t-att-readonly='"readonly" if "preferred_room_id" in readonly_fields else None'
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_number">
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
                                                             <!-- TODO Cambiar por? ._get_allowed_rooms(reservation.checkin, reservation.checkout, reservation.state) -->
                                                             <t t-foreach="reservation.allowed_room_ids" t-as="i">
-                                                                <option name="room_number" t-att-value="i.id" selected="selected" t-if="reservation.preferred_room_id.id == i.id">
+                                                                <option name="preferred_room_id" t-att-value="i.id" selected="selected" t-if="reservation.preferred_room_id.id == i.id">
                                                                     <t t-esc="i.name" />
                                                                 </option>
-                                                                <option name="room_number" t-att-value="i.id" t-if="reservation.preferred_room_id.id != i.id">
+                                                                <option name="preferred_room_id" t-att-value="i.id" t-if="reservation.preferred_room_id.id != i.id">
                                                                     <t t-esc="i.name" />
                                                                 </option>
                                                             </t>

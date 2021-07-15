@@ -630,42 +630,41 @@ section.o_pms_pwa_roomdoo {
         font-weight: 600;
     }
 
-    #folio_reservation_ids {
-        .o_pms_pwa_table_reservation_list {
-            font-family: "Barlow Semi Condensed";
-            font-size: 16px;
-            table {
-                border-collapse: collapse;
-                border-spacing: 0.5rem;
-                border: none;
-                width: 98%;
-                margin: auto;
-                overflow-x: auto;
-                th:first-child,
-                td:first-child {
-                    min-width: 0;
+    .o_pms_pwa_table_reservation_list {
+        font-family: "Barlow Semi Condensed";
+        font-size: 16px;
+        table {
+            border-collapse: collapse;
+            border-spacing: 0.5rem;
+            border: none;
+            width: 98%;
+            margin: auto;
+            overflow-x: auto;
+            th:first-child,
+            td:first-child {
+                min-width: 0;
+            }
+            tr {
+                border-bottom: 1px solid #84848453;
+                th {
+                    padding: 0.5rem;
+                    border: none;
+                    font-size: 15px;
+                    font-weight: 600;
                 }
-                tr {
-                    border-bottom: 1px solid #84848453;
-                    th {
-                        padding: 0.5rem;
-                        border: none;
-                        font-size: 12px;
+                td {
+                    padding: 0.5rem;
+                    border: none;
+                    a {
                         font-weight: 600;
-                    }
-                    td {
-                        padding: 0.5rem;
-                        border: none;
-                        a {
-                            font-weight: 600;
-                            letter-spacing: 0px;
-                            text-align: left;
-                        }
+                        letter-spacing: 0px;
+                        text-align: left;
                     }
                 }
             }
         }
     }
+
     #invoice_col {
         table {
             border-collapse: collapse;
