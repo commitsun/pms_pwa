@@ -526,7 +526,7 @@ h4.collapsed {
     border: 2px solid $theme-color;
 }
 .rounded-circle_prereservation {
-    border: 2px solid #A24680;
+    border: 2px solid #a24680;
     border-radius: 50% !important;
 }
 .rounded-circle_confirmed {
@@ -534,11 +534,11 @@ h4.collapsed {
     border-radius: 50% !important;
 }
 .rounded-circle_checkin {
-    border: 2px solid #00BA39;
+    border: 2px solid #00ba39;
     border-radius: 50% !important;
 }
 .rounded-circle_checkout {
-    border: 2px solid #7E7E7E;
+    border: 2px solid #7e7e7e;
     border-radius: 50% !important;
 }
 .rounded-circle_out-service {
@@ -546,11 +546,11 @@ h4.collapsed {
     border-radius: 50% !important;
 }
 .rounded-circle_staff {
-    border: 2px solid #C08686;
+    border: 2px solid #c08686;
     border-radius: 50% !important;
 }
 .rounded-circle_to-assign {
-    border: 2px solid #ED722E;
+    border: 2px solid #ed722e;
     border-radius: 50% !important;
 }
 .rounded-circle_danger {
@@ -610,3 +610,7 @@ h4.collapsed {
 //     background-size: cover;
 //     margin:-50px 0 0 -50px; /* is width and height divided by two */
 // }
+
+.bg-danger {
+    background-color: #01b6e3 !important;
+}

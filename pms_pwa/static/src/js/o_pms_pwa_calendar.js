@@ -12,24 +12,6 @@ odoo.define("pms_pwa.calendar", function (require) {
         events: {
             "click tr.o_pms_pwa_open_calendar": "_onClickGetCalendarLine",
         },
-
-        // _onClickGetCalendarLine: function (event) {
-        //     event.preventDefault();
-        //     var room_type_id = event.currentTarget.getAttribute("data-id");
-        //     var date_list = $('input[name="date_list"]').val();
-        //     ajax.jsonRpc("/calendar/line", "call", {
-        //         room_type_id: room_type_id,
-        //         range_date: date_list,
-        //     }).then(function (data) {
-        //         var html = core.qweb.render("pms_pwa.calendar_line", {
-        //             room_type_id: room_type_id,
-        //             obj_list: data.reservations,
-        //             csrf_token: csrf_token,
-        //         });
-        //         $(String("#collapse_accordion_" + room_type_id)).html(html);
-        //     });
-        // },
-
         _onClickGetCalendarLine: function (event) {
             event.preventDefault();
             var data_id = event.currentTarget.getAttribute("data-id");
