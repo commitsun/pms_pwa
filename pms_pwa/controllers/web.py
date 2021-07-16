@@ -92,7 +92,7 @@ class TestFrontEnd(http.Controller):
                 ("sale_channel_id", "in", channel_types_ids),
             ]
         )
-        allowed_agencies = []
+        allowed_agencies = [{"id": False, "name": ""}]
         for agency in agencies:
             allowed_agencies.append({"id": agency.id, "name": agency.name})
         return allowed_agencies
