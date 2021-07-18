@@ -1231,6 +1231,7 @@ class TestFrontEnd(http.Controller):
     )
     def single_reservation_new(self, **kw):
         reservation_values = http.request.jsonrequest.get("params")
+        vals = {}
         print("reservation_values: {}".format(reservation_values))
         if reservation_values["checkin"]:
             checkin = (
@@ -1318,11 +1319,14 @@ class TestFrontEnd(http.Controller):
         if reservation_values.get("segmentation_id"):
             vals["segmentation_id"] = int(reservation_values.get("segmentation_id"))
 
+        # REVIEW: Avoid send 'false' to controller
         if reservation_values.get("agency_id"):
-            vals["agency_id"] = int(reservation_values.get("agency_id"))
+            vals["agency_id"] = int(reservation_values.get("agency_id")) if reservation_values.get(
+                "agency_id"
+            ) != 'false' else False
             vals["channel_type_id"] = (
                 request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
-            )
+            ) if vals.get("agency_id") else False
 
         if reservation_values.get("submit"):
             reservation = request.env["pms.reservation"].create(vals)
@@ -1343,75 +1347,71 @@ class TestFrontEnd(http.Controller):
         params = http.request.jsonrequest.get("params")
         booking_engine = False
         print("params: {}".format(params))
+        vals = {}
 
         if params.get("id"):
             booking_engine = request.env["pms.booking.engine"].browse(
                 int(params.get("id"))
             )
         if booking_engine:
-            checkin = booking_engine.start_date
-            checkout = booking_engine.end_date
+            start_date = booking_engine.start_date
 
         if not booking_engine or params.get("checkin"):
-            checkin = (
+            vals["start_date"] = (
                 datetime.datetime.strptime(
                     params["checkin"], get_lang(request.env).date_format
                 ).date()
                 if "checkin" in params
                 else datetime.datetime.today().date()
             )
+            start_date = vals["start_date"]
         if not booking_engine or params.get("checkout"):
-            checkout = (
+            vals["end_date"] = (
                 datetime.datetime.strptime(
                     params["checkout"].strip(),
                     get_lang(request.env).date_format,
                 ).date()
                 if "checkout" in params
-                else checkin + timedelta(days=1).date()
+                else start_date + timedelta(days=1).date()
             )
 
         pms_property = False
-        pms_property_id = False
 
         if request.env.user.get_active_property_ids():
-            pms_property_id = request.env.user.get_active_property_ids()[0]
-            pms_property = request.env["pms.property"].browse(pms_property_id)
+            vals["pms_property_id"] = request.env.user.get_active_property_ids()[0]
+            pms_property = request.env["pms.property"].browse(vals["pms_property_id"])
+
 
         partner_name = booking_engine.partner_name if booking_engine else ""
-        if params.get("name"):
-            partner_name = params.get("name")
+        if params.get("name") and params.get("name") != partner_name:
+            vals["partner_name"] = params.get("name")
 
         channel_type_id = booking_engine.channel_type_id.id if booking_engine else False
-        if params.get("channel_type_id"):
-            channel_type_id = int(params.get("channel_type_id"))
+        if params.get("channel_type_id") and params.get("channel_type_id") != channel_type_id:
+            vals["channel_type_id"]  = int(params.get("channel_type_id") if params.get("channel_type_id") else False)
+
+        agency_id = booking_engine.agency_id.id if booking_engine else False
+        if params.get("agency_id") and params.get("agency_id") != agency_id:
+            # REVIEW: why send 'false' to controller
+            vals["agency_id"]  = int(params.get("agency_id")) if params.get("agency_id") != 'false' else False
+            vals["channel_type_id"] = (
+                request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
+            ) if params.get("agency_id") != False else False
 
         pricelist = booking_engine.pricelist_id if booking_engine else False
-        if params.get("pricelist_id"):
-            pricelist = request.env["product.pricelist"].search(
+        if params.get("pricelist_id") and params.get("pricelist_id") != pricelist.id:
+            vals["pricelist_id"] = request.env["product.pricelist"].search(
                 [("id", "=", int(params.get("pricelist_id")))]
-            )
+            ).id
         if not pricelist and pms_property:
-            pricelist = pms_property.default_pricelist_id
-        vals = {
-            "start_date": checkin,
-            "end_date": checkout,
-            "pricelist_id": pricelist.id if pricelist else False,
-            "pms_property_id": pms_property.id if pms_property else False,
-            "partner_name": partner_name,
-            "channel_type_id": channel_type_id,
-        }
+            vals["pricelist_id"] = pms_property.default_pricelist_id.id
+
         if not booking_engine:
             booking_engine = request.env["pms.booking.engine"].create(vals)
             booking_engine.flush()
-        if (
-            checkin != booking_engine.start_date
-            or checkout != booking_engine.end_date
-            or pricelist.id != booking_engine.pricelist_id.id
-            or pms_property.id != booking_engine.pms_property_id.id
-            or partner_name != booking_engine.partner_name
-            or channel_type_id != booking_engine.channel_type_id.id
-        ):
+        if len(vals) > 0:
             booking_engine.write(vals)
+            booking_engine.flush()
         if params.get("lines"):
             for line_id, values in params.get("lines").items():
                 booking_engine.availability_results.filtered(
@@ -1508,6 +1508,8 @@ class TestFrontEnd(http.Controller):
                 ("pms_property_ids", "in", pms_property_id),
             ]
         )
+        # TODO: Add pricelist not daily in readonly mode (only price)
+
         select_pricelist = 0
         default_pricelist = pricelist[0].id
         if post and post.get("pricelist"):
@@ -1654,7 +1656,7 @@ class TestFrontEnd(http.Controller):
         else:
             partner_vals = {
                 "id": False,
-                "name": reservation.partner_name,
+                "name": reservation.partner_name if reservation.partner_name else "",
                 "mobile": reservation.mobile,
             }
         notifications = []
@@ -1819,6 +1821,7 @@ class TestFrontEnd(http.Controller):
             "pms.reservation"
         ]._get_allowed_segmentations()
         wizard_values["channel_type_id"] = wizard.channel_type_id.id
+        wizard_values["agency_id"] = wizard.agency_id.id
         wizard_values["allowed_channel_type_ids"] = self._get_allowed_channel_type_ids()
         wizard_values["allowed_agency_ids"] = self._get_allowed_agency_ids()
 
