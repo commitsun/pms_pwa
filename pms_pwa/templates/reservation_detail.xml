@@ -232,8 +232,8 @@
                                                             Room type
                                                         </label>
                                                         <select
-                                                            t-att-disabled='"disabled" if "room_type_id" in required_fields else None'
-                                                            t-att-readonly='"readonly" if "room_type_id" in readonly_fields else None'
+                                                            t-att-disabled='"disabled" if "room_type_id" in readonly_fields else None'
+                                                            t-att-required='"required" if "room_type_id" in required_fields else None'
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
                                                             <t t-foreach="reservation.room_type_id" t-as="i">
                                                                 <option name="room_type" t-att-value="i.id" selected="selected" t-if="reservation.room_type_id.id == i.id">
@@ -252,8 +252,8 @@
                                                             Room number
                                                         </label>
                                                         <select
-                                                            t-att-disabled='"disabled" if "preferred_room_id" in required_fields else None'
-                                                            t-att-readonly='"readonly" if "preferred_room_id" in readonly_fields else None'
+                                                            t-att-disabled='"disabled" if "preferred_room_id" in readonly_fields else None'
+                                                            t-att-required='"required" if "preferred_room_id" in required_fields else None'
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
                                                             <!-- TODO Cambiar por? ._get_allowed_rooms(reservation.checkin, reservation.checkout, reservation.state) -->
                                                             <t t-foreach="reservation.allowed_room_ids" t-as="i">
@@ -342,8 +342,8 @@
                                                             Reservation type
                                                         </label>
                                                         <select
-                                                            t-att-disabled='"disabled" if "board_service_room_id" in required_fields else None'
-                                                            t-att-readonly='"readonly" if "board_service_room_id" in readonly_fields else None'
+                                                            t-att-disabled='"disabled" if "board_service_room_id" in readonly_fields else None'
+                                                            t-att-required='"required" if "board_service_room_id" in required_fields else None'
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
                                                             <t t-foreach="reservation._get_allowed_board_service_room_ids()" t-as="key">
                                                                 <t t-if="key['id'] == reservation.board_service_room_id.id">
