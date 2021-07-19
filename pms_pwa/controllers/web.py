@@ -686,6 +686,7 @@ class TestFrontEnd(http.Controller):
         reservation_values = {
             "id": reservation.id,
             "name": reservation.name,
+            "splitted": reservation.splitted,
             "partner_id": partner_vals,
             "unread_msg": len(notifications),
             "messages": notifications,
@@ -910,7 +911,7 @@ class TestFrontEnd(http.Controller):
                         param == "reservation_type"
                         and params["reservation_type"] != reservation.reservation_type
                     ):
-                        reservation_values.folio_id.reservation_type = params[param]
+                        reservation_values.reservation_type = params[param]
 
                 if "add_service" in params:
                     del params["add_service"]
@@ -1269,33 +1270,33 @@ class TestFrontEnd(http.Controller):
         if not pricelist and pms_property:
             pricelist = pms_property.default_pricelist_id
 
-        partner_name = False
-        if reservation_values.get("pricelist_id"):
-            partner_name = reservation_values.get("name")
-
-        room_type_id = False
-        if reservation_values.get("room_type_id"):
-            room_type_id = (
-                request.env["pms.room.type"]
-                .search([("id", "=", int(reservation_values.get("room_type_id")))])
-                .id
-            )
-
         vals = {
             "checkin": checkin,
             "checkout": checkout,
-            "room_type_id": room_type_id,
             "pricelist_id": pricelist.id,
             "pms_property_id": pms_property.id if pms_property else False,
-            "partner_name": partner_name,
         }
         print(vals)
-        if reservation_values.get("preferred_room_id"):
+        if reservation_values.get("preferred_room_id") and reservation_values.get("preferred_room_id") != '':
             vals["preferred_room_id"] = (
                 request.env["pms.room"]
                 .search([("id", "=", int(reservation_values.get("preferred_room_id")))])
                 .id
             )
+
+        if reservation_values.get("room_type_id") and reservation_values.get("room_type_id") != '':
+            vals["room_type_id"] = (
+                request.env["pms.room.type"]
+                .search([("id", "=", int(reservation_values.get("room_type_id")))])
+                .id
+            )
+
+        if reservation_values.get("partner_name") and reservation_values.get("partner_name") != '':
+            vals["partner_name"] = reservation_values.get("name")
+
+
+        if reservation_values.get("reservation_type"):
+            vals["reservation_type"] = reservation_values.get("reservation_type")
 
         # REVIEW: Avoid send 'false' to controller
         if (
@@ -1310,23 +1311,19 @@ class TestFrontEnd(http.Controller):
                 .id
             )
 
-        if reservation_values.get("adults"):
+        if reservation_values.get("adults") and reservation_values.get("adults") != '0':
             vals["adults"] = int(reservation_values.get("adults"))
 
-        if reservation_values.get("channel_type_id"):
+        if reservation_values.get("channel_type_id") and reservation_values.get("channel_type_id") != '':
             vals["channel_type_id"] = int(reservation_values.get("channel_type_id"))
 
         if reservation_values.get("segmentation_id"):
             vals["segmentation_id"] = int(reservation_values.get("segmentation_id"))
 
         # REVIEW: Avoid send 'false' to controller
-        if reservation_values.get("agency_id"):
-            vals["agency_id"] = int(reservation_values.get("agency_id")) if reservation_values.get(
-                "agency_id"
-            ) != 'false' else False
-            vals["channel_type_id"] = (
-                request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
-            ) if vals.get("agency_id") else False
+        if reservation_values.get("agency_id") and reservation_values.get("agency_id") != "false":
+            vals["agency_id"] = int(reservation_values.get("agency_id"))
+            vals["channel_type_id"] = request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
 
         if reservation_values.get("submit"):
             reservation = request.env["pms.reservation"].create(vals)
@@ -1391,12 +1388,10 @@ class TestFrontEnd(http.Controller):
             vals["channel_type_id"]  = int(params.get("channel_type_id") if params.get("channel_type_id") else False)
 
         agency_id = booking_engine.agency_id.id if booking_engine else False
-        if params.get("agency_id") and params.get("agency_id") != agency_id:
+        if params.get("agency_id") and params.get("agency_id") != agency_id and params.get("agency_id") != "false":
             # REVIEW: why send 'false' to controller
-            vals["agency_id"]  = int(params.get("agency_id")) if params.get("agency_id") != 'false' else False
-            vals["channel_type_id"] = (
-                request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
-            ) if params.get("agency_id") != False else False
+            vals["agency_id"]  = int(params.get("agency_id"))
+            vals["channel_type_id"] = request.env["res.partner"].browse(vals["agency_id"]).sale_channel_id.id
 
         pricelist = booking_engine.pricelist_id if booking_engine else False
         if params.get("pricelist_id") and params.get("pricelist_id") != pricelist.id:
@@ -1405,6 +1400,9 @@ class TestFrontEnd(http.Controller):
             ).id
         if not pricelist and pms_property:
             vals["pricelist_id"] = pms_property.default_pricelist_id.id
+
+        if params.get("reservation_type") and params.get("reservation_type") != booking_engine.reservation_type:
+            vals["reservation_type"] = params.get("reservation_type")
 
         if not booking_engine:
             booking_engine = request.env["pms.booking.engine"].create(vals)
@@ -1650,7 +1648,7 @@ class TestFrontEnd(http.Controller):
         if reservation.partner_id:
             partner_vals = {
                 "id": reservation.partner_id.id,
-                "name": reservation.partner_id.name,
+                "name": reservation.partner_id.name if reservation.partner_name else "",
                 "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
             }
         else:
@@ -1685,7 +1683,8 @@ class TestFrontEnd(http.Controller):
 
         reservation_values = {
             "id": reservation.id,
-            "name": reservation.name,
+            "name": reservation.name if reservation.name else "",
+            "splitted": reservation.splitted,
             "partner_id": partner_vals,
             "unread_msg": len(notifications),
             "messages": notifications,
@@ -1719,7 +1718,6 @@ class TestFrontEnd(http.Controller):
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
-            "checkin_partner_ids": reservation._get_checkin_partner_ids(),
             "pms_property_id": reservation.pms_property_id.id,
             "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
             "board_service_room_id": reservation.board_service_room_id.id
@@ -1769,6 +1767,9 @@ class TestFrontEnd(http.Controller):
         if isinstance(reservation.id, int):
             reservation_values["service_ids"] = reservation._get_service_ids()
 
+        if isinstance(reservation.id, int):
+            reservation_values["checkin_partner_ids"] = reservation._get_checkin_partner_ids(),
+
         _logger.info("Values from controller to Frontend (reservation onchange):")
         pp.pprint(reservation_values)
         return reservation_values
@@ -1804,7 +1805,8 @@ class TestFrontEnd(http.Controller):
     def parse_booking_engine(self, wizard):
         wizard_values = dict()
         wizard_values["id"] = wizard.id
-        wizard_values["name"] = wizard.partner_name
+        wizard_values["name"] = wizard.partner_name if wizard.partner_name else ""
+        wizard_values["reservation_type"] = wizard.reservation_type
         wizard_values["checkin"] = wizard.start_date.strftime(
             get_lang(request.env).date_format
         )
