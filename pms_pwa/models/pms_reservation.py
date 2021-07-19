@@ -142,7 +142,7 @@ class PmsReservation(models.Model):
                         )
                     if guest.get("country_id"):
                         guest["nationality_id"] = int(guest["country_id"])
-                        guest.pop("country_id")
+                    guest.pop("country_id")
 
                     if guest.get("state_id"):
                         guest["state_id"] = int(guest["state_id"])
