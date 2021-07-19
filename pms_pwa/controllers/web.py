@@ -3,6 +3,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime
+from inspect import isdatadescriptor
 import json
 import logging
 import pprint
@@ -566,7 +567,7 @@ class TestFrontEnd(http.Controller):
             "page_name": "Reservation",
             "reservation": reservation,
             "readonly_fields": ["arrival_hour", "departure_hour"],
-            "required_fields": ["room_type_id"],
+            "required_fields": [],
         }
         print(values)
         if post and "message" in post:
@@ -739,7 +740,7 @@ class TestFrontEnd(http.Controller):
             "folio_internal_comment": reservation.folio_internal_comment,
             "payment_methods": self._get_allowed_payments_journals(),
             "reservation_types": self._get_reservation_types(),
-            "reservation_type": reservation.folio_id.reservation_type,
+            "reservation_type": reservation.reservation_type,
             "checkins_ratio": reservation.checkins_ratio,
             "ratio_checkin_data": reservation.ratio_checkin_data,
             "adults": reservation.adults,
@@ -765,7 +766,7 @@ class TestFrontEnd(http.Controller):
                 channel_type_id = reservation.channel_type_id.id if reservation.channel_type_id else False
             ),
             "readonly_fields": ["arrival_hour", "departure_hour"],
-            "required_fields": ["room_type_id"],
+            "required_fields": [],
         }
 
         pp.pprint(reservation_values)
@@ -1296,11 +1297,13 @@ class TestFrontEnd(http.Controller):
             )
 
         if reservation_values.get("partner_name") and reservation_values.get("partner_name") != '':
-            vals["partner_name"] = reservation_values.get("name")
+            vals["partner_name"] = reservation_values.get("partner_name")
 
 
         if reservation_values.get("reservation_type"):
             vals["reservation_type"] = reservation_values.get("reservation_type")
+        else:
+            vals["reservation_type"] = 'normal'
 
         # REVIEW: Avoid send 'false' to controller
         if (
@@ -1384,8 +1387,8 @@ class TestFrontEnd(http.Controller):
 
 
         partner_name = booking_engine.partner_name if booking_engine else ""
-        if params.get("name") and params.get("name") != partner_name:
-            vals["partner_name"] = params.get("name")
+        if params.get("partner_name") and params.get("partner_name") != partner_name:
+            vals["partner_name"] = params.get("partner_name")
 
         channel_type_id = booking_engine.channel_type_id.id if booking_engine else False
         if params.get("channel_type_id") and params.get("channel_type_id") != channel_type_id:
@@ -1407,22 +1410,52 @@ class TestFrontEnd(http.Controller):
 
         if params.get("reservation_type") and params.get("reservation_type") != booking_engine.reservation_type:
             vals["reservation_type"] = params.get("reservation_type")
+        elif not booking_engine or not booking_engine.reservation_type:
+            vals["reservation_type"] = 'normal'
 
         if not booking_engine:
             booking_engine = request.env["pms.booking.engine"].create(vals)
             booking_engine.flush()
-        if len(vals) > 0:
-            booking_engine.write(vals)
-            booking_engine.flush()
+        else:
+            old_num_selected = {}
+            old_board_service = {}
+            for room_line in booking_engine.availability_results:
+                if room_line.value_num_rooms_selected > 0:
+                    old_num_selected[room_line.room_type_id] = room_line.value_num_rooms_selected
+                if room_line.board_service_room_id:
+                    old_board_service[room_line.room_type_id] = room_line.board_service_room_id
+            if len(vals) > 0:
+                booking_engine.write(vals)
+                for k, v in old_num_selected.items():
+                    room_line = booking_engine.availability_results.filtered(lambda a: a.room_type_id == k)
+                    room_line.value_num_rooms_selected = v if room_line.num_rooms_available >= v else room_line.num_rooms_available
+                for k, v in old_board_service.items():
+                    room_line = booking_engine.availability_results.filtered(lambda a: a.room_type_id == k)
+                    room_line.board_service_room_id = v
+                booking_engine.flush()
+        board_service_room_id = booking_engine.availability_results.board_service_room_id.pms_board_service_id.ids if booking_engine and booking_engine.availability_results.board_service_room_id.pms_board_service_id else False
+        if params.get("board_service_room_id") and params.get("board_service_room_id") != 'false':
+                board_service_room_id = int(params.get("board_service_room_id"))
+                for room_line in booking_engine.availability_results:
+                    if (
+                    board_service_room_id in room_line.room_type_id.board_service_room_type_ids.mapped("pms_board_service_id.id")
+                    ):
+                        room_line.board_service_room_id = board_service_room_id
+        elif board_service_room_id:
+            board_service_room_id = board_service_room_id[0]
+
         if params.get("lines"):
             for line_id, values in params.get("lines").items():
-                booking_engine.availability_results.filtered(
+                room_line = booking_engine.availability_results.filtered(
                     lambda r: r.id == int(line_id)
-                ).value_num_rooms_selected = int(values["value_num_rooms_selected"])
-                booking_engine.flush()
-                # TODO: Board service
+                )
+                room_line.value_num_rooms_selected = int(values["value_num_rooms_selected"])
 
-        return self.parse_booking_engine(booking_engine)
+                booking_engine.flush()
+
+
+
+        return self.parse_booking_engine(booking_engine, board_service_room_id)
 
     @http.route(
         ["/reservation/multiple_reservation_new"],
@@ -1716,7 +1749,7 @@ class TestFrontEnd(http.Controller):
             "price_tax": round(reservation.price_tax, 2),
             "folio_pending_amount": round(reservation.folio_pending_amount, 2),
             "folio_internal_comment": reservation.folio_internal_comment,
-            "reservation_type": reservation.folio_id.reservation_type,
+            "reservation_type": reservation.reservation_type,
             "payment_methods": self._get_allowed_payments_journals(),
             "reservation_types": self._get_reservation_types(),
             "checkins_ratio": reservation.checkins_ratio,
@@ -1760,7 +1793,7 @@ class TestFrontEnd(http.Controller):
                 },
             ),
             "readonly_fields": ["arrival_hour", "departure_hour"],
-            "required_fields": ["room_type_id"],
+            "required_fields": [],
         }
 
         # avoid send reservation_line_ids on new single reservation modal
@@ -1808,11 +1841,12 @@ class TestFrontEnd(http.Controller):
                 new_values[k] = cmds
         return new_values
 
-    def parse_booking_engine(self, wizard):
+    def parse_booking_engine(self, wizard, board_service_room_id=False):
         wizard_values = dict()
         wizard_values["id"] = wizard.id
-        wizard_values["name"] = wizard.partner_name if wizard.partner_name else ""
+        wizard_values["partner_name"] = wizard.partner_name if wizard.partner_name else ""
         wizard_values["reservation_type"] = wizard.reservation_type
+        wizard_values["reservation_types"] = self._get_reservation_types()
         wizard_values["checkin"] = wizard.start_date.strftime(
             get_lang(request.env).date_format
         )
@@ -1834,6 +1868,26 @@ class TestFrontEnd(http.Controller):
         wizard_values["allowed_agency_ids"] = self._get_allowed_agency_ids(
             channel_type_id=wizard.channel_type_id.id if wizard.channel_type_id else False
         )
+        wizard_values["segmentation_ids"] = wizard.segmentation_ids.ids
+        wizard_values["board_service_room_id"] = board_service_room_id
+
+        # Compute allowed board service room ids
+        room_types = wizard.availability_results.mapped("room_type_id")
+        allowed_board_services = []
+        for room_type in room_types:
+            board_rooms = room_type._get_allowed_board_service_room_ids(
+                room_type_id=room_type.id,
+                pms_property_id=wizard.pms_property_id.id,
+            )
+            if not board_rooms:
+                board_rooms = []
+            boards = request.env["pms.board.service.room.type"].search([
+                ("id", "in", [board["id"] for board in board_rooms])
+            ]).mapped("pms_board_service_id")
+            for board in boards:
+                if all([board["id"] != allowed_board["id"] for allowed_board in allowed_board_services]):
+                    allowed_board_services.append({"id": board["id"], "name": board["name"]})
+        wizard_values["allowed_board_service_room_ids"] = allowed_board_services
 
         lines = {}
         for line in wizard.availability_results:
@@ -1843,14 +1897,9 @@ class TestFrontEnd(http.Controller):
                 "value_num_rooms_selected": line.value_num_rooms_selected,
                 "price_per_room": line.price_per_room,
                 "price_total": line.price_total,
+                "board_service_room_id": line.board_service_room_id.id,
+                "board_service_room_name": line.board_service_room_id.pms_board_service_id.name if line.board_service_room_id else "S.A.",
             }
-            # TODO: BoardService and boardservices allowed
-            # "board_service_id" = line.board_service_id.id,
-            # "allowed_board_service_room_ids" = \
-            #     request.env["pms.room.type"]._get_allowed_board_service_room_ids(
-            #         pms_room_type = line.room_type_id.id,
-            #         pms_property_id = wizard.pms_property_id,
-            #     ),
         wizard_values["lines"] = lines
         _logger.info("Values from controller to Frontend (multi reservation creation):")
         pp.pprint(wizard_values)
