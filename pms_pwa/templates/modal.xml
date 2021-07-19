@@ -120,8 +120,7 @@
                     <div class="col-6">
                         <label class="control-label col-12" for="agency_id">
                             Agency
-                        </label>
-                        <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
+                        </label>sllowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -178,6 +177,20 @@
                             Room type
                         </label>
                         <select data-select="room_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="col-sm-12">
+                    <h4>Internal Comment </h4>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label class="control-label col-12" for="folio_internal_comment">
+                            Comments
+                        </label>
+                        <input class="form-control" type="text" name="folio_internal_comment" placeholder="Comments on the reservation for internal staff ..." />
                     </div>
                 </div>
             </div>
@@ -319,6 +332,20 @@
                         </thead>
                         <tbody/>
                     </table>
+                </div>
+            </div>
+
+            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
+                <div class="col-sm-12">
+                    <h4>Internal Comment </h4>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label class="control-label col-12" for="internal_comment">
+                            Comments
+                        </label>
+                        <input class="form-control" type="text" name="internal_comment" placeholder="Comments on the reservation for internal staff ..." />
+                    </div>
                 </div>
             </div>
 

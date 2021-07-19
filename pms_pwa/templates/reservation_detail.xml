@@ -453,12 +453,6 @@
                                                 </div>
                                                 <hr class="o_pms_pwa_black_hr" />
                                                 <div class="row mt-3">
-                                                    <div class="col-12">
-                                                        <h4>Notes</h4>
-                                                        <div>
-                                                            <p></p>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-12 o_pms_pwa_selectpicker">
                                                         <!-- <label class="control-label col-12" for="allowed_segmentations">
                                                             Motivo del viaje
@@ -476,9 +470,17 @@
                                                 <hr />
                                                 <div class="row mt-3">
                                                     <div class="col-12">
+                                                        <label class="control-label col-12" for="folio_internal_comment">
+                                                            Internal Notes
+                                                        </label>
+                                                        <input
+                                                            t-att-required='"required" if "folio_internal_comment" in required_fields else None'
+                                                            t-att-readonly='"readonly" if "folio_internal_comment" in readonly_fields else None'
+                                                            class="form-control" type="text" name="folio_internal_comment" t-att-value="reservation.folio_internal_comment"
+                                                        />
                                                         <div class="form-group text-center">
                                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                                            <input type="submit" class="btn btn-message" value="Save changes" />
+                                                            <!-- <input type="submit" class="btn btn-message" value="Save changes" /> -->
                                                         </div>
                                                     </div>
                                                 </div>

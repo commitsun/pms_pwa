@@ -1394,6 +1394,10 @@ class TestFrontEnd(http.Controller):
         if params.get("channel_type_id") and params.get("channel_type_id") != channel_type_id:
             vals["channel_type_id"]  = int(params.get("channel_type_id") if params.get("channel_type_id") else False)
 
+        internal_comment = booking_engine.internal_comment if booking_engine else ""
+        if params.get("internal_comment") and params.get("internal_comment") != internal_comment:
+            vals["internal_comment"] = params.get("internal_comment")
+
         agency_id = booking_engine.agency_id.id if booking_engine else False
         if params.get("agency_id") and params.get("agency_id") != agency_id and params.get("agency_id") != "false":
             # REVIEW: why send 'false' to controller
@@ -1870,6 +1874,7 @@ class TestFrontEnd(http.Controller):
         )
         wizard_values["segmentation_ids"] = wizard.segmentation_ids.ids
         wizard_values["board_service_room_id"] = board_service_room_id
+        wizard_values["internal_comment"] = wizard.internal_comment if wizard.internal_comment else ""
 
         # Compute allowed board service room ids
         room_types = wizard.availability_results.mapped("room_type_id")
@@ -1898,7 +1903,7 @@ class TestFrontEnd(http.Controller):
                 "price_per_room": line.price_per_room,
                 "price_total": line.price_total,
                 "board_service_room_id": line.board_service_room_id.id,
-                "board_service_room_name": line.board_service_room_id.pms_board_service_id.name if line.board_service_room_id else "S.A.",
+                "board_service_room_name": line.board_service_room_id.pms_board_service_id.name if line.board_service_room_id else "No",
             }
         wizard_values["lines"] = lines
         _logger.info("Values from controller to Frontend (multi reservation creation):")
@@ -1936,15 +1941,15 @@ class TestFrontEnd(http.Controller):
         type="json",
         methods=["POST"],
     )
-    def print_checkint(self, reservation_ids=None, **kw):
+    def print_checkin(self, reservation_id=None, **kw):
         reservations = False
-        if reservation_ids:
+        if reservation_id:
             reservations = (
                 request.env["pms.reservation"]
                 .sudo()
-                .search([("id", "in", reservation_ids)])
+                .search([("id", "=", int(reservation_id))])
             )
-        reservations.print_all_checkins()
+        return reservations.print_all_checkins()
 
     def generate_reservation_style_buttons(self, reservation):
         buttons = json.loads(reservation.pwa_action_buttons)

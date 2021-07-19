@@ -1831,7 +1831,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
 
                             ajax.jsonRpc("/print-checkins", "call", {
-                                reservation_ids: reservation_id,
+                                reservation_id: reservation_id,
                             }).then(function (data) {
                                 console.log("OK");
                             });
