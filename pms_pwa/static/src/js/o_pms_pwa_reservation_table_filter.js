@@ -1648,7 +1648,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 ).then(function (new_data) {
                                     try {
                                         var checkin_persons =
-                                            new_data.checkin_partner_ids;
+                                            new_data.checkin_partner_ids[0];
 
                                         $.each(checkin_persons, function (key, value) {
                                             var check_partner_id =
