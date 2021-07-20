@@ -10,6 +10,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     const relation_values = {
         allowed_agency_ids: "agency_id",
         allowed_board_service_room_ids: "board_service_room_id",
+        reservation_types: "reservation_type",
         allowed_channel_type_ids: "channel_type_id",
         allowed_pricelists: "pricelist_id",
         allowed_segmentations: "segmentation_ids",
@@ -75,6 +76,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         var allowed_fields = [
             "allowed_agency_ids",
             "allowed_board_service_room_ids",
+            "reservation_types",
             "allowed_channel_type_ids",
             "allowed_pricelists",
             "allowed_segmentations",
@@ -205,6 +207,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         var allowed_fields = [
             "allowed_agency_ids",
             "allowed_board_service_room_ids",
+            "reservation_types",
             "allowed_channel_type_ids",
             "allowed_pricelists",
             "allowed_segmentations",
@@ -302,6 +305,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         "' name='value_num_rooms_selected' value='" +
                                         linevalues["value_num_rooms_selected"] +
                                         "' class='form-control o_pms_pwa_modal_number'/></td><td>" +
+                                        linevalues["board_service_room_name"] +
+                                        "</td><td>" +
                                         linevalues["price_per_room"] +
                                         "</td></tr>";
                                     $("#table_lines tbody").append(tr);
@@ -959,6 +964,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             var allowed_fields = [
                                                                 "allowed_agency_ids",
                                                                 "allowed_board_service_room_ids",
+                                                                "reservation_types",
                                                                 "allowed_channel_type_ids",
                                                                 "allowed_pricelists",
                                                                 "allowed_segmentations",
@@ -1165,6 +1171,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             var allowed_fields = [
                                                                 "allowed_agency_ids",
                                                                 "allowed_board_service_room_ids",
+                                                                "reservation_types",
                                                                 "allowed_channel_type_ids",
                                                                 "allowed_pricelists",
                                                                 "allowed_segmentations",
@@ -1824,7 +1831,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
 
                             ajax.jsonRpc("/print-checkins", "call", {
-                                reservation_ids: reservation_id,
+                                reservation_id: reservation_id,
                             }).then(function (data) {
                                 console.log("OK");
                             });
