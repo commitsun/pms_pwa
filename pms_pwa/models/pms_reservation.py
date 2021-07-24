@@ -290,11 +290,17 @@ class PmsReservation(models.Model):
                 "mobile": checkin.mobile,
                 "email": checkin.email,
                 "gender": checkin.gender,
-                "state": checkin.state,
+                "state_id": {
+                    "id": checkin.state_id.id if checkin.state_id else False,
+                    "name": checkin.state_id.name if checkin.state_id else "",
+                },
                 "allowed_country_ids": allowed_countries,
-                "country_id": checkin.nationality_id.id or False,
+                "country_id": {
+                    "id": checkin.nationality_id.id if checkin.nationality else False,
+                    "name": checkin.nationality_id.name if checkin.nationality else "",
+                },
                 "allowed_state_ids": allowed_states,
-                "state_id": checkin.state_id.id or False,
+                "state": checkin.state or False,
             }
         return checkin_partners
 
@@ -625,6 +631,12 @@ class PmsReservation(models.Model):
                     "content": self.partner_requests,
                 }
             )
+
+        # avoid send o2m & m2m fields on new single reservation modal
+        reservation_line_ids = self._get_reservation_line_ids() if isinstance(self.id, int) else False
+        service_ids = self._get_service_ids() if isinstance(self.id, int) else False
+        checkin_partner_ids = self._get_checkin_partner_ids() if isinstance(self.id, int) else False
+
         reservation_values = dict()
 
         reservation_values = {
@@ -634,18 +646,37 @@ class PmsReservation(models.Model):
             "partner_id": partner_vals,
             "unread_msg": len(notifications),
             "messages": notifications,
-            "room_type_id": self.room_type_id.id,
-            "preferred_room_id": self.preferred_room_id.id,
-            "channel_type_id": self.channel_type_id.id
-            if self.channel_type_id
-            else False,
-            "agency_id": self.agency_id.id if self.agency_id else False,
+            "room_type_id": {
+                "id": self.room_type_id.id,
+                "name": self.room_type_id.name,
+                "default_code": self.room_type_id.default_code,
+            },
+            "preferred_room_id": {
+                "id": self.preferred_room_id.id
+                if self.preferred_room_id
+                else False,
+                "name": self.rooms
+                if self.rooms else "",
+            },
+            "channel_type_id": {
+                "id": self.channel_type_id.id
+                if self.channel_type_id
+                else False,
+                "name": self.channel_type_id.name
+                if self.channel_type_id
+                else "",
+            },
+            "agency_id": {
+                "id": self.agency_id.id if self.agency_id else False,
+                "name": self.agency_id.name if self.agency_id else False,
+                "url": self.website.image_url(self.agency_id, 'image_128')
+                if self.agency_id else False,
+            },
+            "user_name": self.user_id.name if self.user_id else False,
             "nights": self.nights,
             "checkin": self.checkin.strftime(get_lang(self.env).date_format),
             "arrival_hour": self.arrival_hour,
-            "checkout": self.checkout.strftime(
-                get_lang(self.env).date_format
-            ),
+            "checkout": self.checkout.strftime(get_lang(self.env).date_format),
             "departure_hour": self.departure_hour,
             "folio_id": {
                 "id": self.folio_id.id,
@@ -658,22 +689,36 @@ class PmsReservation(models.Model):
             "price_tax": round(self.price_tax, 2),
             "folio_pending_amount": round(self.folio_pending_amount, 2),
             "folio_internal_comment": self.folio_internal_comment,
-            "reservation_type": self.reservation_type,
             "payment_methods": self.pms_property_id._get_allowed_payments_journals(),
             "reservation_types": self._get_reservation_types(),
+            "reservation_type": self.reservation_type,
             "checkins_ratio": self.checkins_ratio,
             "ratio_checkin_data": self.ratio_checkin_data,
             "adults": self.adults,
+            "checkin_partner_ids": checkin_partner_ids,
             "pms_property_id": self.pms_property_id.id,
+            "service_ids": service_ids,
+            "reservation_line_ids": reservation_line_ids,
             "allowed_board_service_room_ids": self._get_allowed_board_service_room_ids(),
-            "board_service_room_id": self.board_service_room_id.id
-            if self.board_service_room_id
-            else False,
+            "board_service_room_id": {
+                "id": self.board_service_room_id.id
+                if self.board_service_room_id
+                else False,
+                "name": self.board_service_room_id.pms_board_service_id.name
+                if self.board_service_room_id
+                else "",
+            },
             "allowed_service_ids": self._get_allowed_service_ids(),
-            # TODO: Review error buttons view
-            # "primary_button": primary_button,
-            # "secondary_buttons": secondary_buttons,
-            "pricelist_id": self.pricelist_id.id,
+            "primary_button": primary_button,
+            "secondary_buttons": secondary_buttons,
+            "pricelist_id": {
+                "id": self.pricelist_id.id
+                if self.pricelist_id
+                else False,
+                "name": self.pricelist_id.name
+                if self.pricelist_id
+                else "",
+            },
             "allowed_pricelists": self._get_allowed_pricelists(),
             "allowed_segmentations": self._get_allowed_segmentations(),
             "allowed_channel_type_ids": self.pms_property_id._get_allowed_channel_type_ids(),
@@ -705,20 +750,7 @@ class PmsReservation(models.Model):
             "required_fields": [],
         }
 
-        # avoid send reservation_line_ids on new single reservation modal
-        if isinstance(self.id, int):
-            reservation_values[
-                "reservation_line_ids"
-            ] = self._get_reservation_line_ids()
-
-        # avoid send reservation_line_ids on new single reservation modal
-        if isinstance(self.id, int):
-            reservation_values["service_ids"] = self._get_service_ids()
-
-        if isinstance(self.id, int):
-            reservation_values["checkin_partner_ids"] = self._get_checkin_partner_ids(),
-
-        _logger.info("Values from controller to Frontend (reservation onchange):")
+        _logger.info("Values from controller to Frontend:")
         pp.pprint(reservation_values)
         return reservation_values
 

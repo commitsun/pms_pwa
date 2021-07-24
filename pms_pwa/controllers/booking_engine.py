@@ -295,7 +295,12 @@ class BookingEngine(http.Controller):
         )
         wizard_values["total_price_folio"] = wizard.total_price_folio
         wizard_values["discount"] = wizard.discount
-        wizard_values["pricelist_id"] = wizard.pricelist_id.id
+        wizard_values["pricelist_id"] = {
+                "id": wizard.pricelist_id.id if wizard.pricelist_id else False,
+                "name": self.agency_id.name if self.agency_id else False,
+                "url": self.website.image_url(self.agency_id, 'image_128')
+                if self.agency_id else False,
+            },
         wizard_values["allowed_pricelists"] = request.env[
             "pms.reservation"
         ]._get_allowed_pricelists()

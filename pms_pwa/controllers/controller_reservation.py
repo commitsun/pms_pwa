@@ -375,129 +375,7 @@ class PmsReservation(http.Controller):
         if not reservation:
             raise MissingError(_("This document does not exist."))
 
-        primary_button, secondary_buttons = reservation.generate_reservation_style_buttons()
-
-        if reservation.partner_id:
-            partner_vals = {
-                "id": reservation.partner_id.id,
-                "name": reservation.partner_id.name,
-                "mobile": reservation.partner_id.mobile or reservation.partner_id.phone,
-            }
-        else:
-            partner_vals = {
-                "id": False,
-                "name": reservation.partner_name,
-                "mobile": reservation.mobile,
-            }
-        notifications = []
-        if reservation.partner_internal_comment:
-            notifications.append(
-                {
-                    "title": "Notas sobre Cliente",
-                    "content": reservation.partner_internal_comment,
-                }
-            )
-        if reservation.folio_internal_comment:
-            notifications.append(
-                {
-                    "title": "Notas sobre Reserva",
-                    "content": reservation.folio_internal_comment,
-                }
-            )
-
-        if reservation.partner_requests:
-            notifications.append(
-                {
-                    "title": "Peticiones de Cliente",
-                    "content": reservation.partner_requests,
-                }
-            )
-
-        reservation_values = {
-            "id": reservation.id,
-            "name": reservation.name,
-            "splitted": reservation.splitted,
-            "partner_id": partner_vals,
-            "unread_msg": len(notifications),
-            "messages": notifications,
-            "room_type_id": {
-                "id": reservation.room_type_id.id,
-                "name": reservation.room_type_id.name,
-                "default_code": reservation.room_type_id.default_code,
-            },
-            "preferred_room_id": {
-                "id": reservation.preferred_room_id.id
-                if reservation.preferred_room_id
-                else False,
-                "name": reservation.preferred_room_id.name
-                if reservation.preferred_room_id
-                else reservation.rooms,
-            },
-            "channel_type_id": {
-                "id": reservation.channel_type_id.id
-                if reservation.channel_type_id
-                else False,
-                "name": reservation.channel_type_id.name
-                if reservation.channel_type_id
-                else False,
-            },
-            "agency_id": {
-                "id": reservation.agency_id.id if reservation.agency_id else False,
-                "name": reservation.agency_id.name if reservation.agency_id else False,
-                "url": request.website.image_url(reservation.agency_id, 'image_128') if reservation.agency_id else False,
-            },
-            "user_name": reservation.user_id.name if reservation.user_id else False,
-            "nights": reservation.nights,
-            "checkin": reservation.checkin.strftime(get_lang(request.env).date_format),
-            "arrival_hour": reservation.arrival_hour,
-            "checkout": reservation.checkout.strftime(
-                get_lang(request.env).date_format
-            ),
-            "departure_hour": reservation.departure_hour,
-            "folio_id": {
-                "id": reservation.folio_id.id,
-                "amount_total": reservation.folio_id.amount_total,
-                "outstanding_vat": round(reservation.folio_pending_amount, 2),
-            },
-            "state": reservation.state,
-            "credit_card_details": reservation.credit_card_details,
-            "price_total": round(reservation.price_total, 2),
-            "price_tax": reservation.price_tax,
-            "folio_pending_amount": round(reservation.folio_pending_amount, 2),
-            "folio_internal_comment": reservation.folio_internal_comment,
-            "payment_methods": reservation.pms_property_id._get_allowed_payments_journals(),
-            "reservation_types": reservation._get_reservation_types(),
-            "reservation_type": reservation.reservation_type,
-            "checkins_ratio": reservation.checkins_ratio,
-            "ratio_checkin_data": reservation.ratio_checkin_data,
-            "adults": reservation.adults,
-            "checkin_partner_ids": reservation._get_checkin_partner_ids(),
-            "pms_property_id": reservation.pms_property_id.id,
-            "service_ids": reservation._get_service_ids(),
-            "reservation_line_ids": reservation._get_reservation_line_ids(),
-            "allowed_board_service_room_ids": reservation._get_allowed_board_service_room_ids(),
-            "board_service_room_id": reservation.board_service_room_id.id
-            if reservation.board_service_room_id
-            else False,
-            "board_service_room_id_name": reservation.board_service_room_id.pms_board_service_id.name
-            if reservation.board_service_room_id and reservation.board_service_room_id.pms_board_service_id
-            else False,
-            "allowed_service_ids": reservation._get_allowed_service_ids(),
-            "primary_button": primary_button,
-            "secondary_buttons": secondary_buttons,
-            "pricelist_id": reservation.pricelist_id.id,
-            "allowed_pricelists": reservation._get_allowed_pricelists(),
-            "allowed_segmentations": reservation._get_allowed_segmentations(),
-            "allowed_channel_type_ids": reservation.pms_property_id._get_allowed_channel_type_ids(),
-            "allowed_agency_ids": reservation.pms_property_id._get_allowed_agency_ids(
-                channel_type_id = reservation.channel_type_id.id if reservation.channel_type_id else False
-            ),
-            "readonly_fields": ["arrival_hour", "departure_hour"],
-            "required_fields": [],
-        }
-
-        pp.pprint(reservation_values)
-        return reservation_values
+        return reservation.parse_reservation()
 
     @http.route(
         ["/reservation/<int:reservation_id>/onchange_data"],
@@ -508,7 +386,6 @@ class PmsReservation(http.Controller):
     )
     # flake8: noqa: C901
     def reservation_onchange_data(self, reservation_id=None, **kw):
-        old_reservation_type = None
         reservation = False
         params = http.request.jsonrequest.get("params")
         _logger.info(params)
