@@ -65,7 +65,7 @@
                                                 <span data-toggle="tooltip" title="Guest personal data" class="badge bg-red mr-2" data-original-title="Guest personal data">
                                                     <t t-esc="reservation.adults" />
                                                 </span>
-                                                Guest personal data
+                                                Huéspedes
                                             </button>
                                             <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
                                                 <t t-foreach="reservation.checkin_partner_ids" t-as="person">
@@ -74,7 +74,7 @@
                                                             <t t-esc="person_value['firstname']" /> <t t-esc="person_value['lastname']" />
                                                         </t>
                                                         <t t-else="">
-                                                            Not indicated
+                                                            Desconocido
                                                         </t>
                                                     </a>
                                                 </t>
