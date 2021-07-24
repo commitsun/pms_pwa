@@ -52,7 +52,6 @@ def _get_search_domain(pms_property_id, search=False, **post):
         elif v and k == "in_house":
             domain_fields.append(("reservation_ids.state", "=", "onboard"))
 
-
     # TODO: text_dialog  (chatter)
     domain_fields.append(("reservation_ids", "!=", False))
 

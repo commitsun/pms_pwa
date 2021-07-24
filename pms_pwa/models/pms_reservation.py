@@ -1,14 +1,20 @@
 # Copyright 2017  Dario Lodeiros
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import json
-from pprint import pprint
+import pprint
 import avinit
-
+import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 import datetime
+from ..controllers import controller_room_types, controller_rooms
+
 
 from odoo.tools.misc import get_lang
+pp = pprint.PrettyPrinter(indent=4)
+
+
+_logger = logging.getLogger(__name__)
 
 
 class PmsReservation(models.Model):
@@ -188,6 +194,7 @@ class PmsReservation(models.Model):
             return json.dumps({"result": False, "message": str(e)})
 
     def _get_reservation_services(self):
+        # REVIEW: Is not Used??
         """
         @return: Return dict with services,
         if normal service return only qty, if service per day
@@ -443,6 +450,7 @@ class PmsReservation(models.Model):
 
     @api.model
     def _get_allowed_extras(self, partner=False, pricelist=False):
+        # REVIEW: Is not used?
         """
         @return: Return dict with list main extras and secondary extras
         {
@@ -571,4 +579,213 @@ class PmsReservation(models.Model):
             else:
                 record.icon_payment = "pending"
 
+    @api.model
+    def _get_reservation_types(self):
+        return [
+            {"id": "out", "name": "Out of service"},
+            {"id": "normal", "name": "Normal"},
+            {"id": "staff", "name": "Staff"},
+        ]
 
+    def parse_reservation(self):
+        self.ensure_one()
+        primary_button, secondary_buttons = self.generate_reservation_style_buttons()
+
+        if self.partner_id:
+            partner_vals = {
+                "id": self.partner_id.id,
+                "name": self.partner_id.name if self.partner_name else "",
+                "mobile": self.partner_id.mobile or self.partner_id.phone,
+            }
+        else:
+            partner_vals = {
+                "id": False,
+                "name": self.partner_name if self.partner_name else "",
+                "mobile": self.mobile,
+            }
+        notifications = []
+        if self.partner_internal_comment:
+            notifications.append(
+                {
+                    "title": "Notas sobre Cliente",
+                    "content": self.partner_internal_comment,
+                }
+            )
+        if self.folio_internal_comment:
+            notifications.append(
+                {
+                    "title": "Notas sobre Reserva",
+                    "content": self.folio_internal_comment,
+                }
+            )
+        if self.partner_requests:
+            notifications.append(
+                {
+                    "title": "Peticiones de Cliente",
+                    "content": self.partner_requests,
+                }
+            )
+        reservation_values = dict()
+
+        reservation_values = {
+            "id": self.id,
+            "name": self.name if self.name else "",
+            "splitted": self.splitted,
+            "partner_id": partner_vals,
+            "unread_msg": len(notifications),
+            "messages": notifications,
+            "room_type_id": self.room_type_id.id,
+            "preferred_room_id": self.preferred_room_id.id,
+            "channel_type_id": self.channel_type_id.id
+            if self.channel_type_id
+            else False,
+            "agency_id": self.agency_id.id if self.agency_id else False,
+            "nights": self.nights,
+            "checkin": self.checkin.strftime(get_lang(self.env).date_format),
+            "arrival_hour": self.arrival_hour,
+            "checkout": self.checkout.strftime(
+                get_lang(self.env).date_format
+            ),
+            "departure_hour": self.departure_hour,
+            "folio_id": {
+                "id": self.folio_id.id,
+                "amount_total": round(self.folio_id.amount_total, 2),
+                "outstanding_vat": round(self.folio_pending_amount, 2),
+            },
+            "state": self.state,
+            "credit_card_details": self.credit_card_details,
+            "price_total": round(self.price_room_services_set, 2),
+            "price_tax": round(self.price_tax, 2),
+            "folio_pending_amount": round(self.folio_pending_amount, 2),
+            "folio_internal_comment": self.folio_internal_comment,
+            "reservation_type": self.reservation_type,
+            "payment_methods": self.pms_property_id._get_allowed_payments_journals(),
+            "reservation_types": self._get_reservation_types(),
+            "checkins_ratio": self.checkins_ratio,
+            "ratio_checkin_data": self.ratio_checkin_data,
+            "adults": self.adults,
+            "pms_property_id": self.pms_property_id.id,
+            "allowed_board_service_room_ids": self._get_allowed_board_service_room_ids(),
+            "board_service_room_id": self.board_service_room_id.id
+            if self.board_service_room_id
+            else False,
+            "allowed_service_ids": self._get_allowed_service_ids(),
+            # TODO: Review error buttons view
+            # "primary_button": primary_button,
+            # "secondary_buttons": secondary_buttons,
+            "pricelist_id": self.pricelist_id.id,
+            "allowed_pricelists": self._get_allowed_pricelists(),
+            "allowed_segmentations": self._get_allowed_segmentations(),
+            "allowed_channel_type_ids": self.pms_property_id._get_allowed_channel_type_ids(),
+            "allowed_agency_ids": self.pms_property_id._get_allowed_agency_ids(
+                channel_type_id=self.channel_type_id.id if self.channel_type_id else False
+            ),
+            "segmentation_ids": self.segmentation_ids.ids,
+            "room_numbers": controller_rooms.Rooms._get_available_rooms(
+                self=self,
+                payload={
+                    "pms_property_id": self.pms_property_id.id,
+                    "pricelist_id": self.pricelist_id.id,
+                    "checkin": self.checkin,
+                    "checkout": self.checkout,
+                    "reservation_id": self.id,
+                },
+            ),
+            "room_types": controller_room_types.RoomTypes._get_available_room_types(
+                self=self,
+                payload={
+                    "pms_property_id": self.pms_property_id.id,
+                    "pricelist_id": self.pricelist_id.id,
+                    "checkin": self.checkin,
+                    "checkout": self.checkout,
+                    "reservation_id": self.id,
+                },
+            ),
+            "readonly_fields": ["arrival_hour", "departure_hour"],
+            "required_fields": [],
+        }
+
+        # avoid send reservation_line_ids on new single reservation modal
+        if isinstance(self.id, int):
+            reservation_values[
+                "reservation_line_ids"
+            ] = self._get_reservation_line_ids()
+
+        # avoid send reservation_line_ids on new single reservation modal
+        if isinstance(self.id, int):
+            reservation_values["service_ids"] = self._get_service_ids()
+
+        if isinstance(self.id, int):
+            reservation_values["checkin_partner_ids"] = self._get_checkin_partner_ids(),
+
+        _logger.info("Values from controller to Frontend (reservation onchange):")
+        pp.pprint(reservation_values)
+        return reservation_values
+
+    def generate_reservation_style_buttons(self):
+        self.ensure_one()
+        buttons = json.loads(self.pwa_action_buttons)
+        keys = buttons.keys()
+        keysList = [key for key in keys]
+
+        primary_button = ""
+        secondary_buttons = ""
+
+        counter = 0
+        primary = 0
+        for _key in keysList:
+            if (primary == 0 and buttons[keysList[counter]]) or keysList[
+                counter
+            ] == "Ver Detalle":
+                if buttons[keysList[counter]]:
+                    primary_button = (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' data-id='"
+                        + str(self.id)
+                        + "' class='btn o_pms_pwa_default_button_name"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+                    primary = 1
+                else:
+                    primary_button = (
+                        "<button"
+                        + " class='disabled btn o_pms_pwa_default_button_name"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(self.id)
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+            else:
+                if buttons[keysList[counter]]:
+                    secondary_buttons += (
+                        "<button url='"
+                        + buttons[keysList[counter]]
+                        + "' class='dropdown-item  o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(self.id)
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+                else:
+                    secondary_buttons += (
+                        "<button class='disabled dropdown-item"
+                        + " o_pms_pwa_abutton o_pms_pwa_button_"
+                        + str(keysList[counter].lower())
+                        + "' data-id='"
+                        + str(self.id)
+                        + "' type='button'>"
+                        + keysList[counter]
+                        + "</button>"
+                    )
+            counter += 1
+        return (primary_button, secondary_buttons)
