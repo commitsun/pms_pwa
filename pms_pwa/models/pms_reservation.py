@@ -296,8 +296,8 @@ class PmsReservation(models.Model):
                 },
                 "allowed_country_ids": allowed_countries,
                 "country_id": {
-                    "id": checkin.nationality_id.id if checkin.nationality else False,
-                    "name": checkin.nationality_id.name if checkin.nationality else "",
+                    "id": checkin.nationality_id.id if checkin.nationality_id else False,
+                    "name": checkin.nationality_id.name if checkin.nationality_id else "",
                 },
                 "allowed_state_ids": allowed_states,
                 "state": checkin.state or False,
