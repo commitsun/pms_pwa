@@ -674,7 +674,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         // var payment_methods = ["Credit card", "Cash"];
                         ajax.jsonRpc("/room_types", "call", {
                             pms_property_id: reservation_data.pms_property_id,
-                            pricelist_id: reservation_data.pricelist_id,
+                            pricelist_id: reservation_data.pricelist_id["id"],
                             checkin: reservation_data.checkin,
                             checkout: reservation_data.checkout,
                             reservation_id: reservation_id,
@@ -683,7 +683,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 room_types = room_types_data;
                                 ajax.jsonRpc("/rooms", "call", {
                                     pms_property_id: reservation_data.pms_property_id,
-                                    pricelist_id: reservation_data.pricelist_id,
+                                    pricelist_id: reservation_data.pricelist_id["id"],
                                     checkin: reservation_data.checkin,
                                     checkout: reservation_data.checkout,
                                     reservation_id: reservation_id,
