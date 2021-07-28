@@ -15,13 +15,12 @@
                 <t t-set="current_property" t-value="1" />
             </t>
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
-            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4">
-                <span class="o_pms_notification_title">
-                    <i class="fa fa-info-circle mr-1" />
-                    Updates
-                    <span class="o_pms_pwa_update_counter ml-1" />
+            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4 row">
+                <span class="o_pms_notification_title col-2">
+                    <i class="fa fa-info-circle mr-1"/> Actualizaciones <span class="o_pms_pwa_update_counter ml-1"/>
                 </span>
-
+                <div class="col-9 o_pms_pwa_notification_list"/>
+                <a href="#" class="col-1 btn o_pms_pwa_btn_border o_pms_pwa_clear_all float-right">Aceptar todo</a>
             </div>
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">

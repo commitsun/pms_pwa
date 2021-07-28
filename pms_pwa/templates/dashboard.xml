@@ -9,9 +9,18 @@
                         <div class="col-md-12 col-lg-6 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
-                                    <h3 class="mb-0">
-                                        NOTIFICATIONS
-                                    </h3>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h3 class="mb-0">
+                                                NOTIFICACIONES
+                                            </h3>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="" class="o_pms_pwa_btn_border o_pms_pwa_clear_all">
+                                                ACEPTAR TODAS
+                                            </a>
+                                        </div>
+                                    </div>
                                     <hr/>
                                 </div>
                                 <div class="card-body o_pms_pwa_notifications">
