@@ -94,7 +94,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                     maxYear: parseInt(moment().format("YYYY"), 10),
                 },
                 function (start) {
-                    console.log(start);
+                    //console.log(start);
                     const start_date = new Date(start);
                     var select_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -103,8 +103,23 @@ odoo.define("pms_pwa.calendar", function (require) {
                     $('input[name="calendar_selected_date"]').val(select_date);
                     let url= new URL(window.location.href);
                     let searchParams = new URLSearchParams(url.search);
+                    let search_params = ""
+                    try{
+                        if(searchParams.has('display_option')){
+                            search_params = search_params+"&display_option="+searchParams.get('display_option')
+                        }
+                    }catch{
+                        console.log("ERROR al pasar opciones de display");
+                    }
+                    try{
+                        if(searchParams.has('pricelist')){
+                            search_params = search_params+"&pricelist="+searchParams.get('pricelist')
+                        }
+                    }catch{
+                        console.log("ERROR al pasar pricelist");
+                    }
                     searchParams.set('selected_date', select_date);
-                    let new_url=url.origin+url.pathname+"?"+searchParams.toString();
+                    let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;
                     window.location = new_url;
                 }
             );
@@ -122,7 +137,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                     maxYear: parseInt(moment().format("YYYY"), 10),
                 },
                 function (start) {
-                    console.log(start);
+                    //console.log(start);
                     const start_date = new Date(start);
                     var select_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
@@ -131,8 +146,23 @@ odoo.define("pms_pwa.calendar", function (require) {
                     $('input[name="calendar_selected_date"]').val(select_date);
                     let url= new URL(window.location.href);
                     let searchParams = new URLSearchParams(url.search);
+                    let search_params = ""
+                    try{
+                        if(searchParams.has('display_option')){
+                            search_params = search_params+"&display_option="+searchParams.get('display_option')
+                        }
+                    }catch{
+                        console.log("ERROR al pasar opciones de display");
+                    }
+                    try{
+                        if(searchParams.has('pricelist')){
+                            search_params = search_params+"&pricelist="+searchParams.get('pricelist')
+                        }
+                    }catch{
+                        console.log("ERROR al pasar pricelist");
+                    }
                     searchParams.set('selected_date', select_date);
-                    let new_url=url.origin+url.pathname+"?"+searchParams.toString();
+                    let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;
                     window.location = new_url;
                 }
             );
