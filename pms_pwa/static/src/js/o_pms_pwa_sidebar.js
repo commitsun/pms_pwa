@@ -41,6 +41,12 @@ odoo.define("pms_pwa.sidebar", function () {
         if (document.documentElement.lang === "es-ES") {
             $(".o_pms_pwa_daterangepicker").daterangepicker(
                 {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
                     singleDatePicker: true,
                     showDropdowns: true,
                     autoUpdateInput: false,
@@ -140,6 +146,10 @@ odoo.define("pms_pwa.sidebar", function () {
         } else {
             $(".o_pms_pwa_daterangepicker").daterangepicker(
                 {
+                    locale: {
+                        direction: "ltr",
+                        format: "MM/DD/YYYY",
+                    },
                     singleDatePicker: true,
                     showDropdowns: true,
                     autoUpdateInput: false,

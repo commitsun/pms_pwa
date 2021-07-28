@@ -62,6 +62,10 @@ section.o_pms_pwa_roomdoo {
                     margin-right: 0.25rem;
                 }
             }
+            .btn-calendar-roomdoo {
+                color: $theme-color;
+                margin-top: -0.25rem;
+            }
         }
         .table-responsive {
             height: calc(70vh - 25px);
