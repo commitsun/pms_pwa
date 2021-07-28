@@ -5,6 +5,7 @@ odoo.define("pms_pwa.calendar", function (require) {
     var core = require("web.core");
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
+    const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
 
     publicWidget.registry.CalendarCollapseWidget = publicWidget.Widget.extend({
         selector: "#calendar_table",
@@ -33,7 +34,7 @@ odoo.define("pms_pwa.calendar", function (require) {
     });
 
     $(document).on("click", ".open-modalDialog", function () {
-        const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
+        // const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
         var date_string = $(this).data("date");
 
         try {
@@ -76,4 +77,67 @@ odoo.define("pms_pwa.calendar", function (require) {
                 .trigger("change");
         }, 300);
     });
+    $(function () {
+        if (document.documentElement.lang === "es-ES") {
+            $(".o_pms_pwa_daterangepicker_calendar").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    console.log(start);
+                    const start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="calendar_selected_date"]').val(select_date);
+                    let url= new URL(window.location.href);
+                    let searchParams = new URLSearchParams(url.search);
+                    searchParams.set('selected_date', select_date);
+                    let new_url=url.origin+url.pathname+"?"+searchParams.toString();
+                    window.location = new_url;
+                }
+            );
+        } else {
+            $(".o_pms_pwa_daterangepicker_calendar").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "MM/DD/YYYY",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    console.log(start);
+                    const start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="calendar_selected_date"]').val(select_date);
+                    let url= new URL(window.location.href);
+                    let searchParams = new URLSearchParams(url.search);
+                    searchParams.set('selected_date', select_date);
+                    let new_url=url.origin+url.pathname+"?"+searchParams.toString();
+                    window.location = new_url;
+                }
+            );
+        }
+    });
+
 });
+
