@@ -23,7 +23,7 @@
         </div>
     </template>
     <template id="o_pms_pwa_new_reservation_modal" name="New reservation modal">
-        <div class="modal fade o_pms_pwa_right o_pms_pwa_new_reservation_modal" tabindex="-1" role="dialog" id="o_pms_pwa_new_reservation_modal" aria-labelledby="o_pms_pwa_new_reservation_modal" aria-hidden="true">
+        <div class="modal fade o_pms_pwa_right o_pms_pwa_new_reservation_modal" tabindex="-1"  data-backdrop="static" role="dialog" id="o_pms_pwa_new_reservation_modal" aria-labelledby="o_pms_pwa_new_reservation_modal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -120,7 +120,8 @@
                     <div class="col-6">
                         <label class="control-label col-12" for="agency_id">
                             Agency
-                        </label>sllowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
+                        </label>
+                        <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
                     </div>
                 </div>
                 <div class="row mt-3">
