@@ -2,6 +2,7 @@ from . import web
 from . import controller_room_types
 from . import controller_rooms
 from . import controller_reservation
+from . import controller_folio
 from . import dashboard
 from . import calendar
 from . import calendar_config
