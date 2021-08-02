@@ -3,6 +3,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     require("web.dom_ready");
     var ajax = require("web.ajax");
     var core = require("web.core");
+    var PortalSidebar = require('portal.PortalSidebar');
     var _t = core._t;
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
@@ -1829,12 +1830,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     reservation_id = $("input[name='id']").val();
                                 }
                             }
-
-                            ajax.jsonRpc("/print-checkins", "call", {
-                                reservation_id: reservation_id,
-                            }).then(function (data) {
-                                console.log("OK");
-                            });
+                            window.open("/checkins/pdf/" + reservation_id);
+                            // window.location.href= "/checkins/pdf/" + reservation_id;
+                            // var href= "/checkins/pdf/" + reservation_id;
+                            // PortalSidebar._printIframeContent(href);
+                            // ajax.jsonRpc("/print-checkins", "call", {
+                            //     reservation_id: reservation_id,
+                            // }).then(function (data) {
+                            //     console.log(data);
+                            // });
                         });
                     }
                 });

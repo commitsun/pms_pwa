@@ -10,12 +10,13 @@ import pprint
 from calendar import monthrange
 from datetime import timedelta
 
-from odoo import _, fields, http
+from odoo import _, fields, http, SUPERUSER_ID
 from odoo.exceptions import MissingError
-from odoo.http import request
+from odoo.http import request, Response, content_disposition
 from odoo.tools.misc import format_date, formatLang, get_lang
 
 from odoo.addons.web.controllers.main import Home
+import re
 
 from . import room_types, rooms
 
@@ -1947,22 +1948,31 @@ class TestFrontEnd(http.Controller):
         return json.dumps(partners)
 
     @http.route(
-        "/print-checkins",
+        ['/checkins/pdf/<int:reservation_id>'],
         csrf=False,
-        auth="public",
+        auth="user",
         website=True,
-        type="json",
-        methods=["POST"],
+        type="http",
+        methods=["GET", "POST"],
     )
     def print_checkin(self, reservation_id=None, **kw):
         reservations = False
+        report_type = "html"
+        download = False
         if reservation_id:
             reservations = (
                 request.env["pms.reservation"]
                 .sudo()
                 .search([("id", "=", int(reservation_id))])
             )
-        return reservations.print_all_checkins()
+        checkins = reservations.checkin_partner_ids
+        pdf = request.env.ref("pms.action_traveller_report").sudo()._render_qweb_pdf(checkins.ids)[0]
+        pdfhttpheaders = [
+            ('Content-Type', 'application/pdf'),
+            ('Content-Length', len(pdf)),
+            # ('Content-Disposition', content_disposition('checkins.pdf')),
+        ]
+        return request.make_response(pdf, headers=pdfhttpheaders)
 
     def generate_reservation_style_buttons(self, reservation):
         buttons = json.loads(reservation.pwa_action_buttons)
@@ -2021,6 +2031,7 @@ class TestFrontEnd(http.Controller):
                     secondary_buttons += (
                         "<button class='disabled dropdown-item"
                         + " o_pms_pwa_abutton o_pms_pwa_button_"
+
                         + str(keysList[counter].lower())
                         + "' data-id='"
                         + str(reservation.id)
