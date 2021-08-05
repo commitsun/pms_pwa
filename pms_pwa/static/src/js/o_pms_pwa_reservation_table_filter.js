@@ -19,6 +19,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         allowed_country_ids: "country_id",
         allowed_state_ids: "state_id",
     };
+    const fields_to_avoid = ['primary_button', 'secondary_buttons'];
     $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
         event.preventDefault();
         var input = event.currentTarget.parentNode.getAttribute("data-tag");
@@ -600,13 +601,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     }
                                     if (
                                         updated_data.board_service_room_id &&
-                                        updated_data.board_service_room_id_name
+                                        updated_data.board_service_room_id.name
                                     ) {
                                         console.log($(String("#reservation_" + data_id)).find("td")[9]);
                                         $(String("#reservation_" + data_id)).find(
                                             "td"
                                         )[9].innerHTML =
-                                            updated_data.board_service_room_id_name;
+                                            updated_data.board_service_room_id.name;
                                     }
                                     $(String("#reservation_" + data_id)).find(
                                         "td"
@@ -1057,16 +1058,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                             value
                                                                         );
                                                                     } else {
-                                                                        $(
-                                                                            "form.o_pms_pwa_reservation_form select[name='" +
-                                                                                key +
-                                                                                "'] option[value='" +
-                                                                                value +
-                                                                                "']"
-                                                                        ).prop(
-                                                                            "selected",
-                                                                            true
-                                                                        );
+                                                                        if (!(fields_to_avoid.includes(key))) {
+                                                                            $(
+                                                                                "form.o_pms_pwa_reservation_form select[name='" +
+                                                                                    key +
+                                                                                    "'] option[value='" +
+                                                                                    value +
+                                                                                    "']"
+                                                                            ).prop(
+                                                                                "selected",
+                                                                                true
+                                                                            );
+                                                                        }
                                                                     }
                                                                 }
                                                             );
@@ -1267,16 +1270,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                             value
                                                                         );
                                                                     } else {
-                                                                        $(
-                                                                            "form.o_pms_pwa_reservation_form select[name='" +
-                                                                                key +
-                                                                                "'] option[value='" +
-                                                                                value +
-                                                                                "']"
-                                                                        ).prop(
-                                                                            "selected",
-                                                                            true
-                                                                        );
+                                                                        if (!(fields_to_avoid.includes(key))) {
+                                                                            $(
+                                                                                "form.o_pms_pwa_reservation_form select[name='" +
+                                                                                    key +
+                                                                                    "'] option[value='" +
+                                                                                    value +
+                                                                                    "']"
+                                                                            ).prop(
+                                                                                "selected",
+                                                                                true
+                                                                            );
+                                                                        }
                                                                     }
                                                                 }
                                                             );
