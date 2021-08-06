@@ -273,66 +273,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 } else {
                     window.location = window.location.href;
                 }
-
-                // If (new_data) {
-
-                //     var reservation_data = JSON.parse(new_data).reservation;
-                //     if (values && "add_service" in values || values && "del_service" in values) {
-                //         window.location.href = window.location.href;
-                //     }
-                //     // Refresh reservation modal values and sync with new data
-                //     var allowed_fields = [
-                //         "allowed_agency_ids",
-                //         "allowed_board_service_room_ids",
-                //         "allowed_channel_type_ids",
-                //         "allowed_pricelists",
-                //         "room_types",
-                //         "room_numbers",
-                //     ];
-                //     $.each(allowed_fields, function (key, value) {
-                //         try {
-                //             var select = $(
-                //                 'form.reservation_detail [data-select="' + value + '"]'
-                //             );
-                //         } catch (error) {
-                //             console.log("Error ---", error);
-                //         }
-                //         if (select.length != 0) {
-                //             select.empty();
-                //             $.each(reservation_data[value], function (
-                //                 subkey,
-                //                 subvalue
-                //             ) {
-                //                 var option = new Option(
-                //                     subvalue.name,
-                //                     subvalue.id
-                //                 );
-                //                 $(option).html(subvalue.name);
-                //                 select.append(option);
-                //             });
-                //         }
-                //         delete reservation_data[value];
-                //     });
-                //     $.each(reservation_data, function (key, value) {
-                //         var input = $(
-                //             "form.reservation_detail input[name='" + key + "']"
-                //         );
-                //         if (input.length != 0) {
-                //             input.val(value);
-                //         } else {
-                //             $(
-                //                 "form.reservation_detail select[name='" +
-                //                     key +
-                //                     "'] option[value='" +
-                //                     value +
-                //                     "']"
-                //             ).prop("selected", true);
-                //         }
-                //     });
-                //     new_displayDataAlert(
-                //         new_data
-                //     );
-                // }
             });
         }
     });
