@@ -144,13 +144,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 if (input.length > 0) {
                                     input.val(value);
                                 } else {
-                                    $(
-                                        "form#single_reservation_form select[name='" +
-                                            key +
-                                            "'] option[value='" +
-                                            value +
-                                            "']"
-                                    ).prop("selected", true);
+                                    if (
+                                        !fields_to_avoid.includes(
+                                            key
+                                        )
+                                    ) {
+                                        $(
+                                            "form.o_pms_pwa_reservation_form select[name='" +
+                                                key +
+                                                "'] option[value='" +
+                                                value +
+                                                "']"
+                                        ).prop("selected", true);
+                                    }
                                 }
                             });
                         }
@@ -321,13 +327,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 if (input.length > 0) {
                                     input.val(value);
                                 } else {
-                                    $(
-                                        "form#multiple_reservation_form select[name='" +
-                                            key +
-                                            "'] option[value='" +
-                                            value +
-                                            "']"
-                                    ).prop("selected", true);
+                                    if (
+                                        !fields_to_avoid.includes(
+                                            key
+                                        )
+                                    ) {
+                                        $(
+                                            "form.o_pms_pwa_reservation_form select[name='" +
+                                                key +
+                                                "'] option[value='" +
+                                                value +
+                                                "']"
+                                        ).prop("selected", true);
+                                    }
                                 }
                             }
                         });
