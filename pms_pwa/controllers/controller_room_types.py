@@ -71,5 +71,5 @@ class RoomTypes(http.Controller):
                     "name": room_type.name + " (" + str(count) + ")",
                 }
             )
-
+        print("HOLA", room_types)
         return room_types

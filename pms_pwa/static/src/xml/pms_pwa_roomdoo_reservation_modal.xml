@@ -119,7 +119,7 @@
                                                 t-att-disabled='reservation.readonly_fields.indexOf("room_type_id") != -1 ? "disabled" : None'
                                                 t-att-required='reservation.required_fields.indexOf("room_type_id") != -1 ? "required" : None'
                                                 data-select="room_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id">
-                                                <option t-foreach="room_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.room_type_id.id === key.id ? 'selected' : None">
+                                                <option t-foreach="reservation.room_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.room_type_id.id === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>
@@ -147,7 +147,7 @@
                                                 t-att-disabled='reservation.readonly_fields.indexOf("preferred_room_id") != -1 ? "disabled" : None'
                                                 t-att-required='reservation.required_fields.indexOf("preferred_room_id") != -1 ? "required" : None'
                                                 data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
-                                                <option t-foreach="room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id.id === key.id ? 'selected' : None">
+                                                <option t-foreach="reservation.room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id.id === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>

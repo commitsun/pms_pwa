@@ -15,7 +15,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         allowed_pricelists: "pricelist_id",
         allowed_segmentations: "segmentation_ids",
         room_numbers: "preferred_room_id",
-        room_types: "room_type_id.id",
+        room_types: "room_type_id",
         allowed_country_ids: "country_id",
         allowed_state_ids: "state_id",
     };
@@ -116,6 +116,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         !new_data[relation_values[value]] &
                                         (new_data[relation_values[value]] == 0)
                                     ) {
+
                                         select.append(
                                             '<option value="" selected></option>'
                                         );
@@ -666,6 +667,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (reservation_data) {
+                console.log("primer reservation_data --->", reservation_data);
                 setTimeout(function () {
                     if (reservation_data) {
                         /* End missin data */
@@ -674,9 +676,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             "pms_pwa.roomdoo_reservation_modal",
                             {
                                 reservation: reservation_data,
-                                room_types: reservation_data.room_types,
                                 payment_methods: reservation_data.payment_methods,
-                                room_numbers: reservation_data.room_numbers,
                                 texts: {
                                     reservation_text: this.reservation_text,
                                     info_text: this.info_text,
@@ -807,6 +807,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     console.log(error);
                                                 }
                                             }
+
+                                            console.log("segundo reservation_data --->", reservation_data['room_types']);
                                             // Refresh reservation modal values and sync with new data
                                             var allowed_fields = [
                                                 "allowed_agency_ids",
@@ -824,23 +826,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 } catch (error) {
                                                     console.log(error);
                                                 }
-
                                                 if (select.length != 0) {
                                                     select.empty();
                                                     if (!reservation_data[relation_values[value]] & (reservation_data[relation_values[value]] == 0)) {
                                                         select.append('<option value="" selected></option>');
                                                     }
-                                                    console.log("---------------------------------------------------");
-                                                    console.log("select --> ", select);
-                                                    console.log("key --> ", key);
-                                                    console.log("value --> ", value);
-                                                    console.log("reservation_data[value] --->", reservation_data[value]);
                                                     $.each(reservation_data[value], function (subkey, subvalue) {
-                                                        console.log("subvalue --> ", subvalue);
-                                                        console.log("subkey --> ", subkey);
-                                                        var option = new Option(subvalue["name"], subvalue["id"]);
+                                                        if(subvalue["id"] == reservation_data[relation_values[value]].id){
+                                                            var option = new Option(subvalue["name"], subvalue["id"], false, true);
+                                                        }else{
+                                                            var option = new Option(subvalue["name"], subvalue["id"], false, false);
+                                                        }
                                                         $(option).html(subvalue["name"]);
-                                                        console.log("option --> ", option);
                                                         select.append(option);
                                                     });
                                                 }
@@ -858,16 +855,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             });
                                             // refresh total
                                             let a = document.getElementsByClassName("price_total");
-                                            a[0].innerText = JSON.parse(new_data).reservation.price_total;
+                                            a.innerText = JSON.parse(new_data).reservation.price_total;
                                             // refresh pending amount
                                             try {
                                                 let b = document.getElementsByClassName("pending_amount");
-                                                b[0].innerText = JSON.parse(new_data).reservation.folio_pending_amount;
+                                                b.innerText = JSON.parse(new_data).reservation.folio_pending_amount;
                                             } catch (error) {
                                                 console.log(error);
                                             }
                                         }
-                                    });
+                                    }, 10);
                                 });
                             }
                         );
@@ -921,6 +918,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 if (!reservation_data[relation_values[value]] & (reservation_data[relation_values[value]] == 0)) {
                                                     select.append('<option value="" selected></option>');
                                                 }
+
                                                 $.each(reservation_data[value], function (subkey, subvalue) {
                                                     var option = new Option(subvalue["name"], subvalue["id"]);
                                                     $(option).html(subvalue["name"]);
@@ -951,7 +949,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             console.log(error);
                                         }
                                     }
-                                });
+                                }, 0);
                             });
                         });
 
