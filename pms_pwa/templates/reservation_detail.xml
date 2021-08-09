@@ -228,19 +228,19 @@
                                             <div class="form-group form-field mt8">
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <label class="control-label col-12" for="room_type">
+                                                        <label class="control-label col-12" for="room_type_id">
                                                             Room type
                                                         </label>
                                                         <select
                                                             t-att-disabled='"disabled" if "room_type_id" in readonly_fields else None'
                                                             t-att-required='"required" if "room_type_id" in required_fields else None'
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type">
-                                                            <t t-foreach="reservation.room_type_id" t-as="i">
-                                                                <option name="room_type" t-att-value="i.id" selected="selected" t-if="reservation.room_type_id.id == i.id">
-                                                                    <t t-esc="i.name" />
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id">
+                                                            <t t-foreach="json_reservation['room_types']" t-as="i">
+                                                                <option name="room_type_id" t-att-value="i['id']" selected="selected" t-if="json_reservation['room_type_id']['id'] == i['id']">
+                                                                    <t t-esc="i['name']" />
                                                                 </option>
-                                                                <option name="room_type" t-att-value="i.id" t-if="reservation.preferred_room_id.id != i.id">
-                                                                    <t t-esc="i.name" />
+                                                                <option name="room_type_id" t-att-value="i['id']" t-if="json_reservation['room_type_id']['id'] != i['id']">
+                                                                    <t t-esc="i['name']" />
                                                                 </option>
                                                             </t>
                                                         </select>
@@ -256,12 +256,12 @@
                                                             t-att-required='"required" if "preferred_room_id" in required_fields else None'
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
                                                             <!-- TODO Cambiar por? ._get_allowed_rooms(reservation.checkin, reservation.checkout, reservation.state) -->
-                                                            <t t-foreach="reservation.allowed_room_ids" t-as="i">
-                                                                <option name="preferred_room_id" t-att-value="i.id" selected="selected" t-if="reservation.preferred_room_id.id == i.id">
-                                                                    <t t-esc="i.name" />
+                                                            <t t-foreach="json_reservation['room_numbers']" t-as="i">
+                                                                <option name="preferred_room_id" t-att-value="i['id']" selected="selected" t-if="json_reservation['preferred_room_id']['id'] == i['id']">
+                                                                    <t t-esc="i['name']" />
                                                                 </option>
-                                                                <option name="preferred_room_id" t-att-value="i.id" t-if="reservation.preferred_room_id.id != i.id">
-                                                                    <t t-esc="i.name" />
+                                                                <option name="preferred_room_id" t-att-value="i['id']" t-if="json_reservation['preferred_room_id']['id'] != i['id']">
+                                                                    <t t-esc="i['name']" />
                                                                 </option>
                                                             </t>
                                                         </select>
@@ -282,7 +282,7 @@
                                                         <input
                                                             t-att-required='"required" if "adults" in required_fields else None'
                                                             t-att-readonly='"readonly" if "adults" in readonly_fields else None'
-                                                            class="form-control" type="text" name="adults" t-att-value="reservation.adults" />
+                                                            class="form-control" type="text" name="adults" t-att-value="json_reservation['adults']" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="nights">
@@ -291,19 +291,19 @@
                                                         <input
                                                             t-att-required='"required" if "nights" in required_fields else None'
                                                             t-att-readonly='"readonly" if "nights" in readonly_fields else None'
-                                                            class="form-control" disabled="disabled" type="text" name="nights" t-att-value="reservation.nights" />
+                                                            class="form-control" disabled="disabled" type="text" name="nights" t-att-value="json_reservation['nights']" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-12">
-                                                        <t t-if="lang and lang == 'es_ES'">
-                                                            <t t-set="checkin_date" t-value="reservation.checkin.strftime('%d/%m/%Y')"/>
-                                                            <t t-set="checkout_date" t-value="reservation.checkout.strftime('%d/%m/%Y')"/>
+                                                        <!-- <t t-if="lang and lang == 'es_ES'">
+                                                            <t t-set="checkin_date" t-value="json_reservation['checkin'].strftime('%d/%m/%Y')"/>
+                                                            <t t-set="checkout_date" t-value="json_reservation['checkout'].strftime('%d/%m/%Y')"/>
                                                         </t>
-                                                        <t t-else="">
-                                                            <t t-set="checkin_date" t-value="reservation.checkin.strftime('%m/%d/%Y')"/>
-                                                            <t t-set="checkout_date" t-value="reservation.checkout.strftime('%m/%d/%Y')"/>
-                                                        </t>
+                                                        <t t-else=""> -->
+                                                        <t t-set="checkin_date" t-value="json_reservation['checkin']"/>
+                                                        <t t-set="checkout_date" t-value="json_reservation['checkout']"/>
+                                                        <!-- </t> -->
                                                         <label class="control-label col-12" for="range_check_date_detail_reservation">
                                                             Check in - Check out
                                                         </label>
@@ -324,7 +324,7 @@
                                                         <input
                                                             t-att-required='"required" if "arrival_hour" in required_fields else None'
                                                             t-att-readonly='"readonly" if "arrival_hour" in readonly_fields else None'
-                                                            class="form-control" type="time" name="check_in_hour" t-att-value="reservation.arrival_hour" />
+                                                            class="form-control" type="time" name="arrival_hour" t-att-value="json_reservation['arrival_hour']" />
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="control-label col-12" for="check_out_hour">
@@ -333,20 +333,42 @@
                                                         <input
                                                             t-att-required='"required" if "departure_hour" in required_fields else None'
                                                             t-att-readonly='"readonly" if "departure_hour" in readonly_fields else None'
-                                                            class="form-control" type="time" name="check_out_hour" t-att-value="reservation.departure_hour" />
+                                                            class="form-control" type="time" name="departure_hour" t-att-value="json_reservation['departure_hour']" />
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <div class="col-sm-12">
-                                                        <label class="control-label col-12" for="allowed_board_service_room_ids">
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label col-12" for="allowed_reservation_types">
                                                             Reservation type
                                                         </label>
                                                         <select
                                                             t-att-disabled='"disabled" if "board_service_room_id" in readonly_fields else None'
                                                             t-att-required='"required" if "board_service_room_id" in required_fields else None'
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
+                                                            <t t-foreach="json_reservation['reservation_types']" t-as="key">
+                                                                <t t-if="key['id'] == json_reservation['reservation_type']">
+                                                                    <option name="reservation_type" t-att-value="key['id']" selected="selected">
+                                                                        <t t-esc="key['name']" />
+                                                                    </option>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <option name="reservation_type" t-att-value="key['id']">
+                                                                        <t t-esc="key['name']" />
+                                                                    </option>
+                                                                </t>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label col-12" for="allowed_board_service_room_ids">
+                                                            Servicios
+                                                        </label>
+                                                        <select
+                                                            t-att-disabled='"disabled" if "board_service_room_id" in readonly_fields else None'
+                                                            t-att-required='"required" if "board_service_room_id" in required_fields else None'
                                                             class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
-                                                            <t t-foreach="reservation._get_allowed_board_service_room_ids()" t-as="key">
-                                                                <t t-if="key['id'] == reservation.board_service_room_id.id">
+                                                            <t t-foreach="json_reservation['allowed_board_service_room_ids']" t-as="key">
+                                                                <t t-if="key['id'] == json_reservation['board_service_room_id']['id']">
                                                                     <option name="board_service_room_id" t-att-value="key['id']" selected="selected">
                                                                         <t t-esc="key['name']" />
                                                                     </option>

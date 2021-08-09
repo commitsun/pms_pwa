@@ -223,7 +223,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     });
 
     // Cambios en formulario
-    $("form#reservation_detail").on("focusout", "input, select", function (new_event) {
+    $("form#reservation_detail").on("change", "input, select", function (new_event) {
         var values = {};
         if (
             !new_event.currentTarget.checked &&
@@ -260,7 +260,8 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             // values = {reservation_id: reservation_id};
             // values[new_event.currentTarget.name] = new_event.currentTarget.value;
         }
-        console.log("--->", new_event);
+        // console.log("--->", new_event);
+        // console.log("VAlue --->", values);
         if (new_event.currentTarget.name !== "range_check_date_detail_reservation") {
             ajax.jsonRpc(
                 "/reservation/" + reservation_id + "/onchange_data",
@@ -271,6 +272,8 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 if (!JSON.parse(new_data).result) {
                     new_displayDataAlert(new_data);
                 } else {
+                    $("#status").toggle();
+                    $("#preloader").toggle();
                     window.location = window.location.href;
                 }
             });

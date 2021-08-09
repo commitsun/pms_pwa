@@ -296,8 +296,9 @@ class PmsReservation(http.Controller):
             "reservation": reservation,
             "readonly_fields": ["arrival_hour", "departure_hour"],
             "required_fields": [],
+            "json_reservation": reservation.parse_reservation(),
         }
-        print(values)
+        # print(values)
         if post and "message" in post:
             try:
                 reservation.message_post(
