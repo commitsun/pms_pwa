@@ -435,6 +435,13 @@ class PmsReservation(http.Controller):
                     ):
                         reservation_values["adults"] = int(params["adults"])
 
+                    # COMMENT
+                    if (
+                        param == "folio_internal_comment"
+                        and params["folio_internal_comment"] != reservation.folio_internal_comment
+                    ):
+                        reservation_values["folio_internal_comment"] = params["folio_internal_comment"]
+
                     # ROOM TYPE
                     elif (
                         param == "room_type_id"
