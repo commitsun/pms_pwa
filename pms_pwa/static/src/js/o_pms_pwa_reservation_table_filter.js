@@ -1550,6 +1550,38 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                 subkey,
                                                                 subvalue
                                                             ) {
+                                                                if (
+                                                                    subvalue["id"] ==
+                                                                    reservation_data[
+                                                                        relation_values[
+                                                                            value
+                                                                        ]
+                                                                    ].id
+                                                                ) {
+                                                                    var option =
+                                                                        new Option(
+                                                                            subvalue[
+                                                                                "name"
+                                                                            ],
+                                                                            subvalue[
+                                                                                "id"
+                                                                            ],
+                                                                            false,
+                                                                            true
+                                                                        );
+                                                                } else {
+                                                                    var option =
+                                                                        new Option(
+                                                                            subvalue[
+                                                                                "name"
+                                                                            ],
+                                                                            subvalue[
+                                                                                "id"
+                                                                            ],
+                                                                            false,
+                                                                            false
+                                                                        );
+                                                                }
                                                                 var option = new Option(
                                                                     subvalue["name"],
                                                                     subvalue["id"]
