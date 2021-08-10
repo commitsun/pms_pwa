@@ -182,7 +182,7 @@ class PmsReservation(models.Model):
                             and guest.get(checkin_field) != record_value
                         ):
                             vals[checkin_field] = guest[checkin_field]
-                    pprint(vals)
+                    # pprint(vals)
                     if len(vals) >= 1:
                         checkin_partner.write(vals)
                         checkin_partner.flush()
@@ -191,6 +191,7 @@ class PmsReservation(models.Model):
                         checkin_partner.action_on_board()
             return True
         except Exception as e:
+            print(e)
             return json.dumps({"result": False, "message": str(e)})
 
     def _get_reservation_services(self):
@@ -255,12 +256,7 @@ class PmsReservation(models.Model):
         """
         self.ensure_one()
         checkin_partners = {}
-        allowed_countries = []
-        for country in self.env["res.country"].search([]):
-            allowed_countries.append({
-                "id": country.id,
-                "name": country.name,
-            })
+
         for checkin in self.checkin_partner_ids:
             allowed_states = []
             if checkin.nationality_id:
@@ -294,7 +290,7 @@ class PmsReservation(models.Model):
                     "id": checkin.state_id.id if checkin.state_id else False,
                     "name": checkin.state_id.name if checkin.state_id else "",
                 },
-                "allowed_country_ids": allowed_countries,
+
                 "country_id": {
                     "id": checkin.nationality_id.id if checkin.nationality_id else False,
                     "name": checkin.nationality_id.name if checkin.nationality_id else "",
@@ -593,6 +589,15 @@ class PmsReservation(models.Model):
             {"id": "staff", "name": "Staff"},
         ]
 
+    def _get_allowed_countries(self):
+        allowed_countries = []
+        for country in self.env["res.country"].search([]):
+            allowed_countries.append({
+                "id": country.id,
+                "name": country.name,
+            })
+        return allowed_countries
+
     def parse_reservation(self):
         self.ensure_one()
         primary_button, secondary_buttons = self.generate_reservation_style_buttons()
@@ -748,6 +753,7 @@ class PmsReservation(models.Model):
             ),
             "readonly_fields": ["arrival_hour", "departure_hour"],
             "required_fields": [],
+            "allowed_country_ids": self._get_allowed_countries(),
         }
 
         _logger.info("Values from controller to Frontend:")

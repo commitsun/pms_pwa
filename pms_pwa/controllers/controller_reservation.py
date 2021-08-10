@@ -297,8 +297,9 @@ class PmsReservation(http.Controller):
             "reservation": reservation,
             "readonly_fields": ["arrival_hour", "departure_hour"],
             "required_fields": [],
+            "json_reservation": reservation.parse_reservation(),
         }
-        print(values)
+        # print(values)
         if post and "message" in post:
             try:
                 reservation.message_post(
@@ -434,6 +435,13 @@ class PmsReservation(http.Controller):
                         and int(params["adults"]) != reservation.adults
                     ):
                         reservation_values["adults"] = int(params["adults"])
+
+                    # COMMENT
+                    if (
+                        param == "folio_internal_comment"
+                        and params["folio_internal_comment"] != reservation.folio_internal_comment
+                    ):
+                        reservation_values["folio_internal_comment"] = params["folio_internal_comment"]
 
                     # ROOM TYPE
                     elif (
