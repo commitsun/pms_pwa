@@ -1463,7 +1463,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 "#checkin_partner_" + key;
 
                                             var allowed_fields = [
-                                                "allowed_country_ids",
+                                                //"allowed_country_ids",
                                                 "allowed_state_ids",
                                             ];
                                             $.each(allowed_fields, function (
@@ -1498,71 +1498,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         );
                                                     }
 
-<<<<<<< HEAD
-                                                    if (select.length != 0) {
-                                                        select.empty();
-                                                        if (
-                                                            !value[
-                                                                relation_values[avalue]
-                                                            ] &
-                                                            (value[
-                                                                relation_values[avalue]
-                                                            ] ==
-                                                                0)
-                                                        ) {
-                                                            select.append(
-                                                                '<option value="" selected></option>'
-                                                            );
-                                                        }
-
-                                                        $.each(
-                                                            value[avalue],
-                                                            function (
-                                                                subkey,
-                                                                subvalue
-                                                            ) {
-                                                                if (
-                                                                    subvalue["id"] ==
-                                                                    reservation_data[
-                                                                        relation_values[
-                                                                            value
-                                                                        ]
-                                                                    ].id
-                                                                ) {
-                                                                    var option =
-                                                                        new Option(
-                                                                            subvalue[
-                                                                                "name"
-                                                                            ],
-                                                                            subvalue[
-                                                                                "id"
-                                                                            ],
-                                                                            false,
-                                                                            true
-                                                                        );
-                                                                } else {
-                                                                    var option =
-                                                                        new Option(
-                                                                            subvalue[
-                                                                                "name"
-                                                                            ],
-                                                                            subvalue[
-                                                                                "id"
-                                                                            ],
-                                                                            false,
-                                                                            false
-                                                                        );
-                                                                }
-                                                                var option = new Option(
-                                                                    subvalue["name"],
-                                                                    subvalue["id"]
-                                                                );
-                                                                $(option).html(
-                                                                    subvalue["name"]
-                                                                );
-                                                                select.append(option);
-                                                            }
-=======
                                                     $.each(value[avalue], function (
                                                         subkey,
                                                         subvalue
@@ -1570,7 +1505,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         var option = new Option(
                                                             subvalue["name"],
                                                             subvalue["id"]
->>>>>>> abc50e13b5277a506d1d2872da47e3d03038a72b
                                                         );
                                                         $(option).html(
                                                             subvalue["name"]
