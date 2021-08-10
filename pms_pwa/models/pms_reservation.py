@@ -182,7 +182,7 @@ class PmsReservation(models.Model):
                             and guest.get(checkin_field) != record_value
                         ):
                             vals[checkin_field] = guest[checkin_field]
-                    pprint(vals)
+                    # pprint(vals)
                     if len(vals) >= 1:
                         checkin_partner.write(vals)
                         checkin_partner.flush()
@@ -191,6 +191,7 @@ class PmsReservation(models.Model):
                         checkin_partner.action_on_board()
             return True
         except Exception as e:
+            print(e)
             return json.dumps({"result": False, "message": str(e)})
 
     def _get_reservation_services(self):
