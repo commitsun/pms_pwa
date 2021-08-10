@@ -1,16 +1,18 @@
 # Copyright 2017  Dario Lodeiros
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import datetime
 import json
-import pprint
-import avinit
 import logging
+import pprint
+
+import avinit
+
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-import datetime
+from odoo.tools.misc import get_lang
+
 from ..controllers import controller_room_types, controller_rooms
 
-
-from odoo.tools.misc import get_lang
 pp = pprint.PrettyPrinter(indent=4)
 
 
@@ -37,12 +39,12 @@ class PmsReservation(models.Model):
     color_state = fields.Char(
         string="Color state",
         help="Define state to color in PWA",
-        compute="_compute_color_state"
+        compute="_compute_color_state",
     )
     icon_payment = fields.Char(
         string="Icon Payment state",
         help="Define payment to icon in PWA",
-        compute="_compute_icon_payment"
+        compute="_compute_icon_payment",
     )
 
     def _compute_pwa_board_service_tags(self):
@@ -260,13 +262,15 @@ class PmsReservation(models.Model):
         for checkin in self.checkin_partner_ids:
             allowed_states = []
             if checkin.nationality_id:
-                for state in self.env["res.country.state"].search([
-                    ('country_id', '=', checkin.nationality_id.id)
-                ]):
-                    allowed_states.append({
-                        "id": state.id,
-                        "name": state.name,
-                    })
+                for state in self.env["res.country.state"].search(
+                    [("country_id", "=", checkin.nationality_id.id)]
+                ):
+                    allowed_states.append(
+                        {
+                            "id": state.id,
+                            "name": state.name,
+                        }
+                    )
             checkin_partners[checkin.id] = {
                 "firstname": checkin.firstname,
                 "lastname": checkin.lastname,
@@ -290,10 +294,13 @@ class PmsReservation(models.Model):
                     "id": checkin.state_id.id if checkin.state_id else False,
                     "name": checkin.state_id.name if checkin.state_id else "",
                 },
-
                 "country_id": {
-                    "id": checkin.nationality_id.id if checkin.nationality_id else False,
-                    "name": checkin.nationality_id.name if checkin.nationality_id else "",
+                    "id": checkin.nationality_id.id
+                    if checkin.nationality_id
+                    else False,
+                    "name": checkin.nationality_id.name
+                    if checkin.nationality_id
+                    else "",
                 },
                 "allowed_state_ids": allowed_states,
                 "state": checkin.state or False,
@@ -359,7 +366,9 @@ class PmsReservation(models.Model):
             allowed_board_services.append(
                 {
                     "id": self.board_service_room_id.id,
-                    "name": self.board_service_room_id.pms_board_service_id.name if self.board_service_room_id else '',
+                    "name": self.board_service_room_id.pms_board_service_id.name
+                    if self.board_service_room_id
+                    else "",
                 }
             )
         return allowed_board_services or False
@@ -374,10 +383,12 @@ class PmsReservation(models.Model):
                 ("pms_property_ids", "in", self.pms_property_id.id),
             ]
         )
-        allowed_services = [{
-            "id": False,
-            "name": '',
-        }]
+        allowed_services = [
+            {
+                "id": False,
+                "name": "",
+            }
+        ]
         for service in services:
             allowed_services.append(
                 {
@@ -592,10 +603,12 @@ class PmsReservation(models.Model):
     def _get_allowed_countries(self):
         allowed_countries = []
         for country in self.env["res.country"].search([]):
-            allowed_countries.append({
-                "id": country.id,
-                "name": country.name,
-            })
+            allowed_countries.append(
+                {
+                    "id": country.id,
+                    "name": country.name,
+                }
+            )
         return allowed_countries
 
     def parse_reservation(self):
@@ -638,9 +651,13 @@ class PmsReservation(models.Model):
             )
 
         # avoid send o2m & m2m fields on new single reservation modal
-        reservation_line_ids = self._get_reservation_line_ids() if isinstance(self.id, int) else False
+        reservation_line_ids = (
+            self._get_reservation_line_ids() if isinstance(self.id, int) else False
+        )
         service_ids = self._get_service_ids() if isinstance(self.id, int) else False
-        checkin_partner_ids = self._get_checkin_partner_ids() if isinstance(self.id, int) else False
+        checkin_partner_ids = (
+            self._get_checkin_partner_ids() if isinstance(self.id, int) else False
+        )
 
         reservation_values = dict()
 
@@ -651,31 +668,26 @@ class PmsReservation(models.Model):
             "partner_id": partner_vals,
             "unread_msg": len(notifications),
             "messages": notifications,
+            "folio_reservations": self.folio_id.get_reservation_json(),
             "room_type_id": {
                 "id": self.room_type_id.id,
                 "name": self.room_type_id.name,
                 "default_code": self.room_type_id.default_code,
             },
             "preferred_room_id": {
-                "id": self.preferred_room_id.id
-                if self.preferred_room_id
-                else False,
-                "name": self.rooms
-                if self.rooms else "",
+                "id": self.preferred_room_id.id if self.preferred_room_id else False,
+                "name": self.rooms if self.rooms else "",
             },
             "channel_type_id": {
-                "id": self.channel_type_id.id
-                if self.channel_type_id
-                else False,
-                "name": self.channel_type_id.name
-                if self.channel_type_id
-                else "",
+                "id": self.channel_type_id.id if self.channel_type_id else False,
+                "name": self.channel_type_id.name if self.channel_type_id else "",
             },
             "agency_id": {
                 "id": self.agency_id.id if self.agency_id else False,
                 "name": self.agency_id.name if self.agency_id else False,
-                "url": self.website.image_url(self.agency_id, 'image_128')
-                if self.agency_id else False,
+                "url": self.website.image_url(self.agency_id, "image_128")
+                if self.agency_id
+                else False,
             },
             "user_name": self.user_id.name if self.user_id else False,
             "nights": self.nights,
@@ -717,18 +729,16 @@ class PmsReservation(models.Model):
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
             "pricelist_id": {
-                "id": self.pricelist_id.id
-                if self.pricelist_id
-                else False,
-                "name": self.pricelist_id.name
-                if self.pricelist_id
-                else "",
+                "id": self.pricelist_id.id if self.pricelist_id else False,
+                "name": self.pricelist_id.name if self.pricelist_id else "",
             },
             "allowed_pricelists": self._get_allowed_pricelists(),
             "allowed_segmentations": self._get_allowed_segmentations(),
             "allowed_channel_type_ids": self.pms_property_id._get_allowed_channel_type_ids(),
             "allowed_agency_ids": self.pms_property_id._get_allowed_agency_ids(
-                channel_type_id=self.channel_type_id.id if self.channel_type_id else False
+                channel_type_id=self.channel_type_id.id
+                if self.channel_type_id
+                else False
             ),
             "segmentation_ids": self.segmentation_ids.ids,
             "room_numbers": controller_rooms.Rooms._get_available_rooms(
@@ -827,3 +837,27 @@ class PmsReservation(models.Model):
                     )
             counter += 1
         return (primary_button, secondary_buttons)
+
+    def get_json(self):
+        self.ensure_one()
+        return {
+            "id": self.id,
+            "name": self.name,
+            "preferred_room_id": {
+                "id": self.preferred_room_id.id if self.preferred_room_id else False,
+                "name": self.rooms if self.rooms else "",
+            },
+            "room_numbers": controller_rooms.Rooms._get_available_rooms(
+                self=self,
+                payload={
+                    "pms_property_id": self.pms_property_id.id,
+                    "pricelist_id": self.pricelist_id.id,
+                    "checkin": self.checkin,
+                    "checkout": self.checkout,
+                    "reservation_id": self.id,
+                },
+            ),
+            "checkin": self.checkin,
+            "checkout": self.checkout,
+            "adults": self.adults,
+        }

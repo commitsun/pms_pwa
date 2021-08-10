@@ -3,25 +3,23 @@
 # -*- coding: utf-8 -*-
 
 import datetime
-from inspect import isdatadescriptor
 import json
 import logging
 import pprint
-from calendar import monthrange
-from datetime import timedelta
-from ..utils import pwa_utils
-from odoo import _, fields, http, SUPERUSER_ID
+
+from odoo import SUPERUSER_ID, _, fields, http
 from odoo.exceptions import MissingError
-from odoo.http import request, Response, content_disposition
+from odoo.http import Response, content_disposition, request
 from odoo.tools.misc import get_lang
-import re
+
+from ..utils import pwa_utils
 
 pp = pprint.PrettyPrinter(indent=4)
 
 _logger = logging.getLogger(__name__)
 
-class PmsReservation(http.Controller):
 
+class PmsReservation(http.Controller):
     @http.route(
         ["/reservation/list", "/reservation/list/page/<int:page>"],
         type="http",
@@ -439,9 +437,12 @@ class PmsReservation(http.Controller):
                     # COMMENT
                     if (
                         param == "folio_internal_comment"
-                        and params["folio_internal_comment"] != reservation.folio_internal_comment
+                        and params["folio_internal_comment"]
+                        != reservation.folio_internal_comment
                     ):
-                        reservation_values["folio_internal_comment"] = params["folio_internal_comment"]
+                        reservation_values["folio_internal_comment"] = params[
+                            "folio_internal_comment"
+                        ]
 
                     # ROOM TYPE
                     elif (
@@ -530,6 +531,34 @@ class PmsReservation(http.Controller):
                     ):
                         reservation_values.reservation_type = params[param]
 
+                    # OTHER FOLIO RESERVATIONS
+                    elif param == "folio_reservations":
+                        parent_reservation = self.env["pms.reservation"].browse(
+                            int(param["id"])
+                        )
+                        if "preferred_room_id" in param:
+                            parent_reservation.preferred_room_id = int(
+                                param["preferred_room_id"]
+                            )
+                        elif "checkin" in param:
+                            parent_reservation.checkin = datetime.datetime.strptime(
+                                param["checkin"], get_lang(request.env).date_format
+                            )
+                        elif "checkout" in param:
+                            parent_reservation.checkout = datetime.datetime.strptime(
+                                param["checkout"], get_lang(request.env).date_format
+                            )
+                        elif "adults" in param:
+                            parent_reservation.adults = int(param["adults"])
+                        parent_reservation.flush()
+                        return json.dumps(
+                            {
+                                "result": True,
+                                "message": _("Operation completed successfully."),
+                                "reservation": reservation.parse_reservation(),
+                            }
+                        )
+
                 if "add_service" in params:
                     del params["add_service"]
                 if "del_service" in params:
@@ -562,7 +591,7 @@ class PmsReservation(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
-        ['/checkins/pdf/<int:reservation_id>'],
+        ["/checkins/pdf/<int:reservation_id>"],
         csrf=False,
         auth="user",
         website=True,
@@ -580,10 +609,14 @@ class PmsReservation(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
         checkins = reservations.checkin_partner_ids
-        pdf = request.env.ref("pms.action_traveller_report").sudo()._render_qweb_pdf(checkins.ids)[0]
+        pdf = (
+            request.env.ref("pms.action_traveller_report")
+            .sudo()
+            ._render_qweb_pdf(checkins.ids)[0]
+        )
         pdfhttpheaders = [
-            ('Content-Type', 'application/pdf'),
-            ('Content-Length', len(pdf)),
+            ("Content-Type", "application/pdf"),
+            ("Content-Length", len(pdf)),
             # ('Content-Disposition', content_disposition('checkins.pdf')),
         ]
         return request.make_response(pdf, headers=pdfhttpheaders)

@@ -38,7 +38,6 @@ class Rooms(http.Controller):
         reservation = False
         if payload["reservation_id"]:
             reservation_id = int(payload["reservation_id"])
-
             reservation = (
                 request.env["pms.reservation"]
                 .sudo()
