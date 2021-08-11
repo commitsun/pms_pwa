@@ -857,7 +857,7 @@ class PmsReservation(models.Model):
                     "reservation_id": self.id,
                 },
             ),
-            "checkin": self.checkin,
-            "checkout": self.checkout,
+            "checkin": self.checkin.strftime(get_lang(self.env).date_format),
+            "checkout": self.checkout.strftime(get_lang(self.env).date_format),
             "adults": self.adults,
         }
