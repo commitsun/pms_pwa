@@ -6,6 +6,7 @@ odoo.define("pms_pwa.calendar", function (require) {
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
+    var calendar_dpr = $('input[name="calendar_dpr"]').val();
 
     publicWidget.registry.CalendarCollapseWidget = publicWidget.Widget.extend({
         selector: "#calendar_table",
@@ -103,24 +104,34 @@ odoo.define("pms_pwa.calendar", function (require) {
                     $('input[name="calendar_selected_date"]').val(select_date);
                     let url= new URL(window.location.href);
                     let searchParams = new URLSearchParams(url.search);
-                    let search_params = ""
+                    let search_params = "";
+
                     try{
                         if(searchParams.has('display_option')){
-                            search_params = search_params+"&display_option="+searchParams.get('display_option')
+                            search_params = search_params+"&display_option="+searchParams.get('display_option');
                         }
                     }catch{
                         console.log("ERROR al pasar opciones de display");
                     }
                     try{
                         if(searchParams.has('pricelist')){
-                            search_params = search_params+"&pricelist="+searchParams.get('pricelist')
+                            search_params = search_params+"&pricelist="+searchParams.get('pricelist');
                         }
                     }catch{
                         console.log("ERROR al pasar pricelist");
                     }
+                    try{
+                        if(searchParams.has('dpr')){
+                            search_params = search_params+"&dpr="+searchParams.get('dpr');
+                        }else{
+                            search_params = search_params+"&dpr="+calendar_dpr;
+                        }
+                    }catch{
+                        console.log("ERROR al pasar dpr");
+                    }
                     searchParams.set('selected_date', select_date);
                     let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;
-                    window.location = new_url;
+                    //window.location = new_url;
                 }
             );
         } else {
@@ -146,24 +157,34 @@ odoo.define("pms_pwa.calendar", function (require) {
                     $('input[name="calendar_selected_date"]').val(select_date);
                     let url= new URL(window.location.href);
                     let searchParams = new URLSearchParams(url.search);
-                    let search_params = ""
+                    let search_params = "";
+
                     try{
                         if(searchParams.has('display_option')){
-                            search_params = search_params+"&display_option="+searchParams.get('display_option')
+                            search_params = search_params+"&display_option="+searchParams.get('display_option');
                         }
                     }catch{
                         console.log("ERROR al pasar opciones de display");
                     }
                     try{
                         if(searchParams.has('pricelist')){
-                            search_params = search_params+"&pricelist="+searchParams.get('pricelist')
+                            search_params = search_params+"&pricelist="+searchParams.get('pricelist');
                         }
                     }catch{
                         console.log("ERROR al pasar pricelist");
                     }
+                    try{
+                        if(searchParams.has('dpr')){
+                            search_params = search_params+"&dpr="+searchParams.get('dpr');
+                        }else{
+                            search_params = search_params+"&dpr="+calendar_dpr;
+                        }
+                    }catch{
+                        console.log("ERROR al pasar dpr");
+                    }
                     searchParams.set('selected_date', select_date);
                     let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;
-                    window.location = new_url;
+                    //window.location = new_url;
                 }
             );
         }

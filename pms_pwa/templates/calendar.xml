@@ -39,6 +39,7 @@
                                 <form method="post" action="">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="display_option" t-att-value="selected_display"/>
+                                    <input type="hidden" name="dpr" t-att-value="dpr"/>
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
                                     <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
                                         <t t-foreach="pricelist" t-as="price">
@@ -57,10 +58,10 @@
                                     <select id="calendar_select" name="display_option" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <t t-foreach="display_select_options" t-as="display_item">
                                             <t t-if="selected_display==display_item['value']">
-                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}" selected="selected"><t t-esc="display_item['name']" /></option>
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}" selected="selected"><t t-esc="display_item['name']" /></option>
                                             </t>
                                             <t t-else="">
-                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}"><t t-esc="display_item['name']" /></option>
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}"><t t-esc="display_item['name']" /></option>
                                             </t>
                                         </t>
                                     </select>
@@ -72,16 +73,17 @@
                                     </select>
                                 </div>
                                 <div class="o_pms_pwa_month_select float-right ml-4">
-                                    <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
+                                    <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
                                     </span>
-                                    <input type="hidden" name="calendar_selected_date" t-value="date_start" />
+                                    <input type="hidden" name="calendar_selected_date" t-att-value="date_start" />
+                                    <input type="hidden" name="calendar_dpr" t-att-value="dpr" />
                                     <button type="button" class="btn btn-calendar-roomdoo o_pms_pwa_daterangepicker_calendar" data-dismiss="modal">
                                         <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
                                     </button>
 
-                                    <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-right"></i></a>
+                                    <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-right"></i></a>
                                 </div>
                                 <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
                                     <form method="post" action="">
@@ -118,7 +120,7 @@
                                                     + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==6 else ' ')
                                                     " t-att-data-value="x">
                                                 <t t-if="day_first">
-                                                    <a t-attf-href="?previous_day={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
+                                                    <a t-attf-href="?previous_day={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
                                                 </t>
                                                 <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
                                                 <t t-set="availability_day" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
@@ -127,7 +129,7 @@
                                                     <t t-esc="availability_day"/>
                                                 </span>
                                                 <t t-if="day_last">
-                                                    <a t-attf-href="?next_day={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
+                                                    <a t-attf-href="?next_day={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
                                                 </t>
                                             </th>
                                         </t>
