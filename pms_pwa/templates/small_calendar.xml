@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="roomdoo_small_calendar_page" name="Small Calendar">
+        <t t-call="website.layout">
+            <t t-set="page_title" t-value="'Calendario'"/>
+            <t t-if="request.httprequest.cookies.get('pms_pids', false)">
+                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
+                </t>
+                <t t-else="">
+                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
+                </t>
+            </t>
+            <t t-else="">
+                <t t-set="current_property" t-value="1" />
+            </t>
+            <div class="o_pms_pwa_roomdoo_reservation_modal" />
+            <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4 row">
+                <span class="o_pms_notification_title col-2">
+                    <i class="fa fa-info-circle mr-1"/> Actualizaciones <span class="o_pms_pwa_update_counter ml-1"/>
+                </span>
+                <div class="col-9 o_pms_pwa_notification_list"/>
+                <a href="#" class="col-1 btn o_pms_pwa_btn_border o_pms_pwa_clear_all float-right">Aceptar todo</a>
+            </div>
+            <div class="oe_structure o_pms_pwa_structure mt-4">
+                <section class="container-fluid o_pms_pwa_roomdoo">
+                    <!-- Calendar -->
+                    <div class="o_pms_pwa_calendar o_pms_pwa_full_shadow bg-white p-5">
+                        <div class="row">
+                            <div class="col-sm-2 d-none d-lg-block">
+                                <div class="d-flex align-items-center ml-4">
+                                    <h2
+                                        class="font-weight-bold mb-0 text-uppercase"
+                                    ><t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
+                                </h2>
+                                </div>
+                            </div>
+                            <div class="col-6 col-sm-2">
+                                <form method="post" action="">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="display_option" t-att-value="selected_display"/>
+                                    <input type="hidden" name="dpr" t-att-value="dpr"/>
+                                    <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
+                                    <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                        <t t-foreach="pricelist" t-as="price">
+                                            <t t-if="default_pricelist==price.id">
+                                                <option t-attf-value="{{ price.id }}" selected="selected"><t t-esc="price.name" /></option>
+                                            </t>
+                                            <t t-else="">
+                                                <option t-attf-value="{{ price.id }}"><t t-esc="price.name" /></option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="col-6 col-sm-8">
+                                <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
+                                    <select id="calendar_select" name="display_option" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
+                                        <t t-foreach="display_select_options" t-as="display_item">
+                                            <t t-if="selected_display==display_item['value']">
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}" selected="selected"><t t-esc="display_item['name']" /></option>
+                                            </t>
+                                            <t t-else="">
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}"><t t-esc="display_item['name']" /></option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="o_pms_pwa_calendar_select  d-none d-lg-block ml-4">
+                                    <select id="display_obj_option" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
+                                        <option value="" selected="selected">Default</option>
+                                        <option value="/calendar/config">Config</option>
+                                    </select>
+                                </div>
+                                <div class="o_pms_pwa_month_select float-right ml-4">
+                                    <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
+                                    <span class="o_pms_pwa_month_select_calendar_icon">
+                                        <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
+                                    </span>
+                                    <input type="hidden" name="calendar_selected_date" t-att-value="date_start" />
+                                    <input type="hidden" name="calendar_dpr" t-att-value="dpr" />
+                                    <button type="button" class="btn btn-calendar-roomdoo o_pms_pwa_daterangepicker_calendar" data-dismiss="modal">
+                                        <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
+                                    </button>
+
+                                    <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-right"></i></a>
+                                </div>
+                                <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
+                                    <form method="post" action="">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="display_option" t-att-value="selected_display"/>
+                                        <input type="hidden" name="pricelist" t-att-value="default_pricelist"/>
+                                        <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
+                                        <select id="dpr" name="dpr" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                            <t t-foreach="dpr_select_values" t-as="show_days">
+                                                <t t-if="int(dpr)==int(show_days)">
+                                                    <option t-attf-value="{{ show_days }}" selected="selected"><t t-esc="show_days" /></option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option t-attf-value="{{ show_days }}"><t t-esc="show_days" /></option>
+                                                </t>
+                                            </t>
+                                        </select>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="table-responsive" >
+                            <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
+                            <input type="hidden" name="selected_display" t-attf-value="{{ selected_display }}" />
+                            <table id="calendar_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
+                                <thead >
+                                    <tr >
+                                        <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"></th>
+                                        <t t-foreach="date_list" t-as="day">
+                                            <th t-att-class="'text-center o_pms_pwa_table_week '
+                                                    + ('o_pms_pwa_today ' if today.strftime('%d/%m/%Y')==day.strftime('%d/%m/%Y') else ' ')
+                                                    + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==0 else ' ')
+                                                    + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==6 else ' ')
+                                                    " t-att-data-value="x">
+                                                <t t-if="day_first">
+                                                    <a t-attf-href="?previous_day={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
+                                                </t>
+                                                <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
+                                                <t t-set="availability_day" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
+                                                <span class="float-right">
+                                                    <img src="/pms_pwa/static/img/svg/icon_house.svg" alt="avail icon" title="avail icon" />
+                                                    <t t-esc="availability_day"/>
+                                                </span>
+                                                <t t-if="day_last">
+                                                    <a t-attf-href="?next_day={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="float-right o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-right"></i></a>
+                                                </t>
+                                            </th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="obj_list" t-as="obj">
+                                        <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
+                                            <td class="o_pms_pwa_table_first_header_td">
+                                                <p class="o_pms_pwa_room_name">
+                                                    <i class="fa fa-angle-down"></i>
+                                                    <t
+                                                        t-if="obj.name"
+                                                        t-esc="obj.name"
+                                                    />
+                                                </p>
+                                                <p class="o_pms_pwa_extra_info">
+                                                    <span t-if="selected_display == 'room_type'"><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
+                                                    <span><t t-esc="obj.total_rooms_count"/> hab</span>
+                                                </p>
+                                            </td>
+                                            <t t-foreach="len(date_list)" t-as="l">
+                                                <span t-if="selected_display == 'room_type'">
+                                                    <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), room_type_id=obj.id, pricelist_id=default_pricelist).availability"></t>
+                                                </span>
+                                                <span t-if="selected_display == 'ubication'">
+                                                    <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), ubication_id=obj.id, pricelist_id=default_pricelist).availability"></t>
+                                                </span>
+                                                <td t-att-class="'o_pms_pwa_table_cell '
+                                                    + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
+                                                    + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
+                                                ">
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> available
+                                                        <span class="o_pms_pwa_info">
+                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="Texto informativo del icono" />
+                                                        </span>
+                                                    </p>
+                                                    <div class="o_pms_pwa_content">
+                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.total_rooms_count - availability_room"/> busy</span>
+                                                        <span t-if="selected_display == 'room_type'" class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
+
+                                                    </div>
+                                                </td>
+                                            </t>
+                                        </tr>
+                                        <tr>
+                                            <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)"  t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+        </t>
+
+    </template>
+</odoo>
