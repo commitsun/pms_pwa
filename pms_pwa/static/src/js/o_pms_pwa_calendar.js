@@ -131,7 +131,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                     }
                     searchParams.set('selected_date', select_date);
                     let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;
-                    //window.location = new_url;
+                    window.location = new_url;
                 }
             );
         } else {
@@ -184,7 +184,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                     }
                     searchParams.set('selected_date', select_date);
                     let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;
-                    //window.location = new_url;
+                    window.location = new_url;
                 }
             );
         }
