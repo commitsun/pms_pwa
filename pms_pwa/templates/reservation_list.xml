@@ -15,6 +15,11 @@
             </div>
             <div class="o_pms_pwa_roomdoo_alerts"/>
             <div class="oe_structure o_pms_pwa_structure mt-4">
+                <div class="row">
+                    <div class="col-12 ml-4 mb-2">
+                        <a href="/calendar"><i class="fa fa-undo"></i> Atrás</a>
+                    </div>
+                </div>
                 <section class="container-fluid o_pms_pwa_roomdoo_list">
                     <div class="o_pms_pwa_full_shadow bg-white p-4">
                         <form method="post" t-att-class="_classes">

@@ -599,6 +599,7 @@ class PmsReservation(http.Controller):
         methods=["GET", "POST"],
     )
     def print_checkin(self, reservation_id=None, **kw):
+        print("HOLI CARACOLI")
         reservations = False
         report_type = "html"
         download = False
@@ -619,4 +620,6 @@ class PmsReservation(http.Controller):
             ("Content-Length", len(pdf)),
             # ('Content-Disposition', content_disposition('checkins.pdf')),
         ]
+        # atta = request.env['ir.attachment'].search([('mimetype', '=', 'application/pdf')], limit=1)
+        # return atta.datas
         return request.make_response(pdf, headers=pdfhttpheaders)
