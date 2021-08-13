@@ -305,13 +305,13 @@ class PmsCalendar(http.Controller):
         return values
 
     @http.route(
-        "/small-calendar",
+        "/reduced-calendar",
         type="http",
         auth="user",
         methods=["GET", "POST"],
         website=True,
     )
-    def small_calendar(self, **post):
+    def reduced_calendar(self, **post):
         date = datetime.date.today()
         date_start = date + timedelta(days=-1)
         if post.get("selected_date"):
@@ -404,6 +404,6 @@ class PmsCalendar(http.Controller):
             "selected_date": date_start,
         }
         return http.request.render(
-            "pms_pwa.roomdoo_small_calendar_page",
+            "pms_pwa.roomdoo_reduced_calendar_page",
             values,
         )
