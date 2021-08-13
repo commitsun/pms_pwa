@@ -236,7 +236,7 @@
                                                 t-att-disabled='reservation.readonly_fields.indexOf("reservation_type") != -1 ? "disabled" : None'
                                                 t-att-required='reservation.required_fields.indexOf("reservation_type") != -1 ? "required" : None'
                                                 class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
-                                                <option t-foreach="reservation.reservation_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.reservation_type.id === key.id ? 'selected' : None">
+                                                <option t-foreach="reservation.reservation_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.reservation_type === key.id ? 'selected' : None">
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>
