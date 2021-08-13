@@ -3,7 +3,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     require("web.dom_ready");
     var ajax = require("web.ajax");
     var core = require("web.core");
-    var PortalSidebar = require('portal.PortalSidebar');
+    // var PortalSidebar = require('portal.PortalSidebar');
     var _t = core._t;
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
@@ -867,6 +867,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     "board_service_room_id" in values)
                                             ) {
                                                 self.displayDataAlert(new_data);
+                                                // cierra modal
                                                 $(
                                                     "div.o_pms_pwa_reservation_modal"
                                                 ).modal("toggle");
@@ -881,6 +882,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             .find("td.first-col")
                                                             .click();
                                                     } else {
+                                                        // abre modal
                                                         var selector =
                                                             "td[data-id=" +
                                                             reservation_data["id"] +
@@ -892,10 +894,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 }
                                             }
 
-                                            console.log(
-                                                "segundo reservation_data --->",
-                                                reservation_data["room_types"]
-                                            );
                                             // Refresh reservation modal values and sync with new data
                                             var allowed_fields = [
                                                 "allowed_agency_ids",
@@ -1631,6 +1629,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         $(".o_pms_pwa_button_print_checkin").on("click", function (
                             new_event
                         ) {
+                            console.log("ENTRO");
                             new_event.preventDefault();
                             var self = this;
                             var button = new_event.currentTarget;
@@ -1647,7 +1646,40 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     reservation_id = $("input[name='id']").val();
                                 }
                             }
-                            window.open("/checkins/pdf/" + reservation_id);
+                            let url = '/checkins/pdf/' + reservation_id;
+                            // Open the window
+                            let printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+                            printWindow.addEventListener('load', function() {
+                                printWindow.print();
+                                setTimeout(function(){
+                                    printWindow.close();
+                                }, 500);
+                            }, true);
+                            // console.log("ER PEPE 23,", reservation_id);
+                            // $.ajax({
+                            //     url: "/checkins/pdf/" + reservation_id,
+                            //     type: "GET",
+                            //     headers: {
+                            //         "Content-type": "application/pdf"
+                            //     },
+                            //     responseType: "arraybuffer",
+                            //     success: function (data) {
+                            //         console.log("Dentro");
+                            //         var pdfFile = new Blob([data], {
+                            //             type: "application/pdf"
+                            //         });
+                            //         var pdfUrl = URL.createObjectURL(pdfFile);
+                            //         //window.open(pdfUrl);
+                            //         printJS(pdfUrl);
+                            //         //var printwWindow = $window.open(pdfUrl);
+                            //         //printwWindow.print();
+                            //     },
+                            //     error: function (data) {
+                            //         alert("Sorry, something went wrong")
+                            //     },
+                            // });
+
+
                             // window.location.href= "/checkins/pdf/" + reservation_id;
                             // var href= "/checkins/pdf/" + reservation_id;
                             // PortalSidebar._printIframeContent(href);

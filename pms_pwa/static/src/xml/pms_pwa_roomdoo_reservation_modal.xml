@@ -778,7 +778,10 @@
                         <div class="modal-body o_pms_pwa_modal_body">
                             <div class="row">
                                 <div class="col-12">
-                                    <button t-attf-url="/print-checkins" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" data-dismiss="modal" aria-label="Print checkin">
+                                    <!-- <button url="/print-checkin" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" data-dismiss="modal" aria-label="Print checkin">
+                                        <span>Print checkin</span>
+                                    </button>  -->
+                                    <button t-attf-onclicj="/checkins/pdf/{{reservation.id}}" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" aria-label="Print checkin">
                                         <span>Print checkin</span>
                                     </button>
                                 </div>
