@@ -94,6 +94,7 @@ class PmsCalendarConfig(http.Controller):
             "date_list": date_list,
             "dpr": dpr,
             "dpr_select_values": dpr_select_values,
+            "selected_date": date_start,
         }
         return http.request.render(
             "pms_pwa.roomdoo_calendar_config_page",

@@ -20,7 +20,7 @@ def _get_search_domain(pms_property_id, search=False, **post):
                 [("reservation_ids.email", "ilike", srch)],
                 [("reservation_ids.partner_id.vat", "ilike", srch)],
                 [("reservation_ids.partner_name", "ilike", srch)],
-                [("reservation_origin_code", "ilike", srch)],
+                # [("reservation_origin_code", "ilike", srch)],
             ]
             domains.append(expression.OR(subdomains))
     domain_fields = [("pms_property_id", "=", pms_property_id)]

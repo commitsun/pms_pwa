@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <template id="roomdoo_calendar_page" name="Calendar">
+    <template id="roomdoo_reduced_calendar_page" name="Small Calendar">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Calendario'"/>
+            <t t-set="page_title" t-value="'Small Calendario'"/>
             <t t-if="request.httprequest.cookies.get('pms_pids', false)">
                 <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
                     <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
@@ -25,7 +25,7 @@
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <!-- Calendar -->
-                    <div class="o_pms_pwa_calendar o_pms_pwa_full_shadow bg-white p-5">
+                    <div class="o_pms_pwa_reduced_calendar o_pms_pwa_full_shadow bg-white p-5">
                         <div class="row">
                             <div class="col-12 mb-4 ml-4">
                                 <form action="/reservation/list" method="post" t-att-class="_classes">
@@ -147,7 +147,7 @@
                         <div class="table-responsive" >
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
                             <input type="hidden" name="selected_display" t-attf-value="{{ selected_display }}" />
-                            <table id="calendar_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
+                            <table id="reduced_calendar_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
                                 <thead >
                                     <tr >
                                         <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"></th>
@@ -175,7 +175,7 @@
                                 </thead>
                                 <tbody>
                                     <t t-foreach="obj_list" t-as="obj">
-                                        <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
+                                        <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td class="o_pms_pwa_table_first_header_td">
                                                 <p class="o_pms_pwa_room_name">
                                                     <i class="fa fa-angle-down"></i>
@@ -183,10 +183,6 @@
                                                         t-if="obj.name"
                                                         t-esc="obj.name"
                                                     />
-                                                </p>
-                                                <p class="o_pms_pwa_extra_info">
-                                                    <span t-if="selected_display == 'room_type'"><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
-                                                    <span><t t-esc="obj.total_rooms_count"/> hab</span>
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
@@ -200,16 +196,7 @@
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
                                                 ">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> available
-                                                        <span class="o_pms_pwa_info">
-                                                            <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="Texto informativo del icono" />
-                                                        </span>
-                                                    </p>
-                                                    <div class="o_pms_pwa_content">
-                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.total_rooms_count - availability_room"/> busy</span>
-                                                        <span t-if="selected_display == 'room_type'" class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
-
-                                                    </div>
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> available</p>
                                                 </td>
                                             </t>
                                         </tr>

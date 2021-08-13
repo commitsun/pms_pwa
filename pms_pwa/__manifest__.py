@@ -26,6 +26,7 @@
         "templates/dashboard.xml",
         "templates/calendar.xml",
         "templates/calendar_config.xml",
+        "templates/reduced_calendar.xml",
         "templates/login.xml",
         "templates/rooms.xml",
         "templates/rates.xml",
