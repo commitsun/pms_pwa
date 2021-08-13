@@ -487,4 +487,34 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             $("#o_pms_pwa_editModal").modal("toggle");
         });
     });
+
+    $(".o_pms_pwa_button_print_checkin").on("click", function (
+        new_event
+    ) {
+        new_event.preventDefault();
+        var self = this;
+        var button = new_event.currentTarget;
+        var reservation_id = false;
+        // var reservation_ids = {};
+        try {
+            reservation_id = button
+                .closest("tr")
+                .getAttribute("data-id");
+        } catch (error) {
+            try {
+                reservation_id = button.getAttribute("data-id");
+            } catch (error) {
+                reservation_id = $("input[name='id']").val();
+            }
+        }
+        let url = '/checkins/pdf/' + reservation_id;
+        // Open the window
+        let printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
+        printWindow.addEventListener('load', function() {
+            printWindow.print();
+            setTimeout(function(){
+                printWindow.close();
+            }, 500);
+        }, true);
+    });
 });
