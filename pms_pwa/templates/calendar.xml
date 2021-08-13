@@ -27,6 +27,44 @@
                     <!-- Calendar -->
                     <div class="o_pms_pwa_calendar o_pms_pwa_full_shadow bg-white p-5">
                         <div class="row">
+                            <div class="col-12 mb-4 ml-4">
+                                <form action="/reservation/list" method="post" t-att-class="_classes">
+                                    <div class="row">
+                                        <div class="col-9 col-md-9 col-lg-5">
+                                            <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        </div>
+                                        <div class="col-3 col-md-3 col-lg-7">
+                                            <span class="dropdown">
+                                                <a
+                                                    class="btn o_pms_pwa_float_right"
+                                                    href="#" data-toggle="modal" data-target="#o_pms_pwa_filters_modal"
+                                                    rel="nofollow">
+                                                    <span class="d-none d-lg-flex align-self-center">
+                                                        FILTERS <i class="fa fa-angle-left"/>
+                                                    </span>
+                                                    <i class="fa fa-filter d-lg-none"></i>
+                                                </a>
+                                            </span>
+                                            <a t-attf-href="/reservation/list?ready_for_checkin=true" label="Checkins" class="btn o_pms_pwa_button_filter">
+                                                <img src="/pms_pwa/static/img/svg/icon_arrival.svg" width="18px" alt="Checkins" class="img-responsive"/>
+                                            </a>
+                                            <a t-attf-href="/reservation/list?in_house=true" label="Dentro" class="btn o_pms_pwa_button_filter">
+                                                <img src="/pms_pwa/static/img/svg/icon_house.svg" width="18px" alt="Dentro" class="img-responsive" />
+                                            </a>
+                                            <a t-attf-href="/reservation/list?ready_for_checkout=true" label="Checkouts" class="btn o_pms_pwa_button_filter">
+                                                <img src="/pms_pwa/static/img/svg/icon_exit.svg" width="18px" alt="Checkouts" class="img-responsive" />
+                                            </a>
+                                        </div>
+                                        <t t-call="pms_pwa.roomdoo_filters_modal">
+                                            <t t-set="post" t-value="post"/>
+                                            <t t-set="search" t-value="search"/>
+                                        </t>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-2 d-none d-lg-block">
                                 <div class="d-flex align-items-center ml-4">
                                     <h2

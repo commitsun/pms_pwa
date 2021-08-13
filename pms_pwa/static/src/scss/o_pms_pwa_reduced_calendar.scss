@@ -1,5 +1,5 @@
 section.o_pms_pwa_roomdoo {
-    .o_pms_pwa_calendar {
+    .o_pms_pwa_reduced_calendar {
         overflow-x: none;
         @media (max-width: 991.98px) {
             margin-left: -3rem;
@@ -97,9 +97,8 @@ section.o_pms_pwa_roomdoo {
         .table-responsive {
             height: calc(70vh - 25px);
         }
-        #calendar_table.table,
-        #calendar_config_table.table {
-            border-collapse: separate;
+        #reduced_calendar_table.table {
+            border-collapse: collapse;
             border-spacing: 8px;
             overflow: auto;
             tr[aria-expanded="true"] {
@@ -160,6 +159,18 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
             }
+            .o_pms_pwa_calendar_line{
+                table{
+                    tbody{
+                        tr{
+                            td{
+                                height: 10px;
+                                padding: 0.25rem;
+                            }
+                        }
+                    }
+                }
+            }
 
             th.o_pms_pwa_table_first_header_td,
             td.o_pms_pwa_table_first_header_td {
@@ -194,7 +205,7 @@ section.o_pms_pwa_roomdoo {
                 min-width: 182.4px;
             }
             .o_pms_pwa_reservation_list_table {
-                border-collapse: separate;
+                border-collapse: collapse;
                 border-spacing: 0 8px;
                 margin-bottom: 0px !important;
                 td[colspan="2"] {
@@ -357,31 +368,10 @@ section.o_pms_pwa_roomdoo {
         .o_pms_pwa_today {
             border-bottom: 3px solid $theme-color;
             vertical-align: middle;
-            // &::after {
-            //     content: "";
-            //     position: absolute;
-            //     margin-top: 47px;
-            //     top:0;
-            //     height: 525px;
-            //     border-right: 2px solid $theme-color;
-            //     margin-left: -3rem;
-            //     z-index: -1;
-            //     opacity: 0.2;
-            // }
         }
         th.o_pms_pwa_weekend {
             border-bottom: 3px solid $dark;
             vertical-align: middle;
-            // &::after {
-            //     content: "";
-            //     position: absolute;
-            //     top: 99%;
-            //     height: 525px;
-            //     border-right: 2px solid $dark;
-            //     margin-left: -2rem;
-            //     //z-index: -2;
-            //     opacity: 0.2;
-            // }
         }
 
         .o_pms_pwa_open_calendar[aria-expanded="true"] {
@@ -439,218 +429,7 @@ section.o_pms_pwa_roomdoo {
             border: none;
             z-index: 1;
         }
-        .o_pms_pwa_line_before {
-            &_prereservation::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: #a24680;
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
 
-            &_confirmed::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: $theme-color;
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
-
-            &_checkin::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: #00ba39;
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
-
-            &_checkout::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: #7e7e7e;
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
-
-            &_out-service::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: #000000;
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
-
-            &_staff::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: #c08686;
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
-
-            &_to-assign::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: #ed722e;
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
-
-            &_danger::before {
-                top: 0.75em !important;
-                left: -100px !important;
-                background-color: var(--danger);
-                content: "" !important;
-                display: inline-block;
-                height: 4px;
-                position: relative;
-                vertical-align: middle;
-                width: 50px;
-                margin-right: -40px;
-            }
-        }
-        @-moz-document url-prefix() {
-            .o_pms_pwa_line_before {
-                &_prereservation::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: #a24680;
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-
-                &_confirmed::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: $theme-color;
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-
-                &_checkin::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: #00ba39;
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-
-                &_checkout::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: #7e7e7e;
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-
-                &_out-service::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: #000000;
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-
-                &_staff::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: #c08686;
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-
-                &_to-assign::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: #ed722e;
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-
-                &_danger::before {
-                    top: 0.7rem !important;
-                    left: -69px !important;
-                    background-color: var(--danger);
-                    content: "----------------" !important;
-                    display: inline-block;
-                    position: relative;
-                    vertical-align: middle;
-                    width: 50px;
-                    margin-right: -40px;
-                    font-size: 3.5px !important;
-                }
-            }
-        }
         .o_pms_pwa_calendar_line {
             background-color: $bg-theme-color;
             .o_pms_pwa_calendar_reservation {
@@ -694,19 +473,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 3rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: -3rem;
-                        width: 12px;
-                        margin-left: 0.1rem;
-                    }
-                    &::before {
-                        content: "|";
-                        position: relative;
-                        top: -1.15rem;
-                        font-size: 16px;
-                        left: -1.65rem;
-                        display: ruby-base-container;
-                        z-index: 0;
-                        color: #584d76;
+                        width: 8px;
                     }
                 }
                 &_confirmed {
@@ -715,19 +482,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 3rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: -3rem;
                         width: 8px;
-                        margin-left: 0.1rem;
-                    }
-                    &::before {
-                        content: "|";
-                        position: relative;
-                        top: -1.15rem;
-                        font-size: 16px;
-                        left: -1.65rem;
-                        display: ruby-base-container;
-                        z-index: 0;
-                        color: $theme-color;
                     }
                 }
 
@@ -737,19 +492,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 3rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: -3rem;
                         width: 8px;
-                        margin-left: 0.1rem;
-                    }
-                    &::before {
-                        content: "|";
-                        position: relative;
-                        top: -1.15rem;
-                        font-size: 16px;
-                        left: -1.65rem;
-                        display: ruby-base-container;
-                        z-index: 0;
-                        color: #00ba39;
                     }
                 }
 
@@ -759,19 +502,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 3rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: -3rem;
                         width: 8px;
-                        margin-left: 0.1rem;
-                    }
-                    &::before {
-                        content: "|";
-                        position: relative;
-                        top: -1.15rem;
-                        font-size: 16px;
-                        left: -1.65rem;
-                        display: ruby-base-container;
-                        z-index: 0;
-                        color: #7e7e7e;
                     }
                 }
 
@@ -781,19 +512,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 3rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: -3rem;
                         width: 8px;
-                        margin-left: 0.1rem;
-                    }
-                    &::before {
-                        content: "|";
-                        position: relative;
-                        top: -1.15rem;
-                        font-size: 16px;
-                        left: -1.65rem;
-                        display: ruby-base-container;
-                        z-index: 0;
-                        color: #000000;
                     }
                 }
 
@@ -803,19 +522,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 3rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: -3rem;
                         width: 8px;
-                        margin-left: 0.1rem;
-                    }
-                    &::before {
-                        content: "|";
-                        position: relative;
-                        top: -1.15rem;
-                        font-size: 16px;
-                        left: -1.65rem;
-                        display: ruby-base-container;
-                        z-index: 0;
-                        color: #c08686;
                     }
                 }
                 &_to-assign {
@@ -824,54 +531,23 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 3rem;
                     .o_pms_pwa_calendar_line_icon {
-                        margin-top: -3rem;
                         width: 8px;
-                        margin-left: 0.1rem;
-                    }
-                    &::before {
-                        content: "|";
-                        position: relative;
-                        top: -1.15rem;
-                        font-size: 16px;
-                        left: -1.65rem;
-                        display: ruby-base-container;
-                        z-index: 0;
-                        color: #ed722e;
                     }
                 }
             }
             &_badge {
-                float: right;
+
                 margin-top: 0.75rem;
                 border-radius: 3rem;
                 text-align: center;
                 width: 1.5rem;
                 height: 1.5rem;
-                &:before {
-                    content: "";
-                    display: block;
-                    position: relative;
-                    top: -1.75rem;
-                    height: 26px;
-                    border-left: 1px solid currentColor;
-                    margin-left: 0.35rem;
-                }
-            }
-            &_price {
-                font-size: 12px;
-                //margin-left: 0.5rem;
             }
             &_name {
                 font-weight: bold;
-                font-size: 14px;
-                margin-left: 3.2rem;
-                margin-top: -1rem;
-                width: 100%;
-                // overflow
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                max-width: 60px;
+                font-size: 12px;
+                margin-left: 0.4rem;
+
             }
         }
         .bg {
@@ -926,6 +602,7 @@ section.o_pms_pwa_roomdoo {
         .o_pms_pwa_calendar_line_event:hover .btn-add {
             display: block;
         }
+
     }
     .o_pms_pwa_last_table_cell {
         width: calc(100% - 38px) !important;

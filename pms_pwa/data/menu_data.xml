@@ -11,7 +11,7 @@
         <!-- Delete contact menu -->
         <!-- <delete id="website.menu_contactus" model="website.menu"/> -->
         <!-- Menus -->
-        <record id="menu_reservation_list" model="website.menu">
+        <!-- <record id="menu_reservation_list" model="website.menu">
             <field name="name">Reservation list</field>
             <field name="url">/reservation/list</field>
             <field name="sequence" type="int">20</field>
@@ -22,7 +22,7 @@
             <field name="page_id" ref="reservation_list_page"/>
             <field name="website_id" ref="website.default_website"/>
             <field name="img" type="base64" file="pms_pwa/static/img/svg/llaves.svg" />
-        </record>
+        </record> -->
 
         <!--<record id="menu_dashboard" model="website.menu">
             <field name="name">Dashboard</field>
