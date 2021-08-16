@@ -9,6 +9,20 @@ from odoo.tools.misc import get_lang
 class PmsProperty(models.Model):
     _inherit = "pms.property"
 
+    total_rooms_count = fields.Integer(
+        string="Total rooms",
+        compute="_compute_total_rooms_count",
+        store=True,
+    )
+
+    @api.depends("room_ids", "room_ids.active")
+    def _compute_total_rooms_count(self):
+        for record in self:
+            record.total_rooms_count = len(record.room_ids)
+
+    def _get_total_rooms(self):
+        return len(self.room_ids)
+
     def _get_allowed_payments_journals(self):
         """
         @return: Return dict with journals
