@@ -5,7 +5,7 @@
         <t t-if="reservation">
 
             <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_reservation_modal" data-backdrop="static" t-att-data-id="reservation.id">
-                <div t-if="reservation.folio_reservations" style="background-color:white;position:absolute;right:100%;min-height:100px;z-index: 9999;top: 0%;">
+                <div t-if="reservation.folio_reservations_count > 1" class="o_pms_pwa_multi_reservation_modal">
                     <div class="modal-header o_pms_pwa_modal_header">
                         <div class="row">
                             <div class="col-12">
@@ -17,22 +17,50 @@
                         <table class="table table-condensed">
                             <thead>
                                 <tr>
+                                    <th class="o_pms_pwa_theme_color"></th>
                                     <th class="o_pms_pwa_theme_color">ID</th>
                                     <th class="o_pms_pwa_theme_color">Room</th>
                                     <th class="o_pms_pwa_theme_color">Adults</th>
-                                    <th class="o_pms_pwa_theme_color">checkin/checkout</th>
+                                    <th class="o_pms_pwa_theme_color">Checkin / Checkout</th>
                                 </tr>
 
                             </thead>
                             <tbody>
                                 <t t-foreach="reservation.folio_reservations" t-as="i">
+                                    <tr t-att-class='reservation.id == i.id ? "o_pms_pwa_background_grey" : "" '>
+                                        <td>
+                                            <input type="checkbox" name="reservation_ids" checked="checked" t-if="reservation.id == i.id" t-attf-value="{{ i.id }}" />
+                                            <input type="checkbox" name="reservation_ids" t-if="reservation.id != i.id" t-attf-value="{{ i.id }}" />
+                                        </td>
+                                        <td>
+                                            <t t-if="reservation.id == i.id" t-esc="i.name"></t>
+                                            <a t-if="reservation.id != i.id" t-attf-id="{{i.id}}" t-attf-data-id="{{i.id}}" href="#">
+                                                <t t-esc="i.name"></t>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <select
+                                                t-att-disabled='reservation.readonly_fields.indexOf("preferred_room_id") != -1 ? "disabled" : None'
+                                                t-att-required='reservation.required_fields.indexOf("preferred_room_id") != -1 ? "required" : None'
+                                                data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
+                                                <option t-foreach="i.room_numbers" t-as="key" t-att-value="key.id" t-att-selected="i.preferred_room_id.id === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
 
-                                <tr>
-                                    <td><t t-esc="i.name"></t></td>
-                                    <td><t t-esc="i.preferred_room_id.name"></t></td>
-                                    <td><t t-esc="i.adults"></t></td>
-                                    <td><t t-esc="i.checkin"></t>/<t t-esc="i.checkout"></t></td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            <input
+                                                t-att-required='reservation.required_fields.indexOf("adults") != -1 ? "required" : None'
+                                                t-att-readonly='reservation.readonly_fields.indexOf("adults") != -1 ? "readonly" : None'
+                                                class="form-control" type="text" name="adults" t-att-value="i.adults" />
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ i.checkin }} - {{ i.checkout }}" />
+                                            <input type="hidden" name="checkin" t-att-value="i.checkin" />
+                                            <input type="hidden" name="checkout" t-att-value="i.checkout" />
+                                        </td>
+                                    </tr>
                                 </t>
                             </tbody>
                         </table>

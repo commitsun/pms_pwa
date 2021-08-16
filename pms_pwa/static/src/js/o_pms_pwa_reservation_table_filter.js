@@ -1651,11 +1651,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             let printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
                             printWindow.addEventListener('load', function() {
                                 printWindow.print();
-                                setTimeout(function(){
-                                    printWindow.close();
-                                }, 500);
+                                // setTimeout(function(){
+                                //     printWindow.close();
+                                // }, 500);
                             }, true);
-                            // console.log("ER PEPE 23,", reservation_id);
                             // $.ajax({
                             //     url: "/checkins/pdf/" + reservation_id,
                             //     type: "GET",
