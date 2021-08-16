@@ -104,7 +104,7 @@
                                         </t>
                                     </select>
                                 </div>
-                                <div class="o_pms_pwa_calendar_select  d-none d-lg-block ml-4">
+                                <div class="o_pms_pwa_calendar_select d-none d-lg-block ml-4">
                                     <select id="display_obj_option" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <option value="" selected="selected">Default</option>
                                         <option value="/calendar/config">Config</option>
