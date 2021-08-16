@@ -669,6 +669,7 @@ class PmsReservation(models.Model):
             "unread_msg": len(notifications),
             "messages": notifications,
             "folio_reservations": self.folio_id.get_reservation_json(),
+            "folio_reservations_count": len(self.folio_id.reservation_ids),
             "room_type_id": {
                 "id": self.room_type_id.id,
                 "name": self.room_type_id.name,

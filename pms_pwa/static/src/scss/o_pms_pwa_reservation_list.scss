@@ -752,3 +752,15 @@ div.o_pms_pwa_new_reservation_modal {
         display: none;
     }
 }
+.o_pms_pwa_multi_reservation_modal{
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    position: absolute;
+    right: 25.5%;
+    min-height: 100px;
+    z-index: 9999;
+    top: 10%;
+    @-moz-document url-prefix() {
+        right: 100%;
+    }
+}
