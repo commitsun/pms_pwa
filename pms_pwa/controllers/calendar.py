@@ -303,4 +303,3 @@ class PmsCalendar(http.Controller):
             )
         pp.pprint(values)
         return values
-
