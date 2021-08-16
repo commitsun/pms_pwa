@@ -760,7 +760,13 @@ div.o_pms_pwa_new_reservation_modal {
     min-height: 100px;
     z-index: 9999;
     top: 10%;
-    @-moz-document url-prefix() {
-        right: 100%;
+    // @-moz-document url-prefix() {
+    //     right: 100%;
+    // }
+    .o_domain_leaf_operator_select{
+        min-width: 150px;
+    }
+    & input[name="adults"] {
+        width: 50px;
     }
 }

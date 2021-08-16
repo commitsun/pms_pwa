@@ -688,7 +688,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (reservation_data) {
-                console.log("primer reservation_data --->", reservation_data);
                 setTimeout(function () {
                     if (reservation_data) {
                         /* End missin data */
@@ -1277,6 +1276,70 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 );
                             }
                         });
+                        // CHANGES IN MULTI MODAL RESERVATIONS
+                        $("#multi_reservation_modal").on("click", "a", function (new_event) {
+                            var modal_reservation_id = new_event.currentTarget.closest("tr").getAttribute("data-id");
+                            // cierro modal
+                            $("div.o_pms_pwa_reservation_modal").modal("toggle");
+                            // abro modal
+                            var selector = "tr[data-id=" + modal_reservation_id +"]";
+                            console.log("selector --->", selector);
+                            $(selector).click();
+
+                        });
+                        $("#multi_reservation_modal").on("change", "input, select", function (new_event) {
+                            var modal_reservation_id = new_event.currentTarget.closest("tr").getAttribute("data-id");
+                            console.log(modal_reservation_id);
+                            var values = {};
+                            // Set checkin & checkout separated
+                            if (
+                                new_event.currentTarget.name ==
+                                    "range_check_date_modal"
+                            ) {
+                                let value_range_picker =
+                                    new_event.currentTarget.value;
+                                values.checkin = value_range_picker.split(" - ")[0];
+                                values.checkout = value_range_picker.split(" - ")[1];
+                            } else {
+                                values[new_event.currentTarget.name] = new_event.currentTarget.value;
+                            }
+                            // si es el mismo id, cambios en modal, sino, llamo función
+                            if(reservation_id ==  modal_reservation_id){
+                                try{
+                                    if(new_event.currentTarget.name == 'preferred_room_id'){
+                                        var select = $(
+                                            'form.o_pms_pwa_reservation_form [data-select="room_numbers"]'
+                                        );
+                                        select.val(new_event.currentTarget.value);
+                                        select.trigger("change");
+                                    }else{
+                                        let input = $(
+                                            "form.o_pms_pwa_reservation_form input[name='" +
+                                            new_event.currentTarget.name +
+                                                "']"
+                                        );
+                                        input.val(new_event.currentTarget.value);
+                                        input.trigger("change");
+                                    }
+                                }catch{
+                                    console.log("ERROR");
+                                }
+                            }else{
+                                ajax.jsonRpc(
+                                    "/reservation/" + modal_reservation_id + "/onchange_data",
+                                    "call",
+                                    values
+                                ).then(function (new_data) {
+                                    //console.log("NNN --->", new_data);
+                                    if (new_data) {
+                                        if (!JSON.parse(new_data).result) {
+                                            self.displayDataAlert(new_data);
+                                        }
+                                    }
+                                });
+                            }
+                        });
+
                     } else {
                         reservation_data = false;
                     }

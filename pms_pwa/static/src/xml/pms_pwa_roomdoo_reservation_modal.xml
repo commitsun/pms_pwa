@@ -14,7 +14,7 @@
                         </div>
                     </div>
                     <div class="modal-body o_pms_pwa_modal_body">
-                        <table class="table table-condensed">
+                        <table class="table table-condensed" id="multi_reservation_modal">
                             <thead>
                                 <tr>
                                     <th class="o_pms_pwa_theme_color"></th>
@@ -27,7 +27,7 @@
                             </thead>
                             <tbody>
                                 <t t-foreach="reservation.folio_reservations" t-as="i">
-                                    <tr t-att-class='reservation.id == i.id ? "o_pms_pwa_background_grey" : "" '>
+                                    <tr t-attf-data-id="{{ i.id }}" t-att-class='reservation.id == i.id ? "o_pms_pwa_background_grey" : "" '>
                                         <td>
                                             <input type="checkbox" name="reservation_ids" checked="checked" t-if="reservation.id == i.id" t-attf-value="{{ i.id }}" />
                                             <input type="checkbox" name="reservation_ids" t-if="reservation.id != i.id" t-attf-value="{{ i.id }}" />
