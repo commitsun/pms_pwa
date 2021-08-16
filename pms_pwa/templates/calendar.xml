@@ -196,6 +196,9 @@
                                                 <span t-if="selected_display == 'ubication'">
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), ubication_id=obj.id, pricelist_id=default_pricelist).availability"></t>
                                                 </span>
+                                                <span t-if="selected_display == 'pms_property'">
+                                                    <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
+                                                </span>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')

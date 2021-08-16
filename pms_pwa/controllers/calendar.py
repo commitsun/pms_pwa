@@ -65,6 +65,7 @@ class PmsCalendar(http.Controller):
         ubications = request.env["pms.ubication"].browse(
             rooms.mapped("ubication_id.id")
         )
+        pms_property = request.env["pms.property"].browse(pms_property_id)
         # Add default dpr and dpr_select_values
 
         dpr = 15
@@ -86,6 +87,7 @@ class PmsCalendar(http.Controller):
             request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
         )
         display_select_options = [
+            {"name": "Properties", "value": "pms_property"},
             {"name": "Room type", "value": "room_type"},
             {"name": "Ubications", "value": "ubication"},
         ]
@@ -98,11 +100,13 @@ class PmsCalendar(http.Controller):
             elif post["display_option"] == "ubication":
                 obj_list = ubications
                 selected_display = "ubication"
+            elif post["display_option"] == "pms_property":
+                obj_list = pms_property
+                selected_display = "pms_property"
 
         if post and "pricelist" in post:
             pricelist = int(post["pricelist"])
 
-        pms_property = request.env["pms.property"].browse(pms_property_id)
         values = {
             "today": datetime.datetime.now(),
             "date_start": date_start,
@@ -139,7 +143,6 @@ class PmsCalendar(http.Controller):
         pms_property_id = request.env.user.get_active_property_ids()[0]
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]
-
         domain = [
             ("date", ">=", from_date),
             ("date", "<=", to_date),
@@ -169,6 +172,16 @@ class PmsCalendar(http.Controller):
                     [
                         ("pms_property_id", "=", pms_property_id),
                         ("ubication_id", "=", int(post.get("data_id"))),
+                    ]
+                )
+                .ids
+            )
+        elif post.get("selected_display") == "pms_property":
+            room_ids = (
+                request.env["pms.room"]
+                .search(
+                    [
+                        ("pms_property_id", "=", pms_property_id),
                     ]
                 )
                 .ids
