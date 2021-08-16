@@ -599,7 +599,6 @@ class PmsReservation(http.Controller):
         methods=["GET", "POST"],
     )
     def print_checkin(self, reservation_id=None, **kw):
-        print("HOLI CARACOLI")
         reservations = False
         report_type = "html"
         download = False
