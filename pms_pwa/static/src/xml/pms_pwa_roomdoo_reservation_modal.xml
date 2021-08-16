@@ -3,7 +3,41 @@
     <t t-name="pms_pwa.roomdoo_reservation_modal">
         <!-- Modal -->
         <t t-if="reservation">
-            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_reservation_modal" t-att-data-id="reservation.id">
+
+            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_reservation_modal" data-backdrop="static" t-att-data-id="reservation.id">
+                <div t-if="reservation.folio_reservations" style="background-color:white;position:absolute;right:100%;min-height:100px;z-index: 9999;top: 0%;">
+                    <div class="modal-header o_pms_pwa_modal_header">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>Multiples reservas</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body o_pms_pwa_modal_body">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th class="o_pms_pwa_theme_color">ID</th>
+                                    <th class="o_pms_pwa_theme_color">Room</th>
+                                    <th class="o_pms_pwa_theme_color">Adults</th>
+                                    <th class="o_pms_pwa_theme_color">checkin/checkout</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <t t-foreach="reservation.folio_reservations" t-as="i">
+
+                                <tr>
+                                    <td><t t-esc="i.name"></t></td>
+                                    <td><t t-esc="i.preferred_room_id.name"></t></td>
+                                    <td><t t-esc="i.adults"></t></td>
+                                    <td><t t-esc="i.checkin"></t>/<t t-esc="i.checkout"></t></td>
+                                </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header o_pms_pwa_modal_header">
