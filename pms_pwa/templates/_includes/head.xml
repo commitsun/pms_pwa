@@ -44,11 +44,6 @@
             <link
                 rel="stylesheet"
                 type="text/scss"
-                href="/pms_pwa/static/src/scss/o_pms_pwa_reduced_calendar.scss"
-            />
-            <link
-                rel="stylesheet"
-                type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_dashboard.scss"
             />
             <link
@@ -109,10 +104,6 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_reduced_calendar.js"
             /> -->
-            <script
-                type="text/javascript"
-                src="/pms_pwa/static/src/js/o_pms_pwa_reduced_calendar.js"
-            />
             <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_notify.js"
