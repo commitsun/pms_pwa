@@ -535,7 +535,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     )
                                 ).html(html);
                             });
-                            // location.reload();
+                            //location.reload();
                         } else {
                             if (updated_data) {
                                 try {
@@ -1724,42 +1724,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             let printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
                             printWindow.addEventListener('load', function() {
                                 printWindow.print();
-                                // setTimeout(function(){
-                                //     printWindow.close();
-                                // }, 500);
                             }, true);
-                            // $.ajax({
-                            //     url: "/checkins/pdf/" + reservation_id,
-                            //     type: "GET",
-                            //     headers: {
-                            //         "Content-type": "application/pdf"
-                            //     },
-                            //     responseType: "arraybuffer",
-                            //     success: function (data) {
-                            //         console.log("Dentro");
-                            //         var pdfFile = new Blob([data], {
-                            //             type: "application/pdf"
-                            //         });
-                            //         var pdfUrl = URL.createObjectURL(pdfFile);
-                            //         //window.open(pdfUrl);
-                            //         printJS(pdfUrl);
-                            //         //var printwWindow = $window.open(pdfUrl);
-                            //         //printwWindow.print();
-                            //     },
-                            //     error: function (data) {
-                            //         alert("Sorry, something went wrong")
-                            //     },
-                            // });
 
-
-                            // window.location.href= "/checkins/pdf/" + reservation_id;
-                            // var href= "/checkins/pdf/" + reservation_id;
-                            // PortalSidebar._printIframeContent(href);
-                            // ajax.jsonRpc("/print-checkins", "call", {
-                            //     reservation_id: reservation_id,
-                            // }).then(function (data) {
-                            //     console.log(data);
-                            // });
                         });
                     }
                 });
