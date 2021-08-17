@@ -1282,10 +1282,20 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             // cierro modal
                             $("div.o_pms_pwa_reservation_modal").modal("toggle");
                             // abro modal
-                            var selector = "tr[data-id=" + modal_reservation_id +"]";
-                            console.log("selector --->", selector);
-                            $(selector).click();
-
+                            try {
+                                var selector = "td[data-id=" + modal_reservation_id +"]";
+                                var test = $(selector);
+                                if (test.length != 0) {
+                                    $(selector).click();
+                                } else {
+                                    var selector = "tr[data-id=" + modal_reservation_id +"]";
+                                    $(selector)
+                                        .find("td.first-col")
+                                        .click();
+                                }
+                            } catch (error) {
+                                console.log(error);
+                            }
                         });
                         $("#multi_reservation_modal").on("change", "input, select", function (new_event) {
                             var modal_reservation_id = new_event.currentTarget.closest("tr").getAttribute("data-id");
