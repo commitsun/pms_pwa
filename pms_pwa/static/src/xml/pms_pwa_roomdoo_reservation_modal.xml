@@ -4,7 +4,7 @@
         <!-- Modal -->
         <t t-if="reservation">
 
-            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_reservation_modal" data-backdrop="static" t-att-data-id="reservation.id">
+            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_reservation_modal" t-att-data-id="reservation.id">
                 <div t-if="reservation.folio_reservations_count > 1" class="o_pms_pwa_multi_reservation_modal">
                     <div class="modal-header o_pms_pwa_modal_header">
                         <div class="row">
