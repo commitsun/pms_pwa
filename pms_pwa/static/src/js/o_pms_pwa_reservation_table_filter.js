@@ -511,32 +511,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     reservation_id: data_id,
                 }).then(function (updated_data) {
                     setTimeout(function () {
-                        var date_list = false;
-                        try {
-                            //var room_type_id = event.currentTarget.getAttribute("data-id");
-                            var date_list = $('input[name="date_list"]').val();
-                        } catch (error) {
-                            console.log(error);
-                        }
-                        if (date_list) {
-                            ajax.jsonRpc("/calendar/line", "call", {
-                                room_type_id: updated_data.room_type_id.id,
-                                range_date: date_list,
-                            }).then(function (data) {
-                                var html = core.qweb.render("pms_pwa.calendar_line", {
-                                    room_type_id: updated_data.room_type_id.id,
-                                    obj_list: data.reservations,
-                                    csrf_token: csrf_token,
-                                });
-                                $(
-                                    String(
-                                        "#collapse_accordion_" +
-                                            updated_data.room_type_id.id
-                                    )
-                                ).html(html);
-                            });
-                            //location.reload();
-                        } else {
                             if (updated_data) {
                                 try {
                                     $(String("#reservation_" + data_id)).find(
@@ -643,6 +617,38 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     console.log(error);
                                 }
                             }
+                    });
+                });
+            } else {
+                ajax.jsonRpc("/reservation/json_data", "call", {
+                    reservation_id: data_id,
+                }).then(function (updated_data) {
+                    setTimeout(function () {
+                        var date_list = false;
+                        try {
+                            //var room_type_id = event.currentTarget.getAttribute("data-id");
+                            var date_list = $('input[name="date_list"]').val();
+                            var selected_display = $('input[name="selected_display"]').val();
+                            ajax.jsonRpc("/calendar/line", "call", {
+                                data_id: updated_data.room_type_id.id,
+                                range_date: date_list,
+                                selected_display: selected_display,
+                            }).then(function (data) {
+                                var html = core.qweb.render("pms_pwa.calendar_line", {
+                                    room_type_id: updated_data.room_type_id.id,
+                                    obj_list: data.reservations,
+                                    csrf_token: csrf_token,
+                                });
+                                $(
+                                    String(
+                                        "#collapse_accordion_" +
+                                        updated_data.room_type_id.id
+                                    )
+                                ).html(html);
+                            });
+                        } catch (error) {
+                            console.log(error);
+                            location.reload();
                         }
                     });
                 });
