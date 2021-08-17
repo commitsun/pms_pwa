@@ -18,10 +18,10 @@
                             <thead>
                                 <tr>
                                     <th class="o_pms_pwa_theme_color"></th>
-                                    <th class="o_pms_pwa_theme_color">ID</th>
-                                    <th class="o_pms_pwa_theme_color">Room</th>
-                                    <th class="o_pms_pwa_theme_color">Adults</th>
-                                    <th class="o_pms_pwa_theme_color">Checkin / Checkout</th>
+                                    <th class="o_pms_pwa_theme_color">Reserva</th>
+                                    <th class="o_pms_pwa_theme_color">Habitación</th>
+                                    <th class="o_pms_pwa_theme_color">Adultos</th>
+                                    <th class="o_pms_pwa_theme_color">Entrada - Salida</th>
                                 </tr>
 
                             </thead>

@@ -769,4 +769,8 @@ div.o_pms_pwa_new_reservation_modal {
     & input[name="adults"] {
         width: 50px;
     }
+    & input, & select{
+        padding-top:0% !important;
+        min-height: 1rem !important;
+    }
 }
