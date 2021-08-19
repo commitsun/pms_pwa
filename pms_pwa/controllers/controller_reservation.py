@@ -622,3 +622,182 @@ class PmsReservation(http.Controller):
         # atta = request.env['ir.attachment'].search([('mimetype', '=', 'application/pdf')], limit=1)
         # return atta.datas
         return request.make_response(pdf, headers=pdfhttpheaders)
+
+    @http.route(
+        ["/allowed_reservation_board_services"],
+        csrf=False,
+        auth="user",
+        website=True,
+        type="http",
+        methods=["GET", "POST"],
+    )
+    def allowed_reservation_board_services(self, **kw):
+        params = http.request.jsonrequest.get("params")
+        try:
+            reservation_ids = [int(item) for item in params["reservation_ids"]]
+            reservations = request.env["pms.reservation"].browse(reservation_ids)
+            allowed_board_services = []
+            for reservation in reservations:
+                boards = reservation._get_allowed_board_service_room_ids()
+                for board in boards:
+                    if not [
+                        i
+                        for i, _ in enumerate(allowed_board_services)
+                        if _["id"] == board["id"]
+                    ]:
+                        allowed_board_services.append(board)
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
+        return json.dumps(
+            {"result": True, "allowed_board_services": allowed_board_services}
+        )
+
+    # ACTIONS MULTI RESERVATIONS
+    @http.route(
+        "/reservation/multi_assign",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_multi_assign(self, **kw):
+        params = http.request.jsonrequest.get("params")
+        try:
+            reservation_ids = [int(item) for item in params["reservation_ids"]]
+            reservations = request.env["pms.reservation"].browse(reservation_ids)
+            reservations.action_assign()
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
+        return json.dumps(
+            {"result": True, "message": _("Operation completed successfully.")}
+        )
+
+    @http.route(
+        "/reservation/multi_cancel",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_multi_cancel(self, **kw):
+        params = http.request.jsonrequest.get("params")
+        try:
+            reservation_ids = [int(item) for item in params["reservation_ids"]]
+            reservations = request.env["pms.reservation"].browse(reservation_ids)
+            reservations.action_cancel()
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
+        return json.dumps(
+            {"result": True, "message": _("Operation completed successfully.")}
+        )
+
+    @http.route(
+        "/reservation/multi_checkout",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_multi_checkout(self, **kw):
+        params = http.request.jsonrequest.get("params")
+        try:
+            reservation_ids = [int(item) for item in params["reservation_ids"]]
+            reservations = request.env["pms.reservation"].browse(reservation_ids)
+            reservations.action_reservation_checkout()
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
+        return json.dumps(
+            {"result": True, "message": _("Operation completed successfully.")}
+        )
+
+    @http.route(
+        ["/checkins/pdf/multi_print"],
+        csrf=False,
+        auth="user",
+        website=True,
+        type="http",
+        methods=["GET", "POST"],
+    )
+    def print_multi_checkin(self, reservation_id=None, **kw):
+        params = http.request.jsonrequest.get("params")
+        try:
+            reservation_ids = [int(item) for item in params["reservation_ids"]]
+            reservations = request.env["pms.reservation"].browse(reservation_ids)
+            checkins = reservations.checkin_partner_ids
+            pdf = (
+                request.env.ref("pms.action_traveller_report")
+                .sudo()
+                ._render_qweb_pdf(checkins.ids)[0]
+            )
+            pdfhttpheaders = [
+                ("Content-Type", "application/pdf"),
+                ("Content-Length", len(pdf)),
+                # ('Content-Disposition', content_disposition('checkins.pdf')),
+            ]
+            # atta = request.env['ir.attachment'].search([('mimetype', '=', 'application/pdf')], limit=1)
+            # return atta.datas
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
+        return request.make_response(pdf, headers=pdfhttpheaders)
+
+    @http.route(
+        "/reservation/multi_changes",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_multi_changes(self, **kw):
+        params = http.request.jsonrequest.get("params")
+        days_week = {
+            "apply_on_monday": False,
+            "apply_on_tuesday": False,
+            "apply_on_wednesday": False,
+            "apply_on_thursday": False,
+            "apply_on_friday": False,
+            "apply_on_saturday": False,
+            "apply_on_sunday": False,
+        }
+        apply_on_all_week = False
+        new_price = False
+        new_discount = False
+        new_board_service_id = False
+        try:
+            reservation_ids = [int(item) for item in params["reservation_ids"]]
+            reservations = request.env["pms.reservation"].browse(reservation_ids)
+            if params["apply_on_all_week"]:
+                apply_on_all_week = True
+            else:
+                for day in days_week:
+                    if params[day]:
+                        days_week[day] = True
+            if params["new_price"]:
+                new_price = params["new_price"]
+            if params["new_discount"]:
+                new_discount = params["new_discount"]
+            if params["new_board_service_id"]:
+                new_board_service_id = int(params["new_board_service_id"])
+            wizard_changes = request.env["wizard.folio.changes"].create(
+                {
+                    "folio_id": reservations[0].folio_id.id,
+                    "apply_on_all_week": apply_on_all_week,
+                    "apply_on_monday": days_week["apply_on_monday"],
+                    "apply_on_tuesday": days_week["apply_on_tuesday"],
+                    "apply_on_wednesday": days_week["apply_on_wednesday"],
+                    "apply_on_thursday": days_week["apply_on_thursday"],
+                    "apply_on_friday": days_week["apply_on_friday"],
+                    "apply_on_saturday": days_week["apply_on_saturday"],
+                    "apply_on_sunday": days_week["apply_on_sunday"],
+                    "new_price": new_price,
+                    "new_discount": new_discount,
+                    "new_board_service_id": new_board_service_id,
+                    "reservation_ids": reservation_ids,
+                }
+            )
+            wizard_changes.button_change()
+
+        except Exception as e:
+            return json.dumps({"result": False, "message": str(e)})
+        return json.dumps(
+            {"result": True, "message": _("Operation completed successfully.")}
+        )
