@@ -533,23 +533,24 @@ class PmsReservation(http.Controller):
 
                     # OTHER FOLIO RESERVATIONS
                     elif param == "folio_reservations":
-                        parent_reservation = self.env["pms.reservation"].browse(
-                            int(param["id"])
+                        related_reservation_dict = params['folio_reservations']
+                        parent_reservation = request.env["pms.reservation"].browse(
+                            int(related_reservation_dict["id"])
                         )
-                        if "preferred_room_id" in param:
+                        if "preferred_room_id" in related_reservation_dict:
                             parent_reservation.preferred_room_id = int(
-                                param["preferred_room_id"]
+                                related_reservation_dict["preferred_room_id"]
                             )
-                        elif "checkin" in param:
+                        elif "checkin" in related_reservation_dict:
                             parent_reservation.checkin = datetime.datetime.strptime(
-                                param["checkin"], get_lang(request.env).date_format
+                                related_reservation_dict["checkin"], get_lang(request.env).date_format
                             )
-                        elif "checkout" in param:
+                        # elif "checkout" in related_reservation_dict:
                             parent_reservation.checkout = datetime.datetime.strptime(
-                                param["checkout"], get_lang(request.env).date_format
+                                related_reservation_dict["checkout"], get_lang(request.env).date_format
                             )
-                        elif "adults" in param:
-                            parent_reservation.adults = int(param["adults"])
+                        elif "adults" in related_reservation_dict:
+                            parent_reservation.adults = int(related_reservation_dict["adults"])
                         parent_reservation.flush()
                         return json.dumps(
                             {

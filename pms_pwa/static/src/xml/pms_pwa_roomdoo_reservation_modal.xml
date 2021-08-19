@@ -824,7 +824,61 @@
 
     <t t-name="pms_pwa.reservation_checkin_modal">
         <t t-if="reservation">
-            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal">
+            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal">
+                <div t-if="reservation.folio_reservations_count > 1" class="o_pms_pwa_multi_reservation_modal">
+                    <div class="modal-header o_pms_pwa_modal_header">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3>Multiples reservas</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body o_pms_pwa_modal_body">
+                        <table class="table table-condensed" id="multi_reservation_modal_checkin">
+                            <thead>
+                                <tr>
+                                    <th class="o_pms_pwa_theme_color">Reserva</th>
+                                    <th class="o_pms_pwa_theme_color">Habitación</th>
+                                    <th class="o_pms_pwa_theme_color">Adultos</th>
+                                    <th class="o_pms_pwa_theme_color">Entrada - Salida</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <t t-foreach="reservation.folio_reservations" t-as="i">
+                                    <tr t-attf-data-id="{{ i.id }}" t-att-class='reservation.id == i.id ? "o_pms_pwa_background_grey" : "" '>
+                                        <td>
+                                            <t t-if="reservation.id == i.id" t-esc="i.name"></t>
+                                            <a class="o_pms_pwa_button_checkin_multi_modal" href="#" t-if="reservation.id != i.id" t-attf-id="{{i.id}}" t-attf-data-id="{{i.id}}" t-attf-url="/reservation/{{ i.id }}/checkin">
+                                                <t t-esc="i.name"></t>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <select
+                                                disabled="disabled" readonly='readonly'
+                                                data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
+                                                <option t-foreach="i.room_numbers" t-as="key" t-att-value="key.id" t-att-selected="i.preferred_room_id.id === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
+
+                                        </td>
+                                        <td>
+                                            <input
+                                                readonly='readonly'
+                                                class="form-control" type="text" name="adults" t-att-value="i.adults" />
+                                        </td>
+                                        <td>
+                                            <input readonly='readonly' class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ i.checkin }} - {{ i.checkout }}" />
+                                            <input type="hidden" name="checkin" t-att-value="i.checkin" />
+                                            <input type="hidden" name="checkout" t-att-value="i.checkout" />
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header o_pms_pwa_modal_header">
@@ -832,8 +886,11 @@
                                 <div class="row o_pms_pwa_modal_header_pad">
                                     <h4 class="modal-title">
                                         Checkin reserva:
-                                        <span t-esc="reservation.id" />
+                                        <span t-esc="reservation.name" />
                                     </h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span class="fa fa-times" />
+                                    </button>
                                 </div>
                             </div>
                         </div>
