@@ -686,7 +686,7 @@ class PmsReservation(models.Model):
             "agency_id": {
                 "id": self.agency_id.id if self.agency_id else False,
                 "name": self.agency_id.name if self.agency_id else False,
-                "url": self.website.image_url(self.agency_id, "image_128")
+                "url": self.env["website"].image_url(self.agency_id, "image_128")
                 if self.agency_id
                 else False,
             },
