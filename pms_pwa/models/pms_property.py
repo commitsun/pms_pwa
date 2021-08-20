@@ -68,3 +68,20 @@ class PmsProperty(models.Model):
         for agency in agencies:
             allowed_agencies.append({"id": agency.id, "name": agency.name})
         return allowed_agencies
+
+    @api.model
+    def _get_allowed_countries(self):
+        allowed_countries = []
+        for country in self.env["res.country"].search([]):
+            allowed_countries.append(
+                {
+                    "id": country.id,
+                    "name": country.name,
+                }
+            )
+        return allowed_countries
+
+    @api.model
+    def _get_langs(self):
+        installed_langs = dict(self.env['res.lang'].get_installed())
+        return installed_langs
