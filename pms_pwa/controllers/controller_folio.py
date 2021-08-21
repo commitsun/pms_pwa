@@ -146,3 +146,14 @@ class PmsFolio(http.Controller):
                     {"result": True, "message": _("Operation completed successfully.")}
                 )
             return json.dumps({"result": False, "message": _("Reservation not found")})
+
+    @http.route(
+        "/ammenities",
+        type="json",
+        website=True,
+        auth="public",
+    )
+    def list_available_ammenities(self):
+        payload = http.request.jsonrequest.get("params")
+        pms_property = request.env["pms.property"].browse(int(payload["pms_property"]))
+        return pms_property.get_available_ammenities()

@@ -85,3 +85,20 @@ class PmsProperty(models.Model):
     def _get_langs(self):
         installed_langs = dict(self.env['res.lang'].get_installed())
         return installed_langs
+
+    def get_available_ammenities(self):
+        self.ensure_one()
+        ammenities_json = []
+        ammenities = self.env["pms.ammenities"].search([
+            '|',
+            ("pms_property_ids", "in", self.id),
+            ("pms_property_ids", "=", False),
+        ])
+        for am in ammenities:
+            ammenities_json.append(
+                {
+                    "id": am.id,
+                    "name": am.name,
+                }
+            )
+        return ammenities_json
