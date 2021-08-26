@@ -23,7 +23,7 @@
         </div>
     </template>
     <template id="o_pms_pwa_new_reservation_modal" name="New reservation modal">
-        <div class="modal fade o_pms_pwa_right o_pms_pwa_new_reservation_modal" tabindex="-1"  data-backdrop="static" role="dialog" id="o_pms_pwa_new_reservation_modal" aria-labelledby="o_pms_pwa_new_reservation_modal" aria-hidden="true">
+        <div class="modal fade o_pms_pwa_right o_pms_pwa_new_reservation_modal" tabindex="-1" data-backdrop="static" role="dialog" id="o_pms_pwa_new_reservation_modal" aria-labelledby="o_pms_pwa_new_reservation_modal" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

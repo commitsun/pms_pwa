@@ -636,3 +636,24 @@ h4.collapsed {
 .bg-danger {
     background-color: #01b6e3 !important;
 }
+
+#o_pms_pwa_multi_reservation_modal{
+    .o_pms_pwa_modal_header{
+        .bg-modal-action{
+            background-image: linear-gradient(
+                to right,
+                $theme-color 80%,
+                $bg-theme-color
+            );
+            color: $white;
+            border: none;
+            border-radius: 1.5rem;
+            font-weight: 600;
+            font-size: medium;
+            width: 100px;
+            &:hover {
+                color: $white;
+            }
+        }
+    }
+}
