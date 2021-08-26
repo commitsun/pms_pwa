@@ -7,4 +7,4 @@ from . import dashboard
 from . import calendar
 from . import calendar_config
 from . import booking_engine
-from . import res_partner
+from . import controller_res_partner

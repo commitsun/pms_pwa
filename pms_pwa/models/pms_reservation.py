@@ -600,17 +600,6 @@ class PmsReservation(models.Model):
             {"id": "staff", "name": "Staff"},
         ]
 
-    def _get_allowed_countries(self):
-        allowed_countries = []
-        for country in self.env["res.country"].search([]):
-            allowed_countries.append(
-                {
-                    "id": country.id,
-                    "name": country.name,
-                }
-            )
-        return allowed_countries
-
     def parse_reservation(self):
         self.ensure_one()
         primary_button, secondary_buttons = self.generate_reservation_style_buttons()
@@ -764,7 +753,7 @@ class PmsReservation(models.Model):
             ),
             "readonly_fields": ["arrival_hour", "departure_hour"],
             "required_fields": [],
-            "allowed_country_ids": self._get_allowed_countries(),
+            "allowed_country_ids": self.pms_property_id._get_allowed_countries(),
         }
 
         _logger.info("Values from controller to Frontend:")
