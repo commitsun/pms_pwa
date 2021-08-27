@@ -44,7 +44,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
 
             var room_type = {};
             $("#calendar_conf_table_line input").each(function (index) {
-                console.log(index);
+                // console.log(index);
                 var input = $(this);
                 if (input.data("edit") === true) {
                     var input_array = {};
@@ -70,7 +70,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                             "/" +
                             current_datetime.getFullYear();
                     }
-                    console.log(formatted_date);
+                    // console.log(formatted_date);
                     // Console.log("price ", price);
                     if (!room_type[room]) {
                         room_type[room] = {};

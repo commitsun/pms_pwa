@@ -3,13 +3,143 @@
     <t t-name="pms_pwa.roomdoo_reservation_modal">
         <!-- Modal -->
         <t t-if="reservation">
+            <!-- Modal -->
+            <div class="modal fade" id="multiChangeModal" tabindex="-2" role="dialog" aria-labelledby="multiChangeModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header o_pms_pwa_modal_header">
+                    <h5 class="modal-title" id="multiChangeModalLabel">Modal multi cambios</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="fa fa-times"></span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-condensed" id="multi_days_values">
+                            <thead>
+                                <tr>
+                                    <td class="o_pms_pwa_theme_color">Todos</td>
+                                    <td class="o_pms_pwa_theme_color">Lunes</td>
+                                    <td class="o_pms_pwa_theme_color">Martes</td>
+                                    <td class="o_pms_pwa_theme_color">Miércoles</td>
+                                    <td class="o_pms_pwa_theme_color">Jueves</td>
+                                    <td class="o_pms_pwa_theme_color">Viernes</td>
+                                    <td class="o_pms_pwa_theme_color">Sábado</td>
+                                    <td class="o_pms_pwa_theme_color">Domingo</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input name="apply_on_all_week" data-edit="true" t-attf-tabindex="1" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input data-edit="false" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input data-edit="false" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input data-edit="false" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input data-edit="false" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input data-edit="false" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input data-edit="false" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <p style="text-align:center">
+                                            <label class="switch">
+                                                <input data-edit="false" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
+                                                <span class="slider round"></span>
+                                            </label>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                                <div class="col-6">
+                                    <label class="control-label col-12" for="Precio">
+                                        Precio
+                                    </label>
+                                    <input class="form-control" type="number" name="new_price" />
+                                </div>
+                                <div class="col-6">
+                                    <label class="control-label col-12" for="Precio">
+                                        Descuento
+                                    </label>
+                                    <input class="form-control" type="number" name="new_discount"></input>
 
+                                </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button> -->
+                        <button type="button" class="btn bg-modal-action rounded-circle send_form_multi_change" url="/reservation/multi_changes">Guardar</button>
+                    </div>
+                </div>
+                </div>
+            </div>
             <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_reservation_modal" t-att-data-id="reservation.id">
                 <div t-if="reservation.folio_reservations_count > 1" class="o_pms_pwa_multi_reservation_modal">
                     <div class="modal-header o_pms_pwa_modal_header">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-8">
                                 <h3>Multiples reservas</h3>
+                            </div>
+                            <div class="col-4">
+                                <div class="btn-group modal-btn-position">
+                                    <button type="button" class="btn bg-modal-action rounded-circle" data-toggle="modal" data-target="#multiChangeModal">Abrir modal</button>
+                                    <button type="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <span class="sr-only">Acciones</span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                      <a class="dropdown-item call_to_action_modal" href="#" url="/reservation/multi_assign">Asignar</a>
+                                      <a class="dropdown-item call_to_action_modal" href="#" url="/reservation/multi_checkout">Checkout</a>
+                                      <a class="dropdown-item call_to_action_modal" href="#" url="/reservation/multi_cancel">Cancel</a>
+                                      <div class="dropdown-divider"></div>
+                                      <a class="dropdown-item call_to_action_modal" href="#" url="/checkins/pdf/multi_print">Print</a>
+                                    </div>
+                                  </div>
                             </div>
                         </div>
                     </div>
@@ -826,28 +956,6 @@
         <t t-if="reservation">
             <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal">
                 <div t-if="reservation.folio_reservations_count > 1" class="o_pms_pwa_multi_reservation_modal">
-                    <div class="modal-header o_pms_pwa_modal_header">
-                        <div class="row">
-                            <div class="col-8">
-                                <h3>Multiples reservas</h3>
-                            </div>
-                            <div class="col-4">
-                                <div class="btn-group">
-                                    <button type="button" class="btn bg-modal-action rounded-circle">Acciones</button>
-                                    <button type="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                      <span class="sr-only">Toggle Dropdown</span>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                      <a class="dropdown-item" href="#">Action</a>
-                                      <a class="dropdown-item" href="#">Another action</a>
-                                      <a class="dropdown-item" href="#">Something else here</a>
-                                      <div class="dropdown-divider"></div>
-                                      <a class="dropdown-item" href="#">Separated link</a>
-                                    </div>
-                                  </div>
-                            </div>
-                        </div>
-                    </div>
                     <div class="modal-body o_pms_pwa_modal_body">
                         <table class="table table-condensed" id="multi_reservation_modal_checkin">
                             <thead>
