@@ -147,7 +147,7 @@
                         <table class="table table-condensed" id="multi_reservation_modal">
                             <thead>
                                 <tr>
-                                    <th class="o_pms_pwa_theme_color"></th>
+                                    <th class="o_pms_pwa_theme_color"><input type="checkbox" id="checkAll"></input></th>
                                     <th class="o_pms_pwa_theme_color">Reserva</th>
                                     <th class="o_pms_pwa_theme_color">Habitación</th>
                                     <th class="o_pms_pwa_theme_color">Adultos</th>

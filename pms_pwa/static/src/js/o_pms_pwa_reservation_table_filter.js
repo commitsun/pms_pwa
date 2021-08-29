@@ -1486,8 +1486,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 });
                             }
                         });
-                        // Form para cambios
-                        // Falta que cuando cambien un día, el check de all_week cambie.
+                        // Check all
+                        $("#multi_reservation_modal #checkAll").change(function () {
+                            $("input:checkbox").prop('checked', $(this).prop("checked"));
+                        });
+                        // Modal multi cambios
+                        $("#multiChangeModal input:checkbox").change(function () {
+                            if(this.name == "apply_on_all_week"){
+                                $("#multiChangeModal input:checkbox").prop('checked', $(this).prop("checked"));
+                            }else{
+                                $("#multiChangeModal input[name='apply_on_all_week']:checkbox").prop('checked', false);
+                            }
+                        });
                         $(
                             "#multiChangeModal button.send_form_multi_change"
                         ).on("click", function (modal_event) {
