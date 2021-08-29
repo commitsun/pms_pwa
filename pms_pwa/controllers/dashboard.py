@@ -6,10 +6,12 @@ from inspect import isdatadescriptor
 import logging
 import pprint
 from calendar import monthrange
+import datetime
+from odoo.tools.misc import get_lang
+from dateutil.relativedelta import relativedelta
 
 from odoo import _, fields, http
 from odoo.http import request
-from odoo.tools.misc import get_lang
 
 from odoo.addons.web.controllers.main import Home
 
@@ -40,6 +42,21 @@ class DashBoard(http.Controller):
                 ]
             return activities
 
+        date = datetime.datetime.today()
+        date_one_day = date + datetime.timedelta(days=1)
+
+        graph_date_from = datetime.datetime.today()
+        graph_date_to = graph_date_from + datetime.timedelta(days=31)
+
+        pms_property_id = request.env.user.get_active_property_ids()[0]
+        property = request.env["pms.property"].browse(pms_property_id)
+
+        channels = request.env["pms.sale.channel"].search([
+            '|',
+            ("pms_property_ids", "in", pms_property_id),
+            ("pms_property_ids", "=", False),
+        ])
+
         values.update(
             {
                 "tasks": _get_user_activities(
@@ -47,29 +64,30 @@ class DashBoard(http.Controller):
                 ),
                 "arrivals": {
                     "today": {
-                        "date": "14/10/2020",
-                        "to_arrive": 10,
-                        "to_check_in": 2,
+                        "date": date.strftime(get_lang(request.env).date_format),
+                        "to_arrive": len(self.dash_checkins(date)),
+                        "to_check_in": len(self.dash_left_checkins(date)),
                     },
                     "tomorrow": {
-                        "date": "15/10/2020",
-                        "to_arrive": 8,
+                        "date": date_one_day.strftime(get_lang(request.env).date_format),
+                        "to_arrive": len(self.dash_checkins(date_one_day)),
                     },
                 },
                 "departures": {
                     "today": {
-                        "date": "14/10/2020",
-                        "to_leave": 10,
-                        "to_check_out": 2,
+                        "date": date.strftime(get_lang(request.env).date_format),
+                        "to_leave": len(self.dash_checkouts(date)),
+                        "to_check_out": len(self.dash_left_checkouts(date)),
                     },
                     "tomorrow": {
-                        "date": "15/10/2020",
-                        "to_leave": 8,
+                        "date": date_one_day.strftime(get_lang(request.env).date_format),
+                        "to_leave": len(self.dash_checkouts(date_one_day)),
                     },
                 },
                 "rooms": {
-                    "date": "14/10/2020",
-                    "available": 10,
+                    "date": date.strftime(get_lang(request.env).date_format),
+                    "available": property.with_context(
+                        checkin=date, checkout=date_one_day).availability,
                     "out_of_service": 2,
                     "taken": 8,
                     "ready": 1,
@@ -102,7 +120,39 @@ class DashBoard(http.Controller):
                 ],
                 "evolutions": [
                     {
-                        "name": "Billing",
+                        "name": "Ocupación",
+                        "selector": "ocupation",
+                        "labels": self.get_graph_labels(graph_date_from, graph_date_to),
+                        "label_1": graph_date_from.strftime("%Y"),
+                        "data_1": self._get_graph_ocupation(graph_date_from, graph_date_to),
+                        "backgroundColor_1": "#E5F8FC",
+                        "borderColor_1": "#00B5E2",
+                        "label_2": (graph_date_from - relativedelta(years=1)).strftime("%Y"),
+                        "data_2": self._get_graph_ocupation(
+                            graph_date_from - relativedelta(years=1),
+                            graph_date_to - relativedelta(years=1),
+                        ),
+                        "backgroundColor_2": "#CEF2E8",
+                        "borderColor_2": "#00BA39",
+                    },
+                    {
+                        "name": "Ingresos",
+                        "selector": "revenue",
+                        "labels": self.get_graph_labels(graph_date_from, graph_date_to),
+                        "label_1": graph_date_from.strftime("%Y"),
+                        "data_1": self._get_graph_revenue(graph_date_from, graph_date_to),
+                        "backgroundColor_1": "#E5F8FC",
+                        "borderColor_1": "#00B5E2",
+                        "label_2": (graph_date_from - relativedelta(years=1)).strftime("%Y"),
+                        "data_2": self._get_graph_revenue(
+                            graph_date_from - relativedelta(years=1),
+                            graph_date_to - relativedelta(years=1),
+                        ),
+                        "backgroundColor_2": "#CEF2E8",
+                        "borderColor_2": "#00BA39",
+                    },
+                    {
+                        "name": "Facturación",
                         "selector": "billing",
                         "labels": "5 oct,6 oct,7 oct,8 oct,9 oct",
                         "label_1": "2019",
@@ -114,51 +164,25 @@ class DashBoard(http.Controller):
                         "backgroundColor_2": "#CEF2E8",
                         "borderColor_2": "#00BA39",
                     },
-                    {
-                        "name": "Revenue",
-                        "selector": "revenue",
-                        "labels": "19 nov,20 nov,21 nov,22 nov,23 nov",
-                        "label_1": "2019",
-                        "data_1": "200,210,130,36,540",
-                        "backgroundColor_1": "#E5F8FC",
-                        "borderColor_1": "#00B5E2",
-                        "label_2": "2020",
-                        "data_2": "150,190,250,690,120",
-                        "backgroundColor_2": "#CEF2E8",
-                        "borderColor_2": "#00BA39",
-                    },
-                    {
-                        "name": "Ocupation",
-                        "selector": "ocupation",
-                        "labels": "5 sept,6 sept,7 sept",
-                        "label_1": "2019",
-                        "data_1": "315,850,130",
-                        "backgroundColor_1": "#E5F8FC",
-                        "borderColor_1": "#00B5E2",
-                        "label_2": "2020",
-                        "data_2": "150,650,250",
-                        "backgroundColor_2": "#CEF2E8",
-                        "borderColor_2": "#00BA39",
-                    },
                 ],
                 "kpis": [
                     {
-                        "name": "Ocupation",
-                        "labels": "Arrivals,Departures,No show",
+                        "name": "Ocupación",
+                        "labels": "Llegadas,Salidas,Fuera de Servicio",
                         "label": "",
-                        "data": "12,24,18",
+                        "data": self._get_kpi_ocupation(graph_date_from, graph_date_to),
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
                         "borderColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "ratio": 3.99,
+                        "ratio": self._get_kpi_ocupation_score(graph_date_from, graph_date_to),
                     },
                     {
-                        "name": "Reservations by channel",
-                        "labels": "Phone,Booking,Other",
+                        "name": "Reservas por canal",
+                        "labels": ",".join(channels.mapped("name")),
                         "label": "",
-                        "data": "14,7,5",
+                        "data": self._get_channel_reservations(channels, graph_date_from, graph_date_to),
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
                         "borderColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "ratio": 4.21,
+                        "ratio": self._get_channel_reservations_score(channels, graph_date_from, graph_date_to),
                     },
                     {
                         "name": "Income by channel",
@@ -212,3 +236,137 @@ class DashBoard(http.Controller):
 
         return http.request.render("pms_pwa.roomdoo_dashboard_page", values)
 
+    def dash_checkins(self, date):
+        checkins = request.env["pms.reservation"].search([
+            ("checkin", "<=", date),
+            ("state", "!=", "cancel"),
+            ("reservation_type", "!=", "out"),
+        ])
+        return checkins
+
+    def dash_checkouts(self, date):
+        checkouts = request.env["pms.reservation"].search([
+            ("checkout", "=", date),
+            ("state", "!=", "cancel"),
+            ("reservation_type", "!=", "out"),
+        ])
+        return checkouts
+
+    def dash_left_checkins(self, date):
+        checkins = request.env["pms.reservation"].search([
+            ("checkin", "<=", date),
+            ("state", "in", ("draft", "confirm", "arrival_delayed")),
+            ("reservation_type", "!=", "out"),
+        ])
+        return checkins
+
+    def dash_left_checkouts(self, date):
+        checkouts = request.env["pms.reservation"].search([
+            ("checkout", "=", date),
+            ("state", "not in", ("cancel", "done")),
+            ("reservation_type", "!=", "out"),
+        ])
+        return checkouts
+
+    def get_graph_labels(self, date_from, date_to):
+        labels = []
+        for day in range(0, (date_to - date_from).days + 1):
+            date = date_from + datetime.timedelta(days=day)
+            labels.append(date.strftime("%d %b"))
+        return ",".join(labels)
+
+    def _get_graph_ocupation(self, date_from, date_to):
+        domain = [
+            ("date", ">=", date_from),
+            ("date", "<=", date_to),
+            ("state", "!=", "cancel"),
+            ("reservation_id.reservation_type", "!=", "out"),
+        ]
+        ocupation_data = request.env["pms.reservation.line"].read_group(
+            domain,
+            ["date"],
+            ["date:day"],
+            lazy=False,
+        )
+        mapped_data = dict([(data['date:day'], data['__count']) for data in ocupation_data])
+        graph_data = ",".join(map(str, mapped_data.values()))
+        return graph_data
+
+    def _get_graph_revenue(self, date_from, date_to):
+        domain = [
+            ("checkout", ">=", date_from),
+            ("checkout", "<=", date_to),
+            ("state", "!=", "cancel"),
+            ("reservation_type", "not in", ("out","staff")),
+        ]
+        revenues_data = request.env["pms.reservation"].read_group(
+            domain,
+            ["price_room_services_set:sum"],
+            ["checkout:day"],
+            lazy=False,
+        )
+        mapped_data = dict([(data['checkout:day'], data['price_room_services_set']) for data in revenues_data])
+        graph_data = ",".join(map(str, mapped_data.values()))
+        return graph_data
+
+    def _get_kpi_ocupation(self, date_from, date_to):
+        data = []
+        data.append(request.env["pms.reservation"].search_count([
+            ("checkin", ">=", date_from),
+            ("checkin", "<=", date_to),
+            ("state", "!=", "cancel"),
+            ("reservation_type", "!=", "out"),
+        ]))
+        data.append(request.env["pms.reservation"].search_count([
+            ("checkout", ">=", date_from),
+            ("checkout", "<=", date_to),
+            ("state", "!=", "cancel"),
+            ("reservation_type", "!=", "out"),
+        ]))
+        data.append(request.env["pms.reservation"].search_count([
+            ("state", "!=", "cancel"),
+            ("reservation_type", "=", "out"),
+            "|",
+            "&",
+            ("checkin", ">=", date_from),
+            ("checkin", "<=", date_to),
+            "&",
+            ("checkout", ">=", date_from),
+            ("checkout", "<=", date_to),
+        ]))
+        return ",".join(map(str, data))
+
+    def _get_kpi_ocupation_score(self, date_from, date_to):
+        return request.env["pms.reservation"].search_count([
+            ("state", "!=", "cancel"),
+            "|",
+            "&",
+            ("checkin", ">=", date_from),
+            ("checkin", "<=", date_to),
+            "&",
+            ("checkout", ">=", date_from),
+            ("checkout", "<=", date_to),
+        ])
+
+    def _get_channel_reservations(self, channels, date_from, date_to):
+        domain = [
+            ("checkin", ">=", date_from),
+            ("checkin", "<=", date_to),
+            ("state", "!=", "cancel"),
+            ("reservation_type", "!=", "out"),
+        ]
+        reservations = request.env["pms.reservation"].search(domain)
+        channels_data = []
+        for channel in channels:
+            channels_data.append(len(reservations.filtered(lambda r: r.channel_type_id.id == channel.id)))
+        return ",".join(map(str, channels_data))
+
+    def _get_channel_reservations_score(self, channels, date_from, date_to):
+        domain = [
+            ("checkin", ">=", date_from),
+            ("checkin", "<=", date_to),
+            ("state", "!=", "cancel"),
+            ("reservation_type", "!=", "out"),
+            ("channel_type_id", "in", channels.ids),
+        ]
+        return request.env["pms.reservation"].search_count(domain)
