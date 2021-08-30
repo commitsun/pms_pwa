@@ -97,19 +97,34 @@
                             </tbody>
                         </table>
                         <div class="row">
-                                <div class="col-6">
-                                    <label class="control-label col-12" for="Precio">
-                                        Precio
-                                    </label>
-                                    <input class="form-control" type="number" name="new_price" />
-                                </div>
-                                <div class="col-6">
-                                    <label class="control-label col-12" for="Precio">
-                                        Descuento
-                                    </label>
-                                    <input class="form-control" type="number" name="new_discount"></input>
 
-                                </div>
+                            <div class="col-5">
+                                <label class="control-label col-12" for="Precio">
+                                    Precio
+                                </label>
+                                <input class="form-control" type="number" name="new_price" />
+                            </div>
+                            <div class="col-5">
+                                <label class="control-label col-12" for="Precio">
+                                    Descuento
+                                </label>
+                                <input class="form-control" type="number" name="new_discount"></input>
+                            </div>
+                        </div>
+                        <div class="row  mt-4">
+
+                            <div class="col-5">
+                                <label class="control-label col-12" for="board_service_room_id">
+                                    Servicios
+                                </label>
+                                <select
+                                    data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="new_board_service_id">
+                                    <option name="new_board_service_id" t-foreach="reservation.allowed_board_service_room_ids" t-as="key" t-att-value="key.id">
+                                        <t t-esc="key.name" />
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-5"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -1023,7 +1038,7 @@
                                     <!-- <button url="/print-checkin" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" data-dismiss="modal" aria-label="Print checkin">
                                         <span>Print checkin</span>
                                     </button>  -->
-                                    <button t-attf-onclicj="/checkins/pdf/{{reservation.id}}" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" aria-label="Print checkin">
+                                    <button t-attf-onclick="/checkins/pdf/{{reservation.id}}" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" aria-label="Print checkin">
                                         <span>Print checkin</span>
                                     </button>
                                 </div>

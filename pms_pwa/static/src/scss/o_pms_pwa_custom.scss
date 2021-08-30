@@ -728,4 +728,23 @@ h4.collapsed {
     .slider.round:before {
         border-radius: 50%;
     }
+    & input[type='number'],
+    & select,
+    & textarea {
+        min-height: 3rem;
+        border: 1px $theme-color-text solid;
+        font-weight: 500;
+        font-size: 16px;
+        padding-top: 1.2rem;
+    }
+    & input[type="submit"] {
+        padding-top: 0;
+    }
+    & label {
+        font-weight: 600;
+        font-size: 12px;
+        padding-top: 0.15rem;
+        position: absolute;
+        color: $theme-color-text;
+    }
 }

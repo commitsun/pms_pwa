@@ -1486,11 +1486,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 });
                             }
                         });
+
                         // Check all
                         $("#multi_reservation_modal #checkAll").change(function () {
                             $("input:checkbox").prop('checked', $(this).prop("checked"));
                         });
+
                         // Modal multi cambios
+                        // input change color
+                        $("#multiChangeModal").on("change", "input[type='number']", function () {
+                            this.style.backgroundColor = "yellow";
+
+                        });
                         $("#multiChangeModal input:checkbox").change(function () {
                             if(this.name == "apply_on_all_week"){
                                 $("#multiChangeModal input:checkbox").prop('checked', $(this).prop("checked"));
@@ -1528,6 +1535,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 });
                             }
                         });
+
 
                     } else {
                         reservation_data = false;
