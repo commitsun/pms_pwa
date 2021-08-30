@@ -761,7 +761,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             "']"
                     );
                 });
-            }
+            };
+
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
@@ -1101,6 +1102,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             //refresh multimodal data
                                             if(reservation_data.folio_reservations.length > 1){
                                                 self.refreshMultiModal(new_data);
+
                                             }
                                         }
                                     }, 10);
@@ -1467,6 +1469,73 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 });
                             }
                         });
+                        // Llamas a multiaction en modal
+                        $(
+                            "a.call_to_action_modal"
+                        ).on("click", function (modal_event) {
+                            modal_event.preventDefault();
+                            var button = modal_event.currentTarget;
+                            var checkedValues = $('input:checkbox:checked').map(function() {
+                                return this.value;
+                            }).get();
+                            if(checkedValues){
+                                ajax.jsonRpc(button.attributes.url.value, "call", {
+                                    reservation_ids: checkedValues,
+                                }).then(function (new_data) {
+                                    self.displayDataAlert(new_data);
+                                });
+                            }
+                        });
+
+                        // Check all
+                        $("#multi_reservation_modal #checkAll").change(function () {
+                            $("input:checkbox").prop('checked', $(this).prop("checked"));
+                        });
+
+                        // Modal multi cambios
+                        // input change color
+                        $("#multiChangeModal").on("change", "input[type='number']", function () {
+                            this.style.backgroundColor = "yellow";
+
+                        });
+                        $("#multiChangeModal input:checkbox").change(function () {
+                            if(this.name == "apply_on_all_week"){
+                                $("#multiChangeModal input:checkbox").prop('checked', $(this).prop("checked"));
+                            }else{
+                                $("#multiChangeModal input[name='apply_on_all_week']:checkbox").prop('checked', false);
+                            }
+                        });
+                        $(
+                            "#multiChangeModal button.send_form_multi_change"
+                        ).on("click", function (modal_event) {
+                            modal_event.preventDefault();
+                            var button = modal_event.currentTarget;
+                            var checkedValues = $('#multi_reservation_modal input:checkbox:checked').map(function() {
+                                return this.value;
+                            }).get();
+                            var days_week = {};
+                            var apply_on_all_week = false;
+                            var new_price = $("#multiChangeModal input[name='new_price']").val();
+                            $('#multi_days_values input:checkbox:checked').map(function() {
+                                if(this.name != "apply_on_all_week"){
+                                    days_week[this.name] = this.value
+                                }else{
+                                    apply_on_all_week = this.value
+                                }
+                            }).get();
+                            if(checkedValues){
+                                ajax.jsonRpc(button.attributes.url.value, "call", {
+                                    reservation_ids: checkedValues,
+                                    apply_on_all_week: apply_on_all_week,
+                                    days_week: days_week,
+                                    new_price: $("#multiChangeModal input[name='new_price']").val(),
+                                    new_discount:$("#multiChangeModal input[name='new_discount']").val(),
+                                }).then(function (new_data) {
+                                    self.displayDataAlert(new_data);
+                                });
+                            }
+                        });
+
 
                     } else {
                         reservation_data = false;
@@ -1862,6 +1931,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 self._onClickCheckinButton(modal_event);
                             }
                         });
+
                     }
 
                 });

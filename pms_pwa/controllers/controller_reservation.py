@@ -663,6 +663,7 @@ class PmsReservation(http.Controller):
     )
     def reservation_multi_assign(self, **kw):
         params = http.request.jsonrequest.get("params")
+        _logger.info(params)
         try:
             reservation_ids = [int(item) for item in params["reservation_ids"]]
             reservations = request.env["pms.reservation"].browse(reservation_ids)
@@ -721,6 +722,7 @@ class PmsReservation(http.Controller):
     )
     def print_multi_checkin(self, reservation_id=None, **kw):
         params = http.request.jsonrequest.get("params")
+
         try:
             reservation_ids = [int(item) for item in params["reservation_ids"]]
             reservations = request.env["pms.reservation"].browse(reservation_ids)
