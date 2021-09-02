@@ -99,7 +99,11 @@
                                             <label class="control-label col-12" for="reservation_type">
                                                 Type
                                             </label>
-                                            <select data-select="reservation_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type" />
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type" >
+                                                <option value="normal">Normal</option>
+                                                <option value="staff">Staff</option>
+                                                <option value="out">Fuera de servicio</option>
+                                            </select>
                                         </div>
 
 
@@ -129,6 +133,14 @@
                                             <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                                         </div>
                                         <div class="col-6">
+                                            <label class="control-label col-12" for="board_service_room_id">
+                                                Board Service
+                                            </label>
+                                            <select data-select="allowed_board_services" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
                                             <label class="control-label col-12" for="sale_category_id">
                                                 Sale category
                                             </label>
@@ -136,50 +148,44 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Group</h4>
+                                        </div>
 
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="board_service_room_id">
-                                                Board Service
+                                            <label class="control-label col-12" for="agrupation_type">
+                                                Agrupación
                                             </label>
-                                            <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id" />
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agrupation_type" >
+                                                <option value="all">Todas</option>
+                                                <option value="room_type">Tipo de habitación</option>
+                                                <option value="ubication">Ubicación</option>
+                                            </select>
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="amenity_ids">
                                                 Amenities
                                             </label>
-                                            <select data-select="allowed_amenityes_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="amenity_ids" />
+                                            <select data-select="allowed_amenity_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="amenity_ids" />
                                         </div>
 
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-12">
-                                            <label class="control-label col-12" for="agrupation_type">
-                                                Agrupation
-                                            </label>
-                                            <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agrupation_type" />
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-sm-12">
-                                            <h4>Group</h4>
-                                        </div>
-                                        <div class="col-12">
+                                        <div class="col-12 mt-3">
                                             <table id="bookengine_table" class="table table-condensed">
                                                 <t t-foreach="range(0,3)" t-as="i">
                                                     <tr>
                                                         <td class="col-4">
-                                                            Group name <br />( 1/2 )
+                                                            Group name <br />( disponibles x )
                                                         </td>
                                                         <td class="col-4">
                                                             <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepDown(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">-</button>
-                                                            <input class="num-control" t-attf-id="quantity{{i}}" type="number" min="0" max="10" />
+                                                            <input name="count_rooms_selected" class="num-control" t-attf-id="quantity{{i}}" type="number" min="0" max="10" />
                                                             <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepUp(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">+</button>
                                                         </td>
                                                         <td class="col-4">
-                                                            <label class="control-label" for="price">
+                                                            <label class="control-label" for="price_per_group">
                                                                 Precio
                                                             </label>
-                                                            <input class="form-control" type="text" name="price" />
+                                                            <t t-esc="price_per_group" />
                                                         </td>
                                                     </tr>
                                                     <tr t-attf-id="collapseme{{i}}" class="collapse out">
@@ -193,7 +199,9 @@
                                                             <label class="control-label" for="adults">
                                                                 Adultos
                                                             </label>
-                                                            <input class="form-control" type="text" name="adults" />
+                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepDown(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">-</button>
+                                                            <input name="adults" class="num-control" t-attf-id="quantity{{i}}" type="number" min="1" max="max_adults" />
+                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepUp(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">+</button>
                                                         </td>
 
                                                     </tr>

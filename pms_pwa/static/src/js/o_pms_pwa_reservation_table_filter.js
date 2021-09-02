@@ -72,11 +72,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         values = form_to_json(values);
         var allowed_fields = [
             "allowed_agency_ids",
-            "allowed_board_service_room_ids",
+            "allowed_board_services",
             "reservation_types",
             "allowed_channel_type_ids",
             "allowed_pricelists",
             "allowed_segmentations",
+            "allowed_sale_category_ids",
+            "allowed_amenity_ids",
             // "room_types",
             // "room_numbers",
         ];
