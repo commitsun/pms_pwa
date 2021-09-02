@@ -65,23 +65,23 @@ class DashBoard(http.Controller):
                 "arrivals": {
                     "today": {
                         "date": date.strftime(get_lang(request.env).date_format),
-                        "to_arrive": len(self.dash_checkins(date)),
-                        "to_check_in": len(self.dash_left_checkins(date)),
+                        "to_arrive": len(self.dash_checkins(date, pms_property_id)),
+                        "to_check_in": len(self.dash_left_checkins(date, pms_property_id)),
                     },
                     "tomorrow": {
                         "date": date_one_day.strftime(get_lang(request.env).date_format),
-                        "to_arrive": len(self.dash_checkins(date_one_day)),
+                        "to_arrive": len(self.dash_checkins(date_one_day, pms_property_id)),
                     },
                 },
                 "departures": {
                     "today": {
                         "date": date.strftime(get_lang(request.env).date_format),
-                        "to_leave": len(self.dash_checkouts(date)),
-                        "to_check_out": len(self.dash_left_checkouts(date)),
+                        "to_leave": len(self.dash_checkouts(date, pms_property_id)),
+                        "to_check_out": len(self.dash_left_checkouts(date, pms_property_id)),
                     },
                     "tomorrow": {
                         "date": date_one_day.strftime(get_lang(request.env).date_format),
-                        "to_leave": len(self.dash_checkouts(date_one_day)),
+                        "to_leave": len(self.dash_checkouts(date_one_day, pms_property_id)),
                     },
                 },
                 "rooms": {
@@ -124,13 +124,14 @@ class DashBoard(http.Controller):
                         "selector": "ocupation",
                         "labels": self.get_graph_labels(graph_date_from, graph_date_to),
                         "label_1": graph_date_from.strftime("%Y"),
-                        "data_1": self._get_graph_ocupation(graph_date_from, graph_date_to),
+                        "data_1": self._get_graph_ocupation(graph_date_from, graph_date_to, pms_property_id),
                         "backgroundColor_1": "#E5F8FC",
                         "borderColor_1": "#00B5E2",
                         "label_2": (graph_date_from - relativedelta(years=1)).strftime("%Y"),
                         "data_2": self._get_graph_ocupation(
                             graph_date_from - relativedelta(years=1),
                             graph_date_to - relativedelta(years=1),
+                            pms_property_id,
                         ),
                         "backgroundColor_2": "#CEF2E8",
                         "borderColor_2": "#00BA39",
@@ -140,13 +141,14 @@ class DashBoard(http.Controller):
                         "selector": "revenue",
                         "labels": self.get_graph_labels(graph_date_from, graph_date_to),
                         "label_1": graph_date_from.strftime("%Y"),
-                        "data_1": self._get_graph_revenue(graph_date_from, graph_date_to),
+                        "data_1": self._get_graph_revenue(graph_date_from, graph_date_to, pms_property_id),
                         "backgroundColor_1": "#E5F8FC",
                         "borderColor_1": "#00B5E2",
                         "label_2": (graph_date_from - relativedelta(years=1)).strftime("%Y"),
                         "data_2": self._get_graph_revenue(
                             graph_date_from - relativedelta(years=1),
                             graph_date_to - relativedelta(years=1),
+                            pms_property_id,
                         ),
                         "backgroundColor_2": "#CEF2E8",
                         "borderColor_2": "#00BA39",
@@ -170,19 +172,19 @@ class DashBoard(http.Controller):
                         "name": "Ocupación",
                         "labels": "Llegadas,Salidas,Fuera de Servicio",
                         "label": "",
-                        "data": self._get_kpi_ocupation(graph_date_from, graph_date_to),
+                        "data": self._get_kpi_ocupation(graph_date_from, graph_date_to, pms_property_id),
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
                         "borderColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "ratio": self._get_kpi_ocupation_score(graph_date_from, graph_date_to),
+                        "ratio": self._get_kpi_ocupation_score(graph_date_from, graph_date_to, pms_property_id),
                     },
                     {
                         "name": "Reservas por canal",
                         "labels": ",".join(channels.mapped("name")),
                         "label": "",
-                        "data": self._get_channel_reservations(channels, graph_date_from, graph_date_to),
+                        "data": self._get_channel_reservations(channels, graph_date_from, graph_date_to, pms_property_id),
                         "backgroundColor": "#FF5733,#B5BFBD,#00B5E2",
                         "borderColor": "#FF5733,#B5BFBD,#00B5E2",
-                        "ratio": self._get_channel_reservations_score(channels, graph_date_from, graph_date_to),
+                        "ratio": self._get_channel_reservations_score(channels, graph_date_from, graph_date_to, pms_property_id),
                     },
                     {
                         "name": "Income by channel",
@@ -236,35 +238,39 @@ class DashBoard(http.Controller):
 
         return http.request.render("pms_pwa.roomdoo_dashboard_page", values)
 
-    def dash_checkins(self, date):
+    def dash_checkins(self, date, pms_property_id):
         checkins = request.env["pms.reservation"].search([
             ("checkin", "<=", date),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ])
         return checkins
 
-    def dash_checkouts(self, date):
+    def dash_checkouts(self, date, pms_property_id):
         checkouts = request.env["pms.reservation"].search([
             ("checkout", "=", date),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ])
         return checkouts
 
-    def dash_left_checkins(self, date):
+    def dash_left_checkins(self, date, pms_property_id):
         checkins = request.env["pms.reservation"].search([
             ("checkin", "<=", date),
             ("state", "in", ("draft", "confirm", "arrival_delayed")),
             ("reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ])
         return checkins
 
-    def dash_left_checkouts(self, date):
+    def dash_left_checkouts(self, date, pms_property_id):
         checkouts = request.env["pms.reservation"].search([
             ("checkout", "=", date),
             ("state", "not in", ("cancel", "done")),
             ("reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ])
         return checkouts
 
@@ -275,12 +281,13 @@ class DashBoard(http.Controller):
             labels.append(date.strftime("%d %b"))
         return ",".join(labels)
 
-    def _get_graph_ocupation(self, date_from, date_to):
+    def _get_graph_ocupation(self, date_from, date_to, pms_property_id):
         domain = [
             ("date", ">=", date_from),
             ("date", "<=", date_to),
             ("state", "!=", "cancel"),
             ("reservation_id.reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ]
         ocupation_data = request.env["pms.reservation.line"].read_group(
             domain,
@@ -292,12 +299,13 @@ class DashBoard(http.Controller):
         graph_data = ",".join(map(str, mapped_data.values()))
         return graph_data
 
-    def _get_graph_revenue(self, date_from, date_to):
+    def _get_graph_revenue(self, date_from, date_to, pms_property_id):
         domain = [
             ("checkout", ">=", date_from),
             ("checkout", "<=", date_to),
             ("state", "!=", "cancel"),
-            ("reservation_type", "not in", ("out","staff")),
+            ("reservation_type", "not in", ("out", "staff")),
+            ("pms_property_id", "=", pms_property_id),
         ]
         revenues_data = request.env["pms.reservation"].read_group(
             domain,
@@ -309,23 +317,26 @@ class DashBoard(http.Controller):
         graph_data = ",".join(map(str, mapped_data.values()))
         return graph_data
 
-    def _get_kpi_ocupation(self, date_from, date_to):
+    def _get_kpi_ocupation(self, date_from, date_to, pms_property_id):
         data = []
         data.append(request.env["pms.reservation"].search_count([
             ("checkin", ">=", date_from),
             ("checkin", "<=", date_to),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ]))
         data.append(request.env["pms.reservation"].search_count([
             ("checkout", ">=", date_from),
             ("checkout", "<=", date_to),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ]))
         data.append(request.env["pms.reservation"].search_count([
             ("state", "!=", "cancel"),
             ("reservation_type", "=", "out"),
+            ("pms_property_id", "=", pms_property_id),
             "|",
             "&",
             ("checkin", ">=", date_from),
@@ -336,9 +347,10 @@ class DashBoard(http.Controller):
         ]))
         return ",".join(map(str, data))
 
-    def _get_kpi_ocupation_score(self, date_from, date_to):
+    def _get_kpi_ocupation_score(self, date_from, date_to, pms_property_id):
         return request.env["pms.reservation"].search_count([
             ("state", "!=", "cancel"),
+            ("pms_property_id", "=", pms_property_id),
             "|",
             "&",
             ("checkin", ">=", date_from),
@@ -348,12 +360,13 @@ class DashBoard(http.Controller):
             ("checkout", "<=", date_to),
         ])
 
-    def _get_channel_reservations(self, channels, date_from, date_to):
+    def _get_channel_reservations(self, channels, date_from, date_to, pms_property_id):
         domain = [
             ("checkin", ">=", date_from),
             ("checkin", "<=", date_to),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
+            ("pms_property_id", "=", pms_property_id),
         ]
         reservations = request.env["pms.reservation"].search(domain)
         channels_data = []
@@ -361,12 +374,13 @@ class DashBoard(http.Controller):
             channels_data.append(len(reservations.filtered(lambda r: r.channel_type_id.id == channel.id)))
         return ",".join(map(str, channels_data))
 
-    def _get_channel_reservations_score(self, channels, date_from, date_to):
+    def _get_channel_reservations_score(self, channels, date_from, date_to, pms_property_id):
         domain = [
             ("checkin", ">=", date_from),
             ("checkin", "<=", date_to),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
             ("channel_type_id", "in", channels.ids),
+            ("pms_property_id", "=", pms_property_id),
         ]
         return request.env["pms.reservation"].search_count(domain)

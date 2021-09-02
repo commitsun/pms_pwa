@@ -774,11 +774,11 @@ class PmsReservation(http.Controller):
                 for day in days_week:
                     if params[day]:
                         days_week[day] = True
-            if params["new_price"]:
+            if params.get("new_price"):
                 new_price = params["new_price"]
-            if params["new_discount"]:
+            if params.get("new_discount"):
                 new_discount = params["new_discount"]
-            if params["new_board_service_id"]:
+            if params.get("new_board_service_id"):
                 new_board_service_id = int(params["new_board_service_id"])
             wizard_changes = request.env["wizard.folio.changes"].create(
                 {

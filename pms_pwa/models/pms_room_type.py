@@ -41,12 +41,17 @@ class PmsPWARoomType(models.Model):
                 ("pms_property_ids", "in", pms_property_id),
             ]
         )
-        allowed_board_services = []
-        for board_service in board_services:
+        allowed_board_services = [
+            {
+                "id": False,
+                "name": "",
+            }
+        ]
+        for board_service in board_services.pms_board_service_id:
             allowed_board_services.append(
                 {
                     "id": board_service.id,
-                    "name": board_service.pms_board_service_id.name,
+                    "name": board_service.name,
                 }
             )
         return allowed_board_services if allowed_board_services else False

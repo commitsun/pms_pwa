@@ -357,15 +357,13 @@ class PmsReservation(models.Model):
             room_type_id=self.room_type_id.id,
             pms_property_id=self.pms_property_id.id,
         )
-        if not allowed_board_services:
-            allowed_board_services = []
         if not any(
             item["id"] == self.board_service_room_id.id
             for item in allowed_board_services
         ):
             allowed_board_services.append(
                 {
-                    "id": self.board_service_room_id.id,
+                    "id": self.board_service_room_id.pms_board_service_id.id,
                     "name": self.board_service_room_id.pms_board_service_id.name
                     if self.board_service_room_id
                     else "",
