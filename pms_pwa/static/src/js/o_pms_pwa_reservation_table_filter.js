@@ -96,70 +96,70 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
 
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-            ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
-                function (new_data) {
-                    setTimeout(function () {
-                        if (new_data) {
-                            $.each(allowed_fields, function (key, value) {
-                                try {
-                                    var select = $(
-                                        'form#single_reservation_form [data-select="' +
-                                            value +
-                                            '"]'
-                                    );
-                                } catch (error) {
-                                    console.log(error);
-                                }
-
-                                if (select.length != 0) {
-                                    select.empty();
-                                    if (
-                                        !new_data[relation_values[value]] &
-                                        (new_data[relation_values[value]] == 0)
-                                    ) {
-                                        select.append(
-                                            '<option value="" selected></option>'
-                                        );
-                                    }
-
-                                    $.each(new_data[value], function (
-                                        subkey,
-                                        subvalue
-                                    ) {
-                                        var option = new Option(
-                                            subvalue["name"],
-                                            subvalue["id"]
-                                        );
-                                        $(option).html(subvalue["name"]);
-                                        select.append(option);
-                                    });
-                                }
-                                delete new_data[value];
-                            });
-                            $.each(new_data, function (key, value) {
-                                var input = $(
-                                    "form#single_reservation_form input[name='" +
-                                        key +
-                                        "']"
+            ajax.jsonRpc("/booking_engine", "call", values).then(function (new_data) {
+                setTimeout(function () {
+                    if (new_data && new_data.result != "error") {
+                        $.each(allowed_fields, function (key, value) {
+                            try {
+                                var select = $(
+                                    'form#single_reservation_form [data-select="' +
+                                        value +
+                                        '"]'
                                 );
-                                if (input.length > 0) {
-                                    input.val(value);
-                                } else {
-                                    if (!fields_to_avoid.includes(key)) {
-                                        $(
-                                            "form.o_pms_pwa_reservation_form select[name='" +
-                                                key +
-                                                "'] option[value='" +
-                                                value +
-                                                "']"
-                                        ).prop("selected", true);
-                                    }
+                            } catch (error) {
+                                console.log(error);
+                            }
+
+                            if (select.length != 0) {
+                                select.empty();
+                                if (
+                                    !new_data[relation_values[value]] &
+                                    (new_data[relation_values[value]] == 0)
+                                ) {
+                                    select.append(
+                                        '<option value="" selected></option>'
+                                    );
                                 }
-                            });
-                        }
-                    });
-                }
-            );
+
+                                $.each(new_data[value], function (subkey, subvalue) {
+                                    var option = new Option(
+                                        subvalue["name"],
+                                        subvalue["id"]
+                                    );
+                                    $(option).html(subvalue["name"]);
+                                    select.append(option);
+                                });
+                            }
+                            delete new_data[value];
+                        });
+                        $.each(new_data, function (key, value) {
+                            var input = $(
+                                "form#single_reservation_form input[name='" + key + "']"
+                            );
+                            if (input.length > 0) {
+                                input.val(value);
+                            } else {
+                                if (!fields_to_avoid.includes(key)) {
+                                    $(
+                                        "form.o_pms_pwa_reservation_form select[name='" +
+                                            key +
+                                            "'] option[value='" +
+                                            value +
+                                            "']"
+                                    ).prop("selected", true);
+                                }
+                            }
+                        });
+                    } else {
+                        new_data.type = "warning";
+                        var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                        var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                            alert: new_data,
+                        });
+                        alert_div.append(alert);
+                    }
+                });
+            });
         }
     });
 
@@ -175,32 +175,27 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             values.checkout = value_range_picker.split(" - ")[1];
         }
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-            ajax.jsonRpc("/reservation/single_reservation_new", "call", values).then(
-                function (new_data) {
-                    setTimeout(function () {
-                        if (new_data) {
-                            var data = new_data;
-                            if (data && data.id) {
-                                /* We need to integrate this into the public widget */
-                                location.href = "/reservation/" + data.id;
-                            } else {
-                                data.type = "warning";
-                                data.message = _t(
-                                    "An undefined error has ocurred, please try again later."
-                                );
-                                var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                                var alert = core.qweb.render(
-                                    "pms_pwa.reservation_alerts",
-                                    {
-                                        alert: data,
-                                    }
-                                );
-                                alert_div.append(alert);
-                            }
+            ajax.jsonRpc("/booking_engine", "call", values).then(function (new_data) {
+                setTimeout(function () {
+                    if (new_data) {
+                        var data = new_data;
+                        if (data && data.id) {
+                            /* We need to integrate this into the public widget */
+                            location.href = "/reservation/" + data.id;
+                        } else {
+                            data.type = "warning";
+                            data.message = _t(
+                                "An undefined error has ocurred, please try again later."
+                            );
+                            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                                alert: data,
+                            });
+                            alert_div.append(alert);
                         }
-                    });
-                }
-            );
+                    }
+                });
+            });
         }
     });
 
@@ -251,13 +246,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             values[event.currentTarget.name] = event.currentTarget.value;
         }
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-            ajax.jsonRpc(
-                "/reservation/multiple_reservation_onchange",
-                "call",
-                values
-            ).then(function (new_data) {
+            ajax.jsonRpc("/booking_engine_group", "call", values).then(function (
+                new_data
+            ) {
                 setTimeout(function () {
-                    if (new_data) {
+                    if (new_data && new_data.result != "error") {
                         $.each(allowed_fields, function (key, value) {
                             try {
                                 var select = $(
@@ -336,6 +329,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 }
                             }
                         });
+                    } else {
+                        new_data.type = "warning";
+                        var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                        var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                            alert: new_data,
+                        });
+                        alert_div.append(alert);
                     }
                 });
             });
@@ -353,23 +353,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             console.log(error);
         }
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-            ajax.jsonRpc("/reservation/multiple_reservation_new", "call", values).then(
-                function (new_data) {
-                    setTimeout(function () {
-                        var data = JSON.parse(new_data);
-                        if (!data.result) {
-                            data.type = "warning";
-                            var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                            var alert = core.qweb.render("pms_pwa.reservation_alerts", {
-                                alert: data,
-                            });
-                            alert_div.append(alert);
-                        } else {
-                            location.href = "/reservation/" + data.id;
-                        }
-                    });
-                }
-            );
+            ajax.jsonRpc("/booking_engine_submit", "call", values).then(function (
+                new_data
+            ) {
+                setTimeout(function () {
+                    var data = JSON.parse(new_data);
+                    if (!data.result) {
+                        data.type = "warning";
+                        var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                        var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                            alert: data,
+                        });
+                        alert_div.append(alert);
+                    } else {
+                        location.href = "/reservation/" + data.id;
+                    }
+                });
+            });
         }
     });
 
@@ -511,107 +511,107 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     reservation_id: data_id,
                 }).then(function (updated_data) {
                     setTimeout(function () {
-                            if (updated_data) {
-                                try {
+                        if (updated_data) {
+                            try {
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[2].innerHTML =
+                                    updated_data.preferred_room_id.name +
+                                    "<br/> <span class='o_pms_pwa_wler'>" +
+                                    updated_data.room_type_id.default_code +
+                                    "</span>";
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[3].innerHTML =
+                                    updated_data.checkin +
+                                    "<br/> <span class='o_pms_pwa_wler'>" +
+                                    updated_data.arrival_hour +
+                                    "</span>";
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[4].innerHTML =
+                                    updated_data.checkout +
+                                    "<br/> <span class='o_pms_pwa_wler'>" +
+                                    updated_data.departure_hour +
+                                    "</span>";
+                                if (
+                                    updated_data.agency_id &&
+                                    updated_data.agency_id.url
+                                ) {
                                     $(String("#reservation_" + data_id)).find(
                                         "td"
-                                    )[2].innerHTML =
-                                        updated_data.preferred_room_id.name +
-                                        "<br/> <span class='o_pms_pwa_wler'>" +
-                                        updated_data.room_type_id.default_code +
-                                        "</span>";
-                                    $(String("#reservation_" + data_id)).find(
-                                        "td"
-                                    )[3].innerHTML =
-                                        updated_data.checkin +
-                                        "<br/> <span class='o_pms_pwa_wler'>" +
-                                        updated_data.arrival_hour +
-                                        "</span>";
-                                    $(String("#reservation_" + data_id)).find(
-                                        "td"
-                                    )[4].innerHTML =
-                                        updated_data.checkout +
-                                        "<br/> <span class='o_pms_pwa_wler'>" +
-                                        updated_data.departure_hour +
-                                        "</span>";
+                                    )[5].innerHTML =
+                                        "<img src=" +
+                                        updated_data.agency_id.url +
+                                        " width='80' title='" +
+                                        updated_data.agency_id.name +
+                                        "' alt='" +
+                                        updated_data.agency_id.name +
+                                        "'/>";
+                                } else {
                                     if (
-                                        updated_data.agency_id &&
-                                        updated_data.agency_id.url
+                                        updated_data.channel_type_id &&
+                                        updated_data.user_name
                                     ) {
+                                        var chan_name = "";
+                                        if (updated_data.channel_type_id.name) {
+                                            var chan_name =
+                                                updated_data.channel_type_id.name;
+                                        }
                                         $(String("#reservation_" + data_id)).find(
                                             "td"
                                         )[5].innerHTML =
-                                            "<img src=" +
-                                            updated_data.agency_id.url +
-                                            " width='80' title='" +
-                                            updated_data.agency_id.name +
-                                            "' alt='" +
-                                            updated_data.agency_id.name +
-                                            "'/>";
-                                    } else {
-                                        if (
-                                            updated_data.channel_type_id &&
-                                            updated_data.user_name
-                                        ) {
-                                            var chan_name = "";
-                                            if (updated_data.channel_type_id.name) {
-                                                var chan_name =
-                                                    updated_data.channel_type_id.name;
-                                            }
-                                            $(String("#reservation_" + data_id)).find(
-                                                "td"
-                                            )[5].innerHTML =
-                                                chan_name +
-                                                "<br/> <span class='o_pms_pwa_wler'>" +
-                                                updated_data.user_name +
-                                                "</span>";
-                                        }
+                                            chan_name +
+                                            "<br/> <span class='o_pms_pwa_wler'>" +
+                                            updated_data.user_name +
+                                            "</span>";
                                     }
-                                    $(String("#reservation_" + data_id)).find(
-                                        "td"
-                                    )[6].innerHTML =
-                                        Math.round(
-                                            (updated_data.folio_id.amount_total +
-                                                Number.EPSILON) *
-                                                100
-                                        ) / 100;
-                                    $(String("#reservation_" + data_id)).find(
-                                        "td"
-                                    )[7].innerHTML =
-                                        Math.round(
-                                            (updated_data.folio_id.outstanding_vat +
-                                                Number.EPSILON) *
-                                                100
-                                        ) / 100;
-                                    if (updated_data.partner_requests) {
-                                        $(String("#reservation_" + data_id)).find(
-                                            "td"
-                                        )[8].innerHTML = updated_data.partner_requests.substring(
-                                            0,
-                                            25
-                                        );
-                                    }
-                                    if (
-                                        updated_data.board_service_room_id &&
-                                        updated_data.board_service_room_id.name
-                                    ) {
-                                        $(String("#reservation_" + data_id)).find(
-                                            "td"
-                                        )[9].innerHTML =
-                                            updated_data.board_service_room_id.name;
-                                    }
-                                    $(String("#reservation_" + data_id)).find(
-                                        "td"
-                                    )[10].firstElementChild.outerHTML =
-                                        updated_data.primary_button;
-                                    $(String("#reservation_" + data_id)).find(
-                                        "td"
-                                    )[10].lastElementChild.lastElementChild.innerHTML =
-                                        updated_data.secondary_buttons;
-                                } catch (error) {
-                                    console.log(error);
                                 }
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[6].innerHTML =
+                                    Math.round(
+                                        (updated_data.folio_id.amount_total +
+                                            Number.EPSILON) *
+                                            100
+                                    ) / 100;
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[7].innerHTML =
+                                    Math.round(
+                                        (updated_data.folio_id.outstanding_vat +
+                                            Number.EPSILON) *
+                                            100
+                                    ) / 100;
+                                if (updated_data.partner_requests) {
+                                    $(String("#reservation_" + data_id)).find(
+                                        "td"
+                                    )[8].innerHTML = updated_data.partner_requests.substring(
+                                        0,
+                                        25
+                                    );
+                                }
+                                if (
+                                    updated_data.board_service_room_id &&
+                                    updated_data.board_service_room_id.name
+                                ) {
+                                    $(String("#reservation_" + data_id)).find(
+                                        "td"
+                                    )[9].innerHTML =
+                                        updated_data.board_service_room_id.name;
+                                }
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[10].firstElementChild.outerHTML =
+                                    updated_data.primary_button;
+                                $(String("#reservation_" + data_id)).find(
+                                    "td"
+                                )[10].lastElementChild.lastElementChild.innerHTML =
+                                    updated_data.secondary_buttons;
+                            } catch (error) {
+                                console.log(error);
                             }
+                        }
                     });
                 });
             } else {
@@ -623,7 +623,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         try {
                             //var room_type_id = event.currentTarget.getAttribute("data-id");
                             var date_list = $('input[name="date_list"]').val();
-                            var selected_display = $('input[name="selected_display"]').val();
+                            var selected_display = $(
+                                'input[name="selected_display"]'
+                            ).val();
                             ajax.jsonRpc("/calendar/line", "call", {
                                 data_id: updated_data.room_type_id.id,
                                 range_date: date_list,
@@ -637,7 +639,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 $(
                                     String(
                                         "#collapse_accordion_" +
-                                        updated_data.room_type_id.id
+                                            updated_data.room_type_id.id
                                     )
                                 ).html(html);
                             });
@@ -675,29 +677,22 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 String(window.location.href + " #reservation_" + data_id + " td")
             ); */
         },
-        refreshMultiModal: function(result, data_id = false){
-
-            var allowed_fields = [
-                "room_numbers",
-            ];
-            var folio_reservation_data = JSON.parse(result)
-                .reservation.folio_reservations;
+        refreshMultiModal: function (result, data_id = false) {
+            var allowed_fields = ["room_numbers"];
+            var folio_reservation_data = JSON.parse(result).reservation
+                .folio_reservations;
 
             for (let i = 0; i < folio_reservation_data.length; i++) {
-                var allowed_fields = [
-                    "room_numbers",
-                ];
-                $.each(allowed_fields, function (
-                    key,
-                    value
-                ) {
+                var allowed_fields = ["room_numbers"];
+                $.each(allowed_fields, function (key, value) {
                     try {
                         var select = $(
-                            'table#multi_reservation_modal tr[data-id="'+folio_reservation_data[i]['id']+'"] [data-select="' +
+                            'table#multi_reservation_modal tr[data-id="' +
+                                folio_reservation_data[i]["id"] +
+                                '"] [data-select="' +
                                 value +
                                 '"]'
                         );
-
                     } catch (error) {
                         console.log(error);
                     }
@@ -717,52 +712,44 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         //         '<option value="" selected></option>'
                         //     );
                         // }
-                        $.each(
-                            folio_reservation_data[i][value],
-                            function (subkey, subvalue) {
-                                if (
-                                    subvalue["id"] ==
-                                    folio_reservation_data[i][
-                                        relation_values[
-                                            value
-                                        ]
-                                    ].id
-                                ) {
-                                    var option = new Option(
-                                        subvalue["name"],
-                                        subvalue["id"],
-                                        false,
-                                        true
-                                    );
-                                } else {
-                                    var option = new Option(
-                                        subvalue["name"],
-                                        subvalue["id"],
-                                        false,
-                                        false
-                                    );
-                                }
-                                $(option).html(
-                                    subvalue["name"]
+                        $.each(folio_reservation_data[i][value], function (
+                            subkey,
+                            subvalue
+                        ) {
+                            if (
+                                subvalue["id"] ==
+                                folio_reservation_data[i][relation_values[value]].id
+                            ) {
+                                var option = new Option(
+                                    subvalue["name"],
+                                    subvalue["id"],
+                                    false,
+                                    true
                                 );
-                                select.append(option);
+                            } else {
+                                var option = new Option(
+                                    subvalue["name"],
+                                    subvalue["id"],
+                                    false,
+                                    false
+                                );
                             }
-                        );
+                            $(option).html(subvalue["name"]);
+                            select.append(option);
+                        });
                     }
                     delete folio_reservation_data[i][value];
                 });
-                $.each(folio_reservation_data[i], function (
-                    key,
-                    value
-                ) {
+                $.each(folio_reservation_data[i], function (key, value) {
                     var input = $(
-                        "table#multi_reservation_modal tr[data-id='"+folio_reservation_data[i]['id']+"'] input[name='" +
+                        "table#multi_reservation_modal tr[data-id='" +
+                            folio_reservation_data[i]["id"] +
+                            "'] input[name='" +
                             key +
                             "']"
                     );
                 });
-            };
-
+            }
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
@@ -1100,9 +1087,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 console.log(error);
                                             }
                                             //refresh multimodal data
-                                            if(reservation_data.folio_reservations.length > 1){
+                                            if (
+                                                reservation_data.folio_reservations
+                                                    .length > 1
+                                            ) {
                                                 self.refreshMultiModal(new_data);
-
                                             }
                                         }
                                     }, 10);
@@ -1158,7 +1147,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 ).then(function (new_data) {
                                     setTimeout(function () {
                                         if (new_data) {
-
                                             if (!JSON.parse(new_data).result) {
                                                 self.displayDataAlert(new_data);
                                             }
@@ -1283,7 +1271,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 console.log(error);
                                             }
                                             //refresh multimodal data
-                                            if(reservation_data.folio_reservations.length > 1){
+                                            if (
+                                                reservation_data.folio_reservations
+                                                    .length > 1
+                                            ) {
                                                 self.refreshMultiModal(new_data);
                                             }
                                         }
@@ -1378,107 +1369,133 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
                         });
                         // CHANGES IN MULTI MODAL RESERVATIONS
-                        $("#multi_reservation_modal").on("click", "a", function (new_event) {
-                            var modal_reservation_id = new_event.currentTarget.closest("tr").getAttribute("data-id");
+                        $("#multi_reservation_modal").on("click", "a", function (
+                            new_event
+                        ) {
+                            var modal_reservation_id = new_event.currentTarget
+                                .closest("tr")
+                                .getAttribute("data-id");
                             // cierro modal
                             $("div.o_pms_pwa_reservation_modal").modal("toggle");
                             // abro modal
                             try {
-                                var selector = "td[data-id=" + modal_reservation_id +"]";
+                                var selector =
+                                    "td[data-id=" + modal_reservation_id + "]";
                                 var test = $(selector);
                                 if (test.length != 0) {
                                     $(selector).click();
                                 } else {
-                                    var selector = "tr[data-id=" + modal_reservation_id +"]";
-                                    $(selector)
-                                        .find("td.first-col")
-                                        .click();
+                                    var selector =
+                                        "tr[data-id=" + modal_reservation_id + "]";
+                                    $(selector).find("td.first-col").click();
                                 }
                             } catch (error) {
                                 console.log(error);
                             }
                         });
-                        $("#multi_reservation_modal").on("change", "input, select", function (new_event) {
-                            var modal_reservation_id = new_event.currentTarget.closest("tr").getAttribute("data-id");
-                            // console.log(modal_reservation_id);
-                            var values = {};
-                            // Set checkin & checkout separated
-                            if (
-                                new_event.currentTarget.name ==
-                                    "range_check_date_modal"
-                            ) {
-                                let value_range_picker =
-                                    new_event.currentTarget.value;
-                                values.checkin = value_range_picker.split(" - ")[0];
-                                values.checkout = value_range_picker.split(" - ")[1];
-                            } else {
-                                values[new_event.currentTarget.name] = new_event.currentTarget.value;
-                            }
-                            // si es el mismo id, cambios en modal, sino, llamo función
-                            if(reservation_id ==  modal_reservation_id){
-                                try{
-                                    if(new_event.currentTarget.name == 'preferred_room_id'){
-                                        var select = $(
-                                            'form.o_pms_pwa_reservation_form [data-select="room_numbers"]'
-                                        );
-                                        select.val(new_event.currentTarget.value);
-                                        select.trigger("change");
-                                    }else{
-                                        let input = $(
-                                            "form.o_pms_pwa_reservation_form input[name='" +
-                                            new_event.currentTarget.name +
-                                                "']"
-                                        );
-
-                                        input.val(new_event.currentTarget.value);
-
-                                        input.trigger("change");
-                                    }
-                                }catch{
-                                    console.log("ERROR");
-                                }
-                            }else{
+                        $("#multi_reservation_modal").on(
+                            "change",
+                            "input, select",
+                            function (new_event) {
+                                var modal_reservation_id = new_event.currentTarget
+                                    .closest("tr")
+                                    .getAttribute("data-id");
+                                // console.log(modal_reservation_id);
                                 var values = {};
-                                values['folio_reservations'] = {};
-                                values['folio_reservations']['id'] = modal_reservation_id;
-
                                 // Set checkin & checkout separated
                                 if (
                                     new_event.currentTarget.name ==
-                                        "range_check_date_modal"
+                                    "range_check_date_modal"
                                 ) {
                                     let value_range_picker =
                                         new_event.currentTarget.value;
-                                    values['folio_reservations']['checkin'] = value_range_picker.split(" - ")[0];
-                                    values['folio_reservations']['checkout'] = value_range_picker.split(" - ")[1];
+                                    values.checkin = value_range_picker.split(" - ")[0];
+                                    values.checkout = value_range_picker.split(
+                                        " - "
+                                    )[1];
                                 } else {
-                                    values['folio_reservations'][new_event.currentTarget.name] = new_event.currentTarget.value;
+                                    values[new_event.currentTarget.name] =
+                                        new_event.currentTarget.value;
                                 }
-                                ajax.jsonRpc(
-                                    "/reservation/" + modal_reservation_id + "/onchange_data",
-                                    "call",
-                                    values
-                                ).then(function (new_data) {
-                                    //console.log("NNN --->", new_data);
-                                    if (new_data) {
-                                        if (!JSON.parse(new_data).result) {
-                                            self.displayDataAlert(new_data);
+                                // si es el mismo id, cambios en modal, sino, llamo función
+                                if (reservation_id == modal_reservation_id) {
+                                    try {
+                                        if (
+                                            new_event.currentTarget.name ==
+                                            "preferred_room_id"
+                                        ) {
+                                            var select = $(
+                                                'form.o_pms_pwa_reservation_form [data-select="room_numbers"]'
+                                            );
+                                            select.val(new_event.currentTarget.value);
+                                            select.trigger("change");
+                                        } else {
+                                            let input = $(
+                                                "form.o_pms_pwa_reservation_form input[name='" +
+                                                    new_event.currentTarget.name +
+                                                    "']"
+                                            );
+
+                                            input.val(new_event.currentTarget.value);
+
+                                            input.trigger("change");
                                         }
+                                    } catch {
+                                        console.log("ERROR");
                                     }
-                                    self.refreshMultiModal(new_data);
-                                });
+                                } else {
+                                    var values = {};
+                                    values["folio_reservations"] = {};
+                                    values["folio_reservations"][
+                                        "id"
+                                    ] = modal_reservation_id;
+
+                                    // Set checkin & checkout separated
+                                    if (
+                                        new_event.currentTarget.name ==
+                                        "range_check_date_modal"
+                                    ) {
+                                        let value_range_picker =
+                                            new_event.currentTarget.value;
+                                        values["folio_reservations"][
+                                            "checkin"
+                                        ] = value_range_picker.split(" - ")[0];
+                                        values["folio_reservations"][
+                                            "checkout"
+                                        ] = value_range_picker.split(" - ")[1];
+                                    } else {
+                                        values["folio_reservations"][
+                                            new_event.currentTarget.name
+                                        ] = new_event.currentTarget.value;
+                                    }
+                                    ajax.jsonRpc(
+                                        "/reservation/" +
+                                            modal_reservation_id +
+                                            "/onchange_data",
+                                        "call",
+                                        values
+                                    ).then(function (new_data) {
+                                        //console.log("NNN --->", new_data);
+                                        if (new_data) {
+                                            if (!JSON.parse(new_data).result) {
+                                                self.displayDataAlert(new_data);
+                                            }
+                                        }
+                                        self.refreshMultiModal(new_data);
+                                    });
+                                }
                             }
-                        });
+                        );
                         // Llamas a multiaction en modal
-                        $(
-                            "a.call_to_action_modal"
-                        ).on("click", function (modal_event) {
+                        $("a.call_to_action_modal").on("click", function (modal_event) {
                             modal_event.preventDefault();
                             var button = modal_event.currentTarget;
-                            var checkedValues = $('input:checkbox:checked').map(function() {
-                                return this.value;
-                            }).get();
-                            if(checkedValues){
+                            var checkedValues = $("input:checkbox:checked")
+                                .map(function () {
+                                    return this.value;
+                                })
+                                .get();
+                            if (checkedValues) {
                                 ajax.jsonRpc(button.attributes.url.value, "call", {
                                     reservation_ids: checkedValues,
                                 }).then(function (new_data) {
@@ -1489,54 +1506,76 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
                         // Check all
                         $("#multi_reservation_modal #checkAll").change(function () {
-                            $("input:checkbox").prop('checked', $(this).prop("checked"));
+                            $("input:checkbox").prop(
+                                "checked",
+                                $(this).prop("checked")
+                            );
                         });
 
                         // Modal multi cambios
                         // input change color
-                        $("#multiChangeModal").on("change", "input[type='number']", function () {
-                            this.style.backgroundColor = "yellow";
-
-                        });
+                        $("#multiChangeModal").on(
+                            "change",
+                            "input[type='number']",
+                            function () {
+                                this.style.backgroundColor = "yellow";
+                            }
+                        );
                         $("#multiChangeModal input:checkbox").change(function () {
-                            if(this.name == "apply_on_all_week"){
-                                $("#multiChangeModal input:checkbox").prop('checked', $(this).prop("checked"));
-                            }else{
-                                $("#multiChangeModal input[name='apply_on_all_week']:checkbox").prop('checked', false);
+                            if (this.name == "apply_on_all_week") {
+                                $("#multiChangeModal input:checkbox").prop(
+                                    "checked",
+                                    $(this).prop("checked")
+                                );
+                            } else {
+                                $(
+                                    "#multiChangeModal input[name='apply_on_all_week']:checkbox"
+                                ).prop("checked", false);
                             }
                         });
-                        $(
-                            "#multiChangeModal button.send_form_multi_change"
-                        ).on("click", function (modal_event) {
-                            modal_event.preventDefault();
-                            var button = modal_event.currentTarget;
-                            var checkedValues = $('#multi_reservation_modal input:checkbox:checked').map(function() {
-                                return this.value;
-                            }).get();
-                            var days_week = {};
-                            var apply_on_all_week = false;
-                            var new_price = $("#multiChangeModal input[name='new_price']").val();
-                            $('#multi_days_values input:checkbox:checked').map(function() {
-                                if(this.name != "apply_on_all_week"){
-                                    days_week[this.name] = this.value
-                                }else{
-                                    apply_on_all_week = this.value
+                        $("#multiChangeModal button.send_form_multi_change").on(
+                            "click",
+                            function (modal_event) {
+                                modal_event.preventDefault();
+                                var button = modal_event.currentTarget;
+                                var checkedValues = $(
+                                    "#multi_reservation_modal input:checkbox:checked"
+                                )
+                                    .map(function () {
+                                        return this.value;
+                                    })
+                                    .get();
+                                var days_week = {};
+                                var apply_on_all_week = false;
+                                var new_price = $(
+                                    "#multiChangeModal input[name='new_price']"
+                                ).val();
+                                $("#multi_days_values input:checkbox:checked")
+                                    .map(function () {
+                                        if (this.name != "apply_on_all_week") {
+                                            days_week[this.name] = this.value;
+                                        } else {
+                                            apply_on_all_week = this.value;
+                                        }
+                                    })
+                                    .get();
+                                if (checkedValues) {
+                                    ajax.jsonRpc(button.attributes.url.value, "call", {
+                                        reservation_ids: checkedValues,
+                                        apply_on_all_week: apply_on_all_week,
+                                        days_week: days_week,
+                                        new_price: $(
+                                            "#multiChangeModal input[name='new_price']"
+                                        ).val(),
+                                        new_discount: $(
+                                            "#multiChangeModal input[name='new_discount']"
+                                        ).val(),
+                                    }).then(function (new_data) {
+                                        self.displayDataAlert(new_data);
+                                    });
                                 }
-                            }).get();
-                            if(checkedValues){
-                                ajax.jsonRpc(button.attributes.url.value, "call", {
-                                    reservation_ids: checkedValues,
-                                    apply_on_all_week: apply_on_all_week,
-                                    days_week: days_week,
-                                    new_price: $("#multiChangeModal input[name='new_price']").val(),
-                                    new_discount:$("#multiChangeModal input[name='new_discount']").val(),
-                                }).then(function (new_data) {
-                                    self.displayDataAlert(new_data);
-                                });
                             }
-                        });
-
-
+                        );
                     } else {
                         reservation_data = false;
                     }
@@ -1905,13 +1944,20 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     reservation_id = $("input[name='id']").val();
                                 }
                             }
-                            let url = '/checkins/pdf/' + reservation_id;
+                            let url = "/checkins/pdf/" + reservation_id;
                             // Open the window
-                            let printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
-                            printWindow.addEventListener('load', function() {
-                                printWindow.print();
-                            }, true);
-
+                            let printWindow = window.open(
+                                url,
+                                "Print",
+                                "left=200, top=200, width=950, height=500, toolbar=0, resizable=0"
+                            );
+                            printWindow.addEventListener(
+                                "load",
+                                function () {
+                                    printWindow.print();
+                                },
+                                true
+                            );
                         });
                         $(
                             "table#multi_reservation_modal_checkin, a.o_pms_pwa_button_checkin_multi_modal"
@@ -1924,16 +1970,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             } catch (error) {
                                 reservation_id = false;
                             }
-                            if(reservation_id){
-                                $(
-                                    "div.o_pms_pwa_reservation_modal"
-                                ).modal("toggle");
+                            if (reservation_id) {
+                                $("div.o_pms_pwa_reservation_modal").modal("toggle");
                                 self._onClickCheckinButton(modal_event);
                             }
                         });
-
                     }
-
                 });
             });
         },
