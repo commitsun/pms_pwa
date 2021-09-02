@@ -77,8 +77,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "allowed_channel_type_ids",
             "allowed_pricelists",
             "allowed_segmentations",
-            "room_types",
-            "room_numbers",
+            // "room_types",
+            // "room_numbers",
         ];
 
         if (event.currentTarget.name == "range_check_date_modal_reservation") {
@@ -1036,22 +1036,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 }
                                             });
                                             // refresh total
-                                            try {
-                                                let a = document.getElementsByClassName(
-                                                    "price_total"
-                                                );
-                                                a[0].innerHTML = JSON.parse(
-                                                    new_data
-                                                ).reservation.price_total;
-                                            } catch (error) {
-                                                console.log(error);
-                                            }
+                                            let a = document.getElementsByClassName(
+                                                "price_total"
+                                            );
+                                            a.innerText = JSON.parse(
+                                                new_data
+                                            ).reservation.price_total;
                                             // refresh pending amount
                                             try {
                                                 let b = document.getElementsByClassName(
                                                     "pending_amount"
                                                 );
-                                                b[0].innerText = JSON.parse(
+                                                b.innerText = JSON.parse(
                                                     new_data
                                                 ).reservation.folio_pending_amount;
                                             } catch (error) {
