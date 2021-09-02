@@ -747,4 +747,58 @@ h4.collapsed {
         position: absolute;
         color: $theme-color-text;
     }
+
+}
+table#bookengine_table{
+    .num-control {
+        width: 2rem;
+        min-height: 2rem !important;
+        height: 2rem !important;
+        padding: 1rem 0.5rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #FFFFFF;
+        background-clip: padding-box;
+        border: 1px solid #CED4DA;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .control-label{
+        padding-top: 0.15rem;
+        padding-left: 1rem;
+    }
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+}
+.o_pms_pwa_shadow {
+    box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.15);
+    padding: 10px;
+    border-radius: 0.3rem;
+    .o_pms_pwa_total_title {
+        color: $theme-color;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    .o_pms_pwa_total_price {
+        color: $table-text-color;
+        font-size: 22px;
+        font-weight: bold;
+        span {
+            font-size: 14px;
+            font-weight: 400;
+            display: block;
+            margin-top: -0.25rem;
+        }
+    }
 }

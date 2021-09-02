@@ -751,6 +751,9 @@ div.o_pms_pwa_new_reservation_modal {
     @media screen and (max-width: 767px) {
         display: none;
     }
+    img{
+        display: block !important;
+    }
 }
 .o_pms_pwa_multi_reservation_modal{
     background-color: white;

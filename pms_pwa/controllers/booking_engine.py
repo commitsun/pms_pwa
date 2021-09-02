@@ -97,13 +97,13 @@ class BookingEngine(http.Controller):
                 if agency.apply_pricelist:
                     folio_values["pricelist_id"] = agency.propert_product_pricelist.id
 
-            folio_values.update(self._get_allowed_selections_values(
-                pms_property=pms_property,
-                channel_type=request.env["pms.channel.type"].browse(
-                    folio_values.get("channel_type_id")
-                )
-            ))
-            folio_values = self.check_incongruences(folio_values)
+            # folio_values.update(self._get_allowed_selections_values(
+            #     pms_property=pms_property,
+            #     channel_type=request.env["pms.channel.type"].browse(
+            #         folio_values.get("channel_type_id")
+            #     )
+            # ))
+            # folio_values = self.check_incongruences(folio_values)
             if folio_values.get("agrupation_type"):
                 vals = {
                     "checkin": checkin,
@@ -115,8 +115,10 @@ class BookingEngine(http.Controller):
                     "active_groups": folio_values.get("groups"),
                 }
                 folio_values["groups"] = self.get_groups(vals)
+            print("devuelve: {}".format(folio_values))
             return folio_values
         except Exception as e:
+            print("error: {}".format(e))
             return {"result": "error", "message": str(e)}
 
     def _get_allowed_selections_values(self, pms_property, channel_type=False):

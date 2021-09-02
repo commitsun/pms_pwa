@@ -7,11 +7,16 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Change value</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"><span class="fa fa-times" /></span>
+                            <span aria-hidden="true">
+                                <span class="fa fa-times" />
+                            </span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Total: <input type="number" id="new_val"/></p>
+                        <p>
+                            Total:
+                            <input type="number" id="new_val" />
+                        </p>
 
                     </div>
                     <div class="modal-footer">
@@ -37,28 +42,199 @@
                     <div class="modal-body o_pms_pwa_modal_body">
                         <div class="container-fluid">
 
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="multiple-tab" data-toggle="tab" href="#multiple" role="tab" aria-controls="multiple" aria-selected="false">By room type</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="single-tab" data-toggle="tab" href="#single" role="tab" aria-controls="single" aria-selected="true">By room number</a>
-                                </li>
+                            <form id="booking_engine_form" class="form-horizontal mt-3" method="post">
+                                <div class="form-group form-field pb-3 ">
 
-                            </ul>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="control-label col-12" for="partner_name">
+                                                Nombre
+                                            </label>
+                                            <input class="form-control o_pms_pwa_search_partner" type="text" name="partner_name" placeholder="Name" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                        </div>
+                                    </div>
 
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="multiple" role="tabpanel" aria-labelledby="profile-tab">
-                                    <t t-call="pms_pwa.multiple_reservation_form" />
+                                    <div class="row mt-3">
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="mobile">
+                                                Teléfono
+                                            </label>
+                                            <input class="form-control" type="text" name="mobile" placeholder="Mobile" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="mail">
+                                                E-mail
+                                            </label>
+                                            <input class="form-control" type="text" name="mail" placeholder="Mail" t-att-value="post['mail'] if post and 'mail' in post else None" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <label class="control-label col-12" for="checkin">
+                                                Check in
+                                            </label>
+                                            <input class="form-control" type="text" name="range_check_date_modal_reservation" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                                            <input type="hidden" name="checkin" value="" />
+                                            <input type="hidden" name="checkout" value="" />
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <!-- <span class="fa fa-calendar"/> -->
+                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                            </span>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Channel type and pricelist</h4>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="pricelist">
+                                                Pricelist
+                                            </label>
+                                            <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="reservation_type">
+                                                Type
+                                            </label>
+                                            <select data-select="reservation_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type" />
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="agency_id">
+                                                Agency
+                                            </label>
+                                            <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="channel_type_id">
+                                                Channel type
+                                            </label>
+                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id" />
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-3">
+
+                                        <div class="col-6">
+                                            <!-- <label class="control-label col-12" for="segmentation_ids">
+                                                Segmentation
+                                            </label> -->
+                                            <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
+                                            <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="sale_category_id">
+                                                Sale category
+                                            </label>
+                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="sale_category_id" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="board_service_room_id">
+                                                Board Service
+                                            </label>
+                                            <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id" />
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="control-label col-12" for="amenity_ids">
+                                                Amenities
+                                            </label>
+                                            <select data-select="allowed_amenityes_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="amenity_ids" />
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-12">
+                                            <label class="control-label col-12" for="agrupation_type">
+                                                Agrupation
+                                            </label>
+                                            <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agrupation_type" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Group</h4>
+                                        </div>
+                                        <div class="col-12">
+                                            <table id="bookengine_table" class="table table-condensed">
+                                                <t t-foreach="range(0,3)" t-as="i">
+                                                    <tr>
+                                                        <td class="col-4">
+                                                            Group name <br />( 1/2 )
+                                                        </td>
+                                                        <td class="col-4">
+                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepDown(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">-</button>
+                                                            <input class="num-control" t-attf-id="quantity{{i}}" type="number" min="0" max="10" />
+                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepUp(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">+</button>
+                                                        </td>
+                                                        <td class="col-4">
+                                                            <label class="control-label" for="price">
+                                                                Precio
+                                                            </label>
+                                                            <input class="form-control" type="text" name="price" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr t-attf-id="collapseme{{i}}" class="collapse out">
+                                                        <td class="col-8" colspan="2">
+                                                            <label class="control-label" for="amenity_ids">
+                                                                Habitación
+                                                            </label>
+                                                            <select data-select="allowed_amenityes_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="amenity_ids" />
+                                                        </td>
+                                                        <td class="col-4">
+                                                            <label class="control-label" for="adults">
+                                                                Adultos
+                                                            </label>
+                                                            <input class="form-control" type="text" name="adults" />
+                                                        </td>
+
+                                                    </tr>
+                                                </t>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div class="o_pms_pwa_shadow mt-3">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row mx-2">
+                                                    <div class="o_pms_pwa_total_title col-12">
+                                                        <h4>Impuestos</h4>
+                                                    </div>
+                                                    <div class="o_pms_pwa_total_price col-12">
+                                                        <strong  class="price_taxes" >0</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row mx-2">
+                                                    <div class="o_pms_pwa_total_title col-12">
+                                                        <h4>Total</h4>
+                                                    </div>
+                                                    <div class="o_pms_pwa_total_price col-12" >
+                                                        <strong class="price_total" >0</strong>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3 mb-3">
+                                        <div class="col-12 text-center">
+                                            <input type="hidden" name="id"/>
+                                            <input class="btn btn-message" type="submit" value="Submit" />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="tab-pane" id="single" role="tabpanel" aria-labelledby="home-tab">
-                                    <t t-call="pms_pwa.single_reservation_form" />
-                                </div>
-
-                            </div>
-
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -66,317 +242,4 @@
         </div>
     </template>
 
-    <template id="single_reservation_form" name="Single reservation form">
-        <form id="single_reservation_form" class="form-horizontal mt-3" method="post">
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-
-                <div class="row">
-                    <div class="col-12">
-                        <label class="control-label col-12" for="partner_name">
-                            Nombre
-                        </label>
-                        <input class="form-control o_pms_pwa_search_partner" type="text" name="partner_name" placeholder="Name" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="mobile">
-                            Teléfono
-                        </label>
-                        <input class="form-control" type="text" name="mobile" placeholder="Mobile" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="mail">
-                            E-mail
-                        </label>
-                        <input class="form-control" type="text" name="mail" placeholder="Mail" t-att-value="post['mail'] if post and 'mail' in post else None" />
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <label class="control-label col-12" for="checkin">
-                            Check in
-                        </label>
-                        <input class="form-control" type="text" name="range_check_date_modal_reservation" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
-                        <input type="hidden" name="checkin" value="" />
-                        <input type="hidden" name="checkout" value="" />
-                        <span class="o_pms_pwa_calendar_icon">
-                            <!-- <span class="fa fa-calendar"/> -->
-                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
-                        </span>
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-sm-12">
-                        <h4>Channel type and pricelist</h4>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="channel_type_id">
-                            Channel type
-                        </label>
-                        <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id"/>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="agency_id">
-                            Agency
-                        </label>
-                        <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="reservation_type">
-                            Type
-                        </label>
-                        <select data-select="reservation_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type"/>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="board_service_room_id">
-                            Board Service
-                        </label>
-                        <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id"/>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="pricelist">
-                            Pricelist
-                        </label>
-                        <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
-                    </div>
-                    <div class="col-6">
-                        <!-- <label class="control-label col-12" for="segmentation_ids">
-                            Segmentation
-                        </label> -->
-                        <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
-                        <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
-                    </div>
-                </div>
-            </div>
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                <div class="row mt-3">
-                    <div class="col-sm-12">
-                        <h4>Selected Room</h4>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="preferred_room_id">
-                            Room
-                        </label>
-                        <select data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id"/>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="adults">
-                            Guest nº
-                        </label>
-                        <input class="form-control" type="number" name="adults" placeholder="Guest nº" />
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-sm-12">
-                        <label class="control-label col-12" for="room_type_id">
-                            Room type
-                        </label>
-                        <select data-select="room_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id"/>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                <div class="col-sm-12">
-                    <h4>Internal Comment </h4>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <label class="control-label col-12" for="folio_internal_comment">
-                            Comments
-                        </label>
-                        <input class="form-control" type="text" name="folio_internal_comment" placeholder="Comments on the reservation for internal staff ..." />
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                <div class="col-sm-12">
-                    <h4>Total </h4>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="discount">
-                            Discount
-                        </label>
-                        <input class="form-control" type="number" name="discount" placeholder="Discount" />
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="price_total">
-                            Total
-                        </label>
-                        <input class="form-control" type="number" name="price_total" placeholder="Total" disabled="disabled" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-3 mb-3">
-                <div class="col-12 text-center">
-                    <input class="btn btn-message" type="submit" name="submit" value="Save" />
-                </div>
-            </div>
-
-        </form>
-    </template>
-
-    <template id="multiple_reservation_form" name="Multiple reservation form">
-        <form id="multiple_reservation_form" class="form-horizontal mt-3" method="post">
-            <div class="form-group form-field pb-3 ">
-
-                <div class="row">
-                    <div class="col-12">
-                        <label class="control-label col-12" for="partner_name">
-                            Nombre
-                        </label>
-                        <input class="form-control o_pms_pwa_search_partner" type="text" name="partner_name" placeholder="Name" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="mobile">
-                            Teléfono
-                        </label>
-                        <input class="form-control" type="text" name="mobile" placeholder="Mobile" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="mail">
-                            E-mail
-                        </label>
-                        <input class="form-control" type="text" name="mail" placeholder="Mail" t-att-value="post['mail'] if post and 'mail' in post else None" />
-                    </div>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <label class="control-label col-12" for="checkin">
-                            Check in
-                        </label>
-                        <input class="form-control" type="text" name="range_check_date_modal_reservation_multi" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
-                        <input type="hidden" name="checkin" value="" />
-                        <input type="hidden" name="checkout" value="" />
-                        <span class="o_pms_pwa_calendar_icon">
-                            <!-- <span class="fa fa-calendar"/> -->
-                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
-                        </span>
-                    </div>
-                </div>
-
-
-                <div class="row mt-3">
-                    <div class="col-sm-12">
-                        <h4>Channel type and pricelist</h4>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="channel_type_id">
-                            Channel type
-                        </label>
-                        <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id"/>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="agency_id">
-                            Agency
-                        </label>
-                        <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id"/>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="reservation_type">
-                            Type
-                        </label>
-                        <select data-select="reservation_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type"/>
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="board_service_room_id">
-                            Board Service
-                        </label>
-                        <select data-select="allowed_board_service_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id"/>
-                    </div>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="pricelist">
-                            Pricelist
-                        </label>
-                        <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id"/>
-                    </div>
-                    <div class="col-6">
-                        <!-- <label class="control-label col-12" for="segmentation_ids">
-                            Segmentation
-                        </label> -->
-                        <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
-                        <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                <div class="row mt-3">
-                    <!-- <div class="col-sm-12">
-                        <h4>Rooms</h4>
-                    </div> -->
-                    <table id="table_lines" class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th class="o_pms_pwa_theme_color">Room type</th>
-                                <th class="o_pms_pwa_theme_color">Selected</th>
-                                <th class="o_pms_pwa_theme_color">Board Service</th>
-                                <th class="o_pms_pwa_theme_color">Price/room</th>
-                            </tr>
-                        </thead>
-                        <tbody/>
-                    </table>
-                </div>
-            </div>
-
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                <div class="col-sm-12">
-                    <h4>Internal Comment </h4>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <label class="control-label col-12" for="internal_comment">
-                            Comments
-                        </label>
-                        <input class="form-control" type="text" name="internal_comment" placeholder="Comments on the reservation for internal staff ..." />
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group form-field pb-3 o_pms_pwa_group_separation">
-                <div class="col-sm-12">
-                    <h4>Total </h4>
-                </div>
-                <div class="row mt-3">
-                    <div class="col-6">
-                        <label class="control-label col-12" for="discount">
-                            Discount
-                        </label>
-                        <input class="form-control" type="number" name="discount" placeholder="Discount" />
-                    </div>
-                    <div class="col-6">
-                        <label class="control-label col-12" for="total_price_folio">
-                            Total
-                        </label>
-                        <input class="form-control" type="number" name="total_price_folio" placeholder="Total" disabled="disabled" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mt-3 mb-3">
-                <div class="col-12 text-center">
-                    <input type="hidden" name="id"/>
-                    <input class="btn btn-message" type="submit" value="Submit" />
-                </div>
-            </div>
-
-        </form>
-    </template>
 </odoo>

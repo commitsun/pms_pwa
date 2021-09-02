@@ -63,17 +63,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             $("#o_pms_pwa_new_reservation_modal")
                 .find("input[name='range_check_date_modal_reservation']")
                 .trigger("change");
-            $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation_multi']")
-                .val(checkin_date + " - " + checkout_date);
-            $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation_multi']")
-                .trigger("change");
+
         }, 500);
     });
 
-    $("form#single_reservation_form").on("change", "input, select", function (event) {
-        var values = $("form#single_reservation_form").serializeArray();
+    $("form#booking_engine_form").on("change", "input, select", function (event) {
+        var values = $("form#booking_engine_form").serializeArray();
         values = form_to_json(values);
         var allowed_fields = [
             "allowed_agency_ids",
@@ -102,7 +97,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         $.each(allowed_fields, function (key, value) {
                             try {
                                 var select = $(
-                                    'form#single_reservation_form [data-select="' +
+                                    'form#booking_engine_form [data-select="' +
                                         value +
                                         '"]'
                                 );
@@ -134,7 +129,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         });
                         $.each(new_data, function (key, value) {
                             var input = $(
-                                "form#single_reservation_form input[name='" + key + "']"
+                                "form#booking_engine_form input[name='" + key + "']"
                             );
                             if (input.length > 0) {
                                 input.val(value);
@@ -163,9 +158,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }
     });
 
-    $("form#single_reservation_form").on("submit", function (event) {
+    $("form#booking_engine_form").on("submit", function (event) {
         event.preventDefault();
-        var values = $("form#single_reservation_form").serializeArray();
+        var values = $("form#booking_engine_form").serializeArray();
         values = form_to_json(values);
         values["submit"] = true;
         if (event.currentTarget.name == "range_check_date_modal_reservation") {
@@ -175,6 +170,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             values.checkout = value_range_picker.split(" - ")[1];
         }
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
+
             ajax.jsonRpc("/booking_engine", "call", values).then(function (new_data) {
                 setTimeout(function () {
                     if (new_data) {
@@ -201,181 +197,152 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     /* Multiple reservation form */
 
-    $("form#multiple_reservation_form").on("change", "input, select", function (event) {
-        var values = {};
-        var allowed_fields = [
-            "allowed_agency_ids",
-            "allowed_board_service_room_ids",
-            "reservation_types",
-            "allowed_channel_type_ids",
-            "allowed_pricelists",
-            "allowed_segmentations",
-            "room_types",
-            "room_numbers",
-        ];
-        try {
-            var id = $("#multiple_reservation_form input[name='id']").val();
-            values["id"] = id;
-        } catch (error) {
-            console.log(error);
-        }
-        if (event.currentTarget.name == "range_check_date_modal_reservation_multi") {
-            let value_range_picker = event.currentTarget.value;
-            values.checkin = value_range_picker.split(" - ")[0];
-            values.checkout = value_range_picker.split(" - ")[1];
-        }
-        if (event.currentTarget.dataset.main_field) {
-            var main_field = event.currentTarget.dataset.main_field;
-            var field_id = event.currentTarget.dataset.field_id;
-            values[main_field] = {};
-            values[main_field][field_id] = {};
-            if (event.currentTarget.dataset.subservice_name) {
-                var subservice_name = event.currentTarget.dataset.subservice_name;
-                var subservice_field_id =
-                    event.currentTarget.dataset.subservice_field_id;
-                values[main_field][field_id][subservice_name] = {};
-                values[main_field][field_id][subservice_name][subservice_field_id] = {};
-                values[main_field][field_id][subservice_name][subservice_field_id][
-                    event.currentTarget.name
-                ] = event.currentTarget.value;
-            } else {
-                values[main_field][field_id][event.currentTarget.name] =
-                    event.currentTarget.value;
-            }
-        } else {
-            values[event.currentTarget.name] = event.currentTarget.value;
-        }
-        if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-            ajax.jsonRpc("/booking_engine_group", "call", values).then(function (
-                new_data
-            ) {
-                setTimeout(function () {
-                    if (new_data && new_data.result != "error") {
-                        $.each(allowed_fields, function (key, value) {
-                            try {
-                                var select = $(
-                                    'form#multiple_reservation_form [data-select="' +
-                                        value +
-                                        '"]'
-                                );
-                            } catch (error) {
-                                console.log(error);
-                            }
-                            if (select.length != 0) {
-                                select.empty();
-                                if (
-                                    !new_data[relation_values[value]] &
-                                    (new_data[relation_values[value]] == 0)
-                                ) {
-                                    select.append(
-                                        '<option value="" selected></option>'
-                                    );
-                                }
-                                $.each(new_data[value], function (subkey, subvalue) {
-                                    var option = new Option(
-                                        subvalue["name"],
-                                        subvalue["id"]
-                                    );
-                                    $(option).html(subvalue["name"]);
-                                    select.append(option);
-                                });
-                            }
-                            delete new_data[value];
-                        });
-                        $.each(new_data, function (key, value) {
-                            if (key == "lines") {
-                                try {
-                                    var table_tbody_trs = $("#table_lines tbody tr");
-                                    table_tbody_trs.remove();
-                                } catch (error) {
-                                    console.log(error);
-                                }
-                                $.each(value, function (linekey, linevalues) {
-                                    var tr =
-                                        "<tr><td>" +
-                                        linevalues["room_type_id"] +
-                                        " (" +
-                                        +linevalues["num_rooms_available"] +
-                                        ")" +
-                                        "</td><td><input type='number' data-main_field='lines' data-field_id='" +
-                                        linekey +
-                                        "' name='value_num_rooms_selected' value='" +
-                                        linevalues["value_num_rooms_selected"] +
-                                        "' class='form-control o_pms_pwa_modal_number'/></td><td>" +
-                                        linevalues["board_service_room_name"] +
-                                        "</td><td>" +
-                                        linevalues["price_per_room"] +
-                                        "</td></tr>";
-                                    $("#table_lines tbody").append(tr);
-                                });
-                            } else {
-                                var input = $(
-                                    "form#multiple_reservation_form input[name='" +
-                                        key +
-                                        "']"
-                                );
-                                if (input.length > 0) {
-                                    input.val(value);
-                                } else {
-                                    if (!fields_to_avoid.includes(key)) {
-                                        $(
-                                            "form.o_pms_pwa_reservation_form select[name='" +
-                                                key +
-                                                "'] option[value='" +
-                                                value +
-                                                "']"
-                                        ).prop("selected", true);
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        new_data.type = "warning";
-                        var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                        var alert = core.qweb.render("pms_pwa.reservation_alerts", {
-                            alert: new_data,
-                        });
-                        alert_div.append(alert);
-                    }
-                });
-            });
-        }
-    });
+    // $("form#multiple_reservation_form").on("change", "input, select", function (event) {
+    //     var values = {};
+    //     var allowed_fields = [
+    //         "allowed_agency_ids",
+    //         "allowed_board_service_room_ids",
+    //         "reservation_types",
+    //         "allowed_channel_type_ids",
+    //         "allowed_pricelists",
+    //         "allowed_segmentations",
+    //         "room_types",
+    //         "room_numbers",
+    //     ];
+    //     try {
+    //         var id = $("#multiple_reservation_form input[name='id']").val();
+    //         values["id"] = id;
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    //     if (event.currentTarget.name == "range_check_date_modal_reservation_multi") {
+    //         let value_range_picker = event.currentTarget.value;
+    //         values.checkin = value_range_picker.split(" - ")[0];
+    //         values.checkout = value_range_picker.split(" - ")[1];
+    //     }
+    //     if (event.currentTarget.dataset.main_field) {
+    //         var main_field = event.currentTarget.dataset.main_field;
+    //         var field_id = event.currentTarget.dataset.field_id;
+    //         values[main_field] = {};
+    //         values[main_field][field_id] = {};
+    //         if (event.currentTarget.dataset.subservice_name) {
+    //             var subservice_name = event.currentTarget.dataset.subservice_name;
+    //             var subservice_field_id =
+    //                 event.currentTarget.dataset.subservice_field_id;
+    //             values[main_field][field_id][subservice_name] = {};
+    //             values[main_field][field_id][subservice_name][subservice_field_id] = {};
+    //             values[main_field][field_id][subservice_name][subservice_field_id][
+    //                 event.currentTarget.name
+    //             ] = event.currentTarget.value;
+    //         } else {
+    //             values[main_field][field_id][event.currentTarget.name] =
+    //                 event.currentTarget.value;
+    //         }
+    //     } else {
+    //         values[event.currentTarget.name] = event.currentTarget.value;
+    //     }
+    //     if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
+    //         ajax.jsonRpc("/booking_engine_group", "call", values).then(function (
+    //             new_data
+    //         ) {
+    //             setTimeout(function () {
+    //                 if (new_data && new_data.result != "error") {
+    //                     $.each(allowed_fields, function (key, value) {
+    //                         try {
+    //                             var select = $(
+    //                                 'form#multiple_reservation_form [data-select="' +
+    //                                     value +
+    //                                     '"]'
+    //                             );
+    //                         } catch (error) {
+    //                             console.log(error);
+    //                         }
+    //                         if (select.length != 0) {
+    //                             select.empty();
+    //                             if (
+    //                                 !new_data[relation_values[value]] &
+    //                                 (new_data[relation_values[value]] == 0)
+    //                             ) {
+    //                                 select.append(
+    //                                     '<option value="" selected></option>'
+    //                                 );
+    //                             }
+    //                             $.each(new_data[value], function (subkey, subvalue) {
+    //                                 var option = new Option(
+    //                                     subvalue["name"],
+    //                                     subvalue["id"]
+    //                                 );
+    //                                 $(option).html(subvalue["name"]);
+    //                                 select.append(option);
+    //                             });
+    //                         }
+    //                         delete new_data[value];
+    //                     });
+    //                     $.each(new_data, function (key, value) {
+    //                         if (key == "lines") {
+    //                             try {
+    //                                 var table_tbody_trs = $("#table_lines tbody tr");
+    //                                 table_tbody_trs.remove();
+    //                             } catch (error) {
+    //                                 console.log(error);
+    //                             }
+    //                             $.each(value, function (linekey, linevalues) {
+    //                                 var tr =
+    //                                     "<tr><td>" +
+    //                                     linevalues["room_type_id"] +
+    //                                     " (" +
+    //                                     +linevalues["num_rooms_available"] +
+    //                                     ")" +
+    //                                     "</td><td><input type='number' data-main_field='lines' data-field_id='" +
+    //                                     linekey +
+    //                                     "' name='value_num_rooms_selected' value='" +
+    //                                     linevalues["value_num_rooms_selected"] +
+    //                                     "' class='form-control o_pms_pwa_modal_number'/></td><td>" +
+    //                                     linevalues["board_service_room_name"] +
+    //                                     "</td><td>" +
+    //                                     linevalues["price_per_room"] +
+    //                                     "</td></tr>";
+    //                                 $("#table_lines tbody").append(tr);
+    //                             });
+    //                         } else {
+    //                             var input = $(
+    //                                 "form#multiple_reservation_form input[name='" +
+    //                                     key +
+    //                                     "']"
+    //                             );
+    //                             if (input.length > 0) {
+    //                                 input.val(value);
+    //                             } else {
+    //                                 if (!fields_to_avoid.includes(key)) {
+    //                                     $(
+    //                                         "form.o_pms_pwa_reservation_form select[name='" +
+    //                                             key +
+    //                                             "'] option[value='" +
+    //                                             value +
+    //                                             "']"
+    //                                     ).prop("selected", true);
+    //                                 }
+    //                             }
+    //                         }
+    //                     });
+    //                 } else {
+    //                     new_data.type = "warning";
+    //                     var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+    //                     var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+    //                         alert: new_data,
+    //                     });
+    //                     alert_div.append(alert);
+    //                 }
+    //             });
+    //         });
+    //     }
+    // });
 
-    $("form#multiple_reservation_form").on("submit", function (event) {
-        event.preventDefault();
-        //var values = $("form#multiple_reservation_form").serializeArray();
-        var values = {};
-        try {
-            var id = $("#multiple_reservation_form input[name='id']").val();
-            values["id"] = id;
-        } catch (error) {
-            console.log(error);
-        }
-        if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
-            ajax.jsonRpc("/booking_engine_submit", "call", values).then(function (
-                new_data
-            ) {
-                setTimeout(function () {
-                    var data = JSON.parse(new_data);
-                    if (!data.result) {
-                        data.type = "warning";
-                        var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                        var alert = core.qweb.render("pms_pwa.reservation_alerts", {
-                            alert: data,
-                        });
-                        alert_div.append(alert);
-                    } else {
-                        location.href = "/reservation/" + data.id;
-                    }
-                });
-            });
-        }
-    });
+
 
     $("#o_pms_pwa_new_reservation_modal").on("hidden.bs.modal", function () {
-        $("form#single_reservation_form")[0].reset();
-        $("form#multiple_reservation_form")[0].reset();
+        $("form#booking_engine_form")[0].reset();
+
 
         const today = new Date();
         const tomorrow = new Date(today);
