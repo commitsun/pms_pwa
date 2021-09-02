@@ -1069,18 +1069,22 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 }
                                             });
                                             // refresh total
-                                            let a = document.getElementsByClassName(
-                                                "price_total"
-                                            );
-                                            a.innerText = JSON.parse(
-                                                new_data
-                                            ).reservation.price_total;
+                                            try {
+                                                let a = document.getElementsByClassName(
+                                                    "price_total"
+                                                );
+                                                a[0].innerHTML = JSON.parse(
+                                                    new_data
+                                                ).reservation.price_total;
+                                            } catch (error) {
+                                                console.log(error);
+                                            }
                                             // refresh pending amount
                                             try {
                                                 let b = document.getElementsByClassName(
                                                     "pending_amount"
                                                 );
-                                                b.innerText = JSON.parse(
+                                                b[0].innerText = JSON.parse(
                                                     new_data
                                                 ).reservation.folio_pending_amount;
                                             } catch (error) {
