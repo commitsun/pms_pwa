@@ -177,9 +177,9 @@
                                                             Group name <br />( disponibles x )
                                                         </td>
                                                         <td class="col-4">
-                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepDown(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">-</button>
-                                                            <input name="count_rooms_selected" class="num-control" t-attf-id="quantity{{i}}" type="number" min="0" max="10" />
-                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepUp(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">+</button>
+                                                            <button class="btn" t-attf-onclick="document.getElementById('groupquantity{{i}}').stepDown(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">-</button>
+                                                            <input name="count_rooms_selected" class="num-control" t-attf-id="groupquantity{{i}}" type="number" min="0" max="10" />
+                                                            <button class="btn" t-attf-onclick="document.getElementById('groupquantity{{i}}').stepUp(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">+</button>
                                                         </td>
                                                         <td class="col-4">
                                                             <label class="control-label" for="price_per_group">
@@ -190,18 +190,18 @@
                                                     </tr>
                                                     <tr t-attf-id="collapseme{{i}}" class="collapse out">
                                                         <td class="col-8" colspan="2">
-                                                            <label class="control-label" for="amenity_ids">
+                                                            <label class="control-label" for="preferred_room_id">
                                                                 Habitación
                                                             </label>
-                                                            <select data-select="allowed_amenityes_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="amenity_ids" />
+                                                            <select data-select="free_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id" />
                                                         </td>
                                                         <td class="col-4">
                                                             <label class="control-label" for="adults">
                                                                 Adultos
                                                             </label>
-                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepDown(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">-</button>
+                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepDown(1)">-</button>
                                                             <input name="adults" class="num-control" t-attf-id="quantity{{i}}" type="number" min="1" max="max_adults" />
-                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepUp(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">+</button>
+                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepUp(1)">+</button>
                                                         </td>
 
                                                     </tr>

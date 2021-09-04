@@ -280,7 +280,10 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         }
     });
     $(function () {
-        $(".selectpicker").selectpicker();
+        setTimeout(function(){
+            $(".selectpicker").selectpicker();
+        }, 500);
+
     });
     // Cargamos la página y las líneas
     $(document).ready(function () {
