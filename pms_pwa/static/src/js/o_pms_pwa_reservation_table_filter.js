@@ -39,10 +39,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         });
         return form_object;
     }
-    function form_booking_engine_group(group_id,checkin, checkout, count_rooms_selected, ubication_id, room_type_id, sale_category_id, pms_property_id, pricelist_id, board_service_room_id) {
-        console.log("WEE, pido lineas");
-        return false;
-    }
+
     /* reservation form */
     $("#button_reservation_modal").on("click", function (e) {
         setTimeout(function () {
@@ -164,24 +161,72 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             var html = "";
 
                             for (const i in groups) {
+
                                 html +=
                                     '<tr>' +
                                         '<td class="col-4">' +
                                             groups[i].name + ' (' + groups[i].max_rooms +')'+
                                         '</td>' +
                                         '<td class="col-4">'+
-                                            '<button class="btn" onclick="form_booking_engine_group(group_id='+i+', checkin='+new_data["checkin"]+', checkout='+new_data["checkout"]+',count_rooms_selected='+groups[i].count_rooms_selected+', ubication_id='+groups[i].ubication_id+', room_type_id='+groups[i].room_type_id+', sale_category_id='+new_data["sale_category_id"]+', pms_property_id='+new_data["pms_property_id"]+', pricelist_id='+new_data["pricelist_id"]+', board_service_room_id='+new_data["board_service_room_id"]+')" data-toggle="collapse" data-target="#collapseme'+i+'">-</button>'+
+                                            '<button class="btn" id="form_booking_engine_group" data-id="'+i+'" data-checkin="'+new_data["checkin"]+'" data-checkout="'+new_data["checkout"]+'" data-count_rooms_selected="'+groups[i].count_rooms_selected+'" data-ubication_id="'+groups[i].ubication_id+'" data-room_type_id='+groups[i].room_type_id+' data-sale_category_id='+new_data["sale_category_id"]+' data-pms_property_id='+new_data["pms_property_id"]+' data-pricelist_id='+new_data["pricelist_id"]+' data-board_service_room_id='+new_data["board_service_room_id"]+' onclick="document.getElementById(\'groupquantity'+i+'\').stepDown(1);" data-target="#collapseme'+i+'">-</button>'+
                                             '<input name="count_rooms_selected" class="num-control" id="groupquantity'+i+'" type="number" min="0" max="'+groups[i].max_rooms+'" />' +
-                                            '<button class="btn" onclick="document.getElementById(\'groupquantity'+i+'\').stepUp(1)" data-toggle="collapse" data-target="#collapseme'+i+'">+</button>' +
+                                            '<button class="btn" id="form_booking_engine_group" data-id="'+i+'" data-checkin="'+new_data["checkin"]+'" data-checkout="'+new_data["checkout"]+'" data-count_rooms_selected="'+groups[i].count_rooms_selected+'" data-ubication_id="'+groups[i].ubication_id+'" data-room_type_id='+groups[i].room_type_id+' data-sale_category_id='+new_data["sale_category_id"]+' data-pms_property_id='+new_data["pms_property_id"]+' data-pricelist_id='+new_data["pricelist_id"]+' data-board_service_room_id='+new_data["board_service_room_id"]+' onclick="document.getElementById(\'groupquantity'+i+'\').stepUp(1)" data-target="#collapseme'+i+'">+</button>' +
                                         '</td>' +
                                         '<td class="col-4">' +
                                            'Precio ' + groups[i].price_per_group  +
                                         '</td>'+
                                     '</tr>'+
-                                    '<tr id="collapseme'+i+'" class="collapse out"></tr>';
+                                    '<tr id="collapseme'+i+'" class="collapse out"><td colspan="3" id="new_values_data'+i+'"></td></tr>';
                             }
                             $("#bookengine_table").html(html);
-                        }
+                        };
+                        $("form#booking_engine_form #form_booking_engine_group").on("click", function (e) {
+                            e.preventDefault();
+                            var event = e.currentTarget;
+                            var send_value = {};
+                            send_value = {
+                                'id': event.getAttribute("data-id"),
+                                'checkin': event.getAttribute("data-checkin"),
+                                'checkout': event.getAttribute("data-checkout"),
+                                'count_rooms_selected': event.getAttribute("data-count_rooms_selected"),
+                                'ubication_id': event.getAttribute("data-ubication_id"),
+                                'room_type_id': event.getAttribute("data-room_type_id"),
+                                'sale_category_id': event.getAttribute("data-sale_category_id"),
+                                'pms_property_id': event.getAttribute("data-pms_property_id"),
+                                'pricelist_id': event.getAttribute("data-pricelist_id"),
+                                'board_service_room_id': event.getAttribute("data-board_service_room_id"),
+                            };
+                            console.log("ESTOY AQUI", send_value);
+                            var name_input = "#groupquantity"+send_value["id"];
+                            var new_values = "#new_values_data"+send_value["id"];
+
+                            var colapse_name = "#collapseme"+send_value["id"];
+                            var num_rooms = $(name_input).val();
+                            if(num_rooms > 0){
+                                $(colapse_name).collapse('show');
+                                ajax.jsonRpc("/booking_engine_group", "call", send_value).then(function (new_data) {
+                                    console.log(new_data);
+                                    var html = "<table>";
+                                    for(var i = 0;i<num_rooms;i++){
+                                        html += '<tr><td class="col-8" colspan="2">' +
+                                                '<label class="control-label" for="preferred_room_id">Habitación</label>'+
+                                                '<select data-select="free_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id" />' +
+                                            '</td>' +
+                                            '<td class="col-4">' +
+                                                //'<label class="control-label" for="adults">Adultos</label>'+
+                                                '<button class="btn" onclick="document.getElementById(\'quantity'+i+'\').stepDown(1)">-</button>'+
+                                                '<input name="adults" class="num-control" id="quantity'+i+'" type="number" min="1" max="max_adults" />'+
+                                                '<button class="btn" onclick="document.getElementById(\'quantity'+i+'\').stepUp(1)">+</button>'+
+                                            '</td></tr>';
+                                    }
+                                    html += '</table>';
+                                    $(new_values).html(html);
+                                    // for(const a in )
+                                });
+                            }else{
+                                $(colapse_name).collapse('hide');
+                            }
+                        });
                     } else {
                         new_data.type = "warning";
                         var alert_div = $(".o_pms_pwa_roomdoo_alerts");
