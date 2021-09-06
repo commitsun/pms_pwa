@@ -171,21 +171,19 @@
 
                                         <div class="col-12 mt-3">
                                             <table id="bookengine_table" class="table table-condensed">
-                                                <t t-foreach="range(0,3)" t-as="i">
+                                                <t t-esc="groups"></t>
+                                                <t t-foreach="groups" t-as="group">
                                                     <tr>
                                                         <td class="col-4">
-                                                            Group name <br />( disponibles x )
+                                                            <t t-esc="group['name']"></t> <br />( disponibles <t t-esc="group['max_rooms']"></t> )
                                                         </td>
                                                         <td class="col-4">
                                                             <button class="btn" t-attf-onclick="document.getElementById('groupquantity{{i}}').stepDown(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">-</button>
-                                                            <input name="count_rooms_selected" class="num-control" t-attf-id="groupquantity{{i}}" type="number" min="0" max="10" />
+                                                            <input name="count_rooms_selected" class="num-control" t-attf-id="groupquantity{{i}}" type="number" min="0" t-attf-max="{{group['max_rooms']}}" />
                                                             <button class="btn" t-attf-onclick="document.getElementById('groupquantity{{i}}').stepUp(1)" data-toggle="collapse" t-attf-data-target="#collapseme{{i}}">+</button>
                                                         </td>
                                                         <td class="col-4">
-                                                            <label class="control-label" for="price_per_group">
-                                                                Precio
-                                                            </label>
-                                                            <t t-esc="price_per_group" />
+                                                            Precio: <t t-esc="group['price_per_group']" />
                                                         </td>
                                                     </tr>
                                                     <tr t-attf-id="collapseme{{i}}" class="collapse out">

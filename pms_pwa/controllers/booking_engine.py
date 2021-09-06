@@ -115,7 +115,8 @@ class BookingEngine(http.Controller):
                     "active_groups": folio_values.get("groups"),
                 }
                 folio_values["groups"] = self.get_groups(vals)
-            print("devuelve: {}".format(folio_values))
+            _logger.info(folio_values)
+
             return folio_values
         except Exception as e:
             print("error: {}".format(e))
@@ -152,7 +153,6 @@ class BookingEngine(http.Controller):
         return selection_fields
 
     def check_incongruences(self, folio_values):
-        print("folio_values: {}".format(folio_values))
         if int(folio_values["pricelist_id"]) not in [item["id"] for item in folio_values["allowed_pricelists"]]:
             folio_values["pricelist_id"] = folio_values["allowed_pricelists"][0]["id"]
         if folio_values.get("segmentation_ids"):
