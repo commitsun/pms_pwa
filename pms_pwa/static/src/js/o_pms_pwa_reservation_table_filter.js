@@ -70,7 +70,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         }, 500);
     });
 
-    $("form#booking_engine_form").on("change", "input, select", function (event) {
+    $("form#booking_engine_form").on("change", "input[name='range_check_date_modal_reservation'] ,select.call_booking_engine", function (event) {
         var values = $("form#booking_engine_form").serializeArray();
         values = form_to_json(values);
         var allowed_fields = [
@@ -99,6 +99,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             ajax.jsonRpc("/booking_engine", "call", values).then(function (new_data) {
                 setTimeout(function () {
                     if (new_data && new_data.result != "error") {
+                        if(new_data['agrupation_type'] == 'room_type'){
+                            $(".sale_category_id").removeAttr("style").hide();
+                        }else{
+                            $(".sale_category_id").show();
+                        }
                         $.each(allowed_fields, function (key, value) {
                             try {
                                 var select = $(
@@ -184,33 +189,44 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             e.preventDefault();
                             var event = e.currentTarget;
                             var send_value = {};
+                            var name_input = "#groupquantity"+event.getAttribute("data-id");
+                            var num_rooms = $(name_input).val();
                             send_value = {
                                 'id': event.getAttribute("data-id"),
                                 'checkin': event.getAttribute("data-checkin"),
                                 'checkout': event.getAttribute("data-checkout"),
-                                'count_rooms_selected': event.getAttribute("data-count_rooms_selected"),
-                                'ubication_id': event.getAttribute("data-ubication_id"),
-                                'room_type_id': event.getAttribute("data-room_type_id"),
-                                'sale_category_id': event.getAttribute("data-sale_category_id"),
+                                'count_rooms_selected': num_rooms, //event.getAttribute("data-count_rooms_selected"),
+                                //'ubication_id': "", //event.getAttribute("data-ubication_id"),
+                                //'room_type_id': "", //event.getAttribute("data-room_type_id"),
+                                //'sale_category_id': "", //event.getAttribute("data-sale_category_id"),
                                 'pms_property_id': event.getAttribute("data-pms_property_id"),
                                 'pricelist_id': event.getAttribute("data-pricelist_id"),
-                                'board_service_room_id': event.getAttribute("data-board_service_room_id"),
+                                //'board_service_room_id': "", //event.getAttribute("data-board_service_room_id"),
                             };
                             console.log("ESTOY AQUI", send_value);
-                            var name_input = "#groupquantity"+send_value["id"];
+
                             var new_values = "#new_values_data"+send_value["id"];
 
                             var colapse_name = "#collapseme"+send_value["id"];
-                            var num_rooms = $(name_input).val();
+
                             if(num_rooms > 0){
                                 $(colapse_name).collapse('show');
                                 ajax.jsonRpc("/booking_engine_group", "call", send_value).then(function (new_data) {
-                                    console.log(new_data);
+                                    console.log(new_data['rooms'][0]['preferred_room_id']);
                                     var html = "<table>";
                                     for(var i = 0;i<num_rooms;i++){
-                                        html += '<tr><td class="col-8" colspan="2">' +
+                                        var  seloption= '<option value="'+new_data['rooms'][i]['preferred_room_id']['id']+'" selected="selected">'+new_data['rooms'][i]['preferred_room_id']['name']+'</option>';
+                                        $.each( new_data['free_rooms_dict'], function( key ) {
+                                            console.log(new_data['free_rooms_dict'][key]['id']);
+                                            console.log(new_data['free_rooms_dict'][key]['name']);
+                                            seloption+='<option value="'+new_data['free_rooms_dict'][key]['id']+'">'+new_data['free_rooms_dict'][key]['name']+'</option>';
+                                        });
+                                        html += '<tr><td class="col-8">' +
                                                 '<label class="control-label" for="preferred_room_id">Habitación</label>'+
-                                                '<select data-select="free_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id" />' +
+                                                '<select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">'+
+                                                    seloption +
+                                                '</select>'+
+
                                             '</td>' +
                                             '<td class="col-4">' +
                                                 //'<label class="control-label" for="adults">Adultos</label>'+
@@ -219,6 +235,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 '<button class="btn" onclick="document.getElementById(\'quantity'+i+'\').stepUp(1)">+</button>'+
                                             '</td></tr>';
                                     }
+
                                     html += '</table>';
                                     $(new_values).html(html);
                                     // for(const a in )

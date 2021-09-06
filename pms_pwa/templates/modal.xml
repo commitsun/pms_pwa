@@ -93,13 +93,13 @@
                                             <label class="control-label col-12" for="pricelist">
                                                 Pricelist
                                             </label>
-                                            <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pricelist_id" />
+                                            <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="pricelist_id" />
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="reservation_type">
                                                 Type
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type" >
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="reservation_type" >
                                                 <option value="normal">Normal</option>
                                                 <option value="staff">Staff</option>
                                                 <option value="out">Fuera de servicio</option>
@@ -113,13 +113,13 @@
                                             <label class="control-label col-12" for="agency_id">
                                                 Agency
                                             </label>
-                                            <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agency_id" />
+                                            <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agency_id" />
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="channel_type_id">
                                                 Channel type
                                             </label>
-                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="channel_type_id" />
+                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="channel_type_id" />
                                         </div>
 
                                     </div>
@@ -136,15 +136,16 @@
                                             <label class="control-label col-12" for="board_service_room_id">
                                                 Board Service
                                             </label>
-                                            <select data-select="allowed_board_services" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id" />
+                                            <select data-select="allowed_board_services" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="board_service_room_id" />
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+
+                                    <div class="row mt-3 sale_category_id" >
                                         <div class="col-12">
                                             <label class="control-label col-12" for="sale_category_id">
                                                 Sale category
                                             </label>
-                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="sale_category_id" />
+                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="sale_category_id" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -156,7 +157,7 @@
                                             <label class="control-label col-12" for="agrupation_type">
                                                 Agrupación
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="agrupation_type" >
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
                                                 <option value="all">Todas</option>
                                                 <option value="room_type">Tipo de habitación</option>
                                                 <option value="ubication">Ubicación</option>
