@@ -336,10 +336,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     });
 
     $("form#booking_engine_form").on("submit", function (event) {
+        console.log("Envio form");
         event.preventDefault();
         var values = $("form#booking_engine_form").serializeArray();
         values = form_to_json(values);
         values["submit"] = true;
+        console.log("Envio ->>", values);
         if (event.currentTarget.name == "range_check_date_modal_reservation") {
             let value_range_picker = event.currentTarget.value;
 
