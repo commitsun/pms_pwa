@@ -322,24 +322,22 @@ class BookingEngine(http.Controller):
             )
             used_rooms = request.env["pms.room"].browse([int(item["preferred_room_id"]) for item in rooms_dict])
             free_rooms = pms_property.free_room_ids - used_rooms
-
-            if count_rooms_selected == len(rooms_dict):
-                rooms = used_rooms
-                for item in rooms_dict:
-                    preferred_room = request.env['pms.room'].browse(int(item['preferred_room_id']))
-                    item.update(
-                        {
-                            "preferred_room_id": {'id': int(item['preferred_room_id']), 'name': preferred_room.display_name},
-                            "room_type_id": room_type_id if room_type_id else sale_category_id,
-                            "checkin": checkin,
-                            "checkout": checkout,
-                            "adults": int(item['adults']) if int(item['adults']) < preferred_room.capacity else preferred_room.capacity,
-                            "max_adults": preferred_room.capacity,
-                            "pricelist_id": pricelist_id,
-                            "board_service_room_id": board_service_room_id,
-                        }
-                    )
-            elif count_rooms_selected < len(rooms_dict):
+            rooms = used_rooms
+            for item in rooms_dict:
+                preferred_room = request.env['pms.room'].browse(int(item['preferred_room_id']))
+                item.update(
+                    {
+                        "preferred_room_id": {'id': int(item['preferred_room_id']), 'name': preferred_room.display_name},
+                        "room_type_id": room_type_id if room_type_id else sale_category_id,
+                        "checkin": checkin,
+                        "checkout": checkout,
+                        "adults": int(item['adults']) if int(item['adults']) < preferred_room.capacity else preferred_room.capacity,
+                        "max_adults": preferred_room.capacity,
+                        "pricelist_id": pricelist_id,
+                        "board_service_room_id": board_service_room_id,
+                    }
+                )
+            if count_rooms_selected < len(rooms_dict):
                 to_del = len(rooms_dict) - count_rooms_selected
                 for item in rooms_dict[len(rooms_dict) - to_del:]:
                     free_rooms += request.env['pms.room'].browse(item['preferred_room_id'])
@@ -362,6 +360,7 @@ class BookingEngine(http.Controller):
 
                 # used_rooms = request.env["pms.room"].browse([int(item["preferred_room_id"]) for item in rooms_dict])
                 # free_rooms = pms_property.free_room_ids - used_rooms
+
                 for i in range(to_add):
                     rooms += free_rooms[i]
                     rooms_dict.append(
@@ -377,8 +376,8 @@ class BookingEngine(http.Controller):
                         }
                     )
                 for room_dict in rooms_dict:
-                    board_service_room_id = room_dict.get("board_service_room_id")
-                    room_type = request.env["pms.room.type"].browse(room_dict["room_type_id"])
+                    board_service_room_id = int(room_dict.get("board_service_room_id"))
+                    room_type = request.env["pms.room.type"].browse(int(room_dict["room_type_id"]))
                     allowed_board_service_room_ids = [{"id": bsr.id, "name": bsr.name} for bsr in room_type.board_service_room_type_ids.pms_board_service_id]
                     board_room_type = room_type.board_service_room_type_ids.filtered(
                         lambda bsr: bsr.id == board_service_room_id
@@ -389,7 +388,7 @@ class BookingEngine(http.Controller):
                         }
                     )
                     price_per_room = request.env["pms.folio.availability.wizard"]._get_price_by_room_type(
-                        room_type_id=room_type_id,
+                        room_type_id=room_type.id,
                         board_service_room_id=board_room_type.id,
                         checkin=checkin,
                         checkout=checkout,
@@ -412,7 +411,6 @@ class BookingEngine(http.Controller):
 
     # BOOKING ENGINE SUBMIT ----------------------------------
     # Call te create the folio in bbdd
-
     @http.route(
         ["/booking_engine_submit"],
         type="json",
@@ -460,37 +458,33 @@ class BookingEngine(http.Controller):
                 vals["segmentation_ids"] = [(6, 0, [int(item) for item in folio_values.get("segmentation_ids")])]
 
             # RESERVATIONS ------------------------------------------------------------
-            groups = folio_values.get("groups")
+            # groups = folio_values.get("groups")
             vals["reservation_ids"] = []
 
-            for group in groups:
-                for room in group["rooms"]:
-                    vals["reservation_ids"].append([
-                        (
-                            0,
-                            0,
-                            {
-                                "partner_name": vals["partner_name"],
-                                "email": vals.get("email"),
-                                "mobile": vals.get("mobile"),
-                                "partner_id": int(vals.get("partner_id")),
-                                "preferred_room_id": int(room["preferred_room_id"]),
-                                "room_type_id": int(room["room_type_id"]),
-                                "checkin": datetime.datetime.strptime(
-                                    room["checkin"], get_lang(request.env).date_format
-                                ).date(),
-                                "checkout": datetime.datetime.strptime(
-                                    room["checkout"], get_lang(request.env).date_format
-                                ).date(),
-                                "adults": int(room["adults"]),
-                                "pricelist_id": int(room["pricelist_id"]),
-                                "board_service_room_id": int(room["board_service_room_id"]),
-                                "pms_property_id": pms_property.id,
-                            }
-                        )
-                    ])
-
+            # for group in groups:
             folio = request.env["pms.folio"].create(vals)
+            for group in folio_values.get("groups"):
+                for room in group['rooms']:
+                    reservation_vals = {
+                        "partner_name": vals["partner_name"],
+                        "email": vals.get("email") if vals.get("email") else False,
+                        "mobile": vals.get("mobile") if vals.get("mobile") else False,
+                        "partner_id": int(vals.get("partner_id")) if vals.get("partner_id") else False,
+                        "preferred_room_id": int(room["preferred_room_id"]),
+                        "room_type_id": int(room["room_type_id"]),
+                        "checkin": datetime.datetime.strptime(
+                            room["checkin"], get_lang(request.env).date_format
+                        ).date(),
+                        "checkout": datetime.datetime.strptime(
+                            room["checkout"], get_lang(request.env).date_format
+                        ).date(),
+                        "adults": int(room["adults"]),
+                        "pricelist_id": int(room["pricelist_id"]),
+                        "board_service_room_id": int(room["board_service_room_id"]) if room["board_service_room_id"] else False,
+                        "pms_property_id": pms_property.id,
+                        "folio_id": folio.id,
+                    }
+                    request.env['pms.reservation'].create(reservation_vals)
             return {"result": "success", "reservation_id": folio.reservation_ids[0].id}
         except Exception as e:
             return {"result": "error", "message": str(e)}
