@@ -184,7 +184,7 @@
                                                             <button class="btn" t-attf-onclick="document.getElementById('groupquantity{{i}}').stepUp(1)" t-attf-data-target="#collapseme{{i}}">+</button>
                                                         </td>
                                                         <td class="col-4">
-                                                            Precio: <t t-esc="group['price_per_group']" />
+                                                            Precio: <span t-attf-id="price{{i}}"><t t-esc="group['price_per_group']" /></span>
                                                         </td>
                                                     </tr>
                                                     <tr t-attf-id="collapseme{{i}}" class="collapse">
