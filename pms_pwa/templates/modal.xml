@@ -100,9 +100,9 @@
                                                 Type
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="reservation_type" >
-                                                <option value="normal">Normal</option>
-                                                <option value="staff">Staff</option>
-                                                <option value="out">Fuera de servicio</option>
+                                                <option name="reservation_type" value="normal">Normal</option>
+                                                <option name="reservation_type" value="staff">Staff</option>
+                                                <option name="reservation_type" value="out">Fuera de servicio</option>
                                             </select>
                                         </div>
 
@@ -158,9 +158,9 @@
                                                 Agrupación
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
-                                                <option value="all">Todas</option>
-                                                <option value="room_type">Tipo de habitación</option>
-                                                <option value="ubication">Ubicación</option>
+                                                <option name="agrupation_type" value="all">Todas</option>
+                                                <option name="agrupation_type" value="room_type">Tipo de habitación</option>
+                                                <option name="agrupation_type" value="ubication">Ubicación</option>
                                             </select>
                                         </div>
                                         <div class="col-6">

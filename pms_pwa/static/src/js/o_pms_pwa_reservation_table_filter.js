@@ -11,6 +11,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     const relation_values = {
         allowed_agency_ids: "agency_id",
         allowed_board_service_room_ids: "board_service_room_id",
+        allowed_board_services: "board_service_room_id",
         reservation_types: "reservation_type",
         allowed_channel_type_ids: "channel_type_id",
         allowed_pricelists: "pricelist_id",
@@ -19,6 +20,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         room_types: "room_type_id",
         allowed_country_ids: "country_id",
         allowed_state_ids: "state_id",
+        allowed_sale_category_ids: "sale_category_id",
+
     };
     const fields_to_avoid = ["primary_button", "secondary_buttons"];
     $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
@@ -35,7 +38,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     function form_to_json(formData) {
         var form_object = {};
         $.each(formData, function (i, v) {
-            form_object[v.name] = v.value;
+            if(v.value != "false"){
+                form_object[v.name] = v.value;
+            }
         });
         return form_object;
     }
@@ -94,7 +99,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         } else {
             values[event.currentTarget.name] = event.currentTarget.value;
         }
-
+        //values[event.currentTarget.name] = event.currentTarget.value;
+        console.log("Primer envío: ", values);
+        console.log(event.currentTarget.name);
         if (($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown) {
             ajax.jsonRpc("/booking_engine", "call", values).then(function (new_data) {
                 var total_price = 0;
@@ -127,19 +134,27 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     );
                                 }
                                 $.each(new_data[value], function (subkey, subvalue) {
-                                    if(subvalue["id"] != false){
+                                    if (
+                                        subvalue["id"] ==
+                                        new_data[relation_values[value]]
+                                    ) {
                                         var option = new Option(
                                             subvalue["name"],
-                                            subvalue["id"]
+                                            subvalue["id"],
+                                            false,
+                                            true
                                         );
-                                        $(option).html(subvalue["name"]);
-                                        select.append(option);
-                                    }
-                                    else{
-                                        select.append(
-                                            '<option value="" selected></option>'
+                                    } else {
+                                        var option = new Option(
+                                            subvalue["name"],
+                                            subvalue["id"],
+                                            false,
+                                            false
                                         );
                                     }
+                                    $(option).html(subvalue["name"]);
+                                    select.append(option);
+
                                 });
                             }
                             delete new_data[value];
@@ -186,64 +201,32 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
                             $("#bookengine_table").html(html);
                         };
-                        function launchChanges(event) {
-                            var send_value = {};
-                            var name_input = "#groupquantity"+event.getAttribute("data-id");
-                            var price_per_group = "#price"+event.getAttribute("data-id");
-                            var num_rooms = $(name_input).val();
-                            send_value = {
-                                'id': event.getAttribute("data-id"),
-                                'checkin': event.getAttribute("data-checkin"),
-                                'checkout': event.getAttribute("data-checkout"),
-                                'count_rooms_selected': num_rooms, //event.getAttribute("data-count_rooms_selected"),
-                                //'ubication_id': "", //event.getAttribute("data-ubication_id"),
-                                //'room_type_id': "", //event.getAttribute("data-room_type_id"),
-                                //'sale_category_id': "", //event.getAttribute("data-sale_category_id"),
-                                'pms_property_id': event.getAttribute("data-pms_property_id"),
-                                'pricelist_id': event.getAttribute("data-pricelist_id"),
-                                //'board_service_room_id': "", //event.getAttribute("data-board_service_room_id"),
-                            };
-                            if(event.getAttribute("data-ubication_id")  && event.getAttribute("data-ubication_id") != "false"){
-                                send_value.ubication_id = event.getAttribute("data-ubication_id");
-                            }
-                            if(event.getAttribute("data-room_type_id")  && event.getAttribute("data-room_type_id") != "false"){
-                                send_value.room_type_id = event.getAttribute("data-room_type_id");
-                            }
-                            if(event.getAttribute("data-sale_category_id") && event.getAttribute("data-sale_category_id") != "undefined"){
-                                send_value.sale_category_id = event.getAttribute("data-sale_category_id");
-                            }
-                            if(event.getAttribute("board_service_room_id")  && event.getAttribute("board_service_room_id") != "false"){
-                                send_value.board_service_room_id = event.getAttribute("board_service_room_id");
-                            }
-                            console.log("Envío", send_value);
-
+                        function launchChanges(event, send_value) {
+                            var price_per_group = "#price"+send_value["id"];
                             var new_values = "#new_values_data"+send_value["id"];
 
-                            var colapse_name = "#collapseme"+send_value["id"];
-
-                            if(num_rooms > 0){
-                                $(colapse_name).collapse('show');
-                                ajax.jsonRpc("/booking_engine_group", "call", send_value).then(function (new_data) {
-                                    console.log(new_data);
+                            ajax.jsonRpc("/booking_engine_group", "call", send_value).then(function (new_data) {
+                                // if (new_data && new_data.result != "error") {
                                     var html = "<table>";
-                                    for(var i = 0;i<num_rooms;i++){
+
+                                    for(var i = 0;i<new_data['rooms'].length;i++){
                                         var  seloption= '<option name="preferred_room_id" value="'+new_data['rooms'][i]['preferred_room_id']['id']+'" selected="selected">'+new_data['rooms'][i]['preferred_room_id']['name']+'</option>';
                                         $.each( new_data['free_rooms_dict'], function( key ) {
-                                            seloption+='<option name="preferred_room_id" value="'+new_data['free_rooms_dict'][key]['id']+'">'+new_data['free_rooms_dict'][key]['name']+'</option>';
+                                            seloption+='<option  name="preferred_room_id" value="'+new_data['free_rooms_dict'][key]['id']+'">'+new_data['free_rooms_dict'][key]['name']+'</option>';
                                         });
                                         html += '<tr><td class="col-8">' +
                                                 '<label class="control-label" for="preferred_room_id">Habitación</label>'+
-                                                '<select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" name="preferred_room_id">'+
+                                                '<select data-parent_id="'+send_value["id"]+'" data-checkin="'+send_value["checkin"]+'" data-checkout="'+send_value["checkout"]+'" data-count_rooms_selected="'+send_value['count_rooms_selected']+'" data-ubication_id="'+send_value['ubication_id']+'" data-room_type_id='+send_value['room_type_id']+' data-sale_category_id='+send_value["sale_category_id"]+' data-pms_property_id='+send_value["pms_property_id"]+' data-pricelist_id='+send_value["pricelist_id"]+' data-board_service_room_id='+send_value["board_service_room_id"]+' class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" name="preferred_room_id">'+
                                                     seloption +
                                                 '</select>'+
 
-                                            '</td>' +
-                                            '<td class="col-4">' +
-                                                //'<label class="control-label" for="adults">Adultos</label>'+
-                                                '<button class="btn" onclick="document.getElementById(\'quantity'+i+'\').stepDown(1)">-</button>'+
-                                                '<input name="adults" class="num-control" id="quantity'+i+'" type="number" min="1" max="'+new_data['rooms'][i]['max_adults']+'" />'+
-                                                '<button class="btn" onclick="document.getElementById(\'quantity'+i+'\').stepUp(1)">+</button>'+
-                                            '</td></tr>';
+                                                '</td>' +
+                                                '<td class="col-4">' +
+                                                    //'<label class="control-label" for="adults">Adultos</label>'+
+                                                    '<button class="btn" onclick="document.getElementById(\'quantity'+i+'\').stepDown(1)">-</button>'+
+                                                    '<input name="adults" class="num-control" id="quantity'+i+'" type="number" min="1" max="'+new_data['rooms'][i]['max_adults']+'" />'+
+                                                    '<button class="btn" onclick="document.getElementById(\'quantity'+i+'\').stepUp(1)">+</button>'+
+                                                '</td></tr>';
                                     }
 
                                     html += '</table>';
@@ -254,25 +237,90 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     $("form#booking_engine_form .price_taxes").html((total_price*0.10).toFixed(2)+"€");
                                     $(price_per_group).html((new_data['price_per_group']).toFixed(2)+"€");
                                     // for(const a in )
-
-                                });
-                            }else{
-                                $(colapse_name).collapse('hide');
-                                $(price_per_group).html("0 €");
-                            };
-
-                        }
+                                // } else {
+                                //     new_data.type = "warning";
+                                //     var alert_div = $(".o_pms_pwa_roomdoo_alerts");
+                                //     var alert = core.qweb.render("pms_pwa.reservation_alerts", {
+                                //         alert: new_data,
+                                //     });
+                                //     alert_div.append(alert);
+                                // }
+                            });
+                        };
                         $("form#booking_engine_form #form_booking_engine_group").on("click", function (e) {
                             e.preventDefault();
                             console.log("lanzamos tras +-");
                             var event = e.currentTarget;
-                            launchChanges(event);
+                            var send_value = {};
+                            var name_input = "#groupquantity"+event.getAttribute("data-id");
+                            var price_per_group = "#price"+event.getAttribute("data-id");
+                            var num_rooms = $(name_input).val();
+
+                            send_value = {
+                                'id': event.getAttribute("data-id"),
+                                'checkin': event.getAttribute("data-checkin"),
+                                'checkout': event.getAttribute("data-checkout"),
+                                'count_rooms_selected': num_rooms,
+                                'pms_property_id': event.getAttribute("data-pms_property_id"),
+                                'pricelist_id': event.getAttribute("data-pricelist_id"),
+                            };
+                            if(event.getAttribute("data-ubication_id") && event.getAttribute("data-ubication_id") != "false" && event.getAttribute("data-ubication_id") != "undefined"){
+                                send_value.ubication_id = event.getAttribute("data-ubication_id");
+                            }
+                            if(event.getAttribute("data-room_type_id") && event.getAttribute("data-room_type_id") != "false" && event.getAttribute("data-room_type_id") != "undefined"){
+                                send_value.room_type_id = event.getAttribute("data-room_type_id");
+                            }
+                            if(event.getAttribute("data-sale_category_id") && event.getAttribute("data-sale_category_id") != "false" && event.getAttribute("data-sale_category_id") != "undefined"){
+                                send_value.sale_category_id = event.getAttribute("data-sale_category_id");
+                            }
+                            if(event.getAttribute("board_service_room_id") && event.getAttribute("board_service_room_id") != "false" && event.getAttribute("board_service_room_id") != "undefined"){
+                                send_value.board_service_room_id = event.getAttribute("board_service_room_id");
+                            }
+                            var colapse_name = "#collapseme"+send_value["id"];
+                            if(num_rooms > 0){
+                                $(colapse_name).collapse('show');
+                                launchChanges(event, send_value);
+                            }else{
+                                $(colapse_name).collapse('hide');
+                                $(price_per_group).html("0 €");
+                            };
                         });
                         $("form#booking_engine_form #bookengine_table").on("change", "select.call_booking_engine_group", function (e) {
                             e.preventDefault();
                             console.log("lanzamos tras cambio de select");
                             var event = e.currentTarget;
-                            launchChanges(event);
+                            var send_value = {};
+                            console.log();
+                            var send_rooms = {
+                                'board_service_room_id': false,
+                                'checkin': event.getAttribute("data-checkin"),
+                                'checkout': event.getAttribute("data-checkout"),
+                                'preferred_room_id': {'id': this.value, 'name': $(this).find("option:selected").text()},
+                                //'pms_property_id': event.getAttribute("data-pms_property_id"),
+                                'pricelist_id': event.getAttribute("data-pricelist_id"),
+                            }
+                            send_value = {
+                                'id': event.getAttribute("data-parent_id"),
+                                'checkin': event.getAttribute("data-checkin"),
+                                'checkout': event.getAttribute("data-checkout"),
+                                'count_rooms_selected': event.getAttribute("data-count_rooms_selected"),
+                                'pms_property_id': event.getAttribute("data-pms_property_id"),
+                                'pricelist_id': event.getAttribute("data-pricelist_id"),
+                                'rooms': send_rooms,
+                            };
+                            if(event.getAttribute("data-ubication_id") && event.getAttribute("data-ubication_id") != "false" && event.getAttribute("data-ubication_id") != "undefined"){
+                                send_value.ubication_id = event.getAttribute("data-ubication_id");
+                            }
+                            if(event.getAttribute("data-room_type_id") && event.getAttribute("data-room_type_id") != "false" && event.getAttribute("data-room_type_id") != "undefined"){
+                                send_value.room_type_id = event.getAttribute("data-room_type_id");
+                            }
+                            if(event.getAttribute("data-sale_category_id") && event.getAttribute("data-sale_category_id") != "false" && event.getAttribute("data-sale_category_id") != "undefined"){
+                                send_value.sale_category_id = event.getAttribute("data-sale_category_id");
+                            }
+                            if(event.getAttribute("board_service_room_id") && event.getAttribute("board_service_room_id") != "false" && event.getAttribute("board_service_room_id") != "undefined"){
+                                send_value.board_service_room_id = event.getAttribute("board_service_room_id");
+                            }
+                            launchChanges(event, send_value);
                         });
                     } else {
                         new_data.type = "warning";
