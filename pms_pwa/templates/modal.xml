@@ -126,10 +126,10 @@
                                     <div class="row mt-3">
 
                                         <div class="col-6">
-                                            <!-- <label class="control-label col-12" for="segmentation_ids">
+                                            <label class="control-label col-12" for="segmentation_ids" style="z-index: 1;">
                                                 Segmentation
-                                            </label> -->
-                                            <select id="segmentation_ids" data-select="allowed_segmentations" multiple="multiple" data-style="form-control o_pms_pwa_multiselect call_booking_engine" class="call_booking_engine w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
+                                            </label>
+                                            <select id="segmentation_ids" data-select="allowed_segmentations" multiple="multiple" class="form-control o_pms_pwa_multiselect"  data-live-search="true" name="segmentation_ids" title="Segmentation" />
                                             <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                                         </div>
                                         <div class="col-6">
@@ -164,10 +164,10 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="amenity_ids">
+                                            <label class="control-label col-12" for="amenity_ids"  style="z-index: 1;">
                                                 Amenities
                                             </label>
-                                            <select data-select="allowed_amenity_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="amenity_ids" />
+                                            <select id="amenity_ids" data-select="allowed_amenity_ids" multiple="multiple" class="form-control o_pms_pwa_multiselect call_booking_engine" data-live-search="true" name="amenity_ids" />
                                         </div>
 
                                         <div class="col-12 mt-3">

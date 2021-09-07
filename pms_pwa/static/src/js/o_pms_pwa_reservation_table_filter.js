@@ -100,9 +100,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             } else {
                 values[event.currentTarget.name] = event.currentTarget.value;
             }
-            //values[event.currentTarget.name] = event.currentTarget.value;
-            console.log("Primer envío: ", values);
-            console.log(event.currentTarget.name);
+
             if (
                 ($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown
             ) {
@@ -273,12 +271,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             function launchChanges(event, send_value) {
                                 var price_per_group = "#price" + send_value["id"];
                                 var new_values = "#new_values_data" + send_value["id"];
-
+                                console.log("Send ->", send_value);
                                 ajax.jsonRpc(
                                     "/booking_engine_group",
                                     "call",
                                     send_value
                                 ).then(function (new_data) {
+                                    console.log("devuelve->", new_data);
                                     // if (new_data && new_data.result != "error") {
                                     var html = "<table>";
 
@@ -310,6 +309,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             '<label class="control-label" for="preferred_room_id">Habitación</label>' +
                                             '<select data-parent_id="' +
                                             send_value["id"] +
+                                            '" data-price_per_room="' +
+                                            new_data["rooms"][i]['price_per_room'] +
                                             '" data-checkin="' +
                                             send_value["checkin"] +
                                             '" data-checkout="' +
@@ -328,16 +329,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             send_value["pricelist_id"] +
                                             " data-board_service_room_id=" +
                                             send_value["board_service_room_id"] +
-                                            ' class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" name="preferred_room_id">' +
+                                            ' class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" name="rooms['+i+'][preferred_room_id]">' +
                                             seloption +
                                             "</select>" +
                                             "</td>" +
                                             '<td class="col-4">' +
                                             //'<label class="control-label" for="adults">Adultos</label>'+
-                                            '<button class="btn" onclick="document.getElementById(\'quantity' +
+                                            '<button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById(\'quantity' +
                                             i +
                                             "').stepDown(1)\">-</button>" +
-                                            '<input name="adults" class="num-control" id="quantity' +
+                                            '<input name="rooms['+i+'][adults]" class="num-control" value=' +
+                                                 new_data["rooms"][i]["adults"] +
+                                            ' id="quantity' +
                                             i +
                                             '" type="number" min="1" max="' +
                                             new_data["rooms"][i]["max_adults"] +
@@ -431,6 +434,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         send_value.sale_category_id = event.getAttribute(
                                             "data-sale_category_id"
                                         );
+                                    }else{
+                                        send_value.sale_category_id = "5"; // sale category por defecto, revisar
                                     }
                                     if (
                                         event.getAttribute("board_service_room_id") &&
@@ -458,25 +463,31 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 "select.call_booking_engine_group",
                                 function (e) {
                                     e.preventDefault();
+                                    var values = $("form#booking_engine_form").serializeArray();
+                                    values = form_to_json(values);
+                                    for(var i = 0; i<parseInt(values.count_rooms_selected); i++){
+                                        console.log("VALI");
+                                        console.log(values["rooms["+i+"][adults]"]);
+                                    }
+                                    console.log("--->", values);
                                     console.log("lanzamos tras cambio de select");
                                     var event = e.currentTarget;
                                     var send_value = {};
-                                    console.log();
-                                    var send_rooms = {
+                                    console.log("Es necesario enviar todas las habitaciones del grupo");
+                                    var send_rooms = [{
                                         board_service_room_id: false,
                                         checkin: event.getAttribute("data-checkin"),
                                         checkout: event.getAttribute("data-checkout"),
-                                        preferred_room_id: {
-                                            id: this.value,
-                                            name: $(this)
-                                                .find("option:selected")
-                                                .text(),
-                                        },
+                                        preferred_room_id: this.value,
                                         //'pms_property_id': event.getAttribute("data-pms_property_id"),
                                         pricelist_id: event.getAttribute(
                                             "data-pricelist_id"
                                         ),
-                                    };
+                                        price_per_room: event.getAttribute(
+                                            "data-price_per_room"
+                                        ),
+                                        adults: 1,
+                                    },];
                                     send_value = {
                                         id: event.getAttribute("data-parent_id"),
                                         checkin: event.getAttribute("data-checkin"),
@@ -524,6 +535,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         send_value.sale_category_id = event.getAttribute(
                                             "data-sale_category_id"
                                         );
+                                    }else{
+                                        send_value.sale_category_id = "5"; //revisar
                                     }
                                     if (
                                         event.getAttribute("board_service_room_id") &&
@@ -536,6 +549,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "board_service_room_id"
                                         );
                                     }
+
                                     launchChanges(event, send_value);
                                 }
                             );
@@ -544,6 +558,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             ).select2("destroy");
                             $(
                                 "div#o_pms_pwa_new_reservation_modal #segmentation_ids"
+                            ).select2();
+                            // enviar amenity_ids
+                            $(
+                                "div#o_pms_pwa_new_reservation_modal #amenity_ids"
+                            ).select2("destroy");
+                            $(
+                                "div#o_pms_pwa_new_reservation_modal #amenity_ids"
                             ).select2();
                         } else {
                             new_data.type = "warning";
