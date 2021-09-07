@@ -129,7 +129,7 @@
                                             <!-- <label class="control-label col-12" for="segmentation_ids">
                                                 Segmentation
                                             </label> -->
-                                            <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
+                                            <select id="segmentation_ids" data-select="allowed_segmentations" multiple="multiple" data-style="form-control o_pms_pwa_multiselect call_booking_engine" class="call_booking_engine w-100" data-live-search="true" name="segmentation_ids" title="Segmentation" />
                                             <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                                         </div>
                                         <div class="col-6">
