@@ -8,7 +8,7 @@
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header o_pms_pwa_modal_header">
-                    <h5 class="modal-title" id="multiChangeModalLabel">Modal multi cambios</h5>
+                    <h5 class="modal-title" id="multiChangeModalLabel">Modificar reservas seleccionadas</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span class="fa fa-times"></span>
                     </button>
@@ -143,7 +143,7 @@
                             </div>
                             <div class="col-4">
                                 <div class="btn-group modal-btn-position">
-                                    <button type="button" class="btn bg-modal-action rounded-circle" data-toggle="modal" data-target="#multiChangeModal">Abrir modal</button>
+                                    <button type="button" class="btn bg-modal-action rounded-circle" data-toggle="modal" data-target="#multiChangeModal">Modificar</button>
                                     <button type="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <span class="sr-only">Acciones</span>
                                     </button>
