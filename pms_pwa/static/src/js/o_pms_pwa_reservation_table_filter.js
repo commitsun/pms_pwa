@@ -38,7 +38,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         var form_object = {};
         $.each(formData, function (i, v) {
             if (v.value != "false") {
-                form_object[v.name] = v.value;
+                if (v.name in form_object) {
+                    if(typeof form_object[v.name] == 'object') {
+                        form_object[v.name].push(v.value);
+                    } else {
+                        form_object[v.name] = [form_object[v.name]];
+                        form_object[v.name].push(v.value);
+                    }
+                } else {
+                    form_object[v.name] = v.value;
+                }
             }
         });
         return form_object;
