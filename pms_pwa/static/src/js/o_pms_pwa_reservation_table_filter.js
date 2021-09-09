@@ -193,6 +193,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 values.checkin = $('input[name="checkin"]').val();
                 values.checkout = $('input[name="checkout"]').val();
             }
+            if(values.agrupation_type != "room_type"){
+                values.sale_category_id = "1"
+            }
 
             if (
                 ($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown
@@ -506,9 +509,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     $("form#booking_engine_form .price_total").html(
                                         parseFloat(total_price).toFixed(2) + "€"
                                     );
-                                    $("form#booking_engine_form .price_taxes").html(
-                                        (parseFloat(total_price) * 0.1).toFixed(2) + "€"
-                                    );
+                                    // $("form#booking_engine_form .price_taxes").html(
+                                    //     (parseFloat(total_price) * 0.1).toFixed(2) + "€"
+                                    // );
                                 });
                             }
                             $("form#booking_engine_form .form_booking_engine_group").on(
@@ -608,6 +611,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         } else {
                                             if(values['agrupation_type'] != "room_type"){
                                                 values.sale_category_id = "5"; //revisar
+                                            }else{
+                                                values.sale_category_id = "";
                                             }
                                         }
                                         if (
@@ -637,9 +642,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         $("form#booking_engine_form .price_total").html(
                                             parseFloat(total_price).toFixed(2) + "€"
                                         );
-                                        $("form#booking_engine_form .price_taxes").html(
-                                            (parseFloat(total_price) * 0.1).toFixed(2) + "€"
-                                        );
+                                        // $("form#booking_engine_form .price_taxes").html(
+                                        //     (parseFloat(total_price) * 0.1).toFixed(2) + "€"
+                                        // );
                                     }
                                 }
                             );
@@ -730,6 +735,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     } else {
                                         if(values['agrupation_type'] != "room_type"){
                                             send_value.sale_category_id = "5"; //revisar
+                                        }else{
+                                            send_value.sale_category_id = "";
                                         }
                                     }
                                     if (
@@ -858,6 +865,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         } else {
             if(values['agrupation_type'] != "room_type"){
                 send_value.sale_category_id = "5"; //revisar
+            }else{
+                send_value.sale_category_id = "";
             }
         }
         if (

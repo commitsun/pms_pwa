@@ -178,14 +178,14 @@
                                     <div class="o_pms_pwa_shadow mt-3">
                                         <div class="row">
                                             <div class="col-6">
-                                                <div class="row mx-2">
+                                                <!-- <div class="row mx-2">
                                                     <div class="o_pms_pwa_total_title col-12">
                                                         <h4>Impuestos</h4>
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12">
                                                         <strong  class="price_taxes" >0</strong>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="col-6">
                                                 <div class="row mx-2">
