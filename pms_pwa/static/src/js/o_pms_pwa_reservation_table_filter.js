@@ -515,7 +515,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 "click",
                                 function (e) {
                                     e.preventDefault();
-                                    console.log("lanzamos tras +-");
+
                                     var event = e.currentTarget;
                                     var send_value = {};
                                     var send_rooms = [];
@@ -530,7 +530,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         "form#booking_engine_form"
                                     ).serializeArray();
                                     values = form_to_json(values);
-                                    console.log("numero de habitaciones", num_rooms);
+
                                     if (num_rooms > 0) {
 
                                         for (
@@ -538,7 +538,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             i < parseInt(num_rooms);
                                             i++
                                         ) {
-                                            console.log("Temenos habs", values);
+
                                             if(values[
                                                 "rooms["+event.getAttribute("data-id")+"][" +
                                                     i +
@@ -564,7 +564,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 });
                                             }
                                         }
-                                        console.log("values -->", values);
+
                                         send_value = {
                                             id: event.getAttribute("data-id"),
                                             checkin: event.getAttribute("data-checkin"),
@@ -647,7 +647,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 "change",
                                 "select.call_booking_engine_group",
                                 function (e) {
-                                    console.log("lanzamos con el cambio de habitación");
+
                                     e.preventDefault();
                                     var event = e.currentTarget;
                                     var send_value = {};
@@ -876,7 +876,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             send_value
         ).then(function (new_data) {
             if (new_data) {
-                console.log(new_data);
+
                 if (new_data.reservation_id) {
                     // Cierra modal
                     $(
@@ -884,14 +884,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     ).modal("toggle");
                     // abre modal
                     try{
-                        $("<td class='prueba o_pms_pwa_calendar_reservation' data-id='" + new_data.reservation_id + "'></td>").appendTo( "body" );
-                        console.log(td);
-                        td[0].click();
-                        td.remove();
+                        $("<td class='launch_modal' data-id='" + new_data.reservation_id + "'>Pincha aqui</td>").appendTo("table.launch_modal");
+                        var selector = "td[data-id=" +new_data.reservation_id +"]";
+                        setTimeout(function () {
+                            $(selector).click();
+                        }, 100);
 
                     } catch (error) {
                         console.log(error);
-                        //location.href = "/reservation/" + new_data.reservation_id;
+                        location.href = "/reservation/" + new_data.reservation_id;
                     }
                 } else {
                     new_data.type = "warning";
@@ -910,7 +911,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     $("#o_pms_pwa_new_reservation_modal").on("hidden.bs.modal", function () {
         $("form#booking_engine_form")[0].reset();
-        console.log("Entro al hacer reset");
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -934,7 +934,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     });
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
-        selector: "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation",
+        selector: "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
         ],
@@ -942,6 +942,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
                 "_onClickReservationButton",
             "click td.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
+            "click td.launch_modal": "_onClickReservationButton",
             "click .o_pms_pwa_button_assign": "_onClickAssingButton",
             "click tbody > tr > td:not(:last-child) a": "_onClickNotLastChildA",
             "click .o_pms_pwa_button_checkin": "_onClickCheckinButton",
@@ -2167,7 +2168,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             } catch (error) {
                 reservation_id = button.getAttribute("data-id");
             }
-            console.log(reservation_id);
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (data) {
