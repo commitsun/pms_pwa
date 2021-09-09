@@ -366,7 +366,7 @@ class BookingEngine(http.Controller):
                     rooms_dict.append(
                         {
                             "preferred_room_id": {'id': free_rooms[i].id, 'name': free_rooms[i].display_name},
-                            "room_type_id": sale_category_id if sale_category_id else free_rooms[i].room_type_id,
+                            "room_type_id": sale_category_id if sale_category_id else free_rooms[i].room_type_id.id,
                             "checkin": checkin,
                             "checkout": checkout,
                             "adults": free_rooms[i].capacity,

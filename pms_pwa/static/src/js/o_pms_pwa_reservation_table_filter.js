@@ -116,7 +116,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 ajax.jsonRpc("/booking_engine", "call", values).then(function (
                     new_data
                 ) {
-                    var total_price = 0;
+
                     setTimeout(function () {
                         if (new_data && new_data.result != "error") {
                             if (new_data["agrupation_type"] == "room_type") {
@@ -230,7 +230,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         '\').stepDown(1);" data-target="#collapseme' +
                                         i +
                                         '">-</button>' +
-                                        '<input name="count_rooms_selected" class="num-control" id="groupquantity' +
+                                        '<input disabled="disabled" name="count_rooms_selected" class="num-control" id="groupquantity' +
                                         i +
                                         '" type="number" min="0" max="' +
                                         groups[i].max_rooms +
@@ -262,7 +262,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         '">+</button>' +
                                         "</td>" +
                                         '<td class="col-4">' +
-                                        'Precio <span id="price' +
+                                        'Precio <span class="price_group" id="price' +
                                         i +
                                         '">' +
                                         groups[i].price_per_group +
@@ -339,7 +339,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             send_value["pricelist_id"] +
                                             " data-board_service_room_id=" +
                                             send_value["board_service_room_id"] +
-                                            ' class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" name="rooms[' +
+                                            ' class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" name="rooms['+send_value["id"]+'][' +
                                             i +
                                             '][preferred_room_id]">' +
                                             seloption +
@@ -350,7 +350,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             '<button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById(\'quantity' +
                                             i +
                                             "').stepDown(1)\">-</button>" +
-                                            '<input name="rooms[' +
+                                            '<input name="rooms['+send_value["id"]+'][' +
                                             i +
                                             '][adults]" class="num-control" value=' +
                                             new_data["rooms"][i]["adults"] +
@@ -359,14 +359,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             '" type="number" min="1" max="' +
                                             new_data["rooms"][i]["max_adults"] +
                                             '" />' +
-                                            '<input name="rooms[' +
+                                            '<input name="rooms['+send_value["id"]+'][' +
                                             i +
                                             '][room_type_id]" value=' +
                                             new_data["rooms"][i]["room_type_id"] +
                                             ' id="quantity' +
                                             i +
                                             '" type="hidden"/>' +
-                                            '<input name="rooms[' +
+                                            '<input name="rooms['+send_value["id"]+'][' +
                                             i +
                                             '][price_per_room]" value=' +
                                             new_data["rooms"][i]["price_per_room"] +
@@ -381,27 +381,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
                                     html += "</table>";
                                     $(new_values).html(html);
-                                    // precios
-                                    total_price =
-                                        total_price + new_data["price_per_group"];
-                                    $("form#booking_engine_form .price_total").html(
-                                        total_price.toFixed(2) + "€"
-                                    );
-                                    $("form#booking_engine_form .price_taxes").html(
-                                        (total_price * 0.1).toFixed(2) + "€"
-                                    );
+                                    // precio grupo
                                     $(price_per_group).html(
                                         new_data["price_per_group"].toFixed(2) + "€"
                                     );
-                                    // for(const a in )
-                                    // } else {
-                                    //     new_data.type = "warning";
-                                    //     var alert_div = $(".o_pms_pwa_roomdoo_alerts");
-                                    //     var alert = core.qweb.render("pms_pwa.reservation_alerts", {
-                                    //         alert: new_data,
-                                    //     });
-                                    //     alert_div.append(alert);
-                                    // }
+                                    //precio total grupos
+                                    var total_price = 0.0
+                                    var price_groups_elements = document.getElementsByClassName('price_group');
+                                    for (var i = 0; i < price_groups_elements.length; ++i) {
+                                        var item = price_groups_elements[i];
+                                        total_price = (parseFloat(total_price) + parseFloat(item.innerText.replace("€", ""))).toFixed(2);
+                                    }
+                                    $("form#booking_engine_form .price_total").html(
+                                        parseFloat(total_price).toFixed(2) + "€"
+                                    );
+                                    $("form#booking_engine_form .price_taxes").html(
+                                        (parseFloat(total_price) * 0.1).toFixed(2) + "€"
+                                    );
                                 });
                             }
                             $("form#booking_engine_form #form_booking_engine_group").on(
@@ -412,6 +408,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     var event = e.currentTarget;
                                     var send_value = {};
                                     var send_rooms = [];
+                                    var colapse_name = "#collapseme" + event.getAttribute("data-id");
                                     var name_input =
                                         "#groupquantity" +
                                         event.getAttribute("data-id");
@@ -422,99 +419,100 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         "form#booking_engine_form"
                                     ).serializeArray();
                                     values = form_to_json(values);
-                                    console.log(values);
-                                    for (
-                                        var i = 0;
-                                        i < parseInt(values.count_rooms_selected);
-                                        i++
-                                    ) {
-                                        if(values[
-                                            "rooms[" +
-                                                i +
-                                                "][preferred_room_id]"
-                                        ]){
-                                            send_rooms.push({
-                                                board_service_room_id: false,
-                                                checkin: event.getAttribute("data-checkin"),
-                                                checkout:
-                                                    event.getAttribute("data-checkout"),
-                                                preferred_room_id:
-                                                    values[
-                                                        "rooms[" +
-                                                            i +
-                                                            "][preferred_room_id]"
-                                                    ],
-                                                //'pms_property_id': event.getAttribute("data-pms_property_id"),
-                                                pricelist_id:
-                                                    event.getAttribute("data-pricelist_id"),
-                                                price_per_room: values["rooms[" + i + "][price_per_room]"],
-                                                adults: values["rooms[" + i + "][adults]"],
-                                                room_type_id: values["rooms[" + i + "][room_type_id]"],
-                                            });
-                                        }
-                                    }
-                                    send_value = {
-                                        id: event.getAttribute("data-id"),
-                                        checkin: event.getAttribute("data-checkin"),
-                                        checkout: event.getAttribute("data-checkout"),
-                                        count_rooms_selected: num_rooms,
-                                        pms_property_id:
-                                            event.getAttribute("data-pms_property_id"),
-                                        pricelist_id:
-                                            event.getAttribute("data-pricelist_id"),
-                                    };
-                                    if (
-                                        event.getAttribute("data-ubication_id") &&
-                                        event.getAttribute("data-ubication_id") !=
-                                            "false" &&
-                                        event.getAttribute("data-ubication_id") !=
-                                            "undefined"
-                                    ) {
-                                        send_value.ubication_id =
-                                            event.getAttribute("data-ubication_id");
-                                    }
-                                    if (
-                                        event.getAttribute("data-room_type_id") &&
-                                        event.getAttribute("data-room_type_id") !=
-                                            "false" &&
-                                        event.getAttribute("data-room_type_id") !=
-                                            "undefined"
-                                    ) {
-                                        send_value.room_type_id =
-                                            event.getAttribute("data-room_type_id");
-                                    }
-                                    if (
-                                        event.getAttribute("data-sale_category_id") &&
-                                        event.getAttribute("data-sale_category_id") !=
-                                            "false" &&
-                                        event.getAttribute("data-sale_category_id") !=
-                                            "undefined" &&
-                                        send_value.agrupation_type != "room_type"
-                                    ) {
-                                        send_value.sale_category_id =
-                                            event.getAttribute("data-sale_category_id");
-                                    } else {
-                                        if(send_value.agrupation_type != "room_type"){
-                                            send_value.sale_category_id = "5"; //revisar
-                                        }
-                                    }
-                                    if (
-                                        event.getAttribute("board_service_room_id") &&
-                                        event.getAttribute("board_service_room_id") !=
-                                            "false" &&
-                                        event.getAttribute("board_service_room_id") !=
-                                            "undefined"
-                                    ) {
-                                        send_value.board_service_room_id =
-                                            event.getAttribute("board_service_room_id");
-                                    }
-                                    if(send_rooms){
-                                        send_value.rooms = send_rooms
-                                    }
-                                    var colapse_name = "#collapseme" + send_value["id"];
+                                    console.log("numero de habitaciones", num_rooms);
                                     if (num_rooms > 0) {
-                                        $(colapse_name).collapse("show");
+
+                                        for (
+                                            var i = 0;
+                                            i < parseInt(num_rooms);
+                                            i++
+                                        ) {
+                                            console.log("Temenos habs", values);
+                                            if(values[
+                                                "rooms["+event.getAttribute("data-id")+"][" +
+                                                    i +
+                                                    "][preferred_room_id]"
+                                            ]){
+                                                send_rooms.push({
+                                                    board_service_room_id: false,
+                                                    checkin: event.getAttribute("data-checkin"),
+                                                    checkout:
+                                                        event.getAttribute("data-checkout"),
+                                                    preferred_room_id:
+                                                        values[
+                                                            "rooms["+event.getAttribute("data-id")+"][" +
+                                                                i +
+                                                                "][preferred_room_id]"
+                                                        ],
+                                                    //'pms_property_id': event.getAttribute("data-pms_property_id"),
+                                                    pricelist_id:
+                                                        event.getAttribute("data-pricelist_id"),
+                                                    price_per_room: values["rooms["+event.getAttribute("data-id")+"][" + i + "][price_per_room]"],
+                                                    adults: values["rooms["+event.getAttribute("data-id")+"][" + i + "][adults]"],
+                                                    room_type_id: values["rooms["+event.getAttribute("data-id")+"][" + i + "][room_type_id]"],
+                                                });
+                                            }
+                                        }
+                                        send_value = {
+                                            id: event.getAttribute("data-id"),
+                                            checkin: event.getAttribute("data-checkin"),
+                                            checkout: event.getAttribute("data-checkout"),
+                                            count_rooms_selected: num_rooms,
+                                            pms_property_id:
+                                                event.getAttribute("data-pms_property_id"),
+                                            pricelist_id:
+                                                event.getAttribute("data-pricelist_id"),
+                                        };
+                                        if (
+                                            event.getAttribute("data-ubication_id") &&
+                                            event.getAttribute("data-ubication_id") !=
+                                                "false" &&
+                                            event.getAttribute("data-ubication_id") !=
+                                                "undefined"
+                                        ) {
+                                            send_value.ubication_id =
+                                                event.getAttribute("data-ubication_id");
+                                        }
+                                        if (
+                                            event.getAttribute("data-room_type_id") &&
+                                            event.getAttribute("data-room_type_id") !=
+                                                "false" &&
+                                            event.getAttribute("data-room_type_id") !=
+                                                "undefined"
+                                        ) {
+                                            send_value.room_type_id =
+                                                event.getAttribute("data-room_type_id");
+                                        }
+                                        if (
+                                            event.getAttribute("data-sale_category_id") &&
+                                            event.getAttribute("data-sale_category_id") !=
+                                                "false" &&
+                                            event.getAttribute("data-sale_category_id") !=
+                                                "undefined" &&
+                                            values['agrupation_type'] != "room_type"
+                                        ) {
+                                            send_value.sale_category_id =
+                                                event.getAttribute("data-sale_category_id");
+                                        } else {
+                                            if(values['agrupation_type'] != "room_type"){
+                                                values.sale_category_id = "5"; //revisar
+                                            }
+                                        }
+                                        if (
+                                            event.getAttribute("board_service_room_id") &&
+                                            event.getAttribute("board_service_room_id") !=
+                                                "false" &&
+                                            event.getAttribute("board_service_room_id") !=
+                                                "undefined"
+                                        ) {
+                                            send_value.board_service_room_id =
+                                                event.getAttribute("board_service_room_id");
+                                        }
+                                        if(send_rooms){
+                                            send_value.rooms = send_rooms
+                                        }
                                         launchChanges(event, send_value);
+                                        $(colapse_name).collapse("show");
                                     } else {
                                         $(colapse_name).collapse("hide");
                                         $(price_per_group).html("0 €");
@@ -525,6 +523,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 "change",
                                 "select.call_booking_engine_group",
                                 function (e) {
+                                    console.log("lanzamos con el cambio de habitación");
                                     e.preventDefault();
                                     var event = e.currentTarget;
                                     var send_value = {};
@@ -532,11 +531,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     var values = $(
                                         "form#booking_engine_form"
                                     ).serializeArray();
+                                    var name_input =
+                                    "#groupquantity" +
+                                    event.getAttribute("data-parent_id");
+                                    var num_rooms = $(name_input).val();
                                     values = form_to_json(values);
-                                    console.log("-->", values);
+
                                     for (
                                         var i = 0;
-                                        i < parseInt(values.count_rooms_selected);
+                                        i < parseInt(num_rooms);
                                         i++
                                     ) {
                                         send_rooms.push({
@@ -546,16 +549,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 event.getAttribute("data-checkout"),
                                             preferred_room_id:
                                                 values[
-                                                    "rooms[" +
+                                                    "rooms["+event.getAttribute("data-parent_id")+"][" +
                                                         i +
                                                         "][preferred_room_id]"
                                                 ],
                                             //'pms_property_id': event.getAttribute("data-pms_property_id"),
                                             pricelist_id:
                                                 event.getAttribute("data-pricelist_id"),
-                                            price_per_room: values["rooms[" + i + "][price_per_room]"],
-                                            adults: values["rooms[" + i + "][adults]"],
-                                            room_type_id: values["rooms[" + i + "][room_type_id]"],
+                                            price_per_room: values["rooms["+event.getAttribute("data-parent_id")+"][" + i + "][price_per_room]"],
+                                            adults: values["rooms["+event.getAttribute("data-parent_id")+"][" + i + "][adults]"],
+                                            room_type_id: values["rooms["+event.getAttribute("data-parent_id")+"][" + i + "][room_type_id]"],
                                         });
                                     }
 
@@ -563,9 +566,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         id: event.getAttribute("data-parent_id"),
                                         checkin: event.getAttribute("data-checkin"),
                                         checkout: event.getAttribute("data-checkout"),
-                                        count_rooms_selected: event.getAttribute(
-                                            "data-count_rooms_selected"
-                                        ),
+                                        count_rooms_selected: num_rooms,
                                         pms_property_id:
                                             event.getAttribute("data-pms_property_id"),
                                         pricelist_id:
@@ -598,12 +599,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "false" &&
                                         event.getAttribute("data-sale_category_id") !=
                                             "undefined" &&
-                                        send_value.agrupation_type != "room_type"
+                                        values['agrupation_type'] != "room_type"
                                     ) {
                                         send_value.sale_category_id =
                                             event.getAttribute("data-sale_category_id");
                                     } else {
-                                        if(send_value.agrupation_type != "room_type"){
+                                        if(values['agrupation_type'] != "room_type"){
                                             send_value.sale_category_id = "5"; //revisar
                                         }
                                     }
@@ -647,28 +648,60 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
         }
     );
-
+    // Envío el formulario
     $("form#booking_engine_form").on("submit", function (e) {
         e.preventDefault();
         var event = e.currentTarget;
         var send_value = {};
         var send_rooms = [];
+        var recibed_rooms = [];
         var values = $("form#booking_engine_form").serializeArray();
-        values = form_to_json(values);
-        console.log("valores -->", values);
-        for (var i = 0; i < parseInt(values.count_rooms_selected); i++) {
-            send_rooms.push({
-                board_service_room_id: false,
-                checkin: values["checkin"],
-                checkout: values["checkout"],
-                preferred_room_id: values["rooms[" + i + "][preferred_room_id]"],
-                pricelist_id: values["pricelist_id"],
-                price_per_room: values["price_per_room"],
-                adults: values["rooms[" + i + "][adults]"],
-                room_type_id: values["rooms[" + i + "][room_type_id]"],
-            });
-        }
 
+        $.each(
+            values,
+            function (key,val) {
+
+                if(String(val['name']).search("rooms") == 0){
+                    var rooms_array = String(val['name']).split("[");
+                    rooms_array = rooms_array.slice(1);
+                    if(!recibed_rooms[String(rooms_array[0]).replace("]", "")]){
+                        recibed_rooms[String(rooms_array[0]).replace("]", "")] = {}
+                    }
+                    if(!recibed_rooms[String(rooms_array[0]).replace("]", "")][String(rooms_array[1]).replace("]", "")]){
+                        recibed_rooms[String(rooms_array[0]).replace("]", "")][String(rooms_array[1]).replace("]", "")] = {};
+                    }
+                    recibed_rooms[String(rooms_array[0]).replace("]", "")][String(rooms_array[1]).replace("]", "")][String(rooms_array[2]).replace("]", "")] = val['value'];
+                }
+        });
+        values = form_to_json(values);
+        var index = 0;
+        var count_rooms = 0;
+        $.each(recibed_rooms, function (room_key,room_val) {
+            if(room_val){
+                if(!send_rooms["rooms"]){
+                    send_rooms["rooms"] = [];
+                }
+                if(!send_rooms["rooms"][index]){
+                    send_rooms["rooms"][index] = [];
+                }
+                $.each(room_val, function(key,val){
+                    if(val){
+                        send_rooms["rooms"][index].push({
+                            board_service_room_id: false,
+                            checkin: values["checkin"],
+                            checkout: values["checkout"],
+                            preferred_room_id: val["preferred_room_id"],
+                            pricelist_id: values["pricelist_id"],
+                            price_per_room: val["price_per_room"],
+                            adults: val["adults"],
+                            room_type_id: val["room_type_id"],
+                        });
+                        count_rooms = count_rooms + 1;
+                    };
+                });
+                index = index + 1;
+            };
+        });
         send_value = {
             partner_id: false,
             partner_name: values["name"] || values['partner_name'],
@@ -676,11 +709,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             email: values["mail"] || "",
             checkin: values["checkin"],
             checkout: values["checkout"],
-            count_rooms_selected: values["count_rooms_selected"],
+            count_rooms_selected: count_rooms,
             pms_property_id: values["pms_property_id"] || "1",
             pricelist_id: values["pricelist_id"],
             reservation_type: values["reservation_type"],
-            rooms: send_rooms,
+            groups: send_rooms,
 
         };
         if (
@@ -701,11 +734,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             values["sale_category_id"] &&
             values["sale_category_id"] != "false" &&
             values["sale_category_id"] != "undefined" &&
-            send_value.agrupation_type != "room_type"
+            values['agrupation_type'] != "room_type"
         ) {
             send_value.sale_category_id = values["sale_category_id"];
         } else {
-            if(send_value.agrupation_type != "room_type"){
+            if(values['agrupation_type'] != "room_type"){
                 send_value.sale_category_id = "5"; //revisar
             }
         }
@@ -726,7 +759,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         ).then(function (new_data) {
             if (new_data) {
                 console.log(new_data);
-                if (new_data && new_data.id) {
+                if (new_data.id) {
                     /* We need to integrate this into the public widget */
                     location.href = "/reservation/" + new_data.id;
                 } else {

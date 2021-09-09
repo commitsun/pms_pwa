@@ -170,39 +170,7 @@
 
                                         <div class="col-12 mt-3">
                                             <table id="bookengine_table" class="table table-condensed">
-                                                <t t-esc="groups"></t>
-                                                <t t-foreach="groups" t-as="group">
-                                                    <tr>
-                                                        <td class="col-4">
-                                                            <t t-esc="group['name']"></t> <br />( disponibles <t t-esc="group['max_rooms']"></t> )
-                                                        </td>
-                                                        <td class="col-4">
-                                                            <button class="btn" t-attf-onclick="document.getElementById('groupquantity{{i}}').stepDown(1)" t-attf-data-target="#collapseme{{i}}">-</button>
-                                                            <input name="count_rooms_selected" class="num-control" t-attf-id="groupquantity{{i}}" type="number" min="0" t-attf-max="{{group['max_rooms']}}" />
-                                                            <button class="btn" t-attf-onclick="document.getElementById('groupquantity{{i}}').stepUp(1)" t-attf-data-target="#collapseme{{i}}">+</button>
-                                                        </td>
-                                                        <td class="col-4">
-                                                            Precio: <span t-attf-id="price{{i}}"><t t-esc="group['price_per_group']" /></span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr t-attf-id="collapseme{{i}}" class="collapse">
-                                                        <td class="col-8" colspan="2">
-                                                            <label class="control-label" for="preferred_room_id">
-                                                                Habitación
-                                                            </label>
-                                                            <select data-select="free_room_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id" />
-                                                        </td>
-                                                        <td class="col-4">
-                                                            <label class="control-label" for="adults">
-                                                                Adultos
-                                                            </label>
-                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepDown(1)">-</button>
-                                                            <input name="adults" class="num-control" t-attf-id="quantity{{i}}" type="number" min="1" max="max_adults" />
-                                                            <button class="btn" t-attf-onclick="document.getElementById('quantity{{i}}').stepUp(1)">+</button>
-                                                        </td>
 
-                                                    </tr>
-                                                </t>
                                             </table>
                                         </div>
 
