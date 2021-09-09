@@ -516,6 +516,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     } else {
                                         $(colapse_name).collapse("hide");
                                         $(price_per_group).html("0 €");
+                                        var total_price = 0.0
+                                        var price_groups_elements = document.getElementsByClassName('price_group');
+                                        for (var i = 0; i < price_groups_elements.length; ++i) {
+                                            var item = price_groups_elements[i];
+                                            total_price = (parseFloat(total_price) + parseFloat(item.innerText.replace("€", ""))).toFixed(2);
+                                        }
+                                        $("form#booking_engine_form .price_total").html(
+                                            parseFloat(total_price).toFixed(2) + "€"
+                                        );
+                                        $("form#booking_engine_form .price_taxes").html(
+                                            (parseFloat(total_price) * 0.1).toFixed(2) + "€"
+                                        );
                                     }
                                 }
                             );
