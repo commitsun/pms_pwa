@@ -21,6 +21,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         allowed_country_ids: "country_id",
         allowed_state_ids: "state_id",
         allowed_sale_category_ids: "sale_category_id",
+        allowed_amenity_ids: "amenity_ids",
     };
     const fields_to_avoid = ["primary_button", "secondary_buttons"];
     $("button.close > span.o_pms_pwa_tag_close").on("click", function (event) {
@@ -40,13 +41,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             if (v.value != "false") {
                 if (v.name in form_object) {
                     if(typeof form_object[v.name] == 'object') {
-                        form_object[v.name].push(v.value);
+                        if(form_object[v.name].indexOf(v.value) == -1){
+                            form_object[v.name].push(v.value);
+                        }
                     } else {
                         form_object[v.name] = [form_object[v.name]];
                         form_object[v.name].push(v.value);
                     }
                 } else {
-                    form_object[v.name] = v.value;
+                    if(v.name == "amenity_ids" || v.name == "segmentation_ids"){
+                        form_object[v.name] = [v.value];
+                    }else{
+                        form_object[v.name] = v.value;
+                    }
                 }
             }
         });
@@ -55,6 +62,86 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     /* reservation form */
     $("#button_reservation_modal").on("click", function (e) {
+        if (document.documentElement.lang === "es-ES") {
+            $('input[name="new_reservation_date_modal_reservation"]').daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        separator: " - ",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    opens: "left",
+                    showCustomRangeLabel: false,
+                },
+                function (start, end, label) {
+                    console.log("cargo el calendario",label);
+                    const start_date = new Date(start);
+                    var checkin_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    const end_date = new Date(end);
+                    var checkout_date = end_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
+
+                    let nights = 1;
+                    // Hours*minutes*seconds*milliseconds
+                    const oneDay = 24 * 60 * 60 * 1000;
+                    const firstDate = new Date(start);
+                    const secondDate = new Date(end);
+                    const diffDays = Math.round(
+                        Math.abs((firstDate - secondDate) / oneDay)
+                    );
+                    nights = diffDays - 1;
+                    $('input[name="nights"]').val(nights);
+                    // $("form#reservation_detail").submit();
+                }
+            );
+        } else {
+            $('input[name="new_reservation_date_modal_reservation"]').daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "MM/DD/YYYY",
+                        separator: " - ",
+                    },
+                    opens: "left",
+                    showCustomRangeLabel: false,
+                },
+                function (start, end, label) {
+                    console.log("cargo el calendario",label);
+                    const start_date = new Date(start);
+                    var checkin_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    const end_date = new Date(end);
+                    var checkout_date = end_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    $('input[name="checkin"]').val(checkin_date);
+                    $('input[name="checkout"]').val(checkout_date);
+                    let nights = 1;
+                    // Hours*minutes*seconds*milliseconds
+                    const oneDay = 24 * 60 * 60 * 1000;
+                    const firstDate = new Date(start);
+                    const secondDate = new Date(end);
+                    const diffDays = Math.round(
+                        Math.abs((firstDate - secondDate) / oneDay)
+                    );
+                    nights = diffDays - 1;
+                    $('input[name="nights"]').val(nights);
+                    // $("form#reservation_detail").submit();
+                }
+            );
+        }
         setTimeout(function () {
             const today = new Date();
             const tomorrow = new Date(today);
@@ -74,17 +161,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 .find("input[name='checkout']")
                 .val(checkout_date);
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation']")
+                .find("input[name='new_reservation_date_modal_reservation']")
                 .val(checkin_date + " - " + checkout_date);
             $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation']")
+                .find("input[name='new_reservation_date_modal_reservation']")
                 .trigger("change");
-        }, 500);
+        }, 100);
     });
 
     $("form#booking_engine_form").on(
         "change",
-        "input[name='range_check_date_modal_reservation'] ,select.call_booking_engine",
+        "input[name='new_reservation_date_modal_reservation'] ,select.call_booking_engine",
         function (event) {
             var values = $("form#booking_engine_form").serializeArray();
             values = form_to_json(values);
@@ -101,13 +188,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 // "room_numbers",
             ];
 
-            if (event.currentTarget.name == "range_check_date_modal_reservation") {
+            if (event.currentTarget.name == "new_reservation_date_modal_reservation") {
                 // let value_range_picker = event.currentTarget.value;
-
                 values.checkin = $('input[name="checkin"]').val();
                 values.checkout = $('input[name="checkout"]').val();
-            } else {
-                values[event.currentTarget.name] = event.currentTarget.value;
             }
 
             if (
@@ -134,17 +218,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 } catch (error) {
                                     console.log(error);
                                 }
-
-                                if (select.length != 0) {
-                                    select.empty();
-                                    if (
-                                        !new_data[relation_values[value]] &
-                                        (new_data[relation_values[value]] == 0)
-                                    ) {
-                                        select.append(
-                                            '<option value="" selected></option>'
-                                        );
-                                    }
+                                if(value == "allowed_amenity_ids"){
                                     $.each(
                                         new_data[value],
                                         function (subkey, subvalue) {
@@ -155,7 +229,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 var option = new Option(
                                                     subvalue["name"],
                                                     subvalue["id"],
-                                                    false,
+                                                    true,
                                                     true
                                                 );
                                             } else {
@@ -170,6 +244,43 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             select.append(option);
                                         }
                                     );
+                                }else{
+                                    if (select.length != 0) {
+                                        select.empty();
+                                        if (
+                                            !new_data[relation_values[value]] &
+                                            (new_data[relation_values[value]] == 0)
+                                        ) {
+                                            select.append(
+                                                '<option value="" selected></option>'
+                                            );
+                                        }
+                                        $.each(
+                                            new_data[value],
+                                            function (subkey, subvalue) {
+                                                if (
+                                                    subvalue["id"] ==
+                                                    new_data[relation_values[value]]
+                                                ) {
+                                                    var option = new Option(
+                                                        subvalue["name"],
+                                                        subvalue["id"],
+                                                        false,
+                                                        true
+                                                    );
+                                                } else {
+                                                    var option = new Option(
+                                                        subvalue["name"],
+                                                        subvalue["id"],
+                                                        false,
+                                                        false
+                                                    );
+                                                }
+                                                $(option).html(subvalue["name"]);
+                                                select.append(option);
+                                            }
+                                        );
+                                    }
                                 }
                                 delete new_data[value];
                             });
@@ -205,7 +316,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         ")" +
                                         "</td>" +
                                         '<td class="col-4">' +
-                                        '<button class="btn btn-o_pms_pwa_min_max" id="form_booking_engine_group" data-id="' +
+                                        '<button class="btn btn-o_pms_pwa_min_max form_booking_engine_group" data-id="' +
                                         i +
                                         '" data-checkin="' +
                                         new_data["checkin"] +
@@ -235,7 +346,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         '" type="number" min="0" max="' +
                                         groups[i].max_rooms +
                                         '" />' +
-                                        '<button class="btn btn-o_pms_pwa_min_max" id="form_booking_engine_group" data-id="' +
+                                        '<button class="btn btn-o_pms_pwa_min_max form_booking_engine_group" data-id="' +
                                         i +
                                         '" data-checkin="' +
                                         new_data["checkin"] +
@@ -400,7 +511,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     );
                                 });
                             }
-                            $("form#booking_engine_form #form_booking_engine_group").on(
+                            $("form#booking_engine_form .form_booking_engine_group").on(
                                 "click",
                                 function (e) {
                                     e.preventDefault();
@@ -453,6 +564,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 });
                                             }
                                         }
+                                        console.log("values -->", values);
                                         send_value = {
                                             id: event.getAttribute("data-id"),
                                             checkin: event.getAttribute("data-checkin"),
@@ -690,15 +802,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         var count_rooms = 0;
         $.each(recibed_rooms, function (room_key,room_val) {
             if(room_val){
-                if(!send_rooms["rooms"]){
-                    send_rooms["rooms"] = [];
-                }
-                if(!send_rooms["rooms"][index]){
-                    send_rooms["rooms"][index] = [];
-                }
                 $.each(room_val, function(key,val){
                     if(val){
-                        send_rooms["rooms"][index].push({
+                        send_rooms.push({
                             board_service_room_id: false,
                             checkin: values["checkin"],
                             checkout: values["checkout"],
@@ -725,7 +831,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             pms_property_id: values["pms_property_id"] || "1",
             pricelist_id: values["pricelist_id"],
             reservation_type: values["reservation_type"],
-            groups: send_rooms,
+            rooms: send_rooms,
 
         };
         if (
@@ -771,9 +877,22 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         ).then(function (new_data) {
             if (new_data) {
                 console.log(new_data);
-                if (new_data.id) {
-                    /* We need to integrate this into the public widget */
-                    location.href = "/reservation/" + new_data.id;
+                if (new_data.reservation_id) {
+                    // Cierra modal
+                    $(
+                        "div.o_pms_pwa_new_reservation_modal"
+                    ).modal("toggle");
+                    // abre modal
+                    try{
+                        $("<td class='prueba o_pms_pwa_calendar_reservation' data-id='" + new_data.reservation_id + "'></td>").appendTo( "body" );
+                        console.log(td);
+                        td[0].click();
+                        td.remove();
+
+                    } catch (error) {
+                        console.log(error);
+                        //location.href = "/reservation/" + new_data.reservation_id;
+                    }
                 } else {
                     new_data.type = "warning";
                     new_data.message = _t(
@@ -791,8 +910,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     $("#o_pms_pwa_new_reservation_modal").on("hidden.bs.modal", function () {
         $("form#booking_engine_form")[0].reset();
-
-        console.log("mmm");
+        console.log("Entro al hacer reset");
         const today = new Date();
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
@@ -804,21 +922,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             document.documentElement.lang,
             date_options
         );
-
-        $("form#single_reservation_form")
+        $("#o_pms_pwa_new_reservation_modal")
             .find("input[name='checkin']")
             .val(checkin_date);
-        $("form#single_reservation_form")
-            .find("input[name='checkout']")
-            .val(checkout_date);
-        $("form#multiple_reservation_form")
-            .find("input[name='checkin']")
-            .val(checkin_date);
-        $("form#multiple_reservation_form")
+        $("#o_pms_pwa_new_reservation_modal")
             .find("input[name='checkout']")
             .val(checkout_date);
         $("#o_pms_pwa_new_reservation_modal")
-            .find("input[name='range_check_date_modal_reservation']")
+            .find("input[name='new_reservation_date_modal_reservation']")
             .val(checkin_date + " - " + checkout_date);
     });
 

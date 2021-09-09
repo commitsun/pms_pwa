@@ -104,45 +104,6 @@ odoo.define("pms_pwa.sidebar", function () {
                     // $("form#reservation_detail").submit();
                 }
             );
-            $('input[name="range_check_date_modal_reservation_multi"]').daterangepicker(
-                {
-                    locale: {
-                        direction: "ltr",
-                        format: "DD/MM/YYYY",
-                        separator: " - ",
-                        applyLabel: "Aplicar",
-                        cancelLabel: "Cancelar",
-                    },
-                    opens: "left",
-                    showCustomRangeLabel: false,
-                },
-                function (start, end, label) {
-                    console.log(label);
-                    const start_date = new Date(start);
-                    var checkin_date = start_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    const end_date = new Date(end);
-                    var checkout_date = end_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    $('input[name="checkin"]').val(checkin_date);
-                    $('input[name="checkout"]').val(checkout_date);
-                    let nights = 1;
-                    // Hours*minutes*seconds*milliseconds
-                    const oneDay = 24 * 60 * 60 * 1000;
-                    const firstDate = new Date(start);
-                    const secondDate = new Date(end);
-                    const diffDays = Math.round(
-                        Math.abs((firstDate - secondDate) / oneDay)
-                    );
-                    nights = diffDays - 1;
-                    $('input[name="nights"]').val(nights);
-                    // $("form#reservation_detail").submit();
-                }
-            );
         } else {
             $(".o_pms_pwa_daterangepicker").daterangepicker(
                 {
@@ -173,45 +134,6 @@ odoo.define("pms_pwa.sidebar", function () {
                         direction: "ltr",
                         format: "MM/DD/YYYY",
                         separator: " - ",
-                    },
-                    opens: "left",
-                    showCustomRangeLabel: false,
-                },
-                function (start, end, label) {
-                    console.log(label);
-                    const start_date = new Date(start);
-                    var checkin_date = start_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    const end_date = new Date(end);
-                    var checkout_date = end_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    $('input[name="checkin"]').val(checkin_date);
-                    $('input[name="checkout"]').val(checkout_date);
-                    let nights = 1;
-                    // Hours*minutes*seconds*milliseconds
-                    const oneDay = 24 * 60 * 60 * 1000;
-                    const firstDate = new Date(start);
-                    const secondDate = new Date(end);
-                    const diffDays = Math.round(
-                        Math.abs((firstDate - secondDate) / oneDay)
-                    );
-                    nights = diffDays - 1;
-                    $('input[name="nights"]').val(nights);
-                    // $("form#reservation_detail").submit();
-                }
-            );
-            $('input[name="range_check_date_modal_reservation_multi"]').daterangepicker(
-                {
-                    locale: {
-                        direction: "ltr",
-                        format: "MM/DD/YYYY",
-                        separator: " - ",
-                        applyLabel: "Aplicar",
-                        cancelLabel: "Cancelar",
                     },
                     opens: "left",
                     showCustomRangeLabel: false,

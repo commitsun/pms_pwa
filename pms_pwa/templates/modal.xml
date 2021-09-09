@@ -74,7 +74,7 @@
                                             <label class="control-label col-12" for="checkin">
                                                 Check in
                                             </label>
-                                            <input class="form-control" type="text" name="range_check_date_modal_reservation" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                                            <input class="form-control" type="text" name="new_reservation_date_modal_reservation" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
                                             <input type="hidden" name="checkin" value="" />
                                             <input type="hidden" name="checkout" value="" />
                                             <span class="o_pms_pwa_calendar_icon">
@@ -162,7 +162,7 @@
                                             </select>
                                         </div>
                                         <div class="col-6">
-                                            <label class="control-label col-12" for="amenity_ids"  style="z-index: 1;">
+                                            <label class="control-label col-12" for="amenity_ids"  style="z-index: 1;margin-bottom: 1rem;">
                                                 Amenities
                                             </label>
                                             <select id="amenity_ids" data-select="allowed_amenity_ids" multiple="multiple" class="form-control o_pms_pwa_multiselect call_booking_engine" data-live-search="true" name="amenity_ids" />

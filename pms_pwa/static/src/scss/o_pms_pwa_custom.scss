@@ -816,5 +816,8 @@ table#bookengine_table{
     }
 }
 
-// Botones +-
+// Multiselect
+.form-control.select2-container .select2-choices{
+    padding-top: 1rem;
+}
 

@@ -96,7 +96,14 @@ class BookingEngine(http.Controller):
                     folio_values["mobile"] = agency.mobile
                 if agency.apply_pricelist:
                     folio_values["pricelist_id"] = agency.propert_product_pricelist.id
-
+            # prepare amenity ids
+            selected_amenity_ids = [int(item) for item in folio_values.get("amenity_ids")] if folio_values.get("amenity_ids") else []
+            selected_amenities = request.env["pms.amenity"].browse(selected_amenity_ids)
+            folio_values["amenity_ids"] = []
+            for amenity in selected_amenities:
+                folio_values["amenity_ids"].append(
+                    {'id': amenity.id, 'name': amenity.display_name}
+                )
             folio_values.update(self._get_allowed_selections_values(
                 pms_property=pms_property,
                 channel_type=request.env["pms.sale.channel"].browse(
@@ -109,7 +116,7 @@ class BookingEngine(http.Controller):
                     "checkin": checkin,
                     "checkout": checkout,
                     "pricelist_id": pricelist.id,
-                    "amenity_ids": [int(item) for item in folio_values.get("amenity_ids")] if folio_values.get("amenity_ids") else [],
+                    "amenity_ids": selected_amenities,
                     "pms_property_id": pms_property_id,
                     "agrupation_type": folio_values.get("agrupation_type"),
                     "active_groups": folio_values.get("groups"),
@@ -189,7 +196,7 @@ class BookingEngine(http.Controller):
                     reservations_dict.append(room)
         checkin = vals["checkin"]
         checkout = vals["checkout"]
-        amenity_ids = [item["id"] for item in vals["amenity_ids"]]
+        amenity_ids = vals["amenity_ids"]
         for group in groups:
             ubication_id = int(group.get("ubication_id")) or False
             room_type_id = int(group.get("room_type_id")) or False
@@ -463,28 +470,28 @@ class BookingEngine(http.Controller):
 
             # for group in groups:
             folio = request.env["pms.folio"].create(vals)
-            for group in folio_values.get("groups"):
-                for room in group['rooms']:
-                    reservation_vals = {
-                        "partner_name": vals["partner_name"],
-                        "email": vals.get("email") if vals.get("email") else False,
-                        "mobile": vals.get("mobile") if vals.get("mobile") else False,
-                        "partner_id": int(vals.get("partner_id")) if vals.get("partner_id") else False,
-                        "preferred_room_id": int(room["preferred_room_id"]),
-                        "room_type_id": int(room["room_type_id"]),
-                        "checkin": datetime.datetime.strptime(
-                            room["checkin"], get_lang(request.env).date_format
-                        ).date(),
-                        "checkout": datetime.datetime.strptime(
-                            room["checkout"], get_lang(request.env).date_format
-                        ).date(),
-                        "adults": int(room["adults"]),
-                        "pricelist_id": int(room["pricelist_id"]),
-                        "board_service_room_id": int(room["board_service_room_id"]) if room["board_service_room_id"] else False,
-                        "pms_property_id": pms_property.id,
-                        "folio_id": folio.id,
-                    }
-                    request.env['pms.reservation'].create(reservation_vals)
+            # for group in folio_values.get("groups"):
+            for room in folio_values.get("rooms"):
+                reservation_vals = {
+                    "partner_name": vals["partner_name"],
+                    "email": vals.get("email") if vals.get("email") else False,
+                    "mobile": vals.get("mobile") if vals.get("mobile") else False,
+                    "partner_id": int(vals.get("partner_id")) if vals.get("partner_id") else False,
+                    "preferred_room_id": int(room["preferred_room_id"]),
+                    "room_type_id": int(room["room_type_id"]),
+                    "checkin": datetime.datetime.strptime(
+                        room["checkin"], get_lang(request.env).date_format
+                    ).date(),
+                    "checkout": datetime.datetime.strptime(
+                        room["checkout"], get_lang(request.env).date_format
+                    ).date(),
+                    "adults": int(room["adults"]),
+                    "pricelist_id": int(room["pricelist_id"]),
+                    "board_service_room_id": int(room["board_service_room_id"]) if room["board_service_room_id"] else False,
+                    "pms_property_id": pms_property.id,
+                    "folio_id": folio.id,
+                }
+                request.env['pms.reservation'].create(reservation_vals)
             return {"result": "success", "reservation_id": folio.reservation_ids[0].id}
         except Exception as e:
             return {"result": "error", "message": str(e)}
