@@ -63,17 +63,18 @@ odoo.define("pms_pwa.calendar", function (require) {
         );
 
         var range_date = checkin_date + " - " + checkout_date;
-        var room = $(this).data("room");
+        var room = $(this).data("calendar-room");
         var pricelist = $(this).data("pricelist");
-        setTimeout(function () {
-            $('input[name="range_check_date_modal_reservation"]').val(range_date);
-            $('select[name="room_type"]').val(room);
-            $('select[name="pricelist"]').val(pricelist);
-            $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation']")
-                .trigger("change");
 
-        }, 300);
+        console.log("Habitación -->", room);
+        $('input[name="new_reservation_date_modal_reservation"]').val(range_date);
+        $('input[name="checkin"]').val(checkin_date);
+        $('input[name="checkout"]').val(checkout_date);
+        $('input[name="calendar_room"]').val(room);
+        $('select[name="pricelist"]').val(pricelist);
+        $("#o_pms_pwa_new_reservation_modal")
+            .find("input[name='new_reservation_date_modal_reservation']")
+            .trigger("change");
     });
     $(function () {
         if (document.documentElement.lang === "es-ES") {

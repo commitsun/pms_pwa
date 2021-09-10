@@ -200,10 +200,33 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             if (
                 ($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown
             ) {
+                console.log("event ->", event);
+                if($('input[name="calendar_room"]').val()){
+                    console.log($('input[name="calendar_room"]').val());
+                    var rooms = {
+                        board_service_room_id: false,
+                        checkin: values.checkin,
+                        checkout: values.checkout,
+                        preferred_room_id: $('input[name="calendar_room"]').val(),
+                        // pms_property_id': event.getAttribute("data-pms_property_id"),
+                        // pricelist_id: $('select[name="pricelist"]').val() || 1,
+                        adults: 1,
+                        // room_type_id:
+                        // price_per_room: values["rooms["+event.getAttribute("data-id")+"][" + i + "][price_per_room]"],
+                        // adults: values["rooms["+event.getAttribute("data-id")+"][" + i + "][adults]"],
+                        // room_type_id: values["rooms["+event.getAttribute("data-id")+"][" + i + "][room_type_id]"],
+                    };
+                    values.groups = [];
+                    values.groups['rooms'] = rooms;
+                    // launchChanges(event, values);
+                    $("#collapseme0").collapse("show");
+                    $('input[name="calendar_room"]').val();
+                }
+                console.log("envio-->", values);
                 ajax.jsonRpc("/booking_engine", "call", values).then(function (
                     new_data
                 ) {
-
+                    console.log("Recibo --->", new_data);
                     setTimeout(function () {
                         if (new_data && new_data.result != "error") {
                             if (new_data["agrupation_type"] == "room_type") {
@@ -919,6 +942,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     });
 
     $("#o_pms_pwa_new_reservation_modal").on("hidden.bs.modal", function () {
+        console.log("Estoy aqui");
         $("form#booking_engine_form")[0].reset();
         const today = new Date();
         const tomorrow = new Date(today);
