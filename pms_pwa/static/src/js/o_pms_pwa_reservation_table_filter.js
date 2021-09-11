@@ -201,6 +201,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 ($("#o_pms_pwa_new_reservation_modal").data("bs.modal") || {})._isShown
             ) {
                 console.log("event ->", event);
+                // Probar a lanzar la modal de +- si hay calendar_room
                 if($('input[name="calendar_room"]').val()){
                     console.log($('input[name="calendar_room"]').val());
                     var rooms = {
@@ -335,13 +336,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 for (const i in groups) {
                                     html +=
                                         "<tr>" +
-                                        '<td class="col-4">' +
+                                        '<td class="col-sm-4">' +
                                         groups[i].name +
                                         " (" +
                                         groups[i].max_rooms +
                                         ")" +
                                         "</td>" +
-                                        '<td class="col-4">' +
+                                        '<td class="col-sm-5">' +
                                         '<button class="btn btn-o_pms_pwa_min_max form_booking_engine_group" data-id="' +
                                         i +
                                         '" data-checkin="' +
@@ -367,7 +368,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         '\').stepDown(1);" data-target="#collapseme' +
                                         i +
                                         '">-</button>' +
-                                        '<input disabled="disabled" name="count_rooms_selected" class="num-control" id="groupquantity' +
+                                        '<input disabled="disabled" name="count_rooms_selected" class="o_pms_pwa_num-control" id="groupquantity' +
                                         i +
                                         '" type="number" min="0" max="' +
                                         groups[i].max_rooms +
@@ -398,8 +399,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         i +
                                         '">+</button>' +
                                         "</td>" +
-                                        '<td class="col-4">' +
-                                        'Precio <span class="price_group" id="price' +
+                                        '<td class="col-sm-3">' +
+                                        '<span class="price_group" id="price' +
                                         i +
                                         '">' +
                                         groups[i].price_per_group +
@@ -454,7 +455,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             }
                                         );
                                         html +=
-                                            '<tr><td class="col-7">' +
+                                            '<tr><td class="col-sm-7">' +
                                             '<label class="control-label" for="preferred_room_id">Habitación</label>' +
                                             '<select data-parent_id="' +
                                             send_value["id"] +
@@ -482,20 +483,20 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             seloption +
                                             "</select>" +
                                             "</td>" +
-                                            '<td class="col-5">' +
+                                            '<td class="col-sm-5 text-right align-middle">' +
                                             //'<label class="control-label" for="adults">Adultos</label>'+
                                             '<button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById(\'quantity' +
                                             i +
                                             "').stepDown(1)\">-</button>" +
                                             '<input name="rooms['+send_value["id"]+'][' +
                                             i +
-                                            '][adults]" class="num-control" value=' +
+                                            '][adults]" class="o_pms_pwa_num-control" value=' +
                                             new_data["rooms"][i]["adults"] +
                                             ' id="quantity' +
                                             i +
                                             '" type="number" min="1" max="' +
                                             new_data["rooms"][i]["max_adults"] +
-                                            '" />' +
+                                            '" disabled="disabled" />' +
                                             '<input name="rooms['+send_value["id"]+'][' +
                                             i +
                                             '][room_type_id]" value=' +

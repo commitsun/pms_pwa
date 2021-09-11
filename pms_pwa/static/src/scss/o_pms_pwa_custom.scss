@@ -749,38 +749,16 @@ h4.collapsed {
     }
 
 }
-table#bookengine_table{
-    .num-control {
-        width: 30px;
-        min-height: 30px !important;
-        height: 30px !important;
-        padding: 0.25rem 0.25rem;
-        margin:0.25rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: $white;
-        background-color: $theme-color-text;
-        background-clip: padding-box;
-        border: none !important;
-        border-radius: 20px;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        text-align: center;
-    }
-    .btn-o_pms_pwa_min_max {
-        background-color: $bg-theme-color;
-        border-radius: 20px;
-        height: 30px;
-        width: 30px;
-        text-align: center;
-        color: $dark;
+table#bookengine_table {
+    td{
+        border:none !important;
     }
     .control-label{
         padding-top: 0.15rem;
         padding-left: 1rem;
     }
     .call_booking_engine_group{
-        width: 200px;
+        max-width: 200px;
     }
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
@@ -793,6 +771,7 @@ table#bookengine_table{
     input[type=number] {
     -moz-appearance: textfield;
     }
+
 }
 .o_pms_pwa_shadow {
     box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.15);
@@ -822,3 +801,90 @@ table#bookengine_table{
 }
 
 .launch_modal{display: none;}
+// botones
+.o_pms_pwa_num-control {
+    width: 1.5rem;
+    min-height: 1.5rem !important;
+    height: 1.5rem !important;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1rem;
+    color: $white;
+    background-color: $theme-color-text;
+    background-clip: padding-box;
+    border: none !important;
+    border-radius: 1.5rem;
+    text-align: center;
+    padding: 0 !important;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-top: 0;
+    @media (max-width: 1830px) {
+        width: 1.25rem;
+        min-height: 1.25rem !important;
+        height: 1.25rem !important;
+        border-radius: 1.25rem;
+    }
+
+}
+.btn-o_pms_pwa_min_max {
+    background-color: $white;
+    border-color: $theme-color-text;;
+    border-radius: 1.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    text-align: center;
+    color: $theme-color-text;
+    padding: 0 !important;
+    // margin-top: -20px;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1rem;
+    margin-top: -3px;
+    @media (max-width: 1830px) {
+        width: 1.25rem;
+        height: 1.25rem !important;
+        border-radius: 1.25rem;
+    }
+}
+.o_pms_pwa_buttons_min_max {
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+    -moz-appearance: textfield;
+    }
+    label {
+        position: static !important;
+        margin: 0 !important;
+        display: block;
+        padding-left: 0.25rem !important;
+    }
+}
+// nuevos botones modal
+.o_pms_pwa_modal_header {
+    .o_pms_pwa_modal_buttons{
+        .o_pms_pwa_button_checkin{
+            background-image: linear-gradient(to right,  $theme-color-text 80%, #daf7fc);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 1.5rem;
+            font-weight: 600;
+            font-size: medium;
+            border-radius: 100px !important;
+            padding: 0.45rem 1.35rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .btn-secondary{
+            color: #FFFFFF;
+            background-color:  #3f4443;
+            border-color:  #3f4443;
+        }
+    }
+}

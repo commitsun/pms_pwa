@@ -32,7 +32,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="modal-title" id="modalLabel">New reservation</div>
+                        <div class="modal-title" id="modalLabel">Nueva reserva</div>
                         <button class="close" data-dismiss="modal">
                             <span>
                                 <span class="fa fa-times" />
@@ -74,7 +74,7 @@
                                     <div class="row mt-3">
                                         <div class="col-12">
                                             <label class="control-label col-12" for="checkin">
-                                                Check in
+                                                Fecha de entrada - Fecha de salida
                                             </label>
                                             <input class="form-control" type="text" name="new_reservation_date_modal_reservation" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
                                             <input type="hidden" name="checkin" value="" />
@@ -91,13 +91,13 @@
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="pricelist">
-                                                Pricelist
+                                                Tarifa
                                             </label>
                                             <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="pricelist_id" />
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="reservation_type">
-                                                Type
+                                                Tipo de habitación
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="reservation_type" >
                                                 <option name="reservation_type" value="normal">Normal</option>
@@ -111,13 +111,13 @@
                                     <div class="row mt-3">
                                         <div class="col-6">
                                             <label class="control-label col-12" for="agency_id">
-                                                Agency
+                                                Agencia
                                             </label>
                                             <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agency_id" />
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="channel_type_id">
-                                                Channel type
+                                                Canal
                                             </label>
                                             <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="channel_type_id" />
                                         </div>
@@ -127,14 +127,14 @@
 
                                         <div class="col-6">
                                             <label class="control-label col-12" for="segmentation_ids" style="z-index: 1;">
-                                                Segmentation
+                                                Segmentación
                                             </label>
                                             <select id="segmentation_ids" data-select="allowed_segmentations" multiple="multiple" class="form-control o_pms_pwa_multiselect"  data-live-search="true" name="segmentation_ids" title="Segmentation" />
                                             <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                                         </div>
                                         <div class="col-6">
                                             <label class="control-label col-12" for="board_service_room_id">
-                                                Board Service
+                                                Servicios habitación
                                             </label>
                                             <select data-select="allowed_board_services" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="board_service_room_id" />
                                         </div>
@@ -150,7 +150,7 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
-                                            <h4>Group</h4>
+                                            <h4>Grupos</h4>
                                         </div>
 
                                         <div class="col-6">

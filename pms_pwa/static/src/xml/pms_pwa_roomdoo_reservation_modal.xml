@@ -214,7 +214,7 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header o_pms_pwa_modal_header">
-                            <div class="col-12">
+                            <div class="col-sm-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
                                     <h4 class="col-6 modal-title">
                                         <t t-esc="texts.reservation_text || _t('Reserva')" />
@@ -228,14 +228,31 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-12 mt-1">
+                            <div class="col-sm-12 mt-1">
                                 <img t-if="reservation.agency_id and reservation.agency_id.id" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="80" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
                                 <span t-else="">
                                     <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
                                 </span>
                             </div>
+                            <div class="col-sm-12 mt-2">
+                                <div class="row o_pms_pwa_modal_buttons" t-if="reservation.primary_button">
+                                    <div class="col-sm-6">
+                                        <t t-raw="reservation.primary_button" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <span class="dropdown">
+                                            <a role="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" href="#" >Otras opciones</a>
+
+                                            <div class="dropdown-menu" aria-labelledby="dLabel">
+                                                <t t-raw="reservation.secondary_buttons" />
+                                            </div>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
+
                             <div class="o_pms_pwa_shadow">
                                 <div class="row">
                                     <div class="col-3 align-self-center">
@@ -291,7 +308,6 @@
                                 </div>
                                 <div t-if="reservation.unread_msg and reservation.unread_msg &gt; 0 and reservation.messages" class="row">
                                     <div class="col-12">
-
                                         <button class="btn o_pms_pwa_messages collapsed mt-2" aria-controls="#collapseMessages" data-target="#collapseMessages" type="button" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
                                             <span data-toggle="tooltip" t-att-title="texts.unread_text || _t('mensajes no leidos')" class="badge bg-red mr-2" t-att-data-original-title="texts.unread_text || _t('mensajes no leidos')">
                                                 <t t-esc="reservation.unread_msg" />
@@ -316,10 +332,38 @@
                             </div>
                             <!-- Form action needs to be updated with the real action -->
                             <form class="mt-2 o_pms_pwa_reservation_form" target="_self" t-att-action="'/reservation/'+reservation.id" method="post">
+
                                 <div class="form-group form-field mt8">
                                     <div class="row">
+                                        <div class="col-12">
+                                            <label class="control-label col-sm-12" for="checkin">
+                                                Fecha de entrada - Fecha de salida
+                                            </label>
+                                            <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ reservation.checkin }} - {{ reservation.checkout }}" />
+                                            <input type="hidden" name="checkin" t-att-value="reservation.checkin" />
+                                            <input type="hidden" name="checkout" t-att-value="reservation.checkout" />
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <!-- <span class="fa fa-calendar"/> -->
+                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
                                         <div class="col-sm-6">
-                                            <label class="control-label col-12" for="room_type_id">
+                                            <label class="control-label col-sm-12" for="preferred_room_id">
+                                                <t t-esc="texts.room_number_text || _t('Nº habitación')" />
+                                            </label>
+                                            <select
+                                                t-att-disabled='reservation.readonly_fields.indexOf("preferred_room_id") != -1 ? "disabled" : None'
+                                                t-att-required='reservation.required_fields.indexOf("preferred_room_id") != -1 ? "required" : None'
+                                                data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
+                                                <option t-foreach="reservation.room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id.id === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-sm-12" for="room_type_id">
                                                 <t t-esc="texts.room_type_text || _t('Tipo de habitación')" />
                                             </label>
                                             <select
@@ -330,6 +374,27 @@
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-3 o_pms_pwa_buttons_min_max">
+                                            <label class="control-label col-12" for="adults">
+                                                <t t-esc="texts.adults_number_text || _t('Adultos')" />
+                                            </label>
+                                            <button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('adults').stepDown(1)">-</button>
+                                            <input
+                                                disabled="disabled" class="o_pms_pwa_num-control" type="number" id="adults" name="adults" min="1" t-att-max="reservation.max_adults" t-att-value="reservation.adults" />
+                                            <button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('adults').stepUp(1)">+</button>
+                                        </div>
+                                        <div class="col-sm-3 o_pms_pwa_buttons_min_max">
+                                            <label class="control-label col-12" for="kids">
+                                                Niños
+                                            </label>
+                                            <button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('kids').stepDown(1)">-</button>
+                                            <input
+                                                disabled="disabled" class="o_pms_pwa_num-control" type="number" id="kids" name="kids" min="0" t-att-max="reservation.max_kids" t-att-value="reservation.kids || 0" />
+                                            <button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('kids').stepUp(1)">+</button>
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="pricelist_id">
@@ -344,110 +409,9 @@
                                                 </option>
                                             </select>
                                         </div>
+
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="preferred_room_id">
-                                                <t t-esc="texts.room_number_text || _t('Nº habitación')" />
-                                            </label>
-                                            <select
-                                                t-att-disabled='reservation.readonly_fields.indexOf("preferred_room_id") != -1 ? "disabled" : None'
-                                                t-att-required='reservation.required_fields.indexOf("preferred_room_id") != -1 ? "required" : None'
-                                                data-select="room_numbers" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
-                                                <option t-foreach="reservation.room_numbers" t-as="key" t-att-value="key.id" t-att-selected="reservation.preferred_room_id.id === key.id ? 'selected' : None">
-                                                    <t t-esc="key.name" />
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div class="col-6">
-                                            <!-- Modificar el botón para poner el primary-button que vendrá en controllers -->
-                                            <!-- <t t-if="reservation.primary_button">
-                                                    <t t-raw="reservation.primary_button"/>
-                                                </t>
-                                            -->
-                                            <div class="row o_pms_pwa_modal_buttons" t-if="reservation.primary_button">
-                                                <div class="col-6">
-                                                    <t t-raw="reservation.primary_button" />
-                                                </div>
-                                                <div class="col-6">
-                                                    <span class="dropdown">
-                                                        <a role="button" class="btn fa fa-ellipsis-v" data-toggle="dropdown" href="#" />
-                                                        <div class="dropdown-menu" aria-labelledby="dLabel">
-                                                            <t t-raw="reservation.secondary_buttons" />
-                                                        </div>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="adults">
-                                                <t t-esc="texts.adults_number_text || _t('Adultos')" />
-                                            </label>
-                                            <input
-                                                t-att-required='reservation.required_fields.indexOf("adults") != -1 ? "required" : None'
-                                                t-att-readonly='reservation.readonly_fields.indexOf("adults") != -1 ? "readonly" : None'
-                                                class="form-control" type="text" name="adults" t-att-value="reservation.adults" />
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="nights">
-                                                <t t-esc="texts.nights_number_text || _t('Noches')" />
-                                            </label>
-                                            <input
-                                                t-att-required='reservation.required_fields.indexOf("nights") != -1 ? "required" : None'
-                                                t-att-readonly='reservation.readonly_fields.indexOf("nights") != -1 ? "readonly" : None'
-                                                class="form-control" type="text" name="nights" t-att-value="reservation.nights" disabled="disabled" />
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-12">
-                                            <label class="control-label col-12" for="checkin">
-                                                Fecha de entrada - Fecha de salida
-                                            </label>
-                                            <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ reservation.checkin }} - {{ reservation.checkout }}" />
-                                            <input type="hidden" name="checkin" t-att-value="reservation.checkin" />
-                                            <input type="hidden" name="checkout" t-att-value="reservation.checkout" />
-                                            <span class="o_pms_pwa_calendar_icon">
-                                                <!-- <span class="fa fa-calendar"/> -->
-                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="arrival_hour">
-                                                <t t-esc="texts.check_in_time_text || _t('Hora de entrada')" />
-                                            </label>
-                                            <input
-                                                t-att-required='reservation.required_fields.indexOf("arrival_hour") != -1 ? "required" : None'
-                                                t-att-readonly='reservation.readonly_fields.indexOf("arrival_hour") != -1 ? "readonly" : None'
-                                                class="form-control" type="time" name="arrival_hour" t-att-value="reservation.arrival_hour" />
-                                        </div>
-                                        <div class="col-6">
-                                            <label class="control-label col-12" for="departure_hour">
-                                                <t t-esc="texts.check_out_time_text || _t('Hora de salida')" />
-                                            </label>
-                                            <input
-                                                t-att-required='reservation.required_fields.indexOf("departure_hour") != -1 ? "required" : None'
-                                                t-att-readonly='reservation.readonly_fields.indexOf("departure_hour") != -1 ? "readonly" : None'
-                                                class="form-control" type="time" name="departure_hour" t-att-value="reservation.departure_hour" />
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-sm-6">
-                                            <label class="control-label col-12" for="reservation_type">
-                                                <t t-esc="_t('Tipo de reserva')" />
-                                            </label>
-                                            <select
-                                                t-att-disabled='reservation.readonly_fields.indexOf("reservation_type") != -1 ? "disabled" : None'
-                                                t-att-required='reservation.required_fields.indexOf("reservation_type") != -1 ? "required" : None'
-                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
-                                                <option t-foreach="reservation.reservation_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.reservation_type === key.id ? 'selected' : None">
-                                                    <t t-esc="key.name" />
-                                                </option>
-                                            </select>
-                                        </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="board_service_room_id">
                                                 Servicios
@@ -461,7 +425,38 @@
                                                 </option>
                                             </select>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="nights">
+                                                <t t-esc="texts.nights_number_text || _t('Noches')" />
+                                            </label>
+                                            <input
+                                                t-att-required='reservation.required_fields.indexOf("nights") != -1 ? "required" : None'
+                                                t-att-readonly='reservation.readonly_fields.indexOf("nights") != -1 ? "readonly" : None'
+                                                class="form-control" type="text" name="nights" t-att-value="reservation.nights" disabled="disabled" />
+                                        </div>
                                     </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="arrival_hour">
+                                                <t t-esc="texts.check_in_time_text || _t('Hora de entrada')" />
+                                            </label>
+                                            <input
+                                                t-att-required='reservation.required_fields.indexOf("arrival_hour") != -1 ? "required" : None'
+                                                t-att-readonly='reservation.readonly_fields.indexOf("arrival_hour") != -1 ? "readonly" : None'
+                                                class="form-control" type="time" name="arrival_hour" t-att-value="reservation.arrival_hour" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="departure_hour">
+                                                <t t-esc="texts.check_out_time_text || _t('Hora de salida')" />
+                                            </label>
+                                            <input
+                                                t-att-required='reservation.required_fields.indexOf("departure_hour") != -1 ? "required" : None'
+                                                t-att-readonly='reservation.readonly_fields.indexOf("departure_hour") != -1 ? "readonly" : None'
+                                                class="form-control" type="time" name="departure_hour" t-att-value="reservation.departure_hour" />
+                                        </div>
+                                    </div>
+
                                     <div class="row mt-3">
                                         <!-- <div class="col-sm-6">
                                             <label class="control-label col-12" for="price_total">
@@ -470,7 +465,7 @@
                                             <input class="form-control" type="text" name="price_total" t-att-value="reservation.price_total" />
                                         </div> -->
                                         <div class="col-sm-12 mt-3">
-                                            <h4 data-toggle="collapse" data-target="#collapse_price_nights">
+                                            <h4 data-toggle="collapse" data-target="#collapse_price_nights" style="cursor: pointer;">
                                                 <i class="fa fa-pencil-square-o" aria-hidden="false" />
                                                 Precio/Noche
                                                 <i class="fa fa-angle-down rotate-icon" />
@@ -532,7 +527,7 @@
 
                                         <t t-foreach="reservation.service_ids" t-as="service">
                                             <input type="hidden" t-attf-name="o_pms_pwa_service_line_{{service}}" t-attf-value="{{service}}" />
-                                            <div class="col-12">
+                                            <div class="col-sm-12">
 
                                                 <div class="form-check" t-if="service_value.service_line_ids">
                                                     <input class="o_pms_pwa_checkbox" type="checkbox" checked="checked" t-att-data-service_id="service" t-attf-id="defaultCheck{{service}}" data-toggle='collapse' t-attf-data-target='#collapsediv{{service}}' aria-expanded="true" t-attf-aria-controls="collapsediv{{service}}" />
@@ -602,7 +597,7 @@
                                                     </label>
                                                 </div> -->
                                             </div>
-                                            <div class="col-12 mt-2">
+                                            <div class="col-sm-12 mt-2">
                                                 <div class="o_roomdoo_hide_show-services-more o_roomdoo_hide_show-more2" t-attf-data-service-id="{{service}}">Ver más</div>
                                             </div>
                                         </t>
@@ -625,8 +620,24 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="reservation_type">
+                                                <t t-esc="_t('Tipo de reserva')" />
+                                            </label>
+                                            <select
+                                                t-att-disabled='reservation.readonly_fields.indexOf("reservation_type") != -1 ? "disabled" : None'
+                                                t-att-required='reservation.required_fields.indexOf("reservation_type") != -1 ? "required" : None'
+                                                class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
+                                                <option t-foreach="reservation.reservation_types" t-as="key" t-att-value="key.id" t-att-selected="reservation.reservation_type === key.id ? 'selected' : None">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                    </div>
                                     <div class="row mt-4">
-                                        <div class="col-12">
+                                        <div class="col-sm-12">
                                             <select data-select="allowed_segmentations" multiple="true" data-style="form-control o_pms_pwa_multiselect" class="selectpicker w-100" data-live-search="true" name="segmentation_ids" title="Motivo viaje" />
                                         </div>
                                     </div>
@@ -636,7 +647,7 @@
 
                                     <div class="o_pms_pwa_shadow mt-3">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-sm-6">
                                                 <div class="row mx-2">
                                                     <div class="o_pms_pwa_total_title col-12">
                                                         <t t-esc="texts.total_text || _t('Precio total reserva')" />
@@ -651,7 +662,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-sm-6">
                                                 <div class="row mx-2">
                                                     <div class="o_pms_pwa_total_title col-12">
                                                         <t t-esc="texts.outstading_text || _t('Importe pendiente')" />
@@ -674,7 +685,7 @@
                                 </div>
 
                                 <div class="row mt-4" t-if="reservation.folio_internal_comment">
-                                    <div class="col-12">
+                                    <div class="col-sm-12">
                                         <h4>
                                             <t t-esc="texts.notes_text || _t('Observaciones')" />
                                         </h4>
