@@ -80,7 +80,6 @@ class BookingEngine(http.Controller):
             # Reservation type
             if not folio_values.get("reservation_type"):
                 folio_values["reservation_type"] = 'normal'
-
             # Channel and Agency
             # REVIEW: Avoid send 'false' to controller
             if folio_values.get("agency_id") and folio_values.get("agency_id") != "false":
@@ -96,6 +95,14 @@ class BookingEngine(http.Controller):
                     folio_values["mobile"] = agency.mobile
                 if agency.apply_pricelist:
                     folio_values["pricelist_id"] = agency.propert_product_pricelist.id
+            else:
+                channel_type = False
+                if folio_values.get("channel_type_id") and folio_values.get("channel_type_id") != "false":
+                    channel_type = request.env["pms.sale.channel"].browse(int(folio_values.get("channel_type_id")))
+                folio_values["channel_type_id"] = {
+                    "id": channel_type.id if channel_type else False,
+                    "name": channel_type.name if channel_type else False,
+                }
             # prepare amenity ids
             selected_amenity_ids = [int(item) for item in folio_values.get("amenity_ids")] if folio_values.get("amenity_ids") else []
             selected_amenities = request.env["pms.amenity"].browse(selected_amenity_ids)
@@ -107,7 +114,7 @@ class BookingEngine(http.Controller):
             folio_values.update(self._get_allowed_selections_values(
                 pms_property=pms_property,
                 channel_type=request.env["pms.sale.channel"].browse(
-                    folio_values.get("channel_type_id")
+                    folio_values["channel_type_id"]["id"]
                 )
             ))
             folio_values = self.check_incongruences(folio_values)
@@ -119,9 +126,17 @@ class BookingEngine(http.Controller):
                     "amenity_ids": selected_amenities,
                     "pms_property_id": pms_property_id,
                     "agrupation_type": folio_values.get("agrupation_type"),
-                    "active_groups": folio_values.get("groups"),
+                    "active_groups": folio_values.get("rooms"),
                 }
                 folio_values["groups"] = self.get_groups(vals)
+            # Parse sale_category_id
+            if folio_values.get("sale_category_id") and folio_values.get("sale_category_id") != "false":
+                room_type = request.env["pms.room.type"].browse(int(folio_values.get("sale_category_id")))
+                folio_values["sale_category_id"] = {
+                    "id": room_type.id,
+                    "name": room_type.name,
+                }
+
             _logger.info(folio_values)
 
             return folio_values
@@ -174,7 +189,7 @@ class BookingEngine(http.Controller):
                 if int(segmentation) not in [item["id"] for item in folio_values["allowed_segmentations"]]:
                     folio_values["segmentation_ids"].remove(segmentation)
         if folio_values.get("channel_type_id"):
-            if int(folio_values["channel_type_id"]) not in [item["id"] for item in folio_values["allowed_channel_type_ids"]]:
+            if int(folio_values["channel_type_id"]["id"]) not in [item["id"] for item in folio_values["allowed_channel_type_ids"]]:
                 folio_values["channel_type_id"] = False
         if folio_values.get("agency_id"):
             if int(folio_values["agency_id"]) not in [item["id"] for item in folio_values["allowed_agency_ids"]]:
@@ -190,36 +205,48 @@ class BookingEngine(http.Controller):
     def get_groups(self, vals):
         groups = self.get_header_groups(vals)
         reservations_dict = []
-        for group in groups:
-            if group.get("rooms"):
-                for room in group["rooms"]:
-                    reservations_dict.append(room)
+        # for group in groups:
+        # if group.get("rooms"):
+        for room in vals["active_groups"]:
+            reservations_dict.append(room)
         checkin = vals["checkin"]
         checkout = vals["checkout"]
         amenity_ids = vals["amenity_ids"]
         for group in groups:
-            ubication_id = int(group.get("ubication_id")) or False
-            room_type_id = int(group.get("room_type_id")) or False
+            group_ubication_id = group["ubication_id"]
+            group_room_type_id = group["room_type_id"]
             pricelist_id = int(vals["pricelist_id"])
             pms_property = request.env["pms.property"].browse(int(vals["pms_property_id"]))
             # First check de availability without amenity filters to keep previously selected rooms
             pms_property = pms_property.with_context(
                 checkin=checkin,
                 checkout=checkout,
-                ubication_id=ubication_id,
-                room_type_id=room_type_id,
+                ubication_id=group_ubication_id,
+                room_type_id=group_room_type_id,
                 pricelist_id=pricelist_id,
             )
             group_rooms = []
             for res_dict in reservations_dict:
-                room = request.env["pms.room"].browse(res_dict["preferred_room_id"])
+                room = request.env["pms.room"].browse(int(res_dict["preferred_room_id"]))
                 ubication_id = room.ubication_id.id if room.ubication_id else False
                 room_type_id = room.room_type_id.id if room.room_type_id else False
                 if (
-                    group["ubication_id"] == ubication_id
-                    and group["room_type_id"] == room_type_id
+                    (group_ubication_id and group_ubication_id == ubication_id)
+                    or (group_room_type_id and group_room_type_id == room_type_id)
+                    or (not group_ubication_id and not group_room_type_id)
                 ):
-                    group_rooms.append(res_dict)
+                    room_dict = {
+                        "preferred_room_id": {'id': room.id, 'name': room.display_name},
+                        "room_type_id": room_type_id if room_type_id else int(res_dict['room_type_id']),
+                        "checkin": checkin,
+                        "checkout": checkout,
+                        "adults": int(res_dict['adults']) if int(res_dict['adults']) < room.capacity else room.capacity,
+                        "max_adults": room.capacity,
+                        "pricelist_id": pricelist_id,
+                        "board_service_room_id": res_dict['board_service_room_id'],
+                        "price_per_room": res_dict['price_per_room'],
+                    }
+                    group_rooms.append(room_dict)
             if pms_property.availability < len(group_rooms):
                 to_del = len(group_rooms) - pms_property.availability
                 group_rooms = group_rooms[:to_del]
@@ -227,7 +254,7 @@ class BookingEngine(http.Controller):
             # and the selected rooms
             free_rooms = pms_property.free_room_ids.filtered(
                 lambda r: len(set(amenity_ids) - set(r.room_amenity_ids.ids)) == 0
-                and r.id not in [r["preferred_room_id"] for r in group_rooms]
+                and r.id not in [int(x["preferred_room_id"]['id']) for x in group_rooms]
             )
             free_room_ids = []
             if free_rooms:
@@ -235,7 +262,7 @@ class BookingEngine(http.Controller):
                     free_room_ids.append(
                         {
                             'id': room.id,
-                            'name': room.name
+                            'name': room.display_name
                         }
                     )
             group.update(
@@ -244,7 +271,7 @@ class BookingEngine(http.Controller):
                     "count_rooms_selected": len(group_rooms),
                     "max_rooms": pms_property.availability - len(group_rooms),
                     "free_room_ids": free_room_ids,
-                    "price_per_group": sum([item["price_per_room"] for item in group_rooms]),
+                    "price_per_group": sum([int(item["price_per_room"]) for item in group_rooms]),
                 }
             )
         return groups

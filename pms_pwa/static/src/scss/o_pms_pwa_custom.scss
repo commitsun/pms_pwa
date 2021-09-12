@@ -484,9 +484,17 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 h4.collapsed {
     cursor: pointer !important;
 }
+h4#price_nights{
+    cursor: pointer !important;
+    &:hover{
+        background-color: $bg-theme-color;
+
+    }
+}
 #collapse_price_nights {
     font-family: "Barlow Semi Condensed";
     font-size: 16px;
+
     table {
         border-collapse: collapse;
         border-spacing: 0.5rem;
@@ -806,7 +814,7 @@ table#bookengine_table {
     width: 1.5rem;
     min-height: 1.5rem !important;
     height: 1.5rem !important;
-    font-size: 1rem;
+    font-size: 15px !important;
     font-weight: 400;
     line-height: 1rem;
     color: $white;
@@ -840,7 +848,7 @@ table#bookengine_table {
     font-size: 1rem;
     font-weight: 600;
     line-height: 1rem;
-    margin-top: -3px;
+    margin-top: -4px;
     @media (max-width: 1830px) {
         width: 1.25rem;
         height: 1.25rem !important;

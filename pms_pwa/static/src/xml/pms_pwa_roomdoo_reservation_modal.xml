@@ -463,7 +463,7 @@
                                             <input class="form-control" type="text" name="price_total" t-att-value="reservation.price_total" />
                                         </div> -->
                                         <div class="col-sm-12 mt-3">
-                                            <h4 data-toggle="collapse" data-target="#collapse_price_nights" style="cursor: pointer;">
+                                            <h4 data-toggle="collapse" data-target="#collapse_price_nights" id="price_nights" >
                                                 <i class="fa fa-pencil-square-o" aria-hidden="false" />
                                                 Precio/Noche
                                                 <i class="fa fa-angle-down rotate-icon" />
