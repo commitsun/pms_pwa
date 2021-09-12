@@ -24,6 +24,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                 range_date: date_list,
                 selected_display: selected_display,
             }).then(function (data) {
+                console.log("recibo->>", data);
                 var html = core.qweb.render("pms_pwa.calendar_line", {
                     data_id: data_id,
                     obj_list: data.reservations,

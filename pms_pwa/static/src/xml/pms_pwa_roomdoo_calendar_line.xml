@@ -89,7 +89,7 @@
                             </t>
                             <t t-else="">
                                 <td class="o_pms_pwa_calendar_line_event o_pms_pwa_line_cell_content">
-                                    <button type="button" class="btn btn-add open-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
+                                    <button type="button" class="btn btn-add open-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" t-attf-data-price_per_room="{{ obj.room.price }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
                                 </td>
                             </t>
                         </t>

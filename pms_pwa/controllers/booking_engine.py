@@ -253,6 +253,7 @@ class BookingEngine(http.Controller):
         groups = []
         if vals.get("agrupation_type") == "all":
             groups = [{
+                "group_id": 0,
                 "name": "All",
                 "ubication_id": False,
                 "room_type_id": False,
@@ -265,6 +266,7 @@ class BookingEngine(http.Controller):
                 ("pms_property_ids", "=", False),
             ]):
                 groups.append({
+                    "group_id": room_type.id,
                     "name": room_type.name,
                     "ubication_id": False,
                     "room_type_id": room_type.id,
@@ -277,6 +279,7 @@ class BookingEngine(http.Controller):
                 ("pms_property_ids", "=", False),
             ]):
                 groups.append({
+                    "group_id": ubication.id,
                     "name": ubication.name,
                     "ubication_id": ubication.id,
                     "room_type_id": False,
