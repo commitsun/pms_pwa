@@ -126,6 +126,11 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/vendor/print.min.js"
             /> -->
+
+            <script
+                type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_partner_form.js"
+            />
         </xpath>
     </template>
 </odoo>
