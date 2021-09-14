@@ -210,7 +210,6 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                                     //count_rooms = count_rooms + 1;
                                 };
                             });
-                            index = index + 1;
                         };
                     });
                 }
@@ -669,11 +668,13 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 var num_rooms = $(name_input).val();
                 // console.log("num_rooms", num_rooms);
                 var send_value = self.pms_pwa_booking_engine_send_values(e);
-                if(event.getAttribute("data-add_room") == "1"){
-                    total_rooms = total_rooms + 1;
-                }else{
+                if(String(event.getAttribute("data-add_room")) == "0"){
                     total_rooms = total_rooms - 1;
+                    // delete send_value.rooms[-1];
                     send_value.rooms.splice(-1);
+                }
+                if(String(event.getAttribute("data-add_room")) == "1"){
+                    total_rooms = total_rooms + 1;
                 }
                 send_value.count_rooms_selected = num_rooms;
                 // console.log("send values --->", send_value);
