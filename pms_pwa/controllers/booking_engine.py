@@ -377,7 +377,7 @@ class BookingEngine(http.Controller):
             if count_rooms_selected < len(rooms_dict):
                 to_del = len(rooms_dict) - count_rooms_selected
                 for item in rooms_dict[len(rooms_dict) - to_del:]:
-                    free_rooms += request.env['pms.room'].browse(item['preferred_room_id'])
+                    free_rooms += request.env['pms.room'].browse(item['preferred_room_id']['id'])
                 rooms_dict = rooms_dict[:len(rooms_dict) - to_del]
             elif count_rooms_selected > len(rooms_dict):
                 to_add = count_rooms_selected - len(rooms_dict)
@@ -441,6 +441,8 @@ class BookingEngine(http.Controller):
             return {
                 "rooms": rooms_dict,
                 "free_rooms_dict": free_rooms_dict,
+                "room_type_id": room_type_id,
+                "ubication_id": ubication_id,
                 "price_per_group": sum([int(item["price_per_room"]) for item in rooms_dict]),
             }
         except Exception as e:

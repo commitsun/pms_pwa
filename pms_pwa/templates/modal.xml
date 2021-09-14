@@ -157,12 +157,14 @@
                                             <label class="control-label col-12" for="agrupation_type">
                                                 Agrupación
                                             </label>
-                                            <!-- <select readonly="readonly"  class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
                                                 <option name="agrupation_type" value="all" selected="selected">Todas</option>
                                                 <option name="agrupation_type" value="room_type">Tipo de habitación</option>
                                                 <option name="agrupation_type" value="ubication">Ubicación</option>
-                                            </select> -->
-                                            <input type="text" class="form-control" style="background-color: #c3c3c3c3;margin-left;text-transform: capitalize;" name="agrupation_type" value="all" readonly="readonly"></input>
+                                            </select>
+                                            <input type="hidden" value="" name="room_type_id"></input>
+                                            <input type="hidden" value="" name="ubication_id"></input>
+                                            <!-- <input type="text" class="form-control" style="background-color: #c3c3c3c3;margin-left;text-transform: capitalize;" name="agrupation_type" value="all" readonly="readonly"></input> -->
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="amenity_ids"  style="z-index: 1;margin-bottom: 1rem;">
