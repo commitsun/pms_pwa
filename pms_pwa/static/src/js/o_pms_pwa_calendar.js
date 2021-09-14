@@ -49,112 +49,42 @@ odoo.define("pms_pwa.calendar", function (require) {
         } catch (error) {
             console.error("Invalid format date");
         }
-        const date = new Date(date_string);
+        var date = new Date(date_string);
 
-        const tomorrow = new Date(date);
+        var tomorrow = new Date(date);
         tomorrow.setDate(tomorrow.getDate() + 1);
+        var room = $(this).data("calendar_room");
+        var pricelist = $(this).data("pricelist");
         var checkin_date = date.toLocaleDateString(
             document.documentElement.lang,
             date_options
         );
-
         var checkout_date = tomorrow.toLocaleDateString(
             document.documentElement.lang,
             date_options
         );
-
         var range_date = checkin_date + " - " + checkout_date;
-        var room = $(this).data("calendar-room");
-        var pricelist = $(this).data("pricelist");
-        if (document.documentElement.lang === "es-ES") {
-            $('input[name="new_reservation_date_modal_reservation"]').daterangepicker(
-                {
-                    locale: {
-                        direction: "ltr",
-                        format: "DD/MM/YYYY",
-                        separator: " - ",
-                        applyLabel: "Aplicar",
-                        cancelLabel: "Cancelar",
-                    },
-                    opens: "left",
-                    showCustomRangeLabel: false,
-                },
-                function (start, end, label) {
-                    console.log("cargo el calendario",label);
-                    const start_date = new Date(start);
-                    var checkin_date = start_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    const end_date = new Date(end);
-                    var checkout_date = end_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    $('input[name="checkin"]').val(checkin_date);
-                    $('input[name="checkout"]').val(checkout_date);
+        // $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').daterangepicker({
+        //     startDate: checkin_date,
+        //     endDate: checkout_date,
+        //     autoUpdateInput: true,
+        //     locale: {
+        //         direction: "ltr",
+        //         format: "DD/MM/YYYY",
+        //         separator: " - ",
+        //         applyLabel: "Aplicar",
+        //         cancelLabel: "Cancelar",
+        //     },
+        //     opens: "left",
+        //     showCustomRangeLabel: false,
+        // });
+        $('form#booking_engine_form input[name="calendar_room"]').val(room);
+        $('form#booking_engine_form select[name="pricelist"]').val(pricelist);
+        $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+        $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+        $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+        $("form#booking_engine_form").find("input[name='new_reservation_date_modal_reservation']").trigger("change");
 
-                    let nights = 1;
-                    // Hours*minutes*seconds*milliseconds
-                    const oneDay = 24 * 60 * 60 * 1000;
-                    const firstDate = new Date(start);
-                    const secondDate = new Date(end);
-                    const diffDays = Math.round(
-                        Math.abs((firstDate - secondDate) / oneDay)
-                    );
-                    nights = diffDays - 1;
-                    $('input[name="nights"]').val(nights);
-                    // $("form#reservation_detail").submit();
-                }
-            );
-        } else {
-            $('input[name="new_reservation_date_modal_reservation"]').daterangepicker(
-                {
-                    locale: {
-                        direction: "ltr",
-                        format: "MM/DD/YYYY",
-                        separator: " - ",
-                    },
-                    opens: "left",
-                    showCustomRangeLabel: false,
-                },
-                function (start, end, label) {
-                    console.log("cargo el calendario",label);
-                    const start_date = new Date(start);
-                    var checkin_date = start_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    const end_date = new Date(end);
-                    var checkout_date = end_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    $('input[name="checkin"]').val(checkin_date);
-                    $('input[name="checkout"]').val(checkout_date);
-                    let nights = 1;
-                    // Hours*minutes*seconds*milliseconds
-                    const oneDay = 24 * 60 * 60 * 1000;
-                    const firstDate = new Date(start);
-                    const secondDate = new Date(end);
-                    const diffDays = Math.round(
-                        Math.abs((firstDate - secondDate) / oneDay)
-                    );
-                    nights = diffDays - 1;
-                    $('input[name="nights"]').val(nights);
-                    // $("form#reservation_detail").submit();
-                }
-            );
-        }
-        // TODO: No tengo el precio de la habitación
-        $('input[name="new_reservation_date_modal_reservation"]').val(range_date);
-        $('input[name="checkin"]').val(checkin_date);
-        $('input[name="checkout"]').val(checkout_date);
-        $('input[name="calendar_room"]').val(room);
-        $('select[name="pricelist"]').val(pricelist);
-        $("#o_pms_pwa_new_reservation_modal")
-            .find("input[name='new_reservation_date_modal_reservation']")
-            .trigger("change");
     });
     $(function () {
         if (document.documentElement.lang === "es-ES") {

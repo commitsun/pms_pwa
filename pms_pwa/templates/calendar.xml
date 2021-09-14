@@ -22,6 +22,7 @@
                 <div class="col-9 o_pms_pwa_notification_list"/>
                 <a href="#" class="col-1 btn o_pms_pwa_btn_border o_pms_pwa_clear_all float-right">Aceptar todo</a>
             </div>
+            <div class="o_pms_pwa_roomdoo_alerts" />
             <div class="oe_structure o_pms_pwa_structure mt-4">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <!-- Calendar -->

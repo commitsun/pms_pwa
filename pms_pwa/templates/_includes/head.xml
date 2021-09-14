@@ -111,6 +111,10 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_partner_search.js"
             />
+            <script
+                type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_booking_engine.js"
+            />
 
             <script src="/pms_pwa/static/src/js/vendor/bs-stepper.min.js"></script>
             <script src="/pms_pwa/static/src/js/vendor/daterangepicker.js"></script>

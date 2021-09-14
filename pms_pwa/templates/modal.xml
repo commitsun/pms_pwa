@@ -48,7 +48,7 @@
                                 <div class="form-group form-field pb-3 ">
 
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-sm-12">
                                             <label class="control-label col-12" for="partner_name">
                                                 Nombre
                                             </label>
@@ -57,13 +57,13 @@
                                     </div>
 
                                     <div class="row mt-3">
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="mobile">
                                                 Teléfono
                                             </label>
                                             <input class="form-control" type="text" name="mobile" placeholder="Mobile" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="mail">
                                                 E-mail
                                             </label>
@@ -72,11 +72,11 @@
                                     </div>
 
                                     <div class="row mt-3">
-                                        <div class="col-12">
+                                        <div class="col-sm-12">
                                             <label class="control-label col-12" for="checkin">
                                                 Fecha de entrada - Fecha de salida
                                             </label>
-                                            <input class="form-control" type="text" name="new_reservation_date_modal_reservation" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                                            <input class="form-control call_booking_engine" type="text" name="new_reservation_date_modal_reservation"  />
                                             <input type="hidden" name="checkin" value="" />
                                             <input type="hidden" name="checkout" value="" />
                                             <span class="o_pms_pwa_calendar_icon">
@@ -89,18 +89,18 @@
                                         <div class="col-sm-12">
                                             <h4>Channel type and pricelist</h4>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="pricelist">
                                                 Tarifa
                                             </label>
                                             <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="pricelist_id" />
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="reservation_type">
                                                 Tipo de habitación
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="reservation_type" >
-                                                <option name="reservation_type" value="normal">Normal</option>
+                                                <option name="reservation_type" value="normal" selected="selected"> Normal</option>
                                                 <option name="reservation_type" value="staff">Staff</option>
                                                 <option name="reservation_type" value="out">Fuera de servicio</option>
                                             </select>
@@ -109,13 +109,13 @@
 
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="agency_id">
                                                 Agencia
                                             </label>
                                             <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agency_id" />
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="channel_type_id">
                                                 Canal
                                             </label>
@@ -125,14 +125,14 @@
                                     </div>
                                     <div class="row mt-3">
 
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="segmentation_ids" style="z-index: 1;">
                                                 Segmentación
                                             </label>
                                             <select id="segmentation_ids" data-select="allowed_segmentations" multiple="multiple" class="form-control o_pms_pwa_multiselect"  data-live-search="true" name="segmentation_ids" title="Segmentation" />
                                             <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="board_service_room_id">
                                                 Servicios habitación
                                             </label>
@@ -141,7 +141,7 @@
                                     </div>
 
                                     <div class="row mt-3 sale_category_id" >
-                                        <div class="col-12">
+                                        <div class="col-sm-12">
                                             <label class="control-label col-12" for="sale_category_id">
                                                 Sale category
                                             </label>
@@ -153,24 +153,24 @@
                                             <h4>Grupos</h4>
                                         </div>
 
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="agrupation_type">
                                                 Agrupación
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
-                                                <option name="agrupation_type" value="all">Todas</option>
+                                            <select disabled="disabled" readonly="readonly" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
+                                                <option name="agrupation_type" value="all" selected="selected">Todas</option>
                                                 <option name="agrupation_type" value="room_type">Tipo de habitación</option>
                                                 <option name="agrupation_type" value="ubication">Ubicación</option>
                                             </select>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <label class="control-label col-12" for="amenity_ids"  style="z-index: 1;margin-bottom: 1rem;">
                                                 Amenities
                                             </label>
                                             <select id="amenity_ids" data-select="allowed_amenity_ids" multiple="multiple" class="form-control o_pms_pwa_multiselect call_booking_engine" data-live-search="true" name="amenity_ids" />
                                         </div>
 
-                                        <div class="col-12 mt-3">
+                                        <div class="col-sm-12 mt-3">
                                             <table id="bookengine_table" class="table table-condensed">
 
                                             </table>
@@ -189,7 +189,7 @@
                                                     </div>
                                                 </div> -->
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-sm-6">
                                                 <div class="row mx-2">
                                                     <div class="o_pms_pwa_total_title col-12">
                                                         <h4>Total</h4>
@@ -203,9 +203,9 @@
                                     </div>
 
                                     <div class="row mt-3 mb-3">
-                                        <div class="col-12 text-center">
+                                        <div class="col-sm-12 text-center">
                                             <input type="hidden" name="id"/>
-                                            <button class="btn btn-message" id="o_pms_pwa_send_form">Guardar</button>
+                                            <a class="btn btn-message" id="o_pms_pwa_send_form">Guardar</a>
                                         </div>
                                     </div>
                                 </div>

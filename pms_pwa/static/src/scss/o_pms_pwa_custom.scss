@@ -842,12 +842,10 @@ table#bookengine_table {
     height: 1.5rem;
     width: 1.5rem;
     text-align: center;
-    color: $theme-color-text;
+    color: $theme-color-text !important;
     padding: 0 !important;
-    // margin-top: -20px;
     font-size: 1rem;
     font-weight: 600;
-    line-height: 1rem;
     margin-top: -4px;
     @media (max-width: 1830px) {
         width: 1.25rem;

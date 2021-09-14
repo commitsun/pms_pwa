@@ -130,12 +130,12 @@ class BookingEngine(http.Controller):
                 }
                 folio_values["groups"] = self.get_groups(vals)
             # Parse sale_category_id
-            if folio_values.get("sale_category_id") and folio_values.get("sale_category_id") != "false":
-                room_type = request.env["pms.room.type"].browse(int(folio_values.get("sale_category_id")))
-                folio_values["sale_category_id"] = {
-                    "id": room_type.id,
-                    "name": room_type.name,
-                }
+            # if folio_values.get("sale_category_id") and folio_values.get("sale_category_id") != "false":
+            #     room_type = request.env["pms.room.type"].browse(int(folio_values.get("sale_category_id")))
+            #     folio_values["sale_category_id"] = {
+            #         "id": room_type.id,
+            #         "name": room_type.name,
+            #     }
 
             _logger.info(folio_values)
 
@@ -270,7 +270,7 @@ class BookingEngine(http.Controller):
                     "rooms": group_rooms,
                     "count_rooms_selected": len(group_rooms),
                     "max_rooms": pms_property.availability - len(group_rooms),
-                    "free_room_ids": free_room_ids,
+                    "free_rooms_dict": free_room_ids,
                     "price_per_group": sum([int(item["price_per_room"]) for item in group_rooms]),
                 }
             )
