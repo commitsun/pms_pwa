@@ -16,16 +16,11 @@
                     <div class="modal-body">
                         <form class="mt-2 o_pms_pwa_partner_form" id="partner_form" target="_self" action="/new_partner" method="post" enctype="multipart/form-data">
                             <div class="form-group form-field mt8">
-                                <!-- <div class="row">
-                                    <div class="col-12">
-                                        <label class="control-label col-6" for="image">
-                                            Nueva imagen
-                                        </label>
-                                        <input class="form-control"  name="image" type="file" accept="image/*"/>
-                                    </div>
-                                </div> -->
 
                                 <div class="row mt-3">
+                                    <div class="col-sm-12">
+                                        <h4>Datos personales</h4>
+                                    </div>
                                     <div class="col-sm-6">
                                         <label class="control-label col-6" for="firstname">
                                             Nombre
@@ -51,25 +46,38 @@
                                             class="form-control" type="text" name="lastname2" t-att-value="partner.lastname2 or none" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <label class="control-label col-6" for="gender">
-                                            Género
+                                        <label class="control-label col-6" for="vat">
+                                            NIF
                                         </label>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="gender">
-                                            <option name="gender" value="" t-att-selected="partner.gender == false ? 'selected' : None"></option>
-                                            <option name="gender" value="male" t-att-selected="partner.gender == 'male' ? 'selected' : None">
-                                                Hombre
-                                            </option>
-                                            <option name="gender" value="female" t-att-selected="partner.gender == 'female' ? 'selected' : None">
-                                                Mujer
-                                            </option>
-                                            <option name="gender" value="other" t-att-selected="partner.gender == 'other' ? 'selected' : None">
-                                                Otro
-                                            </option>
-                                        </select>
+                                        <input
+                                            class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
+                                    <div class="col-sm-12">
+                                        <h4>Datos de contacto</h4>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label col-6" for="email">
+                                            E-mail
+                                        </label>
+                                        <input
+                                            class="form-control" type="text" name="email" t-att-value="partner.email or none" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="control-label col-6" for="mobile">
+                                            Móvil
+                                        </label>
+                                        <input
+                                            class="form-control" type="text" name="mobile" t-att-value="partner.mobile or none" />
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-sm-12">
+                                        <h4>Otros datos</h4>
+                                    </div>
                                     <div class="col-sm-6">
                                         <label class="control-label col-6" for="nationality_id">
                                             Nacionalidad
@@ -98,34 +106,38 @@
                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                         </span>
                                     </div>
+
+                                    <div class="col-sm-6 mt-3">
+                                        <label class="control-label col-6" for="gender">
+                                            Género
+                                        </label>
+                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="gender">
+                                            <option name="gender" value="" t-att-selected="partner.gender == false ? 'selected' : None"></option>
+                                            <option name="gender" value="male" t-att-selected="partner.gender == 'male' ? 'selected' : None">
+                                                Hombre
+                                            </option>
+                                            <option name="gender" value="female" t-att-selected="partner.gender == 'female' ? 'selected' : None">
+                                                Mujer
+                                            </option>
+                                            <option name="gender" value="other" t-att-selected="partner.gender == 'other' ? 'selected' : None">
+                                                Otro
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="email">
-                                            E-mail
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="email" t-att-value="partner.email or none" />
+                                    <div class="col-sm-12">
+                                        <h4>Localización</h4>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="mobile">
-                                            Móvil
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="mobile" t-att-value="partner.mobile or none" />
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <label class="control-label col-6" for="street">
                                             Dirección
                                         </label>
                                         <input
                                             class="form-control" type="text" name="street" t-att-value="partner.street or none" />
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12 mt-3">
                                         <label class="control-label col-9" for="street2">
                                             Dirección (segunda línea)
                                         </label>
@@ -175,13 +187,7 @@
                                 </div>
 
                                 <div class="row mt-3">
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="vat">
-                                            NIF
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
-                                    </div>
+
                                     <div class="col-sm-6">
                                         <label class="control-label col-6" for="zip">
                                             CP
