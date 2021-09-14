@@ -175,7 +175,7 @@ class BookingEngine(http.Controller):
         ]
         # Board services
         allowed_board_services = room_types.mapped("board_service_room_type_ids.pms_board_service_id.id")
-        selection_fields["allowed_board_services"] = [{"id": False, "name": ""}]
+        selection_fields["allowed_board_services"] = []
         selection_fields["allowed_board_services"].extend([{"id": board.id, "name": board.name} for board in request.env[
             "pms.board.service"
         ].browse(allowed_board_services)])
