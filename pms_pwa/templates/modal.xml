@@ -162,7 +162,7 @@
                                                 <option name="agrupation_type" value="room_type">Tipo de habitación</option>
                                                 <option name="agrupation_type" value="ubication">Ubicación</option>
                                             </select> -->
-                                            <input type="text" class="form-control" style="background-color: #c3c3c3c3;margin-left" name="agrupation_type" value="all" readonly="readonly"></input>
+                                            <input type="text" class="form-control" style="background-color: #c3c3c3c3;margin-left;text-transform: capitalize;" name="agrupation_type" value="all" readonly="readonly"></input>
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="amenity_ids"  style="z-index: 1;margin-bottom: 1rem;">
