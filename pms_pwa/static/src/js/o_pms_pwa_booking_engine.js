@@ -728,8 +728,11 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                         ).modal("toggle");
                         // abre modal
                         try{
+                            var selector = "td[data-id=" + new_data.reservation_id +"]";
+                            if($(selector)){
+                                $(selector).remove();
+                            }
                             $("<td class='launch_modal' data-id='" + new_data.reservation_id + "'>Pincha aqui</td>").appendTo("table.launch_modal");
-                            var selector = "td[data-id=" +new_data.reservation_id +"]";
                             setTimeout(function () {
                                 $(selector).click();
                             }, 100);
@@ -738,6 +741,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                             console.log(error);
                             location.href = "/reservation/" + new_data.reservation_id;
                         }
+
                     }else{
                         self.pms_pwa_booking_engine_display_alert(new_data);
                     }

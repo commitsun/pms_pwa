@@ -1045,22 +1045,24 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 var modal_reservation_id = new_event.currentTarget
                                     .closest("tr")
                                     .getAttribute("data-id");
-                                // cierro modal
-                                $("div.o_pms_pwa_reservation_modal").modal("toggle");
-                                // abro modal
-                                try {
-                                    var selector =
-                                        "td[data-id=" + modal_reservation_id + "]";
-                                    var test = $(selector);
-                                    if (test.length != 0) {
-                                        $(selector).click();
-                                    } else {
-                                        var selector =
-                                            "tr[data-id=" + modal_reservation_id + "]";
-                                        $(selector).find("td.first-col").click();
+                                // Cierra modal
+                                $(
+                                    "div.o_pms_pwa_reservation_modal"
+                                ).modal("toggle");
+                                // abre modal
+                                try{
+                                    var selector = "td[data-id=" + modal_reservation_id +"]";
+                                    if($(selector)){
+                                        $(selector).remove();
                                     }
+                                    $("<td class='launch_modal' data-id='" + modal_reservation_id + "'>Pincha aqui</td>").appendTo("table.launch_modal");
+                                    setTimeout(function () {
+                                        $(selector).click();
+                                    }, 100);
+
                                 } catch (error) {
                                     console.log(error);
+                                    location.href = "/reservation/" + new_data.reservation_id;
                                 }
                             }
                         );
