@@ -1,7 +1,9 @@
-from . import controllers
-from . import models
-from odoo.tools.misc import get_lang
 import datetime
+
+from odoo.http import request
+from odoo.tools.misc import get_lang
+
+from . import controllers, models
 
 
 class PwaUtils:
@@ -15,10 +17,10 @@ class PwaUtils:
                 new_values[k] = int(v)
             if field.type == "date":
                 new_values[k] = datetime.datetime.strptime(
-                    v, get_lang(self.env).date_format
+                    v, get_lang(request.env).date_format
                 ).date()
             if field.type in ("one2many", "many2many"):
-                relational_model = self.env[field.comodel_name]
+                relational_model = request.env[field.comodel_name]
                 cmds = []
                 for record_id, value in v.items():
                     cmds.append(

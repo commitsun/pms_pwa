@@ -111,6 +111,7 @@
             </nav>
 
             <t t-call="pms_pwa.o_pms_pwa_new_reservation_modal" />
+            <div class="o_pms_pwa_roomdoo_partner_modal"/>
         </xpath>
     </template>
 </odoo>

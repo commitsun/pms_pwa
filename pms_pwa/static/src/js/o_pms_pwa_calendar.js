@@ -24,6 +24,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                 range_date: date_list,
                 selected_display: selected_display,
             }).then(function (data) {
+                console.log("recibo->>", data);
                 var html = core.qweb.render("pms_pwa.calendar_line", {
                     data_id: data_id,
                     obj_list: data.reservations,
@@ -48,35 +49,42 @@ odoo.define("pms_pwa.calendar", function (require) {
         } catch (error) {
             console.error("Invalid format date");
         }
-        const date = new Date(date_string);
+        var date = new Date(date_string);
 
-        const tomorrow = new Date(date);
+        var tomorrow = new Date(date);
         tomorrow.setDate(tomorrow.getDate() + 1);
+        var room = $(this).data("calendar_room");
+        var pricelist = $(this).data("pricelist");
         var checkin_date = date.toLocaleDateString(
             document.documentElement.lang,
             date_options
         );
-
         var checkout_date = tomorrow.toLocaleDateString(
             document.documentElement.lang,
             date_options
         );
-
         var range_date = checkin_date + " - " + checkout_date;
-        var room = $(this).data("room");
-        var pricelist = $(this).data("pricelist");
-        setTimeout(function () {
-            $('input[name="range_check_date_modal_reservation"]').val(range_date);
-            $('input[name="range_check_date_modal_reservation_multi"]').val(range_date);
-            $('select[name="room_type"]').val(room);
-            $('select[name="pricelist"]').val(pricelist);
-            $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation']")
-                .trigger("change");
-            $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation_multi']")
-                .trigger("change");
-        }, 300);
+        // $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').daterangepicker({
+        //     startDate: checkin_date,
+        //     endDate: checkout_date,
+        //     autoUpdateInput: true,
+        //     locale: {
+        //         direction: "ltr",
+        //         format: "DD/MM/YYYY",
+        //         separator: " - ",
+        //         applyLabel: "Aplicar",
+        //         cancelLabel: "Cancelar",
+        //     },
+        //     opens: "left",
+        //     showCustomRangeLabel: false,
+        // });
+        $('form#booking_engine_form input[name="calendar_room"]').val(room);
+        $('form#booking_engine_form select[name="pricelist"]').val(pricelist);
+        $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+        $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+        $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+        $("form#booking_engine_form").find("input[name='new_reservation_date_modal_reservation']").trigger("change");
+
     });
     $(function () {
         if (document.documentElement.lang === "es-ES") {

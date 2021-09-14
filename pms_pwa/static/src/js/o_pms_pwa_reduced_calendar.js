@@ -67,15 +67,12 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         var pricelist = $(this).data("pricelist");
         setTimeout(function () {
             $('input[name="range_check_date_modal_reservation"]').val(range_date);
-            $('input[name="range_check_date_modal_reservation_multi"]').val(range_date);
             $('select[name="room_type"]').val(room);
             $('select[name="pricelist"]').val(pricelist);
             $("#o_pms_pwa_new_reservation_modal")
                 .find("input[name='range_check_date_modal_reservation']")
                 .trigger("change");
-            $("#o_pms_pwa_new_reservation_modal")
-                .find("input[name='range_check_date_modal_reservation_multi']")
-                .trigger("change");
+
         }, 300);
     });
     $(function () {

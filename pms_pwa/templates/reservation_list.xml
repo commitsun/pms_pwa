@@ -242,7 +242,7 @@
                 <t t-esc="min(folio.reservation_ids.mapped('checkin'))" t-options='{"widget":"date"}'/>
             </td>
             <td>
-                <t t-esc="max(folio.reservation_ids.mapped('checkin'))" t-options='{"widget":"date"}'/>
+                <t t-esc="max(folio.reservation_ids.mapped('checkout'))" t-options='{"widget":"date"}'/>
             </td>
             <td class="text-center o_pms_pwa_priority-2">
 
