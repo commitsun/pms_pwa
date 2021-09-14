@@ -254,7 +254,7 @@
                         <div class="modal-body o_pms_pwa_modal_body">
 
                             <div class="o_pms_pwa_shadow">
-                                <div class="row">
+                                <div class="row o_pms_pwa_partner_modal_show" t-attf-data-partner-id="{{ reservation.partner_id.id }}">
                                     <div class="col-3 align-self-center">
                                         <img t-att-src="'/web/image/pms.reservation/'+reservation.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
                                     </div>

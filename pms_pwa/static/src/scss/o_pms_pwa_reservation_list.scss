@@ -318,6 +318,7 @@ section.o_pms_pwa_roomdoo_list {
 
 div.o_pms_pwa_reservation_modal,
 div.o_pms_pwa_filters_modal,
+div.o_pms_pwa_partner_modal,
 div.o_pms_pwa_new_reservation_modal {
     &.modal.o_pms_pwa_right .modal-dialog {
         position: fixed;
@@ -439,6 +440,13 @@ div.o_pms_pwa_reservation_modal {
     }
 }
 
+div.o_pms_pwa_partner_modal {
+    &.modal.o_pms_pwa_right .modal-dialog {
+        width: unset;
+        margin-top: 10px;
+    }
+}
+
 /*******************************
 * SHARED
 *******************************/
@@ -516,7 +524,7 @@ div.o_pms_pwa_reservation_modal {
             }
         }
     }
-    .btn-persona-info{
+    .btn-persona-info {
         width: 100%;
         background-color: $bg-theme-color;
         color: $black;
@@ -540,11 +548,10 @@ div.o_pms_pwa_reservation_modal {
                 border: unset;
             }
         }
-
     }
     .btn-persona-info.dropdown-toggle::after {
         margin-top: 0.55rem;
-        float:right;
+        float: right;
     }
     .btn-persona-info-item.dropdown-menu {
         width: 100%;
@@ -751,11 +758,11 @@ div.o_pms_pwa_new_reservation_modal {
     @media screen and (max-width: 767px) {
         display: none;
     }
-    img{
+    img {
         display: block !important;
     }
 }
-.o_pms_pwa_multi_reservation_modal{
+.o_pms_pwa_multi_reservation_modal {
     background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.2);
     position: absolute;
@@ -763,27 +770,27 @@ div.o_pms_pwa_new_reservation_modal {
     min-height: 100px;
     z-index: 9999;
     top: 1%;
-    .o_pms_pwa_modal_header{
-        border:none !important;
+    .o_pms_pwa_modal_header {
+        border: none !important;
         padding-bottom: 0rem;
         margin-bottom: -0.5rem;
         border-top-left-radius: 0.3rem;
         border-top-right-radius: 0.3rem;
-        h3{
+        h3 {
             font-size: 18px;
             margin-left: 3rem;
         }
     }
 
-
-    .o_domain_leaf_operator_select{
+    .o_domain_leaf_operator_select {
         min-width: 150px;
     }
     & input[name="adults"] {
         width: 50px;
     }
-    & input, & select{
-        padding-top:0% !important;
+    & input,
+    & select {
+        padding-top: 0% !important;
         min-height: 1rem !important;
     }
 }

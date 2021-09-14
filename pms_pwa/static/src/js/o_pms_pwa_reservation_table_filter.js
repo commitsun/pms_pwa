@@ -36,7 +36,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     });
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
-        selector: "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal",
+        selector:
+            "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
         ],
@@ -309,8 +310,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         refreshMultiModal: function (result, data_id = false) {
             var allowed_fields = ["room_numbers"];
-            var folio_reservation_data =
-                JSON.parse(result).reservation.folio_reservations;
+            var folio_reservation_data = JSON.parse(result).reservation
+                .folio_reservations;
 
             for (let i = 0; i < folio_reservation_data.length; i++) {
                 var allowed_fields = ["room_numbers"];
@@ -342,31 +343,31 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         //         '<option value="" selected></option>'
                         //     );
                         // }
-                        $.each(
-                            folio_reservation_data[i][value],
-                            function (subkey, subvalue) {
-                                if (
-                                    subvalue["id"] ==
-                                    folio_reservation_data[i][relation_values[value]].id
-                                ) {
-                                    var option = new Option(
-                                        subvalue["name"],
-                                        subvalue["id"],
-                                        false,
-                                        true
-                                    );
-                                } else {
-                                    var option = new Option(
-                                        subvalue["name"],
-                                        subvalue["id"],
-                                        false,
-                                        false
-                                    );
-                                }
-                                $(option).html(subvalue["name"]);
-                                select.append(option);
+                        $.each(folio_reservation_data[i][value], function (
+                            subkey,
+                            subvalue
+                        ) {
+                            if (
+                                subvalue["id"] ==
+                                folio_reservation_data[i][relation_values[value]].id
+                            ) {
+                                var option = new Option(
+                                    subvalue["name"],
+                                    subvalue["id"],
+                                    false,
+                                    true
+                                );
+                            } else {
+                                var option = new Option(
+                                    subvalue["name"],
+                                    subvalue["id"],
+                                    false,
+                                    false
+                                );
                             }
-                        );
+                            $(option).html(subvalue["name"]);
+                            select.append(option);
+                        });
                     }
                     delete folio_reservation_data[i][value];
                 });
@@ -497,8 +498,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     let value_range_picker =
                                         new_event.currentTarget.value;
                                     values.checkin = value_range_picker.split(" - ")[0];
-                                    values.checkout =
-                                        value_range_picker.split(" - ")[1];
+                                    values.checkout = value_range_picker.split(
+                                        " - "
+                                    )[1];
                                 } else {
                                     if (new_event.currentTarget.dataset.service_id) {
                                         var service_key = "add_service";
@@ -564,8 +566,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             if (!JSON.parse(new_data).result) {
                                                 self.displayDataAlert(new_data);
                                             }
-                                            var reservation_data =
-                                                JSON.parse(new_data).reservation;
+                                            var reservation_data = JSON.parse(new_data)
+                                                .reservation;
                                             if (
                                                 values &&
                                                 ("add_service" in values ||
@@ -610,127 +612,108 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 "room_types",
                                                 "room_numbers",
                                             ];
-                                            $.each(
-                                                allowed_fields,
-                                                function (key, value) {
-                                                    try {
-                                                        var select = $(
-                                                            'form.o_pms_pwa_reservation_form [data-select="' +
-                                                                value +
-                                                                '"]'
-                                                        );
-                                                    } catch (error) {
-                                                        console.log(error);
-                                                    }
-                                                    if (select.length != 0) {
-                                                        select.empty();
-                                                        if (
-                                                            !reservation_data[
-                                                                relation_values[value]
-                                                            ] &
-                                                            (reservation_data[
-                                                                relation_values[value]
-                                                            ] ==
-                                                                0)
-                                                        ) {
-                                                            select.append(
-                                                                '<option value="" selected></option>'
-                                                            );
-                                                        }
-                                                        $.each(
-                                                            reservation_data[value],
-                                                            function (
-                                                                subkey,
-                                                                subvalue
-                                                            ) {
-                                                                if (
-                                                                    subvalue["id"] ==
-                                                                    reservation_data[
-                                                                        relation_values[
-                                                                            value
-                                                                        ]
-                                                                    ].id
-                                                                ) {
-                                                                    var option =
-                                                                        new Option(
-                                                                            subvalue[
-                                                                                "name"
-                                                                            ],
-                                                                            subvalue[
-                                                                                "id"
-                                                                            ],
-                                                                            false,
-                                                                            true
-                                                                        );
-                                                                } else {
-                                                                    var option =
-                                                                        new Option(
-                                                                            subvalue[
-                                                                                "name"
-                                                                            ],
-                                                                            subvalue[
-                                                                                "id"
-                                                                            ],
-                                                                            false,
-                                                                            false
-                                                                        );
-                                                                }
-                                                                $(option).html(
-                                                                    subvalue["name"]
-                                                                );
-                                                                select.append(option);
-                                                            }
-                                                        );
-                                                    }
-                                                    delete reservation_data[value];
-                                                }
-                                            );
-                                            $.each(
-                                                reservation_data,
-                                                function (key, value) {
-                                                    var input = $(
-                                                        "form.o_pms_pwa_reservation_form input[name='" +
-                                                            key +
-                                                            "']"
+                                            $.each(allowed_fields, function (
+                                                key,
+                                                value
+                                            ) {
+                                                try {
+                                                    var select = $(
+                                                        'form.o_pms_pwa_reservation_form [data-select="' +
+                                                            value +
+                                                            '"]'
                                                     );
-                                                    if (input.length != 0) {
-                                                        input.val(value);
-                                                    } else {
-                                                        if (
-                                                            !fields_to_avoid.includes(
-                                                                key
-                                                            )
-                                                        ) {
-                                                            $(
-                                                                "form.o_pms_pwa_reservation_form select[name='" +
-                                                                    key +
-                                                                    "'] option[value='" +
-                                                                    value +
-                                                                    "']"
-                                                            ).prop("selected", true);
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                                if (select.length != 0) {
+                                                    select.empty();
+                                                    if (
+                                                        !reservation_data[
+                                                            relation_values[value]
+                                                        ] &
+                                                        (reservation_data[
+                                                            relation_values[value]
+                                                        ] ==
+                                                            0)
+                                                    ) {
+                                                        select.append(
+                                                            '<option value="" selected></option>'
+                                                        );
+                                                    }
+                                                    $.each(
+                                                        reservation_data[value],
+                                                        function (subkey, subvalue) {
+                                                            if (
+                                                                subvalue["id"] ==
+                                                                reservation_data[
+                                                                    relation_values[
+                                                                        value
+                                                                    ]
+                                                                ].id
+                                                            ) {
+                                                                var option = new Option(
+                                                                    subvalue["name"],
+                                                                    subvalue["id"],
+                                                                    false,
+                                                                    true
+                                                                );
+                                                            } else {
+                                                                var option = new Option(
+                                                                    subvalue["name"],
+                                                                    subvalue["id"],
+                                                                    false,
+                                                                    false
+                                                                );
+                                                            }
+                                                            $(option).html(
+                                                                subvalue["name"]
+                                                            );
+                                                            select.append(option);
                                                         }
+                                                    );
+                                                }
+                                                delete reservation_data[value];
+                                            });
+                                            $.each(reservation_data, function (
+                                                key,
+                                                value
+                                            ) {
+                                                var input = $(
+                                                    "form.o_pms_pwa_reservation_form input[name='" +
+                                                        key +
+                                                        "']"
+                                                );
+                                                if (input.length != 0) {
+                                                    input.val(value);
+                                                } else {
+                                                    if (
+                                                        !fields_to_avoid.includes(key)
+                                                    ) {
+                                                        $(
+                                                            "form.o_pms_pwa_reservation_form select[name='" +
+                                                                key +
+                                                                "'] option[value='" +
+                                                                value +
+                                                                "']"
+                                                        ).prop("selected", true);
                                                     }
                                                 }
-                                            );
+                                            });
                                             // refresh total
-                                            let a =
-                                                document.getElementsByClassName(
-                                                    "price_total"
-                                                );
-                                            a.innerText =
-                                                JSON.parse(
-                                                    new_data
-                                                ).reservation.price_total;
+                                            let a = $(
+                                                "form.o_pms_pwa_reservation_form .price_total"
+                                            );
+                                            a[0].innerHTML = JSON.parse(
+                                                new_data
+                                            ).reservation.price_total;
                                             // refresh pending amount
                                             try {
-                                                let b =
-                                                    document.getElementsByClassName(
-                                                        "pending_amount"
-                                                    );
-                                                b.innerText =
-                                                    JSON.parse(
-                                                        new_data
-                                                    ).reservation.folio_pending_amount;
+                                                let b = $(
+                                                    "form.o_pms_pwa_reservation_form .pending_amount"
+                                                );
+                                                b[0].innerHTML = JSON.parse(
+                                                    new_data
+                                                ).reservation.folio_pending_amount;
                                             } catch (error) {
                                                 console.log(error);
                                             }
@@ -768,8 +751,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         var subservice_field_id =
                                             new_event.currentTarget.dataset
                                                 .subservice_field_id;
-                                        values[main_field][field_id][subservice_name] =
-                                            {};
+                                        values[main_field][field_id][
+                                            subservice_name
+                                        ] = {};
                                         values[main_field][field_id][subservice_name][
                                             subservice_field_id
                                         ] = {};
@@ -808,131 +792,112 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 "room_types",
                                                 "room_numbers",
                                             ];
-                                            var reservation_data =
-                                                JSON.parse(new_data).reservation;
-                                            $.each(
-                                                allowed_fields,
-                                                function (key, value) {
-                                                    try {
-                                                        var select = $(
-                                                            'form.o_pms_pwa_reservation_form [data-select="' +
-                                                                value +
-                                                                '"]'
-                                                        );
-                                                    } catch (error) {
-                                                        console.log(error);
-                                                    }
-                                                    if (select.length != 0) {
-                                                        select.empty();
-                                                        if (
-                                                            !reservation_data[
-                                                                relation_values[value]
-                                                            ] &
-                                                            (reservation_data[
-                                                                relation_values[value]
-                                                            ] ==
-                                                                0)
-                                                        ) {
-                                                            select.append(
-                                                                '<option value="" selected></option>'
-                                                            );
-                                                        }
-                                                        $.each(
-                                                            reservation_data[value],
-                                                            function (
-                                                                subkey,
-                                                                subvalue
-                                                            ) {
-                                                                if (
-                                                                    subvalue["id"] ==
-                                                                    reservation_data[
-                                                                        relation_values[
-                                                                            value
-                                                                        ]
-                                                                    ].id
-                                                                ) {
-                                                                    var option =
-                                                                        new Option(
-                                                                            subvalue[
-                                                                                "name"
-                                                                            ],
-                                                                            subvalue[
-                                                                                "id"
-                                                                            ],
-                                                                            false,
-                                                                            true
-                                                                        );
-                                                                } else {
-                                                                    var option =
-                                                                        new Option(
-                                                                            subvalue[
-                                                                                "name"
-                                                                            ],
-                                                                            subvalue[
-                                                                                "id"
-                                                                            ],
-                                                                            false,
-                                                                            false
-                                                                        );
-                                                                }
-                                                                $(option).html(
-                                                                    subvalue["name"]
-                                                                );
-                                                                select.append(option);
-                                                            }
-                                                        );
-                                                    }
-                                                    delete reservation_data[value];
-                                                }
-                                            );
-                                            $.each(
-                                                reservation_data,
-                                                function (key, value) {
-                                                    var input = $(
-                                                        "form.o_pms_pwa_reservation_form input[name='" +
-                                                            key +
-                                                            "']"
+                                            var reservation_data = JSON.parse(new_data)
+                                                .reservation;
+                                            $.each(allowed_fields, function (
+                                                key,
+                                                value
+                                            ) {
+                                                try {
+                                                    var select = $(
+                                                        'form.o_pms_pwa_reservation_form [data-select="' +
+                                                            value +
+                                                            '"]'
                                                     );
-                                                    if (input.length != 0) {
-                                                        input.val(value);
-                                                    } else {
-                                                        if (
-                                                            !fields_to_avoid.includes(
-                                                                key
-                                                            )
-                                                        ) {
-                                                            $(
-                                                                "form.o_pms_pwa_reservation_form select[name='" +
-                                                                    key +
-                                                                    "'] option[value='" +
-                                                                    value +
-                                                                    "']"
-                                                            ).prop("selected", true);
+                                                } catch (error) {
+                                                    console.log(error);
+                                                }
+                                                if (select.length != 0) {
+                                                    select.empty();
+                                                    if (
+                                                        !reservation_data[
+                                                            relation_values[value]
+                                                        ] &
+                                                        (reservation_data[
+                                                            relation_values[value]
+                                                        ] ==
+                                                            0)
+                                                    ) {
+                                                        select.append(
+                                                            '<option value="" selected></option>'
+                                                        );
+                                                    }
+                                                    $.each(
+                                                        reservation_data[value],
+                                                        function (subkey, subvalue) {
+                                                            if (
+                                                                subvalue["id"] ==
+                                                                reservation_data[
+                                                                    relation_values[
+                                                                        value
+                                                                    ]
+                                                                ].id
+                                                            ) {
+                                                                var option = new Option(
+                                                                    subvalue["name"],
+                                                                    subvalue["id"],
+                                                                    false,
+                                                                    true
+                                                                );
+                                                            } else {
+                                                                var option = new Option(
+                                                                    subvalue["name"],
+                                                                    subvalue["id"],
+                                                                    false,
+                                                                    false
+                                                                );
+                                                            }
+                                                            $(option).html(
+                                                                subvalue["name"]
+                                                            );
+                                                            select.append(option);
                                                         }
+                                                    );
+                                                }
+                                                delete reservation_data[value];
+                                            });
+                                            $.each(reservation_data, function (
+                                                key,
+                                                value
+                                            ) {
+                                                var input = $(
+                                                    "form.o_pms_pwa_reservation_form input[name='" +
+                                                        key +
+                                                        "']"
+                                                );
+                                                if (input.length != 0) {
+                                                    input.val(value);
+                                                } else {
+                                                    if (
+                                                        !fields_to_avoid.includes(key)
+                                                    ) {
+                                                        $(
+                                                            "form.o_pms_pwa_reservation_form select[name='" +
+                                                                key +
+                                                                "'] option[value='" +
+                                                                value +
+                                                                "']"
+                                                        ).prop("selected", true);
                                                     }
                                                 }
-                                            );
+                                            });
 
                                             // refresh total
-                                            let a =
-                                                document.getElementsByClassName(
-                                                    "price_total"
-                                                );
-                                            a.innerText =
-                                                JSON.parse(
-                                                    new_data
-                                                ).reservation.price_total;
+                                            let a = document.getElementsByClassName(
+                                                "price_total"
+                                            );
+                                            a.innerText = JSON.parse(
+                                                new_data
+                                            ).reservation.price_total;
 
                                             // refresh pending amount.
                                             try {
-                                                let b =
-                                                    document.getElementsByClassName(
-                                                        "pending_amount"
-                                                    );
-                                                b.innerText =
-                                                    JSON.parse(
-                                                        new_data
-                                                    ).reservation.folio_pending_amount;
+                                                let b = document.getElementsByClassName(
+                                                    "pending_amount"
+                                                );
+                                                b.innerText = JSON.parse(
+                                                    new_data
+                                                ).reservation.folio_pending_amount;
                                             } catch (error) {
                                                 console.log(error);
                                             }
@@ -950,24 +915,21 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         );
 
                         // On confirm assign
-                        $(".o_pms_pwa_button_assign_confirm").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var button = new_event.currentTarget;
-                                ajax.jsonRpc(
-                                    button.attributes.url.value,
-                                    "call",
-                                    {}
-                                ).then(function (new_data) {
+                        $(".o_pms_pwa_button_assign_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var button = new_event.currentTarget;
+                            ajax.jsonRpc(button.attributes.url.value, "call", {}).then(
+                                function (new_data) {
                                     $(".o_pms_pwa_reservation_modal").modal("toggle");
                                     self.displayDataAlert(
                                         new_data,
                                         reservation_data.id
                                     );
-                                });
-                            }
-                        );
+                                }
+                            );
+                        });
 
                         // DATE RANGE MODAL
                         $(function () {
@@ -1038,34 +1000,35 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
                         });
                         // CHANGES IN MULTI MODAL RESERVATIONS
-                        $("#multi_reservation_modal").on(
-                            "click",
-                            "a",
-                            function (new_event) {
-                                var modal_reservation_id = new_event.currentTarget
-                                    .closest("tr")
-                                    .getAttribute("data-id");
-                                // Cierra modal
-                                $(
-                                    "div.o_pms_pwa_reservation_modal"
-                                ).modal("toggle");
-                                // abre modal
-                                try{
-                                    var selector = "td[data-id=" + modal_reservation_id +"]";
-                                    if($(selector)){
-                                        $(selector).remove();
-                                    }
-                                    $("<td class='launch_modal' data-id='" + modal_reservation_id + "'>Pincha aqui</td>").appendTo("table.launch_modal");
-                                    setTimeout(function () {
-                                        $(selector).click();
-                                    }, 100);
-
-                                } catch (error) {
-                                    console.log(error);
-                                    location.href = "/reservation/" + new_data.reservation_id;
+                        $("#multi_reservation_modal").on("click", "a", function (
+                            new_event
+                        ) {
+                            var modal_reservation_id = new_event.currentTarget
+                                .closest("tr")
+                                .getAttribute("data-id");
+                            // Cierra modal
+                            $("div.o_pms_pwa_reservation_modal").modal("toggle");
+                            // abre modal
+                            try {
+                                var selector =
+                                    "td[data-id=" + modal_reservation_id + "]";
+                                if ($(selector)) {
+                                    $(selector).remove();
                                 }
+                                $(
+                                    "<td class='launch_modal' data-id='" +
+                                        modal_reservation_id +
+                                        "'>Pincha aqui</td>"
+                                ).appendTo("table.launch_modal");
+                                setTimeout(function () {
+                                    $(selector).click();
+                                }, 100);
+                            } catch (error) {
+                                console.log(error);
+                                location.href =
+                                    "/reservation/" + new_data.reservation_id;
                             }
-                        );
+                        });
                         $("#multi_reservation_modal").on(
                             "change",
                             "input, select",
@@ -1083,8 +1046,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     let value_range_picker =
                                         new_event.currentTarget.value;
                                     values.checkin = value_range_picker.split(" - ")[0];
-                                    values.checkout =
-                                        value_range_picker.split(" - ")[1];
+                                    values.checkout = value_range_picker.split(
+                                        " - "
+                                    )[1];
                                 } else {
                                     values[new_event.currentTarget.name] =
                                         new_event.currentTarget.value;
@@ -1118,8 +1082,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 } else {
                                     var values = {};
                                     values["folio_reservations"] = {};
-                                    values["folio_reservations"]["id"] =
-                                        modal_reservation_id;
+                                    values["folio_reservations"][
+                                        "id"
+                                    ] = modal_reservation_id;
 
                                     // Set checkin & checkout separated
                                     if (
@@ -1128,10 +1093,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     ) {
                                         let value_range_picker =
                                             new_event.currentTarget.value;
-                                        values["folio_reservations"]["checkin"] =
-                                            value_range_picker.split(" - ")[0];
-                                        values["folio_reservations"]["checkout"] =
-                                            value_range_picker.split(" - ")[1];
+                                        values["folio_reservations"][
+                                            "checkin"
+                                        ] = value_range_picker.split(" - ")[0];
+                                        values["folio_reservations"][
+                                            "checkout"
+                                        ] = value_range_picker.split(" - ")[1];
                                     } else {
                                         values["folio_reservations"][
                                             new_event.currentTarget.name
@@ -1258,13 +1225,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             var tr = button.closest("tr");
             var selector =
                 ".o_pms_pwa_reservation[data-id=" + tr.getAttribute("data-id") + "]";
-            if(!selector){
+            if (!selector) {
                 selector = button.getAttribute("data-id");
                 console.log("selector", selector);
                 $(selector).click();
-            }else{
+            } else {
                 $(selector).find("td.first-col").click();
-            };
+            }
         },
         _onClickNotLastChildA: function (event) {
             event.stopPropagation();
@@ -1440,55 +1407,52 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 //"allowed_country_ids",
                                                 "allowed_state_ids",
                                             ];
-                                            $.each(
-                                                allowed_fields,
-                                                function (akey, avalue) {
-                                                    try {
-                                                        var select = $(
-                                                            check_partner_id +
-                                                                " select[data-select='" +
-                                                                avalue +
-                                                                "']"
-                                                        );
-                                                    } catch (error) {
-                                                        console.log(error);
-                                                    }
-
-                                                    if (select.length != 0) {
-                                                        select.empty();
-                                                        if (
-                                                            !value[
-                                                                relation_values[avalue]
-                                                            ] &
-                                                            (value[
-                                                                relation_values[avalue]
-                                                            ] ==
-                                                                0)
-                                                        ) {
-                                                            select.append(
-                                                                '<option value="" selected></option>'
-                                                            );
-                                                        }
-
-                                                        $.each(
-                                                            value[avalue],
-                                                            function (
-                                                                subkey,
-                                                                subvalue
-                                                            ) {
-                                                                var option = new Option(
-                                                                    subvalue["name"],
-                                                                    subvalue["id"]
-                                                                );
-                                                                $(option).html(
-                                                                    subvalue["name"]
-                                                                );
-                                                                select.append(option);
-                                                            }
-                                                        );
-                                                    }
+                                            $.each(allowed_fields, function (
+                                                akey,
+                                                avalue
+                                            ) {
+                                                try {
+                                                    var select = $(
+                                                        check_partner_id +
+                                                            " select[data-select='" +
+                                                            avalue +
+                                                            "']"
+                                                    );
+                                                } catch (error) {
+                                                    console.log(error);
                                                 }
-                                            );
+
+                                                if (select.length != 0) {
+                                                    select.empty();
+                                                    if (
+                                                        !value[
+                                                            relation_values[avalue]
+                                                        ] &
+                                                        (value[
+                                                            relation_values[avalue]
+                                                        ] ==
+                                                            0)
+                                                    ) {
+                                                        select.append(
+                                                            '<option value="" selected></option>'
+                                                        );
+                                                    }
+
+                                                    $.each(value[avalue], function (
+                                                        subkey,
+                                                        subvalue
+                                                    ) {
+                                                        var option = new Option(
+                                                            subvalue["name"],
+                                                            subvalue["id"]
+                                                        );
+                                                        $(option).html(
+                                                            subvalue["name"]
+                                                        );
+                                                        select.append(option);
+                                                    });
+                                                }
+                                            });
 
                                             $.each(value, function (key2, value2) {
                                                 if (
@@ -1537,116 +1501,106 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
                         );
                         /* eslint-enable no-alert */
-                        $(".o_pms_pwa_button_checkin_confirm").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var guest_list = [];
-                                var selector =
-                                    "div.bs-stepper[guest-data-id=" +
-                                    reservation_id +
-                                    "] .content";
+                        $(".o_pms_pwa_button_checkin_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var guest_list = [];
+                            var selector =
+                                "div.bs-stepper[guest-data-id=" +
+                                reservation_id +
+                                "] .content";
 
-                                var contents = $(selector);
+                            var contents = $(selector);
 
-                                for (var i = 1; i <= contents.length; i++) {
-                                    var element = $(
-                                        "#" + contents[i - 1].getAttribute("id")
-                                    );
-                                    guest_list.push({
-                                        id: element
-                                            .find("input[name='guest_id']")
-                                            .val(),
-                                        firstname: element
-                                            .find("input[name='firstname']")
-                                            .val(),
-                                        lastname: element
-                                            .find("input[name='lastname']")
-                                            .val(),
-                                        lastname2: element
-                                            .find("input[name='lastname2']")
-                                            .val(),
-                                        birthdate_date: element
-                                            .find("input[name='birthdate_date']")
-                                            .val(),
-                                        document_number: element
-                                            .find("input[name='document_number']")
-                                            .val(),
-                                        document_type: element
-                                            .find("select[name='document_type'] option")
-                                            .filter(":selected")
-                                            .val(),
-                                        document_expedition_date: element
-                                            .find(
-                                                "input[name='document_expedition_date']"
-                                            )
-                                            .val(),
-                                        gender: element
-                                            .find("select[name='gender'] option")
-                                            .filter(":selected")
-                                            .val(),
-                                        mobile: element
-                                            .find("input[name='mobile']")
-                                            .val(),
-                                        email: element
-                                            .find("input[name='email']")
-                                            .val(),
-                                        pms_property_id: element
-                                            .find("input[name='pms_property_id']")
-                                            .val(),
-                                        country_id: element
-                                            .find("select[name='country_id'] option")
-                                            .filter(":selected")
-                                            .val(),
-                                        state_id: element
-                                            .find("select[name='state_id'] option")
-                                            .filter(":selected")
-                                            .val(),
-                                    });
-                                }
-                                ajax.jsonRpc(button.attributes.url.value, "call", {
-                                    guests_list: guest_list,
-                                    action_on_board: true,
-                                }).then(function (new_data) {
-                                    self.displayDataAlert(new_data, data.id);
+                            for (var i = 1; i <= contents.length; i++) {
+                                var element = $(
+                                    "#" + contents[i - 1].getAttribute("id")
+                                );
+                                guest_list.push({
+                                    id: element.find("input[name='guest_id']").val(),
+                                    firstname: element
+                                        .find("input[name='firstname']")
+                                        .val(),
+                                    lastname: element
+                                        .find("input[name='lastname']")
+                                        .val(),
+                                    lastname2: element
+                                        .find("input[name='lastname2']")
+                                        .val(),
+                                    birthdate_date: element
+                                        .find("input[name='birthdate_date']")
+                                        .val(),
+                                    document_number: element
+                                        .find("input[name='document_number']")
+                                        .val(),
+                                    document_type: element
+                                        .find("select[name='document_type'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    document_expedition_date: element
+                                        .find("input[name='document_expedition_date']")
+                                        .val(),
+                                    gender: element
+                                        .find("select[name='gender'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    mobile: element.find("input[name='mobile']").val(),
+                                    email: element.find("input[name='email']").val(),
+                                    pms_property_id: element
+                                        .find("input[name='pms_property_id']")
+                                        .val(),
+                                    country_id: element
+                                        .find("select[name='country_id'] option")
+                                        .filter(":selected")
+                                        .val(),
+                                    state_id: element
+                                        .find("select[name='state_id'] option")
+                                        .filter(":selected")
+                                        .val(),
                                 });
                             }
-                        );
-                        $(".o_pms_pwa_button_print_checkin").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var self = this;
-                                var button = new_event.currentTarget;
-                                var reservation_id = false;
-                                // var reservation_ids = {};
+                            ajax.jsonRpc(button.attributes.url.value, "call", {
+                                guests_list: guest_list,
+                                action_on_board: true,
+                            }).then(function (new_data) {
+                                self.displayDataAlert(new_data, data.id);
+                            });
+                        });
+                        $(".o_pms_pwa_button_print_checkin").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var self = this;
+                            var button = new_event.currentTarget;
+                            var reservation_id = false;
+                            // var reservation_ids = {};
+                            try {
+                                reservation_id = button
+                                    .closest("tr")
+                                    .getAttribute("data-id");
+                            } catch (error) {
                                 try {
-                                    reservation_id = button
-                                        .closest("tr")
-                                        .getAttribute("data-id");
+                                    reservation_id = button.getAttribute("data-id");
                                 } catch (error) {
-                                    try {
-                                        reservation_id = button.getAttribute("data-id");
-                                    } catch (error) {
-                                        reservation_id = $("input[name='id']").val();
-                                    }
+                                    reservation_id = $("input[name='id']").val();
                                 }
-                                let url = "/checkins/pdf/" + reservation_id;
-                                // Open the window
-                                let printWindow = window.open(
-                                    url,
-                                    "Print",
-                                    "left=200, top=200, width=950, height=500, toolbar=0, resizable=0"
-                                );
-                                printWindow.addEventListener(
-                                    "load",
-                                    function () {
-                                        printWindow.print();
-                                    },
-                                    true
-                                );
                             }
-                        );
+                            let url = "/checkins/pdf/" + reservation_id;
+                            // Open the window
+                            let printWindow = window.open(
+                                url,
+                                "Print",
+                                "left=200, top=200, width=950, height=500, toolbar=0, resizable=0"
+                            );
+                            printWindow.addEventListener(
+                                "load",
+                                function () {
+                                    printWindow.print();
+                                },
+                                true
+                            );
+                        });
                         $(
                             "table#multi_reservation_modal_checkin, a.o_pms_pwa_button_checkin_multi_modal"
                         ).on("click", function (modal_event) {
@@ -1685,20 +1639,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         self.displayContent("pms_pwa.reservation_cancel_modal", {
                             reservation: data,
                         });
-                        $(".o_pms_pwa_button_cancel_confirm").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var cur_button = new_event.currentTarget;
-                                ajax.jsonRpc(
-                                    cur_button.attributes.url.value,
-                                    "call",
-                                    {}
-                                ).then(function (new_data) {
-                                    self.displayDataAlert(new_data, data.id);
-                                });
-                            }
-                        );
+                        $(".o_pms_pwa_button_cancel_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var cur_button = new_event.currentTarget;
+                            ajax.jsonRpc(
+                                cur_button.attributes.url.value,
+                                "call",
+                                {}
+                            ).then(function (new_data) {
+                                self.displayDataAlert(new_data, data.id);
+                            });
+                        });
                     }
                 });
             });
@@ -1721,20 +1674,19 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         self.displayContent("pms_pwa.reservation_checkout_modal", {
                             reservation: data,
                         });
-                        $(".o_pms_pwa_button_checkout_confirm").on(
-                            "click",
-                            function (new_event) {
-                                new_event.preventDefault();
-                                var cur_button = event.currentTarget;
-                                ajax.jsonRpc(
-                                    cur_button.attributes.url.value,
-                                    "call",
-                                    {}
-                                ).then(function (new_data) {
-                                    self.displayDataAlert(new_data, data.id);
-                                });
-                            }
-                        );
+                        $(".o_pms_pwa_button_checkout_confirm").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            var cur_button = event.currentTarget;
+                            ajax.jsonRpc(
+                                cur_button.attributes.url.value,
+                                "call",
+                                {}
+                            ).then(function (new_data) {
+                                self.displayDataAlert(new_data, data.id);
+                            });
+                        });
                     }
                 });
             });
@@ -1760,28 +1712,25 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self.displayContent("pms_pwa.reservation_payment_modal", {
                         reservation: data,
                     });
-                    $(".o_pms_pwa_button_payment_confirm").on(
-                        "click",
-                        function (new_event) {
-                            new_event.preventDefault();
-                            var selector =
-                                "div.modal-dialog[payment-data-id=" +
-                                reservation_id +
-                                "]";
-                            var div = $(selector);
-                            var payment_method = div
-                                .find("select[name='payment_method'] option")
-                                .filter(":selected")
-                                .val();
-                            var payment_amount = div.find("input[name='amount']").val();
-                            ajax.jsonRpc(button.attributes.url.value, "call", {
-                                payment_method: payment_method,
-                                amount: payment_amount,
-                            }).then(function (new_data) {
-                                self.displayDataAlert(new_data, data.id);
-                            });
-                        }
-                    );
+                    $(".o_pms_pwa_button_payment_confirm").on("click", function (
+                        new_event
+                    ) {
+                        new_event.preventDefault();
+                        var selector =
+                            "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                        var div = $(selector);
+                        var payment_method = div
+                            .find("select[name='payment_method'] option")
+                            .filter(":selected")
+                            .val();
+                        var payment_amount = div.find("input[name='amount']").val();
+                        ajax.jsonRpc(button.attributes.url.value, "call", {
+                            payment_method: payment_method,
+                            amount: payment_amount,
+                        }).then(function (new_data) {
+                            self.displayDataAlert(new_data, data.id);
+                        });
+                    });
                 }
             });
         },
