@@ -83,16 +83,20 @@ class BookingEngine(http.Controller):
             # Channel and Agency
             # REVIEW: Avoid send 'false' to controller
             if folio_values.get("agency_id") and folio_values.get("agency_id") != "false":
-                agency = request.env["agency_id"].browse(int(folio_values.get("agency_id")))
-                folio_values["channel_type_id"] = {
-                    "id": agency.channel_type_id.id,
-                    "name": agency.channel_type_id.name,
+                agency = request.env["res.partner"].browse(int(folio_values.get("agency_id")))
+                folio_values["agency_id"] = {
+                    "id": agency.id,
+                    "name": agency.name,
                 }
-                if agency.invoice_agency:
+                folio_values["channel_type_id"] = {
+                    "id": agency.sale_channel_id.id,
+                    "name": agency.sale_channel_id.name,
+                }
+                if agency.invoice_to_agency:
                     folio_values["partner_name"] = agency.name
                     folio_values["partner_id"] = agency.id
-                    folio_values["email"] = agency.email
-                    folio_values["mobile"] = agency.mobile
+                    folio_values["email"] = agency.email or ""
+                    folio_values["mobile"] = agency.mobile or ""
                 if agency.apply_pricelist:
                     folio_values["pricelist_id"] = agency.propert_product_pricelist.id
             else:
@@ -192,7 +196,7 @@ class BookingEngine(http.Controller):
             if int(folio_values["channel_type_id"]["id"]) not in [item["id"] for item in folio_values["allowed_channel_type_ids"]]:
                 folio_values["channel_type_id"] = False
         if folio_values.get("agency_id"):
-            if int(folio_values["agency_id"]) not in [item["id"] for item in folio_values["allowed_agency_ids"]]:
+            if int(folio_values["agency_id"]['id']) not in [item["id"] for item in folio_values["allowed_agency_ids"]]:
                 folio_values["agency_id"] = False
         if folio_values.get("board_service_id"):
             if int(folio_values["board_service_id"]) not in [item["id"] for item in folio_values["allowed_board_services"]]:
