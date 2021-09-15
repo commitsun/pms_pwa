@@ -43,6 +43,8 @@ class ResPartner(http.Controller):
             partner = (
                 request.env["res.partner"].sudo().search([("id", "=", int(partner_id))])
             )
+            if not partner:
+                raise MissingError(_("This partner does not exist."))
             return {"result": True, "partner": partner.parse_res_partner()}
         elif kw.get("reservation_id"):
             reservation = (
