@@ -3,6 +3,10 @@ import avinit
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.osv import expression
+import datetime
+from odoo.http import request
+
+from odoo.tools.misc import get_lang
 
 from ..controllers import controller_room_types, controller_rooms
 
@@ -28,23 +32,32 @@ def _get_search_domain(pms_property_id, search=False, **post):
         if v and k in ["name", "vat", "email"]:
             domain_fields.append(("reservation_ids.partner_id." + k, "=", v))
         elif v and k in ["checkin", "checkout"]:
-            domain_fields.append(("reservation_ids." + k, "=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids." + k, "=", d))
         elif v and k == "checkin_from":
-            domain_fields.append(("reservation_ids.checkin", ">=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.checkin", ">=", d))
         elif v and k == "checkout_from":
-            domain_fields.append(("reservation_ids.checkout", ">=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.checkout", ">=", d))
         elif v and k == "checkin_to":
-            domain_fields.append(("reservation_ids.checkin", "<=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.checkin", "<=", d))
         elif v and k == "checkout_to":
-            domain_fields.append(("reservation_ids.checkout", "<=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.checkout", "<=", d))
         elif v and k == "created_from":
-            domain_fields.append(("reservation_ids.create_date", ">=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.create_date", ">=", d))
         elif v and k == "modified_from":
-            domain_fields.append(("reservation_ids.write_date", ">=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.write_date", ">=", d))
         elif v and k == "created_to":
-            domain_fields.append(("reservation_ids.create_date", "<=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.create_date", "<=", d))
         elif v and k == "modified_to":
-            domain_fields.append(("reservation_ids.write_date", "<=", v))
+            d = datetime.datetime.strptime(v, get_lang(request.env).date_format).date()
+            domain_fields.append(("reservation_ids.write_date", "<=", d))
         elif v and k == "origin":
             domain_fields.extend(
                 ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]

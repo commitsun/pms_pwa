@@ -148,11 +148,15 @@ class PmsReservation(models.Model):
                             .search([("code", "=", guest["document_type"])])
                             .id
                         )
-                    if guest.get("country_id"):
+                    # REVIEW: avoid send "false" to controller
+                    if guest.get("country_id") and guest.get("country_id") != "false":
                         guest["nationality_id"] = int(guest["country_id"])
                     guest.pop("country_id")
 
-                    if guest.get("state_id"):
+                    # REVIEW: avoid send "false" to controller
+                    if guest.get("state_id") == "false":
+                        guest.pop("state_id")
+                    elif guest.get("state_id"):
                         guest["state_id"] = int(guest["state_id"])
 
                     if guest.get("birthdate_date"):
@@ -260,7 +264,10 @@ class PmsReservation(models.Model):
         checkin_partners = {}
 
         for checkin in self.checkin_partner_ids:
-            allowed_states = []
+            allowed_states = [{
+                "id": False,
+                "name": ""
+            }]
             if checkin.nationality_id:
                 for state in self.env["res.country.state"].search(
                     [("country_id", "=", checkin.nationality_id.id)]
@@ -529,13 +536,16 @@ class PmsReservation(models.Model):
         return allowed_extras
 
     @api.model
-    def _get_allowed_pricelists(self):
+    def _get_allowed_pricelists(self, channel_type_id=False):
         if self.pms_property_id:
             pms_property_id = self.pms_property_id.id
         else:
             pms_property_id = self.env.user.get_active_property_ids()[0]
         pricelists = self.env["product.pricelist"].search(
             [
+                "|",
+                ("pms_sale_channel_ids", "=", False),
+                ("pms_sale_channel_ids", "in", channel_type_id if channel_type_id else []),
                 "|",
                 ("pms_property_ids", "=", False),
                 ("pms_property_ids", "in", pms_property_id),
@@ -637,6 +647,8 @@ class PmsReservation(models.Model):
                 }
             )
 
+        readonly_fields = self._get_read_only_fields()
+
         # avoid send o2m & m2m fields on new single reservation modal
         reservation_line_ids = (
             self._get_reservation_line_ids() if isinstance(self.id, int) else False
@@ -720,7 +732,7 @@ class PmsReservation(models.Model):
                 "id": self.pricelist_id.id if self.pricelist_id else False,
                 "name": self.pricelist_id.name if self.pricelist_id else "",
             },
-            "allowed_pricelists": self._get_allowed_pricelists(),
+            "allowed_pricelists": self._get_allowed_pricelists(self.channel_type_id.id),
             "allowed_segmentations": self._get_allowed_segmentations(),
             "allowed_channel_type_ids": self.pms_property_id._get_allowed_channel_type_ids(),
             "allowed_agency_ids": self.pms_property_id._get_allowed_agency_ids(
@@ -749,7 +761,7 @@ class PmsReservation(models.Model):
                     "reservation_id": self.id,
                 },
             ),
-            "readonly_fields": ["arrival_hour", "departure_hour"],
+            "readonly_fields": readonly_fields,
             "required_fields": [],
             "allowed_country_ids": self.pms_property_id._get_allowed_countries(),
         }
@@ -849,3 +861,12 @@ class PmsReservation(models.Model):
             "checkout": self.checkout.strftime(get_lang(self.env).date_format),
             "adults": self.adults,
         }
+
+    def _get_read_only_fields(self):
+        self.ensure_one()
+        fields_readonly = [("nights")]
+        if self.channel_type_id.is_on_line:
+            fields_readonly.extend(["channel_type_id", "pms_property_id", "room_type_id", "agency_id", "user_name",
+                                   "checkin", "checkout", "adults", "reservation_type", "pricelsit_id", "board_service_room_id",
+                                   "reservation_line_ids"])
+        return fields_readonly

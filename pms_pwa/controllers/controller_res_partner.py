@@ -22,8 +22,13 @@ class ResPartner(http.Controller):
 
         Partner = request.env["res.partner"].with_context(bin_size=True)
 
-        domain = []
-        domain += [("name", "ilike", keywords)]
+        domain = [
+            "|",
+            "|",
+            ("name", "ilike", keywords),
+            ("email", "ilike", keywords),
+            ("mobile", "ilike", keywords),
+        ]
 
         partners = Partner.search(domain, limit=10)
         partners = [dict(id=p.id, name=p.name, type="p") for p in partners]

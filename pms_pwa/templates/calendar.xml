@@ -42,7 +42,7 @@
                                                     href="#" data-toggle="modal" data-target="#o_pms_pwa_filters_modal"
                                                     rel="nofollow">
                                                     <span class="d-none d-lg-flex align-self-center">
-                                                        FILTERS <i class="fa fa-angle-left"/>
+                                                        FILTROS <i class="fa fa-angle-left"/>
                                                     </span>
                                                     <i class="fa fa-filter d-lg-none"></i>
                                                 </a>
@@ -93,18 +93,6 @@
                                 </form>
                             </div>
                             <div class="col-6 col-sm-8">
-                                <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
-                                    <select id="calendar_select" name="display_option" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
-                                        <t t-foreach="display_select_options" t-as="display_item">
-                                            <t t-if="selected_display==display_item['value']">
-                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}" selected="selected"><t t-esc="display_item['name']" /></option>
-                                            </t>
-                                            <t t-else="">
-                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}"><t t-esc="display_item['name']" /></option>
-                                            </t>
-                                        </t>
-                                    </select>
-                                </div>
                                 <div class="o_pms_pwa_calendar_select d-none d-lg-block ml-4">
                                     <select id="display_obj_option" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <option value="" selected="selected">Default</option>
@@ -151,7 +139,21 @@
                             <table id="calendar_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
                                 <thead >
                                     <tr >
-                                        <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"></th>
+
+                                        <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td">
+                                            <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
+                                                <select id="calendar_select" name="display_option" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
+                                                    <t t-foreach="display_select_options" t-as="display_item">
+                                                        <t t-if="selected_display==display_item['value']">
+                                                            <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}" selected="selected"><t t-esc="display_item['name']" /></option>
+                                                        </t>
+                                                        <t t-else="">
+                                                            <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}"><t t-esc="display_item['name']" /></option>
+                                                        </t>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                        </th>
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
                                                     + ('o_pms_pwa_today ' if today.strftime('%d/%m/%Y')==day.strftime('%d/%m/%Y') else ' ')
@@ -163,7 +165,7 @@
                                                 </t>
                                                 <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
                                                 <t t-set="availability_day" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
-                                                <span class="float-right">
+                                                <span class="float-right o_pms_pwa_availability_header">
                                                     <img src="/pms_pwa/static/img/svg/icon_house.svg" alt="avail icon" title="avail icon" />
                                                     <t t-esc="availability_day"/>
                                                 </span>
@@ -187,7 +189,7 @@
                                                 </p>
                                                 <p class="o_pms_pwa_extra_info">
                                                     <span t-if="selected_display == 'room_type'"><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
-                                                    <span><t t-esc="obj.total_rooms_count"/> hab</span>
+                                                    <span><t t-esc="obj._get_total_rooms()"/> hab</span>
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
@@ -198,7 +200,7 @@
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), ubication_id=obj.id, pricelist_id=default_pricelist).availability"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'pms_property'">
-                                                    <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
+                                                    <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
                                                 </span>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
@@ -210,7 +212,7 @@
                                                         </span>
                                                     </p>
                                                     <div class="o_pms_pwa_content">
-                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj.total_rooms_count - availability_room"/> busy</span>
+                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms() - availability_room"/> busy</span>
                                                         <span t-if="selected_display == 'room_type'" class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
 
                                                     </div>

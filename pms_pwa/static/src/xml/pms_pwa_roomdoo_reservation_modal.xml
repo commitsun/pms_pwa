@@ -150,9 +150,9 @@
                                     <div class="dropdown-menu">
                                       <a class="dropdown-item call_to_action_modal" href="#" url="/reservation/multi_assign">Asignar</a>
                                       <a class="dropdown-item call_to_action_modal" href="#" url="/reservation/multi_checkout">Checkout</a>
-                                      <a class="dropdown-item call_to_action_modal" href="#" url="/reservation/multi_cancel">Cancel</a>
+                                      <a class="dropdown-item call_to_action_modal" href="#" url="/checkins/pdf/multi_print">Imprimir Checkins</a>
                                       <div class="dropdown-divider"></div>
-                                      <a class="dropdown-item call_to_action_modal" href="#" url="/checkins/pdf/multi_print">Print</a>
+                                      <a class="dropdown-item call_to_action_modal" href="#" url="/reservation/multi_cancel">Cancelar</a>
                                     </div>
                                   </div>
                             </div>
@@ -214,6 +214,12 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header o_pms_pwa_modal_header">
+                            <div class="col-sm-12 mt-1">
+                                <img t-if="reservation.agency_id and reservation.agency_id.id" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="80" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
+                                <span t-else="">
+                                    <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
+                                </span>
+                            </div>
                             <div class="col-sm-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
                                     <h4 class="col-6 modal-title">
@@ -227,12 +233,6 @@
                                         <span class="fa fa-times" />
                                     </button>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 mt-1">
-                                <img t-if="reservation.agency_id and reservation.agency_id.id" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="80" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
-                                <span t-else="">
-                                    <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
-                                </span>
                             </div>
                             <div class="col-sm-12 mt-2">
                                 <div class="row o_pms_pwa_modal_buttons" t-if="reservation.primary_button">
@@ -412,7 +412,7 @@
                                     <div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="board_service_room_id">
-                                                Servicios
+                                                Régimen
                                             </label>
                                             <select
                                                 t-att-disabled='reservation.readonly_fields.indexOf("board_service_room_id") != -1 ? "disabled" : None'

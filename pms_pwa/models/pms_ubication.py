@@ -22,5 +22,8 @@ class PmsUbication(models.Model):
 
     def _get_total_rooms(self):
         pms_property_id = self.env.user.get_active_property_ids()[0]
-        return len(self.room_ids.filtered(lambda r: r.pms_property_id.id == pms_property_id))
-
+        rooms = self.env["pms.room"].search([
+            ("pms_property_id", "=", pms_property_id),
+            ("ubication_id", "=", self.id)
+        ])
+        return len(rooms)
