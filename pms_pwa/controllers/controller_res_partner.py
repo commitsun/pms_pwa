@@ -46,7 +46,63 @@ class ResPartner(http.Controller):
             if not partner:
                 raise MissingError(_("This partner does not exist."))
             return {"result": True, "partner": partner.parse_res_partner()}
-        return {"result": False, "message": _("Partner not indicated")}
+        elif kw.get("reservation_id"):
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(kw.get("reservation_id")))])
+            )
+
+            partner_data = {
+                "id": None,
+                "reservation_id": kw.get("reservation_id"),
+                "firstname": reservation.partner_name
+                if reservation.partner_name
+                else None,
+                "lastname": None,
+                "lastname2": None,
+                "birthdate_date": None,
+                "document_ids": None,
+                "email": None,
+                "mobile": reservation.mobile if reservation.mobile else None,
+                "image_128": None,
+                "gender": None,
+                "nationality_id": {
+                    "id": False,
+                    "name": False,
+                },
+                "state_id": {
+                    "id": False,
+                    "name": False,
+                },
+                "is_agency": None,
+                # "channel_type_id": {
+                #    "id": self.channel_type_id.id if self.channel_type_id else False,
+                #    "name": self.channel_type_id.name if self.channel_type_id else False,
+                # },
+                "is_company": None,
+                "vat": None,
+                "street": None,
+                "street2": None,
+                "city": None,
+                "zip": None,
+                "country_id": {
+                    "id": False,
+                    "name": False,
+                },
+                "comment": None,
+                "lang": None,
+                "allowed_channel_types": request.env[
+                    "pms.property"
+                ]._get_allowed_channel_type_ids(),
+                "allowed_country_ids": request.env[
+                    "pms.property"
+                ]._get_allowed_countries(),
+                "allowed_states": [],
+            }
+            return {"result": True, "partner": partner_data}
+        else:
+            return {"result": False, "message": _("Partner not indicated")}
 
     @http.route(
         ["/new_partner"],

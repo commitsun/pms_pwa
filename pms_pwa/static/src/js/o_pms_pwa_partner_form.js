@@ -118,11 +118,15 @@ odoo.define("pms_pwa.partner_form", function (require) {
             event.preventDefault();
             var self = this;
             var partner_id = event.currentTarget.getAttribute("data-partner-id");
+            var reservation_id = event.currentTarget.getAttribute(
+                "data-reservation-id"
+            );
+
             var partner_data = false;
             /* RPC call to get the reservation data */
-            ajax.jsonRpc("/partner/" + partner_id, "call", {}).then(function (
-                partner_data
-            ) {
+            ajax.jsonRpc("/partner/" + partner_id, "call", {
+                reservation_id: reservation_id,
+            }).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
                         $("div.o_pms_pwa_reservation_modal").modal("toggle");
