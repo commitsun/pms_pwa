@@ -1,3 +1,5 @@
+from odoo.tools.misc import get_lang
+from odoo.http import request
 import datetime
 
 from odoo.http import request

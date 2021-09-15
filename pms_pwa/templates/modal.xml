@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
-                                            <h4>Channel type and pricelist</h4>
+                                            <h4>Canal de venta y Tarifa</h4>
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="pricelist">
@@ -97,7 +97,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="reservation_type">
-                                                Tipo de habitación
+                                                Tipo de reserva
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="reservation_type" >
                                                 <option name="reservation_type" value="normal" selected="selected"> Normal</option>
@@ -117,7 +117,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="channel_type_id">
-                                                Canal
+                                                Canal de Venta
                                             </label>
                                             <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="channel_type_id" />
                                         </div>
@@ -134,7 +134,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="board_service_room_id">
-                                                Servicios habitación
+                                                Régimen
                                             </label>
                                             <select data-select="allowed_board_services" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="board_service_room_id" />
                                         </div>
@@ -143,19 +143,19 @@
                                     <div class="row mt-3 sale_category_id" >
                                         <div class="col-sm-12">
                                             <label class="control-label col-12" for="sale_category_id">
-                                                Sale category
+                                                Vender Como...
                                             </label>
                                             <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="sale_category_id" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
-                                            <h4>Grupos</h4>
+                                            <h4>Habitaciones</h4>
                                         </div>
 
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="agrupation_type">
-                                                Agrupación
+                                                Agrupar por...
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
                                                 <option name="agrupation_type" value="all" selected="selected">Todas</option>
@@ -168,7 +168,7 @@
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="amenity_ids"  style="z-index: 1;margin-bottom: 1rem;">
-                                                Amenities
+                                                Filtrar por características
                                             </label>
                                             <select id="amenity_ids" data-select="allowed_amenity_ids" multiple="multiple" class="form-control o_pms_pwa_multiselect call_booking_engine" data-live-search="true" name="amenity_ids" />
                                         </div>

@@ -46,7 +46,7 @@ class DashBoard(http.Controller):
         date_one_day = date + datetime.timedelta(days=1)
 
         graph_date_from = datetime.datetime.today()
-        graph_date_to = graph_date_from + datetime.timedelta(days=31)
+        graph_date_to = graph_date_from + datetime.timedelta(days=15)
 
         pms_property_id = request.env.user.get_active_property_ids()[0]
         property = request.env["pms.property"].browse(pms_property_id)
@@ -226,11 +226,11 @@ class DashBoard(http.Controller):
                 "compare_options": [
                     {
                         "id": 1,
-                        "value": "Previous year",
+                        "value": "Año Anterior",
                     },
                     {
                         "id": 2,
-                        "value": "Two years ago",
+                        "value": "Hace dos años",
                     },
                 ],
             }
@@ -240,7 +240,7 @@ class DashBoard(http.Controller):
 
     def dash_checkins(self, date, pms_property_id):
         checkins = request.env["pms.reservation"].search([
-            ("checkin", "<=", date),
+            ("checkin", "=", date),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
             ("pms_property_id", "=", pms_property_id),

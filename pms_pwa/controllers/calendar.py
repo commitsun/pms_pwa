@@ -87,9 +87,9 @@ class PmsCalendar(http.Controller):
             request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
         )
         display_select_options = [
-            {"name": "Properties", "value": "pms_property"},
-            {"name": "Room type", "value": "room_type"},
-            {"name": "Ubications", "value": "ubication"},
+            {"name": "Hoteles", "value": "pms_property"},
+            {"name": "Tipo de Habitación", "value": "room_type"},
+            {"name": "Zonas Hotel", "value": "ubication"},
         ]
         obj_list = room_types
         selected_display = "room_type"
@@ -101,7 +101,7 @@ class PmsCalendar(http.Controller):
                 obj_list = ubications
                 selected_display = "ubication"
             elif post["display_option"] == "pms_property":
-                obj_list = pms_property
+                obj_list = request.env["pms.property"].browse(request.env.user.get_active_property_ids())
                 selected_display = "pms_property"
 
         if post and "pricelist" in post:
@@ -170,7 +170,7 @@ class PmsCalendar(http.Controller):
                 request.env["pms.room"]
                 .search(
                     [
-                        ("pms_property_id", "=", pms_property_id),
+                        ("pms_property_id", "=", request.env.user.get_active_property_ids()),
                         ("ubication_id", "=", int(post.get("data_id"))),
                     ]
                 )

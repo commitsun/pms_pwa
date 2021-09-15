@@ -193,6 +193,9 @@ section.o_pms_pwa_roomdoo {
                 width: 182.4px;
                 min-width: 182.4px;
             }
+            .o_pms_pwa_availability_header {
+                color: #01b6e3;
+            }
             .o_pms_pwa_reservation_list_table {
                 border-collapse: separate;
                 border-spacing: 0 8px;
@@ -534,7 +537,7 @@ section.o_pms_pwa_roomdoo {
             &_danger::before {
                 top: 0.75em !important;
                 left: -100px !important;
-                background-color: var(--danger);
+                background-color: #bd0d0d;
                 content: "" !important;
                 display: inline-block;
                 height: 4px;
@@ -640,7 +643,7 @@ section.o_pms_pwa_roomdoo {
                 &_danger::before {
                     top: 0.7rem !important;
                     left: -69px !important;
-                    background-color: var(--danger);
+                    background-color: #bd0d0d;
                     content: "----------------" !important;
                     display: inline-block;
                     position: relative;
@@ -902,9 +905,6 @@ section.o_pms_pwa_roomdoo {
             &-to-assign {
                 color: #ed722e;
                 background-color: #ed722e;
-            }
-            &-to-assign {
-                color: var(--danger);
             }
         }
         .btn-add {

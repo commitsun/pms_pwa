@@ -24,7 +24,7 @@
             <field name="img" type="base64" file="pms_pwa/static/img/svg/llaves.svg" />
         </record> -->
 
-        <!--<record id="menu_dashboard" model="website.menu">
+        <record id="menu_dashboard" model="website.menu">
             <field name="name">Dashboard</field>
             <field name="url">/</field>
             <field name="sequence" type="int">10</field>
@@ -35,7 +35,7 @@
             <field name="page_id" ref="dashboard_page"/>
             <field name="website_id" ref="website.default_website"/>
             <field name="img" type="base64" file="pms_pwa/static/img/svg/cuadrados_blancos.svg" />
-        </record>-->
+        </record>
 
         <record id="menu_calendar" model="website.menu">
             <field name="name">Calendar</field>
