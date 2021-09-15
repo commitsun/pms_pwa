@@ -621,7 +621,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
                 new_data
             ) {
-                console.log("recibo _onChangePMSPWABookingEngine -->", new_data);
+                // console.log("recibo _onChangePMSPWABookingEngine -->", new_data);
                 if (new_data && new_data.result != "error") {
                     if (new_data["agrupation_type"] == "room_type") {
                         $(".sale_category_id").removeAttr("style").hide();
