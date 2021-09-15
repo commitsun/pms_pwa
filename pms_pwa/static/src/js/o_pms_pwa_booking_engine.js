@@ -202,7 +202,6 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                     $.each(recibed_rooms, function (room_key,room_val) {
                         if(room_val){
                             $.each(room_val, function(key,val){
-                                console.log("añado las rooms donde toca");
                                 send_rooms.push({
                                     board_service_room_id: false,
                                     checkin: $('input[name="checkin"]').val(),
@@ -542,16 +541,11 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             $("#bookengine_table").html(html);
         },
         pms_pwa_booking_engine_calculate_price: function () {
-            // console.log("pms_pwa_booking_engine_calculate_price");
             var total_price = 0.0;
             var price_groups_elements = document.getElementsByClassName('price_group');
-            // console.log("Todos los elemetos de precio por grupo", price_groups_elements.length);
             $.each(price_groups_elements, function (a) {
-                //console.log("price_groups_elements[a]", price_groups_elements[a]);
-                //console.log("precio del grupo", price_groups_elements[a].innerText);
                 total_price = (parseFloat(total_price) + parseFloat(price_groups_elements[a].innerText.replace("€", ""))).toFixed(2);
             });
-            // console.log("precio total calculado ", total_price);
             $("form#booking_engine_form .price_total").html(
                 parseFloat(total_price).toFixed(2) + "€"
             );
@@ -587,7 +581,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
 
             self.pms_pwa_booking_calendar_widget();
             var send_value = self.pms_pwa_booking_engine_send_values(event);
-            console.log("envío _onClickPMSPWABookingEngine -->", send_value);
+            // console.log("envío _onClickPMSPWABookingEngine -->", send_value);
             ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
                 new_data
             ) {
@@ -620,12 +614,11 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             event.preventDefault();
             var send_value = self.pms_pwa_booking_engine_send_values(event);
             if(recalculate_price.indexOf(String(event.currentTarget.name)) > -1 ){
-                console.log("cambio el reforce para recalcular precio");
                 send_value.force_recompute = "1";
             }else{
                 send_value.force_recompute = "0";
             }
-            console.log("envio _onChangePMSPWABookingEngine -->", send_value);
+            // console.log("envio _onChangePMSPWABookingEngine -->", send_value);
             ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
                 new_data
             ) {
@@ -693,9 +686,9 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
 
                 if(send_value.rooms){
                     for( var a in send_value.rooms){
-                        console.log("end_value.rooms[a]", send_value.rooms[a]);
+                        // console.log("end_value.rooms[a]", send_value.rooms[a]);
                         if(String(send_value.rooms[a]["group_id"]) == String(group_id)){
-                            console.log("entro en push");
+                            // console.log("entro en push");
                             sended_rooms.push({
                                 board_service_room_id: false,
                                 checkin: send_value.rooms[a]["checkin"],
@@ -718,7 +711,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                         "call",
                         send_value
                     ).then(function (new_data) {
-                        console.log("recibo _onClickPMSPWABookingEngineGroup -->", new_data);
+                        // console.log("recibo _onClickPMSPWABookingEngineGroup -->", new_data);
                         if (new_data && new_data.result != "error") {
                             self.pms_pwa_booking_engine_draw_group_rooms(send_value, new_data, group_id);
                             self.pms_pwa_booking_engine_calculate_price();
