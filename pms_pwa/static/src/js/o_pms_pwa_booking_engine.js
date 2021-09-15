@@ -8,7 +8,13 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
     var publicWidget = require("web.public.widget");
     var date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     var total_rooms = 0;
-
+    var recalculate_price = [
+        "pricelist_id",
+        "sale_category_id",
+        "reservation_type",
+        "board_service_room_id",
+        "checkin",
+    ];
 
     publicWidget.registry.PMSPWABookingEngineWidget = publicWidget.Widget.extend({
         selector: ".o_pms_icons, #o_pms_pwa_new_reservation_modal",
@@ -170,8 +176,10 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             var index = 0;
             // Formateo los valores
             values = this.pms_pwa_booking_engine_form_to_json(values);
-            // console.log("values con formato", values);
+            // console.log("seteo el force_recompute", values.force_recompute);
+            values.force_recompute = "0";
             if(values.calendar_room && values.calendar_room != false){
+                values.force_recompute = "1";
                 // console.log("entro en calendar rooms");
                 send_rooms = [{
                     board_service_room_id: "",
@@ -180,8 +188,8 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                     preferred_room_id: values["calendar_room"],
                     // pms_property_id': event.getAttribute("data-pms_property_id"),
                     pricelist_id: values.pricelist_id || "1",
-                    adults: "1",
-                    price_per_room: "21", // No tengo el precio y pongo este.
+                    adults: "0",
+                    price_per_room: "0", // se recalcula.
                     // room_type_id:
                     // price_per_room: values["rooms["+event.getAttribute("data-id")+"][" + i + "][price_per_room]"],
                     // adults: values["rooms["+event.getAttribute("data-id")+"][" + i + "][adults]"],
@@ -209,6 +217,8 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                             });
                         };
                     });
+                }else{
+                    send_rooms = [];
                 }
             }
             // console.log("send_rooms --->", send_rooms);
@@ -235,6 +245,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 amenity_ids: values.amenity_ids || "",
                 channel_type_id: values.channel_type_id || "",
                 segmentation_ids: values.segmentation_ids || "",
+                force_recompute: values.force_recompute,
 
             };
             if (
@@ -360,7 +371,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                                 try{
                                     if (
                                         subvalue["id"] ==
-                                        new_data[relation_values[value]]
+                                        new_data[relation_values[value]]['id']
                                     ) {
                                         var option = new Option(
                                             subvalue["name"],
@@ -380,7 +391,27 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                                     select.append(option);
                                 }catch(error) {
                                     // console.log(error);
-                                    return false;
+                                    if (
+                                        subvalue["id"] ==
+                                        new_data[relation_values[value]]
+                                    ) {
+                                        var option = new Option(
+                                            subvalue["name"],
+                                            subvalue["id"],
+                                            false,
+                                            true
+                                        );
+                                    } else {
+                                        var option = new Option(
+                                            subvalue["name"],
+                                            subvalue["id"],
+                                            false,
+                                            false
+                                        );
+                                    }
+                                    $(option).html(subvalue["name"]);
+                                    select.append(option);
+                                    // return false;
                                 }
                             }
                         );
@@ -468,7 +499,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             var groups = new_data.groups;
             for (const i in groups) {
                 html +=
-                    '<tr>' +
+                    '<tr class="o_pms_pwa_group_header">' +
                         '<td class="col-sm-4">' +
                             groups[i].name + " (" + groups[i].max_rooms + ")" +
                         '</td>' +
@@ -548,12 +579,15 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
         /* OnClick events */
         _onClickPMSPWABookingEngine: function (event) {
             // console.log("_onClickPMSPWABookingEngine");
+            $('form#booking_engine_form input[name="partner_name"]').val("");
+            $('form#booking_engine_form input[name="mobile"]').val("");
+            $('form#booking_engine_form input[name="email"]').val("");
             var self = this;
             event.preventDefault();
 
             self.pms_pwa_booking_calendar_widget();
             var send_value = self.pms_pwa_booking_engine_send_values(event);
-            // console.log("envío _onClickPMSPWABookingEngine -->", send_value);
+            console.log("envío _onClickPMSPWABookingEngine -->", send_value);
             ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
                 new_data
             ) {
@@ -585,11 +619,17 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             var self = this;
             event.preventDefault();
             var send_value = self.pms_pwa_booking_engine_send_values(event);
-            // console.log("envío _onChangePMSPWABookingEngine -->", send_value);
+            if(recalculate_price.indexOf(String(event.currentTarget.name)) > -1 ){
+                console.log("cambio el reforce para recalcular precio");
+                send_value.force_recompute = "1";
+            }else{
+                send_value.force_recompute = "0";
+            }
+            console.log("envio _onChangePMSPWABookingEngine -->", send_value);
             ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
                 new_data
             ) {
-                // console.log("recibo _onChangePMSPWABookingEngine -->", new_data);
+                console.log("recibo _onChangePMSPWABookingEngine -->", new_data);
                 if (new_data && new_data.result != "error") {
                     if (new_data["agrupation_type"] == "room_type") {
                         $(".sale_category_id").removeAttr("style").hide();
