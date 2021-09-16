@@ -372,7 +372,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     delete folio_reservation_data[i][value];
                 });
                 $.each(folio_reservation_data[i], function (key, value) {
-                    console.log("multimodal, cambio valores", key);
+                    // console.log("multimodal, cambio valores", key);
                     var input = $(
                         "table#multi_reservation_modal tr[data-id='" +
                             folio_reservation_data[i]["id"] +
