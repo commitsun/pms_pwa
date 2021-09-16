@@ -123,7 +123,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
         },
 
         init: function () {
-            // console.log("init");
+            console.log("init");
             let today = new Date();
             let tomorrow =  new Date();
             tomorrow.setDate(today.getDate() + 1);
@@ -136,17 +136,17 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 date_options
             );
             var range_date = checkin_date + " - " + checkout_date;
+            $('#bookengine_table > tr').remove();
             $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
             $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
             $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
-            $('form#booking_engine_form input[name="partner_name"]').val("");
-            $('form#booking_engine_form input[name="mobile"]').val("");
-            $('form#booking_engine_form input[name="mail"]').val("");
-            this.pms_pwa_booking_calendar_widget();
+            $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
+            $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
+            $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
             return this._super.apply(this, arguments);
         },
         start: function () {
-            // console.log("start");
+            console.log("start");
 
             return this._super.apply(this, arguments);
 
@@ -577,41 +577,28 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
         /* OnClick events */
         _onClickPMSPWABookingEngine: function (event) {
             // console.log("_onClickPMSPWABookingEngine");
-            $('form#booking_engine_form input[name="partner_name"]').val("");
-            $('form#booking_engine_form input[name="mobile"]').val("");
-            $('form#booking_engine_form input[name="mail"]').val("");
             var self = this;
             event.preventDefault();
-
-            self.pms_pwa_booking_calendar_widget();
-            // Comento esto, dado que al llamar al calendario se cambia la fecha, por lo tanto se envía a onchangePMS
-            // var send_value = self.pms_pwa_booking_engine_send_values(event);
-            // // console.log("envío _onClickPMSPWABookingEngine -->", send_value);
-            // ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
-            //     new_data
-            // ) {
-            //     // console.log("recibo _onClickPMSPWABookingEngine -->", new_data);
-            //     if (new_data && new_data.result != "error") {
-            //         if (new_data["agrupation_type"] == "room_type") {
-            //             $(".sale_category_id").removeAttr("style").hide();
-            //         } else {
-            //             $(".sale_category_id").show();
-            //         }
-            //         self.pms_pwa_booking_engine_head_form(new_data);
-            //         if (new_data.groups) {
-            //             self.pms_pwa_booking_engine_draw_groups(new_data);
-            //             for(var a in new_data.groups){
-            //                 if(new_data.groups[a].count_rooms_selected > 0){
-            //                     var colapse_name = "#collapseme" + new_data.groups[a].group_id;
-            //                     self.pms_pwa_booking_engine_draw_group_rooms(send_value, new_data.groups[a], new_data.groups[a].group_id);
-            //                     $(colapse_name).collapse("show");
-            //                 }
-            //             }
-            //         }
-            //     }else{
-            //         self.pms_pwa_booking_engine_display_alert(new_data);
-            //     }
-            // });
+            let today = new Date();
+            let tomorrow =  new Date();
+            tomorrow.setDate(today.getDate() + 1);
+            var checkin_date = today.toLocaleDateString(
+                document.documentElement.lang,
+                    date_options
+            );
+            var checkout_date = tomorrow.toLocaleDateString(
+                document.documentElement.lang,
+                date_options
+            );
+            var range_date = checkin_date + " - " + checkout_date;
+            $('#bookengine_table > tr').remove();
+            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+            $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
+            $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
+            $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
+            this.pms_pwa_booking_calendar_widget();
         },
         _onChangePMSPWABookingEngine: function (event) {
             // console.log("_onChangePMSPWABookingEngine");
@@ -756,6 +743,11 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 // console.log("devuelve al enviar form-->", new_data);
                 if (new_data && new_data.result != "error") {
                     if (new_data.reservation_id) {
+                        //vacio datos de la modal a mano.
+                        console.log("BORRO LOS DATOS");
+                        $('#bookengine_table > tr').remove();
+                        document.getElementById('booking_engine_form').reset();
+                        console.log("Cierro la modal");
                         // Cierra modal
                         $(
                             "div.o_pms_pwa_new_reservation_modal"
@@ -785,30 +777,25 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             });
         },
         _onClickPMSPWABookingEngineCloseButton : function () {
-            // console.log("_onClickPMSPWABookingEngineCloseButton");
-            // const today = new Date()
-            // let tomorrow =  new Date()
-            // tomorrow.setDate(today.getDate() + 1)
-            // var checkin_date = today.toLocaleDateString(
-            //     document.documentElement.lang,
-            //         date_options
-            // );
-            // var checkout_date = tomorrow.toLocaleDateString(
-            //     document.documentElement.lang,
-            //     date_options
-            // );
-            // var range_date = checkin_date + " - " + checkout_date;
-            // document.getElementById("booking_engine_form").reset();
-            // $('form#booking_engine_form:input').not(':button, :submit, :reset, :checkbox, :radio').val('');
-            // $('input[name="new_reservation_date_modal_reservation"]').val(range_date);
-            // $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
-            // $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
-            // $('.groups_rooms >tr').remove();
-            // var values = $("form#booking_engine_form").serializeArray();
-            // console.log("values al borrar ->", values);
-            $("#status").toggle();
-            $("#preloader").toggle();
-            location.reload();
+            let today = new Date();
+            let tomorrow =  new Date();
+            tomorrow.setDate(today.getDate() + 1);
+            var checkin_date = today.toLocaleDateString(
+                document.documentElement.lang,
+                    date_options
+            );
+            var checkout_date = tomorrow.toLocaleDateString(
+                document.documentElement.lang,
+                date_options
+            );
+            var range_date = checkin_date + " - " + checkout_date;
+            $('#bookengine_table > tr').remove();
+            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+            $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
+            $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
+            $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
 
         },
     });
