@@ -139,6 +139,9 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
             $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
             $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+            $('form#booking_engine_form input[name="partner_name"]').val("");
+            $('form#booking_engine_form input[name="mobile"]').val("");
+            $('form#booking_engine_form input[name="mail"]').val("");
             this.pms_pwa_booking_calendar_widget();
             return this._super.apply(this, arguments);
         },
@@ -472,8 +475,8 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                             seloption +
                         '</select>' +
                     '</td>' +
-                    '<td class="col-sm-5 text-right align-middle">' +
-                        //'<label class="control-label" for="adults">Adultos</label>'+
+                    '<td class="col-sm-5 o_pms_pwa_buttons_min_max text-center align-top">' +
+                        '<label class="control-label col-12" style="padding-top: 0 !important" for="adults">Adultos</label>'+
                         '<a href="#" class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById(\'quantity' + i +'\').stepDown(1)">-</a>' +
                         '<input name="rooms-'+group_id+'-'+ i +'-adults" class="o_pms_pwa_num-control" value="' +new_data["rooms"][i]["adults"] +'" id="quantity' +i +'" type="number" min="1" max="' + new_data["rooms"][i]["max_adults"] +'" readonly="readonly" />' +
                         '<input name="rooms-'+group_id+'-' + i +'-room_type_id" value="' + new_data["rooms"][i]["room_type_id"] +'" type="hidden" />' +
@@ -576,7 +579,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             // console.log("_onClickPMSPWABookingEngine");
             $('form#booking_engine_form input[name="partner_name"]').val("");
             $('form#booking_engine_form input[name="mobile"]').val("");
-            $('form#booking_engine_form input[name="email"]').val("");
+            $('form#booking_engine_form input[name="mail"]').val("");
             var self = this;
             event.preventDefault();
 

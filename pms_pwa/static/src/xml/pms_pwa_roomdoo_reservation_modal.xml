@@ -198,7 +198,7 @@
                                             <input
                                                 t-att-required='reservation.required_fields.indexOf("adults") != -1 ? "required" : None'
                                                 t-att-readonly='reservation.readonly_fields.indexOf("adults") != -1 ? "readonly" : None'
-                                                class="form-control" type="text" name="adults" t-att-value="i.adults" />
+                                                class="form-control" type="text" name="adults" t-att-value="i.adults" t-att-data-id="i.id" />
                                         </td>
                                         <td>
                                             <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ i.checkin }} - {{ i.checkout }}" />
@@ -382,17 +382,17 @@
                                             <label class="control-label col-12" for="adults">
                                                 <t t-esc="texts.adults_number_text || _t('Adultos')" />
                                             </label>
-                                            <a href="#" class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('adults').stepDown(1)">-</a>
-                                            <input readonly="readonly" class="o_pms_pwa_num-control" type="number" id="adults" name="adults" min="1" t-att-max="reservation.max_adults" t-att-value="reservation.adults" />
-                                            <a href="#" class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('adults').stepUp(1)">+</a>
+                                            <a href="#" class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('adults').stepDown(1)" data-adults="adults" t-att-data-id="reservation.id">-</a>
+                                            <input readonly="readonly" class="o_pms_pwa_num-control" type="number" id="adults" name="adults" min="1" t-att-max="reservation.max_adults" t-att-value="reservation.adults || 0" />
+                                            <a href="#" class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('adults').stepUp(1)" data-adults="adults" t-att-data-id="reservation.id">+</a>
                                         </div>
                                         <div class="col-sm-3 o_pms_pwa_buttons_min_max">
                                             <label class="control-label col-12" for="kids">
                                                 Niños
                                             </label>
-                                            <button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('kids').stepDown(1)">-</button>
+                                            <a href="#" class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('kids').stepDown(1)"  data-adults="kids" t-att-data-id="reservation.id">-</a>
                                             <input readonly="readonly" class="o_pms_pwa_num-control" type="number" id="kids" name="kids" min="0" t-att-max="reservation.max_kids" t-att-value="reservation.kids || 0" />
-                                            <button class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('kids').stepUp(1)">+</button>
+                                            <a href="#" class="btn btn-o_pms_pwa_min_max" onclick="document.getElementById('kids').stepUp(1)"  data-adults="kids" t-att-data-id="reservation.id">+</a>
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="pricelist_id">

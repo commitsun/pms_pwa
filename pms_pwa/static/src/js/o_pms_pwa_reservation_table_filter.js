@@ -372,6 +372,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     delete folio_reservation_data[i][value];
                 });
                 $.each(folio_reservation_data[i], function (key, value) {
+                    console.log("multimodal, cambio valores", key);
                     var input = $(
                         "table#multi_reservation_modal tr[data-id='" +
                             folio_reservation_data[i]["id"] +
@@ -379,6 +380,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             key +
                             "']"
                     );
+                    if (input.length > 0) {
+                        input.val(value);
+                    }
+
                 });
             }
         },
@@ -487,7 +492,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         // On change inputs reservation modal
                         $("form.o_pms_pwa_reservation_form").on(
                             "change",
-                            "select, input[type='checkbox'], input[type='radio'], input[type='text'][name='range_check_date_modal']",
+                            "select, input[type='checkbox'], input[type='radio'], input[type='number'].o_pms_pwa_num-control, input[type='text'][name='range_check_date_modal']",
                             function (new_event) {
                                 var values = {};
                                 // Set checkin & checkout separated
@@ -929,6 +934,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     );
                                 }
                             );
+                        });
+
+                        // On click to change adults or kids
+                        $(".btn-o_pms_pwa_min_max").on("click", function (
+                            new_event
+                        ) {
+                            new_event.preventDefault();
+                            $('input[type="number"].o_pms_pwa_num-control').trigger("change");
                         });
 
                         // DATE RANGE MODAL
