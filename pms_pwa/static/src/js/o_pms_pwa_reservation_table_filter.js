@@ -383,7 +383,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     if (input.length > 0) {
                         input.val(value);
                     }
-                    delete folio_reservation_data[i]
                 });
             }
         },

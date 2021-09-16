@@ -64,25 +64,16 @@ odoo.define("pms_pwa.calendar", function (require) {
             date_options
         );
         var range_date = checkin_date + " - " + checkout_date;
-        // $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').daterangepicker({
-        //     startDate: checkin_date,
-        //     endDate: checkout_date,
-        //     autoUpdateInput: true,
-        //     locale: {
-        //         direction: "ltr",
-        //         format: "DD/MM/YYYY",
-        //         separator: " - ",
-        //         applyLabel: "Aplicar",
-        //         cancelLabel: "Cancelar",
-        //     },
-        //     opens: "left",
-        //     showCustomRangeLabel: false,
-        // });
+        $('#bookengine_table > tr').remove();
         $('form#booking_engine_form input[name="calendar_room"]').val(room);
         $('form#booking_engine_form select[name="pricelist"]').val(pricelist);
         $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
         $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
         $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+
+        $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
+        $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
+        $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
         $("form#booking_engine_form").find("input[name='new_reservation_date_modal_reservation']").trigger("change");
 
     });
