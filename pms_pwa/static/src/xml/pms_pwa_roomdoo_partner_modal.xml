@@ -201,6 +201,7 @@
                                 </div>
                             </div>
                             <input class="form-control" type="hidden" name="id" t-att-value="partner.id or none" />
+                            <input class="form-control" type="hidden" name="reservation_id" t-att-value="partner.reservation_id or none"/>
                         </form>
                     </div>
                     <div class="modal-footer">

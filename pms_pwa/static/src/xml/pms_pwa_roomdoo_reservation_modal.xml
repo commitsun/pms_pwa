@@ -258,7 +258,7 @@
                                     <div class="col-3 align-self-center">
                                         <img t-att-src="'/web/image/pms.reservation/'+reservation.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
                                     </div>
-                                    <div class="col-9 ">
+                                    <div class="col-8 ">
                                         <div class="row">
                                             <div class="col-12">
                                                 <strong>
@@ -273,6 +273,7 @@
 
                                         </div>
                                     </div>
+                                    <i class="col-1 fa fa-pencil-square-o"></i>
                                 </div>
                                 <div class="progress mt-2">
                                     <div t-if="reservation.state == 'onboard'" class="progress-bar bg-success" role="progressbar" t-att-style="'width:'+ reservation.checkins_ratio + '%'" t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0" aria-valuemax="100"></div>
