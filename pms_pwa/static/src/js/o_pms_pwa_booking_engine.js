@@ -13,7 +13,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
         "sale_category_id",
         "reservation_type",
         "board_service_room_id",
-        "checkin",
+        "new_reservation_date_modal_reservation",
     ];
 
     publicWidget.registry.PMSPWABookingEngineWidget = publicWidget.Widget.extend({
@@ -581,33 +581,34 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             event.preventDefault();
 
             self.pms_pwa_booking_calendar_widget();
-            var send_value = self.pms_pwa_booking_engine_send_values(event);
-            // console.log("envío _onClickPMSPWABookingEngine -->", send_value);
-            ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
-                new_data
-            ) {
-                // console.log("recibo _onClickPMSPWABookingEngine -->", new_data);
-                if (new_data && new_data.result != "error") {
-                    if (new_data["agrupation_type"] == "room_type") {
-                        $(".sale_category_id").removeAttr("style").hide();
-                    } else {
-                        $(".sale_category_id").show();
-                    }
-                    self.pms_pwa_booking_engine_head_form(new_data);
-                    if (new_data.groups) {
-                        self.pms_pwa_booking_engine_draw_groups(new_data);
-                        for(var a in new_data.groups){
-                            if(new_data.groups[a].count_rooms_selected > 0){
-                                var colapse_name = "#collapseme" + new_data.groups[a].group_id;
-                                self.pms_pwa_booking_engine_draw_group_rooms(send_value, new_data.groups[a], new_data.groups[a].group_id);
-                                $(colapse_name).collapse("show");
-                            }
-                        }
-                    }
-                }else{
-                    self.pms_pwa_booking_engine_display_alert(new_data);
-                }
-            });
+            // Comento esto, dado que al llamar al calendario se cambia la fecha, por lo tanto se envía a onchangePMS
+            // var send_value = self.pms_pwa_booking_engine_send_values(event);
+            // // console.log("envío _onClickPMSPWABookingEngine -->", send_value);
+            // ajax.jsonRpc("/booking_engine", "call", send_value).then(function (
+            //     new_data
+            // ) {
+            //     // console.log("recibo _onClickPMSPWABookingEngine -->", new_data);
+            //     if (new_data && new_data.result != "error") {
+            //         if (new_data["agrupation_type"] == "room_type") {
+            //             $(".sale_category_id").removeAttr("style").hide();
+            //         } else {
+            //             $(".sale_category_id").show();
+            //         }
+            //         self.pms_pwa_booking_engine_head_form(new_data);
+            //         if (new_data.groups) {
+            //             self.pms_pwa_booking_engine_draw_groups(new_data);
+            //             for(var a in new_data.groups){
+            //                 if(new_data.groups[a].count_rooms_selected > 0){
+            //                     var colapse_name = "#collapseme" + new_data.groups[a].group_id;
+            //                     self.pms_pwa_booking_engine_draw_group_rooms(send_value, new_data.groups[a], new_data.groups[a].group_id);
+            //                     $(colapse_name).collapse("show");
+            //                 }
+            //             }
+            //         }
+            //     }else{
+            //         self.pms_pwa_booking_engine_display_alert(new_data);
+            //     }
+            // });
         },
         _onChangePMSPWABookingEngine: function (event) {
             // console.log("_onChangePMSPWABookingEngine");

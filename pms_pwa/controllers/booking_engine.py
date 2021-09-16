@@ -135,12 +135,12 @@ class BookingEngine(http.Controller):
                 }
                 folio_values["groups"] = self.get_groups(vals)
             # Parse sale_category_id
-            # if folio_values.get("sale_category_id") and folio_values.get("sale_category_id") != "false":
-            #     room_type = request.env["pms.room.type"].browse(int(folio_values.get("sale_category_id")))
-            #     folio_values["sale_category_id"] = {
-            #         "id": room_type.id,
-            #         "name": room_type.name,
-            #     }
+            if folio_values.get("sale_category_id") and folio_values.get("sale_category_id") != "false":
+                room_type = request.env["pms.room.type"].browse(int(folio_values.get("sale_category_id")))
+                folio_values["sale_category_id"] = {
+                    "id": room_type.id,
+                    "name": room_type.name,
+                }
 
             _logger.info(folio_values)
 
