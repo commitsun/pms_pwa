@@ -394,7 +394,7 @@ select::-ms-expand {
             overflow: auto;
             // background-color: #F5F6F8;
             > span {
-                margin-right: 5px;;
+                margin-right: 5px;
             }
         }
     }
@@ -484,11 +484,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 h4.collapsed {
     cursor: pointer !important;
 }
-h4#price_nights{
+h4#price_nights {
     cursor: pointer !important;
-    &:hover{
+    &:hover {
         background-color: $bg-theme-color;
-
     }
 }
 #collapse_price_nights {
@@ -645,12 +644,12 @@ h4#price_nights{
     background-color: #01b6e3 !important;
 }
 
-.o_pms_pwa_multi_reservation_modal{
-    .o_pms_pwa_modal_header{
-        .modal-btn-position{
+.o_pms_pwa_multi_reservation_modal {
+    .o_pms_pwa_modal_header {
+        .modal-btn-position {
             margin-top: -0.5rem;
             float: right;
-            .bg-modal-action{
+            .bg-modal-action {
                 background-image: linear-gradient(
                     to right,
                     $theme-color 80%,
@@ -669,13 +668,13 @@ h4#price_nights{
         }
     }
 }
-#multiChangeModal{
+#multiChangeModal {
     z-index: 9999;
-    .modal{
+    .modal {
         z-index: 9999;
     }
-     /* The switch - the box around the slider */
-     .switch {
+    /* The switch - the box around the slider */
+    .switch {
         position: relative;
         display: inline-block;
         width: 40px;
@@ -736,7 +735,7 @@ h4#price_nights{
     .slider.round:before {
         border-radius: 50%;
     }
-    & input[type='number'],
+    & input[type="number"],
     & select,
     & textarea {
         min-height: 3rem;
@@ -755,31 +754,29 @@ h4#price_nights{
         position: absolute;
         color: $theme-color-text;
     }
-
 }
 table#bookengine_table {
-    td{
-        border:none !important;
+    td {
+        border: none !important;
     }
-    .control-label{
+    .control-label {
         padding-top: 0.15rem;
         padding-left: 1rem;
     }
-    .call_booking_engine_group{
+    .call_booking_engine_group {
         max-width: 200px;
     }
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* Firefox */
-    input[type=number] {
-    -moz-appearance: textfield;
+    input[type="number"] {
+        -moz-appearance: textfield;
     }
-
 }
 .o_pms_pwa_shadow {
     box-shadow: 0px 0px 7px 3px rgba(0, 0, 0, 0.15);
@@ -804,11 +801,13 @@ table#bookengine_table {
 }
 
 // Multiselect
-.form-control.select2-container .select2-choices{
+.form-control.select2-container .select2-choices {
     padding-top: 1rem;
 }
 
-.launch_modal{display: none;}
+.launch_modal {
+    display: none;
+}
 // botones
 .o_pms_pwa_num-control {
     width: 1.5rem;
@@ -833,11 +832,10 @@ table#bookengine_table {
         height: 1.25rem !important;
         border-radius: 1.25rem;
     }
-
 }
 .btn-o_pms_pwa_min_max {
     background-color: $white;
-    border-color: $theme-color-text;;
+    border-color: $theme-color-text;
     border-radius: 1.5rem;
     height: 1.5rem;
     width: 1.5rem;
@@ -857,13 +855,13 @@ table#bookengine_table {
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+        -webkit-appearance: none;
+        margin: 0;
     }
 
     /* Firefox */
-    input[type=number] {
-    -moz-appearance: textfield;
+    input[type="number"] {
+        -moz-appearance: textfield;
     }
     label {
         position: static !important;
@@ -874,10 +872,10 @@ table#bookengine_table {
 }
 // nuevos botones modal
 .o_pms_pwa_modal_header {
-    .o_pms_pwa_modal_buttons{
-        .o_pms_pwa_default_button_name{
-            background-image: linear-gradient(to right,  $theme-color-text 80%, #daf7fc);
-            color: #FFFFFF;
+    .o_pms_pwa_modal_buttons {
+        .o_pms_pwa_default_button_name {
+            background-image: linear-gradient(to right, $theme-color-text 80%, #daf7fc);
+            color: #ffffff;
             border: none;
             border-radius: 1.5rem;
             font-weight: 600;
@@ -887,13 +885,25 @@ table#bookengine_table {
             font-size: 1rem;
             line-height: 1.5;
         }
-        .btn-secondary{
-            color: #FFFFFF;
-            background-color:  #3f4443;
-            border-color:  #3f4443;
+        .btn-secondary {
+            color: #ffffff;
+            background-color: #3f4443;
+            border-color: #3f4443;
         }
     }
 }
-.o_pms_pwa_group_header{
+.o_pms_pwa_group_header {
     background-color: $bg-theme-color-modal;
+}
+// partner modal
+.o_pms_pwa_partner_modal_show {
+    > i {
+        display: none;
+        color: $theme-color;
+    }
+    &:hover {
+        > i {
+            display: block;
+        }
+    }
 }
