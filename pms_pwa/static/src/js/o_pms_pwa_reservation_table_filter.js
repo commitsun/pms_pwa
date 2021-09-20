@@ -887,19 +887,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             });
 
                                             // refresh total
-                                            let a = document.getElementsByClassName(
-                                                "price_total"
+                                            let a = $(
+                                                "form.o_pms_pwa_reservation_form .price_total"
                                             );
-                                            a.innerText = JSON.parse(
+                                            a[0].innerHTML = JSON.parse(
                                                 new_data
                                             ).reservation.price_total;
-
-                                            // refresh pending amount.
+                                            // refresh pending amount
                                             try {
-                                                let b = document.getElementsByClassName(
-                                                    "pending_amount"
+                                                let b = $(
+                                                    "form.o_pms_pwa_reservation_form .pending_amount"
                                                 );
-                                                b.innerText = JSON.parse(
+                                                b[0].innerHTML = JSON.parse(
                                                     new_data
                                                 ).reservation.folio_pending_amount;
                                             } catch (error) {
@@ -936,11 +935,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         });
 
                         // On click to change adults or kids
-                        $(".btn-o_pms_pwa_min_max").on("click", function (
-                            new_event
-                        ) {
+                        $(".btn-o_pms_pwa_min_max").on("click", function (new_event) {
                             new_event.preventDefault();
-                            $('input[type="number"].o_pms_pwa_num-control').trigger("change");
+                            $('input[type="number"].o_pms_pwa_num-control').trigger(
+                                "change"
+                            );
                         });
 
                         // DATE RANGE MODAL
