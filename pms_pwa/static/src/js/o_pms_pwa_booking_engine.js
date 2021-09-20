@@ -44,7 +44,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                         showCustomRangeLabel: false,
                     },
                     function (start, end, label) {
-                        //console.log("fecha de inicio", start);
+                        console.log("fecha de inicio", start);
                         var start_date = new Date(start);
                         var checkin_date = start_date.toLocaleDateString(
                             document.documentElement.lang,
@@ -137,12 +137,12 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             );
             var range_date = checkin_date + " - " + checkout_date;
             $('#bookengine_table > tr').remove();
-            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
-            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
-            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
             $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
             $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
             $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
+            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
             return this._super.apply(this, arguments);
         },
         start: function () {
@@ -592,12 +592,12 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             );
             var range_date = checkin_date + " - " + checkout_date;
             $('#bookengine_table > tr').remove();
-            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
-            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
-            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
             $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
             $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
             $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
+            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
             this.pms_pwa_booking_calendar_widget();
         },
         _onChangePMSPWABookingEngine: function (event) {
@@ -790,12 +790,13 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             );
             var range_date = checkin_date + " - " + checkout_date;
             $('#bookengine_table > tr').remove();
-            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
-            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
-            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
             $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
             $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
             $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
+            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+            this.pms_pwa_booking_calendar_widget();
 
         },
     });
