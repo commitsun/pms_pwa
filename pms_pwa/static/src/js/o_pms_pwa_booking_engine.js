@@ -123,7 +123,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
         },
 
         init: function () {
-            console.log("init");
+            // console.log("init");
             let today = new Date();
             let tomorrow =  new Date();
             tomorrow.setDate(today.getDate() + 1);
@@ -146,7 +146,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             return this._super.apply(this, arguments);
         },
         start: function () {
-            console.log("start");
+            // console.log("start");
 
             return this._super.apply(this, arguments);
 
