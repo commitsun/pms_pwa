@@ -131,6 +131,11 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_partner_form.js"
             />
+            
+            <script
+                type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_property_selector.js"
+            />
         </xpath>
     </template>
 </odoo>

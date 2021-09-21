@@ -47,6 +47,21 @@
                                 <input type="hidden" name="calendar_room" value=""></input>
                                 <div class="form-group form-field pb-3 ">
 
+                                    <div class="row mb-3 pwa_property_id" >
+                                        <div class="col-sm-12" t-if="len(user_id.pms_pwa_property_ids) > 1">
+                                            <label class="control-label col-12" for="pwa_property_id">
+                                                Propiedad
+                                            </label>
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pwa_property_id">
+                                                <t t-foreach="user_id.pms_pwa_property_ids" t-as="i">
+                                                    <option t-attf-value="{{ i.id }}">
+                                                        <t t-esc="i.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <label class="control-label col-12" for="partner_name">

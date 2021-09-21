@@ -121,6 +121,52 @@ body.toggled {
     color: $white;
 }
 
+.o_pms_pwa_dropdown-check-list {
+    display: table-row-group;
+}
+.o_pms_pwa_dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 10px;
+    border: 1px solid #ccc;
+}
+.o_pms_pwa_dropdown-check-list .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    padding: 5px;
+    right: 10px;
+    top: 20%;
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+}
+.o_pms_pwa_dropdown-check-list .anchor:active:after {
+    right: 8px;
+    top: 21%;
+}
+.o_pms_pwa_dropdown-check-list ul.items {
+    padding: 2px;
+    display: none;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+.o_pms_pwa_dropdown-check-list ul.items li {
+    list-style: none;
+}
+.o_pms_pwa_dropdown-check-list.visible .anchor {
+    color: $theme-color;;
+}
+.o_pms_pwa_dropdown-check-list.visible .items {
+    display: block;
+    position: absolute;
+}
+
 @media (min-width: 1025px) {
     .o_pms_pwa_header {
         display: flex;
