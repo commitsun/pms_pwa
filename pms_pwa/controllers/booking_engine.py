@@ -170,6 +170,12 @@ class BookingEngine(http.Controller):
                     "name": room_type.name,
                 }
 
+            # Parse Pricelist
+            folio_values["pricelist_id"] = {
+                "id": pricelist.id,
+                "name": pricelist.name,
+            }
+
             _logger.info(folio_values)
 
             return folio_values

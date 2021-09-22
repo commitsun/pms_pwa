@@ -47,6 +47,20 @@ class PmsReservation(models.Model):
         compute="_compute_icon_payment",
     )
 
+    def _get_readonly_fields(self):
+        self.ensure_one()
+        readonly_fields = []
+        if self.channel_type_id.is_on_line:
+            readonly_fields.extend(
+                "checkin",
+                "checkout",
+                "room_type_id",
+                "pricelist_id",
+                "reservation_type",
+                "reservation_line_ids",
+            )
+        return readonly_fields
+
     def _compute_pwa_board_service_tags(self):
         for record in self:
             board_service_tags = list()
