@@ -111,7 +111,7 @@ section.o_pms_pwa_roomdoo {
             thead {
                 // border-bottom: 1px solid $theme-color;
                 background-color: $white;
-                height: 20px;
+                height: 10px;
                 tr {
                     background-color: $white;
                     // transform: translate(8px);
@@ -130,7 +130,7 @@ section.o_pms_pwa_roomdoo {
                         // border-bottom: 1px solid $theme-color;
                         a {
                             margin-left: -8px;
-                            height: 25px;
+                            height: 15px;
                         }
                     }
                 }
@@ -139,7 +139,7 @@ section.o_pms_pwa_roomdoo {
                 tr {
                     td {
                         padding-bottom: 0;
-                        height: 20px;
+                        height: 10px;
                     }
                     td.o_pms_pwa_dispo_0 {
                         background-color: #f582a640;
@@ -764,4 +764,8 @@ section.o_pms_pwa_roomdoo {
             border-radius: 50%;
         }
     }
+}
+.z-index-all{
+    position: relative;
+    z-index: 9999;
 }
