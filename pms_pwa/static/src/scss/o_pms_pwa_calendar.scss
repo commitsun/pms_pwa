@@ -43,8 +43,8 @@ section.o_pms_pwa_roomdoo {
             color: $theme-color-text;
             margin-left: -1rem;
             font-size: 14px;
-            @media (max-width: 991.98px) {
-                margin-left: 0rem;
+            @media (max-width: 1120px) {
+                margin-left: 3rem;
             }
         }
         .o_pms_pwa_calendar_select {
@@ -52,6 +52,9 @@ section.o_pms_pwa_roomdoo {
             select {
                 width: 200px;
                 font-size: 14px;
+                @media (max-width: 1120px) {
+                    width: auto;
+                }
             }
         }
         .o_pms_pwa_calendar_arrow {
