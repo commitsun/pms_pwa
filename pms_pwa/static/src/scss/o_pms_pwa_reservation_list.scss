@@ -767,9 +767,27 @@ div.o_pms_pwa_new_reservation_modal {
     border: 1px solid rgba(0, 0, 0, 0.2);
     position: absolute;
     right: 25.5%;
+
     min-height: 100px;
     z-index: 9999;
     top: 1%;
+    @media screen and (max-width: 1678px) {
+        right: 35%;
+
+    }
+    @media screen and (max-width: 1300px) {
+        right: unset;
+        left: 8%;
+        width: 55%;
+    }
+    @media screen and (max-width: 1180px) {
+        right: unset;
+        left: 0%;
+        width: 55%;
+    }
+    @media screen and (max-width: 1004px) {
+        display: none;
+    }
     .o_pms_pwa_modal_header {
         border: none !important;
         padding-bottom: 0rem;
