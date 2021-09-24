@@ -223,7 +223,7 @@
                             <div class="col-sm-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
                                     <h4 class="col-6 modal-title">
-                                        <t t-esc="texts.reservation_text || _t('Reserva')" />
+                                        <t t-if="reservation.pms_property_id" t-esc="reservation.pms_property_id.name"/>
                                         <span t-esc="reservation.name" />
                                     </h4>
                                     <a t-att-href="'/reservation/' + reservation.id" class="col-4 btn o_pms_pwa_btn_border float-right o_pms_pwa_preloader" t-att-data-id="reservation.id">

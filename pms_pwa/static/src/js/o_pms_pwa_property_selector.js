@@ -11,7 +11,8 @@ odoo.define("pms_pwa.property_selector", function (require) {
         selector: ".o_pms_pwa_dropdown-check-list",
         events: {
             "click ul.items>li>input": "_updateSelectedProperties",
-            "click span.anchor": "_showHideList",
+            "click ul.items>li>span.o_pms_pwa_property_item": "_updateActiveProperty",
+            "click span.anchor": "_showHideList",            
         },
 
         init: function () {
@@ -61,6 +62,40 @@ odoo.define("pms_pwa.property_selector", function (require) {
                     location.reload();
                 }
             });
+        },
+
+        _updateActiveProperty: function (ev) {
+            var self = this;
+            var ids = [];
+
+            var pms_pwa_active_property = parseInt($(ev.currentTarget).prev()[0].id);
+            var checkboxes = $(ev.currentTarget).prev().parent().parent().find("input:checked");
+
+            if (checkboxes.length == 1) {
+                ids.push(pms_pwa_active_property);
+            } else {
+                $.each(checkboxes, function (i, v) {
+                    ids.push(parseInt(v.id));
+                });
+                ids.push(pms_pwa_active_property);
+            }
+
+            this._rpc({
+                model: 'res.users',
+                method: 'write',
+                args: [[this.getSession().user_id], {
+                    pms_pwa_property_ids: ids,
+                    pms_pwa_property_id: pms_pwa_active_property
+                }],
+            }).then(function (data) {
+                if(data != true) {
+                    this.displayDataAlert(data);
+                } else {
+                    // Reload to recalculate new reservation select options
+                    location.reload();
+                }
+            });
+            
         },
 
         _showHideList: function (ev) {
