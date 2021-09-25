@@ -727,7 +727,10 @@ class PmsReservation(models.Model):
             "ratio_checkin_data": self.ratio_checkin_data,
             "adults": self.adults,
             "checkin_partner_ids": checkin_partner_ids,
-            "pms_property_id": self.pms_property_id.id,
+            "pms_property_id": {
+                "id": self.pms_property_id.id,
+                "name": self.pms_property_id.display_name,
+            },
             "service_ids": service_ids,
             "reservation_line_ids": reservation_line_ids,
             "allowed_board_service_room_ids": self._get_allowed_board_service_room_ids(),

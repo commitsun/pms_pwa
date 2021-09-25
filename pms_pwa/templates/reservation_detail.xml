@@ -25,7 +25,9 @@
                         <div class="row ">
                             <div class="col-lg-12 col-xl-6">
                                 <h1>
-                                    <span class="title-header">Reservation</span>
+                                    <span class="title-header">
+                                        <t t-if="reservation.pms_property_id" t-esc="reservation.pms_property_id.display_name"/>
+                                    </span>
                                     <span class="blue-header">
                                         <t t-esc="reservation.name" />
                                     </span>

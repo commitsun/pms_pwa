@@ -155,9 +155,18 @@ body.toggled {
     margin: 0;
     border: 1px solid #ccc;
     border-top: none;
+    background-color: white;
 }
 .o_pms_pwa_dropdown-check-list ul.items li {
     list-style: none;
+    padding-left: 5px;
+    padding-right: 5px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+.o_pms_pwa_dropdown-check-list .o_pms_pwa_active_property {
+    text-decoration: underline;
 }
 .o_pms_pwa_dropdown-check-list.visible .anchor {
     color: $theme-color;;

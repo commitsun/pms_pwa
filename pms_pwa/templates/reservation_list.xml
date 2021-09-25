@@ -230,7 +230,8 @@
                 </div>
             </td>
             <td class="o_pms_pwa_lh45 o_pms_pwa_priority-1">
-                <t t-esc="folio.name"/>
+                <t t-if="folio.pms_property_id" t-esc="folio.pms_property_id.display_name"/>
+                <br/><span class="o_pms_pwa_wler" t-esc="folio.name"/>
             </td>
             <td class="o_pms_pwa_lh45">
 
@@ -313,7 +314,8 @@
             </div>
         </td>
         <td class="o_pms_pwa_lh45 o_pms_pwa_priority-1">
-            <t t-esc="obj.name"/>
+            <t t-if="obj.pms_property_id" t-esc="obj.pms_property_id.display_name"/>
+            <br/><span class="o_pms_pwa_wler" t-esc="obj.name"/>
         </td>
         <td class="o_pms_pwa_lh45">
             <t t-esc="obj.rooms"/>
