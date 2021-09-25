@@ -22,6 +22,11 @@
     .o_pms_pwa_default_button_name {
         display: none;
     }
+    .o_pms_pwa_modal_buttons{
+        .o_pms_pwa_default_button_name {
+            display: block;
+        }
+    }
 }
 @media screen and (max-width: 1224px) and (min-width: 1180px) {
     .o_pms_pwa_priority-5 {
@@ -96,6 +101,11 @@
         min-height: 80%;
         .o_pms_pwa_default_button_name {
             display: none;
+        }
+        .o_pms_pwa_modal_buttons{
+            .o_pms_pwa_default_button_name {
+                display: block;
+            }
         }
         .dropdown.show {
             z-index: 3;
