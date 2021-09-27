@@ -27,6 +27,19 @@ class PmsPWARoomType(models.Model):
 
         return avail
 
+    def _get_occupied_rooms(self, pms_property_id):
+        if self._context.get("checkin") and self._context.get("checkout"):
+            room_ids = self.room_ids.filtered(
+                lambda r: r.pms_property_id.id == pms_property_id
+            ).ids
+            return len(self.env["pms.availability"].get_rooms_not_avail(
+                checkin=self._context.get("checkin"),
+                checkout=self._context.get("checkout"),
+                room_ids=room_ids,
+                pms_property_id=pms_property_id,
+            ))
+
+
     @api.model
     def _get_allowed_board_service_room_ids(self, room_type_id, pms_property_id):
         board_services = self.env["pms.board.service.room.type"].search(

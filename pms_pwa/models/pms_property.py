@@ -23,6 +23,16 @@ class PmsProperty(models.Model):
     def _get_total_rooms(self):
         return len(self.room_ids)
 
+    def _get_occupied_rooms(self):
+        if self._context.get("checkin") and self._context.get("checkout"):
+            room_ids = self.room_ids.ids
+            return len(self.env["pms.availability"].get_rooms_not_avail(
+                checkin=self._context.get("checkin"),
+                checkout=self._context.get("checkout"),
+                room_ids=room_ids,
+                pms_property_id=self.id,
+            ))
+
     def _get_allowed_payments_journals(self):
         """
         @return: Return dict with journals

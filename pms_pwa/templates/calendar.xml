@@ -187,12 +187,15 @@
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <span t-if="selected_display == 'room_type'">
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), room_type_id=obj.id, pricelist_id=default_pricelist).availability"></t>
+                                                    <t t-set="rooms_occupied" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_rooms(current_property)"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'ubication'">
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), ubication_id=obj.id, pricelist_id=default_pricelist).availability"></t>
+                                                    <t t-set="rooms_occupied" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_rooms(current_property)"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'pms_property'">
                                                     <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
+                                                    <t t-set="rooms_occupied" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_rooms()"></t>
                                                 </span>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
@@ -204,9 +207,11 @@
                                                         </span>
                                                     </p>
                                                     <div class="o_pms_pwa_content">
-                                                        <span t-if="selected_display == 'room_type'" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms(current_property) - availability_room"/> ocupadas</span>
-                                                        <span t-if="selected_display == 'ubication'" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms(current_property) - availability_room"/> ocupadas</span>
-                                                        <span t-if="selected_display == 'pms_property'" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms() - availability_room"/> ocupadas</span>
+                                                        <span t-if="rooms_occupied > 0">
+                                                            <span t-if="selected_display == 'room_type'" class="o_pms_pwa_type"><t t-esc="rooms_occupied"/> ocupadas</span>
+                                                            <span t-if="selected_display == 'ubication'" class="o_pms_pwa_type"><t t-esc="rooms_occupied"/> ocupadas</span>
+                                                            <span t-if="selected_display == 'pms_property'" class="o_pms_pwa_type"><t t-esc="rooms_occupied"/> ocupadas</span>
+                                                        </span>
                                                         <span t-if="selected_display == 'room_type'" class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
 
                                                     </div>
