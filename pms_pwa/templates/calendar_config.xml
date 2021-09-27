@@ -3,17 +3,7 @@
     <template id="roomdoo_calendar_config_page" name="Calendar config">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Calendario de configuración'" />
-            <t t-if="request.httprequest.cookies.get('pms_pids', false)">
-                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1">
-                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
-                </t>
-                <t t-else="">
-                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
-                </t>
-            </t>
-            <t t-else="">
-                <t t-set="current_property" t-value="1" />
-            </t>
+            <t t-set="current_property" t-value="user_id.pms_pwa_property_id.id" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4 row">
                 <span class="o_pms_notification_title col-2">
