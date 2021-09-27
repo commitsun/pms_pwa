@@ -56,7 +56,8 @@ class PmsCalendar(http.Controller):
             ).date()
             date_start = date + timedelta(days=-30)
 
-        pms_property_id = request.env.user.get_active_property_ids()[0]
+        pms_property = request.env.user.pms_pwa_property_id
+        pms_property_id = pms_property.id
         Room = request.env["pms.room"]
         rooms = Room.search([("pms_property_id", "=", pms_property_id)])
         room_types = request.env["pms.room.type"].browse(
@@ -65,7 +66,7 @@ class PmsCalendar(http.Controller):
         ubications = request.env["pms.ubication"].browse(
             rooms.mapped("ubication_id.id")
         )
-        pms_property = request.env["pms.property"].browse(pms_property_id)
+
         # Add default dpr and dpr_select_values
 
         dpr = 15
@@ -101,7 +102,7 @@ class PmsCalendar(http.Controller):
                 obj_list = ubications
                 selected_display = "ubication"
             elif post["display_option"] == "pms_property":
-                obj_list = request.env["pms.property"].browse(request.env.user.get_active_property_ids())
+                obj_list = request.env.user.pms_pwa_property_ids
                 selected_display = "pms_property"
 
         if post and "pricelist" in post:
@@ -140,7 +141,9 @@ class PmsCalendar(http.Controller):
         dates = [item for item in eval(post.get("range_date"))]
         from_date = min(dates)
         to_date = max(dates)
-        pms_property_id = request.env.user.get_active_property_ids()[0]
+        pms_property_id = request.env.user.pms_pwa_property_id.id
+        if post.get("selected_display") == "pms_property":
+            pms_property_id = int(post.get("data_id"))
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]
         domain = [
@@ -170,7 +173,7 @@ class PmsCalendar(http.Controller):
                 request.env["pms.room"]
                 .search(
                     [
-                        ("pms_property_id", "=", request.env.user.get_active_property_ids()),
+                        ("pms_property_id", "=", pms_property_id),
                         ("ubication_id", "=", int(post.get("data_id"))),
                     ]
                 )
@@ -354,7 +357,7 @@ class PmsCalendar(http.Controller):
             ).date()
             date_start = date + timedelta(days=-30)
 
-        pms_property_id = request.env.user.get_active_property_ids()[0]
+        pms_property_id = request.env.user.pms_property_id.id
         Room = request.env["pms.room"]
         rooms = Room.search([("pms_property_id", "=", pms_property_id)])
         room_types = request.env["pms.room.type"].browse(

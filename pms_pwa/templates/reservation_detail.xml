@@ -45,8 +45,8 @@
                                 </h1>
                             </div>
                             <div class="col-lg-12 col-xl-6 text-right o_pms_pwa_keypad_footer">
-                                <button id="o_pms_pwa_button_cancel" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancel o_pms_pwa_btn_principal">Cancel booking</button>
-                                <button id="o_pms_pwa_button_checkin" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkin o_pms_pwa_disabled">Check in</button>
+                                <button id="o_pms_pwa_button_cancelar" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="btn btn-grey-900 btn-radius o_pms_pwa_button_cancelar o_pms_pwa_btn_principal">Cancel booking</button>
+                                <button id="o_pms_pwa_button_checkins" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkins o_pms_pwa_disabled">Check in</button>
                                 <button id="o_pms_pwa_button_checkout" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkout" class="btn btn-grey-300 btn-radius o_pms_pwa_button_checkout o_pms_pwa_disabled">Check out</button>
                             </div>
                         </div>
@@ -143,16 +143,16 @@
                                                             <span data-toggle="tooltip" title="Guest personal data" class="badge bg-red mr-2" data-original-title="Guest personal data">
                                                                 <t t-esc="reservation.adults" />
                                                             </span>
-                                                            Guest personal data
+                                                            Huéspedes
                                                         </button>
                                                         <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
                                                             <t t-foreach="reservation.checkin_partner_ids" t-as="person">
-                                                                <a class="dropdown-item o_pms_pwa_button_checkin" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" t-attf-data-target="#checkin_partner_{{person.id}}">
+                                                                <a class="dropdown-item o_pms_pwa_button_checkins" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" t-attf-data-target="#checkin_partner_{{person.id}}">
                                                                     <t t-if="person.firstname">
                                                                         <t t-esc="person.firstname" /> <t t-esc="person.lastname" />
                                                                     </t>
                                                                     <t t-else="">
-                                                                        Not indicated
+                                                                        Introducir datos del huésped
                                                                     </t>
                                                                 </a>
                                                             </t>
@@ -513,7 +513,7 @@
                                 <div class="card shadow my-4">
                                     <div class="card-header bg-white o_pms_pwa_card_header">
                                         <h3 class="mb-0">
-                                            RATE DETAILS
+                                            PRECIOS
                                         </h3>
                                     </div>
                                     <div class="card-body">
@@ -522,10 +522,10 @@
                                                 <div class="row">
                                                     <div class="col-sm-12">
                                                         <label class="control-label col-12" for="allowed_pricelists">
-                                                            Rate type
+                                                            Tarifa
                                                         </label>
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="allowed_pricelists">
-                                                            <option name="allowed_pricelists" t-foreach="reservation._get_allowed_pricelists()" t-as="key" t-att-value="key['id']">
+                                                            <option name="allowed_pricelists" t-foreach="reservation._get_allowed_pricelists([reservation.pms_property_id.id])" t-as="key" t-att-value="key['id']">
                                                                 <t t-esc="key['name']" />
                                                             </option>
                                                         </select>
@@ -535,7 +535,7 @@
                                                     <div class="col-sm-12">
                                                         <h4 data-toggle="collapse" data-target="#collapse_price_nights">
                                                             <i class="fa fa-pencil-square-o" aria-hidden="false" />
-                                                            Price/Nights
+                                                            Precio/Noche
                                                             <i class="fa fa-angle-down rotate-icon" />
                                                         </h4>
                                                         <div id="collapse_price_nights" class="collapse" aria-labelledby="headingOne">
@@ -543,9 +543,9 @@
                                                                 <thead>
 
                                                                     <tr>
-                                                                        <th class="o_pms_pwa_theme_color">Day</th>
-                                                                        <th class="o_pms_pwa_theme_color">Price</th>
-                                                                        <th class="o_pms_pwa_theme_color">Discount (%)</th>
+                                                                        <th class="o_pms_pwa_theme_color">Día</th>
+                                                                        <th class="o_pms_pwa_theme_color">Precio</th>
+                                                                        <th class="o_pms_pwa_theme_color">Descuento (%)</th>
                                                                     </tr>
 
                                                                 </thead>
@@ -575,7 +575,7 @@
                                 <div class="card bg-dark shadow">
                                     <div class="card-header o_pms_pwa_card_header">
                                         <h3 class="mb-0">
-                                            Payment details
+                                            Detalles de Facturación
                                         </h3>
                                     </div>
                                     <div class="card-body bg-dark">
@@ -583,10 +583,10 @@
                                             <thead>
                                                 <tr>
                                                     <th class="o_pms_pwa_theme_color"></th>
-                                                    <th class="o_pms_pwa_theme_color">concept</th>
-                                                    <th class="o_pms_pwa_theme_color text-right">to invoice</th>
-                                                    <th class="o_pms_pwa_theme_color text-right">invoiced / total </th>
-                                                    <th class="o_pms_pwa_theme_color text-right">amount</th>
+                                                    <th class="o_pms_pwa_theme_color">concepto</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">por facturar</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">facturado / total </th>
+                                                    <th class="o_pms_pwa_theme_color text-right">importe</th>
                                                 </tr>
                                             </thead>
                                             <tbody id="reservation_list"></tbody>
@@ -601,7 +601,7 @@
                                                 <span>
                                                     Total
                                                     <br />
-                                                    to invoice
+                                                    a facturar
                                                 </span>
                                                 <span class="pt" id="total_amount">
                                                     <t t-esc="reservation.folio_id.amount_total" />
@@ -638,7 +638,7 @@
                                             <div class="row m-1" id="facturacion">
                                                 <div class="col-12">
                                                     <h4 data-toggle="collapse" data-target="#collapseDatos">
-                                                        Billing information
+                                                        Contacto de Facturación
                                                         <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
                                                     </h4>
                                                     <div id="collapseDatos" class="collapse" aria-labelledby="headingOne" data-parent="#facturacion">
@@ -649,7 +649,7 @@
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
                                                                             <label class="control-label col-12" for="rate_type">
-                                                                            Invoice contact
+                                                                            Seleccionar Contacto
                                                                         </label>
                                                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" id="partner_to_invoice">
                                                                                 <t t-foreach="reservation.folio_id.partner_invoice_ids" t-as="partner">
@@ -671,7 +671,7 @@
                                                                     <div class="row mt-2">
                                                                         <div class="col-sm-12">
                                                                             <label class="control-label col-12" for="rate_type">
-                                                                            Name
+                                                                            Nombre
                                                                         </label>
                                                                             <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
                                                                         </div>
@@ -687,7 +687,7 @@
                                                                     <div class="row mt-2">
                                                                         <div class="col-sm-12">
                                                                             <label class="control-label col-12" for="rate_type">
-                                                                            Address
+                                                                            Dirección
                                                                         </label>
                                                                             <input class="form-control" type="text" name="invoice_street" t-attf-value="{{ reservation.folio_id.partner_id.street }}" required="required" />
                                                                         </div>
@@ -695,7 +695,7 @@
                                                                     <div class="row mt-2">
                                                                         <div class="col-sm-12">
                                                                             <label class="control-label col-12" for="rate_type">
-                                                                            City
+                                                                            Ciudad
                                                                         </label>
                                                                             <input class="form-control" type="text" name="invoice_city" t-attf-value="{{ reservation.folio_id.partner_id.city }}" required="required" />
                                                                         </div>
@@ -703,7 +703,7 @@
                                                                     <div class="row mt-2">
                                                                         <div class="col-sm-12">
                                                                             <label class="control-label col-12" for="rate_type">
-                                                                            Postal code
+                                                                            Código Postal
                                                                         </label>
                                                                             <input class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ reservation.folio_id.partner_id.zip }}" required="required" />
                                                                         </div>
@@ -711,7 +711,7 @@
                                                                     <div class="row mt-2">
                                                                         <div class="col-sm-12">
                                                                             <label class="control-label col-12" for="rate_type">
-                                                                            Country
+                                                                            País
                                                                         </label>
                                                                             <input class="form-control" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
                                                                         </div>
@@ -723,7 +723,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row m-1">
+                                            <!-- <div class="row m-1">
                                                 <div class="col-12">
                                                     <h4>Payment methods</h4>
                                                 </div>
@@ -732,7 +732,6 @@
 
                                                         <div class="form-check mt-1">
                                                             <input type="radio" class="o_pms_pwa_checkbox" name="payment_method" t-attf-value="{{ payment.id }}" checked="checked" />
-                                                            <!-- <input class="o_pms_pwa_checkbox" type="checkbox" t-attf-id="{{ payment.id }}" checked="checked" /> -->
                                                             <label class="o_pms_pwa_checkbox_label pl-1">
                                                                 <t t-esc="payment.name"></t>
                                                             </label>
@@ -740,7 +739,7 @@
 
                                                     </t>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <hr class="m-1" />
                                             <div class="col-12">
@@ -750,9 +749,9 @@
                                                     IMPRIMIR
                                                 </button> -->
 
-                                                    <button id="payment_button" class="btn btn-message">
+                                                    <button id="invoice_button" class="btn btn-message">
                                                         <i class="fa fa-file-text-o" aria-hidden="false" />
-                                                        Bill
+                                                        Facturar
                                                     </button>
 
                                                 </div>
@@ -764,7 +763,7 @@
                                     <div class="card bg-white shadow mt-4">
                                         <div class="card-header bg-white o_pms_pwa_card_header">
                                             <h3 class="mb-0">
-                                                Invoices
+                                                Facturas
                                             </h3>
                                         </div>
                                         <div class="card-body bg-white o_pms_pwa_table_reservation_list">
@@ -772,9 +771,9 @@
                                                 <thead>
 
                                                     <tr>
-                                                        <th class="o_pms_pwa_theme_color">ID</th>
-                                                        <th class="o_pms_pwa_theme_color">Partner</th>
-                                                        <th class="o_pms_pwa_theme_color">Date</th>
+                                                        <th class="o_pms_pwa_theme_color">Factura</th>
+                                                        <th class="o_pms_pwa_theme_color">Cliente</th>
+                                                        <th class="o_pms_pwa_theme_color">Fecha</th>
                                                         <th class="o_pms_pwa_theme_color">Total</th>
                                                     </tr>
 

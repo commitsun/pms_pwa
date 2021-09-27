@@ -73,7 +73,7 @@
                                 </div>
                             </div>
                             <div id="buttom_save" class="col-6 col-sm-2">
-                                <form method="post" action="">
+                                <form method="post" action="/calendar/config">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
                                     <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
@@ -177,8 +177,8 @@
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
-                                                <t t-set="total_rooms" t-value="obj._get_total_rooms()"></t>
-                                                <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pms_property_id=current_property)._get_availability_rooms()"/>
+                                                <t t-set="total_rooms" t-value="obj._get_total_rooms(current_property)"></t>
+                                                <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pms_property_id=current_property)._get_availability_rooms(current_property)"/>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')

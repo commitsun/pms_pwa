@@ -36,20 +36,20 @@
 
                         <div class="col-lg-2 col-md-12 col-sm-12">
                             <div class="o_pms_pwa_dropdown-check-list float-right" tabindex="100">
-                                <span class="anchor">Propiedades</span>
+                                <span class="anchor" t-esc="user_id.pms_pwa_property_id.name" />
                                 <ul class="items">
                                     <t t-foreach="user_id.pms_property_ids" t-as="i">
                                         <t t-if="i.id in user_id.pms_pwa_property_ids.ids">
                                             <li>
                                                 <input class="mr-3" type="checkbox" t-attf-id="{{ i.id }}" t-attf-checked="checked"/>
-                                                <span t-if="user_id.pms_pwa_property_id and i.id == user_id.pms_pwa_property_id.id" class="o_pms_pwa_property_item o_pms_pwa_active_property" t-esc="i.name"/> 
-                                                <span t-else="" class="o_pms_pwa_property_item" t-esc="i.name" /> 
+                                                <span t-if="user_id.pms_pwa_property_id and i.id == user_id.pms_pwa_property_id.id" class="o_pms_pwa_property_item o_pms_pwa_active_property" t-esc="i.name"/>
+                                                <span t-else="" class="o_pms_pwa_property_item" t-esc="i.name" />
                                             </li>
                                         </t>
                                         <t t-else="">
                                             <li>
                                                 <input class="mr-3" type="checkbox" t-attf-id="{{ i.id }}" />
-                                                <span class="o_pms_pwa_property_item" t-esc="i.name" /> 
+                                                <span class="o_pms_pwa_property_item" t-esc="i.name" />
                                             </li>
                                         </t>
                                     </t>
@@ -60,7 +60,7 @@
                         <div class="col-lg-4 d-none d-lg-block o_pms_icons">
                             <button class="btn btn-radius btn-pms_pwa" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
                                 <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
-                                New reservation
+                                Nueva Reserva
                             </button>
                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
                             <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />

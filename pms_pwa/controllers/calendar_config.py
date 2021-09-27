@@ -62,7 +62,7 @@ class PmsCalendarConfig(http.Controller):
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
 
-        pms_property_id = request.env.user.get_active_property_ids()[0]
+        pms_property_id = request.env.user.pms_pwa_property_id.id
         Pricelist = request.env["product.pricelist"]
 
         pricelist = Pricelist.search(
@@ -74,14 +74,14 @@ class PmsCalendarConfig(http.Controller):
         )
         # TODO: Add pricelist not daily in readonly mode (only price)
 
-        select_pricelist = 0
+        select_pricelist = pricelist
         default_pricelist = pricelist[0].id
         if post and post.get("pricelist"):
             default_pricelist = int(post["pricelist"])
             # pricelist = (
             #     request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
             # )
-            select_pricelist = int(post["pricelist"])
+            select_pricelist = Pricelist.browse(int(post["pricelist"]))
 
         values = {
             "today": datetime.datetime.now(),
@@ -112,7 +112,7 @@ class PmsCalendarConfig(http.Controller):
     def calendar_config_list(self, search="", **post):
         params = http.request.jsonrequest.get("params")
         try:
-            pms_property_id = request.env.user.get_active_property_ids()[0]
+            pms_property_id = request.env.user.pms_pwa_property_id.id
             _logger.info(params)
             for room_type_id, pricelists in params["room_type"].items():
                 room_type = request.env["pms.room.type"].browse(int(room_type_id))

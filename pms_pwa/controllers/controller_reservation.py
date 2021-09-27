@@ -264,10 +264,11 @@ class PmsReservation(http.Controller):
                     lines_to_invoice = dict()
                     for value in invoice_lines:
                         lines_to_invoice[value[0]["id"]] = value[0]["qty"]
-                    reservation.folio_id._create_invoices(
+                    invoices = reservation.folio_id._create_invoices(
                         lines_to_invoice=lines_to_invoice,
                         partner_invoice_id=partner_invoice_id,
                     )
+                    invoices.action_post()
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
                 return json.dumps(

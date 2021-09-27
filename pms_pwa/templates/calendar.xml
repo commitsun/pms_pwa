@@ -3,17 +3,7 @@
     <template id="roomdoo_calendar_page" name="Calendar">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'Calendario'"/>
-            <t t-if="request.httprequest.cookies.get('pms_pids', false)">
-                <t t-if="len(request.httprequest.cookies['pms_pids']) > 1" >
-                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'].split(',')[0])" />
-                </t>
-                <t t-else="">
-                    <t t-set="current_property" t-value="int(request.httprequest.cookies['pms_pids'])" />
-                </t>
-            </t>
-            <t t-else="">
-                <t t-set="current_property" t-value="1" />
-            </t>
+            <t t-set="current_property" t-value="user_id.pms_pwa_property_id.id" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4 row">
                 <span class="o_pms_notification_title col-2">
@@ -189,7 +179,9 @@
                                                 </p>
                                                 <p class="o_pms_pwa_extra_info">
                                                     <span t-if="selected_display == 'room_type'"><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
-                                                    <span><t t-esc="obj._get_total_rooms()"/> hab</span>
+                                                    <span t-if="selected_display == 'room_type'"><t t-esc="obj._get_total_rooms(current_property)"/> hab</span>
+                                                    <span t-if="selected_display == 'ubication'"><t t-esc="obj._get_total_rooms(current_property)"/> hab</span>
+                                                    <span t-if="selected_display == 'pms_property'"><t t-esc="obj._get_total_rooms()"/> hab</span>
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
@@ -206,13 +198,15 @@
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
                                                 ">
-                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> available
+                                                    <p class="o_pms_pwa_title"><t t-esc="availability_room"/> disponibles
                                                         <span class="o_pms_pwa_info">
                                                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive o_pms_pwa_interrogante-calendar" title="Texto informativo del icono" />
                                                         </span>
                                                     </p>
                                                     <div class="o_pms_pwa_content">
-                                                        <span t-if="current_property" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms() - availability_room"/> busy</span>
+                                                        <span t-if="selected_display == 'room_type'" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms(current_property) - availability_room"/> ocupadas</span>
+                                                        <span t-if="selected_display == 'ubication'" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms(current_property) - availability_room"/> ocupadas</span>
+                                                        <span t-if="selected_display == 'pms_property'" class="o_pms_pwa_type"><t t-esc="obj._get_total_rooms() - availability_room"/> ocupadas</span>
                                                         <span t-if="selected_display == 'room_type'" class="o_pms_pwa_price"><t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>€</span>
 
                                                     </div>

@@ -381,7 +381,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     });
 
     // Método de pago
-    $(document).on("click", "#payment_button", function () {
+    $(document).on("click", "#invoice_button", function () {
         const reservation_data = [];
         const reservation_lines = [];
         const checkboxesChecked = [

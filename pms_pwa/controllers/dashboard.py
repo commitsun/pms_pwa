@@ -48,7 +48,7 @@ class DashBoard(http.Controller):
         graph_date_from = datetime.datetime.today()
         graph_date_to = graph_date_from + datetime.timedelta(days=15)
 
-        pms_property_id = request.env.user.get_active_property_ids()[0]
+        pms_property_id = request.env.user.pms_property_id.id
         property = request.env["pms.property"].browse(pms_property_id)
 
         channels = request.env["pms.sale.channel"].search([

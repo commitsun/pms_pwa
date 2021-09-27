@@ -10,17 +10,13 @@ from odoo.exceptions import ValidationError
 class PmsPWARoomType(models.Model):
     _inherit = "pms.room.type"
 
-    def _get_total_rooms(self):
-        pms_property_id = self.env.user.get_active_property_ids()[0]
+    def _get_total_rooms(self, pms_property_id):
         return len(self.room_ids.filtered(lambda r: r.pms_property_id.id == pms_property_id))
 
-    def _get_availability_rooms(self):
+    def _get_availability_rooms(self, pms_property_id):
         avail = 0
         if self._context.get("checkin") and self._context.get("checkout"):
-            # REVIEW: self._context.get("pms_property_id"),
-            pms_property = self.env["pms.property"].browse(
-                self.env.user.get_active_property_ids()[0],
-            )
+            pms_property = self.env["pms.property"].browse(pms_property_id)
             pms_property = pms_property.with_context(
                 checkin=self._context.get("checkin"),
                 checkout=self._context.get("checkout"),
@@ -56,9 +52,8 @@ class PmsPWARoomType(models.Model):
             )
         return allowed_board_services if allowed_board_services else False
 
-    def _get_rules_date(
-        self,
-    ):  # TODO: Modificado por Alejandro, date, pricelist_id, pms_property_id):
+    def _get_rules_date(self):
+        # TODO: Modificado por Alejandro, date, pricelist_id, pms_property_id):
         self.ensure_one()
 
         if (
@@ -82,7 +77,7 @@ class PmsPWARoomType(models.Model):
                 avail = self.with_context(
                     checkin=self._context.get("date"),
                     checkout=self._context.get("date") + datetime.timedelta(days=1),
-                )._get_availability_rooms()
+                )._get_availability_rooms(self._context.get("pms_property_id"))
             return {
                 "plan_avail": rule.plan_avail if rule else avail,
                 "quota": rule.quota if rule else False,

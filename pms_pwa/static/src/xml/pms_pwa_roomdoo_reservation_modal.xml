@@ -294,12 +294,12 @@
                                             </button>
                                             <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
                                                 <t t-foreach="reservation.checkin_partner_ids" t-as="person">
-                                                    <a class="dropdown-item o_pms_pwa_button_checkin" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" t-attf-data-target="#checkin_partner_{{person.id}}">
+                                                    <a class="dropdown-item o_pms_pwa_button_checkins" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" t-attf-data-target="#checkin_partner_{{person.id}}">
                                                         <t t-if="person_value['firstname']">
                                                             <t t-esc="person_value['firstname']" /> <t t-esc="person_value['lastname']" />
                                                         </t>
                                                         <t t-else="">
-                                                            Desconocido
+                                                            Introducir datos de huésped
                                                         </t>
                                                     </a>
                                                 </t>
