@@ -70,6 +70,7 @@ class PmsCalendarConfig(http.Controller):
                 "|",
                 ("pms_property_ids", "=", False),
                 ("pms_property_ids", "in", pms_property_id),
+                ('pricelist_type', '=', 'daily')
             ]
         )
         # TODO: Add pricelist not daily in readonly mode (only price)
