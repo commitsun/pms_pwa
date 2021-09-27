@@ -77,10 +77,10 @@
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
                                     <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
-                                        <option t-if="select_pricelist==0" selected="selected" value="">Todas</option>
-                                        <option t-if="select_pricelist==1" value="">Todas</option>
+                                        <option t-if="default_pricelist==0" selected="selected" value="0">Todas</option>
+                                        <option t-if="default_pricelist!=0" value="0">Todas</option>
                                         <t t-foreach="pricelist" t-as="price">
-                                            <t t-if="select_pricelist==price.id">
+                                            <t t-if="default_pricelist==price.id">
                                                 <option t-attf-value="{{ price.id }}" selected="selected"><t t-esc="price.name" /></option>
                                             </t>
                                             <t t-else="">
@@ -193,7 +193,7 @@
                                         <tr>
                                             <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
                                                 <table class="table" id="calendar_conf_table_line" style="border-collapse: separate; border-spacing: 8px;">
-                                                    <t t-foreach="pricelist" t-as="price">
+                                                    <t t-foreach="select_pricelist" t-as="price">
                                                         <tr t-attf-data-id="{{ price.id }}">
                                                             <td class="o_pms_pwa_show_table" data-toggle="collapse" t-attf-data-target="#collapse_2_accordion_{{price.id}}" aria-expanded="false" aria-controls="collapse_2_accordion_{{price.id}}">
                                                                 <i class="fa fa-angle-down ml-2"></i>

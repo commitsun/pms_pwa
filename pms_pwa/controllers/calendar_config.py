@@ -76,12 +76,9 @@ class PmsCalendarConfig(http.Controller):
         # TODO: Add pricelist not daily in readonly mode (only price)
 
         select_pricelist = pricelist
-        default_pricelist = pricelist[0].id
-        if post and post.get("pricelist"):
+        default_pricelist = 0
+        if post and post.get("pricelist") and int(post.get("pricelist")) != 0:
             default_pricelist = int(post["pricelist"])
-            # pricelist = (
-            #     request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
-            # )
             select_pricelist = Pricelist.browse(int(post["pricelist"]))
 
         values = {
