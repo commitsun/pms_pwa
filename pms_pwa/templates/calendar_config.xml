@@ -146,7 +146,7 @@
                                                         <i class="fa fa-2x fa-angle-left"></i>
                                                     </a>
                                                 </t>
-                                                <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
+                                                <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd (MMM)"}' />
                                                 <t t-if="day_last">
                                                     <a t-att-href="'?next_day='+date_start.strftime('%d/%m/%Y')" class="float-right o_pms_pwa_calendar_arrow">
                                                         <i class="fa fa-2x fa-angle-right"></i>

@@ -153,7 +153,7 @@
                                                 <t t-if="day_first">
                                                     <a t-attf-href="?previous_day={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}&amp;dpr={{dpr}}" class="float-left o_pms_pwa_calendar_arrow"><i class="fa fa-2x fa-angle-left"></i></a>
                                                 </t>
-                                                <t t-esc="day" t-options='{"widget": "date", "format": "EEEE dd"}' />
+                                                <t t-esc="day" t-options='{"widget": "date", "format": "EEE dd (MMM)"}' />
                                                 <t t-set="availability_day" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
                                                 <span class="float-right o_pms_pwa_availability_header">
                                                     <img src="/pms_pwa/static/img/svg/icon_house.svg" alt="avail icon" title="avail icon" />
