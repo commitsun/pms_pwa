@@ -621,6 +621,8 @@ class BookingEngine(http.Controller):
                 )
             else:
                 pms_property = request.env.user.pms_pwa_property_id
+
+            vals["pms_property_id"] = pms_property.id
             # Partner values
             vals["partner_name"] = folio_values["partner_name"]
             if folio_values.get("email") and folio_values.get("email") != "":
