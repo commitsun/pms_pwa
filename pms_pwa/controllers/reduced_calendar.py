@@ -87,8 +87,9 @@ class PmsCalendar(http.Controller):
             request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
         )
         display_select_options = [
-            {"name": "Room type", "value": "room_type"},
-            {"name": "Ubications", "value": "ubication"},
+            {"name": "Hoteles", "value": "pms_property"},
+            {"name": "Tipo de Habitación", "value": "room_type"},
+            {"name": "Zonas Hotel", "value": "ubication"},
         ]
         obj_list = room_types
         selected_display = "room_type"
@@ -99,6 +100,9 @@ class PmsCalendar(http.Controller):
             elif post["display_option"] == "ubication":
                 obj_list = ubications
                 selected_display = "ubication"
+            elif post["display_option"] == "pms_property":
+                obj_list = request.env.user.pms_pwa_property_ids
+                selected_display = "pms_property"
 
         if post and "pricelist" in post:
             pricelist = int(post["pricelist"])
@@ -123,3 +127,15 @@ class PmsCalendar(http.Controller):
             "pms_pwa.roomdoo_reduced_calendar_page",
             values,
         )
+
+    @http.route(
+        "/reduced-calendar/change",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def reduced_calendar_change(self, **post):
+        print("--->", post)
+        return True

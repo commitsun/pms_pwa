@@ -38,6 +38,11 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 });
                 $(String("#collapse_accordion_" + data_id)).html(html);
                 $(String("#collapse_accordion_"+data_id)).addClass("show");
+                // $(".o_pms_pwa_calendar_reservation").colResizable({
+                //     liveDrag:true
+                // });
+
+                // $( ".o_pms_pwa_calendar_reservation" ).resizable();
                 $(".o_pms_pwa_calendar_reservation").draggable({
                     start: function( event, ui ) {
                         console.log("event--->", event.currentTarget);
@@ -47,16 +52,29 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 });
                 $(".o_pms_pwa_line_cell_content").droppable({
                     drop: function(event, ui) {
-                        console.log("drop--->", event.currentTarget);
-                        $(this).css('background', 'rgb(0,200,0)');
+                        console.log("drop event--->", event);
+                        console.log("drop ui--->", ui);
+                        ajax.jsonRpc("/reduced-calendar/change", "call", {
+                            id:  ui.draggable.data('id'),
+                            date:  event.target.dataset.date,
+                            room:  event.target.dataset.calendarRoom,
+                            // selected_display: selected_display,
+                        }).then(function (data) {
+                            console.log("devuelve true");
+                            // var audio = new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3');
+                            // audio.play();
+                        });
+                        $(this).effect("highlight", {}, 1500);
                     },
                     over: function(event, ui) {
-                        console.log("over--->", event.currentTarget);
-                        $(this).css('background', 'orange');
+                        console.log("over event--->", event);
+                        console.log("over ui--->", ui);
+                        $(this).css('background', 'cyan');
                     },
                     out: function(event, ui) {
-                        console.log("out--->", event.currentTarget);
-                        $(this).css('background', 'cyan');
+                        console.log("out event--->", event);
+                        console.log("out ui--->", ui);
+                        $(this).css('background', 'orange');
                     }
                 });
 
