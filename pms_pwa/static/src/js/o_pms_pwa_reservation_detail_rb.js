@@ -520,4 +520,22 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             }, 500);
         }, true);
     });
+
+    // Nueva reserva
+    $(document).on("click", "#o_pms_pwa_button_new_reservation", function (event) {
+        event.preventDefault();
+            var button = event.currentTarget;
+            var folio_id = false;
+            $(".o_pms_pwa_reservation_modal").modal("toggle");
+            try {
+                folio_id = button.getAttribute("data-folio_id");
+            } catch (error) {
+                console.log("error => ", error);
+            }
+
+            if (folio_id) {
+                $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(folio_id);
+                $("div.o_pms_pwa_new_reservation_modal").modal("toggle");
+            }
+    });
 });

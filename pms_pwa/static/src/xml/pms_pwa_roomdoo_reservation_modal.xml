@@ -245,6 +245,7 @@
 
                                             <div class="dropdown-menu" aria-labelledby="dLabel">
                                                 <t t-raw="reservation.secondary_buttons" />
+                                                <button class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation" t-att-data-folio_id="reservation.folio_id.id" type="button">Nueva reserva</button>
                                             </div>
                                         </span>
                                     </div>
