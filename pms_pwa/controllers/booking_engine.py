@@ -61,9 +61,7 @@ class BookingEngine(http.Controller):
             # Pms Property
             # TODO:Enviar correctamente el pms_property_id seleccionado
             if folio_values.get("pms_property_id"):
-                pms_property = request.env["pms.property"].browse(
-                    int(folio_values["pms_property_id"])
-                )
+                pms_property = request.env['pms.property'].browse(int(folio_values.get("pms_property_id")))
             else:
                 pms_property = request.env.user.pms_pwa_property_id
             pms_property_id = pms_property.id
@@ -174,10 +172,10 @@ class BookingEngine(http.Controller):
                 "name": pricelist.name,
             }
 
-            folio_values["pms_property_id"] = {
-                "id": pms_property.id,
-                "name": pms_property.name,
-            }
+            #folio_values["pms_property_id"] = {
+            #    "id": pms_property.id,
+            #    "name": pms_property.name,
+            #}
 
             _logger.info(folio_values)
 

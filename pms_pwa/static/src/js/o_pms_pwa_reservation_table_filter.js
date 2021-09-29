@@ -53,6 +53,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click .o_pms_pwa_button_checkout": "_onClickCheckoutButton",
             "click .o_pms_pwa_button_pagar": "_onClickPaymentButton",
             "click .o_pms_pwa_button_facturar": "_onClickInvoiceButton",
+            "click .o_pms_pwa_button_new_reservation": "_onClickNewReservation",
         },
         /**
          * @override
@@ -133,6 +134,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 function (event) {
                     event.preventDefault();
                     self._onClickCancelButton(event);
+                }
+            );
+
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_new_reservation").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickNewReservation(event);
                 }
             );
         },
@@ -1760,6 +1769,22 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
             location.href = "/reservation/" + reservation_id;
         },
+        _onClickNewReservation: function (event) {
+            event.preventDefault();
+            var button = event.currentTarget;
+            var folio_id = false;
+            $(".o_pms_pwa_reservation_modal").modal("toggle");
+            try {
+                folio_id = button.getAttribute("data-folio_id");
+            } catch (error) {
+                console.log("error => ", error);
+            }
+
+            if (folio_id) {
+                $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(folio_id);
+                $("div.o_pms_pwa_new_reservation_modal").modal("toggle");
+            }
+        }
     });
 
     return publicWidget.registry.ReservationTableWidget;

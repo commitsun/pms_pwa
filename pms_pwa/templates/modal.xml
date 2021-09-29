@@ -49,14 +49,21 @@
 
                                     <div class="row mb-3 pwa_property_id" >
                                         <div class="col-sm-12" t-if="len(user_id.pms_pwa_property_ids) > 1">
-                                            <label class="control-label col-12" for="pwa_property_id">
+                                            <label class="control-label col-12" for="pms_property_id">
                                                 Propiedad
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="pms_property_id">
+                                            <select class="form-control call_booking_engine o_website_form_input o_domain_leaf_operator_select o_input" name="pms_property_id">
                                                 <t t-foreach="user_id.pms_pwa_property_ids" t-as="i">
-                                                    <option t-attf-value="{{ i.id }}">
-                                                        <t t-esc="i.name" />
-                                                    </option>
+                                                    <t t-if="i.id == user_id.pms_pwa_property_id.id">
+                                                        <option t-attf-value="{{ i.id }}" selected="selected">
+                                                            <t t-esc="i.name" />
+                                                        </option>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <option t-attf-value="{{ i.id }}">
+                                                            <t t-esc="i.name" />
+                                                        </option>
+                                                    </t>                                                    
                                                 </t>
                                             </select>
                                         </div>
@@ -223,6 +230,7 @@
                                     <div class="row mt-3 mb-3">
                                         <div class="col-sm-12 text-center">
                                             <input type="hidden" name="id"/>
+                                            <input type="hidden" name="folio_id"/>
                                             <a class="btn btn-message" id="o_pms_pwa_send_form">Guardar</a>
                                         </div>
                                     </div>

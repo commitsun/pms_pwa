@@ -428,6 +428,14 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 );
                 if (input.length > 0) {
                     input.val(value);
+                } else {
+                    try {
+                        $(
+                            "form#booking_engine_form select[name='" +key +"'] option[value='" +value +"']"
+                        ).prop("selected", true);
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }
                 delete new_data[value];
             });
@@ -793,6 +801,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
             $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
             $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
+            $('form#booking_engine_form input[name="folio_id"]').val(false);
             $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
             $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
             $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
