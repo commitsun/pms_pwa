@@ -376,7 +376,7 @@ class BookingEngine(http.Controller):
                     "max_rooms": pms_property.availability - len(group_rooms),
                     "free_rooms_dict": free_room_ids,
                     "price_per_group": sum(
-                        [int(item["price_per_room"]) for item in group_rooms]
+                        [float(item["price_per_room"]) for item in group_rooms]
                     ),
                 }
             )
@@ -590,7 +590,7 @@ class BookingEngine(http.Controller):
                 "room_type_id": room_type_id,
                 "ubication_id": ubication_id,
                 "price_per_group": sum(
-                    [int(item["price_per_room"]) for item in rooms_dict]
+                    [float(item["price_per_room"]) for item in rooms_dict]
                 ),
             }
         except Exception as e:
@@ -610,61 +610,62 @@ class BookingEngine(http.Controller):
         vals = {}
         print("folio_values: {}".format(folio_values))
         try:
-            # HEADER VALUES -----------------------------------------------------------
-            # Pms Property
-            # TODO: Recibir correctamente el property seleccionado
-            if folio_values.get("pms_property_id"):
-                pms_property = request.env["pms.property"].browse(
-                    int(folio_values["pms_property_id"])
-                )
+            if folio_values.get("folio_id"):
+                folio = request.env["pms.folio"].browse(int(folio_values["folio_id"]))
             else:
-                pms_property = request.env.user.pms_pwa_property_id
+                # Pms Property
+                if folio_values.get("pms_property_id"):
+                    pms_property = request.env["pms.property"].browse(
+                        int(folio_values["pms_property_id"])
+                    )
+                else:
+                    pms_property = request.env.user.pms_pwa_property_id
 
-            vals["pms_property_id"] = pms_property.id
-            # Partner values
-            vals["partner_name"] = folio_values["partner_name"]
-            if folio_values.get("email") and folio_values.get("email") != "":
-                vals["email"] = folio_values.get("email")
-            if folio_values.get("mobile") and folio_values.get("mobile") != "":
-                vals["mobile"] = folio_values.get("mobile")
+                vals["pms_property_id"] = pms_property.id
+                # Partner values
+                vals["partner_name"] = folio_values["partner_name"]
+                if folio_values.get("email") and folio_values.get("email") != "":
+                    vals["email"] = folio_values.get("email")
+                if folio_values.get("mobile") and folio_values.get("mobile") != "":
+                    vals["mobile"] = folio_values.get("mobile")
 
-            # Reservation type
-            if folio_values.get("reservation_type"):
-                vals["reservation_type"] = folio_values.get("reservation_type")
-            else:
-                vals["reservation_type"] = "normal"
+                # Reservation type
+                if folio_values.get("reservation_type"):
+                    vals["reservation_type"] = folio_values.get("reservation_type")
+                else:
+                    vals["reservation_type"] = "normal"
 
-            # Channel and Agency
-            if (
-                folio_values.get("channel_type_id")
-                and folio_values.get("channel_type_id") != ""
-            ):
-                vals["channel_type_id"] = int(folio_values.get("channel_type_id"))
+                # Channel and Agency
+                if (
+                    folio_values.get("channel_type_id")
+                    and folio_values.get("channel_type_id") != ""
+                ):
+                    vals["channel_type_id"] = int(folio_values.get("channel_type_id"))
 
-            # REVIEW: Avoid send 'false' to controller
-            if (
-                folio_values.get("agency_id")
-                and folio_values.get("agency_id") != "false"
-            ):
-                vals["agency_id"] = int(folio_values.get("agency_id"))
-                vals["channel_type_id"] = (
-                    request.env["res.partner"]
-                    .browse(vals["agency_id"])
-                    .sale_channel_id.id
-                )
+                # REVIEW: Avoid send 'false' to controller
+                if (
+                    folio_values.get("agency_id")
+                    and folio_values.get("agency_id") != "false"
+                ):
+                    vals["agency_id"] = int(folio_values.get("agency_id"))
+                    vals["channel_type_id"] = (
+                        request.env["res.partner"]
+                        .browse(vals["agency_id"])
+                        .sale_channel_id.id
+                    )
 
-            # Segmentation
-            if folio_values.get("segmentation_ids"):
-                vals["segmentation_ids"] = [
-                    (6, 0, [int(item) for item in folio_values.get("segmentation_ids")])
-                ]
+                # Segmentation
+                if folio_values.get("segmentation_ids"):
+                    vals["segmentation_ids"] = [
+                        (6, 0, [int(item) for item in folio_values.get("segmentation_ids")])
+                    ]
 
-            # RESERVATIONS ------------------------------------------------------------
-            # groups = folio_values.get("groups")
-            vals["reservation_ids"] = []
+                # RESERVATIONS ------------------------------------------------------------
+                # groups = folio_values.get("groups")
+                vals["reservation_ids"] = []
 
-            # for group in groups:
-            folio = request.env["pms.folio"].create(vals)
+                # for group in groups:
+                folio = request.env["pms.folio"].create(vals)
             # for group in folio_values.get("groups"):
             for room in folio_values.get("rooms"):
                 room_record = request.env["pms.room"].browse(
