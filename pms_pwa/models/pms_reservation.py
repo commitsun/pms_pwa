@@ -204,8 +204,6 @@ class PmsReservation(models.Model):
                     # pprint(vals)
                     if len(vals) >= 1:
                         checkin_partner.write(vals)
-                        checkin_partner.flush()
-
                     if action_on_board:
                         checkin_partner.action_on_board()
             return True

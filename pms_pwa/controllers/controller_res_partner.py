@@ -170,8 +170,8 @@ class ResPartner(http.Controller):
             except Exception as e:
                 return {"result": False, "message": str(e)}
         else:
+            allowed_states = []
             if kw.get("country_id"):
-                allowed_states = []
                 for state in request.env["res.country.state"].search(
                     [("country_id", "=", int(kw["country_id"]))]
                 ):
