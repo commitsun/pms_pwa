@@ -306,7 +306,7 @@ class BookingEngine(http.Controller):
                 ):
                     adults = int(res_dict["adults"]) if res_dict.get("adults") else 0
                     price_per_room = (
-                        int(res_dict["price_per_room"])
+                        float(res_dict["price_per_room"])
                         if res_dict.get("price_per_room")
                         else 0
                     )
