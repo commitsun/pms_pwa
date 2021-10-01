@@ -146,7 +146,7 @@
                                                     </div>
                                                     <div class="dropdown mx-2">
                                                         <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <span data-toggle="tooltip" title="Guest personal data" class="badge bg-red mr-2" data-original-title="Guest personal data">
+                                                            <span data-toggle="tooltip" title="Guest personal data" class="badge bg-black mr-2" data-original-title="Guest personal data">
                                                                 <t t-esc="reservation.adults" />
                                                             </span>
                                                             Huéspedes

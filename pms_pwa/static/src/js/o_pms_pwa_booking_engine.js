@@ -249,7 +249,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 channel_type_id: values.channel_type_id || "",
                 segmentation_ids: values.segmentation_ids || "",
                 force_recompute: values.force_recompute,
-
+                folio_id: values.folio_id || false,
             };
             if (
                 values.ubication_id &&

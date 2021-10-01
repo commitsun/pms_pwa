@@ -535,7 +535,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
 
             if (folio_id) {
                 $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(folio_id);
-                $("div.o_pms_pwa_new_reservation_modal").modal("toggle");
+                $("button#button_reservation_modal").click();
             }
     });
 });
