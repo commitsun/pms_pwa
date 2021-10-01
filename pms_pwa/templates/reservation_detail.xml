@@ -50,7 +50,7 @@
                                 <span class="dropdown">
                                     <a role="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" href="#" >Otras opciones</a>
                                     <div class="dropdown-menu" aria-labelledby="dLabel">
-                                        <button id="o_pms_pwa_button_new_reservation" class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation" t-attf-data-folio_id="{{ reservation.folio_id.id }}" type="button">Nueva reserva</button>
+                                        <button id="o_pms_pwa_button_new_reservation" class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation" t-attf-data-folio_id="{{ reservation.folio_id.id }}" type="button">Añadir habitación</button>
                                         <button id="o_pms_pwa_button_cancelar" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/cancel" class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_cancelar">Cancel booking</button>
                                     </div>
                                 </span>
