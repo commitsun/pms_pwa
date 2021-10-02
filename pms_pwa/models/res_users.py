@@ -1,7 +1,8 @@
 # Copyright 2021 Comunitea Servicios Tecnológicos
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, fields, models
+from odoo import _, fields, models, api
+
 
 class ResPartner(models.Model):
     _inherit = "res.users"
@@ -13,12 +14,23 @@ class ResPartner(models.Model):
         relation="pms_pwa_property_users_rel",
         column1="user_id",
         column2="pms_property_id",
-        domain="[('company_id','in',company_ids)]",
+        domain="[('id','in',pms_property_ids)]",
     )
 
     pms_pwa_property_id = fields.Many2one(
         string="PMS PWA Active Property",
         help="The active property selected in pms_pwa for this user",
         comodel_name="pms.property",
-        domain="[('company_id','in',company_ids)]",
+        domain="[('id','in',pms_property_ids)]",
+        compute="_compute_pms_pwa_property_id",
     )
+
+    @api.depends("pms_property_ids", "pms_property_id")
+    def _compute_pms_pwa_property_id(self):
+        for record in self:
+            if not record.pms_pwa_property_id or \
+                    record.pms_pwa_property_id not in record.pms_property_ids:
+                if record.pms_property_id:
+                    record.pms_pwa_property_id = record.pms_property_id
+                else:
+                    record.pms_pwa_property_id = False
