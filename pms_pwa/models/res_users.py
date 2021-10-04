@@ -23,6 +23,8 @@ class ResPartner(models.Model):
         comodel_name="pms.property",
         domain="[('id','in',pms_property_ids)]",
         compute="_compute_pms_pwa_property_id",
+        readonly=False,
+        store=True,
     )
 
     @api.depends("pms_property_ids", "pms_property_id")
