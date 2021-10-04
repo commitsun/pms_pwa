@@ -137,5 +137,37 @@ class PmsCalendar(http.Controller):
         website=True,
     )
     def reduced_calendar_change(self, **post):
+        change_checkin = False
+        change_room = False
+        splitted = False
+        reservation = request.env["pms.reservation"].browse(int(post["id"]))
+        new_checkin = datetime.datetime.strptime(
+            post.get("date"), get_lang(request.env).date_format
+        ).date()
+        new_room = request.env["pms.room"].browse(int(post["room"]))
+        if reservation.splitted:
+            splitted = True
+        if new_checkin != reservation.checkin:
+            change_checkin = True
+        if new_room != reservation.preferred_room_id:
+            change_room = True
+        if change_room and change_checkin:
+            _logger.info("Change ALL")
+            confirmation_mens = ("Modificar la reserva de %s a la habitación %s con checkin %s",
+                                 reservation.partner_name, new_room.display_name, new_checkin)
+            # If new room isn't free in new dates no change
+            # Change Prices??
+        elif change_room:
+            _logger.info("Change Only ROOM")
+            confirmation_mens = ("Modificar la reserva de %s a la habitación %s",
+                                 reservation.partner_name, new_room.display_name)
+            # If new room isn't free, Swap reservations??
+        elif change_checkin:
+            _logger.info("Change only Checkin")
+            confirmation_mens = ("Modificar la fecha de entrada de %s a %s",
+                                 reservation.partner_name, new_checkin)
+            # Change Prices?
         print("--->", post)
+        return {"result": "sucess", "message": confirmation_mens}
+
         return True
