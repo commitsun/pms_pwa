@@ -6,7 +6,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var invoice_lines = [];
     var core = require("web.core");
     var _t = core._t;
-    var folio_id = $("input[name='folio_id']").val();
+    var folio_id = $("form[name='reservation_detail_form'] input[name='folio_id']").val();
     var reservation_id = $("input[name='reservation_id']").val();
 
     // Calendario
@@ -525,16 +525,16 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     $(document).on("click", "#o_pms_pwa_button_new_reservation", function (event) {
         event.preventDefault();
             var button = event.currentTarget;
-            var folio_id = false;
+            var new_res_folio_id = false;
             $(".o_pms_pwa_reservation_modal").modal("toggle");
             try {
-                folio_id = button.getAttribute("data-folio_id");
+                new_res_folio_id = button.getAttribute("data-folio_id");
             } catch (error) {
                 console.log("error => ", error);
             }
 
-            if (folio_id) {
-                $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(folio_id);
+            if (new_res_folio_id) {
+                $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(new_res_folio_id);
                 $("button#button_reservation_modal").click();
             }
     });
