@@ -100,8 +100,7 @@ section.o_pms_pwa_roomdoo {
         .table-responsive {
             height: calc(70vh - 25px);
         }
-        #calendar_table.table,
-        #calendar_config_table.table {
+        #calendar_table.table {
             border-collapse: separate;
             border-spacing: 8px;
             overflow: auto;
@@ -195,6 +194,204 @@ section.o_pms_pwa_roomdoo {
                 // background-color: $white;
                 width: 182.4px;
                 min-width: 182.4px;
+            }
+            .o_pms_pwa_availability_header {
+                color: #01b6e3;
+            }
+            .o_pms_pwa_reservation_list_table {
+                border-collapse: separate;
+                border-spacing: 0 8px;
+                margin-bottom: 0px !important;
+                td[colspan="2"] {
+                    width: calc(189.265px * 2) !important;
+                }
+                td[colspan="3"] {
+                    width: calc(189.265px * 3) !important;
+                }
+                td[colspan="4"] {
+                    width: calc(189.265px * 4) !important;
+                }
+                td[colspan="5"] {
+                    width: calc(189.265px * 5) !important;
+                }
+                td[colspan="6"] {
+                    width: calc(189.265px * 6) !important;
+                }
+                td[colspan="7"] {
+                    width: calc(189.265px * 7) !important;
+                }
+                td[colspan="8"] {
+                    width: calc(189.265px * 8) !important;
+                }
+                td[colspan="9"] {
+                    width: calc(189.265px * 9) !important;
+                }
+                td[colspan="10"] {
+                    width: calc(189.265px * 10) !important;
+                }
+                td[colspan="11"] {
+                    width: calc(189.265px * 11) !important;
+                }
+                td[colspan="12"] {
+                    width: calc(189.265px * 12) !important;
+                }
+                td[colspan="13"] {
+                    width: calc(189.265px * 13) !important;
+                }
+                td[colspan="14"] {
+                    width: calc(189.265px * 14) !important;
+                }
+                td[colspan="15"] {
+                    width: calc(189.265px * 15) !important;
+                }
+                td[colspan="16"] {
+                    width: calc(189.265px * 16) !important;
+                }
+                td[colspan="17"] {
+                    width: calc(189.265px * 17) !important;
+                }
+                td[colspan="18"] {
+                    width: calc(189.265px * 18) !important;
+                }
+                td[colspan="19"] {
+                    width: calc(189.265px * 19) !important;
+                }
+                td[colspan="20"] {
+                    width: calc(189.265px * 20) !important;
+                }
+                td[colspan="21"] {
+                    width: calc(189.265px * 21) !important;
+                }
+                td[colspan="22"] {
+                    width: calc(189.265px * 22) !important;
+                }
+                td[colspan="23"] {
+                    width: calc(189.265px * 23) !important;
+                }
+                td[colspan="24"] {
+                    width: calc(189.265px * 24) !important;
+                }
+                td[colspan="25"] {
+                    width: calc(189.265px * 25) !important;
+                }
+                td[colspan="26"] {
+                    width: calc(189.265px * 26) !important;
+                }
+                td[colspan="27"] {
+                    width: calc(189.265px * 27) !important;
+                }
+                td[colspan="28"] {
+                    width: calc(189.265px * 28) !important;
+                }
+                td[colspan="29"] {
+                    width: calc(189.265px * 29) !important;
+                }
+                td[colspan="30"] {
+                    width: calc(189.265px * 30) !important;
+                }
+                td[colspan="31"] {
+                    width: calc(189.265px * 31) !important;
+                }
+            }
+        }
+
+        #calendar_config_table.table {
+            border-collapse: separate;
+            border-spacing: 8px;
+            overflow: auto;
+            tr[aria-expanded="true"] {
+                i {
+                    -moz-transform: rotate(180deg);
+                    -webkit-transform: rotate(180deg);
+                    transform: rotate(180deg);
+                }
+            }
+            thead {
+                // border-bottom: 1px solid $theme-color;
+                background-color: $white;
+                height: 20px;
+                tr {
+                    background-color: $white;
+                    // transform: translate(8px);
+                    border-bottom: 1px solid $theme-color;
+                    //*border-collapse: expression('collapse', cellSpacing = '10px');
+                    th {
+                        background-color: $white;
+                        position: -webkit-sticky;
+                        position: -moz-sticky;
+                        position: -ms-sticky;
+                        position: -o-sticky;
+                        position: sticky;
+                        top: 0;
+                        z-index: 99;
+
+                        // border-bottom: 1px solid $theme-color;
+                        a {
+                            margin-left: -8px;
+                            height: 25px;
+                        }
+                    }
+                }
+            }
+            tbody {
+                tr {
+                    td {
+                        padding-bottom: 0;
+                        height: 20px;
+                    }
+                    td.o_pms_pwa_dispo_0 {
+                        background-color: #f582a640;
+                    }
+                    td.o_pms_pwa_dispo_1 {
+                        background-color: #ffe7712e;
+                    }
+                    td.o_pms_pwa_line_cell_content {
+                        width: 189.265px !important;
+                        min-width: 189.265px !important;
+                        border: none;
+                    }
+                    td.o_pms_pwa_line_cell_header {
+                        width: 214.167px !important;
+                        min-width: 214.167px !important;
+                        border-left: 3px solid $grey-900 !important;
+                    }
+                }
+            }
+
+            th.o_pms_pwa_table_first_header_td,
+            td.o_pms_pwa_table_first_header_td {
+                background-color: $white;
+            }
+            th:first-child,
+            td:first-child {
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
+                position: sticky;
+                left: 0px;
+                z-index: 2;
+                width: 50.4px !important;
+                min-width: 30.4px !important;
+                border: none;
+            }
+            tr:nth-child(odd) > td {
+                // background-color: $white;
+                width: 10.4px;
+                min-width: 10.4px;
+                max-width: 10.4px;
+            }
+            tr:nth-child(even) > td {
+                // background-color: $white;
+                width: 10.4px;
+                min-width: 10.4px;
+                max-width: 10.4px;
+            }
+            tr:nth-child(odd) > th {
+                // background-color: $white;
+                width: 10.4px;
+                min-width: 10.4px;
+                max-width: 10.4px;
             }
             .o_pms_pwa_availability_header {
                 color: #01b6e3;
