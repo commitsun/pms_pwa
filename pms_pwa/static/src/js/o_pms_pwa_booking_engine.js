@@ -296,6 +296,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             ) {
                 send_value.agency_id = values.agency_id;
             }
+            
             return send_value
         },
         pms_pwa_booking_engine_head_form: function (new_data) {
