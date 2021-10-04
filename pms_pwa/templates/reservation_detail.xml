@@ -213,7 +213,7 @@
                                                 </div>
                                             </div>
                                             <div class="box-footer text-center">
-                                                <form action="/reservation/82" method="post">
+                                                <form action="/reservation/82" name="reservation_detail_form" method="post">
                                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                     <input type="hidden" name="model" value="pms.reservation" />
                                                     <input type="hidden" name="id" t-att-value="reservation.id" />
