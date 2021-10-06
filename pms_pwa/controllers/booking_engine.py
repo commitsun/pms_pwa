@@ -30,6 +30,7 @@ class BookingEngine(http.Controller):
         print("folio_values: {}".format(folio_values))
         try:
             # checkin & Checkout
+            # TODO: add room in folio, default checkin/out from origin folio
             if folio_values["checkin"]:
                 checkin = (
                     datetime.datetime.strptime(
@@ -38,6 +39,10 @@ class BookingEngine(http.Controller):
                     if "checkin" in folio_values
                     else datetime.datetime.today()
                 )
+            elif folio_values["folio_id"]:
+                checkin = request.env["pms.folio"].browse(
+                    int(folio_values["folio_id"])
+                ).reservation_ids[0].checkin
             else:
                 checkin = datetime.datetime.today()
                 folio_values["checkin"] = checkin.strftime(
@@ -52,15 +57,33 @@ class BookingEngine(http.Controller):
                     if "checkout" in folio_values
                     else checkin + timedelta(days=1)
                 )
+            elif folio_values["folio_id"]:
+                checkin = request.env["pms.folio"].browse(
+                    int(folio_values["folio_id"])
+                ).reservation_ids[0].checkout
             else:
                 checkout = checkin + timedelta(days=1)
                 folio_values["checkout"] = checkout.strftime(
                     get_lang(request.env).date_format
                 )
 
+            # Default partner
+            if not folio_values.get("partner_name") and folio_values["folio_id"]:
+                folio = request.env["pms.folio"].browse(
+                    int(folio_values["folio_id"])
+                )
+                folio_values["partner_id"] = folio.partner_id.id if folio.partner_id else False
+                folio_values["partner_name"] = folio.partner_name
+                folio_values["email"] = folio.email
+                folio_values["mobile"] = folio.mobile
+
             # Pms Property
             # TODO:Enviar correctamente el pms_property_id seleccionado
-            if folio_values.get("pms_property_id"):
+            if folio_values["folio_id"]:
+                pms_property = request.env["pms.folio"].browse(
+                    int(folio_values["folio_id"])
+                ).pms_property_id
+            elif folio_values.get("pms_property_id"):
                 pms_property = request.env['pms.property'].browse(int(folio_values.get("pms_property_id")))
             else:
                 pms_property = request.env.user.pms_pwa_property_id
@@ -172,10 +195,10 @@ class BookingEngine(http.Controller):
                 "name": pricelist.name,
             }
 
-            #folio_values["pms_property_id"] = {
-            #    "id": pms_property.id,
-            #    "name": pms_property.name,
-            #}
+            # folio_values["pms_property_id"] = {
+            #     "id": pms_property.id,
+            #     "name": pms_property.name,
+            # }
 
             _logger.info(folio_values)
 
@@ -610,8 +633,25 @@ class BookingEngine(http.Controller):
         vals = {}
         print("folio_values: {}".format(folio_values))
         try:
+            vals["partner_name"] = folio_values["partner_name"]
+            if folio_values.get("email") and folio_values.get("email") != "":
+                vals["email"] = folio_values.get("email")
+            if folio_values.get("mobile") and folio_values.get("mobile") != "":
+                vals["mobile"] = folio_values.get("mobile")
+
+            # Segmentation
+                if folio_values.get("segmentation_ids"):
+                    vals["segmentation_ids"] = [
+                        (6, 0, [int(item) for item in folio_values.get("segmentation_ids")])
+                    ]
+
             if folio_values.get("folio_id"):
                 folio = request.env["pms.folio"].browse(int(folio_values["folio_id"]))
+                pms_property = folio.pms_property_id
+                vals["pms_property_id"] = pms_property.id
+                vals["reservation_type"] = folio.reservation_type
+                vals["channel_type_id"] = folio.channel_type_id.id
+                vals["agency_id"] = folio.agency_id.id
             else:
                 # Pms Property
                 if folio_values.get("pms_property_id"):
@@ -623,11 +663,7 @@ class BookingEngine(http.Controller):
 
                 vals["pms_property_id"] = pms_property.id
                 # Partner values
-                vals["partner_name"] = folio_values["partner_name"]
-                if folio_values.get("email") and folio_values.get("email") != "":
-                    vals["email"] = folio_values.get("email")
-                if folio_values.get("mobile") and folio_values.get("mobile") != "":
-                    vals["mobile"] = folio_values.get("mobile")
+
 
                 # Reservation type
                 if folio_values.get("reservation_type"):
@@ -653,12 +689,6 @@ class BookingEngine(http.Controller):
                         .browse(vals["agency_id"])
                         .sale_channel_id.id
                     )
-
-                # Segmentation
-                if folio_values.get("segmentation_ids"):
-                    vals["segmentation_ids"] = [
-                        (6, 0, [int(item) for item in folio_values.get("segmentation_ids")])
-                    ]
 
                 # RESERVATIONS ------------------------------------------------------------
                 # groups = folio_values.get("groups")

@@ -291,7 +291,7 @@ class PmsReservation(http.Controller):
         reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
-        readonly_fields = reservation._get_readonly_fields()
+        #readonly_fields = reservation._get_readonly_fields()
         values = {
             "page_name": "Reservation",
             "reservation": reservation,
