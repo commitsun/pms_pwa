@@ -166,7 +166,8 @@
                                     <th class="o_pms_pwa_theme_color">Reserva</th>
                                     <th class="o_pms_pwa_theme_color">Habitación</th>
                                     <th class="o_pms_pwa_theme_color">Adultos</th>
-                                    <th class="o_pms_pwa_theme_color">Entrada - Salida</th>
+                                    <th class="o_pms_pwa_theme_color">Entrada</th>
+                                    <th class="o_pms_pwa_theme_color">Salida</th>
                                 </tr>
 
                             </thead>
@@ -201,9 +202,12 @@
                                                 class="form-control" type="text" name="adults" t-att-value="i.adults" t-att-data-id="i.id" />
                                         </td>
                                         <td>
-                                            <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ i.checkin }} - {{ i.checkout }}" />
-                                            <input type="hidden" name="checkin" t-att-value="i.checkin" />
-                                            <input type="hidden" name="checkout" t-att-value="i.checkout" />
+                                            <input class="form-control" type="text" name="checkin" t-attf-value="{{ i.checkin }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
+
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" name="checkout" t-attf-value="{{ i.checkout }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
+
                                         </td>
                                     </tr>
                                 </t>
