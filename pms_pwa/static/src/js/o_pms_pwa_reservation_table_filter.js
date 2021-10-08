@@ -1072,14 +1072,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         values.checkin = value_range_picker.split(" - ")[0];
                                         values.checkout = new_event.currentTarget.value;
                                     }
-                                    // Esto debería cambiar la fecha de la modal de reserva
-                                    values.range_check_date_modal = values.checkin + " - " + values.checkout;
+
                                 } else {
                                     values[new_event.currentTarget.name] =
                                         new_event.currentTarget.value;
                                 }
                                 // si es el mismo id, cambios en modal, sino, llamo función
                                 if (reservation_id == modal_reservation_id) {
+                                    // Esto debería cambiar la fecha de la modal de reserva
+                                    values.range_check_date_modal = values.checkin + " - " + values.checkout;
                                     try {
                                         if (
                                             new_event.currentTarget.name ==
