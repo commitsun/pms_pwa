@@ -202,11 +202,21 @@
                                                 class="form-control" type="text" name="adults" t-att-value="i.adults" t-att-data-id="i.id" />
                                         </td>
                                         <td>
-                                            <input class="form-control" type="text" name="checkin" t-attf-value="{{ i.checkin }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
+                                            <script>
+                                                $( function() {
+                                                  $( "#checkindate<t t-esc='i.id'/>" ).datepicker({ dateFormat: 'dd/mm/yy'}).datepicker("setDate", '<t t-esc="i.checkin"/>');
+                                                } );
+                                            </script>
+                                            <input class="form-control" t-attf-id="checkindate{{ i.id }}" type="text" name="checkin" t-attf-value="{{ i.checkin  }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
 
                                         </td>
                                         <td>
-                                            <input class="form-control" type="text" name="checkout" t-attf-value="{{ i.checkout }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
+                                            <script>
+                                                $( function() {
+                                                  $( "#checkoutdate<t t-esc='i.id'/>" ).datepicker({ dateFormat: 'dd/mm/yy'}).datepicker("setDate", '<t t-esc="i.checkout"/>');
+                                                } );
+                                            </script>
+                                            <input class="form-control" t-attf-id="checkoutdate{{ i.id }}" type="text" name="checkout" t-attf-value="{{ i.checkout }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
 
                                         </td>
                                     </tr>
