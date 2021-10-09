@@ -240,16 +240,18 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 checkin: values.checkin,
                 checkout: values.checkout,
                 count_rooms_selected: total_rooms,
-                pms_property_id: values.pms_property_id || "1",
+                pms_property_id: values.pms_property_id || false,
                 pricelist_id: values.pricelist_id || "1",
                 reservation_type: values.reservation_type || "normal",
                 rooms: send_rooms,
-                agrupation_type: values.agrupation_type || "all",
+                agrupation_type: values.agrupation_type || "room_type",
                 amenity_ids: values.amenity_ids || "",
                 channel_type_id: values.channel_type_id || "",
                 segmentation_ids: values.segmentation_ids || "",
                 force_recompute: values.force_recompute,
                 folio_id: values.folio_id || false,
+                first_call: values.first_call || false,
+
             };
             if (
                 values.ubication_id &&
@@ -296,7 +298,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             ) {
                 send_value.agency_id = values.agency_id;
             }
-            
+
             return send_value
         },
         pms_pwa_booking_engine_head_form: function (new_data) {
@@ -607,7 +609,14 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
             $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
             $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+            $('<input>').attr({
+                type: 'hidden',
+                id: 'first_call',
+                name: 'first_call',
+                value: true,
+            }).appendTo('form#booking_engine_form');
             this.pms_pwa_booking_calendar_widget();
+            $( "#first_call" ).remove();
         },
         _onChangePMSPWABookingEngine: function (event) {
             // console.log("_onChangePMSPWABookingEngine");

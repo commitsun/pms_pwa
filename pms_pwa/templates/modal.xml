@@ -63,7 +63,7 @@
                                                         <option t-attf-value="{{ i.id }}">
                                                             <t t-esc="i.name" />
                                                         </option>
-                                                    </t>                                                    
+                                                    </t>
                                                 </t>
                                             </select>
                                         </div>
@@ -180,9 +180,9 @@
                                                 Agrupar por...
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
-                                                <option name="agrupation_type" value="all" selected="selected">Todas</option>
-                                                <option name="agrupation_type" value="room_type">Tipo de habitación</option>
+                                                <option name="agrupation_type" value="room_type" selected="selected">Tipo de habitación</option>
                                                 <option name="agrupation_type" value="ubication">Ubicación</option>
+                                                <option name="agrupation_type" value="all">Todas</option>
                                             </select>
                                             <input type="hidden" value="" name="room_type_id"></input>
                                             <input type="hidden" value="" name="ubication_id"></input>

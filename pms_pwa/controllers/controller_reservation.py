@@ -249,7 +249,6 @@ class PmsReservation(http.Controller):
                 payload = http.request.jsonrequest["params"]["data"]
                 invoice_lines = payload[0]["lines_to_invoice"]
                 partner_invoice_id = payload[0]["partner_to_invoice"]
-                partner_invoice_values = payload[0]["partner_values"][0]
                 try:
                     if partner_invoice_id:
                         partner_invoice_id = (
@@ -258,6 +257,12 @@ class PmsReservation(http.Controller):
                             .search([("id", "=", int(partner_invoice_id))])
                         )
                     else:
+                        partner_invoice_values = {}
+                        partner_invoice_values["vat"] = payload[0]["partner_values"][0]["vat"]
+                        partner_invoice_values["name"] = payload[0]["partner_values"][0]["name"]
+                        partner_invoice_values["zip"] = payload[0]["partner_values"][0]["postal_code"]
+                        partner_invoice_values["city"] = payload[0]["partner_values"][0]["city"]
+                        #partner_invoice_values["country_id"] = payload[0]["partner_values"][0]["country"]
                         partner_invoice_id = request.env["res.partner"].create(
                             partner_invoice_values
                         )
