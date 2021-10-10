@@ -1061,20 +1061,26 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 // Set checkin & checkout separated
                                 if (
                                     new_event.currentTarget.name ==
-                                    "range_check_date_modal"
+                                    "checkin" || new_event.currentTarget.name ==
+                                    "checkout"
                                 ) {
-                                    let value_range_picker =
-                                        new_event.currentTarget.value;
-                                    values.checkin = value_range_picker.split(" - ")[0];
-                                    values.checkout = value_range_picker.split(
-                                        " - "
-                                    )[1];
+                                    let value_range_picker = new_event.currentTarget.getAttribute("data-range");
+                                    if(new_event.currentTarget.name == "checkin"){
+                                        values.checkin = new_event.currentTarget.value;
+                                        values.checkout = value_range_picker.split(" - ")[1];
+                                    }else{
+                                        values.checkin = value_range_picker.split(" - ")[0];
+                                        values.checkout = new_event.currentTarget.value;
+                                    }
+
                                 } else {
                                     values[new_event.currentTarget.name] =
                                         new_event.currentTarget.value;
                                 }
                                 // si es el mismo id, cambios en modal, sino, llamo función
                                 if (reservation_id == modal_reservation_id) {
+                                    // Esto debería cambiar la fecha de la modal de reserva
+                                    values.range_check_date_modal = values.checkin + " - " + values.checkout;
                                     try {
                                         if (
                                             new_event.currentTarget.name ==
@@ -1107,22 +1113,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     ] = modal_reservation_id;
 
                                     // Set checkin & checkout separated
-                                    if (
-                                        new_event.currentTarget.name ==
-                                        "range_check_date_modal"
-                                    ) {
-                                        let value_range_picker =
-                                            new_event.currentTarget.value;
-                                        values["folio_reservations"][
-                                            "checkin"
-                                        ] = value_range_picker.split(" - ")[0];
-                                        values["folio_reservations"][
-                                            "checkout"
-                                        ] = value_range_picker.split(" - ")[1];
+                                    if (new_event.currentTarget.name == "checkin" || new_event.currentTarget.name == "checkout") {
+                                        let value_range_picker = new_event.currentTarget.getAttribute("data-range");
+                                        if(new_event.currentTarget.name == "checkin"){
+                                            values["folio_reservations"]['checkin'] = new_event.currentTarget.value;
+                                            values["folio_reservations"]['checkout'] = value_range_picker.split(" - ")[1];
+                                        }else{
+                                            values["folio_reservations"]['checkin'] = value_range_picker.split(" - ")[0];
+                                            values["folio_reservations"]['checkout'] = new_event.currentTarget.value;
+                                        }
                                     } else {
-                                        values["folio_reservations"][
-                                            new_event.currentTarget.name
-                                        ] = new_event.currentTarget.value;
+                                        values["folio_reservations"][new_event.currentTarget.name] = new_event.currentTarget.value;
                                     }
                                     ajax.jsonRpc(
                                         "/reservation/" +
