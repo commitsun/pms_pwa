@@ -165,13 +165,16 @@ class PmsReservation(http.Controller):
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
             if res and params.get("action_on_board"):
-                return json.dumps(
-                    {
-                        "result": True,
-                        "message": _("Operation completed successfully."),
-                        "reservation": reservation.parse_reservation(),
-                    }
-                )
+                if reservation.state == 'onboard':
+                    return json.dumps(
+                        {
+                            "result": True,
+                            "message": _("Operation completed successfully."),
+                            "reservation": reservation.parse_reservation(),
+                        }
+                    )
+                else:
+                    return reservation.parse_reservation()
             else:
                 return reservation.parse_reservation()
 
