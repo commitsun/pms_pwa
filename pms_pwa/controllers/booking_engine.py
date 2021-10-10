@@ -106,7 +106,7 @@ class BookingEngine(http.Controller):
                     [("id", "=", int(folio_values.get("pricelist_id")))]
                 )
             if not pricelist:
-                if first_call:
+                if first_call and folio_values["folio_id"]:
                     pricelist = request.env["pms.folio"].browse(
                         int(folio_values["folio_id"])
                     ).reservation_ids[0].pricelist_id
@@ -506,7 +506,10 @@ class BookingEngine(http.Controller):
                 if params.get("sale_category_id")
                 else False
             )
-            pms_property_id = int(params["pms_property_id"])
+            if params["pms_property_id"]:
+                pms_property_id = int(params["pms_property_id"])
+            else:
+                pms_property_id = request.env.user.pms_pwa_property_id.id
             pricelist_id = int(params["pricelist_id"])
             board_service_room_id = (
                 int(params.get("board_service_room_id"))
