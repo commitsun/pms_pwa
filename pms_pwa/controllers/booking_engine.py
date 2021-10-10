@@ -29,9 +29,17 @@ class BookingEngine(http.Controller):
         folio_values = http.request.jsonrequest.get("params")
         print("folio_values: {}".format(folio_values))
         try:
+            # Get property from add room from calendar
+            if not folio_values.get("pms_property_id") and folio_values.get("rooms"):
+                preferred_room = request.env["pms.room"].browse(
+                    int(folio_values.get("rooms")[0]["preferred_room_id"])
+                )
+                folio_values["pms_property_id"] = preferred_room.pms_property_id.id
             # checkin & Checkout
-            # TODO: add room in folio, default checkin/out from origin folio
-            if folio_values["checkin"]:
+            first_call = False
+            if folio_values.get("first_call"):
+                first_call = True
+            if folio_values["checkin"] and not first_call:
                 checkin = (
                     datetime.datetime.strptime(
                         folio_values["checkin"], get_lang(request.env).date_format
@@ -45,10 +53,12 @@ class BookingEngine(http.Controller):
                 ).reservation_ids[0].checkin
             else:
                 checkin = datetime.datetime.today()
-                folio_values["checkin"] = checkin.strftime(
-                    get_lang(request.env).date_format
-                )
-            if folio_values["checkout"]:
+
+            folio_values["checkin"] = checkin.strftime(
+                get_lang(request.env).date_format
+            )
+
+            if folio_values["checkout"] and not first_call:
                 checkout = (
                     datetime.datetime.strptime(
                         folio_values["checkout"].strip(),
@@ -58,17 +68,18 @@ class BookingEngine(http.Controller):
                     else checkin + timedelta(days=1)
                 )
             elif folio_values["folio_id"]:
-                checkin = request.env["pms.folio"].browse(
+                checkout = request.env["pms.folio"].browse(
                     int(folio_values["folio_id"])
                 ).reservation_ids[0].checkout
             else:
                 checkout = checkin + timedelta(days=1)
-                folio_values["checkout"] = checkout.strftime(
-                    get_lang(request.env).date_format
-                )
+
+            folio_values["checkout"] = checkout.strftime(
+                get_lang(request.env).date_format
+            )
 
             # Default partner
-            if not folio_values.get("partner_name") and folio_values["folio_id"]:
+            if folio_values["folio_id"] and first_call:
                 folio = request.env["pms.folio"].browse(
                     int(folio_values["folio_id"])
                 )
@@ -78,7 +89,6 @@ class BookingEngine(http.Controller):
                 folio_values["mobile"] = folio.mobile
 
             # Pms Property
-            # TODO:Enviar correctamente el pms_property_id seleccionado
             if folio_values["folio_id"]:
                 pms_property = request.env["pms.folio"].browse(
                     int(folio_values["folio_id"])
@@ -96,13 +106,31 @@ class BookingEngine(http.Controller):
                     [("id", "=", int(folio_values.get("pricelist_id")))]
                 )
             if not pricelist:
-                pricelist = pms_property.default_pricelist_id
+                if first_call:
+                    pricelist = request.env["pms.folio"].browse(
+                        int(folio_values["folio_id"])
+                    ).reservation_ids[0].pricelist_id
+                else:
+                    pricelist = pms_property.default_pricelist_id
             folio_values["pricelist_id"] = pricelist.id
+
             # Reservation type
-            if not folio_values.get("reservation_type"):
+            if folio_values.get("folio_id"):
+                folio_values["reservation_type"] = request.env["pms.folio"].browse(
+                    int(folio_values["folio_id"])
+                ).reservation_ids[0].reservation_type
+            elif not folio_values.get("reservation_type"):
                 folio_values["reservation_type"] = "normal"
+
             # Channel and Agency
-            # REVIEW: Avoid send 'false' to controller
+            if folio_values.get("folio_id"):
+                folio_values["channel_type_id"] = request.env["pms.folio"].browse(
+                    int(folio_values["folio_id"])
+                ).channel_type_id.id
+                folio_values["agency_id"] = request.env["pms.folio"].browse(
+                    int(folio_values["folio_id"])
+                ).agency_id.id
+
             if (
                 folio_values.get("agency_id")
                 and folio_values.get("agency_id") != "false"
@@ -118,12 +146,12 @@ class BookingEngine(http.Controller):
                     "id": agency.sale_channel_id.id,
                     "name": agency.sale_channel_id.name,
                 }
-                if agency.invoice_to_agency:
+                if agency and agency.invoice_to_agency:
                     folio_values["partner_name"] = agency.name
                     folio_values["partner_id"] = agency.id
                     folio_values["email"] = agency.email or ""
                     folio_values["mobile"] = agency.mobile or ""
-                if agency.apply_pricelist:
+                if agency and agency.apply_pricelist:
                     folio_values["pricelist_id"] = agency.property_product_pricelist.id
             else:
                 channel_type = False
@@ -138,6 +166,7 @@ class BookingEngine(http.Controller):
                     "id": channel_type.id if channel_type else False,
                     "name": channel_type.name if channel_type else False,
                 }
+
             # prepare amenity ids
             selected_amenity_ids = (
                 [int(item) for item in folio_values.get("amenity_ids")]
