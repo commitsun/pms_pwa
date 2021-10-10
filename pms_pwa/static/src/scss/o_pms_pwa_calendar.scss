@@ -575,7 +575,7 @@ section.o_pms_pwa_roomdoo {
                 margin-right: -40px;
             }
 
-            &_checkin::before {
+            &_checkin-paid::before {
                 top: 0.75em !important;
                 left: -100px !important;
                 background-color: #00ba39;
@@ -588,10 +588,36 @@ section.o_pms_pwa_roomdoo {
                 margin-right: -40px;
             }
 
-            &_checkout::before {
+            &_checkin-to-pay::before {
+                top: 0.75em !important;
+                left: -100px !important;
+                background-color: #dc3545;
+                content: "" !important;
+                display: inline-block;
+                height: 4px;
+                position: relative;
+                vertical-align: middle;
+                width: 50px;
+                margin-right: -40px;
+            }
+
+            &_checkout-paid::before {
                 top: 0.75em !important;
                 left: -100px !important;
                 background-color: #7e7e7e;
+                content: "" !important;
+                display: inline-block;
+                height: 4px;
+                position: relative;
+                vertical-align: middle;
+                width: 50px;
+                margin-right: -40px;
+            }
+
+            &_checkout-to-pay::before {
+                top: 0.75em !important;
+                left: -100px !important;
+                background-color: #dc3545;
                 content: "" !important;
                 display: inline-block;
                 height: 4px;
@@ -681,7 +707,7 @@ section.o_pms_pwa_roomdoo {
                     font-size: 3.5px !important;
                 }
 
-                &_checkin::before {
+                &_checkin-paid::before {
                     top: 0.7rem !important;
                     left: -69px !important;
                     background-color: #00ba39;
@@ -694,7 +720,33 @@ section.o_pms_pwa_roomdoo {
                     font-size: 3.5px !important;
                 }
 
-                &_checkout::before {
+                &_checkin-to-pay::before {
+                    top: 0.7rem !important;
+                    left: -69px !important;
+                    background-color: #00ba39;
+                    content: "----------------" !important;
+                    display: inline-block;
+                    position: relative;
+                    vertical-align: middle;
+                    width: 50px;
+                    margin-right: -40px;
+                    font-size: 3.5px !important;
+                }
+
+                &_checkout-paid::before {
+                    top: 0.7rem !important;
+                    left: -69px !important;
+                    background-color: #7e7e7e;
+                    content: "----------------" !important;
+                    display: inline-block;
+                    position: relative;
+                    vertical-align: middle;
+                    width: 50px;
+                    margin-right: -40px;
+                    font-size: 3.5px !important;
+                }
+
+                &_checkout-to-pay::before {
                     top: 0.7rem !important;
                     left: -69px !important;
                     background-color: #7e7e7e;
@@ -840,7 +892,7 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
 
-                &_checkin {
+                &_checkin-paid {
                     border-bottom: 4px solid #00ba39;
                     position: relative;
                     width: 100%;
@@ -862,7 +914,29 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
 
-                &_checkout {
+                &_checkin-to-pay {
+                    border-bottom: 4px solid #dc3545;
+                    position: relative;
+                    width: 100%;
+                    margin-left: 3rem;
+                    .o_pms_pwa_calendar_line_icon {
+                        margin-top: -3rem;
+                        width: 8px;
+                        margin-left: 0.1rem;
+                    }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: #dc3545;
+                    }
+                }
+
+                &_checkout-paid {
                     border-bottom: 4px solid #7e7e7e;
                     position: relative;
                     width: 100%;
@@ -881,6 +955,28 @@ section.o_pms_pwa_roomdoo {
                         display: ruby-base-container;
                         z-index: 0;
                         color: #7e7e7e;
+                    }
+                }
+
+                &_checkout-to-pay {
+                    border-bottom: 4px solid #dc3545;
+                    position: relative;
+                    width: 100%;
+                    margin-left: 3rem;
+                    .o_pms_pwa_calendar_line_icon {
+                        margin-top: -3rem;
+                        width: 8px;
+                        margin-left: 0.1rem;
+                    }
+                    &::before {
+                        content: "|";
+                        position: relative;
+                        top: -1.15rem;
+                        font-size: 16px;
+                        left: -1.65rem;
+                        display: ruby-base-container;
+                        z-index: 0;
+                        color: #dc3545;
                     }
                 }
 
@@ -992,13 +1088,21 @@ section.o_pms_pwa_roomdoo {
                 color: $theme-color;
                 background-color: $theme-color;
             }
-            &-checkin {
+            &-checkin-paid {
                 color: #00ba39;
                 background-color: #00ba39;
             }
-            &-checkout {
+            &-checkin-to-pay {
+                color: #dc3545;
+                background-color: #dc3545;
+            }
+            &-checkout-paid {
                 color: #7e7e7e;
                 background-color: #7e7e7e;
+            }
+            &-checkout-to-pay {
+                color: #dc3545;
+                background-color: #dc3545;
             }
             &-out-service {
                 color: #000000;

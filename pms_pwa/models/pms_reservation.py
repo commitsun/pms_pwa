@@ -41,6 +41,7 @@ class PmsReservation(models.Model):
         string="Color state",
         help="Define state to color in PWA",
         compute="_compute_color_state",
+        store=True,
     )
     icon_payment = fields.Char(
         string="Icon Payment state",
@@ -520,6 +521,7 @@ class PmsReservation(models.Model):
                 )
         return allowed_segmentations
 
+    @api.depends("state", "reservation_type", "folio_pending_amount", "to_assign")
     def _compute_color_state(self):
         for record in self:
             if record.to_assign:
@@ -530,14 +532,21 @@ class PmsReservation(models.Model):
                 record.color_state = "staff"
             elif record.state == "draft":
                 record.color_state = "prereservation"
-            elif record.state == "confirm":
+            elif record.state in ("confirm", "arrival_delayed"):
                 record.color_state = "confirmed"
-            elif record.state == "onboard":
-                record.color_state = "checkin"
+            elif record.state in ("onboard", "departure_delayed"):
+                record.color_state = "onboard"
+                if record.folio_pending_amount > 0:
+                    record.color_state = "checkin-to-pay"
+                else:
+                    record.color_state = "checkin_paid"
             elif record.state == "done":
-                record.color_state = "checkout"
+                if record.folio_pending_amount > 0:
+                    record.color_state = "checkout-to_pay"
+                else:
+                    record.color_state = "checkout_paid"
             else:
-                record.color_state = "danger"
+                record.color_state = False
 
     def _compute_icon_payment(self):
         for record in self:
