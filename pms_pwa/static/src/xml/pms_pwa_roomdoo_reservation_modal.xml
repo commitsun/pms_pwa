@@ -793,7 +793,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
-                                        <span>Cerar</span>
+                                        <span>Cerrar</span>
                                     </button>
                                 </div>
                                 <div class="col-6">
@@ -1063,8 +1063,8 @@
                                     <!-- <button url="/print-checkin" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" data-dismiss="modal" aria-label="Print checkin">
                                         <span>Print checkin</span>
                                     </button>  -->
-                                    <button t-attf-onclick="/checkins/pdf/{{reservation.id}}" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" aria-label="Print checkin">
-                                        <span>Print checkin</span>
+                                    <button t-attf-onclick="/checkins/pdf/{{reservation.id}}" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w" aria-label="Print checkin">
+                                        <span>Imprimir</span>
                                     </button>
                                 </div>
                             </div>
@@ -1243,16 +1243,17 @@
                                                         <button type="button" t-attf-data-id="reservation.id" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                                             <span>Cerrar</span>
                                                         </button>
-                                                        <t t-if="partner_value['state'] == 'precheckin'">
+                                                        <!-- HOT FIX to allow checkin -->
+                                                        <!-- <t t-if="partner_value['state'] == 'precheckin'"> -->
                                                             <button type="button" t-attf-data-id="reservation.id" class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        </t>
+                                                        <!-- </t>
                                                         <t t-else="">
                                                             <button type="button" disabled="true" t-attf-data-id="reservation.id" class="btn btn-block btn-grey-300 btn-radius o_pms_pwa_disabled o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        </t>
+                                                        </t> -->
                                                     </div>
                                                 </div>
                                             </div>
