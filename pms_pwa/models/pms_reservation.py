@@ -539,12 +539,12 @@ class PmsReservation(models.Model):
                 if record.folio_pending_amount > 0:
                     record.color_state = "checkin-to-pay"
                 else:
-                    record.color_state = "checkin_paid"
+                    record.color_state = "checkin-paid"
             elif record.state == "done":
                 if record.folio_pending_amount > 0:
-                    record.color_state = "checkout-to_pay"
+                    record.color_state = "checkout-to-pay"
                 else:
-                    record.color_state = "checkout_paid"
+                    record.color_state = "checkout-paid"
             else:
                 record.color_state = False
 
