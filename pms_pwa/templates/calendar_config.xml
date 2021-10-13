@@ -184,33 +184,36 @@
                                                 <table class="table subtable" id="calendar_conf_table_line" style="border-collapse: separate; border-spacing: 8px;">
                                                     <t t-foreach="select_pricelist" t-as="price">
                                                         <tr t-attf-data-id="{{ price.id }}">
-                                                            <td class="o_pms_pwa_show_table" style="vertical-align:middle;" data-toggle="collapse" t-attf-data-target="#collapse_2_accordion_{{price.id}}" aria-expanded="false" aria-controls="collapse_2_accordion_{{price.id}}">
-                                                                <i class="fa fa-angle-down ml-2"></i>
-                                                                <span style="font-size:medium">
-                                                                    <t t-esc="price.name" />
-                                                                </span>
-                                                                <p style="text-align:end;">
-                                                                    <span style="width:40px;">Precio</span>
+                                                            <td class="o_pms_pwa_show_table" data-toggle="collapse" t-attf-data-target="#collapse_2_accordion_{{price.id}}" aria-expanded="false" aria-controls="collapse_2_accordion_{{price.id}}">
+                                                                <p style="text-align:end; height:28px;">
+                                                                    <span style="min-width:80px !important;">Precio</span>
                                                                 </p>
-                                                                <p style="text-align:end;">
-                                                                    <span style="width:40px;">Cupo</span>
+                                                                <p style="text-align:end; height:28px;">
+                                                                    <span style="min-width:80px !important;">Cupo</span>
                                                                 </p>
-                                                                <p style="text-align:end;">
-                                                                    <span style="width:40px;">Est. Mín</span>
+                                                                <p style="text-align:end; height:28px;">
+                                                                    <span style="min-width:80px !important;">Est. Mín</span>
                                                                 </p>
-                                                                <div class="o_pms_pwa_show_table collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
-                                                                    <p style="text-align:end;">
-                                                                        <span style="width:40px;">Max. stay:</span>
+                                                                <p style="text-align:right; height:45px; margin-bottom:0">
+                                                                    <i class="fa fa-angle-down ml-2"></i>
+                                                                </p>
+                                                                <div class="collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
+                                                                    <p style="text-align:end; height:28px;">
+                                                                        <span style="min-width:80px !important;">Bloquear:</span>
                                                                     </p>
-                                                                    <p style="text-align:end;">
-                                                                        <span style="width:40px;">Min. stay arrival:</span>
+                                                                    <p style="text-align:end; height:28px;">
+                                                                        <span style="min-width:80px !important;">Max. stay:</span>
                                                                     </p>
-                                                                    <p style="text-align:end;">
-                                                                        <span style="width:40px;">Max. stay arrival:</span>
+                                                                    <p style="text-align:end; height:28px;">
+                                                                        <span style="min-width:80px !important;">Min. stay arrival:</span>
                                                                     </p>
-                                                                    <p style="text-align:end;">
-                                                                        <span style="width:40px;">Bloquear:</span>
+                                                                    <p style="text-align:end; height:28px;">
+                                                                        <span style="min-width:80px !important;">Max. stay arrival:</span>
                                                                     </p>
+                                                                    <p style="text-align:end; height:28px;">
+                                                                        <span style="min-width:80px !important;">Bloquear:</span>
+                                                                    </p>
+
                                                                 </div>
 
                                                             </td>
@@ -219,7 +222,7 @@
                                                                 <t t-set="list_price" t-value="obj.with_context(date=date_list[room_day], pricelist_id=price.id, pms_property_id=current_property)._get_rules_date()"></t>
                                                                 <td t-att-class="'o_config_pms_pwa_table_cell '
                                                                     + ('o_pms_pwa_dispo_0 ' if list_price['closed'] else ' ')" t-attf-data="{{ room_day }}">
-                                                                    <p style="text-align:center; padding-top:2.5rem;margin-right: 0.25rem;">
+                                                                    <p style="text-align:center;margin-right: 0.25rem;">
                                                                         <input t-attf-data-room="{{ obj.id }}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}1{{room_day}}" style="width:50px;" type="text" t-att-value="obj.product_id.with_context(quantity=1, consumption_date=date_list[room_day], pricelist=price.id, property=current_property).price" name="price"  />
                                                                     </p>
                                                                     <p style="text-align:center;margin-right: 0.25rem;">
@@ -240,7 +243,13 @@
                                                                         <span style="width:40px;float:left; margin-left: 0.75rem;">Min.</span>
                                                                     </p> -->
                                                                     <div class="collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
-                                                                        <p style="text-align:center; padding-top:2.5rem;margin-right: 0.25rem;">
+                                                                        <p style="text-align:center; padding-top:45px;">
+                                                                            <label class="switch">
+                                                                                <input t-attf-data-room="{{ obj.id }}" t-attf-value="{{list_price['closed']}}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}7{{room_day}}" name="closed" type="checkbox" />
+                                                                                <span class="slider round"></span>
+                                                                            </label>
+                                                                        </p>
+                                                                        <p style="text-align:center; margin-right: 0.25rem;">
                                                                             <input t-attf-data-room="{{ obj.id }}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}4{{room_day}}" style="width:50px;" type="text" t-attf-value="{{ list_price['max_stay'] }}" name="max_stay" />
                                                                         </p>
                                                                         <p style="text-align:center;margin-right: 0.25rem;">
@@ -251,7 +260,7 @@
                                                                         </p>
                                                                         <p style="text-align:center">
                                                                             <label class="switch">
-                                                                                <input t-attf-data-room="{{ obj.id }}" t-attf-value="{{list_price['closed']}}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}7{{room_day}}" name="closed" type="checkbox" />
+                                                                                <input t-attf-data-room="{{ obj.id }}" t-attf-value="{{list_price['closed_arrival']}}" t-attf-data-pricelist="{{ price.id }}" t-attf-data-date="{{ date_list[room_day] }}" data-edit="false" t-attf-tabindex="{{ price.id }}8{{room_day}}" name="closed" type="checkbox" />
                                                                                 <span class="slider round"></span>
                                                                             </label>
                                                                         </p>
