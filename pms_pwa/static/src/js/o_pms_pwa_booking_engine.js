@@ -276,7 +276,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 send_value.sale_category_id = values.sale_category_id;
             } else {
                 if(values.agrupation_type != "room_type"){
-                    send_value.sale_category_id = "1"; //por defecto
+                    send_value.sale_category_id = "0"; //por defecto
                 }else{
                     send_value.sale_category_id = "";
                 }
@@ -514,7 +514,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             for (const i in groups) {
                 html +=
                     '<tr class="o_pms_pwa_group_header">' +
-                        '<td class="col-sm-4">' +
+                        '<td class="col-sm-4" style="font-size: large;" >' +
                             groups[i].name + " (" + groups[i].max_rooms + ")" +
                         '</td>' +
                         '<td class="col-sm-5">' +

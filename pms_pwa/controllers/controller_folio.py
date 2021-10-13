@@ -121,7 +121,7 @@ class PmsFolio(http.Controller):
                         folio.pms_property_id._get_payment_methods()
                     )
                     journal = account_journals.browse(payment_method)
-                    partner_id = request.env["res.partner"].browse(
+                    partner = request.env["res.partner"].browse(
                         int(payment_partner_id)
                     )
                     if folio.payment_state != "paid":
@@ -131,8 +131,8 @@ class PmsFolio(http.Controller):
                             request.env.user,
                             payment_amount,
                             folio,
-                            partner=partner_id
-                            if partner_id
+                            partner=partner
+                            if partner
                             else folio.partner_id,
                             date=fields.date.today(),
                         )
