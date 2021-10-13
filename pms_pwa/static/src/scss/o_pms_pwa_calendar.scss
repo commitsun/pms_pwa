@@ -365,6 +365,7 @@ section.o_pms_pwa_roomdoo {
                 min-width: 30.4px !important;
                 border: none;
             }
+
             tr > td, th {
                 width: 10.4px;
             }
@@ -377,6 +378,28 @@ section.o_pms_pwa_roomdoo {
                 border-collapse: separate;
                 border-spacing: 0 8px;
                 margin-bottom: 0px !important;
+            }
+            .o_config_pms_pwa_table_cell {
+
+                border: 1px solid $grey-300;
+                border-radius: 0.25rem;
+                min-height: 2rem;
+                background-color: white;
+                width: 140px !important;
+                min-width: 140px !important;
+                max-width: 140px !important;
+                .o_pms_pwa_title {
+                    color: $black;
+                    .o_pms_pwa_info {
+                        color: $theme-color;
+                        position: relative;
+                        top: -1rem;
+                        right: -4rem;
+                        .o_pms_pwa_interrogante-calendar {
+                            width: 13px;
+                        }
+                    }
+                }
             }
         }
 
@@ -401,6 +424,7 @@ section.o_pms_pwa_roomdoo {
             -webkit-transform: rotate(135deg);
         }
         .o_pms_pwa_table_cell {
+
             border: 1px solid $grey-300;
             border-radius: 0.25rem;
             min-height: 2rem;
@@ -477,9 +501,6 @@ section.o_pms_pwa_roomdoo {
                 transition: all 0.5s linear;
             }
 
-            @media (max-width: 991.98px) {
-                width: 175px;
-            }
         }
         .o_pms_pwa_extra_info {
             font-size: 14px;
@@ -676,6 +697,7 @@ section.o_pms_pwa_roomdoo {
             // margin-left: 2rem;
             margin-bottom: 1rem;
             font-size: 18px;
+            width: 104px !important;
 
         }
 
@@ -741,6 +763,13 @@ section.o_pms_pwa_roomdoo {
 
         .slider.round:before {
             border-radius: 50%;
+        }
+    }
+}
+.subtable {
+    tr {
+        th, td {
+            border: none !important;
         }
     }
 }
