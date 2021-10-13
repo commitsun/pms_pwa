@@ -1300,6 +1300,16 @@ section.o_pms_pwa_roomdoo {
         }
     }
 }
+.my-circle-parent {
+    width: 100%;
+    .my-circle {
+        height: 20px !important;
+        width: 20px !important;
+        display: inline;
+        border-radius: 50% !important;
+        border: 1px solid red;
+    }
+}
 // .subtable {
 //     tr {
 //         th, td {

@@ -172,9 +172,45 @@
                                                 <td t-att-class="'o_config_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
-                                                ">
+                                                " style="padding:0 !important;">
+                                                <div class="row m-0 p-0 text-center" style="height: 25px !important;">
+                                                    <div
+                                                        class="col-4 m-0 p-0 text-center "
+                                                        style="height:100%; width:25px; text-align: center;">
+                                                        <div
+                                                            class="m-0 p-0"
+                                                            style="border-radius: 50%; border: 1px solid red; height:100%; width:25px"
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="col-4 m-0 p-0 text-center "
+                                                        style="height:100%; width:25px">
+                                                        <div
+                                                            class="m-0 p-0 text-center"
+                                                            style="border-radius: 50%; border: 1px solid red; height:100%; width:25px"
+                                                            >
+                                                        </div>
+                                                    </div>
+                                                    <div
+                                                        class="col-4 m-0 p-0 text-center "
+                                                        style="height:100%; width:25px">
+                                                        <div
+                                                            class="m-0 p-0"
+                                                            style="border-radius: 50%; border: 1px solid red; height:100%; width:25px"
+                                                            >
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                                     <p class="o_pms_pwa_title" style="text-align: center !important;">
-                                                        <t t-esc="availability_room"/> de <t t-esc="total_rooms" />
+                                                        78%
+                                                        <t t-esc="total_rooms" />
+                                                        <t t-esc="availability_room"/>
+                                                        <!--  -->
+                                                        45 <!-- Nº de reservas -->
+                                                        3 <!-- Nº de Out of service -->
+                                                        2 <!-- Nº de bloqueos -->
                                                     </p>
                                                 </td>
                                             </t>
