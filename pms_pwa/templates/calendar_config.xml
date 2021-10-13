@@ -182,7 +182,7 @@
                                         </tr>
                                         <tr>
                                             <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(obj.id)" t-attf-aria-labelledby="{{ obj.id }}" style="width:100% !important">
-                                                <table class="table" id="calendar_conf_table_line" style="border-collapse: separate; border-spacing: 8px;">
+                                                <table class="table" id="calendar_conf_table_line" style="border-collapse: separate;">
                                                     <t t-foreach="select_pricelist" t-as="price">
                                                         <tr t-attf-data-id="{{ price.id }}">
                                                             <td class="o_pms_pwa_show_table" style="vertical-align:middle;" data-toggle="collapse" t-attf-data-target="#collapse_2_accordion_{{price.id}}" aria-expanded="false" aria-controls="collapse_2_accordion_{{price.id}}">
