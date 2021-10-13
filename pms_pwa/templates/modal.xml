@@ -47,12 +47,12 @@
                                 <input type="hidden" name="calendar_room" value=""></input>
                                 <div class="form-group form-field pb-3 ">
 
-                                    <div class="row mb-3 pwa_property_id" >
+                                    <div class=" h2 row mb-3 pwa_property_id" >
                                         <div class="col-sm-12" t-if="len(user_id.pms_pwa_property_ids) > 1">
                                             <label class="control-label col-12" for="pms_property_id">
-                                                Propiedad
+                                                Hotel
                                             </label>
-                                            <select class="form-control call_booking_engine o_website_form_input o_domain_leaf_operator_select o_input" name="pms_property_id">
+                                            <select class="form-control call_booking_engine o_website_form_input o_domain_leaf_operator_select o_input" style="font-size: x-large; height: auto;" name="pms_property_id">
                                                 <t t-foreach="user_id.pms_pwa_property_ids" t-as="i">
                                                     <t t-if="i.id == user_id.pms_pwa_property_id.id">
                                                         <option t-attf-value="{{ i.id }}" selected="selected">
@@ -68,31 +68,6 @@
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <label class="control-label col-12" for="partner_name">
-                                                Nombre
-                                            </label>
-                                            <input class="form-control o_pms_pwa_search_partner" type="text" name="partner_name" placeholder="Name" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
-                                        </div>
-                                    </div>
-
-                                    <div class="row mt-3">
-                                        <div class="col-sm-6">
-                                            <label class="control-label col-12" for="mobile">
-                                                Teléfono
-                                            </label>
-                                            <input class="form-control" type="text" name="mobile" placeholder="Mobile" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label class="control-label col-12" for="mail">
-                                                E-mail
-                                            </label>
-                                            <input class="form-control" type="text" name="mail" placeholder="Mail" t-att-value="post['mail'] if post and 'mail' in post else None" />
-                                        </div>
-                                    </div>
-
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
                                             <label class="control-label col-12" for="checkin">
@@ -108,15 +83,6 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-12">
-                                            <h4>Canal de venta y Tarifa</h4>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label class="control-label col-12" for="pricelist">
-                                                Tarifa
-                                            </label>
-                                            <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="pricelist_id" />
-                                        </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="reservation_type">
                                                 Tipo de reserva
@@ -127,10 +93,14 @@
                                                 <option name="reservation_type" value="out">Fuera de servicio</option>
                                             </select>
                                         </div>
-
-
+                                        <!-- <button type="button" t-attf-data-id="reservation.id" class="btn o_pms_pwa_abutton float-right" data-dismiss="modal" aria-label="Checkin">
+                                            <span>Checkin</span>
+                                        </button> -->
                                     </div>
                                     <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Canal de venta y Tarifa</h4>
+                                        </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="agency_id">
                                                 Agencia
@@ -143,16 +113,20 @@
                                             </label>
                                             <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="channel_type_id" />
                                         </div>
-
                                     </div>
                                     <div class="row mt-3">
-
-                                        <div class="col-sm-6">
+                                        <!-- <div class="col-sm-6">
                                             <label class="control-label col-12" for="segmentation_ids" style="z-index: 1;">
                                                 Segmentación
                                             </label>
-                                            <select id="segmentation_ids" data-select="allowed_segmentations" multiple="multiple" class="form-control o_pms_pwa_multiselect"  data-live-search="true" name="segmentation_ids" title="Segmentation" />
+                                            <select id="segmentation_ids" data-select="allowed_segmentations" multiple="multiple" class="form-control o_pms_pwa_multiselect"  data-live-search="true" name="segmentation_ids" title="Segmentation" /> -->
                                             <!-- <select t-attf-data-select="allowed_segmentations" multiple="multiple" class="form-control o_website_form_input o_domain_leaf_operator_select o_input select2" name="segmentation_ids"/> -->
+                                        <!-- </div> -->
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="pricelist">
+                                                Tarifa
+                                            </label>
+                                            <select data-select="allowed_pricelists" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="pricelist_id" />
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="board_service_room_id">
@@ -162,14 +136,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3 sale_category_id" >
-                                        <div class="col-sm-12">
-                                            <label class="control-label col-12" for="sale_category_id">
-                                                Vender Como...
-                                            </label>
-                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="sale_category_id" />
-                                        </div>
-                                    </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
                                             <h4>Habitaciones</h4>
@@ -182,7 +148,7 @@
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agrupation_type" >
                                                 <option name="agrupation_type" value="room_type" selected="selected">Tipo de habitación</option>
                                                 <option name="agrupation_type" value="ubication">Ubicación</option>
-                                                <option name="agrupation_type" value="all">Todas</option>
+                                                <!-- <option name="agrupation_type" value="all">Todas</option> -->
                                             </select>
                                             <input type="hidden" value="" name="room_type_id"></input>
                                             <input type="hidden" value="" name="ubication_id"></input>
@@ -194,36 +160,70 @@
                                             </label>
                                             <select id="amenity_ids" data-select="allowed_amenity_ids" multiple="multiple" class="form-control o_pms_pwa_multiselect call_booking_engine" data-live-search="true" name="amenity_ids" />
                                         </div>
-
+                                    </div>
+                                    <div class="row mt-3 sale_category_id" >
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="sale_category_id">
+                                                Vender Como...
+                                            </label>
+                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="background-color: #f582a640 !important;" name="sale_category_id" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
                                         <div class="col-sm-12 mt-3">
                                             <table id="bookengine_table" class="table table-condensed">
 
                                             </table>
                                         </div>
-
                                     </div>
+
                                     <div class="o_pms_pwa_shadow mt-3">
                                         <div class="row">
-                                            <div class="col-6">
-                                                <!-- <div class="row mx-2">
+                                            <!-- <div class="col-6">
+                                                <div class="row mx-2">
                                                     <div class="o_pms_pwa_total_title col-12">
                                                         <h4>Impuestos</h4>
                                                     </div>
                                                     <div class="o_pms_pwa_total_price col-12">
                                                         <strong  class="price_taxes" >0</strong>
                                                     </div>
-                                                </div> -->
-                                            </div>
-                                            <div class="col-sm-6">
+                                                </div>
+                                            </div> -->
+                                            <div class="col-sm-12">
                                                 <div class="row mx-2">
-                                                    <div class="o_pms_pwa_total_title col-12">
+                                                    <div class="o_pms_pwa_total_title col-6">
                                                         <h4>Total</h4>
                                                     </div>
-                                                    <div class="o_pms_pwa_total_price col-12" >
-                                                        <strong class="price_total" >0</strong>
+                                                    <div class="o_pms_pwa_total_price" >
+                                                        <strong class="price_total" >0 €</strong>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Datos de Contacto</h4>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="partner_name">
+                                                Nombre
+                                            </label>
+                                            <input class="form-control o_pms_pwa_search_partner" type="text" name="partner_name" placeholder="A nombre de..." t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="mobile">
+                                                Teléfono
+                                            </label>
+                                            <input class="form-control" type="text" name="mobile" placeholder="Móvil" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-12" for="mail">
+                                                E-mail
+                                            </label>
+                                            <input class="form-control" type="text" name="mail" placeholder="Mail" t-att-value="post['mail'] if post and 'mail' in post else None" />
                                         </div>
                                     </div>
 
@@ -231,7 +231,7 @@
                                         <div class="col-sm-12 text-center">
                                             <input type="hidden" name="id"/>
                                             <input type="hidden" name="folio_id"/>
-                                            <a class="btn btn-message" id="o_pms_pwa_send_form">Guardar</a>
+                                            <a class="btn btn-message" id="o_pms_pwa_send_form">Confirmar</a>
                                         </div>
                                     </div>
                                 </div>
