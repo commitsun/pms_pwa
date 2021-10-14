@@ -155,12 +155,16 @@ class PmsCalendarConfig(http.Controller):
                             avail_vals = {}
                             if "quota" in items[0]:
                                 avail_vals["quota"] = int(items[0]["quota"])
+                            if "max_avail" in items[0]:
+                                avail_vals["max_avail"] = int(items[0]["max_avail"])
                             if "min_stay" in items[0]:
                                 avail_vals["min_stay"] = int(items[0]["min_stay"])
                             if "max_stay" in items[0]:
                                 avail_vals["max_stay"] = int(items[0]["max_stay"])
                             if "closed" in items[0]:
                                 avail_vals["closed"] = bool(items[0]["closed"])
+                            if "closed_arrival" in items[0]:
+                                avail_vals["closed"] = bool(items[0]["closed_arrival"])
                             if "min_stay_arrival" in items[0]:
                                 avail_vals["min_stay_arrival"] = int(
                                     items[0]["min_stay_arrival"]
