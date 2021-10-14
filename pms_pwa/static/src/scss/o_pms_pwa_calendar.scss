@@ -361,8 +361,8 @@ section.o_pms_pwa_roomdoo {
                 position: sticky;
                 left: 0px;
                 z-index: 2;
-                width: 50.4px !important;
-                min-width: 30.4px !important;
+                width: 150.4px !important;
+                min-width: 150.4px !important;
                 border: none;
             }
 
@@ -1196,10 +1196,10 @@ section.o_pms_pwa_roomdoo {
         }
     }
 }
-// .subtable {
-//     tr {
-//         th, td {
-//             border: 1px !important;
-//         }
-//     }
-// }
+.subtable {
+    tr {
+        th, td {
+            border: 0 !important;
+        }
+    }
+}

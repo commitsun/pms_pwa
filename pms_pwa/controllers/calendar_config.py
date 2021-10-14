@@ -51,14 +51,14 @@ class PmsCalendarConfig(http.Controller):
             date_start = date + timedelta(days=-30)
 
         # Add default dpr and dpr_select_values
-        dpr = 7
+        # get the days of the month
+        month_days = monthrange(date.year, date.month)[1]
+        dpr = month_days
         if post.get("dpr"):
             dpr = int(post.get("dpr"))
         date_list = [date_start + timedelta(days=x) for x in range(dpr)]
-        # get the days of the month
-        month_days = monthrange(date.year, date.month)[1]
-        dpr_select_values = {7, 15, month_days}
 
+        dpr_select_values = {7, 15, month_days}
         Room = request.env["pms.room.type"]
         rooms = Room.search([])
 
@@ -75,7 +75,7 @@ class PmsCalendarConfig(http.Controller):
         )
         # TODO: Add pricelist not daily in readonly mode (only price)
 
-        select_pricelist = pricelist
+        select_pricelist = pricelist[0]
         default_pricelist = 0
         if post and post.get("pricelist") and int(post.get("pricelist")) != 0:
             default_pricelist = int(post["pricelist"])
