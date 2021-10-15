@@ -266,20 +266,26 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             var selected_display = $(
                                 'input[name="selected_display"]'
                             ).val();
+                            if (selected_display == 'ubication') {
+                                var selected_id = updated_data.current_ubication_id;
+                            } else if (selected_display == 'room_type') {
+                                var selected_id = updated_data.current_room_type_id;
+                            } else if (selected_display == 'pms_property') {
+                                var selected_id = updated_data.current_property_id;
+                            }
                             ajax.jsonRpc("/calendar/line", "call", {
-                                data_id: updated_data.room_type_id.id,
+                                data_id: selected_id,
                                 range_date: date_list,
                                 selected_display: selected_display,
                             }).then(function (data) {
                                 var html = core.qweb.render("pms_pwa.calendar_line", {
-                                    room_type_id: updated_data.room_type_id.id,
                                     obj_list: data.reservations,
                                     csrf_token: csrf_token,
                                 });
                                 $(
                                     String(
                                         "#collapse_accordion_" +
-                                            updated_data.room_type_id.id
+                                        selected_id
                                     )
                                 ).html(html);
                             });
