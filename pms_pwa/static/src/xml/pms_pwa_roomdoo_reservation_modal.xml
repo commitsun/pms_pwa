@@ -203,20 +203,25 @@
                                         </td>
                                         <td>
                                             <script>
+                                                if (document.documentElement.lang === "es-ES") {
+                                                    var format = 'dd/mm/yy';
+                                                } else {
+                                                    var format = 'mm/dd/yy';
+                                                }
                                                 $( function() {
-                                                  $( "#checkindate<t t-esc='i.id'/>" ).datepicker({ dateFormat: 'dd/mm/yy'}).datepicker("setDate", '<t t-esc="i.checkin"/>');
+                                                  $( "#checkindate<t t-esc='i.id'/>" ).datepicker({ dateFormat: format}).datepicker("setDate", '<t t-esc="i.checkin"/>');
                                                 } );
                                             </script>
-                                            <input class="form-control" t-attf-id="checkindate{{ i.id }}" type="text" name="checkin" t-attf-value="{{ i.checkin  }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
+                                            <input class="form-control form-control-rdcd" t-attf-id="checkindate{{ i.id }}" type="text" name="checkin" t-attf-value="{{ i.checkin  }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
 
                                         </td>
                                         <td>
                                             <script>
                                                 $( function() {
-                                                  $( "#checkoutdate<t t-esc='i.id'/>" ).datepicker({ dateFormat: 'dd/mm/yy'}).datepicker("setDate", '<t t-esc="i.checkout"/>');
+                                                  $( "#checkoutdate<t t-esc='i.id'/>" ).datepicker({ dateFormat: format}).datepicker("setDate", '<t t-esc="i.checkout"/>');
                                                 } );
                                             </script>
-                                            <input class="form-control" t-attf-id="checkoutdate{{ i.id }}" type="text" name="checkout" t-attf-value="{{ i.checkout }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
+                                            <input class="form-control form-control-rdcd" t-attf-id="checkoutdate{{ i.id }}" type="text" name="checkout" t-attf-value="{{ i.checkout }}" t-attf-data-range="{{ i.checkin }} - {{ i.checkout }}" t-field-options='{"widget": "date"}'/>
 
                                         </td>
                                     </tr>
@@ -1243,17 +1248,16 @@
                                                         <button type="button" t-attf-data-id="reservation.id" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                                             <span>Cerrar</span>
                                                         </button>
-                                                        <!-- HOT FIX to allow checkin -->
-                                                        <!-- <t t-if="partner_value['state'] == 'precheckin'"> -->
-                                                            <button type="button" t-attf-data-id="reservation.id" class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkin">
+                                                        <t t-if="partner_value['state'] == 'precheckin'">
+                                                            <button type="button" t-attf-data-id="reservation.id" class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w o_pms_pwa_checkin_confirm_button" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        <!-- </t>
+                                                        </t>
                                                         <t t-else="">
-                                                            <button type="button" disabled="true" t-attf-data-id="reservation.id" class="btn btn-block btn-grey-300 btn-radius o_pms_pwa_disabled o_pms_pwa_30w" data-dismiss="modal" aria-label="Checkin">
+                                                            <button type="button" disabled="true" t-attf-data-id="reservation.id" class="btn btn-block btn-grey-300 btn-radius o_pms_pwa_disabled o_pms_pwa_30w o_pms_pwa_checkin_confirm_button" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        </t> -->
+                                                        </t>
                                                     </div>
                                                 </div>
                                             </div>

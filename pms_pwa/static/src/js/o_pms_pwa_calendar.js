@@ -39,16 +39,20 @@ odoo.define("pms_pwa.calendar", function (require) {
         // const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
         var date_string = $(this).data("date");
 
-        try {
-            const parts_of_date = date_string.split("/");
+        if (document.documentElement.lang === "es-ES") {
 
-            const new_date =
-                parts_of_date[1] + "/" + parts_of_date[0] + "/" + parts_of_date[2];
+            try {
+                const parts_of_date = date_string.split("/");
 
-            date_string = new_date;
-        } catch (error) {
-            console.error("Invalid format date");
+                const new_date =
+                    parts_of_date[1] + "/" + parts_of_date[0] + "/" + parts_of_date[2];
+
+                date_string = new_date;
+            } catch (error) {
+                console.error("Invalid format date");
+            }
         }
+
         var date = new Date(date_string);
 
         var tomorrow = new Date(date);
@@ -74,69 +78,6 @@ odoo.define("pms_pwa.calendar", function (require) {
         $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
         $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
         $("form#booking_engine_form").find("input[name='new_reservation_date_modal_reservation']").trigger("change");
-        if (document.documentElement.lang === "es-ES") {
-            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').daterangepicker(
-                {
-                    locale: {
-                        direction: "ltr",
-                        format: "DD/MM/YYYY",
-                        separator: " - ",
-                        applyLabel: "Aplicar",
-                        cancelLabel: "Cancelar",
-                    },
-                    opens: "left",
-                    showCustomRangeLabel: false,
-                },
-                function (start, end, label) {
-                    console.log("fecha de inicio", start);
-                    var start_date = new Date(start);
-                    var checkin_date = start_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    var end_date = new Date(end);
-                    var checkout_date = end_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    var range_date = checkin_date + " - " + checkout_date;
-                    $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
-                    $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
-                    $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
-                    $("form#booking_engine_form").find("input[name='new_reservation_date_modal_reservation']").trigger("change");
-                }
-            );
-        } else {
-            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').daterangepicker(
-                {
-                    locale: {
-                        direction: "ltr",
-                        format: "MM/DD/YYYY",
-                        separator: " - ",
-                    },
-                    opens: "left",
-                    showCustomRangeLabel: false,
-                },
-                function (start, end, label) {
-                    var start_date = new Date(start);
-                    var checkin_date = start_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    var end_date = new Date(end);
-                    var checkout_date = end_date.toLocaleDateString(
-                        document.documentElement.lang,
-                        date_options
-                    );
-                    var range_date = checkin_date + " - " + checkout_date;
-                    $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
-                    $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
-                    $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
-                    $("form#booking_engine_form").find("input[name='new_reservation_date_modal_reservation']").trigger("change");
-                }
-            );
-        };
-
     });
     $(function () {
         if (document.documentElement.lang === "es-ES") {

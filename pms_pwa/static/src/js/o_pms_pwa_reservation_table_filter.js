@@ -1033,16 +1033,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 var selector =
                                     "td[data-id=" + modal_reservation_id + "]";
                                 if ($(selector)) {
-                                    $(selector).remove();
-                                }
-                                $(
-                                    "<td class='launch_modal' data-id='" +
-                                        modal_reservation_id +
-                                        "'>Pincha aqui</td>"
-                                ).appendTo("table.launch_modal");
-                                setTimeout(function () {
                                     $(selector).click();
-                                }, 100);
+                                } else {
+                                    $(
+                                        "<td class='launch_modal' data-id='" +
+                                            modal_reservation_id +
+                                            "'>Pincha aqui</td>"
+                                    ).appendTo("table.launch_modal");
+                                    setTimeout(function () {
+                                        $(selector).click();
+                                    }, 100);
+                                }
                             } catch (error) {
                                 console.log(error);
                                 location.href =
@@ -1480,7 +1481,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     key2 != "gender" &&
                                                     key2 != "document_type" &&
                                                     key2 != "country_id" &&
-                                                    key2 != "state_id"
+                                                    key2 != "state_id" &&
+                                                    key2 != "state"
                                                 ) {
                                                     var input = $(
                                                         check_partner_id +
@@ -1492,24 +1494,35 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         input.val(value2);
                                                     }
                                                 } else {
-                                                    if (value2 && value2["id"]) {
-                                                        $(
-                                                            check_partner_id +
-                                                                " select[name='" +
-                                                                key2 +
-                                                                "'] option[value='" +
-                                                                value2["id"] +
-                                                                "']"
-                                                        ).prop("selected", true);
+                                                    if (key2 == 'state') {
+                                                        var button = $(check_partner_id + " .o_pms_pwa_checkin_confirm_button");
+                                                        if (value2 == 'precheckin') {
+                                                            button.prop("disabled", false);
+                                                            button.addClass("o_pms_pwa_button_checkin_confirm btn-message").removeClass("o_pms_pwa_disabled btn-grey-300");
+                                                        } else {
+                                                            button.prop("disabled", true);
+                                                            button.addClass("o_pms_pwa_disabled btn-grey-300").removeClass("o_pms_pwa_button_checkin_confirm btn-message");
+                                                        }
                                                     } else {
-                                                        $(
-                                                            check_partner_id +
-                                                                " select[name='" +
-                                                                key2 +
-                                                                "'] option[value='" +
-                                                                value2 +
-                                                                "']"
-                                                        ).prop("selected", true);
+                                                        if (value2 && value2["id"]) {
+                                                            $(
+                                                                check_partner_id +
+                                                                    " select[name='" +
+                                                                    key2 +
+                                                                    "'] option[value='" +
+                                                                    value2["id"] +
+                                                                    "']"
+                                                            ).prop("selected", true);
+                                                        } else {
+                                                            $(
+                                                                check_partner_id +
+                                                                    " select[name='" +
+                                                                    key2 +
+                                                                    "'] option[value='" +
+                                                                    value2 +
+                                                                    "']"
+                                                            ).prop("selected", true);
+                                                        }
                                                     }
                                                 }
                                             });
