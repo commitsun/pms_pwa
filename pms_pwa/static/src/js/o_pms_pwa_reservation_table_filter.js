@@ -1203,7 +1203,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 modal_event.preventDefault();
                                 var button = modal_event.currentTarget;
                                 var checkedValues = $(
-                                    "#multi_reservation_modal input:checkbox:checked"
+                                    "#multi_reservation_modal input[name='reservation_ids']:checkbox:checked"
                                 )
                                     .map(function () {
                                         return this.value;
@@ -1211,13 +1211,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     .get();
                                 var days_week = {};
                                 var apply_on_all_week = false;
-                                var new_price = $(
-                                    "#multiChangeModal input[name='new_price']"
-                                ).val();
                                 $("#multi_days_values input:checkbox:checked")
                                     .map(function () {
                                         if (this.name != "apply_on_all_week") {
-                                            days_week[this.name] = this.value;
+                                            if (this.value == 'on') {
+                                                days_week[this.name] = true;
+                                            }
                                         } else {
                                             apply_on_all_week = this.value;
                                         }
