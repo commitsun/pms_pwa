@@ -100,8 +100,7 @@ section.o_pms_pwa_roomdoo {
         .table-responsive {
             height: calc(70vh - 25px);
         }
-        #calendar_table.table,
-        #calendar_config_table.table {
+        #calendar_table.table {
             border-collapse: separate;
             border-spacing: 8px;
             overflow: auto;
@@ -296,6 +295,114 @@ section.o_pms_pwa_roomdoo {
             }
         }
 
+        #calendar_config_table.table {
+            border-collapse: separate;
+            border-spacing: 8px;
+            overflow: auto;
+            tr[aria-expanded="true"] {
+                i {
+                    -moz-transform: rotate(180deg);
+                    -webkit-transform: rotate(180deg);
+                    transform: rotate(180deg);
+                }
+            }
+            thead {
+                // border-bottom: 1px solid $theme-color;
+                background-color: $white;
+                height: 20px;
+                tr {
+                    background-color: $white;
+                    // transform: translate(8px);
+                    border-bottom: 1px solid $theme-color;
+                    //*border-collapse: expression('collapse', cellSpacing = '10px');
+                    th {
+                        background-color: $white;
+                        position: -webkit-sticky;
+                        position: -moz-sticky;
+                        position: -ms-sticky;
+                        position: -o-sticky;
+                        position: sticky;
+                        top: 0;
+                        z-index: 99;
+
+                        // border-bottom: 1px solid $theme-color;
+                        a {
+                            margin-left: -8px;
+                            height: 25px;
+                        }
+                    }
+                }
+            }
+            tbody {
+                tr {
+                    td {
+                        padding-bottom: 0;
+                        height: 20px;
+                    }
+                    td.o_pms_pwa_dispo_0 {
+                        background-color: #f582a640;
+                    }
+                    td.o_pms_pwa_dispo_1 {
+                        background-color: #ffe7712e;
+                    }
+                }
+            }
+
+            th.o_pms_pwa_table_first_header_td,
+            td.o_pms_pwa_table_first_header_td {
+                background-color: $white;
+            }
+            th:first-child,
+            td:first-child {
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
+                position: sticky;
+                left: 0px;
+                z-index: 2;
+                width: 150.4px !important;
+                min-width: 150.4px !important;
+                border: none;
+            }
+
+            tr > td, th {
+                width: 10.4px;
+            }
+
+            .o_pms_pwa_availability_header {
+                color: #01b6e3;
+                border: 2px solid red;
+            }
+            .o_pms_pwa_reservation_list_table {
+                border-collapse: separate;
+                border-spacing: 0 8px;
+                margin-bottom: 0px !important;
+            }
+            .o_config_pms_pwa_table_cell {
+
+                border: 1px solid $grey-300;
+                border-radius: 0.25rem;
+                min-height: 2rem;
+                background-color: white;
+                width: 100px !important;
+                min-width: 100px !important;
+                max-width: 100px !important;
+                .o_pms_pwa_title {
+                    color: $black;
+                    .o_pms_pwa_info {
+                        color: $theme-color;
+                        position: relative;
+                        top: -1rem;
+                        right: -4rem;
+                        .o_pms_pwa_interrogante-calendar {
+                            width: 13px;
+                        }
+                    }
+                }
+            }
+        }
+
         .o_pms_pwa_arrow:before,
         .o_pms_pwa_arrow:after {
             content: "";
@@ -412,10 +519,6 @@ section.o_pms_pwa_roomdoo {
                 -moz-transition: all 0.5s linear;
                 -webkit-transition: all 0.5s linear;
                 transition: all 0.5s linear;
-            }
-
-            @media (max-width: 991.98px) {
-                width: 175px;
             }
         }
         .o_pms_pwa_extra_info {
@@ -1127,7 +1230,9 @@ section.o_pms_pwa_roomdoo {
             background-color: $white;
             // margin-left: 2rem;
             margin-bottom: 1rem;
-            font-size: 18px;
+            font-size: 15px;
+            width: 104px !important;
+
         }
 
         // toggle
@@ -1192,6 +1297,13 @@ section.o_pms_pwa_roomdoo {
 
         .slider.round:before {
             border-radius: 50%;
+        }
+    }
+}
+.subtable {
+    tr {
+        th, td {
+            border: 0 !important;
         }
     }
 }
