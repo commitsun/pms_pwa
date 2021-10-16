@@ -5,7 +5,7 @@
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Change value</h5>
+                        <h5 class="modal-title">Cambiar valor</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">
                                 <span class="fa fa-times" />
@@ -93,9 +93,12 @@
                                                 <option name="reservation_type" value="out">Fuera de servicio</option>
                                             </select>
                                         </div>
-                                        <!-- <button type="button" t-attf-data-id="reservation.id" class="btn o_pms_pwa_abutton float-right" data-dismiss="modal" aria-label="Checkin">
-                                            <span>Checkin</span>
-                                        </button> -->
+                                        <div class="col-6">
+                                            <button type="button"
+                                                class="btn btn-message"
+                                                t-att-url="'/reservation/' + '5' +'/assign'">Bloquear
+                                            </button>
+                                        </div>
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
@@ -111,7 +114,7 @@
                                             <label class="control-label col-12" for="channel_type_id">
                                                 Canal de Venta
                                             </label>
-                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="channel_type_id" />
+                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="border: 2px solid #f582a6ad !important;" name="channel_type_id" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -166,7 +169,7 @@
                                             <label class="control-label col-12" for="sale_category_id">
                                                 Vender Como...
                                             </label>
-                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="background-color: #f582a640 !important;" name="sale_category_id" />
+                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="border: 2px solid #f582a6ad !important;" name="sale_category_id" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
