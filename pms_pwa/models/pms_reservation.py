@@ -617,6 +617,9 @@ class PmsReservation(models.Model):
 
         reservation_values = {
             "id": self.id,
+            "current_ubication_id": self.preferred_room_id.ubication_id.id,
+            "current_room_type_id": self.preferred_room_id.room_type_id.id,
+            "current_property_id": self.pms_property_id.id,
             "name": self.name if self.name else "",
             "splitted": self.splitted,
             "partner_id": partner_vals,

@@ -95,11 +95,18 @@
                                 <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
                                     <select id="calendar_select" name="display_option" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
                                         <t t-foreach="display_select_options" t-as="display_item">
+                                            <script>
+                                                if (document.documentElement.lang === "es-ES") {
+                                                    <t t-set="formated_selected_date" t-value="selected_date.strftime('%d/%m/%Y')"/>
+                                                } else {
+                                                    <t t-set="formated_selected_date" t-value="selected_date.strftime('%m/%d/%Y')"/>
+                                                }
+                                            </script>
                                             <t t-if="selected_display==display_item['value']">
-                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}" selected="selected"><t t-esc="display_item['name']" /></option>
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{formated_selected_date}}&amp;dpr={{dpr}}" selected="selected"><t t-esc="display_item['name']" /></option>
                                             </t>
                                             <t t-else="">
-                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{selected_date.strftime('%d/%m/%Y')}}&amp;dpr={{dpr}}"><t t-esc="display_item['name']" /></option>
+                                                <option t-attf-value="?display_option={{ display_item['value'] }}&amp;pricelist={{default_pricelist}}&amp;selected_date={{formated_selected_date}}&amp;dpr={{dpr}}"><t t-esc="display_item['name']" /></option>
                                             </t>
                                         </t>
                                     </select>

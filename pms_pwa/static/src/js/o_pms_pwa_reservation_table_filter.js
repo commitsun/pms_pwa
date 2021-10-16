@@ -266,20 +266,26 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             var selected_display = $(
                                 'input[name="selected_display"]'
                             ).val();
+                            if (selected_display == 'ubication') {
+                                var selected_id = updated_data.current_ubication_id;
+                            } else if (selected_display == 'room_type') {
+                                var selected_id = updated_data.current_room_type_id;
+                            } else if (selected_display == 'pms_property') {
+                                var selected_id = updated_data.current_property_id;
+                            }
                             ajax.jsonRpc("/calendar/line", "call", {
-                                data_id: updated_data.room_type_id.id,
+                                data_id: selected_id,
                                 range_date: date_list,
                                 selected_display: selected_display,
                             }).then(function (data) {
                                 var html = core.qweb.render("pms_pwa.calendar_line", {
-                                    room_type_id: updated_data.room_type_id.id,
                                     obj_list: data.reservations,
                                     csrf_token: csrf_token,
                                 });
                                 $(
                                     String(
                                         "#collapse_accordion_" +
-                                            updated_data.room_type_id.id
+                                        selected_id
                                     )
                                 ).html(html);
                             });
@@ -1033,16 +1039,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 var selector =
                                     "td[data-id=" + modal_reservation_id + "]";
                                 if ($(selector)) {
-                                    $(selector).remove();
-                                }
-                                $(
-                                    "<td class='launch_modal' data-id='" +
-                                        modal_reservation_id +
-                                        "'>Pincha aqui</td>"
-                                ).appendTo("table.launch_modal");
-                                setTimeout(function () {
                                     $(selector).click();
-                                }, 100);
+                                } else {
+                                    $(
+                                        "<td class='launch_modal' data-id='" +
+                                            modal_reservation_id +
+                                            "'>Pincha aqui</td>"
+                                    ).appendTo("table.launch_modal");
+                                    setTimeout(function () {
+                                        $(selector).click();
+                                    }, 100);
+                                }
                             } catch (error) {
                                 console.log(error);
                                 location.href =
@@ -1196,7 +1203,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 modal_event.preventDefault();
                                 var button = modal_event.currentTarget;
                                 var checkedValues = $(
-                                    "#multi_reservation_modal input:checkbox:checked"
+                                    "#multi_reservation_modal input[name='reservation_ids']:checkbox:checked"
                                 )
                                     .map(function () {
                                         return this.value;
@@ -1204,13 +1211,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     .get();
                                 var days_week = {};
                                 var apply_on_all_week = false;
-                                var new_price = $(
-                                    "#multiChangeModal input[name='new_price']"
-                                ).val();
                                 $("#multi_days_values input:checkbox:checked")
                                     .map(function () {
                                         if (this.name != "apply_on_all_week") {
-                                            days_week[this.name] = this.value;
+                                            if (this.value == 'on') {
+                                                days_week[this.name] = true;
+                                            }
                                         } else {
                                             apply_on_all_week = this.value;
                                         }
@@ -1480,7 +1486,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                     key2 != "gender" &&
                                                     key2 != "document_type" &&
                                                     key2 != "country_id" &&
-                                                    key2 != "state_id"
+                                                    key2 != "state_id" &&
+                                                    key2 != "state"
                                                 ) {
                                                     var input = $(
                                                         check_partner_id +
@@ -1492,24 +1499,35 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         input.val(value2);
                                                     }
                                                 } else {
-                                                    if (value2 && value2["id"]) {
-                                                        $(
-                                                            check_partner_id +
-                                                                " select[name='" +
-                                                                key2 +
-                                                                "'] option[value='" +
-                                                                value2["id"] +
-                                                                "']"
-                                                        ).prop("selected", true);
+                                                    if (key2 == 'state') {
+                                                        var button = $(check_partner_id + " .o_pms_pwa_checkin_confirm_button");
+                                                        if (value2 == 'precheckin') {
+                                                            button.prop("disabled", false);
+                                                            button.addClass("o_pms_pwa_button_checkin_confirm btn-message").removeClass("o_pms_pwa_disabled btn-grey-300");
+                                                        } else {
+                                                            button.prop("disabled", true);
+                                                            button.addClass("o_pms_pwa_disabled btn-grey-300").removeClass("o_pms_pwa_button_checkin_confirm btn-message");
+                                                        }
                                                     } else {
-                                                        $(
-                                                            check_partner_id +
-                                                                " select[name='" +
-                                                                key2 +
-                                                                "'] option[value='" +
-                                                                value2 +
-                                                                "']"
-                                                        ).prop("selected", true);
+                                                        if (value2 && value2["id"]) {
+                                                            $(
+                                                                check_partner_id +
+                                                                    " select[name='" +
+                                                                    key2 +
+                                                                    "'] option[value='" +
+                                                                    value2["id"] +
+                                                                    "']"
+                                                            ).prop("selected", true);
+                                                        } else {
+                                                            $(
+                                                                check_partner_id +
+                                                                    " select[name='" +
+                                                                    key2 +
+                                                                    "'] option[value='" +
+                                                                    value2 +
+                                                                    "']"
+                                                            ).prop("selected", true);
+                                                        }
                                                     }
                                                 }
                                             });
