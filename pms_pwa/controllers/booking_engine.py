@@ -247,6 +247,9 @@ class BookingEngine(http.Controller):
             #     "name": pms_property.name,
             # }
 
+            folio_values["readonly_fields"] = self._get_read_only_fields
+            folio_values["invisible_fields"] = self._get_invisible_fields
+
             _logger.info(folio_values)
 
             return folio_values
@@ -814,3 +817,11 @@ class BookingEngine(http.Controller):
         elif len(avoid_fields) > 1:
             mens = "Los campos " + ", ".join(avoid_fields[:-1]) + " y " + avoid_fields[-1] + " son obligatorios"
         return mens
+
+    def _get_read_only_fields(self):
+        fields_readonly = []
+        return fields_readonly
+
+    def _get_invisible_fields(self):
+        fields_invisible = []
+        return fields_invisible
