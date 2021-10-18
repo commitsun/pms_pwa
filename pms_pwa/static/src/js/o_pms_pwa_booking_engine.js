@@ -242,6 +242,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 checkout: values.checkout,
                 count_rooms_selected: total_rooms,
                 pms_property_id: values.pms_property_id || false,
+                out_type: values.out_type || false,
                 pricelist_id: values.pricelist_id || "1",
                 reservation_type: values.reservation_type || "normal",
                 rooms: send_rooms,
@@ -299,12 +300,21 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             ) {
                 send_value.agency_id = values.agency_id;
             }
+            if (
+                values.out_type &&
+                values.out_type != "false" &&
+                values.out_type != "undefined"
+            ) {
+                send_value.out_type = values.out_type;
+            }
+
 
             return send_value
         },
         pms_pwa_booking_engine_head_form: function (new_data) {
             // console.log("pms_pwa_booking_engine_head_form");
             var allowed_fields = [
+                "allowed_out_services",
                 "allowed_agency_ids",
                 "allowed_board_services",
                 "allowed_channel_type_ids",
@@ -314,6 +324,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 "allowed_amenity_ids",
             ];
             var relation_values = {
+                allowed_out_services: "out_type",
                 allowed_agency_ids: "agency_id",
                 allowed_board_services: "board_service_room_id",
                 allowed_channel_type_ids: "channel_type_id",

@@ -122,6 +122,11 @@ class BookingEngine(http.Controller):
             elif not folio_values.get("reservation_type"):
                 folio_values["reservation_type"] = "normal"
 
+            if folio_values["reservation_type"] != "out":
+                folio_values["out_type"] = False
+            else:
+                out_type = folio_values["out_type"] if folio_values.get("out_type") else False
+
             # Channel and Agency
             if folio_values.get("folio_id"):
                 folio_values["channel_type_id"] = request.env["pms.folio"].browse(
@@ -314,6 +319,27 @@ class BookingEngine(http.Controller):
                 )
             ]
         )
+        # Out of service reasons
+        selection_fields["allowed_out_services"] = [
+            {
+                "id": False,
+                "name": "",
+            }
+        ]
+        out_service_reasons = request.env["room.closure.reason"].search(
+            [
+                "|",
+                ("pms_property_ids", "in", pms_property.id),
+                ("pms_property_ids", "=", False),
+            ]
+        )
+        selection_fields["allowed_out_services"].extend(
+            [
+                {"id": board.id, "name": board.name}
+                for board in out_service_reasons
+            ]
+        )
+
         return selection_fields
 
     def check_incongruences(self, folio_values):
@@ -720,6 +746,7 @@ class BookingEngine(http.Controller):
                 vals["reservation_type"] = folio.reservation_type
                 vals["channel_type_id"] = folio.channel_type_id.id
                 vals["agency_id"] = folio.agency_id.id
+                vals["closure_reason_id"] = folio.closure_reason_id
             else:
                 # Pms Property
                 if folio_values.get("pms_property_id"):
@@ -737,6 +764,9 @@ class BookingEngine(http.Controller):
                     vals["reservation_type"] = folio_values.get("reservation_type")
                 else:
                     vals["reservation_type"] = "normal"
+
+                if vals["reservation_type"] == "out":
+                    vals["closure_reason_id"] = int(folio_values.get("out_type"))
 
                 # Channel and Agency
                 if (
@@ -771,9 +801,11 @@ class BookingEngine(http.Controller):
                     int(room["preferred_room_id"])
                 )
                 room_type_id = int(room["room_type_id"]) if room.get("room_type_id") else room_record.room_type_id.id
-                board_room_type = request.env["pms.room.type"].browse(room_type_id).board_service_room_type_ids.filtered(
-                    lambda bsr: bsr.id == int(folio_values.get("board_service_room_id"))
-                )
+                board_room_type = False
+                if folio_values.get("board_service_room_id"):
+                    board_room_type = request.env["pms.room.type"].browse(room_type_id).board_service_room_type_ids.filtered(
+                        lambda bsr: bsr.id == int(folio_values.get("board_service_room_id"))
+                    )
                 reservation_vals = {
                     "partner_name": vals["partner_name"],
                     "email": vals.get("email") if vals.get("email") else False,
@@ -802,14 +834,20 @@ class BookingEngine(http.Controller):
 
     def _check_required_fields(self, folio_values):
         avoid_fields = []
-        if not folio_values.get("partner_name") or folio_values.get("partner_name") == '':
-            avoid_fields.append("Nombre")
-        if not folio_values.get("mobile") or folio_values.get("mobile") == '':
-            avoid_fields.append("Teléfono")
-        if not folio_values.get("email") or folio_values.get("email") == '':
-            avoid_fields.append("E-mail")
-        if not folio_values.get("channel_type_id") or folio_values.get("channel_type_id") == '':
-            avoid_fields.append("Canal de venta")
+        if not folio_values.get("folio_id"):
+            if folio_values.get("reservation_type") != "out":
+                if not folio_values.get("partner_name") or folio_values.get("partner_name") == '':
+                    avoid_fields.append("Nombre")
+                if not folio_values.get("mobile") or folio_values.get("mobile") == '':
+                    avoid_fields.append("Teléfono")
+                if not folio_values.get("email") or folio_values.get("email") == '':
+                    avoid_fields.append("E-mail")
+                if not folio_values.get("channel_type_id") or folio_values.get("channel_type_id") == '':
+                    avoid_fields.append("Canal de venta")
+            else:
+                if not folio_values.get("out_type"):
+                    avoid_fields.append("Tipo de Bloqueo")
+
         if not avoid_fields:
             return False
         elif len(avoid_fields) == 1:
