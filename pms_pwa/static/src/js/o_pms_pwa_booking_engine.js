@@ -236,7 +236,8 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 partner_id: "",
                 partner_name: values.name || values.partner_name,
                 mobile: values.mobile || "",
-                email: values.mail || "",
+                email: values.email || "",
+                internal_comment: values.internal_comment || "",
                 checkin: values.checkin,
                 checkout: values.checkout,
                 count_rooms_selected: total_rooms,
@@ -333,7 +334,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 } catch (error) {
                     console.log(error);
                 }
-                if(value == "allowed_amenity_ids" || value == "allowed_segmentations"){
+                if(value == "allowed_amenity_ids"){
                     $.each(
                         new_data[value],
                         function (subkey, subvalue) {
@@ -636,6 +637,11 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                         $(".sale_category_id").removeAttr("style").hide();
                     } else {
                         $(".sale_category_id").show();
+                    }
+                    if (new_data["reservation_type"] != "out") {
+                        $(".out_type").removeAttr("style").hide();
+                    } else {
+                        $(".out_type").show();
                     }
                     self.pms_pwa_booking_engine_head_form(new_data);
                     if (new_data.groups) {

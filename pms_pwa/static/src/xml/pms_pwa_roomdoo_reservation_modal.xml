@@ -330,10 +330,10 @@
                                 <div t-if="reservation.unread_msg and reservation.unread_msg &gt; 0 and reservation.messages" class="row">
                                     <div class="col-12">
                                         <button class="btn o_pms_pwa_messages collapsed mt-2" aria-controls="#collapseMessages" data-target="#collapseMessages" type="button" data-toggle="collapse" aria-haspopup="true" aria-expanded="false">
-                                            <span data-toggle="tooltip" t-att-title="texts.unread_text || _t('mensajes no leidos')" class="badge bg-red mr-2" t-att-data-original-title="texts.unread_text || _t('mensajes no leidos')">
+                                            <span data-toggle="tooltip" t-att-title="texts.unread_text || _t('Notas internas')" class="badge bg-red mr-2" t-att-data-original-title="texts.unread_text || _t('Notas internas')">
                                                 <t t-esc="reservation.unread_msg" />
                                             </span>
-                                            <t t-esc="texts.unread_text || _t('mensajes no leidos')" />
+                                            <t t-esc="texts.unread_text || _t('Notas internas')" />
                                             <div class="collapse" id="collapseMessages">
                                                 <div class="card card-body">
                                                     <span class="mb-2" t-foreach="reservation.messages" t-as="key" t-att-value="key">
@@ -1208,7 +1208,11 @@
                                                         <label class="control-label col-12" for="country">
                                                             País
                                                         </label>
-                                                        <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
+                                                        <!-- <input class="form-control o_pms_pwa_search_country" type="text" name="country_id" placeholder="País"
+                                                         t-att-value="post['name'] if post and 'name' in post else None" /> -->
+                                                        <input class="form-control o_pms_pwa_search_country"  type="text" name="country_id"
+                                                        t-att-value="country_value['name'] if country_value and 'name' in country_value else None" />
+                                                        <!-- <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
                                                             <t t-if="partner_value['country_id'].id">
                                                                 <option t-foreach="reservation['allowed_country_ids']" t-as="country" t-att-value="country_value['id']" t-att-selected="partner_value['country_id'].id === country_value['id'] ? 'selected' : None">
                                                                     <t t-esc="country_value['name']" />
@@ -1220,7 +1224,7 @@
                                                                     <t t-esc="country_value['name']" />
                                                                 </option>
                                                             </t>
-                                                        </select>
+                                                        </select> -->
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">

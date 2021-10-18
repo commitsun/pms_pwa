@@ -427,10 +427,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 // TOAST
 .o_pms_pwa_roomdoo_alerts {
-    position: fixed;
+    position:absolute;
+    bottom:2rem;
+    right:2rem;
     z-index: 99999;
-    bottom: 3%;
-    left: 40%;
     .toast.warning {
         color: #721c24;
         background-color: #f8d7da;
@@ -901,7 +901,7 @@ table#bookengine_table {
     }
 }
 .o_pms_pwa_group_header {
-    background-color: $bg-theme-color-modal;
+    border-bottom: 1px solid #00b5e2;
 }
 // partner modal
 .o_pms_pwa_partner_modal_show {

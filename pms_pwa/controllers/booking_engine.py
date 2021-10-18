@@ -208,7 +208,7 @@ class BookingEngine(http.Controller):
                     "checkin": checkin,
                     "checkout": checkout,
                     "pricelist_id": pricelist.id,
-                    "amenity_ids": selected_amenities,
+                    "amenity_ids": selected_amenities.ids,
                     "pms_property_id": pms_property_id,
                     "agrupation_type": folio_values.get("agrupation_type"),
                     "active_groups": folio_values.get("rooms"),
@@ -265,11 +265,11 @@ class BookingEngine(http.Controller):
         selection_fields["allowed_agency_ids"] = pms_property._get_allowed_agency_ids(
             channel_type_id=channel_type.id if channel_type else False
         )
-        allowed_amenity_ids = (
+        allowed_amenity_ids = list(set(
             request.env["pms.room"]
             .search([("pms_property_id", "=", pms_property.id)])
             .mapped("room_amenity_ids.id")
-        )
+        ))
         allowed_amenities = request.env["pms.amenity"].browse(allowed_amenity_ids)
         selection_fields["allowed_amenity_ids"] = []
         for amenity in allowed_amenities:
@@ -362,6 +362,7 @@ class BookingEngine(http.Controller):
                 ubication_id=group_ubication_id,
                 room_type_id=group_room_type_id,
                 pricelist_id=pricelist_id,
+                amenity_ids=amenity_ids,
             )
             group_rooms = []
             for res_dict in reservations_dict:
@@ -390,8 +391,9 @@ class BookingEngine(http.Controller):
                         adults = room.capacity
 
                     if vals.get("force_recompute") == 1:
-                        if vals.get("sale_category_id"):
-                            room_type_id = int(vals.get("sale_category_id"))
+                        sale_category_id = int(vals.get("sale_category_id"))
+                        if sale_category_id:
+                            room_type_id = sale_category_id
                         elif group_room_type_id:
                             room_type_id = room.room_type_id.id
                         else:
@@ -679,6 +681,9 @@ class BookingEngine(http.Controller):
         vals = {}
         print("folio_values: {}".format(folio_values))
         try:
+            check_fields = self._check_required_fields(folio_values)
+            if check_fields:
+                return {"result": "error", "message": check_fields}
             vals["partner_name"] = folio_values["partner_name"]
             if folio_values.get("email") and folio_values.get("email") != "":
                 vals["email"] = folio_values.get("email")
@@ -723,6 +728,8 @@ class BookingEngine(http.Controller):
                 ):
                     vals["channel_type_id"] = int(folio_values.get("channel_type_id"))
 
+                if folio_values.get("internal_comment"):
+                    vals["internal_comment"] = folio_values.get("internal_comment")
                 # REVIEW: Avoid send 'false' to controller
                 if (
                     folio_values.get("agency_id")
@@ -775,3 +782,21 @@ class BookingEngine(http.Controller):
             return {"result": "success", "reservation_id": folio.reservation_ids[0].id}
         except Exception as e:
             return {"result": "error", "message": str(e)}
+
+    def _check_required_fields(self, folio_values):
+        avoid_fields = []
+        if not folio_values.get("partner_name") or folio_values.get("partner_name") == '':
+            avoid_fields.append("Nombre")
+        if not folio_values.get("mobile") or folio_values.get("mobile") == '':
+            avoid_fields.append("Teléfono")
+        if not folio_values.get("email") or folio_values.get("email") == '':
+            avoid_fields.append("E-mail")
+        if not folio_values.get("channel_type_id") or folio_values.get("channel_type_id") == '':
+            avoid_fields.append("Canal de venta")
+        if not avoid_fields:
+            return False
+        elif len(avoid_fields) == 1:
+            mens = "El campo " + avoid_fields[0] + " es obligatorio"
+        elif len(avoid_fields) > 1:
+            mens = "Los campos " + ", ".join(avoid_fields[:-1]) + " y " + avoid_fields[-1] + " son obligatorios"
+        return mens

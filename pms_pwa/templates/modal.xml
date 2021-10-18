@@ -90,15 +90,21 @@
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="reservation_type" >
                                                 <option name="reservation_type" value="normal" selected="selected"> Normal</option>
                                                 <option name="reservation_type" value="staff">Staff</option>
-                                                <option name="reservation_type" value="out">Fuera de servicio</option>
+                                                <option name="reservation_type" value="out">Bloqueo</option>
                                             </select>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6 out_type">
+                                            <label class="control-label col-12" for="out_type">
+                                                Tipo de Bloqueo
+                                            </label>
+                                            <select data-select="allowed_out_services" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="out_type" />
+                                        </div>
+                                        <!-- <div class="col-6">
                                             <button type="button"
                                                 class="btn btn-message"
                                                 t-att-url="'/reservation/' + '5' +'/assign'">Bloquear
                                             </button>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
@@ -114,7 +120,7 @@
                                             <label class="control-label col-12" for="channel_type_id">
                                                 Canal de Venta
                                             </label>
-                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="border: 2px solid #f582a6ad !important;" name="channel_type_id" />
+                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="background-color: #daf7fc !important;" name="channel_type_id" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -169,7 +175,7 @@
                                             <label class="control-label col-12" for="sale_category_id">
                                                 Vender Como...
                                             </label>
-                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="border: 2px solid #f582a6ad !important;" name="sale_category_id" />
+                                            <select data-select="allowed_sale_category_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" style="background-color: #daf7fc !important;" name="sale_category_id" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -212,7 +218,7 @@
                                             <label class="control-label col-12" for="partner_name">
                                                 Nombre
                                             </label>
-                                            <input class="form-control o_pms_pwa_search_partner" type="text" name="partner_name" placeholder="A nombre de..." t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                            <input class="form-control o_pms_pwa_search_partner" type="text" style="background-color: #daf7fc !important;" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -220,13 +226,21 @@
                                             <label class="control-label col-12" for="mobile">
                                                 Teléfono
                                             </label>
-                                            <input class="form-control" type="text" name="mobile" placeholder="Móvil" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
+                                            <input class="form-control" type="text" name="mobile" placeholder="Móvil" style="background-color: #daf7fc !important;" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
                                         </div>
                                         <div class="col-sm-6">
-                                            <label class="control-label col-12" for="mail">
+                                            <label class="control-label col-12" for="email">
                                                 E-mail
                                             </label>
-                                            <input class="form-control" type="text" name="mail" placeholder="Mail" t-att-value="post['mail'] if post and 'mail' in post else None" />
+                                            <input class="form-control" type="text" name="email" placeholder="Mail" style="background-color: #daf7fc !important;" t-att-value="post['email'] if post and 'email' in post else None" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="internal_comment">
+                                                Comentarios internos
+                                            </label>
+                                            <input class="form-control" type="textarea" name="internal_comment" placeholder="Comentarios internos" t-att-value="post['internal_comment'] if post and 'internal_comment' in post else None" />
                                         </div>
                                     </div>
 
