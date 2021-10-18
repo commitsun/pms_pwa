@@ -49,20 +49,6 @@ class PmsReservation(models.Model):
         compute="_compute_icon_payment",
     )
 
-    def _get_readonly_fields(self):
-        self.ensure_one()
-        readonly_fields = []
-        if self.channel_type_id.is_on_line:
-            readonly_fields.extend(
-                "checkin",
-                "checkout",
-                "room_type_id",
-                "pricelist_id",
-                "reservation_type",
-                "reservation_line_ids",
-            )
-        return readonly_fields
-
     def _compute_pwa_board_service_tags(self):
         for record in self:
             board_service_tags = list()
@@ -323,6 +309,8 @@ class PmsReservation(models.Model):
                 },
                 "allowed_state_ids": allowed_states,
                 "state": checkin.state or False,
+                "readonly_fields": self._get_checkin_read_only_fields(checkin),
+                "invisible_fields": self._get_checkin_invisible_fields(checkin),
             }
         return checkin_partners
 
@@ -602,7 +590,7 @@ class PmsReservation(models.Model):
                 }
             )
 
-        readonly_fields = self._get_read_only_fields()
+        readonly_fields = self._get_reservation_read_only_fields()
 
         # avoid send o2m & m2m fields on new single reservation modal
         reservation_line_ids = (
@@ -823,7 +811,7 @@ class PmsReservation(models.Model):
             "adults": self.adults,
         }
 
-    def _get_read_only_fields(self):
+    def _get_reservation_read_only_fields(self):
         self.ensure_one()
         fields_readonly = [("nights")]
         if self.channel_type_id.is_on_line:
@@ -831,3 +819,11 @@ class PmsReservation(models.Model):
                                    "checkin", "checkout", "adults", "reservation_type", "pricelsit_id", "board_service_room_id",
                                    "reservation_line_ids"])
         return fields_readonly
+
+    def _get_checkin_read_only_fields(self, checkin):
+        fields_readonly = []
+        return fields_readonly
+
+    def _get_checkin_invisible_fields(self, checkin):
+        fields_invisible = []
+        return fields_invisible
