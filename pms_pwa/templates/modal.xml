@@ -97,7 +97,7 @@
                                             <label class="control-label col-12" for="out_type">
                                                 Tipo de Bloqueo
                                             </label>
-                                            <select data-select="allowed_out_services" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="out_type" />
+                                            <select data-select="allowed_out_services" style="background-color: #daf7fc !important;" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="out_type" />
                                         </div>
                                         <!-- <div class="col-6">
                                             <button type="button"
