@@ -218,6 +218,9 @@ class BookingEngine(http.Controller):
                     "force_recompute": int(folio_values.get("force_recompute"))
                     if folio_values.get("force_recompute")
                     else False,
+                    "board_service_id": int(folio_values.get("board_service_room_id"))
+                    if folio_values.get("board_service_room_id")
+                    else False,
                 }
                 folio_values["groups"] = self.get_groups(vals)
             # Parse sale_category_id
@@ -294,7 +297,12 @@ class BookingEngine(http.Controller):
         allowed_board_services = room_types.mapped(
             "board_service_room_type_ids.pms_board_service_id.id"
         )
-        selection_fields["allowed_board_services"] = []
+        selection_fields["allowed_board_services"] = [
+            {
+                "id": False,
+                "name": "",
+            }
+        ]
         selection_fields["allowed_board_services"].extend(
             [
                 {"id": board.id, "name": board.name}
@@ -382,11 +390,12 @@ class BookingEngine(http.Controller):
                         if res_dict.get("price_per_room")
                         else 0
                     )
-                    board_service_room_id = (
-                        int(res_dict["board_service_room_id"])
-                        if res_dict.get("board_service_room_id")
-                        else False
-                    )
+                    # REVIEW: Allowed different Board by room??
+                    # board_service_room_id = (
+                    #     int(res_dict["board_service_room_id"])
+                    #     if res_dict.get("board_service_room_id")
+                    #     else False
+                    # )
                     if adults == 0 or adults > room.capacity:
                         adults = room.capacity
 
@@ -398,13 +407,16 @@ class BookingEngine(http.Controller):
                             room_type_id = room.room_type_id.id
                         else:
                             room_type_id = False
+                        board_room_type = request.env["pms.room.type"].browse(room_type_id).board_service_room_type_ids.filtered(
+                            lambda bsr: bsr.id == int(vals.get("board_service_id")) if vals.get("board_service_id") else False
+                        )
                         price_per_room = 0
                         if room_type_id:
                             price_per_room = request.env[
                                 "pms.folio.availability.wizard"
                             ]._get_price_by_room_type(
                                 room_type_id=room_type_id,
-                                board_service_room_id=board_service_room_id,
+                                board_service_room_id=board_room_type.id if board_room_type else False,
                                 checkin=checkin,
                                 checkout=checkout,
                                 pricelist_id=pricelist_id,
@@ -418,7 +430,7 @@ class BookingEngine(http.Controller):
                         "adults": adults,
                         "max_adults": room.capacity,
                         "pricelist_id": pricelist_id,
-                        "board_service_room_id": board_service_room_id,
+                        # "board_service_room_id": board_room_type.id if board_room_type else False,
                         "price_per_room": price_per_room,
                     }
                     group_rooms.append(room_dict)
@@ -439,7 +451,7 @@ class BookingEngine(http.Controller):
                 {
                     "rooms": group_rooms,
                     "count_rooms_selected": len(group_rooms),
-                    "max_rooms": pms_property.availability - len(group_rooms),
+                    "max_rooms": pms_property.availability,
                     "free_rooms_dict": free_room_ids,
                     "price_per_group": sum(
                         [float(item["price_per_room"]) for item in group_rooms]
@@ -576,9 +588,11 @@ class BookingEngine(http.Controller):
             if count_rooms_selected < len(rooms_dict):
                 to_del = len(rooms_dict) - count_rooms_selected
                 for item in rooms_dict[len(rooms_dict) - to_del :]:
-                    free_rooms += request.env["pms.room"].browse(
+                    room_to_del = request.env["pms.room"].browse(
                         item["preferred_room_id"]["id"]
                     )
+                    free_rooms += room_to_del
+                    rooms -= room_to_del
                 rooms_dict = rooms_dict[: len(rooms_dict) - to_del]
             elif count_rooms_selected > len(rooms_dict):
                 to_add = count_rooms_selected - len(rooms_dict)
@@ -753,6 +767,10 @@ class BookingEngine(http.Controller):
                 room_record = request.env["pms.room"].browse(
                     int(room["preferred_room_id"])
                 )
+                room_type_id = int(room["room_type_id"]) if room.get("room_type_id") else room_record.room_type_id.id
+                board_room_type = request.env["pms.room.type"].browse(room_type_id).board_service_room_type_ids.filtered(
+                    lambda bsr: bsr.id == int(folio_values.get("board_service_room_id"))
+                )
                 reservation_vals = {
                     "partner_name": vals["partner_name"],
                     "email": vals.get("email") if vals.get("email") else False,
@@ -761,9 +779,7 @@ class BookingEngine(http.Controller):
                     if vals.get("partner_id")
                     else False,
                     "preferred_room_id": int(room["preferred_room_id"]),
-                    "room_type_id": int(room["room_type_id"])
-                    if room.get("room_type_id")
-                    else room_record.room_type_id.id,
+                    "room_type_id": room_type_id,
                     "checkin": datetime.datetime.strptime(
                         room["checkin"], get_lang(request.env).date_format
                     ).date(),
@@ -772,9 +788,7 @@ class BookingEngine(http.Controller):
                     ).date(),
                     "adults": int(room["adults"]),
                     "pricelist_id": int(room["pricelist_id"]),
-                    "board_service_room_id": int(room["board_service_room_id"])
-                    if room["board_service_room_id"]
-                    else False,
+                    "board_service_room_id": board_room_type.id if board_room_type else False,
                     "pms_property_id": pms_property.id,
                     "folio_id": folio.id,
                 }

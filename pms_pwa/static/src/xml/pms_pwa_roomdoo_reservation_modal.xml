@@ -1208,11 +1208,7 @@
                                                         <label class="control-label col-12" for="country">
                                                             País
                                                         </label>
-                                                        <!-- <input class="form-control o_pms_pwa_search_country" type="text" name="country_id" placeholder="País"
-                                                         t-att-value="post['name'] if post and 'name' in post else None" /> -->
-                                                        <input class="form-control o_pms_pwa_search_country"  type="text" name="country_id"
-                                                        t-att-value="country_value['name'] if country_value and 'name' in country_value else None" />
-                                                        <!-- <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
+                                                        <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
                                                             <t t-if="partner_value['country_id'].id">
                                                                 <option t-foreach="reservation['allowed_country_ids']" t-as="country" t-att-value="country_value['id']" t-att-selected="partner_value['country_id'].id === country_value['id'] ? 'selected' : None">
                                                                     <t t-esc="country_value['name']" />
@@ -1224,7 +1220,7 @@
                                                                     <t t-esc="country_value['name']" />
                                                                 </option>
                                                             </t>
-                                                        </select> -->
+                                                        </select>
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
