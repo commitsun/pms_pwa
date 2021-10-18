@@ -43,11 +43,7 @@ class PmsProperty(models.Model):
           {"id": id, "name": name},
          ]
         """
-        payment_methods = (
-            self.env["account.journal"]
-            .sudo()
-            .search([("type", "in", ["bank", "cash"])])
-        )
+        payment_methods = self._get_payment_methods()
         allowed_journals = []
         for journal in payment_methods:
             allowed_journals.append({"id": journal.id, "name": journal.name})
