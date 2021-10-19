@@ -59,10 +59,16 @@ class PmsCalendarConfig(http.Controller):
         date_list = [date_start + timedelta(days=x) for x in range(dpr)]
 
         dpr_select_values = {7, 15, month_days}
-        Room = request.env["pms.room.type"]
-        rooms = Room.search([])
 
         pms_property_id = request.env.user.pms_pwa_property_id.id
+
+        Room = request.env["pms.room"]
+        rooms = Room.search([
+            ("pms_property_id", "=", pms_property_id)
+        ])
+        room_type_ids = rooms.mapped("room_type_id.id")
+        room_types = request.env["pms.room.type"].browse(room_type_ids)
+
         Pricelist = request.env["product.pricelist"]
 
         pricelist = Pricelist.search(
@@ -88,7 +94,7 @@ class PmsCalendarConfig(http.Controller):
             "pricelist": pricelist,
             "default_pricelist": default_pricelist,
             "select_pricelist": select_pricelist,
-            "rooms_list": rooms,
+            "rooms_list": room_types,
             "date_list": date_list,
             "dpr": dpr,
             "dpr_select_values": dpr_select_values,
