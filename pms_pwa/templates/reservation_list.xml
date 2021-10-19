@@ -276,7 +276,7 @@
                         width="40px"
                         t-att-class="' '
                         + 'img-thumbnail '
-                        + ('rounded-circle_'+ obj.color_state)
+                        + ('rounded-circle_'+ obj.color_state if obj.color_state else '')
                         + ' o_pms_pwa_img_rounded_bg'"
                         t-att-title="obj.partner_name" t-att-alt="obj.partner_name"/>
                     <t t-set="pending_nots" t-value="len(obj.message_ids.filtered(lambda x: user_id.partner_id in x.notified_partner_ids).sorted(key=lambda x: x.date))"/>

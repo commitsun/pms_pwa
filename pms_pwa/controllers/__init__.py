@@ -8,4 +8,6 @@ from . import calendar
 from . import calendar_config
 from . import booking_engine
 from . import controller_res_partner
+
 # from . import reduced_calendar
+from . import controller_pms_checkin_partner

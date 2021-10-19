@@ -1,15 +1,16 @@
-odoo.define("pms_pwa.partner_search", function () {
+odoo.define("pms_pwa.country_search", function () {
     "use strict";
 
     $(function () {
-        $(".o_pms_pwa_search_partner").autocomplete({
+        $(".o_pms_pwa_search_country_name").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: "/partner/search",
+                    url: "/pms_checkin_partner/search",
                     method: "GET",
                     dataType: "json",
-                    data: {keywords: request.term, category: false},
+                    data: {keywords: request.term, model: "res.country", id: null},
                     success: function (data) {
+                        console.log("data => ", data);
                         response(
                             $.map(data, function (item) {
                                 return {
@@ -31,13 +32,8 @@ odoo.define("pms_pwa.partner_search", function () {
                 console.log("suggestion", suggestion, term, item);
                 if (term && term.item) {
                     $(suggestion.target.parentElement)
-                        .find('input[name="partner_id"]')
+                        .find('input[name="country_id"]')
                         .val(term.item.id);
-                    setTimeout(function () {
-                        $(suggestion.target.parentElement)
-                            .find('input[name="partner_id"]')
-                            .trigger("change");
-                    }, 100);
                 }
             },
             minLength: 1,

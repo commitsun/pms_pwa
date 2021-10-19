@@ -113,6 +113,10 @@
             />
             <script
                 type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_country_search.js"
+            />
+            <script
+                type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_booking_engine.js"
             />
 
