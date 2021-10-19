@@ -12,38 +12,78 @@
                 <div class="col-9 o_pms_pwa_notification_list"/>
                 <a href="#" class="col-1 btn o_pms_pwa_btn_border o_pms_pwa_clear_all float-right">Aceptar todo</a>
             </div>
-            <div class="oe_structure o_pms_pwa_structure mt-4">
+            <div class="oe_structure o_pms_pwa_structure">
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <!-- Calendar -->
-                    <div class="o_pms_pwa_calendar o_pms_pwa_full_shadow bg-white p-5">
-                        <div class="row">
-                            <div class="col-12 mb-4 ml-4">
+                    <div class="o_pms_pwa_calendar o_pms_pwa_full_shadow bg-white pt-3 px-5">
+                        <div class="row mb-2">
+                            <div class="col-12 mb-2 ">
                                 <form action="/reservation/list" method="post" t-att-class="_classes">
-                                    <div class="row">
-                                        <div class="col-9 col-md-9 col-lg-5">
-                                            <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Search" title="Search..." />
-                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="row m-0 p-0 align-items-center">
+
+                                        <div class="col-10 col-md-8 col-lg-7">
+                                           <input
+                                              type="text"
+                                              name="search"
+                                              class="form-control o_pmw_pwa_search_input"
+                                              placeholder="Buscar"
+                                              title="Buscar..."
+                                            />
+                                            <input
+                                              type="hidden"
+                                              name="csrf_token"
+                                              t-att-value="request.csrf_token()"
+                                            />
                                         </div>
-                                        <div class="col-3 col-md-3 col-lg-7">
+
+                                        <div class="col-2 col-md-4 col-lg-5 text-right text-xl-left pr-0">
                                             <span class="dropdown">
                                                 <a
                                                     class="btn o_pms_pwa_float_right"
                                                     href="#" data-toggle="modal" data-target="#o_pms_pwa_filters_modal"
                                                     rel="nofollow">
                                                     <span class="d-none d-lg-flex align-self-center">
-                                                        FILTERS <i class="fa fa-angle-left"/>
+                                                        FILTROS <i class="fa fa-angle-left"/>
                                                     </span>
                                                     <i class="fa fa-filter d-lg-none"></i>
                                                 </a>
                                             </span>
-                                            <a t-attf-href="/reservation/list?ready_for_checkin=true" label="Checkins" class="btn o_pms_pwa_button_filter">
-                                                <img src="/pms_pwa/static/img/svg/icon_arrival.svg" width="18px" alt="Checkins" class="img-responsive"/>
+                                            <a
+                                              t-attf-href="/reservation/list?ready_for_checkin=true"
+                                              label="Checkins"
+                                              class="btn o_pms_pwa_button_filter align-self-center"
+                                            >
+                                                <img
+                                                  src="/pms_pwa/static/img/svg/icon_arrival.svg"
+                                                  width="18px"
+                                                  alt="Checkins"
+                                                  class="img-responsive"
+                                                />
                                             </a>
-                                            <a t-attf-href="/reservation/list?in_house=true" label="Dentro" class="btn o_pms_pwa_button_filter">
-                                                <img src="/pms_pwa/static/img/svg/icon_house.svg" width="18px" alt="Dentro" class="img-responsive" />
+                                            <a
+                                              t-attf-href="/reservation/list?in_house=true"
+                                              label="Dentro"
+                                              class="btn o_pms_pwa_button_filter"
+                                            >
+                                                <img
+                                                  src="/pms_pwa/static/img/svg/icon_house.svg"
+                                                  width="18px"
+                                                  alt="Dentro"
+                                                  class="img-responsive"
+                                                />
                                             </a>
-                                            <a t-attf-href="/reservation/list?ready_for_checkout=true" label="Checkouts" class="btn o_pms_pwa_button_filter">
-                                                <img src="/pms_pwa/static/img/svg/icon_exit.svg" width="18px" alt="Checkouts" class="img-responsive" />
+                                            <a
+                                              t-attf-href="/reservation/list?ready_for_checkout=true"
+                                              label="Checkouts"
+                                              class="btn o_pms_pwa_button_filter"
+                                            >
+                                                <img
+                                                  src="/pms_pwa/static/img/svg/icon_exit.svg"
+                                                  width="18px"
+                                                  alt="Checkouts"
+                                                  class="img-responsive"
+                                                />
                                             </a>
                                         </div>
                                         <t t-call="pms_pwa.roomdoo_filters_modal">
@@ -54,45 +94,129 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-2 d-none d-lg-block">
-                                <div class="d-flex align-items-center ml-4">
-                                    <h2 class="font-weight-bold mb-0 text-uppercase">
-                                        <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
-                                    </h2>
+                        <div class="row m-0 p-0 mb-2">
+                            <!-- title current date -->
+                            <div
+                              class="col-6 col-md-3 mt-md-4 col-lg-3 col-xl-12 pr-0 mb-2"
+                            >
+                                <h2 class="font-weight-bold mb-0 text-uppercase">
+                                    <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
+                                </h2>
+                            </div>
+                            
+                            <!-- button to open all rooms -->
+                            <div class="col-6 col-md-3 order-lg-3 col-xl-2 order-md-3 mt-md-4 pr-0 mb-4">
+                                <button
+                                    id="open_collapse"
+                                    name="open_collapse"
+                                    class="btn btn-radius btn-pms_pwa w-100 o_pms_pwa_open_collapse"
+                                >
+                                        Abrir
+                                    </button
+                                >
+                                <button
+                                    id="close_collapse"
+                                    name="close_collapse"
+                                    style="display:none;"
+                                    class="btn btn-radius btn-pms_pwa w-100 o_pms_pwa_close_collapse"
+                                >
+                                        Cerrar
+                                    </button
+                                >
+                            </div>
+
+                            <!-- select calendar type -->
+                            <div
+                              class="col-6 col-md-3 order-md-1 pr-0"      
+                            >   
+                                Calendario:
+                                <div class="o_pms_pwa_calendar_select">
+                                    <select
+                                      id="calendar_select"
+                                      name="calendar_select"
+                                      class="form-control o_website_form_input o_input"
+                                      onchange="if (this.value) window.location.href=this.value"
+                                    >
+                                        <option value="" selected="selected">Configuración de precios</option>
+                                        <option value="/calendar">Calendario por defecto</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div id="buttom_save" class="col-6 col-sm-2">
+
+                            <!-- select pricelist -->
+                            <div
+                              class="col-6 col-md-3 order-md-2 col-xl-3 pr-0"
+                              id="buttom_save"
+                            >
+                                Tarifa:
                                 <form method="post" action="/calendar/config">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
-                                    <select id="pricelist_select" name="pricelist" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
-                                        <!-- <option t-if="default_pricelist==0" selected="selected" value="0">Todas</option>
-                                        <option t-if="default_pricelist!=0" value="0">Todas</option> -->
+                                    <select
+                                        id="pricelist_select"
+                                        name="pricelist"
+                                        class="form-control o_website_form_input o_input"
+                                        onchange="javascript:this.form.submit()"
+                                    >
                                         <t t-foreach="pricelist" t-as="price">
                                             <t t-if="default_pricelist==price.id">
-                                                <option t-attf-value="{{ price.id }}" selected="selected"><t t-esc="price.name" /></option>
+                                                <option t-attf-value="{{ price.id }}" selected="selected">
+                                                    <t t-esc="price.name" />
+                                                </option>
                                             </t>
                                             <t t-else="">
-                                                <option t-attf-value="{{ price.id }}"><t t-esc="price.name" /></option>
+                                                <option t-attf-value="{{ price.id }}">
+                                                    <t t-esc="price.name" />
+                                                </option>
+                                            </t>
+                                        </t>
+
+                                    </select>
+                                </form>
+                            </div>
+                            
+                            
+                            
+                            <!-- col just to fill -->
+                            <div class="col-6 d-none d-md-block d-xl-none pt-2 order-md-4"/>
+                            
+
+                            <!-- select days to view -->
+                            <div class="col-6 col-md-3 col-lg-2 col-xl-1 pr-0 order-md-5">
+                                Días:
+                                <form method="post" action="">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                    <input type="hidden" name="display_option" t-att-value="selected_display"/>
+                                    <input type="hidden" name="pricelist" t-att-value="default_pricelist"/>
+                                    <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
+
+                                    <select id="dpr" name="dpr" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                        <t t-foreach="dpr_select_values" t-as="show_days">
+                                            <t t-if="int(dpr)==int(show_days)">
+                                                <option t-attf-value="{{ show_days }}" selected="selected">
+                                                    <t t-esc="show_days" />
+                                                </option>
+                                            </t>
+                                            <t t-else="">
+                                                <option t-attf-value="{{ show_days }}">
+                                                    <t t-esc="show_days" />
+                                                </option>
                                             </t>
                                         </t>
                                     </select>
                                 </form>
-                                <button id="save" name="save" style="min-width:100px;" class="btn btn-radius btn-pms_pwa ml-4 d-none">Save</button>
                             </div>
-                            <div class="col-6 col-sm-8">
-                                <button id="open_collapse" name="open_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_open_collapse" style="min-width:100px;">Open</button>
-                                <button id="close_collapse" name="close_collapse" class="btn btn-radius btn-pms_pwa ml-4 o_pms_pwa_close_collapse" style="min-width:100px;display:none;">Close</button>
-                                <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
-                                    <select id="calendar_select" name="calendar_select" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
-                                        <option value="" selected="selected">Config</option>
-                                        <option value="/calendar">Default</option>
-                                    </select>
-                                </div>
-
-                                <div class="o_pms_pwa_month_select float-right ml-4">
-                                    <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-left"></i></a>
+                            <!-- select date -->
+                            <div class="col-6 col-md-3 col-lg-4 col-xl-3 pr-0 order-md-6">
+                                <span class="d-block">Fecha:</span>
+                                <div class="o_pms_pwa_month_select form-control px-0">
+                                
+                                    <a
+                                    t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}"
+                                    class="mx-2 o_pms_pwa_calendar_arrow"
+                                    >
+                                        <i class="fa fa-angle-left"/>
+                                    </a>
                                     <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
                                     </span>
@@ -101,34 +225,16 @@
                                         <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
                                     </button>
 
-                                    <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}" class="mx-2 o_pms_pwa_calendar_arrow"><i class="fa fa-angle-right"></i></a>
-                                </div>
-                                <div class="o_pms_pwa_calendar_select float-right d-none d-lg-block">
-                                    <form method="post" action="">
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                        <input type="hidden" name="display_option" t-att-value="selected_display"/>
-                                        <input type="hidden" name="pricelist" t-att-value="default_pricelist"/>
-                                        <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
-
-                                        <select id="dpr" name="dpr" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
-                                            <t t-foreach="dpr_select_values" t-as="show_days">
-                                                <t t-if="int(dpr)==int(show_days)">
-                                                    <option t-attf-value="{{ show_days }}" selected="selected">
-                                                        <t t-esc="show_days" />
-                                                    </option>
-                                                </t>
-                                                <t t-else="">
-                                                    <option t-attf-value="{{ show_days }}">
-                                                        <t t-esc="show_days" />
-                                                    </option>
-                                                </t>
-                                            </t>
-                                        </select>
-                                    </form>
+                                    <a
+                                        t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;display_option={{selected_display}}&amp;pricelist={{default_pricelist}}"
+                                        class="mx-2 o_pms_pwa_calendar_arrow"
+                                    >
+                                        <i class="fa fa-angle-right"/>
+                                    </a>
                                 </div>
                             </div>
                         </div>
-                        <hr />
+                        
                         <div class="table-responsive">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
                             <table id="calendar_config_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
@@ -173,12 +279,68 @@
                                                 <t t-set="total_rooms" t-value="obj._get_total_rooms(current_property)"></t>
                                                 <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pms_property_id=current_property)._get_availability_rooms(current_property)"/>
                                                 <td t-att-class="'o_config_pms_pwa_table_cell '
-                                                    + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
-                                                    + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
-                                                ">
-                                                    <p class="o_pms_pwa_title" style="text-align: center !important;">
-                                                        <t t-esc="availability_room"/> de <t t-esc="total_rooms" />
-                                                    </p>
+                                                    + ('o_pms_pwa_dispo_0' if availability_room==0 else ' ')
+                                                    + ('o_pms_pwa_dispo_1' if availability_room==1 else ' ')
+                                                "
+                                                    style="padding: 0 !important;"
+                                                >
+                                                <!--<p class="o_pms_pwa_title" style="text-align: center !important;">-->
+                                                <!--    <t t-esc="availability_room"/> de <t t-esc="total_rooms" />-->
+                                                <!--/p>-->
+                                                    <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
+                                                        <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                            title="Reservas"
+                                                        >
+                                                            <div class="circle">
+                                                                <span >
+                                                                    11
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                            title="Fuera de servicio"
+                                                        >
+                                                            <div class="circle">
+                                                                <span >
+                                                                    22
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                            title="Bloqueadas"
+                                                        >
+                                                            <div class="circle">
+                                                                <span >
+                                                                    33
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row percentage-container">
+                                                        <div class="col percentage-value">
+                                                            67 %
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row availabilitys-container">
+                                                        <div class="col-6 availability-group text-center">
+                                                            <div>
+                                                                <span class="fa fa-cloud-upload"/>
+                                                                <span class="availability-value">
+                                                                    24
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 availability-group text-center">
+                                                            <div>
+                                                                <span class="fa fa-home"/>
+                                                                <span class="availability-value">
+                                                                    13
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </t>
                                         </tr>

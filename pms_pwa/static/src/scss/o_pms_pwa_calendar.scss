@@ -1,10 +1,14 @@
+$debug: border 3px dotted red;
+
 section.o_pms_pwa_roomdoo {
     .o_pms_pwa_calendar {
-        overflow-x: none;
+        
+        overflow: hidden;
         @media (max-width: 991.98px) {
             margin-left: -3rem;
             margin-top: -4rem;
         }
+        // search form
         form {
             input.o_pmw_pwa_search_input {
                 background-image: url("/pms_pwa/static/img/searchicon.png");
@@ -20,10 +24,8 @@ section.o_pms_pwa_roomdoo {
                 margin-bottom: 12px;
                 border-radius: 0px;
             }
+            // button to show modal with filters
             a.o_pms_pwa_float_right {
-                color: $theme-color;
-                border-color: $theme-color;
-                background-color: $bg-theme-color;
                 & > span {
                     & > i {
                         margin-left: 15px;
@@ -31,46 +33,25 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
             }
-        }
-        hr {
-            background-color: #dadada;
-            margin-top: 1rem;
-            margin-bottom: -0.5rem;
-            width: 98%;
-        }
-        #pricelist_select {
-            background-color: $bg-theme-color !important;
-            color: $theme-color-text;
-            margin-left: -1rem;
-            font-size: 14px;
-            @media (max-width: 1120px) {
-                margin-left: 3rem;
+            a.o_pms_pwa_button_filter, a.o_pms_pwa_float_right {
+                height: 38px;
+                color: $theme-color;
+                border-color: $theme-color;
+                background-color: $bg-theme-color;
+                
             }
         }
-        .o_pms_pwa_calendar_select {
-            float: left;
-            select {
-                width: 200px;
-                font-size: 14px;
-                @media (max-width: 1120px) {
-                    width: auto;
-                }
-            }
-        }
+
         .o_pms_pwa_calendar_arrow {
             font-size: 16px;
             font-weight: bold;
         }
         .o_pms_pwa_month_select {
-            margin-right: 1rem;
-            text-align: right;
-            color: $theme-color;
-            font-weight: bold;
-            font-size: 14px;
-            margin-top: 0.5rem;
-            @media (max-width: 991.98px) {
-                margin-right: 0rem;
-            }
+            border: 1px solid #CED4DA;
+            border-radius: 0.25rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
             a {
                 color: $theme-color;
                 text-decoration: none;
@@ -97,9 +78,22 @@ section.o_pms_pwa_roomdoo {
                 margin-top: -0.25rem;
             }
         }
-        .table-responsive {
-            height: calc(70vh - 25px);
+
+
+
+
+        hr {
+            background-color: #dadada;
+            margin-top: 1rem;
+            margin-bottom: -0.5rem;
+            width: 98%;
         }
+        
+        .table-responsive {
+            height: calc(66vh - 25px);
+        }
+
+        /************************************************************************************************************************************/
         #calendar_table.table {
             border-collapse: separate;
             border-spacing: 8px;
@@ -295,6 +289,7 @@ section.o_pms_pwa_roomdoo {
             }
         }
 
+        /************************************************************************************************************************************/
         #calendar_config_table.table {
             border-collapse: separate;
             border-spacing: 8px;
@@ -305,6 +300,9 @@ section.o_pms_pwa_roomdoo {
                     -webkit-transform: rotate(180deg);
                     transform: rotate(180deg);
                 }
+            }
+            th, td {
+                width: 190px;
             }
             thead {
                 // border-bottom: 1px solid $theme-color;
@@ -338,6 +336,50 @@ section.o_pms_pwa_roomdoo {
                     td {
                         padding-bottom: 0;
                         height: 20px;
+                        .circles-container {
+                            .circle {
+                                height: 25px;
+                                width: 25px;
+                                border-radius: 50%;
+                                font-size: 0.9rem;
+                                font-weight: bold;
+                                padding: 0.1rem;
+                                color: white;
+                                cursor: pointer;
+                            }
+                            div:nth-child(1) > .circle {
+                                background-color: rgba(1, 182, 227, 0.5);
+                            }
+                            div:nth-child(2) > .circle {
+                                background-color: rgba(0, 0, 0, 0.5);
+                            }
+                            div:nth-child(3) > .circle {
+                                background-color: rgba(255, 0, 0, 0.5);
+                            }
+
+                        }
+                        .percentage-container {
+                            margin-top: 1rem;
+                            .percentage-value {
+                                text-align: center;
+                            }
+                        }
+                        .availabilitys-container {
+                            margin: 0;
+                            margin-top: 1rem;
+                            .availability-group {
+                                padding-left:0;
+                                padding-right: 0;
+                                .availability-value {
+                                    padding: 0;
+                                }
+                                .fa {
+                                    font-size: 1.1rem;
+                                    color: rgba(1, 182, 227, 0.5);
+
+                                }
+                            }
+                        }
                     }
                     td.o_pms_pwa_dispo_0 {
                         background-color: #f582a640;
@@ -399,6 +441,145 @@ section.o_pms_pwa_roomdoo {
                             width: 13px;
                         }
                     }
+                }
+            }
+            .o_pms_pwa_calendar_line {
+                // margin: auto;
+                p {
+                    margin-left: 1rem;
+                    //margin-top: 1rem;
+                }
+                &_title {
+                    // background-color: $bg-theme-color-modal;
+                    text-align: center;
+
+                    margin-left: 0rem !important;
+                    margin-top: 0rem !important;
+                    margin-bottom: 0.5rem !important;
+                    color: $table-text-color;
+                    :after,
+                    :before {
+                        background-color: $bg-theme-color-modal;
+                    }
+                }
+                &_title:last-child {
+                    width: 103%;
+                }
+                &_name {
+                    margin: 1rem;
+                    font-size: 14px;
+                }
+                // &_room_type {
+                //     p{
+                //         margin-bottom: 0.2rem;
+                //         margin-top: 0.2rem;
+                //     }
+
+                // }
+                tr[aria-expanded="true"] {
+                    i {
+                        -moz-transform: rotate(180deg);
+                        -webkit-transform: rotate(180deg);
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+            #calendar_conf_table_line.table {
+                // background-color: $bg-theme-color;
+                // td.o_pms_pwa_table_cell{
+                //     p.o_pms_pwa_title{
+                //         text-align: center !important;
+                //         height: 1rem;
+                //     }
+                // }
+                tr[aria-expanded="true"] {
+                    i {
+                        -moz-transform: rotate(180deg);
+                        -webkit-transform: rotate(180deg);
+                        transform: rotate(180deg);
+                    }
+                }
+                p {
+                    input {
+                        width: 50px;
+                        margin-left: 1rem;
+                        margin: auto;
+                        border: 1px solid $theme-color;
+                        text-align: center;
+                    }
+                }
+
+                .o_pms_pwa_show_table {
+                    background-color: $white;
+                    // margin-left: 2rem;
+                    margin-bottom: 1rem;
+                    font-size: 15px;
+                    width: 104px !important;
+
+                }
+
+                // toggle
+                /* The switch - the box around the slider */
+                .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 40px;
+                    height: 20px;
+                }
+
+                /* Hide default HTML checkbox */
+                .switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                }
+
+                /* The slider */
+                .slider {
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #ccc;
+                    -webkit-transition: 0.4s;
+                    transition: 0.4s;
+                }
+
+                .slider:before {
+                    position: absolute;
+                    content: "";
+                    height: 12px;
+                    width: 12px;
+                    left: 2px;
+                    bottom: 4px;
+                    background-color: white;
+                    -webkit-transition: 0.4s;
+                    transition: 0.4s;
+                }
+
+                input:checked + .slider {
+                    background-color: $theme-color;
+                }
+
+                input:focus + .slider {
+                    box-shadow: 0 0 1px $theme-color;
+                }
+
+                input:checked + .slider:before {
+                    -webkit-transform: translateX(26px);
+                    -ms-transform: translateX(26px);
+                    transform: translateX(26px);
+                }
+
+                /* Rounded sliders */
+                .slider.round {
+                    border-radius: 18px;
+                }
+
+                .slider.round:before {
+                    border-radius: 50%;
                 }
             }
         }
@@ -1159,147 +1340,6 @@ section.o_pms_pwa_roomdoo {
 
 // Calendar Config
 
-#calendar_config_table.table {
-    .o_pms_pwa_calendar_line {
-        // margin: auto;
-        p {
-            margin-left: 1rem;
-            //margin-top: 1rem;
-        }
-        &_title {
-            // background-color: $bg-theme-color-modal;
-            text-align: center;
-
-            margin-left: 0rem !important;
-            margin-top: 0rem !important;
-            margin-bottom: 0.5rem !important;
-            color: $table-text-color;
-            :after,
-            :before {
-                background-color: $bg-theme-color-modal;
-            }
-        }
-        &_title:last-child {
-            width: 103%;
-        }
-        &_name {
-            margin: 1rem;
-            font-size: 14px;
-        }
-        // &_room_type {
-        //     p{
-        //         margin-bottom: 0.2rem;
-        //         margin-top: 0.2rem;
-        //     }
-
-        // }
-        tr[aria-expanded="true"] {
-            i {
-                -moz-transform: rotate(180deg);
-                -webkit-transform: rotate(180deg);
-                transform: rotate(180deg);
-            }
-        }
-    }
-    #calendar_conf_table_line.table {
-        // background-color: $bg-theme-color;
-        // td.o_pms_pwa_table_cell{
-        //     p.o_pms_pwa_title{
-        //         text-align: center !important;
-        //         height: 1rem;
-        //     }
-        // }
-        tr[aria-expanded="true"] {
-            i {
-                -moz-transform: rotate(180deg);
-                -webkit-transform: rotate(180deg);
-                transform: rotate(180deg);
-            }
-        }
-        p {
-            input {
-                width: 50px;
-                margin-left: 1rem;
-                margin: auto;
-                border: 1px solid $theme-color;
-                text-align: center;
-            }
-        }
-
-        .o_pms_pwa_show_table {
-            background-color: $white;
-            // margin-left: 2rem;
-            margin-bottom: 1rem;
-            font-size: 15px;
-            width: 104px !important;
-
-        }
-
-        // toggle
-        /* The switch - the box around the slider */
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 20px;
-        }
-
-        /* Hide default HTML checkbox */
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        /* The slider */
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: 0.4s;
-            transition: 0.4s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 12px;
-            width: 12px;
-            left: 2px;
-            bottom: 4px;
-            background-color: white;
-            -webkit-transition: 0.4s;
-            transition: 0.4s;
-        }
-
-        input:checked + .slider {
-            background-color: $theme-color;
-        }
-
-        input:focus + .slider {
-            box-shadow: 0 0 1px $theme-color;
-        }
-
-        input:checked + .slider:before {
-            -webkit-transform: translateX(26px);
-            -ms-transform: translateX(26px);
-            transform: translateX(26px);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 18px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
-        }
-    }
-}
 .subtable {
     tr {
         th, td {

@@ -18,15 +18,25 @@ body {
     font-weight: 400;
     font-size: 16px;
 }
-// scroll Firefox
-body {
-    scrollbar-width: auto; /* "auto" or "thin" */
-    scrollbar-color: $theme-color $white; /* scroll thumb and track */
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $primary;
 }
-// scroll Chrome
-::-webkit-scrollbar {
-    width: 12px;
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }
+
+*::-webkit-scrollbar-thumb {
+  background-color: $primary;
+  // background-image: linear-gradient(to right, #daf7fc 50%, #01b6e3);
+  border-radius: 3px;
+  margin: 10px;
+}
+
 
 /* Track */
 ::-webkit-scrollbar-track {
