@@ -326,7 +326,7 @@
                                                 <!--    <t t-esc="availability_room"/> de <t t-esc="total_rooms" />-->
                                                 <!--/p>-->
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
-                                                        <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                        <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center"
                                                             title="Reservas"
                                                         >
                                                             <div class="circle">
@@ -335,7 +335,7 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                        <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center"
                                                             title="Fuera de servicio"
                                                         >
                                                             <div class="circle">
@@ -344,7 +344,7 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                        <!-- <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
                                                             title="Bloqueadas"
                                                         >
                                                             <div class="circle">
@@ -352,7 +352,7 @@
                                                                     33
                                                                 </span>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
 
                                                     <div class="row percentage-container">
@@ -364,7 +364,6 @@
                                                     <div class="row availabilitys-container">
                                                         <div class="col-6 availability-group text-center">
                                                             <div>
-                                                                <span class="fa fa-cloud-upload"/>
                                                                 <span class="availability-value">
                                                                     24
                                                                 </span>
@@ -372,7 +371,6 @@
                                                         </div>
                                                         <div class="col-6 availability-group text-center">
                                                             <div>
-                                                                <span class="fa fa-home"/>
                                                                 <span class="availability-value">
                                                                     13
                                                                 </span>

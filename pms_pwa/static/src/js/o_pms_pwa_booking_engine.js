@@ -526,10 +526,10 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             for (const i in groups) {
                 html +=
                     '<tr class="o_pms_pwa_group_header">' +
-                        '<td class="col-sm-4" style="font-size: large;" >' +
+                        '<td class="col-sm-4" style="font-size: large; width: 33% !important;" >' +
                             groups[i].name + " (" + groups[i].max_rooms + ")" +
                         '</td>' +
-                        '<td class="col-sm-5">' +
+                        '<td class="col-sm-5" style="width: 41% !important;">' +
                             '<a class="btn btn-o_pms_pwa_min_max form_booking_engine_group" data-group_id="' +
                                 groups[i].group_id +
                                 '" data-add_room="0" data-board_service_room_id="' +
@@ -551,7 +551,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                                 groups[i].group_id +
                             '">+</a>' +
                             '</td>' +
-                            '<td class="col-sm-3">' +
+                            '<td class="col-sm-3" style="width: 25%">' +
                                 '<span class="price_group" id="price' +
                                 groups[i].group_id +
                                 '">' +

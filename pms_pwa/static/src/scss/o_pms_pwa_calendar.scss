@@ -368,6 +368,7 @@ section.o_pms_pwa_roomdoo {
                             margin: 0;
                             margin-top: 1rem;
                             .availability-group {
+                                border-top: 1px solid black;
                                 padding-left:0;
                                 padding-right: 0;
                                 .availability-value {
@@ -378,6 +379,9 @@ section.o_pms_pwa_roomdoo {
                                     color: rgba(1, 182, 227, 0.5);
 
                                 }
+                            }
+                            .availability-group:first-child {
+                                border-right: 1px solid black;;
                             }
                         }
                     }
