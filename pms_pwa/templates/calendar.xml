@@ -104,7 +104,7 @@
                                     <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
                                 </h2>
                             </div>
-                            
+
                             <!-- select calendar type -->
                             <div
                               class="col-6 col-md-3 col-lg-2 col-xl-3 pr-0"
@@ -155,7 +155,7 @@
                                 </form>
                             </div>
 
-                            
+
                             <!-- col just to fill -->
                             <div class="col-6 d-none d-md-block d-lg-none d-xl-none pt-2"/>
 
@@ -196,9 +196,9 @@
                                     >
                                         <i class="fa fa-angle-left"/>
                                     </a>
-                                    <span class="o_pms_pwa_month_select_calendar_icon">
+                                    <!-- <span class="o_pms_pwa_month_select_calendar_icon">
                                         <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
-                                    </span>
+                                    </span> -->
                                     <input type="hidden" name="calendar_selected_date" t-value="date_start" />
                                     <button type="button" class="btn btn-calendar-roomdoo o_pms_pwa_daterangepicker_calendar" data-dismiss="modal">
                                         <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
@@ -276,32 +276,73 @@
                                                 </p>
                                                 <p class="o_pms_pwa_extra_info">
                                                     <span t-if="selected_display == 'room_type'"><t t-esc="obj.get_capacity()"/> <img src="/pms_pwa/static/img/svg/user.svg" alt="user icon" title="user icon" /></span>
-                                                    <span t-if="selected_display == 'room_type'"><t t-esc="obj._get_total_rooms(current_property)"/> hab</span>
-                                                    <span t-if="selected_display == 'ubication'"><t t-esc="obj._get_total_rooms(current_property)"/> hab</span>
-                                                    <span t-if="selected_display == 'pms_property'"><t t-esc="obj._get_total_rooms()"/> hab</span>
+                                                    <span t-if="selected_display == 'room_type'"><t t-set="total_rooms" t-value="obj._get_total_rooms(current_property)"/></span>
+                                                    <span t-if="selected_display == 'ubication'"><t t-set="total_rooms" t-value="obj._get_total_rooms(current_property)"/></span>
+                                                    <span t-if="selected_display == 'pms_property'"><t t-set="total_rooms" t-value="obj._get_total_rooms()"/></span>
+                                                    <t t-esc="total_rooms"/> hab
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
                                                 <span t-if="selected_display == 'room_type'">
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), room_type_id=obj.id, pricelist_id=default_pricelist).availability"></t>
-                                                    <t t-set="rooms_occupied" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_rooms(current_property)"></t>
+                                                    <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations(current_property)"></t>
+                                                    <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service(current_property)"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'ubication'">
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), ubication_id=obj.id, pricelist_id=default_pricelist).availability"></t>
-                                                    <t t-set="rooms_occupied" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_rooms(current_property)"></t>
+                                                    <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations(current_property)"></t>
+                                                    <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service(current_property)"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'pms_property'">
                                                     <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
-                                                    <t t-set="rooms_occupied" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_rooms()"></t>
+                                                    <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations()"></t>
+                                                    <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service()"></t>
                                                 </span>
+                                                <t t-set="percent_avail" t-value="availability_room * 100 / total_rooms"></t>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0 ' if availability_room==0 else ' ')
                                                     + ('o_pms_pwa_dispo_1 ' if availability_room==1 else ' ')
-                                                ">
-                                                    
+                                                " style="padding-top: 0px">
+                                                    <div class="row percentage-container">
+                                                        <span t-if="percent_avail == 100" style="width:100%">
+                                                            <div style="col border-radius: 5%; background-color:rgb(171, 255, 153); margin-right:3px; margin-left:3px; height:5px;"/>
+                                                            <div class="col percentage-value" style="font-weight: bold;">
+                                                                <t t-esc="percent_avail"  t-options="{'widget': 'float', 'precision': 0}"/> %
+                                                            </div>
+                                                        </span>
+                                                        <span t-if="percent_avail &gt; 74 and percent_avail &lt; 100" style="width:100%">
+                                                            <div style="col border-radius: 5%; background-color:rgb(207, 255, 153); margin-right:3px;  margin-left:35px; height:5px;"/>
+                                                            <div class="col percentage-value" style="font-weight: bold;">
+                                                                <t t-esc="percent_avail"  t-options="{'widget': 'float', 'precision': 0}"/> %
+                                                            </div>
+                                                        </span>
+                                                        <span t-if="percent_avail &gt; 49 and percent_avail &lt; 75" style="width:100%">
+                                                            <div style="col border-radius: 5%; background-color:rgb(255, 224, 153); margin-right:3px; margin-left:65px height:5px;"/>
+                                                            <div class="col percentage-value" style="font-weight: bold;">
+                                                                <t t-esc="percent_avail"  t-options="{'widget': 'float', 'precision': 0}"/> %
+                                                            </div>
+                                                        </span>
+                                                        <span t-if="percent_avail &gt; 24 and percent_avail &lt; 50" style="width:100%">
+                                                            <div style="col border-radius: 5%; background-color:rgb(255, 202, 153); margin-right:3px; margin-left:110px; height:5px;"/>
+                                                            <div class="col percentage-value" style="font-weight: bold;">
+                                                                <t t-esc="percent_avail"  t-options="{'widget': 'float', 'precision': 0}"/> %
+                                                            </div>
+                                                        </span>
+                                                        <span t-if="percent_avail &gt; 0 and percent_avail &lt; 25" style="width:100%">
+                                                            <div style="col border-radius: 5%; background-color:rgb(255, 188, 153); margin-right:3px; margin-left:125px; height:5px;"/>
+                                                            <div class="col percentage-value" style="font-weight: bold;">
+                                                                <t t-esc="percent_avail"  t-options="{'widget': 'float', 'precision': 0}"/> %
+                                                            </div>
+                                                        </span>
+                                                        <span t-if="percent_avail == 0" style="width:100%">
+                                                            <div class="col percentage-value" style="font-weight: bold;">
+                                                                <t t-esc="percent_avail"  t-options="{'widget': 'float', 'precision': 0}"/> %
+                                                            </div>
+                                                        </span>
+                                                    </div>
                                                     <p class="o_pms_pwa_title"><t t-esc="availability_room"/>
                                                         disponibles
-                                                        
+
                                                         <!-- <span class="o_pms_pwa_info">
                                                             <img
                                                               src="/pms_pwa/static/img/svg/interrogante-azul.svg"
@@ -311,26 +352,6 @@
                                                             />
                                                         </span> -->
                                                     </p>
-                                                    <div class="circles-container text-center row m-0 p-0">
-                                                        <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center"
-                                                            title="Reservas"
-                                                        >
-                                                            <div class="circle">
-                                                                <span >
-                                                                    11
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center"
-                                                            title="Fuera de servicio"
-                                                        >
-                                                            <div class="circle">
-                                                                <span >
-                                                                    22
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
 
                                                     <div class="mt-2 o_pms_pwa_content">
                                                         <!-- <span t-if="rooms_occupied > 0">
@@ -345,24 +366,45 @@
                                                               t-if="selected_display == 'ubication'"
                                                               class="o_pms_pwa_type"
                                                             >
-                                                                <t t-esc="rooms_occupied"/> 
+                                                                <t t-esc="rooms_occupied"/>
                                                                 ocupadas
                                                             </span>
                                                             <span
                                                               t-if="selected_display == 'pms_property'"
                                                               class="o_pms_pwa_type"
                                                             >
-                                                                <t t-esc="rooms_occupied"/> 
+                                                                <t t-esc="rooms_occupied"/>
                                                                 ocupadas
                                                             </span>
                                                         </span> -->
-                                                        <span
-                                                          t-if="selected_display == 'room_type'"
-                                                          class="o_pms_pwa_price"
-                                                        >
-                                                            <t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>
-                                                            €
-                                                        </span>
+                                                        <div class="circles-container text-center row m-0 p-0">
+                                                            <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                                    title="Reservas"
+                                                                >
+                                                                <div t-if="rooms_occupied_reservations > 0" class="circle">
+                                                                    <span >
+                                                                        <t t-esc="rooms_occupied_reservations"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center"
+                                                                title="Fuera de servicio"
+                                                            >
+                                                                <div t-if="rooms_occupied_out_service > 0" class="circle">
+                                                                    <span >
+                                                                        <t t-esc="rooms_occupied_out_service"/>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <span
+                                                            t-if="selected_display == 'room_type'"
+                                                            class="o_pms_pwa_price"
+                                                            style="color: $black !important; font-weight: bold !important; float: right; padding-left: 20%; padding-top: 3%;"
+                                                          >
+                                                              <t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>
+                                                              €
+                                                          </span>
+                                                        </div>
                                                     </div>
                                                 </td>
                                             </t>

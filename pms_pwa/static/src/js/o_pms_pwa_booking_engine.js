@@ -580,7 +580,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                     groups[i].max_rooms +
                     ")" +
                     "</td>" +
-                    '<td class="col-sm-5"> style="width: 41% !important;">' +
+                    '<td class="col-sm-5" style="width: 41% !important;">' +
                     '<a class="btn btn-o_pms_pwa_min_max form_booking_engine_group" data-group_id="' +
                     groups[i].group_id +
                     '" data-add_room="0" data-board_service_room_id="' +

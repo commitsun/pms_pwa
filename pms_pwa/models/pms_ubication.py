@@ -4,6 +4,7 @@
 from odoo import _, api, fields, models
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools.misc import get_lang
+import datetime
 
 
 class PmsUbication(models.Model):
@@ -38,3 +39,35 @@ class PmsUbication(models.Model):
                 room_ids=room_ids,
                 pms_property_id=pms_property_id,
             ))
+
+    def _get_occupied_reservations(self, pms_property_id):
+        if self._context.get("checkin") and self._context.get("checkout"):
+            room_ids = self.room_ids.filtered(
+                lambda r: r.pms_property_id.id == pms_property_id
+            ).ids
+            return len(self.env["pms.reservation.line"].search(
+                [
+                    ("date", ">=", self._context.get("checkin")),
+                    ("date", "<=", self._context.get("checkout") - datetime.timedelta(1)),
+                    ("room_id", "in", room_ids),
+                    ("pms_property_id", "=", pms_property_id),
+                    ("occupies_availability", "=", True),
+                    ("reservation_id.reservation_type", "!=", "out"),
+                ]
+            ).mapped("reservation_id.id"))
+
+    def _get_occupied_out_service(self, pms_property_id):
+        if self._context.get("checkin") and self._context.get("checkout"):
+            room_ids = self.room_ids.filtered(
+                lambda r: r.pms_property_id.id == pms_property_id
+            ).ids
+            return len(self.env["pms.reservation.line"].search(
+                [
+                    ("date", ">=", self._context.get("checkin")),
+                    ("date", "<=", self._context.get("checkout") - datetime.timedelta(1)),
+                    ("room_id", "in", room_ids),
+                    ("pms_property_id", "=", pms_property_id),
+                    ("occupies_availability", "=", True),
+                    ("reservation_id.reservation_type", "=", "out"),
+                ]
+            ).mapped("reservation_id.id"))

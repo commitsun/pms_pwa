@@ -4,6 +4,7 @@
 from odoo import _, api, fields, models
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.tools.misc import get_lang
+import datetime
 
 
 class PmsProperty(models.Model):
@@ -32,6 +33,34 @@ class PmsProperty(models.Model):
                 room_ids=room_ids,
                 pms_property_id=self.id,
             ))
+
+    def _get_occupied_reservations(self):
+        if self._context.get("checkin") and self._context.get("checkout"):
+            room_ids = self.room_ids.ids
+            return len(self.env["pms.reservation.line"].search(
+                [
+                    ("date", ">=", self._context.get("checkin")),
+                    ("date", "<=", self._context.get("checkout") - datetime.timedelta(1)),
+                    ("room_id", "in", room_ids),
+                    ("pms_property_id", "=", self.id),
+                    ("occupies_availability", "=", True),
+                    ("reservation_id.reservation_type", "!=", "out"),
+                ]
+            ).mapped("reservation_id.id"))
+
+    def _get_occupied_out_service(self):
+        if self._context.get("checkin") and self._context.get("checkout"):
+            room_ids = self.room_ids.ids
+            return len(self.env["pms.reservation.line"].search(
+                [
+                    ("date", ">=", self._context.get("checkin")),
+                    ("date", "<=", self._context.get("checkout") - datetime.timedelta(1)),
+                    ("room_id", "in", room_ids),
+                    ("pms_property_id", "=", self.id),
+                    ("occupies_availability", "=", True),
+                    ("reservation_id.reservation_type", "=", "out"),
+                ]
+            ).mapped("reservation_id.id"))
 
     def _get_allowed_payments_journals(self):
         """

@@ -233,12 +233,6 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header o_pms_pwa_modal_header">
-                            <div class="col-sm-12 mt-1">
-                                <img t-if="reservation.agency_id and reservation.agency_id.id" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="80" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
-                                <span t-else="">
-                                    <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
-                                </span>
-                            </div>
                             <div class="col-sm-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
                                     <h4 class="col-6 modal-title">
@@ -255,17 +249,23 @@
                             </div>
                             <div class="col-sm-12 mt-2">
                                 <div class="row o_pms_pwa_modal_buttons" t-if="reservation.primary_button">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4">
                                         <t t-raw="reservation.primary_button" />
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-4" style="text-align: inline-end;">
                                         <span class="dropdown">
-                                            <a role="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" href="#" >Otras opciones</a>
+                                            <a role="button" class="btn btn-secondary dropdown-toggle" style="max_width:30%;" data-toggle="dropdown" href="#" >Otras opciones</a>
 
                                             <div class="dropdown-menu" aria-labelledby="dLabel">
                                                 <t t-raw="reservation.secondary_buttons" />
                                                 <button class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation" t-att-data-folio_id="reservation.folio_id.id" type="button">Añadir habitación</button>
                                             </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-4 align-self-center">
+                                        <img t-if="reservation.agency_id and reservation.agency_id.id" style="float:right;" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="40" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
+                                        <span t-else="">
+                                            <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
                                         </span>
                                     </div>
                                 </div>
