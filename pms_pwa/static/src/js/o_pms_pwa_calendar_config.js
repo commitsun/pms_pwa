@@ -43,6 +43,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
             event.preventDefault();
 
             var room_type = {};
+            var send;
             $("#calendar_conf_table_line input").each(function (index) {
                 // console.log(index);
                 var input = $(this);
@@ -51,6 +52,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     // Value['pricelist_id'].push(input.data('pricelist'));
                     input_array[input.attr("name")] = input.val();
                     var price = input.data("pricelist");
+                    var availability_plan = input.data("availability_plan");
                     var room = input.data("room");
                     var date = input.data("date");
                     // Var input_name = input.attr("name");
@@ -91,11 +93,15 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     room_type[room].pricelist_id[price].date[formatted_date].push(
                         input_array
                     );
+                    send = {
+                        room_type : room_type,
+                        availability_plan: availability_plan,
+                    }
                 }
             });
             // Console.log(room_type);
             ajax.jsonRpc("/calendar/config/save", "call", {
-                room_type,
+                send
             }).then(function (new_data) {
                 if (!JSON.parse(new_data).result) {
                     new_displayDataAlert(new_data);
