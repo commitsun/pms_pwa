@@ -317,7 +317,7 @@
                                                             </div>
                                                         </span>
                                                         <span t-if="percent_avail &gt; 49 and percent_avail &lt; 75" style="width:100%">
-                                                            <div style="col border-radius: 5%; background-color:rgb(255, 224, 153); margin-right:3px; margin-left:65px height:5px;"/>
+                                                            <div style="col border-radius: 5%; background-color:rgb(255, 224, 153); margin-right:3px; margin-left:65px; height:5px;"/>
                                                             <div class="col percentage-value" style="font-weight: bold;">
                                                                 <t t-esc="percent_avail"  t-options="{'widget': 'float', 'precision': 0}"/> %
                                                             </div>
