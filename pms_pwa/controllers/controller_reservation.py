@@ -511,6 +511,18 @@ class PmsReservation(http.Controller):
                             .id
                         )
 
+                    # PRICELIST
+                    elif (
+                        param == "pricelist_id"
+                        and int(params["pricelist_id"])
+                        != reservation.pricelist_id.id
+                    ):
+                        reservation_values["pricelist_id"] = (
+                            request.env["product.pricelist"]
+                            .browse(int(params["pricelist_id"]))
+                            .id
+                        )
+
                     # SEGMENTATION
                     # TODO
 
