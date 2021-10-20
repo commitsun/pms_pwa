@@ -10,7 +10,6 @@ odoo.define("pms_pwa.country_search", function () {
                     dataType: "json",
                     data: {keywords: request.term, model: "res.country", id: null},
                     success: function (data) {
-                        console.log("data => ", data);
                         response(
                             $.map(data, function (item) {
                                 return {
@@ -29,7 +28,6 @@ odoo.define("pms_pwa.country_search", function () {
                 });
             },
             select: function (suggestion, term, item) {
-                console.log("suggestion", suggestion, term, item);
                 if (term && term.item) {
                     $(suggestion.target.parentElement)
                         .find('input[name="country_id"]')

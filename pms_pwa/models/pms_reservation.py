@@ -275,6 +275,7 @@ class PmsReservation(models.Model):
                     )
             checkin_partners[checkin.id] = {
                 "id": checkin.id,
+                "partner_id": checkin.partner_id.id if checkin.partner_id else None,
                 "firstname": checkin.firstname,
                 "lastname": checkin.lastname,
                 "lastname2": checkin.lastname2,
@@ -297,8 +298,8 @@ class PmsReservation(models.Model):
                     "id": checkin.state_id.id if checkin.state_id else False,
                     "name": checkin.state_id.name if checkin.state_id else "",
                 },
-                "state_name": checkin.partner_id.state_id.display_name
-                if checkin.partner_id and checkin.partner_id.state_id
+                "state_name": checkin.state_id.display_name
+                if checkin.state_id
                 else None,
                 "country_id": {
                     "id": checkin.nationality_id.id
@@ -308,8 +309,8 @@ class PmsReservation(models.Model):
                     if checkin.nationality_id
                     else "",
                 },
-                "country_name": checkin.partner_id.country_id.display_name
-                if checkin.partner_id and checkin.partner_id.country_id
+                "country_name": checkin.nationality_id.display_name
+                if checkin.nationality_id
                 else None,
                 "allowed_state_ids": allowed_states,
                 "state": checkin.state or False,

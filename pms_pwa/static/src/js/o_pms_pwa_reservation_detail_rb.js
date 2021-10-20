@@ -6,7 +6,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var invoice_lines = [];
     var core = require("web.core");
     var _t = core._t;
-    var folio_id = $("form[name='reservation_detail_form'] input[name='folio_id']").val();
+    var folio_id = $(
+        "form[name='reservation_detail_form'] input[name='folio_id']"
+    ).val();
     var reservation_id = $("input[name='reservation_id']").val();
 
     // Calendario
@@ -242,11 +244,14 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 values[main_field] = {};
                 values[main_field][field_id] = {};
                 if (new_event.currentTarget.dataset.subservice_name) {
-                    var subservice_name = new_event.currentTarget.dataset.subservice_name;
+                    var subservice_name =
+                        new_event.currentTarget.dataset.subservice_name;
                     var subservice_field_id =
-                    new_event.currentTarget.dataset.subservice_field_id;
+                        new_event.currentTarget.dataset.subservice_field_id;
                     values[main_field][field_id][subservice_name] = {};
-                    values[main_field][field_id][subservice_name][subservice_field_id] = {};
+                    values[main_field][field_id][subservice_name][
+                        subservice_field_id
+                    ] = {};
                     values[main_field][field_id][subservice_name][subservice_field_id][
                         new_event.currentTarget.name
                     ] = new_event.currentTarget.value;
@@ -257,10 +262,10 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             } else {
                 values[new_event.currentTarget.name] = new_event.currentTarget.value;
             }
-            // values = {reservation_id: reservation_id};
+            // Values = {reservation_id: reservation_id};
             // values[new_event.currentTarget.name] = new_event.currentTarget.value;
         }
-        // console.log("--->", new_event);
+        // Console.log("--->", new_event);
         // console.log("VAlue --->", values);
         if (new_event.currentTarget.name !== "range_check_date_detail_reservation") {
             ajax.jsonRpc(
@@ -280,10 +285,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         }
     });
     $(function () {
-        setTimeout(function(){
+        setTimeout(function () {
             $(".selectpicker").selectpicker();
         }, 500);
-
     });
     // Cargamos la página y las líneas
     $(document).ready(function () {
@@ -404,11 +408,13 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             partner_values: [
                 {
                     name: $("input[name='invoice_name']").val(),
+                    partner_id: $("input[name='partner_id']").val(),
                     vat: $("input[name='invoice_vat']").val(),
                     address: $("input[name='invoice_street']").val(),
                     postal_code: $("input[name='invoice_postal_code']").val(),
                     city: $("input[name='invoice_city']").val(),
                     country: $("input[name='invoice_country']").val(),
+                    country_id: $("input[name='country_id']").val(),
                 },
             ],
             payment_method: parseInt(
@@ -491,18 +497,14 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         });
     });
 
-    $(".o_pms_pwa_button_print_checkin").on("click", function (
-        new_event
-    ) {
+    $(".o_pms_pwa_button_print_checkin").on("click", function (new_event) {
         new_event.preventDefault();
         var self = this;
         var button = new_event.currentTarget;
         var reservation_id = false;
-        // var reservation_ids = {};
+        // Var reservation_ids = {};
         try {
-            reservation_id = button
-                .closest("tr")
-                .getAttribute("data-id");
+            reservation_id = button.closest("tr").getAttribute("data-id");
         } catch (error) {
             try {
                 reservation_id = button.getAttribute("data-id");
@@ -510,32 +512,42 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                 reservation_id = $("input[name='id']").val();
             }
         }
-        let url = '/checkins/pdf/' + reservation_id;
+        const url = "/checkins/pdf/" + reservation_id;
         // Open the window
-        let printWindow = window.open( url, 'Print', 'left=200, top=200, width=950, height=500, toolbar=0, resizable=0');
-        printWindow.addEventListener('load', function() {
-            printWindow.print();
-            setTimeout(function(){
-                printWindow.close();
-            }, 500);
-        }, true);
+        const printWindow = window.open(
+            url,
+            "Print",
+            "left=200, top=200, width=950, height=500, toolbar=0, resizable=0"
+        );
+        printWindow.addEventListener(
+            "load",
+            function () {
+                printWindow.print();
+                setTimeout(function () {
+                    printWindow.close();
+                }, 500);
+            },
+            true
+        );
     });
 
     // Nueva reserva
     $(document).on("click", "#o_pms_pwa_button_new_reservation", function (event) {
         event.preventDefault();
-            var button = event.currentTarget;
-            var new_res_folio_id = false;
-            $(".o_pms_pwa_reservation_modal").modal("toggle");
-            try {
-                new_res_folio_id = button.getAttribute("data-folio_id");
-            } catch (error) {
-                console.log("error => ", error);
-            }
+        var button = event.currentTarget;
+        var new_res_folio_id = false;
+        $(".o_pms_pwa_reservation_modal").modal("toggle");
+        try {
+            new_res_folio_id = button.getAttribute("data-folio_id");
+        } catch (error) {
+            console.log("error => ", error);
+        }
 
-            if (new_res_folio_id) {
-                $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(new_res_folio_id);
-                $("button#button_reservation_modal").click();
-            }
+        if (new_res_folio_id) {
+            $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(
+                new_res_folio_id
+            );
+            $("button#button_reservation_modal").click();
+        }
     });
 });

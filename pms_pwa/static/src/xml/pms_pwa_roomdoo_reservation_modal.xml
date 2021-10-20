@@ -1152,7 +1152,7 @@
                                                         </label>
                                                         <input class="form-control" type="email" name="email" t-att-value="partner_value['email'] ? partner_value['email'] : ''" />
 
-                                                        <input class="form-control" type="hidden" name="pms_property_id" t-att-value="reservation.pms_property_id" />
+                                                        <input class="form-control" type="hidden" name="pms_property_id" t-att-value="reservation.pms_property_id.id" />
                                                         <input class="form-control" type="hidden" name="id" t-att-value="partner" />
                                                     </div>
                                                     <div class="col-sm-12 mt-2">
@@ -1210,7 +1210,7 @@
                                                             País
                                                         </label>
                                                         <input t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_country_name" type="text" name="country_name" placeholder="País" t-att-value="partner_value['country_name'] ? partner_value['country_name'] : ''" />
-                                                        <input type="hidden" name="country_id" t-att-value="partner_value['country_id'] ? partner_value['country_id'] : ''" />
+                                                        <input type="hidden" name="country_id" t-att-value="partner_value['country_id'] ? partner_value['country_id']['id'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
@@ -1218,7 +1218,7 @@
                                                             Provincia
                                                         </label>
                                                        <input t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner_value['state_name'] ? partner_value['state_name'] : ''" />
-                                                       <input type="hidden" name="state_id" t-att-value="partner_value['state_id'] ? partner_value['state_id'] : ''" />
+                                                       <input type="hidden" name="state_id" t-att-value="partner_value['state_id'] ? partner_value['state_id']['id'] : ''" />
                                                     </div>
 
                                                 </div>

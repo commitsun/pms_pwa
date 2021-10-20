@@ -1424,12 +1424,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             .find("input[name='pms_property_id']")
                                             .val(),
                                         country_id: element
-                                            .find("select[name='country_id'] option")
-                                            .filter(":selected")
+                                            .find("input[name='country_id']")
                                             .val(),
                                         state_id: element
-                                            .find("select[name='state_id'] option")
-                                            .filter(":selected")
+                                            .find("input[name='state_id']")
                                             .val(),
                                     });
                                 }
@@ -1450,63 +1448,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             var check_partner_id =
                                                 "#checkin_partner_" + key;
 
-                                            var allowed_fields = [
-                                                //"allowed_country_ids",
-                                                "allowed_state_ids",
-                                            ];
-                                            $.each(allowed_fields, function (
-                                                akey,
-                                                avalue
-                                            ) {
-                                                try {
-                                                    var select = $(
-                                                        check_partner_id +
-                                                            " select[data-select='" +
-                                                            avalue +
-                                                            "']"
-                                                    );
-                                                } catch (error) {
-                                                    console.log(error);
-                                                }
-
-                                                if (select.length != 0) {
-                                                    select.empty();
-                                                    if (
-                                                        !value[
-                                                            relation_values[avalue]
-                                                        ] &
-                                                        (value[
-                                                            relation_values[avalue]
-                                                        ] ==
-                                                            0)
-                                                    ) {
-                                                        select.append(
-                                                            '<option value="" selected></option>'
-                                                        );
-                                                    }
-
-                                                    $.each(value[avalue], function (
-                                                        subkey,
-                                                        subvalue
-                                                    ) {
-                                                        var option = new Option(
-                                                            subvalue["name"],
-                                                            subvalue["id"]
-                                                        );
-                                                        $(option).html(
-                                                            subvalue["name"]
-                                                        );
-                                                        select.append(option);
-                                                    });
-                                                }
-                                            });
-
                                             $.each(value, function (key2, value2) {
                                                 if (
                                                     key2 != "gender" &&
                                                     key2 != "document_type" &&
-                                                    key2 != "country_id" &&
-                                                    key2 != "state_id" &&
                                                     key2 != "state"
                                                 ) {
                                                     var input = $(
@@ -1515,7 +1460,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             key2 +
                                                             "']"
                                                     );
-                                                    if (value2) {
+                                                    if (value2 && "id" in value2) {
+                                                        input.val(value2["id"]);
+                                                    } else if (value2) {
                                                         input.val(value2);
                                                     }
                                                 } else {
@@ -1631,12 +1578,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         .find("input[name='pms_property_id']")
                                         .val(),
                                     country_id: element
-                                        .find("select[name='country_id'] option")
-                                        .filter(":selected")
+                                        .find("input[name='country_id']")
                                         .val(),
                                     state_id: element
-                                        .find("select[name='state_id'] option")
-                                        .filter(":selected")
+                                        .find("input[name='state_id']")
                                         .val(),
                                 });
                             }
