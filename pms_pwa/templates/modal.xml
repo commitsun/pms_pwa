@@ -219,6 +219,7 @@
                                                 Nombre
                                             </label>
                                             <input class="form-control o_pms_pwa_search_partner" type="text" style="background-color: #daf7fc !important;" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                            <input type="hidden" class="call_booking_engine" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">

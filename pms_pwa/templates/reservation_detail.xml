@@ -679,7 +679,8 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             Nombre
                                                                         </label>
-                                                                            <input class="form-control" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
+                                                                            <input class="form-control o_pms_pwa_search_partner" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
+                                                                            <input type="hidden" name="partner_id" t-attf-value="{{ reservation.folio_id.partner_id.id }}" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="row mt-2">
@@ -719,7 +720,8 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             País
                                                                         </label>
-                                                                            <input class="form-control" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
+                                                                            <input class="form-control o_pms_pwa_search_country_name" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
+                                                                            <input type="hidden" name="country_id" t-attf-value="{{ reservation.folio_id.partner_id.country_id.id }}" />
                                                                         </div>
                                                                     </div>
                                                                 </div>

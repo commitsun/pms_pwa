@@ -266,11 +266,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             var selected_display = $(
                                 'input[name="selected_display"]'
                             ).val();
-                            if (selected_display == 'ubication') {
+                            if (selected_display == "ubication") {
                                 var selected_id = updated_data.current_ubication_id;
-                            } else if (selected_display == 'room_type') {
+                            } else if (selected_display == "room_type") {
                                 var selected_id = updated_data.current_room_type_id;
-                            } else if (selected_display == 'pms_property') {
+                            } else if (selected_display == "pms_property") {
                                 var selected_id = updated_data.current_property_id;
                             }
                             ajax.jsonRpc("/calendar/line", "call", {
@@ -282,12 +282,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     obj_list: data.reservations,
                                     csrf_token: csrf_token,
                                 });
-                                $(
-                                    String(
-                                        "#collapse_accordion_" +
-                                        selected_id
-                                    )
-                                ).html(html);
+                                $(String("#collapse_accordion_" + selected_id)).html(
+                                    html
+                                );
                             });
                         } catch (error) {
                             console.log(error);
@@ -1038,8 +1035,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             try {
                                 var selector =
                                     "td[data-id=" + modal_reservation_id + "]";
-                                if ($(selector)) {
+                                var selector_list =
+                                    "table#o_pms_pwa_reservation_list_table tr[data-id=" +
+                                    modal_reservation_id +
+                                    "]";
+                                if ($(selector).length != 0) {
                                     $(selector).click();
+                                } else if ($(selector_list).length != 0) {
+                                    $(selector_list).find("td.first-col").click();
                                 } else {
                                     $(
                                         "<td class='launch_modal' data-id='" +
@@ -1052,8 +1055,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 }
                             } catch (error) {
                                 console.log(error);
-                                location.href =
-                                    "/reservation/" + new_data.reservation_id;
+                                location.href = "/reservation/" + modal_reservation_id;
                             }
                         });
                         $("#multi_reservation_modal").on(
@@ -1067,19 +1069,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 var values = {};
                                 // Set checkin & checkout separated
                                 if (
-                                    new_event.currentTarget.name ==
-                                    "checkin" || new_event.currentTarget.name ==
-                                    "checkout"
+                                    new_event.currentTarget.name == "checkin" ||
+                                    new_event.currentTarget.name == "checkout"
                                 ) {
-                                    let value_range_picker = new_event.currentTarget.getAttribute("data-range");
-                                    if(new_event.currentTarget.name == "checkin"){
+                                    let value_range_picker = new_event.currentTarget.getAttribute(
+                                        "data-range"
+                                    );
+                                    if (new_event.currentTarget.name == "checkin") {
                                         values.checkin = new_event.currentTarget.value;
-                                        values.checkout = value_range_picker.split(" - ")[1];
-                                    }else{
-                                        values.checkin = value_range_picker.split(" - ")[0];
+                                        values.checkout = value_range_picker.split(
+                                            " - "
+                                        )[1];
+                                    } else {
+                                        values.checkin = value_range_picker.split(
+                                            " - "
+                                        )[0];
                                         values.checkout = new_event.currentTarget.value;
                                     }
-
                                 } else {
                                     values[new_event.currentTarget.name] =
                                         new_event.currentTarget.value;
@@ -1087,7 +1093,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 // si es el mismo id, cambios en modal, sino, llamo función
                                 if (reservation_id == modal_reservation_id) {
                                     // Esto debería cambiar la fecha de la modal de reserva
-                                    values.range_check_date_modal = values.checkin + " - " + values.checkout;
+                                    values.range_check_date_modal =
+                                        values.checkin + " - " + values.checkout;
                                     try {
                                         if (
                                             new_event.currentTarget.name ==
@@ -1120,17 +1127,30 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     ] = modal_reservation_id;
 
                                     // Set checkin & checkout separated
-                                    if (new_event.currentTarget.name == "checkin" || new_event.currentTarget.name == "checkout") {
-                                        let value_range_picker = new_event.currentTarget.getAttribute("data-range");
-                                        if(new_event.currentTarget.name == "checkin"){
-                                            values["folio_reservations"]['checkin'] = new_event.currentTarget.value;
-                                            values["folio_reservations"]['checkout'] = value_range_picker.split(" - ")[1];
-                                        }else{
-                                            values["folio_reservations"]['checkin'] = value_range_picker.split(" - ")[0];
-                                            values["folio_reservations"]['checkout'] = new_event.currentTarget.value;
+                                    if (
+                                        new_event.currentTarget.name == "checkin" ||
+                                        new_event.currentTarget.name == "checkout"
+                                    ) {
+                                        let value_range_picker = new_event.currentTarget.getAttribute(
+                                            "data-range"
+                                        );
+                                        if (new_event.currentTarget.name == "checkin") {
+                                            values["folio_reservations"]["checkin"] =
+                                                new_event.currentTarget.value;
+                                            values["folio_reservations"][
+                                                "checkout"
+                                            ] = value_range_picker.split(" - ")[1];
+                                        } else {
+                                            values["folio_reservations"][
+                                                "checkin"
+                                            ] = value_range_picker.split(" - ")[0];
+                                            values["folio_reservations"]["checkout"] =
+                                                new_event.currentTarget.value;
                                         }
                                     } else {
-                                        values["folio_reservations"][new_event.currentTarget.name] = new_event.currentTarget.value;
+                                        values["folio_reservations"][
+                                            new_event.currentTarget.name
+                                        ] = new_event.currentTarget.value;
                                     }
                                     ajax.jsonRpc(
                                         "/reservation/" +
@@ -1214,7 +1234,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 $("#multi_days_values input:checkbox:checked")
                                     .map(function () {
                                         if (this.name != "apply_on_all_week") {
-                                            if (this.value == 'on') {
+                                            if (this.value == "on") {
                                                 days_week[this.name] = true;
                                             }
                                         } else {
@@ -1404,12 +1424,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             .find("input[name='pms_property_id']")
                                             .val(),
                                         country_id: element
-                                            .find("select[name='country_id'] option")
-                                            .filter(":selected")
+                                            .find("input[name='country_id']")
                                             .val(),
                                         state_id: element
-                                            .find("select[name='state_id'] option")
-                                            .filter(":selected")
+                                            .find("input[name='state_id']")
                                             .val(),
                                     });
                                 }
@@ -1430,63 +1448,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             var check_partner_id =
                                                 "#checkin_partner_" + key;
 
-                                            var allowed_fields = [
-                                                //"allowed_country_ids",
-                                                "allowed_state_ids",
-                                            ];
-                                            $.each(allowed_fields, function (
-                                                akey,
-                                                avalue
-                                            ) {
-                                                try {
-                                                    var select = $(
-                                                        check_partner_id +
-                                                            " select[data-select='" +
-                                                            avalue +
-                                                            "']"
-                                                    );
-                                                } catch (error) {
-                                                    console.log(error);
-                                                }
-
-                                                if (select.length != 0) {
-                                                    select.empty();
-                                                    if (
-                                                        !value[
-                                                            relation_values[avalue]
-                                                        ] &
-                                                        (value[
-                                                            relation_values[avalue]
-                                                        ] ==
-                                                            0)
-                                                    ) {
-                                                        select.append(
-                                                            '<option value="" selected></option>'
-                                                        );
-                                                    }
-
-                                                    $.each(value[avalue], function (
-                                                        subkey,
-                                                        subvalue
-                                                    ) {
-                                                        var option = new Option(
-                                                            subvalue["name"],
-                                                            subvalue["id"]
-                                                        );
-                                                        $(option).html(
-                                                            subvalue["name"]
-                                                        );
-                                                        select.append(option);
-                                                    });
-                                                }
-                                            });
-
                                             $.each(value, function (key2, value2) {
                                                 if (
                                                     key2 != "gender" &&
                                                     key2 != "document_type" &&
-                                                    key2 != "country_id" &&
-                                                    key2 != "state_id" &&
                                                     key2 != "state"
                                                 ) {
                                                     var input = $(
@@ -1495,18 +1460,41 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             key2 +
                                                             "']"
                                                     );
-                                                    if (value2) {
+                                                    if (value2 && "id" in value2) {
+                                                        input.val(value2["id"]);
+                                                    } else if (value2) {
                                                         input.val(value2);
                                                     }
                                                 } else {
-                                                    if (key2 == 'state') {
-                                                        var button = $(check_partner_id + " .o_pms_pwa_checkin_confirm_button");
-                                                        if (value2 == 'precheckin') {
-                                                            button.prop("disabled", false);
-                                                            button.addClass("o_pms_pwa_button_checkin_confirm btn-message").removeClass("o_pms_pwa_disabled btn-grey-300");
+                                                    if (key2 == "state") {
+                                                        var button = $(
+                                                            check_partner_id +
+                                                                " .o_pms_pwa_checkin_confirm_button"
+                                                        );
+                                                        if (value2 == "precheckin") {
+                                                            button.prop(
+                                                                "disabled",
+                                                                false
+                                                            );
+                                                            button
+                                                                .addClass(
+                                                                    "o_pms_pwa_button_checkin_confirm btn-message"
+                                                                )
+                                                                .removeClass(
+                                                                    "o_pms_pwa_disabled btn-grey-300"
+                                                                );
                                                         } else {
-                                                            button.prop("disabled", true);
-                                                            button.addClass("o_pms_pwa_disabled btn-grey-300").removeClass("o_pms_pwa_button_checkin_confirm btn-message");
+                                                            button.prop(
+                                                                "disabled",
+                                                                true
+                                                            );
+                                                            button
+                                                                .addClass(
+                                                                    "o_pms_pwa_disabled btn-grey-300"
+                                                                )
+                                                                .removeClass(
+                                                                    "o_pms_pwa_button_checkin_confirm btn-message"
+                                                                );
                                                         }
                                                     } else {
                                                         if (value2 && value2["id"]) {
@@ -1590,12 +1578,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         .find("input[name='pms_property_id']")
                                         .val(),
                                     country_id: element
-                                        .find("select[name='country_id'] option")
-                                        .filter(":selected")
+                                        .find("input[name='country_id']")
                                         .val(),
                                     state_id: element
-                                        .find("select[name='state_id'] option")
-                                        .filter(":selected")
+                                        .find("input[name='state_id']")
                                         .val(),
                                 });
                             }
@@ -1656,6 +1642,141 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 self._onClickCheckinButton(modal_event);
                             }
                         });
+
+                        // Autocomplete country
+                        $(
+                            ".bs-stepper-content .o_pms_pwa_search_country_name"
+                        ).autocomplete({
+                            source: function (request, response) {
+                                var checkin_partner = $(
+                                    ".bs-stepper-content .o_pms_pwa_search_country_name"
+                                ).data("id");
+                                $.ajax({
+                                    url: "/pms_checkin_partner/search",
+                                    method: "GET",
+                                    dataType: "json",
+                                    data: {
+                                        keywords: request.term,
+                                        model: "res.country",
+                                        id: checkin_partner,
+                                    },
+                                    success: function (data) {
+                                        console.log("data => ", data);
+                                        response(
+                                            $.map(data, function (item) {
+                                                return {
+                                                    label:
+                                                        (item.type === "c"
+                                                            ? "Category: "
+                                                            : "") + item.name,
+                                                    value: item.name,
+                                                    id: item.id,
+                                                };
+                                            })
+                                        );
+                                    },
+                                    error: function (error) {
+                                        console.error(error);
+                                    },
+                                });
+                            },
+                            select: function (suggestion, term, item) {
+                                console.log("suggestion", suggestion, term, item);
+                                if (term && term.item) {
+                                    $(suggestion.target.parentElement)
+                                        .find('input[name="country_id"]')
+                                        .val(term.item.id);
+                                }
+                            },
+                            minLength: 1,
+                        });
+
+                        // Autocomplete state
+                        $(
+                            ".bs-stepper-content .o_pms_pwa_search_state_name"
+                        ).autocomplete({
+                            source: function (request, response) {
+                                var checkin_partner = $(
+                                    ".bs-stepper-content .o_pms_pwa_search_state_name"
+                                ).data("id");
+                                $.ajax({
+                                    url: "/pms_checkin_partner/search",
+                                    method: "GET",
+                                    dataType: "json",
+                                    data: {
+                                        keywords: request.term,
+                                        model: "res.country.state",
+                                        id: checkin_partner,
+                                    },
+                                    success: function (data) {
+                                        response(
+                                            $.map(data, function (item) {
+                                                return {
+                                                    label:
+                                                        (item.type === "c"
+                                                            ? "Category: "
+                                                            : "") + item.name,
+                                                    value: item.name,
+                                                    id: item.id,
+                                                };
+                                            })
+                                        );
+                                    },
+                                    error: function (error) {
+                                        console.error(error);
+                                    },
+                                });
+                            },
+                            select: function (suggestion, term, item) {
+                                console.log("suggestion", suggestion, term, item);
+                                if (term && term.item) {
+                                    $(suggestion.target.parentElement)
+                                        .find('input[name="state_id"]')
+                                        .val(term.item.id);
+                                }
+                            },
+                            minLength: 1,
+                        });
+
+                        // Autocomplete partner
+                        $(".bs-stepper-content .o_pms_pwa_search_partner").autocomplete(
+                            {
+                                source: function (request, response) {
+                                    $.ajax({
+                                        url: "/partner/search",
+                                        method: "GET",
+                                        dataType: "json",
+                                        data: {keywords: request.term, category: false},
+                                        success: function (data) {
+                                            response(
+                                                $.map(data, function (item) {
+                                                    return {
+                                                        label:
+                                                            (item.type === "c"
+                                                                ? "Category: "
+                                                                : "") + item.name,
+                                                        value: item.name,
+                                                        id: item.id,
+                                                    };
+                                                })
+                                            );
+                                        },
+                                        error: function (error) {
+                                            console.error(error);
+                                        },
+                                    });
+                                },
+                                select: function (suggestion, term, item) {
+                                    console.log("suggestion", suggestion, term, item);
+                                    if (term && term.item) {
+                                        $(suggestion.target.parentElement)
+                                            .find('input[name="partner_id"]')
+                                            .val(term.item.id);
+                                    }
+                                },
+                                minLength: 1,
+                            }
+                        );
                     }
                 });
             });
@@ -1800,10 +1921,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
 
             if (folio_id) {
-                $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(folio_id);
+                $("#o_pms_pwa_new_reservation_modal input[name='folio_id']").val(
+                    folio_id
+                );
                 $("button#button_reservation_modal").click();
             }
-        }
+        },
     });
 
     return publicWidget.registry.ReservationTableWidget;
