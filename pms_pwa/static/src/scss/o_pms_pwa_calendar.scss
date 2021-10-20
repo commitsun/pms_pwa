@@ -135,6 +135,28 @@ section.o_pms_pwa_roomdoo {
             tbody {
                 tr {
                     td {
+                        .circles-container {
+                            .circle {
+                                height: 25px;
+                                width: 25px;
+                                border-radius: 50%;
+                                font-size: 0.9rem;
+                                font-weight: bold;
+                                padding: 0.1rem;
+                                color: white;
+                                cursor: pointer;
+                            }
+                            div:nth-child(1) > .circle {
+                                background-color: rgba(1, 182, 227, 0.5);
+                            }
+                            div:nth-child(2) > .circle {
+                                background-color: rgba(0, 0, 0, 0.5);
+                            }
+                            div:nth-child(3) > .circle {
+                                background-color: rgba(255, 0, 0, 0.5);
+                            }
+
+                        }
                         padding-bottom: 0;
                         height: 20px;
                     }

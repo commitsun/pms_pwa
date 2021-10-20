@@ -238,7 +238,7 @@
                                 </div>
                             </div>
                             <!-- button to open/close all configuration rooms -->
-                            <div class="col-6 col-md-3 col-xl-2 offset-md-9 offset-lg-10 mt-md-4 pr-0 mt-4">
+                            <div class="col-6 col-md-3 col-xl-2 offset-md-9 offset-lg-9 offset-xl-10 mt-md-4 pr-0 mt-4">
                                 <button
                                     id="open_collapse"
                                     name="open_collapse"
@@ -345,15 +345,6 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <!-- <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
-                                                            title="Bloqueadas"
-                                                        >
-                                                            <div class="circle">
-                                                                <span >
-                                                                    33
-                                                                </span>
-                                                            </div>
-                                                        </div> -->
                                                     </div>
 
                                                     <div class="row percentage-container">
