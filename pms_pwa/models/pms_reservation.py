@@ -195,7 +195,7 @@ class PmsReservation(models.Model):
                         checkin_partner.action_on_board()
             return True
         except Exception as e:
-            print(e)
+            _logger.error(e)
             return json.dumps({"result": False, "message": str(e)})
 
     def _get_reservation_services(self):
@@ -262,10 +262,7 @@ class PmsReservation(models.Model):
         checkin_partners = {}
 
         for checkin in self.checkin_partner_ids:
-            allowed_states = [{
-                "id": False,
-                "name": ""
-            }]
+            allowed_states = [{"id": False, "name": ""}]
             if checkin.nationality_id:
                 for state in self.env["res.country.state"].search(
                     [("country_id", "=", checkin.nationality_id.id)]
@@ -277,6 +274,8 @@ class PmsReservation(models.Model):
                         }
                     )
             checkin_partners[checkin.id] = {
+                "id": checkin.id,
+                "partner_id": checkin.partner_id.id if checkin.partner_id else None,
                 "firstname": checkin.firstname,
                 "lastname": checkin.lastname,
                 "lastname2": checkin.lastname2,
@@ -299,6 +298,9 @@ class PmsReservation(models.Model):
                     "id": checkin.state_id.id if checkin.state_id else False,
                     "name": checkin.state_id.name if checkin.state_id else "",
                 },
+                "state_name": checkin.state_id.display_name
+                if checkin.state_id
+                else None,
                 "country_id": {
                     "id": checkin.nationality_id.id
                     if checkin.nationality_id
@@ -307,6 +309,9 @@ class PmsReservation(models.Model):
                     if checkin.nationality_id
                     else "",
                 },
+                "country_name": checkin.nationality_id.display_name
+                if checkin.nationality_id
+                else None,
                 "allowed_state_ids": allowed_states,
                 "state": checkin.state or False,
                 "readonly_fields": self._get_checkin_read_only_fields(checkin),
@@ -478,7 +483,11 @@ class PmsReservation(models.Model):
             [
                 "|",
                 ("pms_sale_channel_ids", "=", False),
-                ("pms_sale_channel_ids", "in", channel_type_id if channel_type_id else []),
+                (
+                    "pms_sale_channel_ids",
+                    "in",
+                    channel_type_id if channel_type_id else [],
+                ),
                 "|",
                 ("pms_property_ids", "=", False),
                 ("pms_property_ids", "in", pms_property_ids),
@@ -486,7 +495,9 @@ class PmsReservation(models.Model):
         )
         allowed_pricelists = []
         for pricelist in pricelists:
-            if not pricelist.pms_sale_channel_ids or any(not channel.is_on_line for channel in pricelist.pms_sale_channel_ids):
+            if not pricelist.pms_sale_channel_ids or any(
+                not channel.is_on_line for channel in pricelist.pms_sale_channel_ids
+            ):
                 allowed_pricelists.append(
                     {
                         "id": pricelist.id,
@@ -681,7 +692,9 @@ class PmsReservation(models.Model):
                 "id": self.pricelist_id.id if self.pricelist_id else False,
                 "name": self.pricelist_id.name if self.pricelist_id else "",
             },
-            "allowed_pricelists": self._get_allowed_pricelists([self.pms_property_id.id], self.channel_type_id.id),
+            "allowed_pricelists": self._get_allowed_pricelists(
+                [self.pms_property_id.id], self.channel_type_id.id
+            ),
             "allowed_segmentations": self._get_allowed_segmentations(),
             "allowed_channel_type_ids": self.pms_property_id._get_allowed_channel_type_ids(),
             "allowed_agency_ids": self.pms_property_id._get_allowed_agency_ids(
@@ -815,9 +828,22 @@ class PmsReservation(models.Model):
         self.ensure_one()
         fields_readonly = [("nights")]
         if self.channel_type_id.is_on_line:
-            fields_readonly.extend(["channel_type_id", "pms_property_id", "room_type_id", "agency_id", "user_name",
-                                   "checkin", "checkout", "adults", "reservation_type", "pricelsit_id", "board_service_room_id",
-                                   "reservation_line_ids"])
+            fields_readonly.extend(
+                [
+                    "channel_type_id",
+                    "pms_property_id",
+                    "room_type_id",
+                    "agency_id",
+                    "user_name",
+                    "checkin",
+                    "checkout",
+                    "adults",
+                    "reservation_type",
+                    "pricelsit_id",
+                    "board_service_room_id",
+                    "reservation_line_ids",
+                ]
+            )
         return fields_readonly
 
     def _get_checkin_read_only_fields(self, checkin):

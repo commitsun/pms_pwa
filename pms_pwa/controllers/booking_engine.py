@@ -2,10 +2,11 @@
 
 # -*- coding: utf-8 -*-
 
+import datetime
 import logging
 import pprint
 from datetime import timedelta
-import datetime
+
 from odoo import _, fields, http
 from odoo.http import request
 from odoo.tools.misc import get_lang
@@ -27,7 +28,7 @@ class BookingEngine(http.Controller):
     )
     def booking_engine(self, **kw):
         folio_values = http.request.jsonrequest.get("params")
-        print("folio_values: {}".format(folio_values))
+        _logger.info("folio_values: {}".format(folio_values))
         try:
             # Get property from add room from calendar
             if not folio_values.get("pms_property_id") and folio_values.get("rooms"):
@@ -48,9 +49,12 @@ class BookingEngine(http.Controller):
                     else datetime.datetime.today()
                 )
             elif folio_values["folio_id"]:
-                checkin = request.env["pms.folio"].browse(
-                    int(folio_values["folio_id"])
-                ).reservation_ids[0].checkin
+                checkin = (
+                    request.env["pms.folio"]
+                    .browse(int(folio_values["folio_id"]))
+                    .reservation_ids[0]
+                    .checkin
+                )
             else:
                 checkin = datetime.datetime.today()
 
@@ -68,9 +72,12 @@ class BookingEngine(http.Controller):
                     else checkin + timedelta(days=1)
                 )
             elif folio_values["folio_id"]:
-                checkout = request.env["pms.folio"].browse(
-                    int(folio_values["folio_id"])
-                ).reservation_ids[0].checkout
+                checkout = (
+                    request.env["pms.folio"]
+                    .browse(int(folio_values["folio_id"]))
+                    .reservation_ids[0]
+                    .checkout
+                )
             else:
                 checkout = checkin + timedelta(days=1)
 
@@ -80,21 +87,25 @@ class BookingEngine(http.Controller):
 
             # Default partner
             if folio_values["folio_id"] and first_call:
-                folio = request.env["pms.folio"].browse(
-                    int(folio_values["folio_id"])
+                folio = request.env["pms.folio"].browse(int(folio_values["folio_id"]))
+                folio_values["partner_id"] = (
+                    folio.partner_id.id if folio.partner_id else False
                 )
-                folio_values["partner_id"] = folio.partner_id.id if folio.partner_id else False
                 folio_values["partner_name"] = folio.partner_name
                 folio_values["email"] = folio.email
                 folio_values["mobile"] = folio.mobile
 
             # Pms Property
             if folio_values["folio_id"]:
-                pms_property = request.env["pms.folio"].browse(
-                    int(folio_values["folio_id"])
-                ).pms_property_id
+                pms_property = (
+                    request.env["pms.folio"]
+                    .browse(int(folio_values["folio_id"]))
+                    .pms_property_id
+                )
             elif folio_values.get("pms_property_id"):
-                pms_property = request.env['pms.property'].browse(int(folio_values.get("pms_property_id")))
+                pms_property = request.env["pms.property"].browse(
+                    int(folio_values.get("pms_property_id"))
+                )
             else:
                 pms_property = request.env.user.pms_pwa_property_id
             pms_property_id = pms_property.id
@@ -107,34 +118,46 @@ class BookingEngine(http.Controller):
                 )
             if not pricelist:
                 if first_call and folio_values["folio_id"]:
-                    pricelist = request.env["pms.folio"].browse(
-                        int(folio_values["folio_id"])
-                    ).reservation_ids[0].pricelist_id
+                    pricelist = (
+                        request.env["pms.folio"]
+                        .browse(int(folio_values["folio_id"]))
+                        .reservation_ids[0]
+                        .pricelist_id
+                    )
                 else:
                     pricelist = pms_property.default_pricelist_id
             folio_values["pricelist_id"] = pricelist.id
 
             # Reservation type
             if folio_values.get("folio_id"):
-                folio_values["reservation_type"] = request.env["pms.folio"].browse(
-                    int(folio_values["folio_id"])
-                ).reservation_ids[0].reservation_type
+                folio_values["reservation_type"] = (
+                    request.env["pms.folio"]
+                    .browse(int(folio_values["folio_id"]))
+                    .reservation_ids[0]
+                    .reservation_type
+                )
             elif not folio_values.get("reservation_type"):
                 folio_values["reservation_type"] = "normal"
 
             if folio_values["reservation_type"] != "out":
                 folio_values["out_type"] = False
             else:
-                out_type = folio_values["out_type"] if folio_values.get("out_type") else False
+                out_type = (
+                    folio_values["out_type"] if folio_values.get("out_type") else False
+                )
 
             # Channel and Agency
             if folio_values.get("folio_id"):
-                folio_values["channel_type_id"] = request.env["pms.folio"].browse(
-                    int(folio_values["folio_id"])
-                ).channel_type_id.id
-                folio_values["agency_id"] = request.env["pms.folio"].browse(
-                    int(folio_values["folio_id"])
-                ).agency_id.id
+                folio_values["channel_type_id"] = (
+                    request.env["pms.folio"]
+                    .browse(int(folio_values["folio_id"]))
+                    .channel_type_id.id
+                )
+                folio_values["agency_id"] = (
+                    request.env["pms.folio"]
+                    .browse(int(folio_values["folio_id"]))
+                    .agency_id.id
+                )
 
             if (
                 folio_values.get("agency_id")
@@ -174,18 +197,24 @@ class BookingEngine(http.Controller):
 
             if folio_values["partner_id"]:
                 if not folio_values["partner_name"]:
-                    folio_values["partner_name"] = request.env["res.partner"].browse(
-                        int(folio_values["partner_id"])
-                    ).name
+                    folio_values["partner_name"] = (
+                        request.env["res.partner"]
+                        .browse(int(folio_values["partner_id"]))
+                        .name
+                    )
                 if not folio_values["email"]:
-                    folio_values["email"] = request.env["res.partner"].browse(
-                        int(folio_values["partner_id"])
-                    ).email
+                    folio_values["email"] = (
+                        request.env["res.partner"]
+                        .browse(int(folio_values["partner_id"]))
+                        .email
+                    )
                 if not folio_values["mobile"]:
                     customer = request.env["res.partner"].browse(
                         int(folio_values["partner_id"])
                     )
-                    folio_values["mobile"] = customer.mobile if customer.mobile else customer.phone
+                    folio_values["mobile"] = (
+                        customer.mobile if customer.mobile else customer.phone
+                    )
 
             # prepare amenity ids
             selected_amenity_ids = (
@@ -252,14 +281,17 @@ class BookingEngine(http.Controller):
             #     "name": pms_property.name,
             # }
 
-            folio_values["readonly_fields"] = self._get_read_only_fields
-            folio_values["invisible_fields"] = self._get_invisible_fields
+            # 'readonly_fields': <bound method BookingEngine._get_read_only_fields of <odoo.addons.pms_pwa.controllers.booking_engine.BookingEngine object at 0x7f6810067ee0>>,
+            # 'invisible_fields': <bound method BookingEngine._get_invisible_fields of <odoo.addons.pms_pwa.controllers.booking_engine.BookingEngine object at 0x7f6810067ee0>>
+
+            folio_values["readonly_fields"] = []  # self._get_read_only_fields
+            folio_values["invisible_fields"] = []  # self._get_invisible_fields
 
             _logger.info(folio_values)
 
             return folio_values
         except Exception as e:
-            print("error: {}".format(e))
+            _logger.info("error: {}".format(e))
             return {"result": "error", "message": str(e)}
 
     def _get_allowed_selections_values(self, pms_property, channel_type=False):
@@ -276,11 +308,13 @@ class BookingEngine(http.Controller):
         selection_fields["allowed_agency_ids"] = pms_property._get_allowed_agency_ids(
             channel_type_id=channel_type.id if channel_type else False
         )
-        allowed_amenity_ids = list(set(
-            request.env["pms.room"]
-            .search([("pms_property_id", "=", pms_property.id)])
-            .mapped("room_amenity_ids.id")
-        ))
+        allowed_amenity_ids = list(
+            set(
+                request.env["pms.room"]
+                .search([("pms_property_id", "=", pms_property.id)])
+                .mapped("room_amenity_ids.id")
+            )
+        )
         allowed_amenities = request.env["pms.amenity"].browse(allowed_amenity_ids)
         selection_fields["allowed_amenity_ids"] = []
         for amenity in allowed_amenities:
@@ -296,10 +330,7 @@ class BookingEngine(http.Controller):
         )
         selection_fields["allowed_sale_category_ids"] = [{"id": 0, "name": ""}]
         selection_fields["allowed_sale_category_ids"].extend(
-            [
-                {"id": room_type.id, "name": room_type.name}
-                for room_type in room_types
-            ]
+            [{"id": room_type.id, "name": room_type.name} for room_type in room_types]
         )
         # Board services
         allowed_board_services = room_types.mapped(
@@ -334,10 +365,7 @@ class BookingEngine(http.Controller):
             ]
         )
         selection_fields["allowed_out_services"].extend(
-            [
-                {"id": board.id, "name": board.name}
-                for board in out_service_reasons
-            ]
+            [{"id": board.id, "name": board.name} for board in out_service_reasons]
         )
 
         return selection_fields
@@ -436,8 +464,14 @@ class BookingEngine(http.Controller):
                             room_type_id = room.room_type_id.id
                         else:
                             room_type_id = False
-                        board_room_type = request.env["pms.room.type"].browse(room_type_id).board_service_room_type_ids.filtered(
-                            lambda bsr: bsr.id == int(vals.get("board_service_id")) if vals.get("board_service_id") else False
+                        board_room_type = (
+                            request.env["pms.room.type"]
+                            .browse(room_type_id)
+                            .board_service_room_type_ids.filtered(
+                                lambda bsr: bsr.id == int(vals.get("board_service_id"))
+                                if vals.get("board_service_id")
+                                else False
+                            )
                         )
                         price_per_room = 0
                         if room_type_id:
@@ -445,7 +479,9 @@ class BookingEngine(http.Controller):
                                 "pms.folio.availability.wizard"
                             ]._get_price_by_room_type(
                                 room_type_id=room_type_id,
-                                board_service_room_id=board_room_type.id if board_room_type else False,
+                                board_service_room_id=board_room_type.id
+                                if board_room_type
+                                else False,
                                 checkin=checkin,
                                 checkout=checkout,
                                 pricelist_id=pricelist_id,
@@ -491,9 +527,9 @@ class BookingEngine(http.Controller):
 
     def get_header_groups(self, vals):
         groups = []
-        rooms = request.env["pms.room"].search([
-            ("pms_property_id", "=", vals["pms_property_id"])
-        ])
+        rooms = request.env["pms.room"].search(
+            [("pms_property_id", "=", vals["pms_property_id"])]
+        )
         if vals.get("agrupation_type") == "all":
             groups = [
                 {
@@ -505,7 +541,9 @@ class BookingEngine(http.Controller):
             ]
         elif vals.get("agrupation_type") == "room_type":
             groups = []
-            for room_type in request.env["pms.room.type"].browse(rooms.mapped("room_type_id.id")):
+            for room_type in request.env["pms.room.type"].browse(
+                rooms.mapped("room_type_id.id")
+            ):
                 groups.append(
                     {
                         "group_id": room_type.id,
@@ -516,7 +554,9 @@ class BookingEngine(http.Controller):
                 )
         elif vals.get("agrupation_type") == "ubication":
             groups = []
-            for ubication in request.env["pms.ubication"].browse(rooms.mapped("ubication_id.id")):
+            for ubication in request.env["pms.ubication"].browse(
+                rooms.mapped("ubication_id.id")
+            ):
                 groups.append(
                     {
                         "group_id": ubication.id,
@@ -722,7 +762,7 @@ class BookingEngine(http.Controller):
     def booking_engine_submit(self, **kw):
         folio_values = http.request.jsonrequest.get("params")
         vals = {}
-        print("folio_values: {}".format(folio_values))
+        _logger.info("folio_values: {}".format(folio_values))
         try:
             check_fields = self._check_required_fields(folio_values)
             if check_fields:
@@ -733,10 +773,17 @@ class BookingEngine(http.Controller):
             if folio_values.get("mobile") and folio_values.get("mobile") != "":
                 vals["mobile"] = folio_values.get("mobile")
 
-            # Segmentation
+                # Segmentation
                 if folio_values.get("segmentation_ids"):
                     vals["segmentation_ids"] = [
-                        (6, 0, [int(item) for item in folio_values.get("segmentation_ids")])
+                        (
+                            6,
+                            0,
+                            [
+                                int(item)
+                                for item in folio_values.get("segmentation_ids")
+                            ],
+                        )
                     ]
 
             if folio_values.get("folio_id"):
@@ -800,11 +847,20 @@ class BookingEngine(http.Controller):
                 room_record = request.env["pms.room"].browse(
                     int(room["preferred_room_id"])
                 )
-                room_type_id = int(room["room_type_id"]) if room.get("room_type_id") else room_record.room_type_id.id
+                room_type_id = (
+                    int(room["room_type_id"])
+                    if room.get("room_type_id")
+                    else room_record.room_type_id.id
+                )
                 board_room_type = False
                 if folio_values.get("board_service_room_id"):
-                    board_room_type = request.env["pms.room.type"].browse(room_type_id).board_service_room_type_ids.filtered(
-                        lambda bsr: bsr.id == int(folio_values.get("board_service_room_id"))
+                    board_room_type = (
+                        request.env["pms.room.type"]
+                        .browse(room_type_id)
+                        .board_service_room_type_ids.filtered(
+                            lambda bsr: bsr.id
+                            == int(folio_values.get("board_service_room_id"))
+                        )
                     )
                 reservation_vals = {
                     "partner_name": vals["partner_name"],
@@ -823,7 +879,9 @@ class BookingEngine(http.Controller):
                     ).date(),
                     "adults": int(room["adults"]),
                     "pricelist_id": int(room["pricelist_id"]),
-                    "board_service_room_id": board_room_type.id if board_room_type else False,
+                    "board_service_room_id": board_room_type.id
+                    if board_room_type
+                    else False,
                     "pms_property_id": pms_property.id,
                     "folio_id": folio.id,
                 }
@@ -836,13 +894,19 @@ class BookingEngine(http.Controller):
         avoid_fields = []
         if not folio_values.get("folio_id"):
             if folio_values.get("reservation_type") != "out":
-                if not folio_values.get("partner_name") or folio_values.get("partner_name") == '':
+                if (
+                    not folio_values.get("partner_name")
+                    or folio_values.get("partner_name") == ""
+                ):
                     avoid_fields.append("Nombre")
-                if not folio_values.get("mobile") or folio_values.get("mobile") == '':
+                if not folio_values.get("mobile") or folio_values.get("mobile") == "":
                     avoid_fields.append("Teléfono")
-                if not folio_values.get("email") or folio_values.get("email") == '':
+                if not folio_values.get("email") or folio_values.get("email") == "":
                     avoid_fields.append("E-mail")
-                if not folio_values.get("channel_type_id") or folio_values.get("channel_type_id") == '':
+                if (
+                    not folio_values.get("channel_type_id")
+                    or folio_values.get("channel_type_id") == ""
+                ):
                     avoid_fields.append("Canal de venta")
             else:
                 if not folio_values.get("out_type"):
@@ -853,7 +917,13 @@ class BookingEngine(http.Controller):
         elif len(avoid_fields) == 1:
             mens = "El campo " + avoid_fields[0] + " es obligatorio"
         elif len(avoid_fields) > 1:
-            mens = "Los campos " + ", ".join(avoid_fields[:-1]) + " y " + avoid_fields[-1] + " son obligatorios"
+            mens = (
+                "Los campos "
+                + ", ".join(avoid_fields[:-1])
+                + " y "
+                + avoid_fields[-1]
+                + " son obligatorios"
+            )
         return mens
 
     def _get_read_only_fields(self):
