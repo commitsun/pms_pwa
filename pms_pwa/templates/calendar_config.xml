@@ -97,37 +97,16 @@
                         <div class="row m-0 p-0 mb-2">
                             <!-- title current date -->
                             <div
-                              class="col-6 col-md-3 mt-md-4 col-lg-3 col-xl-12 pr-0 mb-2"
+                              class="col-12 col-md-3 mt-md-4 col-lg-3 col-xl-12 pr-0 mb-2"
                             >
                                 <h2 class="font-weight-bold mb-0 text-uppercase">
                                     <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
                                 </h2>
                             </div>
 
-                            <!-- button to open all rooms -->
-                            <div class="col-6 col-md-3 order-lg-3 col-xl-2 order-md-3 mt-md-4 pr-0 mb-4">
-                                <button
-                                    id="open_collapse"
-                                    name="open_collapse"
-                                    class="btn btn-radius btn-pms_pwa w-100 o_pms_pwa_open_collapse"
-                                >
-                                        Abrir
-                                    </button
-                                >
-                                <button
-                                    id="close_collapse"
-                                    name="close_collapse"
-                                    style="display:none;"
-                                    class="btn btn-radius btn-pms_pwa w-100 o_pms_pwa_close_collapse"
-                                >
-                                        Cerrar
-                                    </button
-                                >
-                            </div>
-
                             <!-- select calendar type -->
                             <div
-                              class="col-6 col-md-3 order-md-1 pr-0"
+                              class="col-6 col-md-3 col-lg-2 col-xl-3 pr-0"
                             >
                                 Calendario:
                                 <div class="o_pms_pwa_calendar_select">
@@ -145,7 +124,7 @@
 
                             <!-- select pricelist -->
                             <div
-                              class="col-6 col-md-3 order-md-2 col-xl-3 pr-0"
+                              class="col-6 col-md-3 col-lg-2 col-xl-3 pr-0"
                             >
                                 Tarifa:
                                 <form method="post" action="/calendar/config">
@@ -174,11 +153,12 @@
                                 </form>
                             </div>
 
+
                             <!-- select availability plan -->
                             <div
-                              class="col-6 col-md-3 order-md-2 col-xl-3 pr-0"
+                              class="col-6 col-md-3 col-lg-2 col-xl-3 pr-0"
                             >
-                                Plan de dispon.:
+                                Plan de disp.:
                                 <form method="post" action="/calendar/config">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
@@ -198,14 +178,15 @@
                                         </t>
                                     </select>
                                 </form>
-                            </div>                            
+                            </div>
+
 
                             <!-- col just to fill -->
-                            <div class="col-6 d-none d-md-block d-xl-none pt-2 order-md-4"/>
+                            <div class="col-6 d-none d-md-block d-lg-none d-xl-none pt-2"/>
 
 
                             <!-- select days to view -->
-                            <div class="col-6 col-md-3 col-lg-2 col-xl-1 pr-0 order-md-5">
+                            <div class="col-6 col-md-3 col-lg-1 col-xl-1 pr-0">
                                 Días:
                                 <form method="post" action="">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
@@ -230,7 +211,7 @@
                                 </form>
                             </div>
                             <!-- select date -->
-                            <div class="col-6 col-md-3 col-lg-4 col-xl-3 pr-0 order-md-6">
+                            <div class="col-6 col-md-3 col-lg-2 col-xl-2 pr-0">
                                 <span class="d-block">Fecha:</span>
                                 <div class="o_pms_pwa_month_select form-control px-0">
 
@@ -256,6 +237,26 @@
                                     </a>
                                 </div>
                             </div>
+                            <!-- button to open/close all configuration rooms -->
+                            <div class="col-6 col-md-3 col-xl-2 offset-md-9 offset-lg-10 mt-md-4 pr-0 mt-4">
+                                <button
+                                    id="open_collapse"
+                                    name="open_collapse"
+                                    class="btn btn-radius btn-pms_pwa w-100 o_pms_pwa_open_collapse"
+                                >
+                                        Abrir
+                                    </button
+                                >
+                                <button
+                                    id="close_collapse"
+                                    name="close_collapse"
+                                    style="display:none;"
+                                    class="btn btn-radius btn-pms_pwa w-100 o_pms_pwa_close_collapse"
+                                >
+                                        Cerrar
+                                    </button
+                                >
+                            </div>
                         </div>
 
                         <div class="table-responsive">
@@ -272,7 +273,7 @@
                                             <button
                                                 id="save"
                                                 name="save"
-                                                class="btn btn-radius btn-pms_pwa ml-4 W-100 "
+                                                class="btn btn-radius btn-pms_pwa w-100 "
                                             >
                                                 Save
                                             </button>

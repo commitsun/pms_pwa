@@ -494,7 +494,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                         '<label class="control-label" for="preferred_room_id">Habitación</label>' +
                         '<select data-group_id="' + group_id +
                             '" data-board_service_room_id="' + send_value["board_service_room_id"] +
-                            '" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" name="rooms-'+group_id+'-' + i +'-preferred_room_id">' +
+                            '" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine_group" style="margin-right: 0" name="rooms-'+group_id+'-' + i +'-preferred_room_id">' +
                             seloption +
                         '</select>' +
                     '</td>' +
