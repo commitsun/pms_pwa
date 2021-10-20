@@ -87,6 +87,22 @@ class PmsCalendarConfig(http.Controller):
             default_pricelist = int(post["pricelist"])
             select_pricelist = Pricelist.browse(int(post["pricelist"]))
 
+        PlanAvail = request.env["pms.availability.plan"]
+
+        availability_plan = PlanAvail.search(
+            [
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", pms_property_id),
+            ]
+        )
+
+        select_availability_plan = availability_plan[0]
+        default_availability_plan = 0
+        if post and post.get("availability_plan") and int(post.get("availability_plan")) != 0:
+            default_availability_plan = int(post["availability_plan"])
+            select_availability_plan = PlanAvail.browse(int(post["availability_plan"]))
+
         values = {
             "today": datetime.datetime.now(),
             "date_start": date_start,
@@ -94,6 +110,9 @@ class PmsCalendarConfig(http.Controller):
             "pricelist": pricelist,
             "default_pricelist": default_pricelist,
             "select_pricelist": select_pricelist,
+            "availability_plan": availability_plan,
+            "default_availability_plan": default_availability_plan,
+            "select_availability_plan": select_availability_plan,
             "rooms_list": room_types,
             "date_list": date_list,
             "dpr": dpr,
@@ -118,7 +137,7 @@ class PmsCalendarConfig(http.Controller):
         try:
             pms_property_id = request.env.user.pms_pwa_property_id.id
             _logger.info(params)
-            for room_type_id, pricelists in params["room_type"].items():
+            for room_type_id, pricelists in params["send"]["room_type"].items():
                 room_type = request.env["pms.room.type"].browse(int(room_type_id))
                 for pricelist_id, dates in pricelists["pricelist_id"].items():
                     pricelist = request.env["product.pricelist"].browse(
@@ -128,7 +147,9 @@ class PmsCalendarConfig(http.Controller):
                         item_date = datetime.datetime.strptime(
                             date_str, get_lang(request.env).date_format
                         ).date()
-                        availability_plan = pricelist.availability_plan_id
+                        availability_plan = request.env['pms.availability.plan'].browse(
+                            int(params["send"]["availability_plan"])
+                        )
                         # price
                         if "price" in items[0]:
                             # REVIEW: Necesary date (sale) start/end = False???

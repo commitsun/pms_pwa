@@ -15,13 +15,7 @@
                             <div id="menu-toggle">
                                 <img src="/pms_pwa/static/img/logo_mobil.png" alt="logo menu roomdoo" class="img-responsive mobile" />
                                 <div class="o_pms_pwa_options">
-                                    <!-- <button class="btn btn-radius btn-pms_pwa mobile" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
-                                            <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
-                                            Nueva reserva
-                                        </button> -->
-                                    <!-- <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive mobile" />
-                                        <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive mobile" /> -->
-                                    <img src="/pms_pwa/static/img/menu_img.png" alt="notificaciones" class="img-responsive mobile navbar-toggler-icon" />
+                                    <span alt="menu" class="fa fa-bars mobile " />
                                 </div>
                             </div>
                             <!-- Page Title -->
@@ -65,6 +59,7 @@
                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
                             <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
                         </div>
+                        
                         <div class="col-lg-2 d-none d-lg-block o_pms_user_img">
                             <a href="/web">
                                 <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />
@@ -79,23 +74,6 @@
                             </span>
                         </div>
 
-
-                        <!-- <t t-call="website.navbar_nav">
-                            <t t-set="_nav_class" t-value="'flex-grow-1'" />
-
-                            <t t-call="portal.placeholder_user_sign_in">
-                                <t t-set="_item_class" t-value="'nav-item ml-auto'"/>
-                                <t t-set="_link_class" t-value="'nav-link font-weight-bold'"/>
-                            </t>
-
-
-
-                            <t t-call="portal.user_dropdown">
-                                <t t-set="_user_name" t-value="true" />
-                                <t t-set="_item_class" t-value="'nav-item dropdown ml-auto'" />
-                                <t t-set="_link_class" t-value="'nav-link font-weight-bold'" />
-                            </t>
-                        </t> -->
                     </div>
                     <!-- Language Selector -->
                     <t t-call="website.placeholder_header_language_selector">

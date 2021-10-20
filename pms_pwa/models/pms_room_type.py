@@ -73,16 +73,14 @@ class PmsPWARoomType(models.Model):
             self._context.get("date")
             and self._context.get("pms_property_id")
             and self._context.get("pricelist_id")
+            and self._context.get("availability_plan_id")
         ):
 
-            pricelist = self.env["product.pricelist"].browse(
-                self._context.get("pricelist_id")
-            )
             rule = self.env["pms.availability.plan.rule"].search(
                 [
                     ("pms_property_id", "=", self._context.get("pms_property_id")),
                     ("date", "=", self._context.get("date")),
-                    ("availability_plan_id", "=", pricelist.availability_plan_id.id),
+                    ("availability_plan_id", "=", self._context.get("availability_plan_id")),
                     ("room_type_id", "=", self.id)
                 ]
             )
