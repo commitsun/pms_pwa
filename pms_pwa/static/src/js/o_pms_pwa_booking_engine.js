@@ -366,6 +366,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                     var select = $(
                         'form#booking_engine_form [data-select="' + value + '"]'
                     );
+                    select.empty();
                 } catch (error) {
                     console.log(error);
                 }
