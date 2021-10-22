@@ -3,8 +3,10 @@
     <template id="roomdoo_dashboard_page" name="Dashboard">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="'DASHBOARD'"/>
-            <div class="oe_structure o_pms_pwa_structure mt-4">
-                <section class="container-fluid o_pms_pwa_dashboard">
+            <div class="oe_structure o_pms_pwa_structure mt-4 o_pms_pwa_dashboard">
+                <t t-call="pms_pwa.o_pms_pwa_new_cash_register_payment" />
+                <div class="o_pms_pwa_roomdoo_alerts" />
+                <section class="container-fluid">
                     <div class="row">
                         <div class="col-md-12 col-lg-6 mt-4">
                             <div class="card shadow">
@@ -328,7 +330,7 @@
 
                 <section class="container-fluid o_pms_pwa_dashboard">
                     <div class="row">
-                        <div class="col-md-12 col-lg-4 mt-4">
+                        <!-- <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <h3 class="mb-0">
@@ -348,6 +350,35 @@
                                             </div>
                                         </div>
                                     </t>
+                                </div>
+                            </div>
+                        </div> -->
+
+                        <div class="col-md-12 col-lg-4 mt-4">
+                            <div class="card shadow">
+                                <div class="card-header bg-white o_pms_pwa_card_header">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <h3 class="mb-0">
+                                                Caja
+                                            </h3>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
+                                                CREAR PAGO
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="" class="o_pms_pwa_btn_border px-3 o_pms_pwa_cash_register_close">
+                                                CERRAR CAJA
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                </div>
+                                <div class="card-body o_pms_pwa_dbh_force">
+                                    <div class="row">
+                                    </div>
                                 </div>
                             </div>
                         </div>
