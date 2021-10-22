@@ -19,6 +19,7 @@
     "data": [
         "templates/_includes/head.xml",
         "templates/modal.xml",
+        "templates/cash_register_modal.xml",
         "templates/menu/sidebar.xml",
         "templates/menu/navbar.xml",
         "templates/reservation_list.xml",

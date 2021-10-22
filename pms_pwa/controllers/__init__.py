@@ -11,3 +11,4 @@ from . import controller_res_partner
 
 # from . import reduced_calendar
 from . import controller_pms_checkin_partner
+from . import controller_cash_register
