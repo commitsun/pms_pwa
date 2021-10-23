@@ -34,6 +34,9 @@ class Rooms(http.Controller):
 
         pms_property_id = int(payload["pms_property_id"])
         pricelist_id = int(payload["pricelist_id"])
+        room_type_id = int(payload["room_type_id"]) if payload.get("room_type_id") else False
+        room_type = request.env["pms.room.type"].browse(room_type_id) if room_type_id else False
+        class_id = room_type.class_id.id if room_type else False
 
         reservation = False
         if payload["reservation_id"]:
@@ -54,6 +57,8 @@ class Rooms(http.Controller):
             checkout=checkout,
             current_lines=reservation_line_ids,
             pricelist_id=pricelist_id,
+            class_id=class_id,
+            real_avail=True,
         )
         rooms_avail = pms_property.free_room_ids
 

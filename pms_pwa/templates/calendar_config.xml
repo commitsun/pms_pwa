@@ -200,7 +200,7 @@
                                                     " t-att-data-value="x" style="padding-bottom:0;">
                                                 <t t-set="property_total_day_reservations" t-value="user_id.pms_pwa_property_id.with_context(checkin=day, checkout=day+relativedelta(days=1))._get_occupied_reservations()"></t>
                                                 <t t-set="property_total_out_service" t-value="user_id.pms_pwa_property_id.with_context(checkin=day, checkout=day+relativedelta(days=1))._get_occupied_out_service()"></t>
-                                                <t t-set="availability_day" t-value="user_id.pms_pwa_property_id.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
+                                                <t t-set="availability_day" t-value="user_id.pms_pwa_property_id.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist, overnight_rooms=True).availability"></t>
                                                 <t t-set="total_rooms" t-value="user_id.pms_pwa_property_id._get_total_rooms()"/>
                                                 <t t-set="percent_occupied" t-value="(property_total_day_reservations + property_total_out_service) * 100 / total_rooms"></t>
                                                 <span style="font-size:13px;">
@@ -283,7 +283,7 @@
                                                     </p>
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
                                                         <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
-                                                            title="Reservas"
+                                                            title="Reservas" style="padding-bottom: 2px !important; padding-top: 0 !important;"
                                                         >
                                                             <div t-if="rooms_occupied_reservations > 0" class="circle" style="-0.6rem !important;">
                                                                 <span >
@@ -294,7 +294,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center"
-                                                            title="Fuera de servicio"
+                                                            title="Fuera de servicio" style="padding-bottom: 2px !important; padding-top: 0 !important;"
                                                         >
                                                             <div t-if="rooms_occupied_out_service > 0" class="circle" style="-0.6rem !important;">
                                                                 <span >
@@ -365,7 +365,15 @@
                                                                     <span style="min-width:80px !important;">Est. Mín</span>
                                                                 </p>
                                                                 <p style="text-align:right; height:45px; margin-bottom:0">
-                                                                    <i class="fa fa-angle-down ml-2"></i>
+                                                                    <i class="fa fa-angle-down ml-2"
+                                                                        style="background-color: black;
+                                                                            height: 15px;
+                                                                            width: 15px;
+                                                                            border-radius: 50%;
+                                                                            padding-right: 2.7px !important;
+                                                                            color: white;
+                                                                            cursor: pointer;">
+                                                                    </i>
                                                                 </p>
                                                                 <div class="collapse" t-attf-id="collapse_2_accordion_{{price.id}}" t-attf-aria-labelledby="{{ price.id }}">
                                                                     <p style="text-align:end; height:28px;">

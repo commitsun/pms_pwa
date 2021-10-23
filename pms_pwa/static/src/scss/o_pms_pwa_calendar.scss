@@ -362,18 +362,18 @@ section.o_pms_pwa_roomdoo {
             tbody {
                 tr {
                     td {
-                        padding-bottom: 0;
+                        padding-top: 0 !important;
                         height: 10px;
                         .circles-container {
                             .circle {
                                 line-height: 1.5;
                                 height: 25px;
-                                width: 100%;
+                                width: 25px;
+                                border-radius: 50%;
                                 font-size: 0.9rem;
                                 font-weight: bold;
                                 padding: 0.1rem;
                                 color: white;
-                                cursor: pointer;
                             }
                             div:nth-child(1) > .circle {
                                 background-color:#01b6e3;
@@ -383,12 +383,14 @@ section.o_pms_pwa_roomdoo {
                             }
                             div:nth-child(3) > .circle {
                                 color:#000000;
+                                border-radius: 0%;
                                 border-left: 1px solid #dadada;
                                 border-top: 1px solid #dadada;
                                 border-right: 1px solid white;
                                 border-bottom: 1px solid white;
-                                margin-right: -1px;
-                                margin-bottom: -1px;
+                                background-color: white;
+                                margin-right: -10px;
+                                margin-bottom: -2px;
                             }
 
                         }
@@ -702,7 +704,7 @@ section.o_pms_pwa_roomdoo {
         }
         th.o_pms_pwa_weekend {
             border-bottom: 3px solid $dark;
-            background-color:#6a6a6a1c !important;
+            background-color:#efefef !important;
             // &::after {
             //     content: "";
             //     position: absolute;

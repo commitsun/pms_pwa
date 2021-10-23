@@ -428,6 +428,8 @@ class BookingEngine(http.Controller):
                 room_type_id=group_room_type_id,
                 pricelist_id=pricelist_id,
                 amenity_ids=amenity_ids,
+                real_avail=True,
+                class_id=group_room_type_id,
             )
             group_rooms = []
             for res_dict in reservations_dict:

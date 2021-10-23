@@ -213,7 +213,7 @@
                                 <thead >
                                     <tr>
                                         <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td"
-                                            style="z-index: 999999 !important; background-color: white !important;"
+                                            style="z-index: 999 !important; background-color: white !important;"
                                         >
                                             <div class="o_pms_pwa_calendar_select  d-none d-lg-block">
                                                 <select id="calendar_select" name="display_option" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="if (this.value) window.location.href=this.value">
@@ -238,7 +238,7 @@
                                             <span t-if="selected_display != 'pms_property'">
                                                 <t t-set="property_total_day_reservations" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1))._get_occupied_reservations()"></t>
                                                 <t t-set="property_total_out_service" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1))._get_occupied_out_service()"></t>
-                                                <t t-set="availability_day" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
+                                                <t t-set="availability_day" t-value="pms_property.with_context(checkin=day, checkout=day+relativedelta(days=1), pricelist_id=default_pricelist, overnight_rooms=True).availability"></t>
                                                 <t t-set="total_rooms" t-value="pms_property._get_total_rooms()"/>
                                                 <t t-set="percent_occupied" t-value="(property_total_day_reservations + property_total_out_service) * 100 / total_rooms"></t>
                                             </span>
@@ -314,7 +314,7 @@
                                                     <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service(current_property)"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'pms_property'">
-                                                    <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist).availability"></t>
+                                                    <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, overnight_rooms=True).availability"></t>
                                                     <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations()"></t>
                                                     <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service()"></t>
                                                     <t t-set="percent_occupied" t-value="(rooms_occupied_reservations + rooms_occupied_out_service) * 100 / total_rooms"></t>

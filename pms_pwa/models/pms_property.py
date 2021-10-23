@@ -45,6 +45,7 @@ class PmsProperty(models.Model):
                     ("pms_property_id", "=", self.id),
                     ("occupies_availability", "=", True),
                     ("reservation_id.reservation_type", "!=", "out"),
+                    ("overnight_room", "=", True)
                 ]
             ).mapped("reservation_id.id"))
 

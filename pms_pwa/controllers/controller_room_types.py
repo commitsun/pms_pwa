@@ -59,7 +59,11 @@ class RoomTypes(http.Controller):
         )
         rooms_avail = pms_property.free_room_ids
 
-        pms_room_types = request.env["pms.room.type"].sudo().search([])
+        pms_room_types = request.env["pms.room.type"].browse(
+            request.env["pms.room"].sudo().search([
+                ("pms_property_id", "=", pms_property.id)
+            ]).mapped("room_type_id.id")
+        )
 
         for room_type in pms_room_types.filtered(lambda r: r.total_rooms_count > 0):
             count = len(

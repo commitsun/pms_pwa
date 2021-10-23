@@ -711,6 +711,7 @@ class PmsReservation(models.Model):
                     "checkin": self.checkin,
                     "checkout": self.checkout,
                     "reservation_id": self.id,
+                    "room_type_id": self.room_type_id,
                 },
             ),
             "room_types": controller_room_types.RoomTypes._get_available_room_types(
