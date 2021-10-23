@@ -428,8 +428,6 @@ class BookingEngine(http.Controller):
                 room_type_id=group_room_type_id,
                 pricelist_id=pricelist_id,
                 amenity_ids=amenity_ids,
-                real_avail=True,
-                class_id=group_room_type_id,
             )
             group_rooms = []
             for res_dict in reservations_dict:
@@ -627,6 +625,7 @@ class BookingEngine(http.Controller):
                 ubication_id=ubication_id,
                 room_type_id=room_type_id,
                 amenity_ids=amenity_ids if amenity_ids else False,
+                real_avail=True,
             )
             used_rooms = request.env["pms.room"].browse(
                 [int(item["preferred_room_id"]) for item in rooms_dict]
