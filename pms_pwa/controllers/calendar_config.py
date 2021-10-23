@@ -29,6 +29,11 @@ class PmsCalendarConfig(http.Controller):
     def calendar_config(self, date=False, **post):
         date = datetime.date.today()
         date_start = date + timedelta(days=-1)
+        if post.get("selected_date"):
+            date = datetime.datetime.strptime(
+                post.get("selected_date"), get_lang(request.env).date_format
+            ).date()
+            date_start = date
         if post.get("next_day"):
             date = datetime.datetime.strptime(
                 post.get("next_day"), get_lang(request.env).date_format
@@ -54,7 +59,7 @@ class PmsCalendarConfig(http.Controller):
         # get the days of the month
         month_days = monthrange(date.year, date.month)[1]
         dpr = month_days
-        if post.get("dpr"):
+        if post.get("dpr") and post.get("dpr").isnumeric():
             dpr = int(post.get("dpr"))
         date_list = [date_start + timedelta(days=x) for x in range(dpr)]
 

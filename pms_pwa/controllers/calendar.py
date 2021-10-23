@@ -70,7 +70,7 @@ class PmsCalendar(http.Controller):
         # Add default dpr and dpr_select_values
 
         dpr = 15
-        if post.get("dpr"):
+        if post.get("dpr") and post.get("dpr").isnumeric():
             dpr = int(post.get("dpr"))
         date_list = [date_start + timedelta(days=x) for x in range(dpr)]
         # get the days of the month

@@ -44,7 +44,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
 
             var room_type = {};
             var send;
-            $("#calendar_conf_table_line input").each(function (index) {
+            $(".calendar_config_input input").each(function (index) {
                 // console.log(index);
                 var input = $(this);
                 if (input.data("edit") === true) {
@@ -119,11 +119,11 @@ odoo.define("pms_pwa.calendar_config", function (require) {
         element.classList.remove("d-none");
     });
 
-    $(".o_pms_pwa_open_collapse").on("click", function () {
-        $(".o_pms_pwa_hiddenRow").addClass("show");
-        $("#open_collapse").hide();
-        $("#close_collapse").show();
-    });
+    // $(".o_pms_pwa_open_collapse").on("click", function () {
+    //     $(".o_pms_pwa_hiddenRow").addClass("show");
+    //     $("#open_collapse").hide();
+    //     $("#close_collapse").show();
+    // });
     $(".o_pms_pwa_close_collapse").on("click", function () {
         $(".o_pms_pwa_hiddenRow").removeClass("show");
         $("#close_collapse").hide();

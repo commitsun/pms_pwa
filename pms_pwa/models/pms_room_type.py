@@ -55,6 +55,37 @@ class PmsPWARoomType(models.Model):
                 ]
             ).mapped("reservation_id.id"))
 
+    def _get_sale_avail(self):
+        if (
+            self._context.get("date")
+            and self._context.get("pms_property_id")
+            and self._context.get("pricelist_id")
+            and self._context.get("availability_plan_id")
+        ):
+
+            rule = self.env["pms.availability.plan.rule"].search(
+                [
+                    ("pms_property_id", "=", self._context.get("pms_property_id")),
+                    ("date", "=", self._context.get("date")),
+                    ("availability_plan_id", "=", self._context.get("availability_plan_id")),
+                    ("room_type_id", "=", self.id)
+                ]
+            )
+            real_avail = self.with_context(
+                checkin=self._context.get("date"),
+                checkout=self._context.get("date") + datetime.timedelta(days=1),
+            )._get_availability_rooms(self._context.get("pms_property_id"))
+            if not rule:
+                quota = self.default_quota
+                max_avail = self.default_max_avail
+                return min([
+                    max_avail if max_avail >= 0 else real_avail,
+                    quota if quota >= 0 else real_avail,
+                    real_avail,
+                ])
+            else:
+                return rule.plan_avail
+
     def _get_occupied_out_service(self, pms_property_id):
         if self._context.get("checkin") and self._context.get("checkout"):
             room_ids = self.room_ids.filtered(
@@ -116,24 +147,43 @@ class PmsPWARoomType(models.Model):
                     ("room_type_id", "=", self.id)
                 ]
             )
+            avail = self.with_context(
+                checkin=self._context.get("date"),
+                checkout=self._context.get("date") + datetime.timedelta(days=1),
+            )._get_availability_rooms(self._context.get("pms_property_id"))
             if not rule:
-                avail = self.with_context(
-                    checkin=self._context.get("date"),
-                    checkout=self._context.get("date") + datetime.timedelta(days=1),
-                )._get_availability_rooms(self._context.get("pms_property_id"))
-            return {
-                "plan_avail": rule.plan_avail if rule else avail,
-                "quota": rule.quota if rule else False,
-                "max_avail": rule.max_avail if rule else False,
-                "real_avail": rule.real_avail if rule else avail,
-                "min_stay": rule.min_stay if rule else False,
-                "min_stay_arrival": rule.min_stay_arrival if rule else False,
-                "max_stay": rule.max_stay if rule else False,
-                "max_stay_arrival": rule.max_stay_arrival if rule else False,
-                "closed": rule.closed if rule else False,
-                "closed_departure": rule.closed_departure if rule else False,
-                "closed_arrival": rule.closed_arrival if rule else False,
-                # TODO "no_ota": False,
-            }
+                quota = '∞' if self.default_quota == -1 else self.default_quota
+                max_avail = '∞' if self.default_max_avail == -1 else self.default_max_avail
+                return {
+                    "plan_avail": avail,
+                    "quota": quota,
+                    "max_avail": max_avail,
+                    "real_avail": avail,
+                    "min_stay": '',
+                    "min_stay_arrival": '',
+                    "max_stay": '',
+                    "max_stay_arrival": '',
+                    "closed": False,
+                    "closed_departure": False,
+                    "closed_arrival": False,
+                    "no_ota": False,
+                }
+            else:
+                quota = '∞' if rule.quota == -1 else rule.quota
+                max_avail = '∞' if rule.max_avail == -1 else rule.max_avail
+                return {
+                    "plan_avail": rule.plan_avail if rule else avail,
+                    "quota": quota,
+                    "max_avail": max_avail,
+                    "real_avail": rule.real_avail if rule else avail,
+                    "min_stay": rule.min_stay if rule else '',
+                    "min_stay_arrival": rule.min_stay_arrival if rule else '',
+                    "max_stay": rule.max_stay if rule else '',
+                    "max_stay_arrival": rule.max_stay_arrival if rule else '',
+                    "closed": rule.closed if rule else '',
+                    "closed_departure": rule.closed_departure if rule else '',
+                    "closed_arrival": rule.closed_arrival if rule else '',
+                    # TODO "no_ota": False,
+                }
 
         return False

@@ -42,7 +42,7 @@ class PmsUbication(models.Model):
 
     def _get_occupied_reservations(self, pms_property_id):
         if self._context.get("checkin") and self._context.get("checkout"):
-            room_ids = self.room_ids.filtered(
+            room_ids = self.pms_room_ids.filtered(
                 lambda r: r.pms_property_id.id == pms_property_id
             ).ids
             return len(self.env["pms.reservation.line"].search(
@@ -58,7 +58,7 @@ class PmsUbication(models.Model):
 
     def _get_occupied_out_service(self, pms_property_id):
         if self._context.get("checkin") and self._context.get("checkout"):
-            room_ids = self.room_ids.filtered(
+            room_ids = self.pms_room_ids.filtered(
                 lambda r: r.pms_property_id.id == pms_property_id
             ).ids
             return len(self.env["pms.reservation.line"].search(
