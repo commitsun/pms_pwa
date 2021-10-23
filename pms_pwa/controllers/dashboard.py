@@ -98,6 +98,8 @@ class DashBoard(http.Controller):
                     {"name": "Juan Manuel Díaz", "date": "15/10/2020 10:19:25"},
                     {"name": "Paula Sánchez", "date": "15/10/2020 10:54:25"},
                 ],
+                "cash_balance": self._get_cash_balance(pms_property_id),
+                "payments": self._get_cash_payments(pms_property_id),
                 "deliveries": [
                     {"name": "Envío fichero a la policía", "date": "15/10/2020"},
                     {"name": "Envío facturas al gestor", "date": "15/10/2020"},
@@ -384,3 +386,38 @@ class DashBoard(http.Controller):
             ("pms_property_id", "=", pms_property_id),
         ]
         return request.env["pms.reservation"].search_count(domain)
+
+    def _get_cash_payments(self, pms_property_id):
+        statement = (
+            request.env["account.bank.statement"]
+            .sudo()
+            .search(
+                [
+                    ("journal_id.type", "=", "cash"),
+                    ("pms_property_id", "=", pms_property_id),
+                    ("state", "=", "open"),
+                ]
+            )
+        )
+        payments = []
+        for line in statement.line_ids:
+            payments.append({
+                "name": line.payment_ref + " el " + line.create_date.strftime("%d %b - %H:%M") + " (" + line.create_uid.name + ")",
+                "amount": line.amount,
+            })
+        return payments
+
+    def _get_cash_balance(self, pms_property_id):
+        statement = (
+            request.env["account.bank.statement"]
+            .sudo()
+            .search(
+                [
+                    ("journal_id.type", "=", "cash"),
+                    ("pms_property_id", "=", pms_property_id),
+                    ("state", "=", "open"),
+                ]
+            )
+        )
+        return statement.balance_end
+

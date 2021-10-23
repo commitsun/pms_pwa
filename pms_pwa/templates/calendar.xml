@@ -266,16 +266,16 @@
                                                         <div style="col border-radius: 5%; background-color:rgb(252, 123, 147); margin-right:3px; margin-left:3px; height:5px;"/>
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 74 and percent_occupied &lt; 100" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(255, 202, 153); margin-right:3px;  margin-left:35px; height:5px;"/>
+                                                        <div style="col border-radius: 5%; background-color:rgb(255, 202, 153); margin-right:35px;  margin-left:3px; height:5px;"/>
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 49 and percent_occupied &lt; 75" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(255, 224, 153); margin-right:3px; margin-left:65px; height:5px;"/>
+                                                        <div style="col border-radius: 5%; background-color:rgb(255, 224, 153); margin-right:65px; margin-left:3px; height:5px;"/>
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 24 and percent_occupied &lt; 50" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(207, 255, 153); margin-right:3px; margin-left:110px; height:5px;"/>
+                                                        <div style="col border-radius: 5%; background-color:rgb(207, 255, 153); margin-right:110px; margin-left:3px; height:5px;"/>
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 0 and percent_occupied &lt; 25" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(171, 255, 153); margin-right:3px; margin-left:125px; height:5px;"/>
+                                                        <div style="col border-radius: 5%; background-color:rgb(171, 255, 153); margin-right:125px; margin-left:3px; height:5px;"/>
                                                     </span>
                                                     <span t-if="percent_occupied == 0" style="width:100%"/>
                                                 </span>

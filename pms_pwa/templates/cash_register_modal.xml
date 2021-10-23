@@ -54,7 +54,7 @@
                             </div>
                             <div class="col-6">
                                 <button type="button" class="btn btn-message btn-block o_pms_pwa_cash_register_confirm" data-dismiss="modal" aria-label="Pay">
-                                    <span>Pagar</span>
+                                    <span>Sacar dinero</span>
                                 </button>
                             </div>
                         </div>

@@ -360,7 +360,8 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <h3 class="mb-0">
-                                                Caja
+                                                Caja:
+                                                <span t-esc="cash_balance"/> €
                                             </h3>
                                         </div>
                                         <div class="col-4">
@@ -369,7 +370,7 @@
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a href="" class="o_pms_pwa_btn_border px-3 o_pms_pwa_cash_register_close">
+                                            <a href=""  type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_cash_register_close">
                                                 CERRAR CAJA
                                             </a>
                                         </div>
@@ -377,8 +378,19 @@
                                     <hr/>
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <div class="row">
-                                    </div>
+                                    <t t-foreach="payments" t-as="pm">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <span t-esc="pm['name']"/>
+                                            </div>
+                                            <div t-if="pm['amount'] > 0" class="col-3 text-right o_pms_pwa_db_dates">
+                                                <span t-esc="pm['amount']"/> €
+                                            </div>
+                                            <div t-else="" class="col-3 text-right o_pms_pwa_db_dates" style="color:red;">
+                                                <span t-esc="pm['amount']"/> €
+                                            </div>
+                                        </div>
+                                    </t>
                                 </div>
                             </div>
                         </div>
@@ -395,10 +407,10 @@
 
                                     <t t-foreach="deliveries" t-as="delivery">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-9">
                                                 <span t-esc="delivery['name']"/>
                                             </div>
-                                            <div class="col-6 text-right o_pms_pwa_db_dates">
+                                            <div class="col-3 text-right o_pms_pwa_db_dates">
                                                 <span t-esc="delivery['date']"/>
                                             </div>
                                         </div>
