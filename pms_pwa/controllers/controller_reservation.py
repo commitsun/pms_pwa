@@ -165,7 +165,7 @@ class PmsReservation(http.Controller):
             except Exception as e:
                 return json.dumps({"result": False, "message": str(e)})
             if res and params.get("action_on_board"):
-                if reservation.state == 'onboard':
+                if reservation.state == "onboard":
                     return json.dumps(
                         {
                             "result": True,
@@ -207,9 +207,7 @@ class PmsReservation(http.Controller):
                         reservation.folio_id.pms_property_id._get_payment_methods()
                     )
                     journal = account_journals.browse(payment_method)
-                    partner = request.env["res.partner"].browse(
-                        int(payment_partner_id)
-                    )
+                    partner = request.env["res.partner"].browse(int(payment_partner_id))
                     if reservation.folio_payment_state != "paid":
                         reservation.folio_id.do_payment(
                             journal,
@@ -217,9 +215,7 @@ class PmsReservation(http.Controller):
                             request.env.user,
                             payment_amount,
                             reservation.folio_id,
-                            partner=partner
-                            if partner
-                            else reservation.partner_id,
+                            partner=partner if partner else reservation.partner_id,
                             date=fields.date.today(),
                         )
                     else:
@@ -261,20 +257,29 @@ class PmsReservation(http.Controller):
                         )
                     else:
                         partner_invoice_values = {}
-                        partner_invoice_values["vat"] = payload[0]["partner_values"][0]["vat"]
-                        partner_invoice_values["name"] = payload[0]["partner_values"][0]["name"]
-                        partner_invoice_values["zip"] = payload[0]["partner_values"][0]["postal_code"]
-                        partner_invoice_values["city"] = payload[0]["partner_values"][0]["city"]
-                        #partner_invoice_values["country_id"] = payload[0]["partner_values"][0]["country"]
+                        partner_invoice_values["vat"] = payload[0]["partner_values"][0][
+                            "vat"
+                        ]
+                        partner_invoice_values["name"] = payload[0]["partner_values"][
+                            0
+                        ]["name"]
+                        partner_invoice_values["zip"] = payload[0]["partner_values"][0][
+                            "postal_code"
+                        ]
+                        partner_invoice_values["city"] = payload[0]["partner_values"][
+                            0
+                        ]["city"]
+                        # partner_invoice_values["country_id"] = payload[0]["partner_values"][0]["country"]
                         partner_invoice_id = request.env["res.partner"].create(
                             partner_invoice_values
                         )
                     lines_to_invoice = dict()
-                    for value in invoice_lines:
-                        lines_to_invoice[value[0]["id"]] = value[0]["qty"]
+                    for value in invoice_lines[0]:
+                        lines_to_invoice[value["id"]] = value["qty"]
                     invoices = reservation.folio_id._create_invoices(
                         lines_to_invoice=lines_to_invoice,
                         partner_invoice_id=partner_invoice_id,
+                        grouped=True,
                     )
                     invoices.action_post()
                 except Exception as e:
@@ -299,7 +304,7 @@ class PmsReservation(http.Controller):
         reservation = request.env["pms.reservation"].browse([reservation_id])
         if not reservation:
             raise MissingError(_("This document does not exist."))
-        #readonly_fields = reservation._get_readonly_fields()
+        # readonly_fields = reservation._get_readonly_fields()
         values = {
             "page_name": "Reservation",
             "reservation": reservation,
@@ -514,8 +519,7 @@ class PmsReservation(http.Controller):
                     # PRICELIST
                     elif (
                         param == "pricelist_id"
-                        and int(params["pricelist_id"])
-                        != reservation.pricelist_id.id
+                        and int(params["pricelist_id"]) != reservation.pricelist_id.id
                     ):
                         reservation_values["pricelist_id"] = (
                             request.env["product.pricelist"]
@@ -555,7 +559,7 @@ class PmsReservation(http.Controller):
 
                     # OTHER FOLIO RESERVATIONS
                     elif param == "folio_reservations":
-                        related_reservation_dict = params['folio_reservations']
+                        related_reservation_dict = params["folio_reservations"]
                         parent_reservation = request.env["pms.reservation"].browse(
                             int(related_reservation_dict["id"])
                         )
@@ -565,14 +569,18 @@ class PmsReservation(http.Controller):
                             )
                         elif "checkin" in related_reservation_dict:
                             parent_reservation.checkin = datetime.datetime.strptime(
-                                related_reservation_dict["checkin"], get_lang(request.env).date_format
+                                related_reservation_dict["checkin"],
+                                get_lang(request.env).date_format,
                             )
-                        # elif "checkout" in related_reservation_dict:
+                            # elif "checkout" in related_reservation_dict:
                             parent_reservation.checkout = datetime.datetime.strptime(
-                                related_reservation_dict["checkout"], get_lang(request.env).date_format
+                                related_reservation_dict["checkout"],
+                                get_lang(request.env).date_format,
                             )
                         elif "adults" in related_reservation_dict:
-                            parent_reservation.adults = int(related_reservation_dict["adults"])
+                            parent_reservation.adults = int(
+                                related_reservation_dict["adults"]
+                            )
                         parent_reservation.flush()
                         return json.dumps(
                             {
@@ -688,7 +696,9 @@ class PmsReservation(http.Controller):
         _logger.info(params)
         try:
             # TODO: Hot FIX quit 'on' of params
-            reservation_ids = [int(item) for item in params["reservation_ids"] if item != "on"]
+            reservation_ids = [
+                int(item) for item in params["reservation_ids"] if item != "on"
+            ]
             reservations = request.env["pms.reservation"].browse(reservation_ids)
             reservations.action_assign()
         except Exception as e:
@@ -707,7 +717,9 @@ class PmsReservation(http.Controller):
     def reservation_multi_cancel(self, **kw):
         params = http.request.jsonrequest.get("params")
         try:
-            reservation_ids = [int(item) for item in params["reservation_ids"] if item != "on"]
+            reservation_ids = [
+                int(item) for item in params["reservation_ids"] if item != "on"
+            ]
             reservations = request.env["pms.reservation"].browse(reservation_ids)
             reservations.action_cancel()
         except Exception as e:
@@ -726,7 +738,9 @@ class PmsReservation(http.Controller):
     def reservation_multi_checkout(self, **kw):
         params = http.request.jsonrequest.get("params")
         try:
-            reservation_ids = [int(item) for item in params["reservation_ids"] if item != "on"]
+            reservation_ids = [
+                int(item) for item in params["reservation_ids"] if item != "on"
+            ]
             reservations = request.env["pms.reservation"].browse(reservation_ids)
             reservations.action_reservation_checkout()
         except Exception as e:
@@ -747,7 +761,9 @@ class PmsReservation(http.Controller):
         params = http.request.jsonrequest.get("params")
 
         try:
-            reservation_ids = [int(item) for item in params["reservation_ids"] if item != "on"]
+            reservation_ids = [
+                int(item) for item in params["reservation_ids"] if item != "on"
+            ]
             reservations = request.env["pms.reservation"].browse(reservation_ids)
             checkins = reservations.checkin_partner_ids
             pdf = (
@@ -789,7 +805,9 @@ class PmsReservation(http.Controller):
         new_discount = False
         new_board_service_id = False
         try:
-            reservation_ids = [int(item) for item in params["reservation_ids"] if item != "on"]
+            reservation_ids = [
+                int(item) for item in params["reservation_ids"] if item != "on"
+            ]
             reservations = request.env["pms.reservation"].browse(reservation_ids)
             if params["apply_on_all_week"]:
                 apply_on_all_week = True

@@ -349,7 +349,7 @@ section.o_pms_pwa_roomdoo {
         }
         .price {
             color: $black;
-            font-size: 16px;
+            font-size: 28px;
             font-weight: bold;
             line-height: 1.5rem;
             align-items: flex-end;
@@ -358,20 +358,19 @@ section.o_pms_pwa_roomdoo {
         }
         .price2 {
             color: $red;
-            font-size: 16px;
-            font-weight: bold;
-            line-height: 1.5rem;
-            align-items: flex-end;
-            position: absolute;
-            bottom: -0.2rem;
-        }
-        .pt {
-            color: $black;
             font-size: 28px;
             font-weight: bold;
             line-height: 1.5rem;
             position: absolute;
             bottom: 0;
+        }
+        .pt {
+            color: $black;
+            font-size: 16px;
+            font-weight: bold;
+            line-height: 1.5rem;
+            position: absolute;
+            bottom: -0.2rem;
         }
         // .num {
         //     color: $black;

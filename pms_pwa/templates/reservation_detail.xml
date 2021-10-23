@@ -246,7 +246,8 @@
                                                         <select
                                                             t-att-disabled='"disabled" if "room_type_id" in readonly_fields else None'
                                                             t-att-required='"required" if "room_type_id" in required_fields else None'
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id">
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="room_type_id"
+                                                            style="cursor:pointer;">
                                                             <t t-foreach="json_reservation['room_types']" t-as="i">
                                                                 <option name="room_type_id" t-att-value="i['id']" selected="selected" t-if="json_reservation['room_type_id']['id'] == i['id']">
                                                                     <t t-esc="i['name']" />
@@ -266,7 +267,8 @@
                                                         <select
                                                             t-att-disabled='"disabled" if "preferred_room_id" in readonly_fields else None'
                                                             t-att-required='"required" if "preferred_room_id" in required_fields else None'
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id">
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="preferred_room_id"
+                                                            style="cursor:pointer;">
                                                             <t t-foreach="json_reservation['room_numbers']" t-as="i">
                                                                 <option name="preferred_room_id" t-att-value="i['id']" selected="selected" t-if="json_reservation['preferred_room_id']['id'] == i['id']">
                                                                     <t t-esc="i['name']" />
@@ -311,7 +313,7 @@
                                                         <label class="control-label col-12" for="range_check_date_detail_reservation">
                                                             Check in - Check out
                                                         </label>
-                                                        <input class="form-control" type="text" name="range_check_date_detail_reservation" t-attf-value="{{ checkin_date }} - {{ checkout_date }}" />
+                                                        <input class="form-control" type="text" name="range_check_date_detail_reservation" t-attf-value="{{ checkin_date }} - {{ checkout_date }}" style="cursor:pointer;"/>
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -348,7 +350,8 @@
                                                         <select
                                                             t-att-disabled='"disabled" if "board_service_room_id" in readonly_fields else None'
                                                             t-att-required='"required" if "board_service_room_id" in required_fields else None'
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type">
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="reservation_type"
+                                                            style="cursor:pointer;">
                                                             <t t-foreach="json_reservation['reservation_types']" t-as="key">
                                                                 <t t-if="key['id'] == json_reservation['reservation_type']">
                                                                     <option name="reservation_type" t-att-value="key['id']" selected="selected">
@@ -370,7 +373,8 @@
                                                         <select
                                                             t-att-disabled='"disabled" if "board_service_room_id" in readonly_fields else None'
                                                             t-att-required='"required" if "board_service_room_id" in required_fields else None'
-                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id">
+                                                            class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="board_service_room_id"
+                                                            style="cursor:pointer;">
                                                             <t t-foreach="json_reservation['allowed_board_service_room_ids']" t-as="key">
                                                                 <t t-if="key['id'] == json_reservation['board_service_room_id']['id']">
                                                                     <option name="board_service_room_id" t-att-value="key['id']" selected="selected">
@@ -470,7 +474,7 @@
                                                         <label class="control-label col-12" for="add_service">
                                                             Add service
                                                         </label>
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="add_service" style="cursor:pointer;">
                                                             <option t-foreach="reservation._get_allowed_service_ids()" t-as="key" t-att-value="key['id']">
                                                                 <t t-esc="key['name']" />
                                                             </option>
@@ -623,9 +627,9 @@
                                             </div>
                                             <div class="col-4">
                                                 <span>
-                                                    Earring
+                                                    Pendiente
                                                     <br />
-                                                    payment
+                                                    de pago
                                                 </span>
                                                 <span class="price2">
                                                     <t t-esc="reservation.folio_id.pending_amount" />
@@ -643,7 +647,7 @@
                                         </div> -->
                                             <div class="row m-1" id="facturacion">
                                                 <div class="col-12">
-                                                    <h4 data-toggle="collapse" data-target="#collapseDatos">
+                                                    <h4 data-toggle="collapse" data-target="#collapseDatos" style="cursor: pointer;">
                                                         Contacto de Facturación
                                                         <i class="fa fa-angle-down o_pms_pwa_rotate-icon" />
                                                     </h4>
