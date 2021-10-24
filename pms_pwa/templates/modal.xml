@@ -106,7 +106,7 @@
                                             </button>
                                         </div> -->
                                     </div>
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 not_out_type">
                                         <div class="col-sm-12">
                                             <h4>Canal de venta y Tarifa</h4>
                                         </div>
@@ -123,7 +123,7 @@
                                             <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="channel_type_id" />
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 not_out_type">
                                         <!-- <div class="col-sm-6">
                                             <label class="control-label col-12" for="segmentation_ids" style="z-index: 1;">
                                                 Segmentación
@@ -170,7 +170,7 @@
                                             <select id="amenity_ids" data-select="allowed_amenity_ids" multiple="multiple" class="form-control o_pms_pwa_multiselect call_booking_engine" data-live-search="true" name="amenity_ids" />
                                         </div>
                                     </div>
-                                    <div class="row mt-3 sale_category_id" >
+                                    <div class="row mt-3 sale_category_id not_out_type" >
                                         <div class="col-sm-12">
                                             <label class="control-label col-12" for="sale_category_id">
                                                 Vender Como...
@@ -186,7 +186,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="o_pms_pwa_shadow mt-3">
+                                    <div class="o_pms_pwa_shadow mt-3 not_out_type">
                                         <div class="row">
                                             <!-- <div class="col-6">
                                                 <div class="row mx-2">
@@ -210,7 +210,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 not_out_type">
                                         <div class="col-sm-12">
                                             <h4>Datos de Contacto</h4>
                                         </div>
@@ -218,22 +218,22 @@
                                             <label class="control-label col-12" for="partner_name">
                                                 Nombre
                                             </label>
-                                            <input class="form-control o_pms_pwa_search_partner" type="text" style="background-color: #daf7fc !important;" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                            <input class="form-control o_pms_pwa_search_partner" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
                                             <input type="hidden" class="call_booking_engine" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 not_out_type">
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="mobile">
                                                 Teléfono
                                             </label>
-                                            <input class="form-control" type="text" name="mobile" placeholder="Móvil" style="background-color: #daf7fc !important;" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
+                                            <input class="form-control" type="text" name="mobile" required="required" placeholder="Móvil" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-12" for="email">
                                                 E-mail
                                             </label>
-                                            <input class="form-control" type="text" name="email" placeholder="Mail" style="background-color: #daf7fc !important;" t-att-value="post['email'] if post and 'email' in post else None" />
+                                            <input class="form-control" type="text" name="email" required="required" placeholder="Mail" t-att-value="post['email'] if post and 'email' in post else None" />
                                         </div>
                                     </div>
                                     <div class="row mt-3">

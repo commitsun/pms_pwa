@@ -771,8 +771,10 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                     }
                     if (new_data.reservation_type != "out") {
                         $(".out_type").removeAttr("style").hide();
+                        $(".not_out_type").show();
                     } else {
                         $(".out_type").show();
+                        $(".not_out_type").removeAttr("style").hide();
                     }
                     self.pms_pwa_booking_engine_head_form(new_data);
                     self.pms_pwa_booking_engine_reset_fields();

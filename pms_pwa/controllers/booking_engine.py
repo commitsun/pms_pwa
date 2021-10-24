@@ -765,10 +765,21 @@ class BookingEngine(http.Controller):
         vals = {}
         _logger.info("folio_values: {}".format(folio_values))
         try:
+            if folio_values.get("folio_id"):
+                folio = request.env["pms.folio"].browse(int(folio_values["folio_id"]))
+                pms_property = folio.pms_property_id
+                vals["pms_property_id"] = pms_property.id
+                vals["reservation_type"] = folio.reservation_type
+                vals["channel_type_id"] = folio.channel_type_id.id
+                vals["agency_id"] = folio.agency_id.id
+                vals["closure_reason_id"] = folio.closure_reason_id
+            else:
+                vals["reservation_type"] = folio_values.get("reservation_type") if folio_values.get("reservation_type") else "normal"
+
             check_fields = self._check_required_fields(folio_values)
             if check_fields:
                 return {"result": "error", "message": check_fields}
-            vals["partner_name"] = folio_values["partner_name"]
+            vals["partner_name"] = folio_values["partner_name"] if vals["reservation_type"] != "out" else "Bloqueo"
             if folio_values.get("email") and folio_values.get("email") != "":
                 vals["email"] = folio_values.get("email")
             if folio_values.get("mobile") and folio_values.get("mobile") != "":
@@ -786,16 +797,7 @@ class BookingEngine(http.Controller):
                             ],
                         )
                     ]
-
-            if folio_values.get("folio_id"):
-                folio = request.env["pms.folio"].browse(int(folio_values["folio_id"]))
-                pms_property = folio.pms_property_id
-                vals["pms_property_id"] = pms_property.id
-                vals["reservation_type"] = folio.reservation_type
-                vals["channel_type_id"] = folio.channel_type_id.id
-                vals["agency_id"] = folio.agency_id.id
-                vals["closure_reason_id"] = folio.closure_reason_id
-            else:
+            if not folio_values.get("folio_id"):
                 # Pms Property
                 if folio_values.get("pms_property_id"):
                     pms_property = request.env["pms.property"].browse(
@@ -805,14 +807,8 @@ class BookingEngine(http.Controller):
                     pms_property = request.env.user.pms_pwa_property_id
 
                 vals["pms_property_id"] = pms_property.id
-                # Partner values
 
                 # Reservation type
-                if folio_values.get("reservation_type"):
-                    vals["reservation_type"] = folio_values.get("reservation_type")
-                else:
-                    vals["reservation_type"] = "normal"
-
                 if vals["reservation_type"] == "out":
                     vals["closure_reason_id"] = int(folio_values.get("out_type"))
 
@@ -864,7 +860,7 @@ class BookingEngine(http.Controller):
                         )
                     )
                 reservation_vals = {
-                    "partner_name": vals["partner_name"],
+                    "partner_name": vals["partner_name"] if vals["reservation_type"] != "out" else "Bloqueo",
                     "email": vals.get("email") if vals.get("email") else False,
                     "mobile": vals.get("mobile") if vals.get("mobile") else False,
                     "partner_id": int(vals.get("partner_id"))
