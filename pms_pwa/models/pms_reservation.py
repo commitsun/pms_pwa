@@ -494,6 +494,13 @@ class PmsReservation(models.Model):
             ]
         )
         allowed_pricelists = []
+        if self.pricelist_id:
+            allowed_pricelists.append(
+                {
+                    "id": self.pricelist_id.id,
+                    "name": self.pricelist_id.name,
+                }
+            )
         for pricelist in pricelists:
             if not pricelist.pms_sale_channel_ids or any(
                 not channel.is_on_line for channel in pricelist.pms_sale_channel_ids
