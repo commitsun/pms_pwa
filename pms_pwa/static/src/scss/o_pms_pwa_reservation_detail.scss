@@ -39,8 +39,8 @@ section.o_pms_pwa_roomdoo {
             }
             .o_pms_pwa_disabled {
                 text-align: center;
-                color: $grey-300;
-                border: 1px solid $grey-300;
+                color: $grey-300 !important;
+                border: 1px solid $grey-300 !important;
                 background-color: transparent;
                 margin-top: 1rem;
                 margin-bottom: 1rem;
@@ -578,7 +578,7 @@ section.o_pms_pwa_roomdoo {
     }
     .o_pms_pwa_disabled {
         color: $white;
-        background-color: $grey-300;
+        background-color: $grey-300 !important;
     }
     .o_pms_pwa_extras {
         color: $theme-color;

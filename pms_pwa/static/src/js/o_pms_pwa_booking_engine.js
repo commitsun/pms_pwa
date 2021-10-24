@@ -563,8 +563,19 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             $(new_values).html(html);
             $(price_per_group).html(new_data.price_per_group.toFixed(2) + "€");
             // Aqui el precio al no tener grupos
+            var total_price = 0.0;
             $("form#booking_engine_form .price_total").html(
-                new_data.price_per_group.toFixed(2) + "€"
+
+            );
+            var price_groups_elements = document.getElementsByClassName("price_group");
+            $.each(price_groups_elements, function (a) {
+                total_price = (
+                    parseFloat(total_price) +
+                    parseFloat(price_groups_elements[a].innerText.replace("€", ""))
+                ).toFixed(2);
+            });
+            $("form#booking_engine_form .price_total").html(
+                parseFloat(total_price).toFixed(2) + "€"
             );
         },
         pms_pwa_booking_engine_draw_groups: function (new_data) {

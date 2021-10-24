@@ -501,6 +501,7 @@ class PmsReservation(models.Model):
                     "name": self.pricelist_id.name,
                 }
             )
+            pricelists -= self.pricelist_id
         for pricelist in pricelists:
             if not pricelist.pms_sale_channel_ids or any(
                 not channel.is_on_line for channel in pricelist.pms_sale_channel_ids
@@ -842,12 +843,12 @@ class PmsReservation(models.Model):
                     "pms_property_id",
                     "room_type_id",
                     "agency_id",
-                    "user_name",
                     "checkin",
                     "checkout",
+                    "range_check_date_modal",
                     "adults",
                     "reservation_type",
-                    "pricelsit_id",
+                    "pricelist_id",
                     "board_service_room_id",
                     "reservation_line_ids",
                 ]

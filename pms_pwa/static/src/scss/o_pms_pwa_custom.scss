@@ -929,3 +929,13 @@ table#bookengine_table {
 .form-control-rdcd {
     width: 106px;
 }
+
+.form-control:disabled, .form-control.o_wysiwyg_loader, .form-control[readonly] {
+    background-color: #E9ECEF !important;
+    opacity: 1;
+  }
+
+.form-control:required{
+    background-color: #daf7fc !important;
+    opacity: 1;
+  }

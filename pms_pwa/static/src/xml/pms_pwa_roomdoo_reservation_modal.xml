@@ -360,7 +360,10 @@
                                             <label class="control-label col-sm-12" for="checkin">
                                                 Fecha de entrada - Fecha de salida
                                             </label>
-                                            <input class="form-control" type="text" name="range_check_date_modal" t-attf-value="{{ reservation.checkin }} - {{ reservation.checkout }}" />
+                                            <input
+                                                t-att-readonly='reservation.readonly_fields.indexOf("checkin") != -1 ? "readonly" : None'
+                                                t-att-name='reservation.readonly_fields.indexOf("checkin") == -1 ? "range_check_date_modal" : None'
+                                                class="form-control" type="text" t-attf-value="{{ reservation.checkin }} - {{ reservation.checkout }}" />
                                             <input type="hidden" name="checkin" t-att-value="reservation.checkin" />
                                             <input type="hidden" name="checkout" t-att-value="reservation.checkout" />
                                             <span class="o_pms_pwa_calendar_icon">
