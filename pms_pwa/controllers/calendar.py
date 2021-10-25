@@ -311,7 +311,7 @@ class PmsCalendar(http.Controller):
                     "room": {
                         "id": room.id,
                         "room_type_id": room.room_type_id.id,
-                        "name": room.name,
+                        "name": room.display_name,
                         "status": "Limpia",  # TODO
                     },
                     "ocupation": rooms_reservation_values,

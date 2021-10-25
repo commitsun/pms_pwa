@@ -63,6 +63,6 @@ class Rooms(http.Controller):
         rooms_avail = pms_property.free_room_ids
 
         for room in rooms_avail:
-            rooms.append({"id": room.id, "name": room.name})
+            rooms.append({"id": room.id, "name": room.display_name})
 
         return rooms
