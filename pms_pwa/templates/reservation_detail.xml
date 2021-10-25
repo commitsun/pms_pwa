@@ -815,6 +815,27 @@
                                         </div>
                                     </div>
                                 </t>
+
+                                <div class="card bg-dark shadow mt-4">
+                                    <div class="card-header o_pms_pwa_card_header">
+                                        <h3 class="mb-0">
+                                            Listado de pagos
+                                        </h3>
+                                    </div>
+                                    <div class="card-body bg-dark">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="o_pms_pwa_theme_color"></th>
+                                                    <th class="o_pms_pwa_theme_color">método de pago</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">fecha</th>
+                                                    <th class="o_pms_pwa_theme_color text-right">importe</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="payments_list"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
