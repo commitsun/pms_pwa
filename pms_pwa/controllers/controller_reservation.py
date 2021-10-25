@@ -372,6 +372,92 @@ class PmsReservation(http.Controller):
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
+        "/reservation/reservation_payments",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def reservation_payments_json(self, folio_id=False, **kw):
+        if folio_id:
+            folio = request.env["pms.folio"].sudo().search([("id", "=", int(folio_id))])
+            if not folio:
+                raise MissingError(_("This document does not exist."))
+
+            payment_methods = (
+                request.env.user.pms_pwa_property_id._get_allowed_payments_journals()
+            )
+            payment_lines_batch = folio.statement_line_ids
+            payment_lines = [
+                {
+                    "id": x.id,
+                    "journal_id": {
+                        "id": x.journal_id.id,
+                        "name": x.journal_id.display_name,
+                    },
+                    "date": x.date,
+                    "amount": x.amount,
+                }
+                for x in payment_lines_batch
+            ]
+
+            data = {
+                "payment_lines": payment_lines,
+                "payment_methods": payment_methods,
+            }
+            return data
+        return json.dumps({"result": False, "message": _("Reservation not found")})
+
+    @http.route(
+        "/reservation/update_payment",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def reservation_update_payment(self, folio_id=False, **kw):
+        if folio_id:
+            folio = request.env["pms.folio"].sudo().search([("id", "=", int(folio_id))])
+            if not folio:
+                return json.dumps(
+                    {"result": False, "message": _("Reservation not found")}
+                )
+
+            if not kw.get("id", False):
+                return json.dumps(
+                    {"result": False, "message": _("Reservation not found")}
+                )
+
+            try:
+                statement = (
+                    request.env["account.bank.statement.line"]
+                    .sudo()
+                    .search([("id", "=", int(kw.get("id")))])
+                )
+                statement.update(
+                    {
+                        "journal_id": int(kw.get("journal_id", False))
+                        if kw.get("journal_id", False)
+                        else False,
+                        "date": kw.get("date", False),
+                        "amount": float(kw.get("amount", False))
+                        if kw.get("amount", False)
+                        else False,
+                    }
+                )
+            except Exception as e:
+                return json.dumps(
+                    {
+                        "result": False,
+                        "message": str(e),
+                    }
+                )
+            return json.dumps({"result": True, "message": _("Payment updated")})
+        return json.dumps({"result": False, "message": _("Reservation not found")})
+
+    @http.route(
         ["/reservation/json_data"],
         type="json",
         auth="public",
