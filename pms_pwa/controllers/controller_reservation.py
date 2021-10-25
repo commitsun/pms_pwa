@@ -308,7 +308,7 @@ class PmsReservation(http.Controller):
         values = {
             "page_name": "Reservation",
             "reservation": reservation,
-            "readonly_fields": ["arrival_hour", "departure_hour"],
+            "readonly_fields": [],
             "required_fields": [],
             "json_reservation": reservation.parse_reservation(),
         }
@@ -479,6 +479,11 @@ class PmsReservation(http.Controller):
                             .browse(int(params["preferred_room_id"]))
                             .id
                         )
+                    #HOURS
+                    elif param == "arrival_hour":
+                        reservation_values["arrival_hour"] = params["arrival_hour"]
+                    elif param == "departure_hour":
+                        reservation_values["departure_hour"] = params["departure_hour"]
 
                     # CHECKIN & CHECKOUT TODO process both as an unit
                     elif (
