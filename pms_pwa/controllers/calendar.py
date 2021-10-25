@@ -60,8 +60,9 @@ class PmsCalendar(http.Controller):
         pms_property_id = pms_property.id
         Room = request.env["pms.room"]
         rooms = Room.search([("pms_property_id", "=", pms_property_id)])
-        room_types = request.env["pms.room.type"].browse(
-            rooms.mapped("room_type_id.id")
+        room_types = request.env["pms.room.type"].search([
+            ("id", "in", rooms.mapped("room_type_id.id"))
+        ], order="sequence"
         )
         ubications = request.env["pms.ubication"].browse(
             rooms.mapped("ubication_id.id")
@@ -164,7 +165,7 @@ class PmsCalendar(http.Controller):
                     [
                         ("pms_property_id", "=", pms_property_id),
                         ("room_type_id", "=", int(post.get("data_id"))),
-                    ]
+                    ], order="sequence"
                 )
                 .ids
             )
@@ -175,7 +176,7 @@ class PmsCalendar(http.Controller):
                     [
                         ("pms_property_id", "=", pms_property_id),
                         ("ubication_id", "=", int(post.get("data_id"))),
-                    ]
+                    ], order="sequence"
                 )
                 .ids
             )
@@ -185,7 +186,7 @@ class PmsCalendar(http.Controller):
                 .search(
                     [
                         ("pms_property_id", "=", pms_property_id),
-                    ]
+                    ], order="sequence"
                 )
                 .ids
             )

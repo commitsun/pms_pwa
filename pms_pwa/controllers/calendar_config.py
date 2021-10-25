@@ -70,9 +70,11 @@ class PmsCalendarConfig(http.Controller):
         Room = request.env["pms.room"]
         rooms = Room.search([
             ("pms_property_id", "=", pms_property_id)
-        ])
+        ], order="sequence")
         room_type_ids = rooms.mapped("room_type_id.id")
-        room_types = request.env["pms.room.type"].browse(room_type_ids)
+        room_types = request.env["pms.room.type"].search([
+            ("id", "in", room_type_ids),
+        ], order="sequence")
 
         Pricelist = request.env["product.pricelist"]
 

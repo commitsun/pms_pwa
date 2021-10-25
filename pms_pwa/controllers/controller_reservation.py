@@ -388,7 +388,20 @@ class PmsReservation(http.Controller):
             payment_methods = (
                 request.env.user.pms_pwa_property_id._get_allowed_payments_journals()
             )
-            payment_lines_batch = folio.statement_line_ids
+            statement_lines_batch = folio.statement_line_ids
+            statement_lines = [
+                {
+                    "id": x.id,
+                    "journal_id": {
+                        "id": x.journal_id.id,
+                        "name": x.journal_id.display_name,
+                    },
+                    "date": x.date,
+                    "amount": x.amount,
+                }
+                for x in statement_lines_batch
+            ]
+            payment_lines_batch = folio.payment_ids
             payment_lines = [
                 {
                     "id": x.id,
@@ -401,9 +414,9 @@ class PmsReservation(http.Controller):
                 }
                 for x in payment_lines_batch
             ]
-
+            total_payments = statement_lines + payment_lines
             data = {
-                "payment_lines": payment_lines,
+                "payment_lines": total_payments,
                 "payment_methods": payment_methods,
             }
             return data
@@ -431,22 +444,69 @@ class PmsReservation(http.Controller):
                 )
 
             try:
+                journal_id = int(kw.get("journal_id", False))
+                journal = request.env["account.journal"].browse(journal_id)
+                date= kw.get("date", False)
+                amount = float(kw.get("amount", False))
                 statement = (
                     request.env["account.bank.statement.line"]
                     .sudo()
-                    .search([("id", "=", int(kw.get("id")))])
+                    .search([
+                        ("id", "=", int(kw.get("id"))),
+                        ("folio_ids", "in", int(folio_id)),
+                    ])
                 )
-                statement.update(
-                    {
-                        "journal_id": int(kw.get("journal_id", False))
-                        if kw.get("journal_id", False)
-                        else False,
-                        "date": kw.get("date", False),
-                        "amount": float(kw.get("amount", False))
-                        if kw.get("amount", False)
-                        else False,
-                    }
+                payment = (
+                    request.env["account.payment"]
+                    .sudo()
+                    .search([
+                        ("id", "=", int(kw.get("id"))),
+                        ("folio_ids", "in", int(folio_id)),
+                    ])
                 )
+                if journal.type == "cash" and statement:
+                    statement.update(
+                        {
+                            "journal_id": journal_id,
+                            "date": date,
+                            "amount": amount,
+                        }
+                    )
+                elif journal.type == "bank" and payment:
+                    payment.action_draft()
+                    payment.update(
+                        {
+                            "journal_id": journal_id,
+                            "date": date,
+                            "amount": amount,
+                        }
+                    )
+                    payment.action_post()
+                elif journal.type == "cash" and payment:
+                    payment.action_draft()
+                    payment.action_cancel()
+                    payment.unlink()
+                    folio.do_payment(
+                        journal,
+                        journal.suspense_account_id,
+                        request.env.user,
+                        amount,
+                        folio,
+                        partner=folio.partner_id,
+                        date=date,
+                    )
+                elif journal.type == "bank" and statement:
+                    statement.unlink()
+                    folio.do_payment(
+                        journal,
+                        journal.suspense_account_id,
+                        request.env.user,
+                        amount,
+                        folio,
+                        partner=folio.partner_id,
+                        date=date,
+                    )
+
             except Exception as e:
                 return json.dumps(
                     {
