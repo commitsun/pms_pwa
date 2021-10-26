@@ -564,7 +564,7 @@
                                                                     <tr>
                                                                         <th class="o_pms_pwa_detail_th">Fecha</th>
                                                                         <th class="o_pms_pwa_detail_th">Cantidad</th>
-                                                                        <th class="o_pms_pwa_detail_th">Precio</th>
+                                                                        <th class="o_pms_pwa_detail_th" style="padding-left:0;">Precio Ud.</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
