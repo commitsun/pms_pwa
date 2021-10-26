@@ -22,7 +22,7 @@ class PmsProperty(models.Model):
             record.total_rooms_count = len(record.room_ids)
 
     def _get_total_rooms(self):
-        return len(self.room_ids)
+        return len(self.room_ids.filtered("lambda r: r.room_type_id.overnight_room"))
 
     def _get_occupied_rooms(self):
         if self._context.get("checkin") and self._context.get("checkout"):
