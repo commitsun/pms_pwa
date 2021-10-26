@@ -1230,16 +1230,17 @@
                                                         <button type="button" t-attf-data-id="reservation.id" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                                             <span>Cerrar</span>
                                                         </button>
-                                                        <t t-if="partner_value['state'] == 'precheckin'">
+                                                        <!-- HOTFIX  enabled js dont run-->
+                                                        <!-- <t t-if="partner_value['state'] == 'precheckin'"> -->
                                                             <button type="button" t-attf-data-id="reservation.id" class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w o_pms_pwa_checkin_confirm_button" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        </t>
+                                                        <!-- </t>
                                                         <t t-else="">
                                                             <button type="button" disabled="true" t-attf-data-id="reservation.id" class="btn btn-block btn-grey-300 btn-radius o_pms_pwa_disabled o_pms_pwa_30w o_pms_pwa_checkin_confirm_button" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        </t>
+                                                        </t> -->
                                                     </div>
                                                 </div>
                                             </div>
