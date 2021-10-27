@@ -44,8 +44,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         events: {
             "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
                 "_onClickReservationButton",
+            "dblclick tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
+                "_onDobleClickReservationButton",
             "click td.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
+            "dblclick td.o_pms_pwa_calendar_reservation": "_onDobleClickReservationButton",
             "click td.launch_modal": "_onClickReservationButton",
+            "dblclick td.launch_modal": "_onDobleClickReservationButton",
             "click .o_pms_pwa_button_asignar": "_onClickAssingButton",
             "click tbody > tr > td:not(:last-child) a": "_onClickNotLastChildA",
             "click .o_pms_pwa_button_checkins": "_onClickCheckinButton",
@@ -85,8 +89,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         displayContent: function (xmlid, render_values) {
             var html = core.qweb.render(xmlid, render_values);
-            $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
-            $("div.o_pms_pwa_reservation_modal").modal();
+            setTimeout(function () {
+                $("div.o_pms_pwa_reservation_modal").remove()
+                $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
+                $("div.o_pms_pwa_reservation_modal").modal();
+            }, 10);
         },
         modalButtonsOnChange: function () {
             var self = this;
@@ -398,6 +405,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 });
             }
         },
+        /* DobleClick event control */
+        _onDobleClickReservationButton: function(event) {
+            event.preventDefault();
+        },
         /* OnClick events */
         _onClickReservationButton: function (event) {
             event.preventDefault();
@@ -610,7 +621,24 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             "td[data-id=" +
                                                             reservation_data["id"] +
                                                             "]";
-                                                        $(selector).click();
+                                                        if ($(selector).length > 0) {
+                                                            $(selector).click();
+                                                        } else {
+                                                            var new_selector = $(
+                                                                "<td class='launch_modal' data-id='" +
+                                                                    modal_reservation_id +
+                                                                    "'>Pincha aqui</td>"
+                                                            );
+                                                            new_selector.appendTo(
+                                                                "table.launch_modal"
+                                                            );
+                                                            setTimeout(function () {
+                                                                $(new_selector).click();
+                                                                $(
+                                                                    new_selector
+                                                                ).remove();
+                                                            }, 100);
+                                                        }
                                                     }
                                                 } catch (error) {
                                                     console.log(error);
@@ -1044,13 +1072,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 } else if ($(selector_list).length != 0) {
                                     $(selector_list).find("td.first-col").click();
                                 } else {
-                                    $(
+                                    var new_selector = $(
                                         "<td class='launch_modal' data-id='" +
                                             modal_reservation_id +
                                             "'>Pincha aqui</td>"
-                                    ).appendTo("table.launch_modal");
+                                    );
+                                    new_selector.appendTo("table.launch_modal");
                                     setTimeout(function () {
-                                        $(selector).click();
+                                        $(new_selector).click();
+                                        $(new_selector).remove();
                                     }, 100);
                                 }
                             } catch (error) {
