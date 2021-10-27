@@ -44,8 +44,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         events: {
             "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
                 "_onClickReservationButton",
+            "dblclick tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
+                "_onDobleClickReservationButton",
             "click td.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
+            "dblclick td.o_pms_pwa_calendar_reservation": "_onDobleClickReservationButton",
             "click td.launch_modal": "_onClickReservationButton",
+            "dblclick td.launch_modal": "_onDobleClickReservationButton",
             "click .o_pms_pwa_button_asignar": "_onClickAssingButton",
             "click tbody > tr > td:not(:last-child) a": "_onClickNotLastChildA",
             "click .o_pms_pwa_button_checkins": "_onClickCheckinButton",
@@ -85,8 +89,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         displayContent: function (xmlid, render_values) {
             var html = core.qweb.render(xmlid, render_values);
-            $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
-            $("div.o_pms_pwa_reservation_modal").modal();
+            setTimeout(function () {
+                $("div.o_pms_pwa_reservation_modal").remove()
+                $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
+                $("div.o_pms_pwa_reservation_modal").modal();
+            }, 10);
         },
         modalButtonsOnChange: function () {
             var self = this;
@@ -397,6 +404,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     }
                 });
             }
+        },
+        /* DobleClick event control */
+        _onDobleClickReservationButton: function(event) {
+            event.preventDefault();
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
