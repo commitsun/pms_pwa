@@ -315,7 +315,7 @@
                                                     <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service(current_property)"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'pms_property'">
-                                                    <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, overnight_rooms=True).availability"></t>
+                                                    <t t-set="room_classes" t-value="obj._get_room_classes()"></t>
                                                     <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations()"></t>
                                                     <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service()"></t>
                                                     <t t-set="percent_occupied" t-value="(rooms_occupied_reservations + rooms_occupied_out_service) * 100 / total_rooms"></t>
@@ -344,18 +344,27 @@
                                                             <t t-esc="percent_occupied"  t-options="{'widget': 'float', 'precision': 0}"/> %
                                                         </div>
                                                     </div>
-                                                    <p class="o_pms_pwa_title" style="margin-bottom:0;"><t t-esc="availability_room"/>
-                                                        disponibles
+                                                    <span t-if="selected_display == 'pms_property'">
+                                                        <t t-foreach="room_classes" t-as="room_class">
+                                                            <p class="o_pms_pwa_title" style="margin-bottom:0;"><t t-esc="obj._get_class_availability(room_class_id=room_class.id, checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist)"></t>
+                                                                <t t-esc="room_class.default_code" /> disponibles
+                                                            </p>
+                                                        </t>
+                                                    </span>
+                                                    <span t-else="">
+                                                        <p class="o_pms_pwa_title" style="margin-bottom:0;"><t t-esc="availability_room"/>
+                                                            disponibles
 
-                                                        <!-- <span class="o_pms_pwa_info">
-                                                            <img
-                                                              src="/pms_pwa/static/img/svg/interrogante-azul.svg"
-                                                              alt="ayuda"
-                                                              class="img-responsive o_pms_pwa_interrogante-calendar"
-                                                              title="Texto informativo del icono"
-                                                            />
-                                                        </span> -->
-                                                    </p>
+                                                            <!-- <span class="o_pms_pwa_info">
+                                                                <img
+                                                                  src="/pms_pwa/static/img/svg/interrogante-azul.svg"
+                                                                  alt="ayuda"
+                                                                  class="img-responsive o_pms_pwa_interrogante-calendar"
+                                                                  title="Texto informativo del icono"
+                                                                />
+                                                            </span> -->
+                                                        </p>
+                                                    </span>
 
                                                     <div class="mt-2 o_pms_pwa_content">
                                                         <div class="circles-container text-center row m-0 p-0">
