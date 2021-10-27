@@ -564,9 +564,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             $(price_per_group).html(new_data.price_per_group.toFixed(2) + "€");
             // Aqui el precio al no tener grupos
             var total_price = 0.0;
-            $("form#booking_engine_form .price_total").html(
-
-            );
+            $("form#booking_engine_form .price_total").html();
             var price_groups_elements = document.getElementsByClassName("price_group");
             $.each(price_groups_elements, function (a) {
                 total_price = (
@@ -921,27 +919,30 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 if (new_data && new_data.result != "error") {
                     if (new_data.reservation_id) {
                         // Vacio datos de la modal a mano.
-                        console.log("BORRO LOS DATOS");
                         $("#bookengine_table > tr").remove();
                         document.getElementById("booking_engine_form").reset();
-                        console.log("Cierro la modal");
                         // Cierra modal
                         $("div.o_pms_pwa_new_reservation_modal").modal("toggle");
                         // Abre modal
                         try {
                             var selector =
                                 "td[data-id=" + new_data.reservation_id + "]";
-                            if ($(selector)) {
-                                $(selector).remove();
+                            if ($(selector).length > 0) {
+                                setTimeout(function () {
+                                    $(selector).click();
+                                }, 100);
+                            } else {
+                                var new_selector = $(
+                                    "<td class='launch_modal' data-id='" +
+                                        new_data.reservation_id +
+                                        "'>Pincha aqui</td>"
+                                );
+                                new_selector.appendTo("table.launch_modal");
+                                setTimeout(function () {
+                                    $(new_selector).click();
+                                    $(new_selector).remove();
+                                }, 100);
                             }
-                            $(
-                                "<td class='launch_modal' data-id='" +
-                                    new_data.reservation_id +
-                                    "'>Pincha aqui</td>"
-                            ).appendTo("table.launch_modal");
-                            setTimeout(function () {
-                                $(selector).click();
-                            }, 100);
                         } catch (error) {
                             console.log(error);
                             location.href = "/reservation/" + new_data.reservation_id;

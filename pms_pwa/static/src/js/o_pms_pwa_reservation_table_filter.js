@@ -610,7 +610,24 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             "td[data-id=" +
                                                             reservation_data["id"] +
                                                             "]";
-                                                        $(selector).click();
+                                                        if ($(selector).length > 0) {
+                                                            $(selector).click();
+                                                        } else {
+                                                            var new_selector = $(
+                                                                "<td class='launch_modal' data-id='" +
+                                                                    modal_reservation_id +
+                                                                    "'>Pincha aqui</td>"
+                                                            );
+                                                            new_selector.appendTo(
+                                                                "table.launch_modal"
+                                                            );
+                                                            setTimeout(function () {
+                                                                $(new_selector).click();
+                                                                $(
+                                                                    new_selector
+                                                                ).remove();
+                                                            }, 100);
+                                                        }
                                                     }
                                                 } catch (error) {
                                                     console.log(error);
@@ -1044,13 +1061,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 } else if ($(selector_list).length != 0) {
                                     $(selector_list).find("td.first-col").click();
                                 } else {
-                                    $(
+                                    var new_selector = $(
                                         "<td class='launch_modal' data-id='" +
                                             modal_reservation_id +
                                             "'>Pincha aqui</td>"
-                                    ).appendTo("table.launch_modal");
+                                    );
+                                    new_selector.appendTo("table.launch_modal");
                                     setTimeout(function () {
-                                        $(selector).click();
+                                        $(new_selector).click();
+                                        $(new_selector).remove();
                                     }, 100);
                                 }
                             } catch (error) {
