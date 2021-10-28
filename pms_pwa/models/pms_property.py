@@ -21,11 +21,8 @@ class PmsProperty(models.Model):
         for record in self:
             record.total_rooms_count = len(record.room_ids)
 
-    def _get_room_classes(self):
-        return self.room_ids.room_type_id.class_id
-
     def _get_total_rooms(self):
-        return len(self.room_ids.filtered(lambda r: r.room_type_id.overnight_room))
+        return len(self.room_ids.filtered("lambda r: r.room_type_id.overnight_room"))
 
     def _get_occupied_rooms(self):
         if self._context.get("checkin") and self._context.get("checkout"):
@@ -65,14 +62,6 @@ class PmsProperty(models.Model):
                     ("reservation_id.reservation_type", "=", "out"),
                 ]
             ).mapped("reservation_id.id"))
-
-    def _get_class_availability(self, room_class_id, checkin, checkout, pricelist_id):
-        availability_rooms = self.with_context(
-            checkin=checkin,
-            checkout=checkout,
-            pricelist_id=pricelist_id).free_room_ids
-        availability_rooms = availability_rooms.filtered(lambda r: r.room_type_id.class_id.id == room_class_id)
-        return len(availability_rooms)
 
     def _get_allowed_payments_journals(self):
         """
