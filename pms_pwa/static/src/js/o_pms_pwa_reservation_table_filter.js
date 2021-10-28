@@ -89,11 +89,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         displayContent: function (xmlid, render_values) {
             var html = core.qweb.render(xmlid, render_values);
-            setTimeout(function () {
-                $("div.o_pms_pwa_reservation_modal").remove()
-                $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
-                $("div.o_pms_pwa_reservation_modal").modal();
-            }, 10);
+            $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
+            $("div.o_pms_pwa_reservation_modal").modal();
         },
         modalButtonsOnChange: function () {
             var self = this;
@@ -408,6 +405,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         /* DobleClick event control */
         _onDobleClickReservationButton: function(event) {
             event.preventDefault();
+            event.stopPropagation();
+            console.log("Double click");
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
@@ -610,11 +609,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                         "tr[data-id=" +
                                                         reservation_data["id"] +
                                                         "]";
-                                                    var test = $(selector);
+                                                    var test = $(selector).find("td.first-col");
                                                     if (test.length != 0) {
-                                                        $(selector)
-                                                            .find("td.first-col")
-                                                            .click();
+                                                        $(selector).click();
                                                     } else {
                                                         // abre modal
                                                         var selector =
