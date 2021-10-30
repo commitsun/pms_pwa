@@ -247,15 +247,14 @@ class PmsCalendar(http.Controller):
                 )
             splitted_reservations_lines = reservations.filtered(
                 lambda r: r.splitted
-            ).reservation_line_ids.filtered(lambda l: l.room_id.id == room_id)
+            ).reservation_line_ids.filtered(
+                lambda l: l.room_id.id == room_id
+                and l.date in dates
+            )
+            used_line_ids = []
             for split in splitted_reservations_lines.sorted("date"):
-                rooms_reservation_values.append(
-                    {
-                        "date": day,
-                        "reservation_info": False,
-                    }
-                )
-                continue
+                if split.id in used_line_ids:
+                    continue
                 main_split = False
                 reservation = split.reservation_id
                 nights = 0
@@ -265,34 +264,41 @@ class PmsCalendar(http.Controller):
                     split.date + timedelta(days=x)
                     for x in range(0, (reservation.checkout - split.date).days)
                 ]:
-                    line = reservation.reservation_line_ids(
-                        lambda l: l.date == date_iterator
+                    line = reservation.reservation_line_ids.filtered(
+                        lambda l: l.date == date_iterator and l.room_id == split.room_id
                     )
-                    if line and line.room_id == split.room_id:
+                    if line:
                         nights += 1
-                        free_dates.remove(line.date)
-                        splitted_reservations_lines.remove(line)
+                        used_line_ids.append(line.id)
+                        # splitted_reservations_lines -= line
+                        # free_dates.remove(line.date)
                 rooms_reservation_values.append(
                     {
                         "splitted": True,
                         "main_split": main_split,
-                        "date": reservation.checkin,
+                        "date": split.date,
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": reservation.partner_name
                             if main_split
-                            else False,
+                            else reservation.rooms,
                             "img": "/web/image/pms.reservation/"
                             + str(reservation.id)
-                            + "/partner_image_128"
-                            if main_split
-                            else False,
+                            + "/partner_image_128",
                             "price": round(reservation.folio_pending_amount, 2)
                             if main_split
-                            else False,
-                            "status": color_state,
+                            else '',
+                            "status": reservation.color_state,
                             "icon_payment": reservation.icon_payment,
                             "nigths": nights,
+                            "days": nights + 1,
+                            "checkin_in_range": False
+                            if split.date == reservation.checkin
+                            else True,
+                            "checkout_in_range": False
+                            if split.date + timedelta(days=nights)
+                            != reservation.checkout
+                            else True,
                         },
                     }
                 )
