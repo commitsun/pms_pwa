@@ -59,8 +59,9 @@ class PmsCalendarConfig(http.Controller):
         # get the days of the month
         month_days = monthrange(date.year, date.month)[1]
         dpr = month_days
-        if post.get("dpr") and post.get("dpr").isnumeric():
-            dpr = int(post.get("dpr"))
+        # Disable days selection feature
+        # if post.get("dpr") and post.get("dpr").isnumeric():
+        #     dpr = int(post.get("dpr"))
         date_list = [date_start + timedelta(days=x) for x in range(dpr)]
 
         dpr_select_values = {7, 15, month_days}
