@@ -292,13 +292,8 @@ class PmsCalendar(http.Controller):
                             "icon_payment": reservation.icon_payment,
                             "nigths": nights,
                             "days": nights + 1,
-                            "checkin_in_range": False
-                            if split.date == reservation.checkin
-                            else True,
-                            "checkout_in_range": False
-                            if split.date + timedelta(days=nights)
-                            != reservation.checkout
-                            else True,
+                            "checkin_in_range": False,
+                            "checkout_in_range": True,
                         },
                     }
                 )
