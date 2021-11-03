@@ -371,12 +371,12 @@ class PmsCalendar(http.Controller):
         )
         # Add default dpr and dpr_select_values
 
-        dpr = 15
+        month_days = monthrange(date.year, date.month)[1]
+        dpr = month_days
         if post.get("dpr"):
             dpr = int(post.get("dpr"))
         date_list = [date_start + timedelta(days=x) for x in range(dpr)]
         # get the days of the month
-        month_days = monthrange(date.year, date.month)[1]
         dpr_select_values = {7, 15, month_days}
         Pricelist = request.env["product.pricelist"]
         pricelists = Pricelist.search(
