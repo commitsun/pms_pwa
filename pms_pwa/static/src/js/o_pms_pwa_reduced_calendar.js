@@ -8,7 +8,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     var calendar_dpr = $('input[name="calendar_dpr"]').val();
 
-    publicWidget.registry.CalendarCollapseWidget = publicWidget.Widget.extend({
+    publicWidget.registry.ReducedCalendarCollapseWidget = publicWidget.Widget.extend({
         selector: "#reduced_calendar_table, #confirmChange",
         xmlDependencies: ["/pms_pwa/static/src/xml/pms_pwa_roomdoo_reduced_calendar_line.xml"],
         events: {
@@ -141,9 +141,9 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         init: function(){
             console.log("init");
             var self = this;
-            $(".o_pms_pwa_open_reduced_calendar").map(function() {
-                self.launchLines(this);
-            }).get();
+            // $(".o_pms_pwa_open_reduced_calendar").map(function() {
+            //     self.launchLines(this);
+            // }).get();
             return this._super.apply(this, arguments);
 
         },
