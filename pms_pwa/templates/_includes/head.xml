@@ -36,11 +36,11 @@
                 type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_calendar.scss"
             />
-            <!-- <link
+            <link
                 rel="stylesheet"
                 type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_reduced_calendar.scss"
-            /> -->
+            />
             <link
                 rel="stylesheet"
                 type="text/scss"
@@ -99,10 +99,10 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_calendar_config.js"
             />
-            <!-- <script
+            <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_reduced_calendar.js"
-            /> -->
+            />
             <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_notify.js"
@@ -140,10 +140,10 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_property_selector.js"
             />
-            <!-- <script
+            <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/vendor/jquery-ui.js"
-            /> -->
+            />
         </xpath>
     </template>
 </odoo>

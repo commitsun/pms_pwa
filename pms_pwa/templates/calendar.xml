@@ -110,8 +110,9 @@
                                       class="form-control o_website_form_input o_input"
                                       onchange="if (this.value) window.location.href=this.value"
                                     >
-                                         <option value="" selected="selected">Calendario de reservas</option>
+                                        <option value="" selected="selected">Calendario de reservas</option>
                                         <option value="/calendar/config">Configuración de precios</option>
+                                        <option value="/calendar/reduced">Calendario reducido</option>
                                     </select>
                                 </div>
                             </div>
