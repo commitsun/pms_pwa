@@ -19,6 +19,7 @@ odoo.define("pms_pwa.calendar", function (require) {
             var data_id = event.currentTarget.getAttribute("data-id");
             var date_list = $('input[name="date_list"]').val();
             var selected_display = $('input[name="selected_display"]').val();
+
             ajax.jsonRpc("/calendar/line", "call", {
                 data_id: data_id,
                 range_date: date_list,
