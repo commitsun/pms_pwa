@@ -50,6 +50,7 @@
                                     >
                                         <option value="" selected="selected">Configuración de precios</option>
                                         <option value="/calendar">Calendario de reservas</option>
+                                        <option value="/calendar/reduced">Calendario reducido</option>
                                     </select>
                                 </div>
                             </div>

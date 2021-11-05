@@ -21,7 +21,7 @@ _logger = logging.getLogger(__name__)
 class PmsCalendar(http.Controller):
 
     @http.route(
-        "/reduced-calendar",
+        "/calendar/reduced",
         type="http",
         auth="user",
         methods=["GET", "POST"],
@@ -87,8 +87,9 @@ class PmsCalendar(http.Controller):
             request.env["pms.property"].browse(pms_property_id).default_pricelist_id.id
         )
         display_select_options = [
-            {"name": "Room type", "value": "room_type"},
-            {"name": "Ubications", "value": "ubication"},
+            {"name": "Hoteles", "value": "pms_property"},
+            {"name": "Tipo de Habitación", "value": "room_type"},
+            {"name": "Zonas Hotel", "value": "ubication"},
         ]
         obj_list = room_types
         selected_display = "room_type"
@@ -99,6 +100,9 @@ class PmsCalendar(http.Controller):
             elif post["display_option"] == "ubication":
                 obj_list = ubications
                 selected_display = "ubication"
+            elif post["display_option"] == "pms_property":
+                obj_list = request.env.user.pms_pwa_property_ids
+                selected_display = "pms_property"
 
         if post and "pricelist" in post:
             pricelist = int(post["pricelist"])
@@ -123,3 +127,47 @@ class PmsCalendar(http.Controller):
             "pms_pwa.roomdoo_reduced_calendar_page",
             values,
         )
+
+    @http.route(
+        "/calendar/reduced-change",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def reduced_calendar_change(self, **post):
+        change_checkin = False
+        change_room = False
+        splitted = False
+        reservation = request.env["pms.reservation"].browse(int(post["id"]))
+        new_checkin = datetime.datetime.strptime(
+            post.get("date"), get_lang(request.env).date_format
+        ).date()
+        new_room = request.env["pms.room"].browse(int(post["room"]))
+        if reservation.splitted:
+            splitted = True
+        if new_checkin != reservation.checkin:
+            change_checkin = True
+        if new_room != reservation.preferred_room_id:
+            change_room = True
+        if change_room and change_checkin:
+            _logger.info("Change ALL")
+            confirmation_mens = ("Modificar la reserva de %s a la habitación %s con checkin %s",
+                                 reservation.partner_name, new_room.display_name, new_checkin)
+            # If new room isn't free in new dates no change
+            # Change Prices??
+        elif change_room:
+            _logger.info("Change Only ROOM")
+            confirmation_mens = ("Modificar la reserva de %s a la habitación %s",
+                                 reservation.partner_name, new_room.display_name)
+            # If new room isn't free, Swap reservations??
+        elif change_checkin:
+            _logger.info("Change only Checkin")
+            confirmation_mens = ("Modificar la fecha de entrada de %s a %s",
+                                 reservation.partner_name, new_checkin)
+            # Change Prices?
+        print("--->", post)
+        return {"result": "success", "message": confirmation_mens}
+
+        # return True

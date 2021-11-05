@@ -13,7 +13,7 @@
                         <t t-foreach="obj.ocupation" t-as="reservation">
                             <t t-if="reservation.reservation_info">
                                 <t t-if="reservation.reservation_info.checkin_in_range">
-                                    <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-colspan="reservation.reservation_info.nigths"  t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                    <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-colspan="reservation.reservation_info.nigths"  t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}">
                                         <t t-set="o_pms_pwa_line_color" t-att-value="'o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status"/>
                                         <p t-att-class="' '
                                             + (' o_pms_pwa_calendar_line_hr_'+reservation.reservation_info.status)">
@@ -31,7 +31,7 @@
                                 </t>
                                 <t t-else="">
                                     <t t-if="reservation.reservation_info.nigths > 1">
-                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-colspan="reservation.reservation_info.nigths" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-colspan="reservation.reservation_info.nigths" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}">
                                             <p
                                                 t-att-class="(reservation_last ? 'o_pms_pwa_last_table_cell ' : ' ') + 'o_pms_pwa_calendar_line_hr_' + (reservation.reservation_info.status)"
                                             >
@@ -52,7 +52,7 @@
                                         </td>
                                     </t>
                                     <t t-else="">
-                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}">
+                                        <td class="o_pms_pwa_line_cell_content o_pms_pwa_calendar_reservation" t-att-id="'reservation_'+ reservation.reservation_info.id" t-attf-data-id="{{ reservation.reservation_info.id }}" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}">
                                             <p
                                                 t-att-class="(reservation_last ? 'o_pms_pwa_last_table_cell ' : ' ') + 'o_pms_pwa_calendar_line_hr_' + (reservation.reservation_info.status)"
 
@@ -76,7 +76,7 @@
                                 </t>
                             </t>
                             <t t-else="">
-                                <td class="o_pms_pwa_calendar_line_event o_pms_pwa_line_cell_content">
+                                <td class="o_pms_pwa_calendar_line_event o_pms_pwa_line_cell_content" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}">
                                     <button type="button" class="btn btn-add open-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" t-attf-data-price_per_room="{{ obj.room.price }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">+</button>
                                 </td>
                             </t>
