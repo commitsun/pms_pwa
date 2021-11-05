@@ -312,13 +312,27 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 range_date: date_list,
                                 selected_display: selected_display,
                             }).then(function (data) {
-                                var html = core.qweb.render("pms_pwa.calendar_line", {
-                                    obj_list: data.reservations,
-                                    csrf_token: csrf_token,
-                                });
-                                $(String("#collapse_accordion_" + selected_id)).html(
-                                    html
-                                );
+                                try{
+                                    var html = core.qweb.render("pms_pwa.calendar_line", {
+                                        obj_list: data.reservations,
+                                        csrf_token: csrf_token,
+                                    });
+                                    $(String("#collapse_accordion_" + selected_id)).html(
+                                        html
+                                    );
+                                }catch{
+                                    var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
+                                        obj_list: data.reservations,
+                                        csrf_token: csrf_token,
+                                    });
+                                    $(
+                                        String(
+                                            "#collapse_accordion_" + selected_id
+                                        )
+                                    ).html(html);
+                                    $(".o_pms_pwa_line_cell_content").removeAttr('style');
+                                    $(".o_pms_pwa_line_cell_content").draggable();
+                                }
                             });
                         } catch (error) {
                             console.log(error);
