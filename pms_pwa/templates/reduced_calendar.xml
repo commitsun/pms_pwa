@@ -2,7 +2,7 @@
 <odoo>
     <template id="roomdoo_reduced_calendar_page" name="Small Calendar">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'Small Calendario'"/>
+            <t t-set="page_title" t-value="today.strftime('%d de %b')"/>
             <t t-set="current_property" t-value="user_id.pms_pwa_property_id.id" />
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
@@ -306,7 +306,7 @@
                                 </thead>
                                 <tbody>
                                     <t t-foreach="obj_list" t-as="obj">
-                                        <tr class="o_pms_pwa_open_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
+                                        <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-id="{{ obj.id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(obj.id)" aria-expanded="false">
                                             <td class="o_pms_pwa_table_first_header_td">
                                                 <p class="o_pms_pwa_room_name">
                                                     <i class="fa fa-angle-down"></i>
