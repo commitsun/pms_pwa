@@ -99,7 +99,21 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 "click",
                 function (event) {
                     event.preventDefault();
-                    /* var reservation_id = $("#o_pms_pwa_reservation_modal")[0].getAttribute("data-id"); */
+                    var reservation_id = $("#o_pms_pwa_reservation_modal")[0].getAttribute("data-id");
+
+                    ajax.jsonRpc(
+                        "/reservation/" +
+                        reservation_id +
+                            "/assign",
+                        "call",
+                        {}
+                    ).then(function (res) {
+                        if (res) {
+                            if (JSON.parse(res).result) {
+                                self.displayDataAlert(res);
+                            }
+                        }
+                    });
                 }
             );
 
