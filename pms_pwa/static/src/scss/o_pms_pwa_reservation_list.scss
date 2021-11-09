@@ -319,7 +319,8 @@ section.o_pms_pwa_roomdoo_list {
 div.o_pms_pwa_reservation_modal,
 div.o_pms_pwa_filters_modal,
 div.o_pms_pwa_partner_modal,
-div.o_pms_pwa_new_reservation_modal {
+div.o_pms_pwa_new_reservation_modal,
+div.o_pms_pwa_cash_modal {
     &.modal.o_pms_pwa_right .modal-dialog {
         position: fixed;
         margin: auto;
@@ -399,7 +400,8 @@ div.o_pms_pwa_new_reservation_modal {
     }
 }
 
-div.o_pms_pwa_reservation_modal {
+div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_cash_modal {
     div.modal-header.o_pms_pwa_modal_header {
         display: block;
     }
@@ -452,7 +454,8 @@ div.o_pms_pwa_partner_modal {
 *******************************/
 
 section.o_pms_pwa_roomdoo_list,
-div.o_pms_pwa_reservation_modal {
+div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_cash_modal {
     .o_pms_pwa_reservation_name {
         text-align: left;
         font-size: 18px;
@@ -737,7 +740,8 @@ div.o_pms_pwa_new_reservation_modal {
 section.o_pms_pwa_roomdoo_section,
 div.o_pms_pwa_reservation_modal,
 div.o_pms_pwa_filters_modal,
-div.o_pms_pwa_new_reservation_modal {
+div.o_pms_pwa_new_reservation_modal,
+div.o_pms_pwa_cash_modal {
     a.btn-outline-dark,
     button.btn-outline-dark {
         border-width: 1px;
@@ -774,7 +778,6 @@ div.o_pms_pwa_new_reservation_modal {
     top: 1%;
     @media screen and (max-width: 1678px) {
         right: 35%;
-
     }
     @media screen and (max-width: 1300px) {
         right: unset;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="o_pms_pwa_new_cash_register_payment" name="Edit reservation modal">
-        <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal" id="o_pms_pwa_new_cash_register_payment">
+        <div class="modal o_pms_pwa_right fade o_pms_pwa_cash_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_cash_modal" id="o_pms_pwa_new_cash_register_payment">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header o_pms_pwa_modal_header">

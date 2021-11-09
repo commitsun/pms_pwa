@@ -1083,7 +1083,10 @@
                                     <t t-foreach="reservation.checkin_partner_ids" t-as="partner_id">
                                         <div class="step" t-att-data-target="'#checkin_partner_'+partner_id">
                                             <button type="button" class="step-trigger" role="tab" t-att-aria-controls="'#checkin_partner_'+partner_id" t-att-id="'checkin_partner_'+partner_id+'-trigger'">
-                                                <span class="bs-stepper-circle">
+                                                <span t-if="(partner_id_value['state'] == 'onboard') or (partner_id_value['state'] == 'done')" class="bs-stepper-circle o_pms_pwa_done_circle">
+                                                    <t t-esc="step_counter" />
+                                                </span>
+                                                <span t-else="" class="bs-stepper-circle">
                                                     <t t-esc="step_counter" />
                                                 </span>
                                             </button>
@@ -1230,17 +1233,16 @@
                                                         <button type="button" t-attf-data-id="reservation.id" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                                             <span>Cerrar</span>
                                                         </button>
-                                                        <!-- HOTFIX  enabled js dont run-->
-                                                        <!-- <t t-if="partner_value['state'] == 'precheckin'"> -->
+                                                        <t t-if="partner_value['state'] == 'precheckin'">
                                                             <button type="button" t-attf-data-id="reservation.id" class="btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w o_pms_pwa_checkin_confirm_button" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        <!-- </t>
+                                                        </t>
                                                         <t t-else="">
-                                                            <button type="button" disabled="true" t-attf-data-id="reservation.id" class="btn btn-block btn-grey-300 btn-radius o_pms_pwa_disabled o_pms_pwa_30w o_pms_pwa_checkin_confirm_button" data-dismiss="modal" aria-label="Checkin">
+                                                            <button type="button" disabled="true" t-attf-data-id="reservation.id" class="btn btn-block btn-grey-300 btn-radius o_pms_pwa_disabled o_pms_pwa_30w o_pms_pwa_button_checkin_confirm o_pms_pwa_checkin_confirm_button" data-dismiss="modal" aria-label="Checkin">
                                                                 <span>Checkin</span>
                                                             </button>
-                                                        </t> -->
+                                                        </t>
                                                     </div>
                                                 </div>
                                             </div>

@@ -5,6 +5,7 @@
             <t t-set="page_title" t-value="'DASHBOARD'"/>
             <div class="oe_structure o_pms_pwa_structure mt-4 o_pms_pwa_dashboard">
                 <t t-call="pms_pwa.o_pms_pwa_new_cash_register_payment" />
+                <div class="o_pms_pwa_roomdoo_reservation_modal" />
                 <div class="o_pms_pwa_roomdoo_alerts" />
                 <section class="container-fluid">
                     <div class="row">

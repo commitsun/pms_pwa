@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="pms_pwa" xml:space="preserve">
+    <t t-name="pms_pwa.notification_widget">
+        <t t-if="alert">
+            <div t-attf-class="toast show {{ alert['type'] }}" data-autohide="true">
+                <div class="toast-header">
+                    <strong class="mr-auto">
+                        <i class="fa fa-bell"></i>
+                    </strong>
+                    <button type="button" class="ml-2 mb-1 o_pms_pwa_toast-close close" data-dismiss="toast">
+                        <span>x</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    <t t-esc="alert['message']" />
+                    <t t-if="alert['id']">
+                        <a href="#" class="o_pms_pwa_open_reservation_modal" t-att-data-id="alert['id']"> Ver </a>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </t>
+
+</templates>
