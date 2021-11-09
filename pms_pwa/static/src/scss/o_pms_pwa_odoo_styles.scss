@@ -9,7 +9,8 @@ body.o_connected_user {
 
 div.o_pms_pwa_reservation_modal,
 div.o_pms_pwa_filters_modal,
-div.o_pms_pwa_new_reservation_modal {
+div.o_pms_pwa_new_reservation_modal,
+div.o_pms_pwa_cash_modal {
     &.modal.o_pms_pwa_right .modal-dialog {
         position: fixed;
         // margin: auto;
