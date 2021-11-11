@@ -462,6 +462,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
+            var target = $(event.currentTarget);
+            target.prop("disabled", true);
             event.stopImmediatePropagation();
             event.preventDefault();
             var self = this;
@@ -1345,6 +1347,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         reservation_data = false;
                     }
                 }, 0);
+                target.prop("disabled", false);
+                console.log("Button enabled");
             });
         },
         _onClickAssingButton: function (event) {
