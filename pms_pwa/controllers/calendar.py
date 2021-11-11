@@ -70,7 +70,7 @@ class PmsCalendar(http.Controller):
 
         # Add default dpr and dpr_select_values
 
-        dpr = 15
+        dpr = 31
         # Disable days selection feature
         # if post.get("dpr") and post.get("dpr").isnumeric():
         #     dpr = int(post.get("dpr"))
