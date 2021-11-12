@@ -321,7 +321,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             try {
                 var data = JSON.parse(result);
             } catch (error) {
-                console.log(error);
                 var data = result;
             }
 
@@ -1526,7 +1525,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         action_on_board: false,
                                     }
                                 ).then(function (new_data) {
-                                    new_data = JSON.parse(new_data);
+                                    try {
+                                        new_data = JSON.parse(new_data);
+                                    } catch (err) {
+                                        new_data = new_data;
+                                    }
                                     try {
                                         var checkin_persons =
                                             new_data.checkin_partner_ids;
@@ -1681,8 +1684,18 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }).then(function (new_data) {
                                 try {
                                     new_data = JSON.parse(new_data);
+                                } catch (error) {
+                                    new_data = new_data;
+                                }
 
-                                    var checkin_persons = new_data.checkin_partner_ids;
+                                try {
+                                    if (new_data.reservation) {
+                                        var checkin_persons =
+                                            new_data.reservation.checkin_partner_ids;
+                                    } else {
+                                        var checkin_persons =
+                                            new_data.checkin_partner_ids;
+                                    }
 
                                     $.each(checkin_persons, function (key, value) {
                                         var partner_id_button =
@@ -1695,9 +1708,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                 value["state"] == "onboard") ||
                                             value["state"] == "done"
                                         ) {
-                                            $(partner_id_button).addClass(
-                                                "o_pms_pwa_done_circle"
-                                            );
+                                            $(partner_id_button)
+                                                .find("span.bs-stepper-circle")
+                                                .addClass("o_pms_pwa_done_circle");
                                         }
                                     });
                                 } catch (error) {

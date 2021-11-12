@@ -42,7 +42,7 @@
                     <div class="modal-body o_pms_pwa_modal_body">
                         <div class="container-fluid">
 
-                            <form id="booking_engine_form" class="form-horizontal mt-3" method="post">
+                            <form autocomplete="off" id="booking_engine_form" class="form-horizontal mt-3" method="post">
                                 <!-- Si llega habitación de calendario -->
                                 <input type="hidden" name="calendar_room" value=""></input>
                                 <div class="form-group form-field pb-3 ">

@@ -1165,7 +1165,7 @@
                                                         <label class="control-label col-12" for="firstname">
                                                             Nombre
                                                         </label>
-                                                        <input t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_partner" type="text" name="firstname" t-att-value="partner_value['firstname'] ? partner_value['firstname'] : ''" />
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_partner" type="text" name="firstname" t-att-value="partner_value['firstname'] ? partner_value['firstname'] : ''" />
                                                         <input type="hidden" name="partner_id" t-att-value="partner_value['partner_id'] ? partner_value['partner_id'] : ''" />
                                                     </div>
 
@@ -1215,7 +1215,7 @@
                                                         <label class="control-label col-12" for="country_name">
                                                             País
                                                         </label>
-                                                        <input t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_country_name" type="text" name="country_name" placeholder="País" t-att-value="partner_value['country_name'] ? partner_value['country_name'] : ''" />
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_country_name" type="text" name="country_name" placeholder="País" t-att-value="partner_value['country_name'] ? partner_value['country_name'] : ''" />
                                                         <input type="hidden" name="country_id" t-att-value="partner_value['country_id'] ? partner_value['country_id']['id'] : ''" />
                                                     </div>
 
@@ -1223,7 +1223,7 @@
                                                         <label class="control-label col-12" for="state_name">
                                                             Provincia
                                                         </label>
-                                                       <input t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner_value['state_name'] ? partner_value['state_name'] : ''" />
+                                                       <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner_value['state_name'] ? partner_value['state_name'] : ''" />
                                                        <input type="hidden" name="state_id" t-att-value="partner_value['state_id'] ? partner_value['state_id']['id'] : ''" />
                                                     </div>
 
