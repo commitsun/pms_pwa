@@ -17,7 +17,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="mt-2 o_pms_pwa_partner_form" id="partner_form" target="_self" action="/new_partner" method="post" enctype="multipart/form-data">
+                        <form autocomplete="off" class="mt-2 o_pms_pwa_partner_form" id="partner_form" target="_self" action="/new_partner" method="post" enctype="multipart/form-data">
                             <div class="form-group form-field mt8">
 
                                 <div class="row mt-3">
