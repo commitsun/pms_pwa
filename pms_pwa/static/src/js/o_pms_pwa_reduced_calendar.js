@@ -33,27 +33,27 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 $(String("#collapse_accordion_"+data_id)).addClass("show");
 
                 // RESIZE:
-                $(".o_pms_pwa_line_cell_content")
-                .css({
-                    /* required to allow resizer embedding */
-                    position: "relative",
-                    // index: '9999'
-                })
-                /* check .resizer CSS */
-                .prepend("<div class='resizer'></div>")
-                .resizable({
-                    resizeHeight: false,
-                    resizeHeightFrom: false,
-                    // we use the column as handle and filter
-                    // by the contained .resizer element
-                    handleSelector: ".o_pms_pwa_resize",
-                    onDragStart: function(e, $el, opt) {
-                    // only drag resizer
-                    if (!$(e.target).hasClass("resizer"))
-                        return false;
-                    return true;
-                    }
-                });
+                // $(".o_pms_pwa_line_cell_content")
+                // .css({
+                //     /* required to allow resizer embedding */
+                //     position: "relative",
+                //     // index: '9999'
+                // })
+                // /* check .resizer CSS */
+                // .prepend("<div class='resizer'></div>")
+                // .resizable({
+                //     resizeHeight: false,
+                //     resizeHeightFrom: false,
+                //     // we use the column as handle and filter
+                //     // by the contained .resizer element
+                //     handleSelector: ".o_pms_pwa_resize",
+                //     onDragStart: function(e, $el, opt) {
+                //     // only drag resizer
+                //     if (!$(e.target).hasClass("resizer"))
+                //         return false;
+                //     return true;
+                //     }
+                // });
                 // $(".o_pms_pwa_calendar_reservation" ).resizable({
                 //     handleSelector: ".o_pms_pwa_calendar_line",
                 //     resizeHeight: false,
