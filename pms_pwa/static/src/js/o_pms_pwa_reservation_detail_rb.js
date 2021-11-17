@@ -291,6 +291,13 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     });
     // Cargamos la página y las líneas
     $(document).ready(function () {
+        // Mark all the reservations as checked and trigger the change
+        $("input[name='reservation_ids']").prop('checked', true);
+        $("input[name='reservation_ids']").trigger("change");
+
+        // Show/hide contact at start
+        $("select#partner_to_invoice").trigger("change");
+
         if ($("input[name='reservation_ids']:checked").val()) {
             reservation_ids.push(
                 parseInt($("input[name='reservation_ids']:checked").val(), 10)
@@ -477,6 +484,18 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         }
     });
 
+    // Contacto de facturación
+    $(document).on("change", "select#partner_to_invoice", function (ev) {
+        if (ev.currentTarget.value != "False") {
+            $("#collapseDatos form input[type!='hidden']").parent().addClass("d-none");
+            $("#collapseDatos form div.o_pms_pwa_partner_modal_show").removeClass("d-none");
+            $("#collapseDatos form div.o_pms_pwa_partner_modal_show")[0].dataset.partnerId = ev.currentTarget.value;
+        } else {
+            $("#collapseDatos form input[type!='hidden']").parent().removeClass("d-none");
+            $("#collapseDatos form div.o_pms_pwa_partner_modal_show").addClass("d-none");            
+        }
+    });        
+
     // Método de pago
     $(document).on("click", "#invoice_button", function () {
         const reservation_data = [];
@@ -562,7 +581,20 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             {
                 service_ids,
             }
-        );
+        ).then(function (new_data) {
+            console.log("new_data => ", new_data);
+            const a = $("form.o_pms_pwa_reservation_form .price_total");
+            a[0].innerHTML = JSON.parse(new_data).reservation.price_total;
+            // Refresh pending amount
+            try {
+                const b = $("form.o_pms_pwa_reservation_form .pending_amount");
+                b[0].innerHTML = JSON.parse(
+                    new_data
+                ).reservation.folio_pending_amount;
+            } catch (error) {
+                console.log(error);
+            }
+        });
     });
     // Editar servicios
     $("#o_pms_pwa_editModal").on("show.bs.modal", function (event) {
@@ -586,7 +618,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     service_ids,
                 }
             ).then(function (new_data) {
-                console.log(new_data);
                 const a = $("form.o_pms_pwa_reservation_form .price_total");
                 a[0].innerHTML = JSON.parse(new_data).reservation.price_total;
                 // Refresh pending amount
