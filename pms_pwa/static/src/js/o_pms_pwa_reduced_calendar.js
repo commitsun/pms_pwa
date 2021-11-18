@@ -60,7 +60,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 // });
 
                 // ESTO PARA CREAR EL DRAG
-                $(".o_pms_pwa_calendar_reservation").draggable({
+                $(".o_pms_pwa_reduced_calendar_reservation").draggable({
                     containment: "#reduced_calendar_table",
                     revert: "invalid",
                     start: function( event, ui ) {
