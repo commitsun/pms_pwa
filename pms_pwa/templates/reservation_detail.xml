@@ -678,6 +678,11 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="row mt-2 o_pms_pwa_partner_modal_show" t-attf-data-partner-id="{{ reservation.partner_id.id or 0 }}" t-attf-data-reservation-id="{{ reservation.id }}">
+                                                                        <span>
+                                                                            Editar contacto<i class="col-1 fa fa-pencil-square-o"></i>
+                                                                        </span>
+                                                                    </div>
                                                                     <div class="row mt-2">
                                                                         <div class="col-sm-12">
                                                                             <label class="control-label col-12" for="rate_type">
