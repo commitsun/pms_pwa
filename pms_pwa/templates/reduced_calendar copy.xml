@@ -6,6 +6,13 @@
             <t t-set="current_property" t-value="user_id.pms_pwa_property_id.id" />
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
+            <!-- <div class="o_pms_pwa_notifications o_pms_pwa_notifications_regular mt-4 row">
+                <span class="o_pms_notification_title col-2">
+                    <i class="fa fa-info-circle mr-1"/> Actualizaciones <span class="o_pms_pwa_update_counter ml-1"/>
+                </span>
+                <div class="col-9 o_pms_pwa_notification_list"/>
+                <a href="#" class="col-1 btn o_pms_pwa_btn_border o_pms_pwa_clear_all float-right">Aceptar todo</a>
+            </div> -->
             <div class="o_pms_pwa_roomdoo_alerts" />
             <div id="confirmChange" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
@@ -123,9 +130,8 @@
                                       onchange="if (this.value) window.location.href=this.value"
                                     >
                                         <option value="" selected="selected">Calendario reducido</option>
-                                        <option value="/calendar" >Calendario de reservas</option>
+                                        <option value="/calendar">Calendario de reservas</option>
                                         <option value="/calendar/config">Configuración de precios</option>
-
                                     </select>
                                 </div>
                             </div>
@@ -162,7 +168,37 @@
                                 </form>
                             </div>
 
+
+                            <!-- col just to fill -->
                             <div class="col-6 d-none d-md-block d-lg-none d-xl-none pt-2"/>
+
+
+                            <!-- select days to view -->
+                            <!-- <div class="col-6 col-md-3 col-lg-1 col-xl-1 pr-0">
+                                Días:
+                                <form method="post" action="">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                    <input type="hidden" name="display_option" t-att-value="selected_display"/>
+                                    <input type="hidden" name="pricelist" t-att-value="default_pricelist"/>
+                                    <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')"/>
+
+                                    <select id="dpr" name="dpr" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" onchange="javascript:this.form.submit()">
+                                        <t t-foreach="dpr_select_values" t-as="show_days">
+                                            <t t-if="int(dpr)==int(show_days)">
+                                                <option t-attf-value="{{ show_days }}" selected="selected">
+                                                    <t t-esc="show_days" />
+                                                </option>
+                                            </t>
+                                            <t t-else="">
+                                                <option t-attf-value="{{ show_days }}">
+                                                    <t t-esc="show_days" />
+                                                </option>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </form>
+                            </div> -->
+                            <!-- select date -->
                             <div class="col-6 col-md-3 col-lg-3 col-xl-2 pr-0">
                                 <span class="d-block">Fecha:</span>
                                 <div class="o_pms_pwa_month_select form-control px-0">
@@ -382,11 +418,9 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </section>
             </div>
         </t>
-
     </template>
 </odoo>
