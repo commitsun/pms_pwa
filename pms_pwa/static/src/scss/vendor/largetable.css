@@ -53,7 +53,7 @@ body.largetable-noscroll {
 	font-size: 11px;
 	border-radius: 6px;
 	cursor: pointer;
-    z-index: 999;
+    z-index: 99;
 }
 
 .largetable-maximized .largetable-maximize-btn {
@@ -83,7 +83,7 @@ body.largetable-noscroll {
 	right: 0;
 	bottom: 0;
 	left: 0;
-	z-index: 99999;
+	z-index: 99;
 	overflow: auto;
 }
 
