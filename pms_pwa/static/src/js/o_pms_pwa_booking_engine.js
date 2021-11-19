@@ -956,6 +956,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             });
         },
         _onClickPMSPWABookingEngineCloseButton: function () {
+            $(".o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected");
             const today = new Date();
             const tomorrow = new Date();
             tomorrow.setDate(today.getDate() + 1);

@@ -51,7 +51,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4 d-none d-lg-block o_pms_icons">
+                        <div class="col-lg-4 d-lg-block o_pms_icons">
                             <button class="btn btn-radius btn-pms_pwa" href="#" data-toggle="modal" id="button_reservation_modal" data-target="#o_pms_pwa_new_reservation_modal" rel="nofollow">
                                 <img src="/pms_pwa/static/img/svg/llaves.svg" alt="llaves" class="img-responsive" style="margin-left: -0.5rem;" />
                                 Nueva Reserva
@@ -59,7 +59,7 @@
                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
                             <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive" style="width:30px;" />
                         </div>
-                        
+
                         <div class="col-lg-2 d-none d-lg-block o_pms_user_img">
                             <a href="/web">
                                 <img t-att-src="website.image_url(user_id.partner_id, 'image_128')" width="50" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="user_id" t-att-alt="user_id.name" />

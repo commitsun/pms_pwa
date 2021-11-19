@@ -239,6 +239,9 @@ select::-ms-expand {
 .o_pms_icons {
     text-align: right;
     padding-right: 2rem;
+    @media screen and (max-width: 992px){
+        text-align: center;
+    }
     button {
         // margin-right: 4rem;
         min-width: 200px;
@@ -246,6 +249,11 @@ select::-ms-expand {
         font-size: 16px;
         img {
             margin-right: 0.5rem;
+        }
+    }
+    @media screen and (min-width: 1259px){
+        .img-responsive {
+            display: inline !important;
         }
     }
     img {

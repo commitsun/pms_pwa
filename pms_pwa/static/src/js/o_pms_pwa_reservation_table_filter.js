@@ -37,7 +37,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
         selector:
-            "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal",
+            "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal, table.o_pms_pwa_reduced_reservation_list_table",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
         ],
@@ -48,6 +48,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 "_onDobleClickReservationButton",
             "click td.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
             "dblclick td.o_pms_pwa_calendar_reservation":
+                "_onDobleClickReservationButton",
+            "click td.o_pms_pwa_reduced_calendar_reservation": "_onClickReservationButton",
+            "dblclick td.o_pms_pwa_reduced_calendar_reservation":
                 "_onDobleClickReservationButton",
             "click td.launch_modal": "_onClickReservationButton",
             "dblclick td.launch_modal": "_onDobleClickReservationButton",
@@ -301,6 +304,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "#collapse_accordion_" + selected_id
                                         )
                                     ).html(html);
+                                    // $(".o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected");
                                     $(".o_pms_pwa_line_cell_content").removeAttr('style');
                                     $(".o_pms_pwa_line_cell_content").draggable();
                                 }
