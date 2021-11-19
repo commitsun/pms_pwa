@@ -151,23 +151,29 @@ class PmsCalendar(http.Controller):
             change_checkin = True
         if new_room != reservation.preferred_room_id:
             change_room = True
-        if change_room and change_checkin:
-            _logger.info("Change ALL")
-            confirmation_mens = ("Modificar la reserva de %s a la habitación %s con checkin %s",
-                                 reservation.partner_name, new_room.display_name, new_checkin)
-            # If new room isn't free in new dates no change
-            # Change Prices??
-        elif change_room:
-            _logger.info("Change Only ROOM")
-            confirmation_mens = ("Modificar la reserva de %s a la habitación %s",
-                                 reservation.partner_name, new_room.display_name)
-            # If new room isn't free, Swap reservations??
-        elif change_checkin:
-            _logger.info("Change only Checkin")
-            confirmation_mens = ("Modificar la fecha de entrada de %s a %s",
-                                 reservation.partner_name, new_checkin)
-            # Change Prices?
-        print("--->", post)
-        return {"result": "success", "message": confirmation_mens}
-
+        print(" ---> ", post.get("submit"))
+        if not post.get("submit"):
+            if change_room and change_checkin:
+                _logger.info("Change ALL")
+                confirmation_mens = ("Modificar la reserva de %s a la habitación %s con checkin %s",
+                                    reservation.partner_name, new_room.display_name, new_checkin)
+                # If new room isn't free in new dates no change
+                # Change Prices??
+            elif change_room:
+                _logger.info("Change Only ROOM")
+                confirmation_mens = ("Modificar la reserva de %s a la habitación %s  con checkin %s",
+                                    reservation.partner_name, new_room.display_name, new_checkin)
+                # If new room isn't free, Swap reservations??
+            elif change_checkin:
+                _logger.info("Change only Checkin")
+                confirmation_mens = ("Modificar la fecha de entrada de %s a %s",
+                                    reservation.partner_name, new_checkin)
+                # Change Prices?
+            print("--->", post)
+            return {"result": "success", "message": confirmation_mens, "date": post["date"], "reservation": post["id"], "room": post["room"] }
+        else:
+            old_room = reservation.preferred_room_id
+            reservation.checkin = new_checkin
+            reservation.preferred_room_id = new_room
+            return {"result": "success", "reservation": post['id']}
         # return True

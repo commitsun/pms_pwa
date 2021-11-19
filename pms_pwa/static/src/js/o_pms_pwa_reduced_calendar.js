@@ -27,6 +27,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         events: {
             "click tr.o_pms_pwa_open_reduced_calendar": "_onClickGetCalendarLine",
             "click .close_confirmChange": "_onClickCloseModal",
+            "click .send_ConfirmChanges": "_onClickConfirmModal",
         },
         convertDay: function(day_to_convert){
             if (document.documentElement.lang === "es-ES") {
@@ -57,9 +58,13 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             return day_to_convert;
         },
 
-        launchLines: function (event) {
+        launchLines: function (event, data_id = false) {
             var self = this;
-            var data_id = event.getAttribute("data-id");
+            if(data_id){
+                data_id = data_id;
+            }else{
+                data_id = event.getAttribute("data-id");
+            }
             var date_list = $('input[name="date_list"]').val();
             var selected_display = $('input[name="selected_display"]').val();
             ajax.jsonRpc("/calendar/line", "call", {
@@ -74,41 +79,12 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 });
                 $(String("#collapse_accordion_" + data_id)).html(html);
                 $(String("#collapse_accordion_"+data_id)).addClass("show");
-
-                // RESIZE:
-                // $(".o_pms_pwa_line_cell_content")
-                // .css({
-                //     /* required to allow resizer embedding */
-                //     position: "relative",
-                //     // index: '9999'
-                // })
-                // /* check .resizer CSS */
-                // .prepend("<div class='resizer'></div>")
-                // .resizable({
-                //     resizeHeight: false,
-                //     resizeHeightFrom: false,
-                //     // we use the column as handle and filter
-                //     // by the contained .resizer element
-                //     handleSelector: ".o_pms_pwa_resize",
-                //     onDragStart: function(e, $el, opt) {
-                //     // only drag resizer
-                //     if (!$(e.target).hasClass("resizer"))
-                //         return false;
-                //     return true;
-                //     }
-                // });
-                // $(".o_pms_pwa_calendar_reservation" ).resizable({
-                //     handleSelector: ".o_pms_pwa_calendar_line",
-                //     resizeHeight: false,
-                // });
-
                 // ESTO PARA CREAR EL DRAG
                 $(".o_pms_pwa_reduced_calendar_reservation").draggable({
                     containment: "#reduced_calendar_table",
                     revert: "invalid",
                     start: function( event, ui ) {
-                        console.log("event--->", event.currentTarget);
-                        console.log("ui--->", ui);
+                        console.log("creo el dragabble")
                         $(event.currentTarget).addClass('z-index-all');
                         $(".o_pms_pwa_line_cell_content").removeAttr('style');
                         $(".o_pms_pwa_line_cell_content").draggable();
@@ -135,11 +111,14 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                             if (data && String(data['result']) == "success") {
                                 // LANZO MODAL DE CONFIRMACIÓN
                                 $('#confirmChange').on('show.bs.modal', function (event) {
-                                    var button = $(event.relatedTarget)
-                                    var recipient = button.data('whatever')
-                                    var modal = $(this)
-                                    modal.find('.modal-title').text("Confirmar cambio")
-                                    modal.find('.modal-body p').text(String(data['message']))
+                                    var button = $(event.relatedTarget);
+                                    var recipient = button.data('whatever');
+                                    var modal = $(this);
+                                    modal.find('.modal-title').text("Confirmar cambio");
+                                    modal.find('.modal-body p').text(String(data['message']));
+                                    $("input[name='modal_date']").val(String(data['date']));
+                                    $("input[name='modal_reservation']").val(String(data['reservation']));
+                                    $("input[name='modal_room']").val(String(data['room']));
                                 });
                                 $('#confirmChange').modal('show');
                             } else{
@@ -277,6 +256,56 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             event.preventDefault();
             self.launchLines(event.currentTarget);
         },
+        _onClickConfirmModal: function (event){
+            var self = this;
+            event.preventDefault();
+
+            var send_date = $("input[name='modal_date']").val();
+            var send_reservation = $("input[name='modal_reservation']").val();
+            var send_room = $("input[name='modal_room']").val();
+            ajax.jsonRpc("/calendar/reduced-change", "call", {
+                id:  send_reservation,
+                date:  send_date,
+                room:  send_room,
+                submit: true,
+                // selected_display: selected_display,
+            }).then(function (data) {
+                $("#confirmChange").modal('hide');
+                var data_id = data['reservation'];
+                var reservation_table = require("pms_pwa.reservation_table");
+                new reservation_table(this).reloadReservationInfo(data_id);
+                ajax.jsonRpc("/reservation/json_data", "call", {
+                    reservation_id: data_id,
+                }).then(function (updated_data) {
+                    setTimeout(function () {
+                        if(updated_data){
+                            try {
+                                var selected_display = $(
+                                    'input[name="selected_display"]'
+                                ).val();
+                                if (selected_display == "ubication") {
+                                    var selected_id = updated_data.current_ubication_id;
+                                } else if (selected_display == "room_type") {
+                                    var selected_id = updated_data.current_room_type_id;
+                                } else if (selected_display == "pms_property") {
+                                    var selected_id = updated_data.current_property_id;
+                                }
+                                $(this).parents("table.o_pms_pwa_reduced_reservation_list_table").remove();
+                                // Destroy draggable
+                                $(".o_pms_pwa_line_cell_content").draggable();
+                                self.launchLines(this, selected_id);
+                            } catch (error) {
+                                console.log(error);
+                                location.reload();
+                            }
+                        }else{
+                            console.log(error);
+                            location.reload();
+                        }
+                    });
+                });
+            });
+        }
     });
 });
 

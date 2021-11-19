@@ -20,7 +20,10 @@
                       <p>Deseas realizar el movimiento</p>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-message">Confirmar cambio</button>
+                        <input type="hidden" name="modal_date" value=""></input>
+                        <input type="hidden" name="modal_reservation" value=""></input>
+                        <input type="hidden" name="modal_room" value=""></input>
+                      <button type="button" class="btn btn-message send_ConfirmChanges">Confirmar cambio</button>
                       <button type="button" class="btn btn-secondary close_confirmChange" data-dismiss="modal">Cerrar</button>
                     </div>
                   </div>
