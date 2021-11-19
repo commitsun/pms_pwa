@@ -65,6 +65,7 @@
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/bs-stepper.min.css"/>
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/daterangepicker.css"/>
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/bootstrap-select.min.css" />
+            <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/largetable.css" />
             <!-- <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/print.min.css" /> -->
         </xpath>
     </template>
@@ -130,6 +131,7 @@
             <script src="/web/static/lib/Chart/Chart.js"></script>
 
             <script src="/pms_pwa/static/src/js/vendor/bootstrap-select.min.js"></script>
+            <script src="/pms_pwa/static/src/js/vendor/largetable.js"></script>
             <!-- <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/vendor/print.min.js"

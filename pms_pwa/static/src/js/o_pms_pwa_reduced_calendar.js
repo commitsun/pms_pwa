@@ -8,6 +8,19 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     var calendar_dpr = $('input[name="calendar_dpr"]').val();
 
+    $("table#reduced_calendar_table").largetable({
+        enableMaximize: true
+    })
+    .on("toggleMaximize", function() {
+        console.log("toggleMaximize event");
+    })
+    .on("maximize", function () {
+        console.log("maximize event");
+    })
+    .on("unmaximize", function () {
+        console.log("unmaximize event");
+    });
+
     publicWidget.registry.ReducedCalendarCollapseWidget = publicWidget.Widget.extend({
         selector: "#reduced_calendar_table, #confirmChange",
         xmlDependencies: ["/pms_pwa/static/src/xml/pms_pwa_roomdoo_reduced_calendar_line.xml"],
@@ -15,7 +28,37 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             "click tr.o_pms_pwa_open_reduced_calendar": "_onClickGetCalendarLine",
             "click .close_confirmChange": "_onClickCloseModal",
         },
+        convertDay: function(day_to_convert){
+            if (document.documentElement.lang === "es-ES") {
+                try {
+                    let parts_of_date = day_to_convert.split("/");
+
+                    let new_date =
+                        parts_of_date[1] + "/" + parts_of_date[0] + "/" + parts_of_date[2];
+
+                    day_to_convert = new_date;
+                } catch (error) {
+                    console.error("Invalid format date");
+                    return false
+                }
+            }else{
+                try {
+                    let parts_of_date = day_to_convert.split("/");
+
+                    let new_date =
+                        parts_of_date[0] + "-" + parts_of_date[1] + "-" + parts_of_date[2];
+
+                    day_to_convert = new_date;
+                } catch (error) {
+                    console.error("Invalid format date");
+                    return false
+                }
+            }
+            return day_to_convert;
+        },
+
         launchLines: function (event) {
+            var self = this;
             var data_id = event.getAttribute("data-id");
             var date_list = $('input[name="date_list"]').val();
             var selected_display = $('input[name="selected_display"]').val();
@@ -126,16 +169,90 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     // over: function(event, ui) {
                     //     console.log("over event--->", event);
                     //     console.log("over ui--->", ui);
-                    //     $(this).css('background', 'cyan');
+                    //     $(this).css('background', 'brown');
                     // },
                     // out: function(event, ui) {
                     //     console.log("out event--->", event);
                     //     console.log("out ui--->", ui);
-                    //     $(this).css('background', 'orange');
+                    //     $(this).css('background', 'brown');
                     //     $(".o_pms_pwa_line_cell_content").removeAttr('style');
                     //     $(".o_pms_pwa_line_cell_content").draggable();
                     // }
                 });
+                // Arrastras para crear reserva
+                $(document).on("click", ".open-calendar-modalDialog", function () {
+                    console.log("launch modal");
+                });
+                var isMouseDown = false, isHighlighted;
+                var initial_day = "";
+                var calendar_room = "";
+                var last_day = "";
+                $(".o_pms_pwa_reduced_calendar_line_event")
+                    .mousedown(function() {
+                        initial_day = $(this).data("date");
+                        console.log("mouse down initial -> ", initial_day);
+                        isMouseDown = true;
+                        $(this).toggleClass("o_pms_pwa_range_days_selected");
+                        isHighlighted = $(this).hasClass("o_pms_pwa_range_days_selected");
+                        return false; // prevent text selection
+                    })
+                    .mouseover(function () {
+                        if (isMouseDown) {
+                          $(this).toggleClass("o_pms_pwa_range_days_selected", isHighlighted);
+                          $(this).attr('data-initial_day', initial_day);
+                          console.log(initial_day);
+
+                        }
+                    })
+                    .mouseup(function () {
+                        if(isMouseDown){
+                            initial_day = $(this).data("initial_day");
+                            last_day = $(this).data("date");
+                            calendar_room = $(this).data("calendar-room");
+                            if(initial_day){
+                                initial_day = self.convertDay(initial_day);
+                                last_day = self.convertDay(last_day);
+                                initial_day = new Date(initial_day);
+                                last_day = new Date(last_day);
+                            }else{
+                                initial_day = last_day;
+                                initial_day = self.convertDay(initial_day);
+                                last_day = self.convertDay(last_day);
+                                initial_day = new Date(initial_day);
+                                last_day = new Date(last_day);
+                                last_day.setDate(last_day.getDate() + 1);
+                            }
+                            var pricelist = $(this).data("pricelist");
+                            var checkin_date = initial_day.toLocaleDateString(
+                                document.documentElement.lang,
+                                date_options
+                            );
+                            var checkout_date = last_day.toLocaleDateString(
+                                document.documentElement.lang,
+                                date_options
+                            );
+                            var range_date = checkin_date + " - " + checkout_date;
+                            console.log("Range date -> ", range_date);
+                            $('#bookengine_table > tr').remove();
+                            $("#booking_engine_form").find('input:text, input:password, input:file, select, textarea').val('');
+                            $("div#o_pms_pwa_new_reservation_modal #segmentation_ids").select2("destroy");
+                            $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2("destroy");
+                            $('form#booking_engine_form input[name="calendar_room"]').val(calendar_room);
+                            $('form#booking_engine_form select[name="pricelist"]').val(pricelist);
+                            $('form#booking_engine_form input[name="new_reservation_date_modal_reservation"]').val(range_date);
+                            $('form#booking_engine_form input[name="checkin"]').val(checkin_date);
+                            $('form#booking_engine_form input[name="checkout"]').val(checkout_date);
+                            $("form#booking_engine_form").find("input[name='new_reservation_date_modal_reservation']").trigger("change");
+                            $(".open-calendar-modalDialog").attr('data-range_days', true);
+                            $(".open-calendar-modalDialog").click();
+                            $(".open-calendar-modalDialog").attr('data-range_days', false);
+                        }
+
+                        isMouseDown = false;
+                        initial_day = "";
+                        calendar_room = "";
+                        last_day = "";
+                    });
             });
         },
         init: function(){
@@ -148,8 +265,12 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
 
         },
         _onClickCloseModal: function (event) {
+            var self = this;
+            event.preventDefault();
+            console.log("reinicio el calendario");
             $(".o_pms_pwa_line_cell_content").removeAttr('style');
             $(".o_pms_pwa_line_cell_content").draggable();
+
         },
         _onClickGetCalendarLine: function (event) {
             var self = this;

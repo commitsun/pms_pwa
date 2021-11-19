@@ -3,14 +3,19 @@ $debug: border 3px dotted red;
 section.o_pms_pwa_roomdoo {
     .o_pms_pwa_reduced_calendar {
         .ui-droppable-active{
-            background-color: cyan;
+            background-color: $theme-color;
             border: none !important;
         }
         .ui-droppable-hover{
             background-color: green;
             border: none !important;
         }
-
+        .ui-state-active{
+            background-color: $theme-color;
+        }
+        .ui-state-hover{
+            background-color: green;
+        }
         overflow: hidden;
         @media (max-width: 991.98px) {
             margin-left: -3rem;
@@ -27,7 +32,76 @@ section.o_pms_pwa_roomdoo {
         .table-responsive {
             height: calc(66vh - 25px);
         }
+        // search form
+        form {
+            input.o_pmw_pwa_search_input {
+                background-image: url("/pms_pwa/static/img/searchicon.png");
+                background-position: 10px 10px;
+                background-repeat: no-repeat;
+                background-color: transparent;
+                width: 100%;
+                font-size: 16px;
+                padding: 12px 20px 12px 40px;
+                color: $table-text-color;
+                border: none;
+                border-bottom: 1px solid $theme-color;
+                margin-bottom: 12px;
+                border-radius: 0px;
+            }
+            // button to show modal with filters
+            a.o_pms_pwa_float_right {
+                & > span {
+                    & > i {
+                        margin-left: 15px;
+                        line-height: 22px;
+                    }
+                }
+            }
+            a.o_pms_pwa_button_filter, a.o_pms_pwa_float_right {
+                height: 38px;
+                color: $theme-color;
+                border-color: $theme-color;
+                background-color: $bg-theme-color;
 
+            }
+        }
+
+        .o_pms_pwa_calendar_arrow {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .o_pms_pwa_month_select {
+            border: 1px solid #CED4DA;
+            border-radius: 0.25rem;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            a {
+                color: $theme-color;
+                text-decoration: none;
+                i {
+                    font-size: 20px;
+                    font-weight: bold;
+                    align-items: center;
+                }
+            }
+            // margin-top: 1rem;
+            .o_pms_pwa_month_select_calendar_icon {
+                pointer-events: none;
+                color: $theme-color-text;
+                font-size: 14px;
+                margin-bottom: 0.25rem;
+                img {
+                    width: 14px;
+                    margin-bottom: 0.25rem;
+                    margin-right: 0.25rem;
+                }
+            }
+            .btn-calendar-roomdoo {
+                color: $theme-color;
+                margin-top: -0.25rem;
+            }
+        }
         /************************************************************************************************************************************/
         #reduced_calendar_table.table {
             border-collapse: separate;
@@ -159,6 +233,7 @@ section.o_pms_pwa_roomdoo {
                 tr.o_pms_pwa_reduced_calendar_line:hover, td.o_pms_pwa_table_cell:hover::before, td.o_pms_pwa_table_cell:hover::after {
                     background-color: #f1f1f1 !important;
                 }
+                td.o_pms_pwa_range_days_selected { background-color:#c3c3c3; }
                 // td.o_pms_pwa_line_cell_content:hover{
                 //     background-color: #c3c3c3 !important;
                 // }
