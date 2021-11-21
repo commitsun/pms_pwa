@@ -6,6 +6,7 @@ import datetime
 import logging
 import pprint
 from datetime import timedelta
+import traceback
 
 from odoo import _, fields, http
 from odoo.http import request
@@ -468,7 +469,7 @@ class BookingEngine(http.Controller):
                             request.env["pms.room.type"]
                             .browse(room_type_id)
                             .board_service_room_type_ids.filtered(
-                                lambda bsr: bsr.id == int(vals.get("board_service_id"))
+                                lambda bsr: bsr.pms_board_service_id.id == int(vals.get("board_service_id"))
                                 if vals.get("board_service_id")
                                 else False
                             )
@@ -606,7 +607,7 @@ class BookingEngine(http.Controller):
             else:
                 pms_property_id = request.env.user.pms_pwa_property_id.id
             pricelist_id = int(params["pricelist_id"])
-            board_service_room_id = (
+            board_service_id = (
                 int(params.get("board_service_room_id"))
                 if params.get("board_service_room_id")
                 else False
@@ -632,6 +633,11 @@ class BookingEngine(http.Controller):
             )
             free_rooms = pms_property.free_room_ids - used_rooms
             rooms = used_rooms
+            room_type_id = sale_category_id if sale_category_id else room_type_id,
+            room_type = request.env["pms.room.type"].browse(room_type_id)
+            board_service_room_id = room_type.board_service_room_type_ids.filtered(
+                lambda bsr: bsr.pms_board_service_id.id == board_service_id
+            ).id or False
             for item in rooms_dict:
                 preferred_room = request.env["pms.room"].browse(
                     int(item["preferred_room_id"])
@@ -642,9 +648,7 @@ class BookingEngine(http.Controller):
                             "id": int(item["preferred_room_id"]),
                             "name": preferred_room.display_name,
                         },
-                        "room_type_id": sale_category_id
-                        if sale_category_id
-                        else room_type_id,
+                        "room_type_id": room_type_id,
                         "checkin": checkin,
                         "checkout": checkout,
                         "adults": int(item["adults"])
@@ -703,17 +707,10 @@ class BookingEngine(http.Controller):
                         }
                     )
                 for room_dict in rooms_dict:
-                    board_service_room_id = int(room_dict.get("board_service_room_id"))
-                    room_type = request.env["pms.room.type"].browse(
-                        int(room_dict["room_type_id"])
-                    )
                     allowed_board_service_room_ids = [
                         {"id": bsr.id, "name": bsr.name}
                         for bsr in room_type.board_service_room_type_ids.pms_board_service_id
                     ]
-                    board_room_type = room_type.board_service_room_type_ids.filtered(
-                        lambda bsr: bsr.id == board_service_room_id
-                    )
                     room_dict.update(
                         {
                             "allowed_board_service_room_ids": allowed_board_service_room_ids,
@@ -725,11 +722,12 @@ class BookingEngine(http.Controller):
                             "pms.folio.availability.wizard"
                         ]._get_price_by_room_type(
                             room_type_id=room_type.id,
-                            board_service_room_id=board_room_type.id,
+                            board_service_room_id=board_service_room_id,
                             checkin=checkin,
                             checkout=checkout,
                             pricelist_id=pricelist_id,
                             pms_property_id=pms_property.id,
+                            adults=room_dict["adults"],
                         )
                     room_dict.update({"price_per_room": price_per_room})
 
@@ -749,6 +747,8 @@ class BookingEngine(http.Controller):
                 ),
             }
         except Exception as e:
+            traceback.print_exc()
+            _logger.info("error: {}".format(e))
             return {"result": "error", "message": str(e)}
 
     # BOOKING ENGINE SUBMIT ----------------------------------
@@ -855,7 +855,7 @@ class BookingEngine(http.Controller):
                         request.env["pms.room.type"]
                         .browse(room_type_id)
                         .board_service_room_type_ids.filtered(
-                            lambda bsr: bsr.id
+                            lambda bsr: bsr.pms_board_service_id.id
                             == int(folio_values.get("board_service_room_id"))
                         )
                     )

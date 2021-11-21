@@ -57,6 +57,12 @@
                                 Nueva Reserva
                             </button>
                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
+                            <div class="o_pms_pwa_cloud_dropdown dropdown">
+                                <a type="button" id="dropdownCloudButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="/pms_pwa/static/img/svg/cloud.svg" alt="notificaciones" class="img-responsive o_pms_pwa_bell_off" style="width:40px;" />
+                                </a>
+                                <div class="dropdown-menu o_pms_pwa_cloud_dropdown_menu" aria-labelledby="dropdownCloudButton"/>
+                            </div>
                             <div class="o_pms_pwa_bell_dropdown dropdown">
                                 <a type="button" id="dropdownBellButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive o_pms_pwa_bell_off" style="width:30px;" />

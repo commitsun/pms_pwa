@@ -16,7 +16,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
     var publicWidget = require("web.public.widget");
 
     publicWidget.registry.NotifyWidget = publicWidget.Widget.extend({
-        selector: ".o_pms_pwa_notify_widget, .o_pms_pwa_bell_dropdown_menu",
+        selector: ".o_pms_pwa_notify_widget, .o_pms_pwa_cloud_dropdown_menu",
         events: {
             "click a.o_pms_pwa_open_reservation_modal": "_onClickReservationButton",
         },
@@ -69,7 +69,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         },
 
         addNotificationToBell: function (notification) {
-            var bell_div = $(".o_pms_pwa_bell_dropdown_menu");
+            var bell_div = $(".o_pms_pwa_cloud_dropdown_menu");
             var message = JSON.parse(notification.message);
             if (message.id) {
                 var notification = $("<a></a>")
@@ -91,9 +91,9 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             var child_count = 0;
             var bell_off = false;
             try {
-                child_count = $(".o_pms_pwa_bell_dropdown_menu").get(0)
+                child_count = $(".o_pms_pwa_cloud_dropdown_menu").get(0)
                     .childElementCount;
-                var bell = $(".o_pms_pwa_bell_dropdown").find("img.o_pms_pwa_bell_off");
+                var bell = $(".o_pms_pwa_cloud_dropdown").find("img.o_pms_pwa_bell_off");
                 if (bell.length > 0) {
                     bell_off = true;
                 }
@@ -102,10 +102,10 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             }
 
             if (child_count > 0 && bell_off) {
-                $(".o_pms_pwa_bell_dropdown")
+                $(".o_pms_pwa_cloud_dropdown")
                     .find("img")
                     .removeClass("o_pms_pwa_bell_off")
-                    .addClass("o_pms_pwa_bell_on");
+                    .addClass("o_pms_pwa_cloud_on");
             }
         },
     });

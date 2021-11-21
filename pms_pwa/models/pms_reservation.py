@@ -48,6 +48,28 @@ class PmsReservation(models.Model):
         help="Define payment to icon in PWA",
         compute="_compute_icon_payment",
     )
+    state_value = fields.Char(
+        compute="_compute_state_value",
+        store=True,
+    )
+
+    @api.model
+    def create(self, vals):
+        record = super(PmsReservation, self).create(vals)
+        notify = json.dumps(
+            {
+                "id": "18507",
+                "audio": "https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3",
+                "message": "10:03 - Casco Antiguo: Nueva reserva de Booking",
+            }
+        )
+        self.env["bus.bus"].sendone("notify_pms_2", notify)
+        return record
+
+    @api.depends("state")
+    def _compute_state_value(self):
+        for record in self:
+            record.state_value = dict(self._fields["state"].selection).get(record.state)
 
     def _compute_pwa_board_service_tags(self):
         for record in self:
@@ -693,6 +715,7 @@ class PmsReservation(models.Model):
                 if self.board_service_room_id
                 else "",
             },
+            "to_assign": self.to_assign,
             "allowed_service_ids": self._get_allowed_service_ids(),
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,

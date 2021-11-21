@@ -20,14 +20,14 @@ body {
 }
 /* Works on Firefox */
 * {
-    scrollbar-width: thin;
+    scrollbar-width: medium;
     scrollbar-color: $primary;
 }
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
 }
 
 *::-webkit-scrollbar-thumb {
@@ -620,17 +620,6 @@ h4#price_nights {
 .o_pms_pwa_reservation_form {
     .o_pms_pwa_modal_buttons {
         .o_pms_pwa_button_asignar {
-            background-image: linear-gradient(
-                to right,
-                $theme-color 80%,
-                $bg-theme-color
-            );
-            color: $white;
-            border: none;
-            border-radius: 1.5rem;
-            font-weight: 600;
-            font-size: medium;
-            width: 100px;
             &:hover {
                 color: $white;
             }
@@ -920,14 +909,19 @@ table#bookengine_table {
 .o_pms_pwa_group_header {
     border-bottom: 1px solid #00b5e2;
 }
+
 // partner modal
 .o_pms_pwa_partner_modal_show {
-    > i {
+    cursor: pointer !important;
+    > .o_pms_pwa_partner_edit {
         display: none;
         color: $theme-color;
     }
     &:hover {
-        > i {
+        > .o_pms_pwa_partner_icon {
+            display: none;
+        }
+        > .o_pms_pwa_partner_edit {
             display: block;
         }
     }
@@ -954,7 +948,11 @@ table#bookengine_table {
     float: right;
 }
 
-.o_pms_pwa_bell_on {
+.o_pms_pwa_cloud_dropdown {
+    float: right;
+}
+
+.o_pms_pwa_cloud_on {
     animation: blinker 1s linear infinite;
 }
 

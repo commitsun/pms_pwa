@@ -129,7 +129,13 @@ body.toggled {
     cursor: pointer;
     display: inline-block;
     padding: 5px 50px 5px 10px;
-    border: 1px solid #ccc;
+    border: 1px solid $theme-color;
+    height: auto;
+    width: auto;
+    font-size: larger;
+    color: $theme-color;
+    background-color: $bg-theme-color;
+    border-radius: 0.25rem;
 }
 .o_pms_pwa_dropdown-check-list .anchor:after {
     position: absolute;
@@ -169,7 +175,7 @@ body.toggled {
     text-decoration: underline;
 }
 .o_pms_pwa_dropdown-check-list.visible .anchor {
-    color: $theme-color;;
+    color: $theme-color;
 }
 .o_pms_pwa_dropdown-check-list.visible .items {
     display: block;

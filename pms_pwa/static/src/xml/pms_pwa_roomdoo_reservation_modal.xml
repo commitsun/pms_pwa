@@ -232,53 +232,114 @@
                 </div>
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header o_pms_pwa_modal_header">
+                        <div class="modal-header o_pms_pwa_modal_header" style="padding-bottom:0px;">
                             <div class="col-sm-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
                                     <h4 class="col-6 modal-title">
                                         <t t-if="reservation.pms_property_id" t-esc="reservation.pms_property_id.name"/>
                                         <span t-esc="reservation.name" />
                                     </h4>
-                                    <a t-att-href="'/reservation/' + reservation.id" class="col-4 btn o_pms_pwa_btn_border float-right o_pms_pwa_preloader" t-att-data-id="reservation.id">
+                                    <!-- <span t-esc="dict(reservation.fields_get(allfields=['state'])['state']['selection'])[reservation.state]"/> -->
+                                    <!-- <a t-att-href="'/reservation/' + reservation.id" class="col-4 btn o_pms_pwa_btn_border float-right o_pms_pwa_preloader" t-att-data-id="reservation.id">
                                         <t t-esc="texts.info_text || _t('Más información')" />
-                                    </a>
+                                    </a> -->
+                                    <h4 class="col-4 modal-title"  style="float: right; text-align-last:end;">
+                                        <t t-if="reservation.state == 'confirm'">
+                                            <span class="label label-default">Confirmada</span>
+                                        </t>
+                                        <t t-if="reservation.state == 'arrival_delayed'">
+                                            <span class="label label-default" style="color:#e37f01;">Llegada Retrasada</span>
+                                        </t>
+                                        <t t-if="reservation.state == 'departure_delayed'">
+                                            <span class="label label-default" style="color:#e37f01;">Salida Retrasada</span>
+                                        </t>
+                                        <t t-if="reservation.state == 'draft'">
+                                            <span class="label label-default" style="color:#a24680;">Por Confirmar</span>
+                                        </t>
+                                        <t t-if="reservation.state == 'cancel'">
+                                            <span class="label label-default" style="color:#bd0d0d;">Cancelada</span>
+                                        </t>
+                                        <t t-if="reservation.state == 'onboard'">
+                                            <span class="label label-default" style="color:#00ba39;">Dentro</span>
+                                        </t>
+                                        <t t-if="reservation.state == 'done'">
+                                            <span class="label label-default" style="color:#575757;">Finalizada</span>
+                                        </t>
+                                    </h4>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span class="fa fa-times" />
                                     </button>
                                 </div>
                             </div>
-                            <div class="col-sm-12 mt-2">
-                                <div class="row o_pms_pwa_modal_buttons" t-if="reservation.primary_button">
-                                    <div class="col-sm-4">
-                                        <t t-raw="reservation.primary_button" />
-                                    </div>
-                                    <div class="col-sm-4" style="text-align: inline-end;">
-                                        <span class="dropdown">
-                                            <a role="button" class="btn btn-secondary dropdown-toggle" style="max_width:30%;" data-toggle="dropdown" href="#" >Otras opciones</a>
+                            <div class="col-12 row o_pms_pwa_modal_buttons" style="margin:1px; margin-top:5px;">
+                                <button
+                                    class="col-3 btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_pagar"
+                                    style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                    type="button"
+                                    t-attf-data-id="{{ reservation.id }}"
+                                    t-attf-url="/reservation/{{ reservation.id }}/payment"
+                                >
+                                    Pagar
+                                </button>
+                                <a
+                                    t-att-href="'/reservation/' + reservation.id"
+                                    style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                    class="col-3 btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_preloader"
+                                    t-att-data-id="reservation.id"
+                                >
+                                    Ver Detalle
+                                </a>
+                                <a role="button" class="col-4 btn btn-secondary dropdown-toggle" style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;" data-toggle="dropdown" href="#" >Más Opciones</a>
 
-                                            <div class="dropdown-menu" aria-labelledby="dLabel">
-                                                <t t-raw="reservation.secondary_buttons" />
-                                                <button class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation" t-att-data-folio_id="reservation.folio_id.id" type="button">Añadir habitación</button>
-                                            </div>
-                                        </span>
-                                    </div>
-                                    <div class="col-4 align-self-center">
-                                        <img t-if="reservation.agency_id and reservation.agency_id.id" style="float:right;" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="40" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
-                                        <span t-else="">
-                                            <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
-                                        </span>
-                                    </div>
+                                <div class="dropdown-menu" aria-labelledby="dLabel">
+                                    <button
+                                        class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_facturar"
+                                        type="button"
+                                        t-att-href="'/reservation/' + reservation.id"
+                                        t-att-data-id="reservation.id"
+                                    >
+                                        Facturar
+                                    </button>
+                                    <button
+                                        class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation"
+                                        t-att-data-folio_id="reservation.folio_id.id"
+                                        type="button"
+                                    >
+                                        Añadir habitación
+                                    </button>
+                                    <button
+                                        class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_cancelar"
+                                        type="button"
+                                        t-attf-data-id="{{ reservation.id }}"
+                                        t-attf-url="/reservation/{{ reservation.id }}/cancel"
+                                    >
+                                        Cancelar
+                                    </button>
                                 </div>
+                                <!-- <div class="col-sm-4">
+                                    <t t-raw="reservation.primary_button" />
+                                </div>
+                                <div class="col-sm-4" style="text-align: inline-end;">
+                                    <span class="dropdown">
+                                        <a role="button" class="btn btn-secondary dropdown-toggle" style="max_width:30%;" data-toggle="dropdown" href="#" >Otras opciones</a>
+
+                                        <div class="dropdown-menu" aria-labelledby="dLabel">
+                                            <t t-raw="reservation.secondary_buttons" />
+                                            <button class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation" t-att-data-folio_id="reservation.folio_id.id" type="button">Añadir habitación</button>
+                                        </div>
+                                    </span>
+                                </div> -->
                             </div>
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
 
                             <div class="o_pms_pwa_shadow">
-                                <div class="row o_pms_pwa_partner_modal_show" t-attf-data-partner-id="{{ reservation.partner_id.id or 0 }}" t-attf-data-reservation-id="{{ reservation.id }}">
-                                    <div class="col-3 align-self-center">
-                                        <img t-att-src="'/web/image/pms.reservation/'+reservation.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
+                                <div class="row" >
+                                    <div class="col-3 align-self-center o_pms_pwa_partner_edit o_pms_pwa_partner_modal_show" t-attf-data-partner-id="{{ reservation.partner_id.id or 0 }}" t-attf-data-reservation-id="{{ reservation.id }}">
+                                        <img t-att-src="'/web/image/pms.reservation/'+reservation.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg o_pms_pwa_partner_icon" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
+                                        <img t-att-src="'/pms_pwa/static/img/svg/edit_partner.svg'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg o_pms_pwa_partner_edit" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
                                     </div>
-                                    <div class="col-8 ">
+                                    <div class="col-6 ">
                                         <div class="row">
                                             <div class="col-12">
                                                 <strong>
@@ -293,7 +354,13 @@
 
                                         </div>
                                     </div>
-                                    <i class="col-1 fa fa-pencil-square-o"></i>
+
+                                    <div class="col-3 align-self-center">
+                                        <img t-if="reservation.agency_id and reservation.agency_id.id" style="float:right;border:0;" class="img-thumbnail" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="60" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
+                                        <span t-else="">
+                                            <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
+                                        </span>
+                                    </div>
                                 </div>
                                 <div class="progress mt-2">
                                     <div t-if="reservation.state == 'onboard'" class="progress-bar bg-success" role="progressbar" t-att-style="'width:'+ reservation.checkins_ratio + '%'" t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0" aria-valuemax="100"></div>
@@ -302,30 +369,6 @@
                                     <div t-elif="reservation.state == 'confirm' and 75 &gt; reservation.ratio_checkin_data &gt; 50" class="progress-bar bg-warning" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
                                     <div t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &lt; 50" class="progress-bar bg-danger" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
                                     <div t-else="" class="progress-bar" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="dropdown mx-2">
-                                            <button class="btn btn-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span data-toggle="tooltip" title="Guest personal data" class="badge bg-black mr-2" data-original-title="Guest personal data">
-                                                    <t t-esc="reservation.adults" />
-                                                </span>
-                                                Huéspedes
-                                            </button>
-                                            <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
-                                                <t t-foreach="reservation.checkin_partner_ids" t-as="person">
-                                                    <a class="dropdown-item o_pms_pwa_button_checkins" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" t-attf-data-target="#checkin_partner_{{person.id}}">
-                                                        <t t-if="person_value['firstname']">
-                                                            <t t-esc="person_value['firstname']" /> <t t-esc="person_value['lastname']" />
-                                                        </t>
-                                                        <t t-else="">
-                                                            Introducir datos de huésped
-                                                        </t>
-                                                    </a>
-                                                </t>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div t-if="reservation.unread_msg and reservation.unread_msg &gt; 0 and reservation.messages" class="row">
                                     <div class="col-12">
@@ -351,6 +394,37 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-12 o_pms_pwa_modal_buttons" style="margin:2px; margin-top:10px;">
+                                <button class="col-8 btn btno_pms_pwa_modal_buttons-persona-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                style="color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                >
+                                    <span data-toggle="tooltip" title="Guest personal data" class="badge bg-black mr-2" data-original-title="Guest personal data">
+                                        <t t-esc="reservation.adults" />
+                                    </span>
+                                    Hacer Checkins
+                                </button>
+                                <div class="dropdown-menu btn-persona-info-item" aria-labelledby="dropdownMenuButton">
+                                    <t t-foreach="reservation.checkin_partner_ids" t-as="person">
+                                        <a class="dropdown-item o_pms_pwa_button_checkins" t-attf-data-id="{{ reservation.id }}" t-attf-url="/reservation/{{ reservation.id }}/checkin" t-attf-data-target="#checkin_partner_{{person.id}}">
+                                            <t t-if="person_value['firstname']">
+                                                <t t-esc="person_value['firstname']" /> <t t-esc="person_value['lastname']" />
+                                            </t>
+                                            <t t-else="">
+                                                Introducir datos de huésped
+                                            </t>
+                                        </a>
+                                    </t>
+                                </div>
+                                <button
+                                    class="col-3 btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_checkout"
+                                    style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                    type="button"
+                                    t-attf-data-id="{{ reservation.id }}"
+                                    t-attf-url="/reservation/{{ reservation.id }}/checkout"
+                                >
+                                    <i class="fa fa-sign-out"></i> Out
+                                </button>
+                            </div>
                             <!-- Form action needs to be updated with the real action -->
                             <form class="mt-2 o_pms_pwa_reservation_form" target="_self" t-att-action="'/reservation/'+reservation.id" method="post">
 
@@ -373,7 +447,7 @@
                                         </div>
                                     </div>
                                     <div class="row mt-3">
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-5">
                                             <label class="control-label col-sm-12" for="preferred_room_id">
                                                 <t t-esc="texts.room_number_text || _t('Nº habitación')" />
                                             </label>
@@ -385,6 +459,18 @@
                                                     <t t-esc="key.name" />
                                                 </option>
                                             </select>
+                                        </div>
+                                        <div class="col-sm-1 o_pms_pwa_modal_buttons" style="padding-left:0;">
+                                            <button
+                                                t-if="reservation.to_assign"
+                                                class="btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_asignar"
+                                                style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc; margin-lef:-20px !important;"
+                                                type="button"
+                                                t-attf-data-id="{{ reservation.id }}"
+                                                t-attf-url="/reservation/{{ reservation.id }}/assign"
+                                            >
+                                                <span class="fa fa-cloud-download" style="color:#ed722e;" />
+                                            </button>
                                         </div>
                                         <div class="col-sm-6">
                                             <label class="control-label col-sm-12" for="room_type_id">
@@ -689,7 +775,7 @@
                                                     <div class="o_pms_pwa_total_title col-12">
                                                         <t t-esc="texts.outstading_text || _t('Importe pendiente')" />
                                                     </div>
-                                                    <div class="o_pms_pwa_total_price col-12" t-if="reservation.folio_pending_amount">
+                                                    <div class="o_pms_pwa_total_price col-12">
                                                         <strong t-esc="reservation.folio_pending_amount" class="pending_amount" />
 
                                                         <!-- <span>
@@ -806,7 +892,7 @@
                                 </div>
                                 <div class="col-6">
                                     <button type="button" t-att-url="'/reservation/' + reservation.id +'/checkout'" class="btn btn-message btn-block o_pms_pwa_button_checkout_confirm" data-dismiss="modal" aria-label="Checkout">
-                                        <span>Pagar</span>
+                                        <span>Checkout</span>
                                     </button>
                                 </div>
                             </div>
@@ -897,7 +983,7 @@
                                 </div>
                                 <div class="col-6">
                                     <button type="button" t-att-url="'/reservation/' + reservation.id +'/cancel'" class="btn btn-message btn-block o_pms_pwa_button_cancel_confirm" data-dismiss="modal" aria-label="Cancel">
-                                        <span>Cancelar</span>
+                                        <span>Cancelar Reserva</span>
                                     </button>
                                 </div>
                             </div>
