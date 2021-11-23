@@ -40,11 +40,21 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             );
         },
 
+        cloudColorToDefault: function () {
+            $(".o_pms_pwa_cloud_dropdown")
+                .find("img")
+                .attr('src','/pms_pwa/static/img/svg/cloud.svg')
+                .removeClass("o_pms_pwa_cloud_on")
+                .addClass("o_pms_pwa_cloud_off");
+        },
+
         _onClickReservationButton: function (event) {
             event.stopImmediatePropagation();
             event.preventDefault();
             new ReservationTableWidget(this)._openModalFromExternal(event);
+            this.cloudColorToDefault();
         },
+
 
         displayDataAlert: function (data) {
             var self = this;
@@ -57,19 +67,19 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
 
             // Browser does not allow playing audio without user interaction. TO REVIEW
 
-            /* if (message.audio) {
+            if (message.audio) {
                 var audio = new Audio(message.audio);
                 audio.play();
-            } */
+            }
 
             self.alertButtonsOnClick();
 
-            self.addNotificationToBell(data);
-            self.calculateBellColor();
+            self.addNotificationToCloud(data);
+            self.calculateCloudColor();
         },
 
-        addNotificationToBell: function (notification) {
-            var bell_div = $(".o_pms_pwa_cloud_dropdown_menu");
+        addNotificationToCloud: function (notification) {
+            var cloud_div = $(".o_pms_pwa_cloud_dropdown_menu");
             var message = JSON.parse(notification.message);
             if (message.id) {
                 var notification = $("<a></a>")
@@ -84,27 +94,28 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
                     .attr("href", "#");
             }
 
-            bell_div.append(notification);
+            cloud_div.append(notification);
         },
 
-        calculateBellColor: function () {
+        calculateCloudColor: function () {
             var child_count = 0;
-            var bell_off = false;
+            var cloud_off = false;
             try {
                 child_count = $(".o_pms_pwa_cloud_dropdown_menu").get(0)
                     .childElementCount;
-                var bell = $(".o_pms_pwa_cloud_dropdown").find("img.o_pms_pwa_bell_off");
-                if (bell.length > 0) {
-                    bell_off = true;
+                var cloud = $(".o_pms_pwa_cloud_dropdown").find("img.o_pms_pwa_cloud_off");
+                if (cloud.length > 0) {
+                    cloud_off = true;
                 }
             } catch (error) {
                 console.log(error);
             }
 
-            if (child_count > 0 && bell_off) {
+            if (child_count > 0 && cloud_off) {
                 $(".o_pms_pwa_cloud_dropdown")
                     .find("img")
-                    .removeClass("o_pms_pwa_bell_off")
+                    .attr('src','/pms_pwa/static/img/svg/cloud-to-assign.svg')
+                    .removeClass("o_pms_pwa_cloud_off")
                     .addClass("o_pms_pwa_cloud_on");
             }
         },

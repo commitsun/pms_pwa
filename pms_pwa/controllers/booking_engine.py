@@ -131,12 +131,15 @@ class BookingEngine(http.Controller):
 
             # Reservation type
             if folio_values.get("folio_id"):
-                folio_values["reservation_type"] = (
-                    request.env["pms.folio"]
-                    .browse(int(folio_values["folio_id"]))
-                    .reservation_ids[0]
-                    .reservation_type
-                )
+                folio = request.env["pms.folio"].browse(int(folio_values["folio_id"]))
+                if folio.state == "draft":
+                    folio_values["reservation_type"] = "quotation"
+                else:
+                    folio_values["reservation_type"] = (
+                        folio
+                        .reservation_ids[0]
+                        .reservation_type
+                    )
             elif not folio_values.get("reservation_type"):
                 folio_values["reservation_type"] = "normal"
 
@@ -774,7 +777,11 @@ class BookingEngine(http.Controller):
                 vals["agency_id"] = folio.agency_id.id
                 vals["closure_reason_id"] = folio.closure_reason_id
             else:
-                vals["reservation_type"] = folio_values.get("reservation_type") if folio_values.get("reservation_type") else "normal"
+                if folio_values.get("reservation_type") == "quotation":
+                    vals["state"] = "draft"
+                    vals["reservation_type"] = "normal"
+                else:
+                    vals["reservation_type"] = folio_values.get("reservation_type") if folio_values.get("reservation_type") else "normal"
 
             check_fields = self._check_required_fields(folio_values)
             if check_fields:
@@ -859,6 +866,7 @@ class BookingEngine(http.Controller):
                             == int(folio_values.get("board_service_room_id"))
                         )
                     )
+                preconfirm = False if vals.get("state") == "draft" else True
                 reservation_vals = {
                     "partner_name": vals["partner_name"] if vals["reservation_type"] != "out" else "Bloqueo",
                     "email": vals.get("email") if vals.get("email") else False,
@@ -881,6 +889,7 @@ class BookingEngine(http.Controller):
                     else False,
                     "pms_property_id": pms_property.id,
                     "folio_id": folio.id,
+                    "preconfirm": preconfirm,
                 }
                 request.env["pms.reservation"].create(reservation_vals)
             return {"result": "success", "reservation_id": folio.reservation_ids[0].id}

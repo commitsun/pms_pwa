@@ -243,7 +243,7 @@
                                     <!-- <a t-att-href="'/reservation/' + reservation.id" class="col-4 btn o_pms_pwa_btn_border float-right o_pms_pwa_preloader" t-att-data-id="reservation.id">
                                         <t t-esc="texts.info_text || _t('Más información')" />
                                     </a> -->
-                                    <h4 class="col-4 modal-title"  style="float: right; text-align-last:end;">
+                                    <h5 class="col-4 modal-title"  style="float: right; text-align-last:end;">
                                         <t t-if="reservation.state == 'confirm'">
                                             <span class="label label-default">Confirmada</span>
                                         </t>
@@ -254,7 +254,7 @@
                                             <span class="label label-default" style="color:#e37f01;">Salida Retrasada</span>
                                         </t>
                                         <t t-if="reservation.state == 'draft'">
-                                            <span class="label label-default" style="color:#a24680;">Por Confirmar</span>
+                                            <span class="label label-default" style="color:#a24680;">Presupuesto</span>
                                         </t>
                                         <t t-if="reservation.state == 'cancel'">
                                             <span class="label label-default" style="color:#bd0d0d;">Cancelada</span>
@@ -265,7 +265,7 @@
                                         <t t-if="reservation.state == 'done'">
                                             <span class="label label-default" style="color:#575757;">Finalizada</span>
                                         </t>
-                                    </h4>
+                                    </h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span class="fa fa-times" />
                                     </button>
@@ -279,7 +279,7 @@
                                     t-attf-data-id="{{ reservation.id }}"
                                     t-attf-url="/reservation/{{ reservation.id }}/payment"
                                 >
-                                    Pagar
+                                    Cobrar
                                 </button>
                                 <a
                                     t-att-href="'/reservation/' + reservation.id"

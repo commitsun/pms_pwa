@@ -91,6 +91,7 @@
                                                 <option name="reservation_type" value="normal" selected="selected"> Normal</option>
                                                 <option name="reservation_type" value="staff">Staff</option>
                                                 <option name="reservation_type" value="out">Bloqueo</option>
+                                                <option name="reservation_type" value="quotation">Grupo</option>
                                             </select>
                                         </div>
                                         <div class="col-sm-6 out_type">

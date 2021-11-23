@@ -111,9 +111,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         if (res) {
                             if (JSON.parse(res).result) {
                                 self.displayDataAlert(res);
+                                $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_asignar").hide();
                             }
                         }
                     });
+
                 }
             );
 
