@@ -1219,13 +1219,13 @@
                                                         <label class="control-label col-12" for="document_number">
                                                             NIF/CIF
                                                         </label>
-                                                        <input class="form-control" type="text" name="document_number" t-att-value="partner_value['document_number'] ? partner_value['document_number'] : ''" />
+                                                        <input autocomplete="off" class="form-control" type="text" name="document_number" t-att-value="partner_value['document_number'] ? partner_value['document_number'] : ''" />
                                                     </div>
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="document_expedition_date">
                                                             Fecha de expdición del documento
                                                         </label>
-                                                        <input class="form-control o_pms_pwa_daterangepicker" type="text" name="document_expedition_date" t-att-value="partner_value['document_expedition_date'] ? partner_value['document_expedition_date'] : ''" />
+                                                        <input autocomplete="off" class="form-control o_pms_pwa_daterangepicker" type="text" name="document_expedition_date" t-att-value="partner_value['document_expedition_date'] ? partner_value['document_expedition_date'] : ''" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -1235,14 +1235,14 @@
                                                         <label class="control-label col-12" for="mobile">
                                                             Móvil
                                                         </label>
-                                                        <input class="form-control" type="tel" name="mobile" t-att-value="partner_value['mobile'] ? partner_value['mobile'] : ''" />
+                                                        <input autocomplete="off" class="form-control" type="tel" name="mobile" t-att-value="partner_value['mobile'] ? partner_value['mobile'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="email">
                                                             Email
                                                         </label>
-                                                        <input class="form-control" type="email" name="email" t-att-value="partner_value['email'] ? partner_value['email'] : ''" />
+                                                        <input autocomplete="off" class="form-control" type="email" name="email" t-att-value="partner_value['email'] ? partner_value['email'] : ''" />
 
                                                         <input class="form-control" type="hidden" name="pms_property_id" t-att-value="reservation.pms_property_id.id" />
                                                         <input class="form-control" type="hidden" name="id" t-att-value="partner" />
@@ -1259,21 +1259,21 @@
                                                         <label class="control-label col-12" for="lastname">
                                                             Primer apellido
                                                         </label>
-                                                        <input class="form-control" type="text" name="lastname" t-att-value="partner_value['lastname'] ? partner_value['lastname'] : ''" />
+                                                        <input autocomplete="off" class="form-control" type="text" name="lastname" t-att-value="partner_value['lastname'] ? partner_value['lastname'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="lastname2">
                                                             Segundo apellido
                                                         </label>
-                                                        <input class="form-control" type="text" name="lastname2" t-att-value="partner_value['lastname2'] ? partner_value['lastname2'] : ''" />
+                                                        <input autocomplete="off" class="form-control" type="text" name="lastname2" t-att-value="partner_value['lastname2'] ? partner_value['lastname2'] : ''" />
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="birthdate_date">
                                                             Fecha de nacimiento
                                                         </label>
-                                                        <input class="form-control o_pms_pwa_daterangepicker" type="text" name="birthdate_date" t-att-value="partner_value['birthdate_date'] ? partner_value['birthdate_date'] : ''" />
+                                                        <input autocomplete="off" class="form-control o_pms_pwa_daterangepicker" type="text" name="birthdate_date" t-att-value="partner_value['birthdate_date'] ? partner_value['birthdate_date'] : ''" />
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <!-- <span class="fa fa-calendar" /> -->
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />

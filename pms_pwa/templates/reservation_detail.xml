@@ -504,6 +504,7 @@
                                                             Internal Notes
                                                         </label>
                                                         <input
+                                                            autocomplete="off"
                                                             t-att-required='"required" if "folio_internal_comment" in required_fields else None'
                                                             t-att-readonly='"readonly" if "folio_internal_comment" in readonly_fields else None'
                                                             class="form-control" type="text" name="folio_internal_comment" t-att-value="reservation.folio_internal_comment"
@@ -688,7 +689,7 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             Nombre
                                                                         </label>
-                                                                            <input class="form-control o_pms_pwa_search_partner" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
+                                                                            <input autocomplete="off" class="form-control o_pms_pwa_search_partner" type="text" name="invoice_name" t-attf-value="{{ reservation.folio_id.partner_id.name }}" />
                                                                             <input type="hidden" name="partner_id" t-attf-value="{{ reservation.folio_id.partner_id.id }}" />
                                                                         </div>
                                                                     </div>
@@ -697,7 +698,7 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             NIF/CIF
                                                                         </label>
-                                                                            <input class="form-control" type="text" name="invoice_vat" t-attf-value="{{ reservation.folio_id.partner_id.vat }}" required="required" />
+                                                                            <input autocomplete="off" class="form-control" type="text" name="invoice_vat" t-attf-value="{{ reservation.folio_id.partner_id.vat }}" required="required" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="row mt-2">
@@ -705,7 +706,7 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             Dirección
                                                                         </label>
-                                                                            <input class="form-control" type="text" name="invoice_street" t-attf-value="{{ reservation.folio_id.partner_id.street }}" required="required" />
+                                                                            <input autocomplete="off" class="form-control" type="text" name="invoice_street" t-attf-value="{{ reservation.folio_id.partner_id.street }}" required="required" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="row mt-2">
@@ -713,7 +714,7 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             Ciudad
                                                                         </label>
-                                                                            <input class="form-control" type="text" name="invoice_city" t-attf-value="{{ reservation.folio_id.partner_id.city }}" required="required" />
+                                                                            <input autocomplete="off" class="form-control" type="text" name="invoice_city" t-attf-value="{{ reservation.folio_id.partner_id.city }}" required="required" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="row mt-2">
@@ -721,7 +722,7 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             Código Postal
                                                                         </label>
-                                                                            <input class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ reservation.folio_id.partner_id.zip }}" required="required" />
+                                                                            <input autocomplete="off" class="form-control" type="text" name="invoice_postal_code" t-attf-value="{{ reservation.folio_id.partner_id.zip }}" required="required" />
                                                                         </div>
                                                                     </div>
                                                                     <div class="row mt-2">
@@ -729,7 +730,7 @@
                                                                             <label class="control-label col-12" for="rate_type">
                                                                             País
                                                                         </label>
-                                                                            <input class="form-control o_pms_pwa_search_country_name" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
+                                                                            <input autocomplete="off" class="form-control o_pms_pwa_search_country_name" type="text" name="invoice_country" t-attf-value="{{ reservation.folio_id.partner_id.country_id.name }}" required="required" />
                                                                             <input type="hidden" name="country_id" t-attf-value="{{ reservation.folio_id.partner_id.country_id.id }}" />
                                                                         </div>
                                                                     </div>
