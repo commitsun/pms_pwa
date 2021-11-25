@@ -956,6 +956,10 @@ table#bookengine_table {
     animation: blinker 1s linear infinite;
 }
 
+i.o_pms_pwa_remove_alert {
+    color: $badge-color;
+}
+
 @keyframes blinker {
     50% {
         opacity: 0;
