@@ -175,5 +175,5 @@ class PmsCalendar(http.Controller):
             old_room = reservation.preferred_room_id
             reservation.checkin = new_checkin
             reservation.preferred_room_id = new_room
-            return {"result": "success", "reservation": post['id']}
+            return {"result": "success", "reservation": post['id'], "old_group_room": old_room.id, "new_group_room": new_room.id}
         # return True

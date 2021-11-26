@@ -956,7 +956,8 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
             });
         },
         _onClickPMSPWABookingEngineCloseButton: function () {
-            $(".o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected");
+            $("table.o_pms_pwa_reduced_reservation_list_table  td.o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start o_pms_pwa_range_days_end o_pms_pwa_range_days_first");
+            $("table.o_pms_pwa_reduced_reservation_list_table tr.o_pms_pwa_reduced_calendar_line").removeClass("o_pms_pwa_range_days_selecting");
             const today = new Date();
             const tomorrow = new Date();
             tomorrow.setDate(today.getDate() + 1);
