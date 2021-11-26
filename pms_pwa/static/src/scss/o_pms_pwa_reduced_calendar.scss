@@ -32,6 +32,7 @@ section.o_pms_pwa_roomdoo {
         .table-responsive {
             height: calc(66vh - 25px);
         }
+
         // search form
         form {
             input.o_pmw_pwa_search_input {
@@ -230,17 +231,33 @@ section.o_pms_pwa_roomdoo {
                 color: #01b6e3;
             }
             .o_pms_pwa_reduced_reservation_list_table {
-                tr.o_pms_pwa_reduced_calendar_line:hover, td.o_pms_pwa_table_cell:hover::before, td.o_pms_pwa_table_cell:hover::after {
-                    background-color: #f1f1f1 !important;
-                }
-                td.o_pms_pwa_range_days_selected { background-color:#c3c3c3; }
-                // td.o_pms_pwa_line_cell_content:hover{
-                //     background-color: #c3c3c3 !important;
-                // }
-
                 border-collapse: separate;
                 border-spacing: 0 5px;
                 margin-bottom: 0px !important;
+                tr.o_pms_pwa_reduced_calendar_line:hover, td.o_pms_pwa_table_cell:hover::before, td.o_pms_pwa_table_cell:hover::after {
+                    background-color: #f1f1f1 !important;
+                }
+                // td.o_pms_pwa_range_days_selected { background-color:#c3c3c3; }
+                // td.o_pms_pwa_line_cell_content:hover{
+                //     background-color: #c3c3c3 !important;
+                // }
+                tr.o_pms_pwa_range_days_selecting{
+                    background-color: #f1f1f1;
+                }
+                td.o_pms_pwa_range_days_selected{
+                    background: #c3c3c3;
+                }
+                td.o_pms_pwa_range_days_start{
+                    background:#c3c3c3;
+                }
+                td.o_pms_pwa_range_days_end{
+                    background:#c3c3c3;
+                }
+                td.o_pms_pwa_range_days_first{
+                    background:#c3c3c3;
+                }
+
+
                 td[colspan="2"] {
                     width: calc(189.265px * 2) !important;
                 }
@@ -794,7 +811,8 @@ section.o_pms_pwa_roomdoo {
         }
         .btn-add {
             display: none;
-            margin-top: 0.5rem;
+            margin-top: 0.25rem !important;
+            padding: 0 !important;
             width: 80%;
             margin-left: 2rem;
             //margin-left: 0.5rem;
