@@ -56,16 +56,13 @@ class PmsCalendar(http.Controller):
                 post.get("previous_month"), get_lang(request.env).date_format
             ).date()
             date_start = date + timedelta(days=-30)
-
         pms_property_id = request.env.user.get_active_property_ids()[0]
         Room = request.env["pms.room"]
         rooms = Room.search([("pms_property_id", "=", pms_property_id)])
         room_types = request.env["pms.room.type"].browse(
             rooms.mapped("room_type_id.id")
         )
-        ubications = request.env["pms.ubication"].browse(
-            rooms.mapped("ubication_id.id")
-        )
+
         # Add default dpr and dpr_select_values
 
         dpr = 15
@@ -92,7 +89,7 @@ class PmsCalendar(http.Controller):
         ]
         # obj_list = room_types
         selected_display = "pms_property"
-        obj_list = request.env.user.pms_pwa_property_ids
+        # obj_list = request.env.user.pms_pwa_property_ids
 
         # if post and "display_option" in post:
         #     if post["display_option"] == "room_type":
@@ -106,7 +103,11 @@ class PmsCalendar(http.Controller):
         #         selected_display = "pms_property"
 
         pms_property = request.env["pms.property"].browse(pms_property_id)
-
+        tab_pms_property = pms_property.id
+        if post and post.get("selected_property"):
+            tab_pms_property = int(post["selected_property"])
+            pms_property = request.env["pms.property"].browse(int(post["selected_property"]))
+            pms_property_id = int(post["selected_property"])
         # TODO: Add pricelist not daily in readonly mode (only price)
 
         select_pricelist = pricelist[0]
@@ -136,7 +137,7 @@ class PmsCalendar(http.Controller):
             "page_name": "Calendar",
             "pricelist": pricelist,
             "pms_property": pms_property,
-            "hotel_list": obj_list,
+            "hotel_list": pms_property,
             "date_list": date_list,
             "dpr": dpr,
             "display_select_options": display_select_options,
@@ -150,6 +151,8 @@ class PmsCalendar(http.Controller):
             "select_pricelist": select_pricelist,
             "default_pricelist": default_pricelist,
             "rooms_list": room_types,
+            "tab_pms_property": tab_pms_property,
+
         }
         return http.request.render(
             "pms_pwa.roomdoo_reduced_calendar_page",
