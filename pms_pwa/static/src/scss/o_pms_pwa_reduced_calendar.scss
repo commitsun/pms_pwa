@@ -326,10 +326,9 @@ section.o_pms_pwa_roomdoo {
                                 border-right: 1px solid white;
                                 border-bottom: 1px solid white;
                                 background-color: white;
-                                margin-right: -25px;
+                                margin-right: -21px;
                                 margin-bottom: -2px;
                             }
-
                         }
                         .availabilitys-container {
                             margin: 0;
@@ -1037,8 +1036,23 @@ section.o_pms_pwa_roomdoo {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 60px;
+                max-width: 75px;
+
             }
+            &_name_small {
+                font-weight: bold;
+                font-size: 12px;
+                margin-left: 3.2rem;
+                margin-top: 0rem;
+                width: 100%;
+                margin-bottom: -0.75rem;
+                // overflow
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 40px;
+            }
+
         }
         .bg {
             &-prereservation {
