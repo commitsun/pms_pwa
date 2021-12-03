@@ -169,9 +169,19 @@ section.o_pms_pwa_roomdoo {
                     td.o_pms_pwa_dispo_property {
                         padding-top: 0;
                     }
+                    td.o_pms_pwa_min_stay {
+                        background: repeating-linear-gradient(
+                            45deg,
+                            rgba(0, 0, 0, 0) 20px,
+                            rgba(0, 0, 0, 0) 40px,
+                            #fcdaf89e 40px,
+                            #fcdaf89e 60px
+                        );
+                    }
                     // td.o_pms_pwa_dispo_1 {
                     //     background-color: #ffe7712e;
                     // }
+
                     td.o_pms_pwa_line_cell_content {
                         width: 189.265px !important;
                         min-width: 189.265px !important;

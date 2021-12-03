@@ -20,23 +20,22 @@ body {
 }
 /* Works on Firefox */
 * {
-  scrollbar-width: thin;
-  scrollbar-color: $primary;
+    scrollbar-width: medium;
+    scrollbar-color: $primary;
 }
 
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+    width: 12px;
+    height: 12px;
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: $primary;
-  // background-image: linear-gradient(to right, #daf7fc 50%, #01b6e3);
-  border-radius: 3px;
-  margin: 10px;
+    background-color: $primary;
+    // background-image: linear-gradient(to right, #daf7fc 50%, #01b6e3);
+    border-radius: 3px;
+    margin: 10px;
 }
-
 
 /* Track */
 ::-webkit-scrollbar-track {
@@ -101,7 +100,8 @@ a {
 }
 form > div.form-group,
 div.o_pms_pwa_filters_modal,
-div.o_pms_pwa_reservation_modal {
+div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_cash_modal {
     & input,
     & select,
     & textarea {
@@ -444,10 +444,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 // TOAST
-.o_pms_pwa_roomdoo_alerts {
-    position:absolute;
-    bottom:2rem;
-    right:2rem;
+.o_pms_pwa_roomdoo_alerts,
+.o_pms_pwa_notify_widget {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
     z-index: 99999;
     .toast.warning {
         color: #721c24;
@@ -469,6 +470,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
             }
         }
     }
+}
+
+.o_pms_pwa_notify_widget {
+    right: unset;
+    left: 2rem;
+    max-width: 11rem;
 }
 
 .o_pms_pwa_img_rounded_bg {
@@ -621,17 +628,6 @@ h4#price_nights {
 .o_pms_pwa_reservation_form {
     .o_pms_pwa_modal_buttons {
         .o_pms_pwa_button_asignar {
-            background-image: linear-gradient(
-                to right,
-                $theme-color 80%,
-                $bg-theme-color
-            );
-            color: $white;
-            border: none;
-            border-radius: 1.5rem;
-            font-weight: 600;
-            font-size: medium;
-            width: 100px;
             &:hover {
                 color: $white;
             }
@@ -921,14 +917,19 @@ table#bookengine_table {
 .o_pms_pwa_group_header {
     border-bottom: 1px solid #00b5e2;
 }
+
 // partner modal
 .o_pms_pwa_partner_modal_show {
-    > i {
+    cursor: pointer !important;
+    > .o_pms_pwa_partner_edit {
         display: none;
         color: $theme-color;
     }
     &:hover {
-        > i {
+        > .o_pms_pwa_partner_icon {
+            display: none;
+        }
+        > .o_pms_pwa_partner_edit {
             display: block;
         }
     }
@@ -938,12 +939,33 @@ table#bookengine_table {
     width: 106px;
 }
 
-.form-control:disabled, .form-control.o_wysiwyg_loader, .form-control[readonly] {
-    background-color: #E9ECEF !important;
+.form-control:disabled,
+.form-control.o_wysiwyg_loader,
+.form-control[readonly] {
+    background-color: #e9ecef !important;
     opacity: 1;
-  }
+}
 
-.form-control:required{
+.form-control:required {
     background-color: #daf7fc !important;
     opacity: 1;
-  }
+}
+
+// Notifications
+.o_pms_pwa_bell_dropdown {
+    float: right;
+}
+
+.o_pms_pwa_cloud_dropdown {
+    float: right;
+}
+
+.o_pms_pwa_cloud_on {
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}

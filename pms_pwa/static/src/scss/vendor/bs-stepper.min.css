@@ -104,6 +104,9 @@
 .active .bs-stepper-circle {
     background-color: #007bff;
 }
+.bs-stepper-circle.o_pms_pwa_done_circle {
+    background-color: green;
+}
 .bs-stepper-content {
     padding: 0 20px 20px;
 }

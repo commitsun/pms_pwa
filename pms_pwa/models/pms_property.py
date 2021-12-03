@@ -34,6 +34,59 @@ class PmsProperty(models.Model):
                 pms_property_id=self.id,
             ))
 
+    def _get_min_stay(self):
+        if self._context.get("checkin") and self._context.get("checkout") and self._context.get("pricelist_id"):
+            Restrictions = self.env["pms.availability.plan.rule"]
+            pricelist = self.env["product.pricelist"].browse(int(self._context.get("pricelist_id")))
+            if pricelist.availability_plan_id:
+                restrictions = Restrictions.search([
+                    ("availability_plan_id", "=", pricelist.availability_plan_id.id),
+                    ("date", ">=", self._context.get("checkin")),
+                    ("date", "<", self._context.get("checkout")),
+                    ("pms_property_id", "=", self.id),
+                ])
+                if self._context.get("room_type_id"):
+                    restrictions = restrictions.filtered(lambda r: r.room_type_id.id == int(self._context.get("room_type_id")))
+                min_stay = restrictions.mapped("min_stay")
+                if min_stay:
+                    return max(min_stay)
+            return False
+
+    def _get_other_restrictions(self):
+        if self._context.get("checkin") and self._context.get("checkout") and self._context.get("pricelist_id"):
+            Restrictions = self.env["pms.availability.plan.rule"]
+            pricelist = self.env["product.pricelist"].browse(int(self._context.get("pricelist_id")))
+            restrictions_str = ""
+            if pricelist.availability_plan_id:
+                restrictions = Restrictions.search([
+                    ("availability_plan_id", "=", pricelist.availability_plan_id.id),
+                    ("date", ">=", self._context.get("checkin")),
+                    ("date", "<", self._context.get("checkout")),
+                    ("pms_property_id", "=", self.id),
+                ])
+                if self._context.get("room_type_id"):
+                    restrictions = restrictions.filtered(lambda r: r.room_type_id.id == int(self._context.get("room_type_id")))
+                for restriction in restrictions:
+                    if restriction.quota > 0:
+                        restrictions_str += _("%s Cupo: %s\n") % (restriction.room_type_id.default_code, restriction.quota)
+                    if restriction.max_avail > 0:
+                        restrictions_str += _("%s Max. disponible: %s\n") % (restriction.room_type_id.default_code, restriction.max_avail)
+                    if restriction.min_stay_arrival > 0:
+                        restrictions_str += _("%s Min. estancia entrada: %s\n") % (restriction.room_type_id.default_code, restriction.min_stay_arrival)
+                    if restriction.max_stay > 0:
+                        restrictions_str += _("%s Max. estancia: %s\n") % (restriction.room_type_id.default_code, restriction.max_stay)
+                    if restriction.closed:
+                        restrictions_str += _("%s Ventas Cerradas") % (restriction.room_type_id.default_code)
+                    if restriction.closed_arrival:
+                        restrictions_str += _("%s Entrada Cerrada") % (restriction.room_type_id.default_code)
+                    if restriction.closed_departure:
+                        restrictions_str += _("%s Salida Cerrada") % (restriction.room_type_id.default_code)
+                    if restriction.max_stay_arrival:
+                        restrictions_str += _("%s Max. estancia entrada: %s\n") % (restriction.room_type_id.default_code, restriction.max_stay_arrival)
+            if len(restrictions_str) > 0:
+                return restrictions_str
+            return False
+
     def _get_occupied_reservations(self):
         if self._context.get("checkin") and self._context.get("checkout"):
             room_ids = self.room_ids.ids

@@ -48,6 +48,45 @@ class PmsReservation(models.Model):
         help="Define payment to icon in PWA",
         compute="_compute_icon_payment",
     )
+    state_value = fields.Char(
+        compute="_compute_state_value",
+        store=True,
+    )
+
+    @api.model
+    def create(self, vals):
+        Users = self.env['res.users']
+        record = super(PmsReservation, self).create(vals)
+        pms_property = record.pms_property_id
+        notify_users = Users.search([
+            ('active', '=', True),
+            ("pms_pwa_property_ids", "in", pms_property.id),
+            ("id", "!=", record.create_uid.id)
+        ])
+        # We only want one notification by folio (wiht multi reservations, only select the first)
+        folio = self.env["pms.folio"].browse(vals["folio_id"])
+        if record.to_assign and len(folio.reservation_ids) == 1:
+            for notify_user in notify_users:
+                id_notify = "notify_pms_" + str(notify_user.id)
+                mens = pms_property.name + ": Nueva reserva de " + record.channel_type_id.name
+                if record.agency_id:
+                    mens += " (" + record.agency_id.name + ")"
+                else:
+                    mens += " (" + record.create_uid.name + ")"
+                notify_json = json.dumps(
+                    {
+                        "id": record.id,
+                        "audio": "/pms_pwa/static/audio/book_new.mp3",
+                        "message": mens,
+                    }
+                )
+                self.env["bus.bus"].sendone(id_notify, notify_json)
+        return record
+
+    @api.depends("state")
+    def _compute_state_value(self):
+        for record in self:
+            record.state_value = dict(self._fields["state"].selection).get(record.state)
 
     def _compute_pwa_board_service_tags(self):
         for record in self:
@@ -693,6 +732,7 @@ class PmsReservation(models.Model):
                 if self.board_service_room_id
                 else "",
             },
+            "to_assign": self.to_assign,
             "allowed_service_ids": self._get_allowed_service_ids(),
             "primary_button": primary_button,
             "secondary_buttons": secondary_buttons,
@@ -735,6 +775,7 @@ class PmsReservation(models.Model):
             "readonly_fields": readonly_fields,
             "required_fields": [],
             "allowed_country_ids": self.pms_property_id._get_allowed_countries(),
+            "is_mail_send": self.is_mail_send,
         }
 
         _logger.info("Values from controller to Frontend:")

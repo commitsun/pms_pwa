@@ -531,7 +531,23 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 "click",
                 function (event) {
                     event.preventDefault();
-                    /* var reservation_id = $("#o_pms_pwa_reservation_modal")[0].getAttribute("data-id"); */
+                    var reservation_id = $(
+                        "#o_pms_pwa_reservation_modal"
+                    )[0].getAttribute("data-id");
+
+                    ajax.jsonRpc(
+                        "/reservation/" + reservation_id + "/assign",
+                        "call",
+                        {}
+                    ).then(function (res) {
+                        if (res) {
+                            if (JSON.parse(res).result) {
+                                self.displayDataAlert(res);
+                                $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_asignar").hide();
+                            }
+                        }
+                    });
+
                 }
             );
 
@@ -692,6 +708,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         }
                     });
                 });
+            } else if (String(window.location.href).includes(String("/dashboard"))) {
+                console.log("No se puede hacer reload en dashboard");
+                // Mirar si hay que borrar de la campanita el aviso.
             } else {
 
                 ajax.jsonRpc("/reservation/json_data", "call", {
@@ -779,7 +798,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         displayDataAlert: function (result, data_id = false) {
             var self = this;
-            var data = JSON.parse(result);
+            try {
+                var data = JSON.parse(result);
+            } catch (error) {
+                var data = result;
+            }
+
             if (data && data.result === true) {
                 data.type = "success";
             } else if (data && data.result === false) {
@@ -881,14 +905,45 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 });
             }
         },
+        _openModalFromExternal: function (event) {
+            try {
+                var reservation_id = event.currentTarget.getAttribute("data-id");
+
+                var new_selector = $(
+                    "<td class='launch_modal' data-id='" +
+                        reservation_id +
+                        "'>Pincha aqui</td>"
+                );
+                new_selector.appendTo("table.launch_modal");
+                setTimeout(function () {
+                    $(new_selector).click();
+                    $(new_selector).remove();
+                }, 100);
+            } catch (error) {
+                console.log(error);
+            }
+        },
         /* DobleClick event control */
         _onDobleClickReservationButton: function (event) {
+            event.stopImmediatePropagation();
             event.preventDefault();
-            event.stopPropagation();
             console.log("Double click");
+            var target = $(event.currentTarget);
+            /* Disable button for 0.5 seconds */
+            target.prop("disabled", true);
+
+            console.log("Button disabled");
+
+            setTimeout(function () {
+                target.prop("disabled", false);
+                console.log("Button enabled");
+            }, 500);
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
+            var target = $(event.currentTarget);
+            target.prop("disabled", true);
+            event.stopImmediatePropagation();
             event.preventDefault();
             var self = this;
             var reservation_id = event.currentTarget.parentNode.getAttribute("data-id");
@@ -1772,6 +1827,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         reservation_data = false;
                     }
                 }, 0);
+                target.prop("disabled", false);
+                console.log("Button enabled");
             });
         },
         _onClickAssingButton: function (event) {
@@ -1950,6 +2007,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     }
                                 ).then(function (new_data) {
                                     try {
+                                        new_data = JSON.parse(new_data);
+                                    } catch (err) {
+                                        new_data = new_data;
+                                    }
+                                    try {
                                         var checkin_persons =
                                             new_data.checkin_partner_ids;
 
@@ -1969,7 +2031,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                             key2 +
                                                             "']"
                                                     );
-                                                    if (value2 && "id" in value2) {
+                                                    if (
+                                                        value2 &&
+                                                        typeof value2 == "object" &&
+                                                        "id" in value2
+                                                    ) {
                                                         input.val(value2["id"]);
                                                     } else if (value2) {
                                                         input.val(value2);
@@ -1986,9 +2052,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                 false
                                                             );
                                                             button
-                                                                .addClass(
-                                                                    "o_pms_pwa_button_checkin_confirm btn-message"
-                                                                )
+                                                                .addClass("btn-message")
                                                                 .removeClass(
                                                                     "o_pms_pwa_disabled btn-grey-300"
                                                                 );
@@ -2002,7 +2066,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                                                     "o_pms_pwa_disabled btn-grey-300"
                                                                 )
                                                                 .removeClass(
-                                                                    "o_pms_pwa_button_checkin_confirm btn-message"
+                                                                    "btn-message"
                                                                 );
                                                         }
                                                     } else {
@@ -2041,6 +2105,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             new_event
                         ) {
                             new_event.preventDefault();
+                            new_event.stopPropagation();
                             var guest_list = [];
                             var selector =
                                 "div.bs-stepper[guest-data-id=" +
@@ -2098,7 +2163,42 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 guests_list: guest_list,
                                 action_on_board: true,
                             }).then(function (new_data) {
-                                self.displayDataAlert(new_data, data.id);
+                                try {
+                                    new_data = JSON.parse(new_data);
+                                } catch (error) {
+                                    new_data = new_data;
+                                }
+
+                                try {
+                                    if (new_data.reservation) {
+                                        var checkin_persons =
+                                            new_data.reservation.checkin_partner_ids;
+                                    } else {
+                                        var checkin_persons =
+                                            new_data.checkin_partner_ids;
+                                    }
+
+                                    $.each(checkin_persons, function (key, value) {
+                                        var partner_id_button =
+                                            "button#checkin_partner_" +
+                                            key +
+                                            "-trigger";
+
+                                        if (
+                                            ("state" in value &&
+                                                value["state"] == "onboard") ||
+                                            value["state"] == "done"
+                                        ) {
+                                            $(partner_id_button)
+                                                .find("span.bs-stepper-circle")
+                                                .addClass("o_pms_pwa_done_circle");
+                                        }
+                                    });
+                                } catch (error) {
+                                    console.log(error);
+                                }
+
+                                self.displayDataAlert(new_data);
                             });
                         });
                         $(".o_pms_pwa_button_print_checkin").on("click", function (

@@ -305,25 +305,37 @@
                                                 </p>
                                             </td>
                                             <t t-foreach="len(date_list)" t-as="l">
+                                                <t t-set="min_stay" t-value="0" />
+                                                <t t-set="other_restrictions" t-value="0" />
                                                 <span t-if="selected_display == 'room_type'">
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), room_type_id=obj.id, pricelist_id=default_pricelist).availability"></t>
                                                     <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations(current_property)"></t>
                                                     <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service(current_property)"></t>
+                                                    <t t-set="min_stay" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), room_type_id=obj.id, pricelist_id=default_pricelist)._get_min_stay()"></t>
+                                                    <t t-set="other_restrictions" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), room_type_id=obj.id, pricelist_id=default_pricelist)._get_other_restrictions()"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'ubication'">
                                                     <t t-set="availability_room" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), ubication_id=obj.id, pricelist_id=default_pricelist).availability"></t>
                                                     <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations(current_property)"></t>
                                                     <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service(current_property)"></t>
+                                                    <t t-set="min_stay" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist)._get_min_stay()"></t>
+                                                    <t t-set="other_restrictions" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist)._get_other_restrictions()"></t>
                                                 </span>
                                                 <span t-if="selected_display == 'pms_property'">
                                                     <t t-set="availability_room" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist, overnight_rooms=True).availability"></t>
                                                     <t t-set="rooms_occupied_reservations" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_reservations()"></t>
                                                     <t t-set="rooms_occupied_out_service" t-value="obj.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1))._get_occupied_out_service()"></t>
                                                     <t t-set="percent_occupied" t-value="(rooms_occupied_reservations + rooms_occupied_out_service) * 100 / total_rooms"></t>
+                                                    <t t-set="min_stay" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist)._get_min_stay()"></t>
+                                                    <t t-set="other_restrictions" t-value="pms_property.with_context(checkin=date_list[l], checkout=date_list[l]+relativedelta(days=1), pricelist_id=default_pricelist)._get_other_restrictions()"></t>
                                                 </span>
+                                                <t t-set="min_stay_mens" t-value="'Estancia mínima: ' + str(min_stay) + ' Noche/s' if min_stay &gt; 0 else ''"></t>
                                                 <td t-att-class="'o_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_property ' if selected_display == 'pms_property' else ' ')
-                                                ">
+                                                    + ('o_pms_pwa_min_stay ' if min_stay &gt; 0 else ' ')"
+                                                    t-attf-title="{{ min_stay_mens }}"
+                                                >
+
                                                     <div t-if="selected_display == 'pms_property'" class="row percentage-container">
                                                         <span t-if="percent_occupied == 100" style="width:100%">
                                                             <div style="col border-radius: 5%; background-color:rgb(252, 123, 147); margin-right:3px; margin-left:3px; height:5px;"/>
@@ -345,34 +357,32 @@
                                                             <t t-esc="percent_occupied"  t-options="{'widget': 'float', 'precision': 0}"/> %
                                                         </div>
                                                     </div>
+                                                    <span t-if="other_restrictions" class="o_pms_pwa_info">
+                                                        <img
+                                                          src="/pms_pwa/static/img/svg/restrictions.svg"
+                                                          alt="ayuda"
+                                                          class="img-responsive o_pms_pwa_interrogante-calendar"
+                                                          style="width:16px; float:right; margin-top:-5px;margin-right:-5px;"
+                                                          t-attf-title="{{ other_restrictions }}"
+                                                        />
+                                                    </span>
                                                     <p class="o_pms_pwa_title" style="margin-bottom:0;"><t t-esc="availability_room"/>
                                                         disponibles
-
-                                                        <!-- <span class="o_pms_pwa_info">
-                                                            <img
-                                                              src="/pms_pwa/static/img/svg/interrogante-azul.svg"
-                                                              alt="ayuda"
-                                                              class="img-responsive o_pms_pwa_interrogante-calendar"
-                                                              title="Texto informativo del icono"
-                                                            />
-                                                        </span> -->
                                                     </p>
 
                                                     <div class="mt-2 o_pms_pwa_content">
                                                         <div class="circles-container text-center row m-0 p-0">
                                                             <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-left"
-                                                                    title="Reservas"
                                                                 >
-                                                                <div t-if="rooms_occupied_reservations > 0" class="circle">
+                                                                <div t-if="rooms_occupied_reservations > 0" class="circle" title="Reservas">
                                                                     <span >
                                                                         <t t-esc="rooms_occupied_reservations"/>
                                                                     </span>
                                                                 </div>
                                                             </div>
                                                             <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-left"
-                                                                title="Fuera de servicio"
                                                             >
-                                                                <div t-if="rooms_occupied_out_service > 0" class="circle">
+                                                                <div t-if="rooms_occupied_out_service > 0" class="circle" title="Fuera de servicio">
                                                                     <span >
                                                                         <t t-esc="rooms_occupied_out_service"/>
                                                                     </span>

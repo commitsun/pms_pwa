@@ -707,6 +707,13 @@ section.o_pms_pwa_roomdoo {
     .o_pms_pwa_editinline {
         width: 50px;
     }
+    #collapseDatos form div.o_pms_pwa_partner_modal_show {
+        span {
+            margin: auto;
+            color: $theme-color-text;
+            cursor: pointer;
+        }
+    }
 }
 
 .editable {

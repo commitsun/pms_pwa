@@ -174,9 +174,9 @@ class PmsReservation(http.Controller):
                         }
                     )
                 else:
-                    return reservation.parse_reservation()
+                    return json.dumps(reservation.parse_reservation())
             else:
-                return reservation.parse_reservation()
+                return json.dumps(reservation.parse_reservation())
 
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
@@ -446,23 +446,27 @@ class PmsReservation(http.Controller):
             try:
                 journal_id = int(kw.get("journal_id", False))
                 journal = request.env["account.journal"].browse(journal_id)
-                date= kw.get("date", False)
+                date = kw.get("date", False)
                 amount = float(kw.get("amount", False))
                 statement = (
                     request.env["account.bank.statement.line"]
                     .sudo()
-                    .search([
-                        ("id", "=", int(kw.get("id"))),
-                        ("folio_ids", "in", int(folio_id)),
-                    ])
+                    .search(
+                        [
+                            ("id", "=", int(kw.get("id"))),
+                            ("folio_ids", "in", int(folio_id)),
+                        ]
+                    )
                 )
                 payment = (
                     request.env["account.payment"]
                     .sudo()
-                    .search([
-                        ("id", "=", int(kw.get("id"))),
-                        ("folio_ids", "in", int(folio_id)),
-                    ])
+                    .search(
+                        [
+                            ("id", "=", int(kw.get("id"))),
+                            ("folio_ids", "in", int(folio_id)),
+                        ]
+                    )
                 )
                 if journal.type == "cash" and statement:
                     statement.update(
@@ -625,7 +629,7 @@ class PmsReservation(http.Controller):
                             .browse(int(params["preferred_room_id"]))
                             .id
                         )
-                    #HOURS
+                    # HOURS
                     elif param == "arrival_hour":
                         reservation_values["arrival_hour"] = params["arrival_hour"]
                     elif param == "departure_hour":
