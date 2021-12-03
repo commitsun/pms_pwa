@@ -7,14 +7,14 @@ section.o_pms_pwa_roomdoo {
             border: none !important;
         }
         .ui-droppable-hover{
-            background-color: green;
+            background-color: #B0E0E6;
             border: none !important;
         }
         .ui-state-active{
-            background-color: $theme-color;
+            background-color: $bg-theme-color;
         }
         .ui-state-hover{
-            background-color: green;
+            background-color: #B0E0E6;
         }
         overflow: hidden;
         @media (max-width: 991.98px) {
@@ -104,7 +104,78 @@ section.o_pms_pwa_roomdoo {
             }
         }
         /************************************************************************************************************************************/
-        #reduced_calendar_table.table {
+        .o_pms_pwa_availability_header {
+            color: #01b6e3;
+            border: 2px solid red;
+        }
+        .o_pms_pwa_reservation_list_table {
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-bottom: 0px !important;
+        }
+        .o_config_pms_pwa_table_cell {
+            border: 1px solid $grey-300;
+            border-radius: 0.25rem;
+            min-height: 1rem;
+            background-color: white;
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            .o_pms_pwa_title {
+                color: $black;
+                .o_pms_pwa_info {
+                    color: $theme-color;
+                    position: relative;
+                    top: -1rem;
+                    right: -4rem;
+                    .o_pms_pwa_interrogante-calendar {
+                        width: 13px;
+                    }
+                }
+            }
+        }
+        .o_pms_pwa_calendar_line {
+            // margin: auto;
+            p {
+                margin-left: 1rem;
+                //margin-top: 1rem;
+            }
+            &_title {
+                // background-color: $bg-theme-color-modal;
+                text-align: center;
+
+                margin-left: 0rem !important;
+                margin-top: 0rem !important;
+                margin-bottom: 0.5rem !important;
+                color: $table-text-color;
+                :after,
+                :before {
+                    background-color: $bg-theme-color-modal;
+                }
+            }
+            &_title:last-child {
+                width: 103%;
+            }
+            &_name {
+                margin: 1rem;
+                font-size: 14px;
+            }
+            // &_room_type {
+            //     p{
+            //         margin-bottom: 0.2rem;
+            //         margin-top: 0.2rem;
+            //     }
+
+            // }
+            tr[aria-expanded="true"] {
+                i {
+                    -moz-transform: rotate(180deg);
+                    -webkit-transform: rotate(180deg);
+                    transform: rotate(180deg);
+                }
+            }
+        }
+        #reduced_calendar_table.table{
             border-collapse: separate;
             border-spacing: 8px;
             overflow: auto;
@@ -115,10 +186,92 @@ section.o_pms_pwa_roomdoo {
                     transform: rotate(180deg);
                 }
             }
+            p {
+                input {
+                    width: 50px;
+                    margin-left: 1rem;
+                    margin: auto;
+                    border-bottom: 1px solid #01b6e3 !important;
+                    border: 0;
+                    text-align: center;
+                }
+            }
+            .o_pms_pwa_show_table {
+                background-color: $white;
+                // margin-left: 2rem;
+                margin-bottom: 1rem;
+                font-size: 15px;
+                width: 104px !important;
+                min-width: 104px !important;
+
+            }
+            // toggle
+            /* The switch - the box around the slider */
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 40px;
+                height: 20px;
+            }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            /* The slider */
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 12px;
+                width: 12px;
+                left: 2px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            input:checked + .slider {
+                background-color: $theme-color;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px $theme-color;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 18px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
             thead {
                 // border-bottom: 1px solid $theme-color;
                 background-color: $white;
-                height: 20px;
+                height: 50px;
                 tr {
                     background-color: $white;
                     // transform: translate(8px);
@@ -140,11 +293,14 @@ section.o_pms_pwa_roomdoo {
                             height: 25px;
                         }
                     }
+
                 }
+
             }
             tbody {
                 tr {
                     td {
+                        height: 50px;
                         .circles-container {
                             .circle {
                                 line-height: 1.5;
@@ -156,13 +312,6 @@ section.o_pms_pwa_roomdoo {
                                 padding: 0.1rem;
                                 color: white;
                             }
-                            .avoid_circle {
-                                height: 25px;
-                                min-height: 25px !important;
-                                width: 25px;
-                                min-width: 25px !important;
-                                padding: 0.1rem;
-                            }
                             div:nth-child(1) > .circle {
                                 background-color:#01b6e3;
                             }
@@ -170,12 +319,41 @@ section.o_pms_pwa_roomdoo {
                                 background-color:black;
                             }
                             div:nth-child(3) > .circle {
-                                background-color:#721c24;
+                                color:#000000;
+                                border-radius: 0%;
+                                border-left: 1px solid #dadada;
+                                border-top: 1px solid #dadada;
+                                border-right: 1px solid white;
+                                border-bottom: 1px solid white;
+                                background-color: white;
+                                margin-right: -38px;
+                                margin-bottom: -2px;
                             }
 
                         }
-                        height: 20px;
+                        .availabilitys-container {
+                            margin: 0;
+                            margin-top: 1rem;
+                            .availability-group {
+                                border-top: 1px solid black;
+                                padding-left:0;
+                                padding-right: 0;
+                                .availability-value {
+                                    padding: 0;
+                                }
+                                .fa {
+                                    font-size: 1.1rem;
+                                    color: rgba(1, 182, 227, 0.5);
+
+                                }
+                            }
+                            .availability-group:first-child {
+                                border-right: 1px solid black;
+                            }
+                        }
+
                     }
+
                     td.o_pms_pwa_dispo_property {
                         padding-top: 0;
                     }
@@ -227,6 +405,107 @@ section.o_pms_pwa_roomdoo {
                 width: 182.4px;
                 min-width: 182.4px;
             }
+            #calendar_conf_table_line.table {
+                // background-color: $bg-theme-color;
+                // td.o_pms_pwa_table_cell{
+                //     p.o_pms_pwa_title{
+                //         text-align: center !important;
+                //         height: 1rem;
+                //     }
+                // }
+                tr[aria-expanded="true"] {
+                    i {
+                        -moz-transform: rotate(180deg);
+                        -webkit-transform: rotate(180deg);
+                        transform: rotate(180deg);
+                    }
+                }
+                p {
+                    input {
+                        width: 50px;
+                        margin-left: 1rem;
+                        margin: auto;
+                        border-bottom: 1px solid #01b6e3 !important;
+                        border: 0;
+                        text-align: center;
+                    }
+                }
+
+                .o_pms_pwa_show_table {
+                    background-color: $white;
+                    // margin-left: 2rem;
+                    margin-bottom: 1rem;
+                    font-size: 15px;
+                    width: 104px !important;
+                    min-width: 104px !important;
+
+                }
+
+                // toggle
+                /* The switch - the box around the slider */
+                .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 40px;
+                    height: 20px;
+                }
+
+                /* Hide default HTML checkbox */
+                .switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                }
+
+                /* The slider */
+                .slider {
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #ccc;
+                    -webkit-transition: 0.4s;
+                    transition: 0.4s;
+                }
+
+                .slider:before {
+                    position: absolute;
+                    content: "";
+                    height: 12px;
+                    width: 12px;
+                    left: 2px;
+                    bottom: 4px;
+                    background-color: white;
+                    -webkit-transition: 0.4s;
+                    transition: 0.4s;
+                }
+
+                input:checked + .slider {
+                    background-color: $theme-color;
+                }
+
+                input:focus + .slider {
+                    box-shadow: 0 0 1px $theme-color;
+                }
+
+                input:checked + .slider:before {
+                    -webkit-transform: translateX(26px);
+                    -ms-transform: translateX(26px);
+                    transform: translateX(26px);
+                }
+
+                /* Rounded sliders */
+                .slider.round {
+                    border-radius: 18px;
+                }
+
+                .slider.round:before {
+                    border-radius: 50%;
+                }
+
+            }
             .o_pms_pwa_availability_header {
                 color: #01b6e3;
             }
@@ -243,6 +522,7 @@ section.o_pms_pwa_roomdoo {
                 // }
                 tr.o_pms_pwa_range_days_selecting{
                     background-color: #f1f1f1;
+                    // z-index: 9999;
                 }
                 td.o_pms_pwa_range_days_selected{
                     background: #c3c3c3;
@@ -441,17 +721,6 @@ section.o_pms_pwa_roomdoo {
             //     //z-index: -2;
             //     opacity: 0.2;
             // }
-        }
-
-        .o_pms_pwa_open_reduced_calendar[aria-expanded="true"] {
-            background-color: $white;
-            .o_pms_pwa_room_name {
-                i {
-                    -moz-transform: rotate(180deg);
-                    -webkit-transform: rotate(180deg);
-                    transform: rotate(180deg);
-                }
-            }
         }
         .o_pms_pwa_room_name {
             color: $black;
@@ -863,7 +1132,7 @@ section.o_pms_pwa_roomdoo {
 // modal y drag and drop
 .z-index-all{
     position: relative;
-    z-index: 999;
+    z-index: 9999 !important;
 }
 #confirmChange.modal{
         z-index: 9999;

@@ -955,9 +955,32 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
                 }
             });
         },
-        _onClickPMSPWABookingEngineCloseButton: function () {
-            $("table.o_pms_pwa_reduced_reservation_list_table  td.o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start o_pms_pwa_range_days_end o_pms_pwa_range_days_first");
+        _onClickPMSPWABookingEngineCloseButton: function (event) {
+            event.preventDefault();
+            console.log("reinicio el calendario");
+            $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start o_pms_pwa_range_days_end o_pms_pwa_range_days_first");
             $("table.o_pms_pwa_reduced_reservation_list_table tr.o_pms_pwa_reduced_calendar_line").removeClass("o_pms_pwa_range_days_selecting");
+
+            $(".o_pms_pwa_line_cell_content").removeAttr("style");
+            // Destroy original draggable and create new one
+            // $(".o_pms_pwa_line_cell_content").draggable("destroy");
+            // $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
+            //     containment: "#reduced_calendar_table",
+            //     revert: "invalid",
+            //     start: function (event, ui) {
+            //         // event.preventDefault();
+            //         console.log("creo de nuevo el dragabble");
+            //         $(event.currentTarget).addClass("z-index-all");
+            //         $(".o_pms_pwa_line_cell_content").removeAttr("style");
+            //         $(".o_pms_pwa_line_cell_content").draggable();
+            //         drop_function = true;
+            //     },
+            // });
+
+            console.log("elimino las clases de draggable de los tds _onClickCloseModal")
+            $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").removeClass(
+                "ui-draggable ui-draggable-handle"
+            ); //we reset
             const today = new Date();
             const tomorrow = new Date();
             tomorrow.setDate(today.getDate() + 1);

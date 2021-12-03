@@ -140,6 +140,7 @@ class PmsCalendar(http.Controller):
     )
     def calendar_list(self, date=False, search="", **post):
         # TODO: Evitar el uso de eval
+        print("post ---> ", post)
         dates = [item for item in eval(post.get("range_date"))]
         from_date = min(dates)
         to_date = max(dates)

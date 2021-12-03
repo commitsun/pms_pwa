@@ -34,11 +34,11 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         })
         .on("maximize", function () {
             console.log("maximize event");
-            $("header#top").hide();
+            $("header#top nav").hide();
         })
         .on("unmaximize", function () {
             console.log("unmaximize event");
-            $("header#top").show();
+            $("header#top nav").show();
         });
 
     publicWidget.registry.ReducedCalendarCollapseWidget = publicWidget.Widget.extend({
@@ -50,6 +50,22 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             "click tr.o_pms_pwa_open_reduced_calendar": "_onClickGetCalendarLine",
             "click .close_confirmChange": "_onClickCloseModal",
             "click .send_ConfirmChanges": "_onClickConfirmModal",
+        },
+        /**
+         * @override
+         */
+        start: function () {
+            console.log("start");
+            var self = this;
+            return this._super.apply(this, arguments);
+        },
+        init: function () {
+            console.log("init");
+            var self = this;
+            // $(".o_pms_pwa_open_reduced_calendar").map(function() {
+            //     self.launchLines(this);
+            // }).get();
+            return this._super.apply(this, arguments);
         },
         convertDay: function (day_to_convert) {
             if (document.documentElement.lang === "es-ES") {
@@ -89,7 +105,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         },
         closestEdge: function (mouse, elem) {
             var elemBounding = elem.getBoundingClientRect();
-
+            console.log("elemBounding ---> ", elemBounding);
             var elementLeftEdge = elemBounding.left;
             var elementTopEdge = elemBounding.top;
             var elementRightEdge = elemBounding.right;
@@ -142,9 +158,9 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     csrf_token: csrf_token,
                 });
                 $(String("#collapse_accordion_" + data_id)).html(html);
-                $(String("#collapse_accordion_" + data_id)).addClass("show");
+                // $(String("#collapse_accordion_" + data_id)).addClass("show");
                 // ESTO PARA CREAR EL DRAG
-                $(".o_pms_pwa_reduced_calendar_reservation").draggable({
+                $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
                     containment: "#reduced_calendar_table",
                     revert: "invalid",
                     start: function (event, ui) {
@@ -157,7 +173,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     },
                 });
                 // ESTO PARA VER DONDE IR Y DROP PARA CONOCER DONDE SE SUELTA
-                $(".o_pms_pwa_line_cell_content").droppable({
+                $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_line_cell_content").droppable({
                     // CLASES PARA MOSTRAR CUADROS ACTIVOS Y COLOR DE HOVER
                     classes: {
                         "ui-droppable-active": "ui-state-active",
@@ -204,6 +220,16 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                                         }
                                     );
                                     $("#confirmChange").modal("show");
+                                    // $(".o_pms_pwa_line_cell_content").removeAttr("style");
+                                    //$(".o_pms_pwa_line_cell_content").draggable("destroy");
+                                    //$(".o_pms_pwa_line_cell_content").draggable();
+                                    console.log("elimino las clases de draggable de los tds")
+                                    $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").removeClass(
+                                        "ui-draggable ui-draggable-handle"
+                                    ); //we reset
+                                    $(this).effect("highlight", {}, 1500);
+                                    drop_function = false;
+
                                 } else {
                                     //LANZO WARNNING
                                     data["type"] = "warning";
@@ -223,12 +249,17 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                                     $(".o_pms_pwa_line_cell_content").removeAttr("style");
 
                                     // Destroy original draggable and create new one
-                                    $(".o_pms_pwa_line_cell_content").draggable("destroy");
-                                    $(".o_pms_pwa_line_cell_content").draggable();
+                                    // $(".o_pms_pwa_line_cell_content").draggable("destroy");
+                                    // $(".o_pms_pwa_line_cell_content").draggable();
+                                    console.log("elimino las clases de draggable de los tds")
+                                    $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").removeClass(
+                                        "ui-draggable ui-draggable-handle"
+                                    ); //we reset
+                                    $(this).effect("highlight", {}, 1500);
+                                    drop_function = false;
                                 }
                             });
-                            $(this).effect("highlight", {}, 1500);
-                            drop_function = false;
+
                         }
                     },
                     // over: function(event, ui) {
@@ -253,11 +284,20 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     // }
                 });
                 // Arrastras para crear reserva
-                $(document).on("click", ".open-calendar-modalDialog", function () {
-                    console.log("launch modal");
-                });
+                // $(document).on("click", ".open-calendar-modalDialog", function () {
+                //     $(".o_pms_pwa_line_cell_content").removeAttr("style");
 
-                $("table.o_pms_pwa_reduced_reservation_list_table").mousedown(function (
+                //     // Destroy original draggable and create new one
+                //     // $(".o_pms_pwa_line_cell_content").draggable("destroy");
+                //     // $(".o_pms_pwa_line_cell_content").draggable();
+                //     console.log("elimino las clases de draggable de los tds al abrir la modal launch modal?");
+                //     $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").removeClass(
+                //         "ui-draggable ui-draggable-handle"
+                //     ); //we reset
+                //     console.log("launch modal ?¿");
+                // });
+
+                $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").mousedown(function (
                     e
                 ) {
                     //Mouse Down
@@ -271,10 +311,10 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     //we are selecting in this row
                     $("tr.o_pms_pwa_reduced_calendar_line").removeClass("o_pms_pwa_range_days_selecting"); //we reset
                     elemMousedowned.parent("tr.o_pms_pwa_reduced_calendar_line").addClass("o_pms_pwa_range_days_selecting");
-
-                    $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_line_event").removeClass(
+                    console.log("mouseDown o_pms_pwa_range_days_selecting")
+                    $("table.o_pms_pwa_reduced_reservation_list_table ").removeClass(
                         "o_pms_pwa_range_days_selected o_pms_pwa_range_days_first o_pms_pwa_range_days_end o_pms_pwa_range_days_start"
-                    ); //we reset
+                    ).attr('unselectable', 'on'); //we reset
                     elemMousedowned.addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start"); // we started
                 });
 
@@ -286,70 +326,9 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     mouseDown = false;
                     mouseUp = true;
                     elemMouseuped = $(e.target);
-                    if (mouseUp && drop_function == false) {
-                        initial_day = initial_day;
-                        let last_day = elemMouseuped.data("date");
-                        calendar_room = calendar_room;
-                        initial_day = self.convertDay(initial_day);
-                        last_day = self.convertDay(last_day);
-                        initial_day = new Date(initial_day);
-                        last_day = new Date(last_day);
-                        if (initial_day.toString() === last_day.toString()) {
-                            last_day.setDate(last_day.getDate() + 1);
-                        }
-                        let pricelist = elemMouseuped.data("pricelist");
-                        let checkin_date = initial_day.toLocaleDateString(
-                            document.documentElement.lang,
-                            date_options
-                        );
-                        let checkout_date = last_day.toLocaleDateString(
-                            document.documentElement.lang,
-                            date_options
-                        );
-                        if (checkin_date > checkout_date) {
-                            let change_date = checkin_date;
-                            checkin_date = checkout_date;
-                            checkout_date = change_date;
-                        }
+                    console.log("drop_function ->", drop_function);
+                    console.log("doneSelecting --->", doneSelecting);
 
-                        let range_date = checkin_date + " - " + checkout_date;
-                        console.log("Range date -> ", range_date);
-                        $("#bookengine_table > tr").remove();
-                        $("#booking_engine_form")
-                            .find(
-                                "input:text, input:password, input:file, select, textarea"
-                            )
-                            .val("");
-                        $(
-                            "div#o_pms_pwa_new_reservation_modal #segmentation_ids"
-                        ).select2("destroy");
-                        $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2(
-                            "destroy"
-                        );
-                        $('form#booking_engine_form input[name="calendar_room"]').val(
-                            calendar_room
-                        );
-                        $('form#booking_engine_form select[name="pricelist"]').val(
-                            pricelist
-                        );
-                        $(
-                            'form#booking_engine_form input[name="new_reservation_date_modal_reservation"]'
-                        ).val(range_date);
-                        $('form#booking_engine_form input[name="checkin"]').val(
-                            checkin_date
-                        );
-                        $('form#booking_engine_form input[name="checkout"]').val(
-                            checkout_date
-                        );
-                        $("form#booking_engine_form")
-                            .find(
-                                "input[name='new_reservation_date_modal_reservation']"
-                            )
-                            .trigger("change");
-                        $(".open-calendar-modalDialog").attr("data-range_days", true);
-                        $(".open-calendar-modalDialog").click();
-                        $(".open-calendar-modalDialog").attr("data-range_days", false);
-                    }
                     if (!doneSelecting) {
                         if (
                             elemMouseuped
@@ -361,11 +340,78 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                             elemMouseuped.addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
                             doneSelecting = true;
                             //elemMouseuped.removeClass("selected start");
+                            if (mouseUp && drop_function == false) {
+                                initial_day = initial_day;
+                                let last_day = elemMouseuped.data("date");
+                                calendar_room = calendar_room;
+                                initial_day = self.convertDay(initial_day);
+                                last_day = self.convertDay(last_day);
+                                initial_day = new Date(initial_day);
+                                last_day = new Date(last_day);
+                                if (initial_day.toString() === last_day.toString()) {
+                                    last_day.setDate(last_day.getDate() + 1);
+                                }
+                                let pricelist = elemMouseuped.data("pricelist");
+                                let checkin_date = initial_day.toLocaleDateString(
+                                    document.documentElement.lang,
+                                    date_options
+                                );
+                                let checkout_date = last_day.toLocaleDateString(
+                                    document.documentElement.lang,
+                                    date_options
+                                );
+                                console.log("checkin_date ----> ", checkin_date);
+                                console.log("checkout_date ----> ", checkout_date);
+                                if (initial_day > last_day) {
+                                    console.log("Cambio las fechas");
+                                    let change_date = checkin_date;
+                                    checkin_date = checkout_date;
+                                    checkout_date = change_date;
+                                }
+
+                                let range_date = checkin_date + " - " + checkout_date;
+                                console.log("Range date -> ", range_date);
+                                $("#bookengine_table > tr").remove();
+                                $("#booking_engine_form")
+                                    .find(
+                                        "input:text, input:password, input:file, select, textarea"
+                                    )
+                                    .val("");
+                                $(
+                                    "div#o_pms_pwa_new_reservation_modal #segmentation_ids"
+                                ).select2("destroy");
+                                $("div#o_pms_pwa_new_reservation_modal #amenity_ids").select2(
+                                    "destroy"
+                                );
+                                $('form#booking_engine_form input[name="calendar_room"]').val(
+                                    calendar_room
+                                );
+                                $('form#booking_engine_form select[name="pricelist"]').val(
+                                    pricelist
+                                );
+                                $(
+                                    'form#booking_engine_form input[name="new_reservation_date_modal_reservation"]'
+                                ).val(range_date);
+                                $('form#booking_engine_form input[name="checkin"]').val(
+                                    checkin_date
+                                );
+                                $('form#booking_engine_form input[name="checkout"]').val(
+                                    checkout_date
+                                );
+                                $("form#booking_engine_form")
+                                    .find(
+                                        "input[name='new_reservation_date_modal_reservation']"
+                                    )
+                                    .trigger("change");
+                                $(".open-calendar-modalDialog").attr("data-range_days", true);
+                                $(".open-calendar-modalDialog").click();
+                                $(".open-calendar-modalDialog").attr("data-range_days", false);
+                            }
                         }
                     }
                 });
 
-                $("table.o_pms_pwa_reduced_reservation_list_table td").hover(
+                $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").hover(
                     function (e) {
                         //console.log(doneSelecting);
                         // Esta función se ejecuta cuando el puntero del ratón entra en el elemento tr
@@ -390,7 +436,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                         }
                     },
                     function (e) {
-                        //console.log($(this));
+                        console.log("doneSelecting ----> ", doneSelecting);
                         // Esta función se ejecuta cuando el puntero del ratón sale del elemento tr
                         if (!doneSelecting) {
                             if (
@@ -403,12 +449,15 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
 
                                 if (went == "top" || went == "bottom") {
                                     console.log(went);
+                                    console.log($(this));
                                     $(".o_pms_pwa_range_days_selecting .o_pms_pwa_range_days_end").removeClass("o_pms_pwa_range_days_end");
                                     $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                    // $(this).closest('td').next('td').addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
                                     doneSelecting = true;
-                                    // console.log(doneSelecting);
+                                    console.log(doneSelecting);
                                 }
                                 if (went == "right") {
+                                    console.log("Right");
                                     if ($(this).hasClass("o_pms_pwa_range_days_start")) {
                                         selectingToTheLeft = false;
                                         selectingToTheRight = true;
@@ -418,6 +467,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                                     }
                                 }
                                 if (went == "left") {
+                                    console.log("left");
                                     if ($(this).hasClass("o_pms_pwa_range_days_start")) {
                                         selectingToTheLeft = true;
                                         selectingToTheRight = false;
@@ -433,32 +483,51 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 );
             });
         },
-        init: function () {
-            console.log("init");
-            var self = this;
-            // $(".o_pms_pwa_open_reduced_calendar").map(function() {
-            //     self.launchLines(this);
-            // }).get();
-            return this._super.apply(this, arguments);
-        },
+
         _onClickCloseModal: function (event) {
             var self = this;
             event.preventDefault();
             console.log("reinicio el calendario");
-            $("table.o_pms_pwa_reduced_reservation_list_table  td.o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start o_pms_pwa_range_days_end o_pms_pwa_range_days_first");
+            $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start o_pms_pwa_range_days_end o_pms_pwa_range_days_first");
             $("table.o_pms_pwa_reduced_reservation_list_table tr.o_pms_pwa_reduced_calendar_line").removeClass("o_pms_pwa_range_days_selecting");
+
             $(".o_pms_pwa_line_cell_content").removeAttr("style");
-            $(".o_pms_pwa_line_cell_content").draggable();
+            // Destroy original draggable and create new one
+            $(".o_pms_pwa_line_cell_content").draggable("destroy");
+            $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
+                containment: "#reduced_calendar_table",
+                revert: "invalid",
+                start: function (event, ui) {
+                    // event.preventDefault();
+                    console.log("creo de nuevo el dragabble");
+                    $(event.currentTarget).addClass("z-index-all");
+                    $(".o_pms_pwa_line_cell_content").removeAttr("style");
+                    $(".o_pms_pwa_line_cell_content").draggable();
+                    drop_function = true;
+                },
+            });
+
+            console.log("elimino las clases de draggable de los tds _onClickCloseModal")
+            $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").removeClass(
+                "ui-draggable ui-draggable-handle"
+            ); //we reset
+
+            drop_function = false;
+            console.log(event);
+            // self.launchLines(event.currentTarget);
         },
+
         _onClickGetCalendarLine: function (event) {
             var self = this;
             event.preventDefault();
+
             self.launchLines(event.currentTarget);
         },
         _onClickConfirmModal: function (event) {
+            console.log("Confirmo en modal.");
             var self = this;
             event.preventDefault();
-
+            drop_function = false;
             var send_date = $("input[name='modal_date']").val();
             var send_reservation = $("input[name='modal_reservation']").val();
             var send_room = $("input[name='modal_room']").val();
@@ -471,8 +540,8 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             }).then(function (data) {
                 $("#confirmChange").modal("hide");
                 var data_id = data["reservation"];
-                var reservation_table = require("pms_pwa.reservation_table");
-                new reservation_table(this).reloadReservationInfo(data_id);
+                // var reservation_table = require("pms_pwa.reservation_table");
+                // new reservation_table(this).reloadReservationInfo(data_id);
                 ajax.jsonRpc("/reservation/json_data", "call", {
                     reservation_id: data_id,
                 }).then(function (updated_data) {
