@@ -132,6 +132,7 @@
 
             <script src="/pms_pwa/static/src/js/vendor/bootstrap-select.min.js"></script>
             <script src="/pms_pwa/static/src/js/vendor/largetable.js"></script>
+            <script src="/pms_pwa/static/src/js/vendor/jquery.tablehover.js"></script>
             <!-- <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/vendor/print.min.js"

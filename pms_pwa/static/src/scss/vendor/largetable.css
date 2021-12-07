@@ -2,13 +2,13 @@ body.largetable-noscroll {
 	overflow: hidden;
 }
 
-.largetable {
+/* .largetable {
 	position: relative;
-}
+} */
 
 .largetable-scroller {
 	max-width: 100%;
-	overflow-x: auto;
+	/* overflow-x: auto; */
 	-webkit-overflow-scrolling: touch;
 	z-index: 0;
 }
@@ -23,12 +23,12 @@ body.largetable-noscroll {
 
 .largetable:before {
 	left: 0;
-	box-shadow: inset 30px 0px 10px -30px #424242;
+	/* box-shadow: inset 30px 0px 10px -30px #424242; */
 }
 
 .largetable:after {
 	right: 0;
-	box-shadow: inset -30px 0px 10px -30px #424242;
+	/* box-shadow: inset -30px 0px 10px -30px #424242; */
 }
 
 :not(.largetable-maximized).largetable-shadow-left:before,
