@@ -7,16 +7,16 @@ section.o_pms_pwa_roomdoo {
             border: none !important;
         }
         .ui-droppable-hover{
-            background-color: #B0E0E6;
+            background-color: #B0E0E6 !important;
             border: none !important;
         }
         .ui-state-active{
             background-color: $bg-theme-color;
         }
         .ui-state-hover{
-            background-color: #B0E0E6;
+            background-color: #B0E0E6 !important;
         }
-        overflow: hidden;
+
         @media (max-width: 991.98px) {
             margin-left: -3rem;
             margin-top: -4rem;
@@ -31,8 +31,12 @@ section.o_pms_pwa_roomdoo {
 
         .table-responsive {
             height: calc(66vh - 25px);
-        }
+            display: block;
+            width: 100%;
+            overflow-x: auto;
 
+
+        }
         // search form
         form {
             input.o_pmw_pwa_search_input {
@@ -179,6 +183,7 @@ section.o_pms_pwa_roomdoo {
             border-collapse: separate;
             border-spacing: 8px;
             overflow: auto;
+            position: relative;
             tr[aria-expanded="true"] {
                 i {
                     -moz-transform: rotate(180deg);
@@ -271,7 +276,7 @@ section.o_pms_pwa_roomdoo {
             thead {
                 // border-bottom: 1px solid $theme-color;
                 background-color: $white;
-                height: 50px;
+                height: 20px;
                 tr {
                     background-color: $white;
                     // transform: translate(8px);
@@ -285,7 +290,7 @@ section.o_pms_pwa_roomdoo {
                         position: -o-sticky;
                         position: sticky;
                         top: 0;
-                        z-index: 99;
+                        z-index: 99 !important;
 
                         // border-bottom: 1px solid $theme-color;
                         a {
@@ -404,6 +409,7 @@ section.o_pms_pwa_roomdoo {
                 width: 132.4px;
                 min-width: 132.4px;
             }
+
             #calendar_conf_table_line.table {
                 // background-color: $bg-theme-color;
                 // td.o_pms_pwa_table_cell{
@@ -513,7 +519,7 @@ section.o_pms_pwa_roomdoo {
                 border-spacing: 0 5px;
                 margin-bottom: 0px !important;
                 tr.o_pms_pwa_reduced_calendar_line:hover, td.o_pms_pwa_table_cell:hover::before, td.o_pms_pwa_table_cell:hover::after {
-                    background-color: #f1f1f1 !important;
+                    background-color: #f1f1f1;
                 }
                 // td.o_pms_pwa_range_days_selected { background-color:#c3c3c3; }
                 // td.o_pms_pwa_line_cell_content:hover{
@@ -524,18 +530,19 @@ section.o_pms_pwa_roomdoo {
                     // z-index: 9999;
                 }
                 td.o_pms_pwa_range_days_selected{
-                    background: #c3c3c3;
+                    background-color: #c3c3c3;
                 }
                 td.o_pms_pwa_range_days_start{
-                    background:#c3c3c3;
+                    background-color: #c3c3c3;
                 }
                 td.o_pms_pwa_range_days_end{
-                    background:#c3c3c3;
+                    background-color: #c3c3c3;
                 }
                 td.o_pms_pwa_range_days_first{
-                    background:#c3c3c3;
+                    background-color: #c3c3c3;
                 }
 
+                td.hover, tr.hover { background-color: #f1f1f1; }
 
                 td[colspan="2"] {
                     width: calc(129.265px * 2) !important;
@@ -814,6 +821,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -835,6 +843,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -857,6 +866,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -879,6 +889,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -901,6 +912,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -923,6 +935,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -945,6 +958,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -967,6 +981,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -988,6 +1003,7 @@ section.o_pms_pwa_roomdoo {
                     width: 100%;
                     margin-left: 2rem;
                     margin-bottom: 0.25rem;
+                    z-index: 99;
                     .o_pms_pwa_reduced_calendar_line_icon {
                         width: 8px;
                         margin-left: 0.1rem;
@@ -1057,39 +1073,39 @@ section.o_pms_pwa_roomdoo {
         .bg {
             &-prereservation {
                 color: #a24680;
-                background-color: #a24680;
+                background-color: #a24680 !important;
             }
             &-confirmed {
                 color: $theme-color;
-                background-color: $theme-color;
+                background-color: $theme-color !important;
             }
             &-checkin-paid {
                 color: #00ba39;
-                background-color: #00ba39;
+                background-color: #00ba39 !important;
             }
             &-checkin-to-pay {
                 color: #dc3545;
-                background-color: #dc3545;
+                background-color: #dc3545 !important;
             }
             &-checkout-paid {
                 color: #7e7e7e;
-                background-color: #7e7e7e;
+                background-color: #7e7e7e !important;
             }
             &-checkout-to-pay {
                 color: #dc3545;
-                background-color: #dc3545;
+                background-color: #dc3545 !important;
             }
             &-out-service {
                 color: #000000;
-                background-color: #000000;
+                background-color: #000000 !important;
             }
             &-staff {
                 color: #c08686;
-                background-color: #c08686;
+                background-color: #c08686 !important;
             }
             &-to-assign {
                 color: #ed722e;
-                background-color: #ed722e;
+                background-color: #ed722e !important;
             }
         }
         .btn-add {
@@ -1147,6 +1163,7 @@ section.o_pms_pwa_roomdoo {
 .z-index-all{
     position: relative;
     z-index: 9999 !important;
+    background-color: transparent !important;
 }
 #confirmChange.modal{
         z-index: 9999;

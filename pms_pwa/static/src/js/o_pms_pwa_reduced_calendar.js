@@ -40,7 +40,6 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             console.log("unmaximize event");
             $("header#top nav").show();
         });
-
     publicWidget.registry.ReducedCalendarCollapseWidget = publicWidget.Widget.extend({
         selector: "#reduced_calendar_table, #confirmChange",
         xmlDependencies: [
@@ -105,15 +104,13 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         },
         closestEdge: function (mouse, elem) {
             var elemBounding = elem.getBoundingClientRect();
-            console.log("elemBounding ---> ", elemBounding);
             var elementLeftEdge = elemBounding.left;
-            var elementTopEdge = elemBounding.top;
+            var elementTopEdge = elemBounding.top+100;
             var elementRightEdge = elemBounding.right;
-            var elementBottomEdge = elemBounding.bottom;
+            var elementBottomEdge = elemBounding.bottom+100;
 
             var mouseX = mouse.pageX;
             var mouseY = mouse.pageY;
-
             var topEdgeDist = Math.abs(elementTopEdge - mouseY);
             var bottomEdgeDist = Math.abs(elementBottomEdge - mouseY);
             var leftEdgeDist = Math.abs(elementLeftEdge - mouseX);
@@ -125,7 +122,6 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 leftEdgeDist,
                 rightEdgeDist
             );
-
             switch (min) {
                 case leftEdgeDist:
                     return "left";
@@ -159,6 +155,8 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 });
                 $(String("#collapse_accordion_" + data_id)).html(html);
                 // $(String("#collapse_accordion_" + data_id)).addClass("show");
+                //
+                $('table.o_pms_pwa_reduced_reservation_list_table').tableHover({colClass: 'hover'});
                 // ESTO PARA CREAR EL DRAG
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
                     containment: "#reduced_calendar_table",
@@ -329,7 +327,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     console.log("drop_function ->", drop_function);
                     console.log("doneSelecting --->", doneSelecting);
 
-                    if (!doneSelecting) {
+                    if (!drop_function) {
                         if (
                             elemMouseuped
                                 .parent("tr.o_pms_pwa_reduced_calendar_line")
@@ -580,3 +578,4 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         },
     });
 });
+

@@ -195,7 +195,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     csrf_token: csrf_token,
                 });
                 $(String("#collapse_accordion_" + data_id)).html(html);
-                $(String("#collapse_accordion_" + data_id)).addClass("show");
+                $('table.o_pms_pwa_reduced_reservation_list_table').tableHover({colClass: 'hover'});
                 // ESTO PARA CREAR EL DRAG
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
                     containment: "#reduced_calendar_table",
