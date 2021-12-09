@@ -112,7 +112,7 @@
 
                                 </div>
                                 <div class="card shadow">
-                                    <div class="container-fluid">
+                                    <div class="container-fluid" style="background-color:#daf7fc;">
                                         <div class="bg-dark">
                                             <div class="row">
                                                 <div class="col-12">
@@ -172,58 +172,9 @@
                                             </div>
                                         </div>
                                         <div class="box o_pms_pwa_direct_chat o_pms_pwa_direct_chat_warning">
-                                            <!-- <div class="box-header with-border">
-                                                <h3 class="box-title">Mensajes</h3>
-                                                <div class="box-tools pull-right">
-                                                    <span data-toggle="tooltip" title="New Messages" class="badge o_pms_pwa_bg_blue" data-original-title="New Messages"><t t-esc="reservation.message_unread_counter"></t></span>
-                                                </div>
-                                            </div> -->
-                                            <div id="o_pms_pwa_direct_chat_messages" class="box-body">
-                                                <div class="o_pms_pwa_direct_chat_messages">
-                                                    <t t-set="mesage_date" t-value="[]" />
-                                                    <t t-foreach="reservation.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
-                                                        <t t-if="msg.date not in mesage_date" t-set="mesage_date" t-value="mesage_date+[msg.date]" />
-                                                    </t>
-                                                    <t t-foreach="mesage_date" t-as="date">
-                                                        <div class="o_pms_pwa_direct_chat_timestamp text-center">
-                                                            <strong t-esc="date" t-esc-options='{"format": "%d %B %Y"}'/>
-                                                        </div>
-                                                        <t t-foreach="reservation.message_ids.sorted(key=lambda x: x.date)" t-as="msg">
-                                                            <t t-if="date==msg.date">
-                                                                <div class="o_pms_pwa_direct_chat_msg m-2">
-                                                                    <div class="o_pms_pwa_direct_direct_chat_info clearfix">
-                                                                        <span class="pull-left">
-                                                                            <img class="o_pms_pwa_direct_chat_img rounded-circle img-fluid" t-att-src="website.image_url(msg.author_id, 'image_128')" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" />
-                                                                            <strong class="ml-2">
-                                                                                <t t-esc="msg.author_id.name"></t>
-                                                                            </strong>
-                                                                        </span>
-                                                                        <span class="o_pms_pwa_direct_chat_timestamp pull-right">
-                                                                            <span t-field="msg.date" t-options='{"format": "H:s"}' />
-                                                                        </span>
-                                                                    </div>
-
-                                                                    <div class="o_pms_pwa_direct_chat_text">
-                                                                        <span t-field="msg.body" options="{'style-inline': true}" />
-                                                                    </div>
-                                                                </div>
-                                                            </t>
-                                                        </t>
-                                                    </t>
-                                                </div>
-                                            </div>
-                                            <div class="box-footer text-center">
-                                                <form action="/reservation/82" name="reservation_detail_form" method="post">
-                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
-                                                    <input type="hidden" name="model" value="pms.reservation" />
-                                                    <input type="hidden" name="id" t-att-value="reservation.id" />
-                                                    <input type="hidden" name="folio_id" t-att-value="reservation.folio_id.id" />
-                                                    <div class="form-group">
-                                                        <input type="text" name="message" placeholder="Escribe..." class="form-control message-input" required="" />
-                                                        <input type="submit" class="btn btn-message" value="Enviar" />
-                                                    </div>
-                                                </form>
-                                            </div>
+                                            <t t-call="portal.message_thread">
+                                                <t t-set="object" t-value="reservation"/>
+                                            </t>
                                         </div>
                                     </div>
                                 </div>

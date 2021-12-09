@@ -141,148 +141,62 @@ section.o_pms_pwa_roomdoo {
         position: relative;
         overflow-x: hidden;
         padding: 0;
-    }
+        max-height: 500px;
+        hr{
+            background-color:  white;
+        }
+        .o_message_counter{
+            margin-left: 1rem;
+            margin-top: 0.5rem;
+        }
+        .o_portal_chatter_composer{
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-top: 1px solid #f4f4f4;
+            padding: 10px;
+        }
+        .o_portal_chatter_messages{
+            -webkit-transform: translate(0, 0);
+            -ms-transform: translate(0, 0);
+            -o-transform: translate(0, 0);
+            transform: translate(0, 0);
+            padding: 10px;
+            height: 250px;
+            -webkit-transition: -webkit-transform 0.5s ease-in-out;
+            -moz-transition: -moz-transform 0.5s ease-in-out;
+            -o-transition: -o-transform 0.5s ease-in-out;
+            transition: transform 0.5s ease-in-out;
+            .media-body{
+                border-radius: 5px;
+                padding: 5px 10px;
+                background: $bg-theme-color-modal;
+                border-color: $bg-theme-color;
+                color: $black;
+                margin: 5px 0 0 5px;
+                .o_portal_chatter_puslished_date{
+                    color: grey;
+                }
+                .o_portal_chatter_attachments{
+                    .row{
+                        .col-lg-2{
+                            flex: 0 0 25%;
+                            max-width: 25%;
+                        }
+                    }
+                }
+            }
 
-    .o_pms_pwa_direct_chat_messages {
-        -webkit-transform: translate(0, 0);
-        -ms-transform: translate(0, 0);
-        -o-transform: translate(0, 0);
-        transform: translate(0, 0);
-        padding: 10px;
-        height: 250px;
-        overflow: auto;
-    }
-    .o_pms_pwa_direct_chat_messages {
-        -webkit-transition: -webkit-transform 0.5s ease-in-out;
-        -moz-transition: -moz-transform 0.5s ease-in-out;
-        -o-transition: -o-transform 0.5s ease-in-out;
-        transition: transform 0.5s ease-in-out;
-    }
-
-    .o_pms_pwa_direct_chat_msg {
-        margin-bottom: 10px;
-    }
-
-    .o_pms_pwa_direct_chat_msg,
-    .o_pms_pwa_direct_chat_text {
-        display: block;
-    }
-
-    .o_pms_pwa_direct_direct_chat_info {
-        display: block;
-        margin-bottom: 2px;
-        font-size: 12px;
-        & strong {
-            font-size: 1.1rem !important;
-            font-weight: 900;
+        }
+        .o_portal_chatter_avatar{
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            border: 1px solid $theme-color;
         }
     }
 
-    .o_pms_pwa_direct_chat_timestamp {
-        color: $theme-color;
-        font-size: 1rem;
-    }
-
-    .o_pms_pwa_direct_chat_img {
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        border: 1px solid $theme-color;
-    }
-
-    .o_pms_pwa_direct_chat_text {
-        border-radius: 5px;
-        position: relative;
-        padding: 5px 10px;
-        background: $bg-theme-color;
-        border-color: $bg-theme-color;
-        color: $black;
-        margin: 5px 0 0 50px;
-    }
-
-    .o_pms_pwa_direct_chat_msg,
-    .o_pms_pwa_direct_chat_text {
-        display: block;
-    }
-
-    .o_pms_pwa_direct_chat_text:before {
-        border-width: 6px;
-        margin-top: -6px;
-    }
-
-    .o_pms_pwa_direct_chat_text:after,
-    .o_pms_pwa_direct_chat_text:before {
-        position: absolute;
-        right: 100%;
-        top: 15px;
-        border: solid transparent;
-        border-right-color: #d2d6de;
-        content: " ";
-        height: 0;
-        width: 0;
-        pointer-events: none;
-    }
-
-    .o_pms_pwa_direct_chat_text:after {
-        border-width: 5px;
-        margin-top: -5px;
-    }
-
-    .o_pms_pwa_direct_chat_text:after,
-    .o_pms_pwa_direct_chat_text:before {
-        position: absolute;
-        right: 100%;
-        top: 15px;
-        border: solid transparent;
-        border-right-color: #d2d6de;
-        content: " ";
-        height: 0;
-        width: 0;
-        pointer-events: none;
-    }
-    .o_pms_pwa_direct_chat_msg:after {
-        clear: both;
-    }
-
-    .o_pms_pwa_direct_chat_msg:after {
-        content: "";
-        display: table;
-    }
-
-    .o_pms_pwa_direct_direct_chat_info {
-        display: block;
-        margin-bottom: 2px;
-        font-size: 12px;
-    }
-    .o_pms_pwa_direct_chat_warning .right > .o_pms_pwa_direct_chat_text {
-        background: $bg-theme-color;
-        border-color: $bg-theme-color;
-        color: $black;
-    }
-
-    .right .o_pms_pwa_direct_chat_text {
-        margin-right: 50px;
-        margin-left: 0;
-    }
-    .box-footer {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 3px;
-        border-bottom-left-radius: 3px;
-        border-top: 1px solid #f4f4f4;
-        padding: 10px;
-        background-color: #fff;
-    }
-
-    .box-header:before,
-    .box-body:before,
-    .box-footer:before,
-    .box-header:after,
-    .box-body:after,
-    .box-footer:after {
-        content: "";
-        display: table;
-    }
     .message-input {
         width: 90%;
         height: 6rem;
