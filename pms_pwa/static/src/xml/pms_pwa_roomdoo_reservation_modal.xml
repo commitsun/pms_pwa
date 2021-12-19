@@ -266,7 +266,7 @@
                                             <span class="label label-default" style="color:#575757;">Finalizada</span>
                                         </t>
                                     </h5>
-                                    <t t-if="not reservation.to_send_mail and reservation_type != 'out'">
+                                    <t t-if="reservation.to_send_mail == False and reservation.reservation_type != 'out'">
                                         <i class="fa fa-envelope" style="color:green;" title="Mail de confirmación enviado"></i>
                                     </t>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1157,10 +1157,8 @@
                         <div class="modal-body o_pms_pwa_modal_body">
                             <div class="row">
                                 <div class="col-12">
-                                    <!-- <button url="/print-checkin" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-block btn-grey-300 btn-radius o_pms_pwa_50w" data-dismiss="modal" aria-label="Print checkin">
-                                        <span>Print checkin</span>
-                                    </button>  -->
-                                    <button t-attf-onclick="/checkins/pdf/{{reservation.id}}" type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-message btn-block o_pms_pwa_button_checkin_confirm o_pms_pwa_30w" aria-label="Print checkin">
+                                    <!-- t-attf-onclick="/checkins/pdf/{{reservation.id}}"   class="o_pms_pwa_button_checkin_confirm"-->
+                                    <button type="button" t-attf-data-id="{{reservation.id}}" class="o_pms_pwa_button_print_checkin btn btn-message btn-block o_pms_pwa_30w" aria-label="Print checkin">
                                         <span>Imprimir</span>
                                     </button>
                                 </div>
