@@ -4,7 +4,7 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="pms.res_users_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='pms_property_id']/group" position="after">
+            <xpath expr="//field[@name='pms_property_id']" position="after">
                 <field
                     string="PWA Allowed Properties"
                     name="pms_pwa_property_ids"
