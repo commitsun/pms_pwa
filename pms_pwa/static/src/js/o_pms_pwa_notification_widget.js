@@ -19,6 +19,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         selector: ".o_pms_pwa_notify_widget, .o_pms_pwa_cloud_dropdown_menu",
         events: {
             "click a.o_pms_pwa_open_reservation_modal": "_onClickReservationButton",
+            "click i.o_pms_pwa_remove_alert": "_onClickDismissAlert",
         },
 
         init: function () {
@@ -43,7 +44,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         cloudColorToDefault: function () {
             $(".o_pms_pwa_cloud_dropdown")
                 .find("img")
-                .attr('src','/pms_pwa/static/img/svg/cloud.svg')
+                .attr("src", "/pms_pwa/static/img/svg/cloud.svg")
                 .removeClass("o_pms_pwa_cloud_on")
                 .addClass("o_pms_pwa_cloud_off");
         },
@@ -55,6 +56,11 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             this.cloudColorToDefault();
         },
 
+        _onClickDismissAlert: function (event) {
+            event.stopPropagation();
+            event.preventDefault();
+            event.currentTarget.parentNode.remove();
+        },
 
         displayDataAlert: function (data) {
             var self = this;
@@ -84,13 +90,19 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             if (message.id) {
                 var notification = $("<a></a>")
                     .addClass("dropdown-item o_pms_pwa_open_reservation_modal")
-                    .text(message.message)
+                    .html(
+                        message.message +
+                            "<i class='fa fa-trash o_pms_pwa_remove_alert ml-2'></i>"
+                    )
                     .attr("href", "#")
                     .attr("data-id", message.id);
             } else {
                 var notification = $("<a></a>")
                     .addClass("dropdown-item")
-                    .text(message.message)
+                    .html(
+                        message.message +
+                            "<i class='fa fa-trash o_pms_pwa_remove_alert ml-2'></i>"
+                    )
                     .attr("href", "#");
             }
 
@@ -103,7 +115,9 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             try {
                 child_count = $(".o_pms_pwa_cloud_dropdown_menu").get(0)
                     .childElementCount;
-                var cloud = $(".o_pms_pwa_cloud_dropdown").find("img.o_pms_pwa_cloud_off");
+                var cloud = $(".o_pms_pwa_cloud_dropdown").find(
+                    "img.o_pms_pwa_cloud_off"
+                );
                 if (cloud.length > 0) {
                     cloud_off = true;
                 }
@@ -114,7 +128,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             if (child_count > 0 && cloud_off) {
                 $(".o_pms_pwa_cloud_dropdown")
                     .find("img")
-                    .attr('src','/pms_pwa/static/img/svg/cloud-to-assign.svg')
+                    .attr("src", "/pms_pwa/static/img/svg/cloud-to-assign.svg")
                     .removeClass("o_pms_pwa_cloud_off")
                     .addClass("o_pms_pwa_cloud_on");
             }
