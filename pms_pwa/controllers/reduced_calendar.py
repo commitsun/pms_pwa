@@ -8,6 +8,7 @@ import pprint
 from calendar import monthrange
 from datetime import timedelta
 import datetime
+from itertools import groupby
 
 from odoo import _, fields, http
 from odoo.http import request
@@ -158,6 +159,225 @@ class PmsCalendar(http.Controller):
             "pms_pwa.roomdoo_reduced_calendar_page",
             values,
         )
+
+    @http.route(
+        "/calendar/general_headers",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def calendar_general_headers(self, **post):
+        # Funtion to group by date in query sql result
+        def date_func(k):
+            return k[0]
+
+        # Funtion to group by room type in query sql result
+        def room_type_func(k):
+            return k[1]
+        dates = [item for item in eval(post.get("range_date"))]
+        pms_property_id = int(post.get("data_id"))
+        pms_property = request.env["pms.property"].browse(pms_property_id)
+        rooms = [int(item) for item in post.get("rooms")] if post.get("rooms") else pms_property.room_ids
+        room_types = rooms.room_type_id
+
+        # Prepare data
+        self.env.cr.execute(
+            """
+            SELECT DATE(night.date), pms_room.room_type_id, reservation.reservation_type, count(night.id)
+            FROM    pms_reservation_line  night
+                    LEFT JOIN pms_reservation reservation
+                        ON reservation.id = night.reservation_id
+                    LEFT JOIN pms_room
+                        ON pms_room.id = night.room_id
+                    LEFT JOIN pms_availability pms_avail
+                        on pms_avail.id = night.avail_id
+            WHERE   (night.pms_property_id = %s)
+                AND (night.date in %s)
+                AND (pms_room.room_type_id in %s)
+                AND (night.occupies_availability = TRUE)
+                AND (night.room_id is not NULL)
+            GROUP BY DATE(night.date), pms_room.room_type_id, reservation.reservation_type
+            """,
+            (
+                pms_property_id,
+                tuple(dates),
+                tuple(room_types.ids),
+            )
+        )
+        avail_result = self.env.cr.fetchall()
+        avail_result = sorted(avail_result, key=date_func)
+        dict_result = {}
+        for avail_date, data in groupby(avail_result, date_func):
+            total_res_count = 0
+            total_out_count = 0
+            dict_result[avail_date] = {}
+            data = list(filter(lambda x: x[1] != None, data))
+            data = sorted(data, key=room_type_func)
+            for room_type_id, vals in groupby(data, room_type_func):
+                vals = list(vals)
+                res_count = sum([x[3] for x in vals if x[2] != 'out'])
+                out_count = sum([x[3] for x in vals if x[2] == 'out'])
+                dict_result[avail_date][room_type_id] = {
+                    'reservations_count': res_count,
+                    'outs_count': out_count,
+                }
+                room_type = request.env["pms.room.type"].browse(room_type_id)
+                if room_type.overnight_room:
+                    total_res_count += res_count
+                    total_out_count += out_count
+            # complete estructure to avoid room types
+            for room_type in room_types:
+                if room_type.id not in dict_result[avail_date]:
+                    dict_result[avail_date][room_type.id] = {
+                        'reservations_count': 0,
+                        'outs_count': 0,
+                    }
+            dict_result[avail_date]["property_header"] = {
+                'reservations_count': total_res_count,
+                'outs_count': total_out_count,
+                'percent_occupied': int((total_res_count + total_out_count) * 100 / pms_property._get_total_rooms()),
+                'num_avail': pms_property._get_total_rooms() - (total_res_count + total_out_count),
+            }
+        # complete estructure to avoid dates
+        for date in dates:
+            if date not in dict_result:
+                dict_result[date]["property_header"] = {
+                    'reservations_count': 0,
+                    'outs_count': 0,
+                    'percent_occupied': 0,
+                    'num_avail': pms_property._get_total_rooms(),
+                }
+                for room_type in room_types:
+                    dict_result[date][room_type.id] = {
+                        'reservations_count': 0,
+                        'outs_count': 0,
+                    }
+        return dict_result
+
+    @http.route(
+        "/calendar/price_headers",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def calendar_price_headers(self, **post):
+        dates = [item for item in eval(post.get("range_date"))]
+        pms_property_id = int(post.get("data_id"))
+        pms_property = request.env["pms.property"].browse(pms_property_id)
+        pricelist_id = int(post.get("pricelist_id"))
+        pricelist = request.env["product.pricelist"].browse(pricelist_id)
+        rooms = [int(item) for item in post.get("rooms")] if post.get("rooms") else pms_property.room_ids
+        room_types = rooms.room_type_id
+
+        # Prepare data
+        dict_result = {}
+        for date in dates:
+            products = [(
+                r.with_context(
+                    quantity=1,
+                    consumption_date=date,
+                    property=pms_property_id,
+                ),
+                1,
+                False
+            ) for r in room_types.product_id]
+            date_prices = pricelist._compute_price_rule(products, datetime.datetime.today())
+            dict_result[date] = {
+                self.env["product.product"].browse(k).room_type_id.id: v[0] for k, v in date_prices.items()
+            }
+
+        return dict_result
+
+    @http.route(
+        "/calendar/rules_headers",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def calendar_rules_headers(self, **post):
+        dates = [item for item in eval(post.get("range_date"))]
+        pms_property_id = int(post.get("data_id"))
+        pms_property = request.env["pms.property"].browse(pms_property_id)
+        pricelist_id = int(post.get("pricelist_id"))
+        pricelist = request.env["product.pricelist"].browse(pricelist_id)
+        rooms = [int(item) for item in post.get("rooms")] if post.get("rooms") else pms_property.room_ids
+        room_types = rooms.room_type_id
+        availability_plan = pricelist.availability_plan_id
+
+        # Prepare data
+        dict_result = {}
+        if availability_plan:
+            self.env.cr.execute(
+                """
+                SELECT DATE(date), room_type_id, min_stay, closed, quota, max_avail, plan_avail,
+                    min_stay_arrival, max_stay, max_stay_arrival, closed_departure, closed_arrival
+                FROM    pms_availability_plan_rule  rule
+                WHERE   (rule.pms_property_id = %s)
+                    AND (rule.date in %s)
+                    AND (rule.room_type_id in %s)
+                    AND (rule.availability_plan_id = %s)
+                """,
+                (
+                    pms_property_id,
+                    tuple(dates),
+                    tuple(room_types.ids),
+                    availability_plan.id,
+                )
+            )
+            rules_result = self.env.cr.fetchall()
+
+            def date_func(k):
+                return k[0]
+
+            def room_type_func(k):
+                return k[1]
+
+            rules_result = sorted(rules_result, key=date_func)
+            for rule_date, data in groupby(rules_result, date_func):
+                dict_result[rule_date] = {}
+                data = list(filter(lambda x: x[1] != None, data))
+                data = sorted(data, key=room_type_func)
+                for room_type_id, vals in groupby(data, room_type_func):
+                    vals = list(vals)[0]
+                    dict_result[rule_date][room_type_id] = {
+                        'min_stay': vals[2],
+                        'closed': vals[3],
+                        'quota': vals[4],
+                        'max_avail': vals[5],
+                        'plan_avail': vals[6],
+                        'other': 1 if any(vals[7:]) else 0,
+                    }
+                # complete estructure to avoid room types
+                for room_type in room_types:
+                    if room_type.id not in dict_result[rule_date]:
+                        dict_result[rule_date][room_type_id] = {
+                            'min_stay': 0,
+                            'closed': 0,
+                            'quota': -1,
+                            'max_avail': -1,
+                            'plan_avail': -1,  # TODO:calcular dispo real en el front?
+                            'other': 0,
+                        }
+        # complete estructure to avoid dates
+        for date in dates:
+            if date not in dict_result:
+                dict_result[date] = {}
+                for room_type in room_types:
+                    dict_result[date][room_type.id] = {
+                        'min_stay': 0,
+                        'closed': 0,
+                        'quota': -1,
+                        'max_avail': -1,
+                        'plan_avail': -1,  # TODO:calcular dispo real en el fron?
+                        'other': 0,
+                    }
+        return dict_result
 
     @http.route(
         "/calendar/reduced-change",
