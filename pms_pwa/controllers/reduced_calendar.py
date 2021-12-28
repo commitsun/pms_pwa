@@ -31,7 +31,7 @@ class PmsCalendar(http.Controller):
         website=True,
     )
     def reduced_calendar(self, **post):
-        print("post ---> ", post)
+        print("http ---> ", post)
         pms_property_id = self._get_property(post)
         pms_property = request.env["pms.property"].browse(pms_property_id)
 
@@ -41,24 +41,52 @@ class PmsCalendar(http.Controller):
 
         room_types = self._get_room_types(pms_property_id)
 
-        allowed_pricelists, select_pricelist = self._get_pricelists(calendar_config, post)
+        allowed_pricelists, select_pricelist_id = self._get_pricelists(calendar_config, post)
 
-        allowed_availability_plans, select_availability_plan = self._get_avail_plans(calendar_config, post)
+        allowed_availability_plans, select_availability_plan_id = self._get_avail_plans(calendar_config, post)
 
+        general_headers = self._get_general_headers(
+            dates=date_list,
+            pms_property_id=pms_property_id,
+            room_type_ids=room_types.ids,
+        )
+        price_headers = self._get_price_headers(
+            dates=date_list,
+            pms_property_id=pms_property_id,
+            pricelist_id=select_pricelist_id,
+            room_type_ids=room_types.ids,
+        )
+        rule_headers = self._get_rules_headers(
+            dates=date_list,
+            pms_property_id=pms_property_id,
+            pricelist_id=select_pricelist_id,
+            room_type_ids=room_types.ids,
+        )
+        rooms_list = []
+        for room_type in room_types:
+            rooms_list.append({
+                'id': room_type.id,
+                'name': room_type.name,
+                'total_rooms': room_type._get_total_rooms(pms_property_id),
+                'default_code': room_type.default_code,
+            })
         values = {
             "today": datetime.datetime.now(),
             "date_start": date_start,
-            "page_name": "Calendar",
+            "page_name": "Calendario",
             "allowed_pricelists": allowed_pricelists,
-            "select_pricelist_id": select_pricelist.id,
-            "pms_property": pms_property,
+            "select_pricelist_id": select_pricelist_id,
+            "pms_property_id": pms_property_id,
             "date_list": date_list,
             "selected_date": date_start,
-            # config calendar
             "allowed_availability_plans": allowed_availability_plans,
-            "select_availability_plan_id": select_availability_plan.id,
-            "rooms_list": room_types,
+            "select_availability_plan_id": select_availability_plan_id,
+            "rooms_list": rooms_list,
+            "general_headers": general_headers,
+            "price_headers": price_headers,
+            "rule_headers": rule_headers,
         }
+        print(values)
         return http.request.render(
             "pms_pwa.roomdoo_reduced_calendar_page",
             values,
@@ -84,6 +112,13 @@ class PmsCalendar(http.Controller):
         website=True,
     )
     def calendar_general_headers(self, **post):
+        return self._get_general_headers(
+            dates=[item for item in eval(post.get("range_date"))],
+            pms_property_id=int(post.get("pms_property_id")),
+            room_type_ids=[int(item) for item in post.get("room_type_ids")] if post.get("room_type_ids") else False,
+        )
+
+    def _get_general_headers(self, dates, pms_property_id, room_type_ids=False):
         # Funtion to group by date in query sql result
         def date_func(k):
             return k[0]
@@ -91,11 +126,11 @@ class PmsCalendar(http.Controller):
         # Funtion to group by room type in query sql result
         def room_type_func(k):
             return k[1]
-        dates = [item for item in eval(post.get("range_date"))]
-        pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
-        rooms = [int(item) for item in post.get("rooms")] if post.get("rooms") else pms_property.room_ids
-        room_types = rooms.room_type_id
+        if not room_type_ids:
+            room_types = pms_property.room_ids.room_type_id
+        else:
+            room_types = request.env["pms.room.type"].browse(room_type_ids)
 
         # Prepare data
         request.env.cr.execute(
@@ -158,6 +193,7 @@ class PmsCalendar(http.Controller):
         # complete estructure to avoid dates
         for date in dates:
             if date not in dict_result:
+                dict_result[date] = {}
                 dict_result[date]["property_header"] = {
                     'reservations_count': 0,
                     'outs_count': 0,
@@ -181,13 +217,20 @@ class PmsCalendar(http.Controller):
         website=True,
     )
     def calendar_price_headers(self, **post):
-        dates = [item for item in eval(post.get("range_date"))]
-        pms_property_id = int(post.get("pms_property_id"))
+        return self._get_price_headers(
+            dates=[item for item in eval(post.get("range_date"))],
+            pms_property_id=int(post.get("pms_property_id")),
+            pricelist_id=int(post.get("pricelist_id")),
+            room_type_ids=[int(item) for item in post.get("room_type_ids")] if post.get("room_type_ids") else False,
+        )
+
+    def _get_price_headers(self, dates, pms_property_id, pricelist_id, room_type_ids=False):
         pms_property = request.env["pms.property"].browse(pms_property_id)
-        pricelist_id = int(post.get("pricelist_id"))
         pricelist = request.env["product.pricelist"].browse(pricelist_id)
-        rooms = [int(item) for item in post.get("rooms")] if post.get("rooms") else pms_property.room_ids
-        room_types = rooms.room_type_id
+        if not room_type_ids:
+            room_types = pms_property.room_ids.room_type_id
+        else:
+            room_types = request.env["pms.room.type"].browse(room_type_ids)
 
         # Prepare data
         dict_result = {}
@@ -217,13 +260,20 @@ class PmsCalendar(http.Controller):
         website=True,
     )
     def calendar_rules_headers(self, **post):
-        dates = [item for item in eval(post.get("range_date"))]
-        pms_property_id = int(post.get("pms_property_id"))
+        return self._get_rules_headers(
+            dates=[item for item in eval(post.get("range_date"))],
+            pms_property_id=int(post.get("pms_property_id")),
+            pricelist_id=int(post.get("pricelist_id")),
+            room_type_ids=[int(item) for item in post.get("room_type_ids")] if post.get("room_type_ids") else False,
+        )
+
+    def _get_rules_headers(self, dates, pms_property_id, pricelist_id, room_type_ids=False):
         pms_property = request.env["pms.property"].browse(pms_property_id)
-        pricelist_id = int(post.get("pricelist_id"))
         pricelist = request.env["product.pricelist"].browse(pricelist_id)
-        rooms = [int(item) for item in post.get("rooms")] if post.get("rooms") else pms_property.room_ids
-        room_types = rooms.room_type_id
+        if not room_type_ids:
+            room_types = pms_property.room_ids.room_type_id
+        else:
+            room_types = request.env["pms.room.type"].browse(room_type_ids)
         availability_plan = pricelist.availability_plan_id
 
         # Prepare data
@@ -589,7 +639,7 @@ class PmsCalendar(http.Controller):
 
     def _get_pricelists(self, calendar_config, post):
         pms_property_id = calendar_config.pms_property_id.id
-        allowed_pricelists = request.env["product.pricelist"].search([
+        pricelists = request.env["product.pricelist"].search([
             "|",
             ("pms_property_ids", "=", False),
             ("pms_property_ids", "in", pms_property_id),
@@ -597,15 +647,24 @@ class PmsCalendar(http.Controller):
         if calendar_config.select_pricelist:
             select_pricelist = calendar_config.select_pricelist
         else:
-            select_pricelist = allowed_pricelists[0]
+            select_pricelist = pricelists[0]
         if post and post.get("pricelist") and int(post.get("pricelist")) != 0:
             select_pricelist = request.env["product.pricelist"].browse(int(post["pricelist"]))
         calendar_config.select_pricelist = select_pricelist
-        return allowed_pricelists, select_pricelist
+        allowed_pricelists = []
+        for pricelist in pricelists:
+            allowed_pricelists.append(
+                {
+                    "id": pricelist.id,
+                    "name": pricelist.name,
+                }
+            )
+
+        return allowed_pricelists, select_pricelist.id
 
     def _get_avail_plans(self, calendar_config, post):
         pms_property_id = calendar_config.pms_property_id.id
-        allowed_availability_plans = request.env["pms.availability.plan"].search(
+        availability_plans = request.env["pms.availability.plan"].search(
             [
                 "|",
                 ("pms_property_ids", "=", False),
@@ -615,8 +674,17 @@ class PmsCalendar(http.Controller):
         if calendar_config.select_availability_plan:
             select_availability_plan = calendar_config.select_availability_plan
         else:
-            select_availability_plan = allowed_availability_plans[0]
+            select_availability_plan = availability_plans[0]
         if post and post.get("availability_plan") and int(post.get("availability_plan")) != 0:
             select_availability_plan = request.env["pms.availability.plan"].browse(int(post["availability_plan"]))
         calendar_config.select_availability_plan = select_availability_plan
-        return allowed_availability_plans, select_availability_plan
+        allowed_availability_plans = []
+        for plan in availability_plans:
+            allowed_availability_plans.append(
+                {
+                    "id": plan.id,
+                    "name": plan.name,
+                }
+            )
+        return allowed_availability_plans, select_availability_plan.id
+
