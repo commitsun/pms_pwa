@@ -317,7 +317,11 @@ class PmsCalendar(http.Controller):
                         'quota': vals[4],
                         'max_avail': vals[5],
                         'plan_avail': vals[6],
-                        'other': 1 if any(vals[7:]) else 0,
+                        'min_stay_arrival': vals[7],
+                        'max_stay': vals[9],
+                        'max_stay_arrival': vals[10],
+                        'closed_departure': vals[11],
+                        'closed_arrival': vals[12],
                     }
                 # complete estructure to avoid room types
                 for room_type in room_types:
@@ -328,7 +332,11 @@ class PmsCalendar(http.Controller):
                             'quota': -1,
                             'max_avail': -1,
                             'plan_avail': -1,  # TODO:calcular dispo real en el front?
-                            'other': 0,
+                            'min_stay_arrival': 0,
+                            'max_stay': 0,
+                            'max_stay_arrival': 0,
+                            'closed_departure': 0,
+                            'closed_arrival': 0,
                         }
         # complete estructure to avoid dates
         for date in dates:
@@ -341,7 +349,11 @@ class PmsCalendar(http.Controller):
                         'quota': -1,
                         'max_avail': -1,
                         'plan_avail': -1,  # TODO:calcular dispo real en el fron?
-                        'other': 0,
+                        'min_stay_arrival': 0,
+                        'max_stay': 0,
+                        'max_stay_arrival': 0,
+                        'closed_departure': 0,
+                        'closed_arrival': 0,
                     }
         return dict_result
 

@@ -381,10 +381,10 @@
                                                 </td>
                                             </t>
                                         </tr>
-                                        <!-- <tr>
+                                        <tr>
                                             <td
                                               t-att-colspan="len(date_list)+1"
-                                              t-attf-aria-labelledby="{{ obj.id }}"
+                                              t-attf-aria-labelledby="{{ room['id'] }}"
                                               style="width:100% !important; padding-top: 0;"
                                             >
                                                 <table class="table subtable" id="calendar_conf_table_line" style="margin-bottom: 0;  padding-top: 0;">
@@ -436,13 +436,12 @@
                                                         </td>
 
                                                         <t t-foreach="len(date_list)" t-as="room_day">
-                                                            <t t-set="list_price" t-value="obj.with_context(date=date_list[room_day], pricelist_id=select_pricelist_id, availability_plan_id=select_availability_plan_id, pms_property_id=pms_property_id)._get_rules_date()"></t>
                                                             <td t-att-class="'o_config_pms_pwa_table_cell '
-                                                                + ('o_pms_pwa_dispo_0 ' if list_price['closed'] else ' ')"
+                                                                + ('o_pms_pwa_dispo_0 ' if rule_headers[date_list[room_day]][room['id']]['closed'] else ' ')"
                                                                 t-attf-data="{{ room_day }}"  style="padding-top: 0;">
                                                                 <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
                                                                     <input
-                                                                        t-attf-data-room="{{ obj.id }}"
+                                                                        t-attf-data-room="{{ room['id'] }}"
                                                                         t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                         t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                         t-attf-data-date="{{ date_list[room_day] }}"
@@ -450,13 +449,13 @@
                                                                         t-attf-tabindex="{{ select_pricelist_id }}2{{room_day}}"
                                                                         style="width:50px;"
                                                                         type="text"
-                                                                        t-attf-value="{{ list_price['quota'] }}"
+                                                                        t-attf-value="{{ rule_headers[date_list[room_day]][room['id']]['quota'] }}"
                                                                         name="quota"
                                                                     />
                                                                 </p>
                                                                 <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
                                                                     <input
-                                                                        t-attf-data-room="{{ obj.id }}"
+                                                                        t-attf-data-room="{{ room['id'] }}"
                                                                         t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                         t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                         t-attf-data-date="{{ date_list[room_day] }}"
@@ -464,15 +463,15 @@
                                                                         t-attf-tabindex="{{ select_pricelist_id }}3{{room_day}}"
                                                                         style="width:50px;"
                                                                         type="text"
-                                                                        t-attf-value="{{ list_price['min_stay'] }}"
+                                                                        t-attf-value="{{ rule_headers[date_list[room_day]][room['id']]['min_stay'] }}"
                                                                         name="min_stay"
                                                                     />
                                                                 </p>
                                                                 <p class="calendar_config_input" style="text-align:center;">
                                                                     <label class="switch">
                                                                         <input
-                                                                            t-attf-data-room="{{ obj.id }}"
-                                                                            t-attf-value="{{list_price['closed']}}"
+                                                                            t-attf-data-room="{{ room['id'] }}"
+                                                                            t-attf-value="{{rule_headers[date_list[room_day]][room['id']]['closed']}}"
                                                                             t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                             t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                             t-attf-data-date="{{ date_list[room_day] }}"
@@ -488,7 +487,7 @@
                                                                 <div class="collapse" t-attf-id="collapse_2_accordion_{{select_pricelist_id}}" t-attf-aria-labelledby="{{ select_pricelist_id }}">
                                                                     <p class="calendar_config_input" style="text-align:center; margin-right: 0.25rem;">
                                                                         <input
-                                                                            t-attf-data-room="{{ obj.id }}"
+                                                                            t-attf-data-room="{{ room['id'] }}"
                                                                             t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                             t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                             t-attf-data-date="{{ date_list[room_day] }}"
@@ -496,13 +495,13 @@
                                                                             t-attf-tabindex="{{ select_pricelist_id }}4{{room_day}}"
                                                                             style="width:50px;"
                                                                             type="text"
-                                                                            t-attf-value="{{ list_price['max_avail'] }}"
+                                                                            t-attf-value="{{ rule_headers[date_list[room_day]][room['id']]['max_avail'] }}"
                                                                             name="max_avail"
                                                                         />
                                                                     </p>
                                                                     <p class="calendar_config_input" style="text-align:center; margin-right: 0.25rem;">
                                                                         <input
-                                                                            t-attf-data-room="{{ obj.id }}"
+                                                                            t-attf-data-room="{{ room['id'] }}"
                                                                             t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                             t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                             t-attf-data-date="{{ date_list[room_day] }}"
@@ -510,13 +509,13 @@
                                                                             t-attf-tabindex="{{ select_pricelist_id }}4{{room_day}}"
                                                                             style="width:50px;"
                                                                             type="text"
-                                                                            t-attf-value="{{ list_price['max_stay'] }}"
+                                                                            t-attf-value="{{ rule_headers[date_list[room_day]][room['id']]['max_stay'] }}"
                                                                             name="max_stay"
                                                                         />
                                                                     </p>
                                                                     <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
                                                                         <input
-                                                                            t-attf-data-room="{{ obj.id }}"
+                                                                            t-attf-data-room="{{ room['id'] }}"
                                                                             t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                             t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                             t-attf-data-date="{{ date_list[room_day] }}"
@@ -524,13 +523,13 @@
                                                                             t-attf-tabindex="{{ select_pricelist_id }}5{{room_day}}"
                                                                             style="width:50px;"
                                                                             type="text"
-                                                                            t-attf-value="{{ list_price['min_stay_arrival'] }}"
+                                                                            t-attf-value="{{ rule_headers[date_list[room_day]][room['id']]['min_stay_arrival'] }}"
                                                                             name="min_stay_arrival"
                                                                         />
                                                                     </p>
                                                                     <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
                                                                         <input
-                                                                            t-attf-data-room="{{ obj.id }}"
+                                                                            t-attf-data-room="{{ room['id'] }}"
                                                                             t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                             t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                             t-attf-data-date="{{ date_list[room_day] }}"
@@ -538,15 +537,15 @@
                                                                             t-attf-tabindex="{{ select_pricelist_id }}6{{room_day}}"
                                                                             style="width:50px;"
                                                                             type="text"
-                                                                            t-attf-value="{{ list_price['max_stay_arrival'] }}"
+                                                                            t-attf-value="{{ rule_headers[date_list[room_day]][room['id']]['max_stay_arrival'] }}"
                                                                             name="max_stay_arrival"
                                                                         />
                                                                     </p>
                                                                     <p class="calendar_config_input" style="text-align:center">
                                                                         <label class="switch">
                                                                             <input
-                                                                                t-attf-data-room="{{ obj.id }}"
-                                                                                t-attf-value="{{list_price['closed_arrival']}}"
+                                                                                t-attf-data-room="{{ room['id'] }}"
+                                                                                t-attf-value="{{rule_headers[date_list[room_day]][room['id']]['closed_arrival']}}"
                                                                                 t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                                 t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                                 t-attf-data-date="{{ date_list[room_day] }}"
@@ -564,7 +563,7 @@
                                                     </tr>
                                                 </table>
                                             </td>
-                                        </tr> -->
+                                        </tr>
                                     </t>
                                 </tbody>
                             </table>
