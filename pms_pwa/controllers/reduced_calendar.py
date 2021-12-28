@@ -32,8 +32,27 @@ class PmsCalendar(http.Controller):
     )
     def reduced_calendar(self, **post):
         print("http ---> ", post)
+        values = self._get_calendar_values(post)
+        return http.request.render(
+            "pms_pwa.roomdoo_reduced_calendar_page",
+            values,
+        )
+
+    @http.route(
+        "/property/calendar",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def property_calendar(self, **post):
+        print("json ---> ", post)
+        return self._get_calendar_values(post)
+
+
+    def _get_calendar_values(self, post):
         pms_property_id = self._get_property(post)
-        pms_property = request.env["pms.property"].browse(pms_property_id)
 
         calendar_config = self._get_calendar_config(pms_property_id)
 
@@ -70,7 +89,7 @@ class PmsCalendar(http.Controller):
                 'total_rooms': room_type._get_total_rooms(pms_property_id),
                 'default_code': room_type.default_code,
             })
-        values = {
+        return {
             "today": datetime.datetime.now(),
             "date_start": date_start,
             "page_name": "Calendario",
@@ -86,22 +105,6 @@ class PmsCalendar(http.Controller):
             "price_headers": price_headers,
             "rule_headers": rule_headers,
         }
-        print(values)
-        return http.request.render(
-            "pms_pwa.roomdoo_reduced_calendar_page",
-            values,
-        )
-
-    @http.route(
-        "/property/calendar",
-        type="json",
-        auth="public",
-        csrf=False,
-        methods=["POST"],
-        website=True,
-    )
-    def property_calendar(self, **post):
-        return
 
     @http.route(
         "/calendar/general_headers",
