@@ -6,7 +6,6 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
-    var calendar_dpr = $('input[name="calendar_dpr"]').val();
     //event mouse
     var mouseDown = false;
     var mouseUp = false;
@@ -134,27 +133,26 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             }
         },
 
-        launchLines: function (event, data_id = false) {
+        launchLines: function (event, pms_property_id = false) {
             var self = this;
-            if (data_id) {
-                data_id = data_id;
+            if (pms_property_id) {
+                pms_property_id = pms_property_id;
             } else {
-                data_id = event.getAttribute("data-id");
+                pms_property_id = event.getAttribute("data-id");
             }
             var date_list = $('input[name="date_list"]').val();
             var selected_display = $('input[name="selected_display"]').val();
             ajax.jsonRpc("/calendar/line", "call", {
-                data_id: data_id,
+                pms_property_id: pms_property_id,
                 range_date: date_list,
-                selected_display: selected_display,
             }).then(function (data) {
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
-                    data_id: data_id,
+                    pms_property_id: pms_property_id,
                     obj_list: data.reservations,
                     csrf_token: csrf_token,
                 });
-                $(String("#collapse_accordion_" + data_id)).html(html);
-                // $(String("#collapse_accordion_" + data_id)).addClass("show");
+                $(String("#collapse_accordion_" + pms_property_id)).html(html);
+                // $(String("#collapse_accordion_" + pms_property_id)).addClass("show");
                 //
                 $('table.o_pms_pwa_reduced_reservation_list_table').tableHover({colClass: 'hover'});
                 // ESTO PARA CREAR EL DRAG

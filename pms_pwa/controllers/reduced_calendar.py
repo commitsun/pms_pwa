@@ -14,6 +14,8 @@ from odoo import _, fields, http
 from odoo.http import request
 from odoo.tools.misc import get_lang
 
+RESET_CALENDAR_HOURS = 1
+
 pp = pprint.PrettyPrinter(indent=4)
 
 _logger = logging.getLogger(__name__)
@@ -29,136 +31,49 @@ class PmsCalendar(http.Controller):
         website=True,
     )
     def reduced_calendar(self, **post):
-        date = datetime.date.today()
-        date_start = date + timedelta(days=-1)
-        if post.get("selected_date"):
-            date = datetime.datetime.strptime(
-                post.get("selected_date"), get_lang(request.env).date_format
-            ).date()
-            date_start = date
-
-        if post.get("next_day"):
-            date = datetime.datetime.strptime(
-                post.get("next_day"), get_lang(request.env).date_format
-            ).date()
-            date_start = date + timedelta(days=+1)
-        if post.get("previous_day"):
-            date = datetime.datetime.strptime(
-                post.get("previous_day"), get_lang(request.env).date_format
-            ).date()
-            date_start = date + timedelta(days=-1)
-        if post.get("next_month"):
-            date = datetime.datetime.strptime(
-                post.get("next_month"), get_lang(request.env).date_format
-            ).date()
-            date_start = date + timedelta(days=30)
-        if post.get("previous_month"):
-            date = datetime.datetime.strptime(
-                post.get("previous_month"), get_lang(request.env).date_format
-            ).date()
-            date_start = date + timedelta(days=-30)
-        pms_property_id = request.env.user.get_active_property_ids()[0]
-        Room = request.env["pms.room"]
-        rooms = Room.search([("pms_property_id", "=", pms_property_id)])
-        room_types = request.env["pms.room.type"].browse(
-            rooms.mapped("room_type_id.id")
-        )
-
-        # Add default dpr and dpr_select_values
-
-        dpr = 15
-        if post.get("dpr"):
-            dpr = int(post.get("dpr"))
-        date_list = [date_start + timedelta(days=x) for x in range(dpr)]
-        # get the days of the month
-        month_days = monthrange(date.year, date.month)[1]
-        dpr_select_values = {7, 15, month_days}
-        Pricelist = request.env["product.pricelist"]
-
-        pricelist = Pricelist.search(
-            [
-                "|",
-                ("pms_property_ids", "=", False),
-                ("pms_property_ids", "in", pms_property_id),
-                ('pricelist_type', '=', 'daily')
-            ]
-        )
-        display_select_options = [
-            {"name": "Hoteles", "value": "pms_property"},
-            {"name": "Tipo de Habitación", "value": "room_type"},
-            {"name": "Zonas Hotel", "value": "ubication"},
-        ]
-        # obj_list = room_types
-        selected_display = "pms_property"
-        # obj_list = request.env.user.pms_pwa_property_ids
-
-        # if post and "display_option" in post:
-        #     if post["display_option"] == "room_type":
-        #         obj_list = room_types
-        #         selected_display = "room_type"
-        #     elif post["display_option"] == "ubication":
-        #         obj_list = ubications
-        #         selected_display = "ubication"
-        #     elif post["display_option"] == "pms_property":
-        #         obj_list = request.env.user.pms_pwa_property_ids
-        #         selected_display = "pms_property"
-
+        print("post ---> ", post)
+        pms_property_id = self._get_property(post)
         pms_property = request.env["pms.property"].browse(pms_property_id)
-        tab_pms_property = pms_property.id
-        if post and post.get("selected_property"):
-            tab_pms_property = int(post["selected_property"])
-            pms_property = request.env["pms.property"].browse(int(post["selected_property"]))
-            pms_property_id = int(post["selected_property"])
-        # TODO: Add pricelist not daily in readonly mode (only price)
 
-        select_pricelist = pricelist[0]
-        default_pricelist = 0
-        if post and post.get("pricelist") and int(post.get("pricelist")) != 0:
-            default_pricelist = int(post["pricelist"])
-            select_pricelist = Pricelist.browse(int(post["pricelist"]))
+        calendar_config = self._get_calendar_config(pms_property_id)
 
-        PlanAvail = request.env["pms.availability.plan"]
+        date_start, date_list = self._get_dates(calendar_config, post)
 
-        availability_plan = PlanAvail.search(
-            [
-                "|",
-                ("pms_property_ids", "=", False),
-                ("pms_property_ids", "in", pms_property_id),
-            ]
-        )
+        room_types = self._get_room_types(pms_property_id)
 
-        select_availability_plan = availability_plan[0]
-        default_availability_plan = 0
-        if post and post.get("availability_plan") and int(post.get("availability_plan")) != 0:
-            default_availability_plan = int(post["availability_plan"])
-            select_availability_plan = PlanAvail.browse(int(post["availability_plan"]))
+        allowed_pricelists, select_pricelist = self._get_pricelists(calendar_config, post)
+
+        allowed_availability_plans, select_availability_plan = self._get_avail_plans(calendar_config, post)
+
         values = {
             "today": datetime.datetime.now(),
             "date_start": date_start,
             "page_name": "Calendar",
-            "pricelist": pricelist,
+            "allowed_pricelists": allowed_pricelists,
+            "select_pricelist_id": select_pricelist.id,
             "pms_property": pms_property,
-            "hotel_list": pms_property,
             "date_list": date_list,
-            "dpr": dpr,
-            "display_select_options": display_select_options,
-            "selected_display": selected_display,
-            "dpr_select_values": dpr_select_values,
             "selected_date": date_start,
             # config calendar
-            "availability_plan": availability_plan,
-            "default_availability_plan": default_availability_plan,
-            "select_availability_plan": select_availability_plan,
-            "select_pricelist": select_pricelist,
-            "default_pricelist": default_pricelist,
+            "allowed_availability_plans": allowed_availability_plans,
+            "select_availability_plan_id": select_availability_plan.id,
             "rooms_list": room_types,
-            "tab_pms_property": tab_pms_property,
-
         }
         return http.request.render(
             "pms_pwa.roomdoo_reduced_calendar_page",
             values,
         )
+
+    @http.route(
+        "/property/calendar",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def property_calendar(self, **post):
+        return
 
     @http.route(
         "/calendar/general_headers",
@@ -177,13 +92,13 @@ class PmsCalendar(http.Controller):
         def room_type_func(k):
             return k[1]
         dates = [item for item in eval(post.get("range_date"))]
-        pms_property_id = int(post.get("data_id"))
+        pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
         rooms = [int(item) for item in post.get("rooms")] if post.get("rooms") else pms_property.room_ids
         room_types = rooms.room_type_id
 
         # Prepare data
-        self.env.cr.execute(
+        request.env.cr.execute(
             """
             SELECT DATE(night.date), pms_room.room_type_id, reservation.reservation_type, count(night.id)
             FROM    pms_reservation_line  night
@@ -191,8 +106,6 @@ class PmsCalendar(http.Controller):
                         ON reservation.id = night.reservation_id
                     LEFT JOIN pms_room
                         ON pms_room.id = night.room_id
-                    LEFT JOIN pms_availability pms_avail
-                        on pms_avail.id = night.avail_id
             WHERE   (night.pms_property_id = %s)
                 AND (night.date in %s)
                 AND (pms_room.room_type_id in %s)
@@ -206,7 +119,7 @@ class PmsCalendar(http.Controller):
                 tuple(room_types.ids),
             )
         )
-        avail_result = self.env.cr.fetchall()
+        avail_result = request.env.cr.fetchall()
         avail_result = sorted(avail_result, key=date_func)
         dict_result = {}
         for avail_date, data in groupby(avail_result, date_func):
@@ -216,14 +129,15 @@ class PmsCalendar(http.Controller):
             data = list(filter(lambda x: x[1] != None, data))
             data = sorted(data, key=room_type_func)
             for room_type_id, vals in groupby(data, room_type_func):
+                room_type = request.env["pms.room.type"].browse(room_type_id)
                 vals = list(vals)
                 res_count = sum([x[3] for x in vals if x[2] != 'out'])
                 out_count = sum([x[3] for x in vals if x[2] == 'out'])
                 dict_result[avail_date][room_type_id] = {
                     'reservations_count': res_count,
                     'outs_count': out_count,
+                    'num_avail': room_type._get_total_rooms(pms_property.id) - (res_count + out_count),
                 }
-                room_type = request.env["pms.room.type"].browse(room_type_id)
                 if room_type.overnight_room:
                     total_res_count += res_count
                     total_out_count += out_count
@@ -233,6 +147,7 @@ class PmsCalendar(http.Controller):
                     dict_result[avail_date][room_type.id] = {
                         'reservations_count': 0,
                         'outs_count': 0,
+                        'num_avail': room_type._get_total_rooms(pms_property.id),
                     }
             dict_result[avail_date]["property_header"] = {
                 'reservations_count': total_res_count,
@@ -253,6 +168,7 @@ class PmsCalendar(http.Controller):
                     dict_result[date][room_type.id] = {
                         'reservations_count': 0,
                         'outs_count': 0,
+                        'num_avail': room_type._get_total_rooms(pms_property.id),
                     }
         return dict_result
 
@@ -266,7 +182,7 @@ class PmsCalendar(http.Controller):
     )
     def calendar_price_headers(self, **post):
         dates = [item for item in eval(post.get("range_date"))]
-        pms_property_id = int(post.get("data_id"))
+        pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
         pricelist_id = int(post.get("pricelist_id"))
         pricelist = request.env["product.pricelist"].browse(pricelist_id)
@@ -287,7 +203,7 @@ class PmsCalendar(http.Controller):
             ) for r in room_types.product_id]
             date_prices = pricelist._compute_price_rule(products, datetime.datetime.today())
             dict_result[date] = {
-                self.env["product.product"].browse(k).room_type_id.id: v[0] for k, v in date_prices.items()
+                request.env["product.product"].browse(k).room_type_id.id: v[0] for k, v in date_prices.items()
             }
 
         return dict_result
@@ -302,7 +218,7 @@ class PmsCalendar(http.Controller):
     )
     def calendar_rules_headers(self, **post):
         dates = [item for item in eval(post.get("range_date"))]
-        pms_property_id = int(post.get("data_id"))
+        pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
         pricelist_id = int(post.get("pricelist_id"))
         pricelist = request.env["product.pricelist"].browse(pricelist_id)
@@ -313,7 +229,7 @@ class PmsCalendar(http.Controller):
         # Prepare data
         dict_result = {}
         if availability_plan:
-            self.env.cr.execute(
+            request.env.cr.execute(
                 """
                 SELECT DATE(date), room_type_id, min_stay, closed, quota, max_avail, plan_avail,
                     min_stay_arrival, max_stay, max_stay_arrival, closed_departure, closed_arrival
@@ -330,7 +246,7 @@ class PmsCalendar(http.Controller):
                     availability_plan.id,
                 )
             )
-            rules_result = self.env.cr.fetchall()
+            rules_result = request.env.cr.fetchall()
 
             def date_func(k):
                 return k[0]
@@ -406,19 +322,24 @@ class PmsCalendar(http.Controller):
         if not post.get("submit"):
             if change_room and change_checkin:
                 _logger.info("Change ALL")
-                confirmation_mens = ("Modificar la reserva de %s a la habitación %s con checkin %s",
-                                    reservation.partner_name, new_room.display_name, new_checkin)
+                confirmation_mens = (
+                    "Modificar la reserva de "
+                    + reservation.partner_name
+                    + " a la habitación " + new_room.display_name
+                    + " con checkin " + new_checkin
+                )
                 # If new room isn't free in new dates no change
                 # Change Prices??
             elif change_room:
                 _logger.info("Change Only ROOM")
-                confirmation_mens = ("Modificar la reserva de %s a la habitación %s  con checkin %s",
-                                    reservation.partner_name, new_room.display_name, new_checkin)
+                confirmation_mens = (
+                    "Modificar la reserva de " + reservation.partner_name
+                    + " a la habitación " + new_room.display_name
+                )
                 # If new room isn't free, Swap reservations??
             elif change_checkin:
                 _logger.info("Change only Checkin")
-                confirmation_mens = ("Modificar la fecha de entrada de %s a %s",
-                                    reservation.partner_name, new_checkin)
+                confirmation_mens = ("Modificar la fecha de entrada de %s a %s",reservation.partner_name, new_checkin)
                 # Change Prices?
             print("--->", post)
             return {"result": "success", "message": confirmation_mens, "date": post["date"], "reservation": post["id"], "room": post["room"] }
@@ -428,3 +349,274 @@ class PmsCalendar(http.Controller):
             reservation.preferred_room_id = new_room
             return {"result": "success", "reservation": post['id'], "old_group_room": old_room.id, "new_group_room": new_room.id}
         # return True
+
+    @http.route(
+        "/calendar/line",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def calendar_list(self, date=False, search="", **post):
+        # TODO: Evitar el uso de eval
+        print("post ---> ", post)
+        dates = [item for item in eval(post.get("range_date"))]
+        from_date = min(dates)
+        to_date = max(dates)
+        pms_property_id = int(post.get("pms_property_id"))
+        Reservation = request.env["pms.reservation"]
+        ReservationLine = request.env["pms.reservation.line"]
+        domain = [
+            ("date", ">=", from_date),
+            ("date", "<=", to_date),
+            ("state", "!=", "cancel"),
+        ]
+        reservation_lines = ReservationLine.search(domain)
+        reservations = Reservation.browse(reservation_lines.mapped("reservation_id.id"))
+        values = {}
+        # REVIEW: revisar estructura
+        values["reservations"] = []
+        room_ids = (
+            request.env["pms.room"]
+            .search(
+                [
+                    ("pms_property_id", "=", pms_property_id),
+                ], order="sequence"
+            )
+            .ids
+        )
+        for room_id in room_ids:
+            free_dates = dates.copy()
+            room = request.env["pms.room"].browse(room_id)
+            rooms_reservation_values = []
+            for reservation in reservations.filtered(
+                lambda r: r.preferred_room_id.id == room_id
+                and r.pms_property_id.id == pms_property_id
+            ):
+                min_reservation_date = min(
+                    reservation.reservation_line_ids.filtered(
+                        lambda d: d.date in dates
+                    ).mapped("date")
+                )
+                max_reservation_date = max(
+                    reservation.reservation_line_ids.filtered(
+                        lambda d: d.date in dates
+                    ).mapped("date")
+                )
+                for d in reservation.reservation_line_ids.mapped("date"):
+                    if d in free_dates:
+                        free_dates.remove(d)
+                rooms_reservation_values.append(
+                    {
+                        "date": min_reservation_date,
+                        "reservation_info": {
+                            "id": reservation.id,
+                            "partner_name": reservation.partner_name,
+                            "img": "/web/image/pms.reservation/"
+                            + str(reservation.id)
+                            + "/partner_image_128",
+                            "price": round(reservation.folio_pending_amount, 2),
+                            "status": reservation.color_state,
+                            "icon_payment": reservation.icon_payment,
+                            "nigths": (
+                                max_reservation_date
+                                + timedelta(days=1)
+                                - min_reservation_date
+                            ).days,
+                            "days": (
+                                max_reservation_date
+                                + timedelta(days=1)
+                                - min_reservation_date
+                            ).days
+                            + 1,
+                            "checkin_in_range": False
+                            if min_reservation_date == reservation.checkin
+                            else True,
+                            "checkout_in_range": False
+                            if max_reservation_date + timedelta(days=1)
+                            != reservation.checkout
+                            else True,
+                        },
+                    }
+                )
+            splitted_reservations_lines = reservations.filtered(
+                lambda r: r.splitted
+            ).reservation_line_ids.filtered(
+                lambda l: l.room_id.id == room_id
+                and l.date in dates
+            )
+            used_line_ids = []
+            for split in splitted_reservations_lines.sorted("date"):
+                if split.id in used_line_ids:
+                    continue
+                main_split = False
+                reservation = split.reservation_id
+                nights = 0
+                if split.date == reservation.checkin:
+                    main_split = True
+                for date_iterator in [
+                    split.date + timedelta(days=x)
+                    for x in range(0, (reservation.checkout - split.date).days)
+                ]:
+                    line = reservation.reservation_line_ids.filtered(
+                        lambda l: l.date == date_iterator and l.room_id == split.room_id
+                    )
+                    if line:
+                        nights += 1
+                        used_line_ids.append(line.id)
+                        # splitted_reservations_lines -= line
+                        # free_dates.remove(line.date)
+                rooms_reservation_values.append(
+                    {
+                        "splitted": True,
+                        "main_split": main_split,
+                        "date": split.date,
+                        "reservation_info": {
+                            "id": reservation.id,
+                            "partner_name": reservation.partner_name
+                            if main_split
+                            else reservation.rooms,
+                            "img": "/web/image/pms.reservation/"
+                            + str(reservation.id)
+                            + "/partner_image_128",
+                            "price": round(reservation.folio_pending_amount, 2)
+                            if main_split
+                            else '',
+                            "status": reservation.color_state,
+                            "icon_payment": reservation.icon_payment,
+                            "nigths": nights,
+                            "days": nights + 1,
+                            "checkin_in_range": False,
+                            "checkout_in_range": True,
+                        },
+                    }
+                )
+            for day in free_dates:
+                rooms_reservation_values.append(
+                    {
+                        "date": day,
+                        "reservation_info": False,
+                    }
+                )
+            rooms_reservation_values = sorted(
+                rooms_reservation_values, key=lambda item: item["date"]
+            )
+            for item in rooms_reservation_values:
+                item["date"] = item["date"].strftime(get_lang(request.env).date_format)
+            values["reservations"].append(
+                {
+                    "room": {
+                        "id": room.id,
+                        "room_type_id": room.room_type_id.id,
+                        "name": room.display_name,
+                        "status": "Limpia",  # TODO
+                    },
+                    "ocupation": rooms_reservation_values,
+                }
+            )
+        pp.pprint(values)
+        return values
+
+    def _get_calendar_config(self, pms_property_id):
+        calendar_config = request.env["pms.user.calendar.property"].sudo().search([
+            ("pms_property_id", "=", pms_property_id),
+            ("user_id", "=", request.env.user.id)
+        ])
+        if (
+            calendar_config
+            and (datetime.datetime.now() - calendar_config.write_date).total_seconds() / 3600 > RESET_CALENDAR_HOURS
+        ):
+            calendar_config.sudo().unlink()
+            calendar_config = False
+        if not calendar_config:
+            calendar_config = request.env["pms.user.calendar.property"].sudo().create({
+                "pms_property_id": pms_property_id,
+                "user_id": request.env.user.id,
+            })
+        return calendar_config
+
+    def _get_dates(self, calendar_config, post):
+        date = datetime.date.today()
+        if calendar_config.date_start:
+            date_start = calendar_config.date_start
+        else:
+            date_start = date + timedelta(days=-1)
+        if post.get("selected_date"):
+            date = datetime.datetime.strptime(
+                post.get("selected_date"), get_lang(request.env).date_format
+            ).date()
+            date_start = date
+
+        if post.get("next_day"):
+            date = datetime.datetime.strptime(
+                post.get("next_day"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=+1)
+        if post.get("previous_day"):
+            date = datetime.datetime.strptime(
+                post.get("previous_day"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=-1)
+        if post.get("next_month"):
+            date = datetime.datetime.strptime(
+                post.get("next_month"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=30)
+        if post.get("previous_month"):
+            date = datetime.datetime.strptime(
+                post.get("previous_month"), get_lang(request.env).date_format
+            ).date()
+            date_start = date + timedelta(days=-30)
+        calendar_config.date_start = date_start
+        dpr = 31
+        date_list = [date_start + timedelta(days=x) for x in range(dpr)]
+        return date_start, date_list
+
+    def _get_property(self, post):
+        pms_property_id = request.env.user.get_active_property_ids()[0]
+        if post and post.get("selected_property"):
+            pms_property_id = int(post["selected_property"])
+        return pms_property_id
+
+    def _get_room_types(self, pms_property_id):
+        Room = request.env["pms.room"]
+        rooms = Room.search([("pms_property_id", "=", pms_property_id)])
+        room_types = request.env["pms.room.type"].browse(
+            rooms.mapped("room_type_id.id")
+        )
+        return room_types
+
+    def _get_pricelists(self, calendar_config, post):
+        pms_property_id = calendar_config.pms_property_id.id
+        allowed_pricelists = request.env["product.pricelist"].search([
+            "|",
+            ("pms_property_ids", "=", False),
+            ("pms_property_ids", "in", pms_property_id),
+        ])
+        if calendar_config.select_pricelist:
+            select_pricelist = calendar_config.select_pricelist
+        else:
+            select_pricelist = allowed_pricelists[0]
+        if post and post.get("pricelist") and int(post.get("pricelist")) != 0:
+            select_pricelist = request.env["product.pricelist"].browse(int(post["pricelist"]))
+        calendar_config.select_pricelist = select_pricelist
+        return allowed_pricelists, select_pricelist
+
+    def _get_avail_plans(self, calendar_config, post):
+        pms_property_id = calendar_config.pms_property_id.id
+        allowed_availability_plans = request.env["pms.availability.plan"].search(
+            [
+                "|",
+                ("pms_property_ids", "=", False),
+                ("pms_property_ids", "in", pms_property_id),
+            ]
+        )
+        if calendar_config.select_availability_plan:
+            select_availability_plan = calendar_config.select_availability_plan
+        else:
+            select_availability_plan = allowed_availability_plans[0]
+        if post and post.get("availability_plan") and int(post.get("availability_plan")) != 0:
+            select_availability_plan = request.env["pms.availability.plan"].browse(int(post["availability_plan"]))
+        calendar_config.select_availability_plan = select_availability_plan
+        return allowed_availability_plans, select_availability_plan
