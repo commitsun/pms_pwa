@@ -6,7 +6,6 @@ odoo.define("pms_pwa.calendar", function (require) {
     var publicWidget = require("web.public.widget");
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
-    var calendar_dpr = $('input[name="calendar_dpr"]').val();
 
     publicWidget.registry.CalendarCollapseWidget = publicWidget.Widget.extend({
         selector: "#calendar_table",
@@ -16,22 +15,22 @@ odoo.define("pms_pwa.calendar", function (require) {
         },
         _onClickGetCalendarLine: function (event) {
             event.preventDefault();
-            var data_id = event.currentTarget.getAttribute("data-id");
+            var pms_property_id = event.currentTarget.getAttribute("data-id");
             var date_list = $('input[name="date_list"]').val();
             var selected_display = $('input[name="selected_display"]').val();
 
             ajax.jsonRpc("/calendar/line", "call", {
-                data_id: data_id,
+                pms_property_id: pms_property_id,
                 range_date: date_list,
                 selected_display: selected_display,
             }).then(function (data) {
                 // console.log("recibo->>", data);
                 var html = core.qweb.render("pms_pwa.calendar_line", {
-                    data_id: data_id,
+                    pms_property_id: pms_property_id,
                     obj_list: data.reservations,
                     csrf_token: csrf_token,
                 });
-                $(String("#collapse_accordion_" + data_id)).html(html);
+                $(String("#collapse_accordion_" + pms_property_id)).html(html);
             });
         },
     });
@@ -109,13 +108,6 @@ odoo.define("pms_pwa.calendar", function (require) {
                     let search_params = "";
 
                     try{
-                        if(searchParams.has('display_option')){
-                            search_params = search_params+"&display_option="+searchParams.get('display_option');
-                        }
-                    }catch{
-                        console.log("ERROR al pasar opciones de display");
-                    }
-                    try{
                         if(searchParams.has('pricelist')){
                             search_params = search_params+"&pricelist="+searchParams.get('pricelist');
                         }
@@ -123,13 +115,11 @@ odoo.define("pms_pwa.calendar", function (require) {
                         console.log("ERROR al pasar pricelist");
                     }
                     try{
-                        if(searchParams.has('dpr')){
-                            search_params = search_params+"&dpr="+searchParams.get('dpr');
-                        }else{
-                            search_params = search_params+"&dpr="+calendar_dpr;
+                        if(searchParams.has('selected_property')){
+                            search_params = search_params+"&selected_property="+searchParams.get('selected_property');
                         }
                     }catch{
-                        console.log("ERROR al pasar dpr");
+                        console.log("ERROR al pasar la property");
                     }
                     searchParams.set('selected_date', select_date);
                     let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;
@@ -176,13 +166,11 @@ odoo.define("pms_pwa.calendar", function (require) {
                         console.log("ERROR al pasar pricelist");
                     }
                     try{
-                        if(searchParams.has('dpr')){
-                            search_params = search_params+"&dpr="+searchParams.get('dpr');
-                        }else{
-                            search_params = search_params+"&dpr="+calendar_dpr;
+                        if(searchParams.has('selected_property')){
+                            search_params = search_params+"&selected_property="+searchParams.get('selected_property');
                         }
                     }catch{
-                        console.log("ERROR al pasar dpr");
+                        console.log("ERROR al pasar la property");
                     }
                     searchParams.set('selected_date', select_date);
                     let new_url=url.origin+url.pathname+"?selected_date="+select_date+search_params;

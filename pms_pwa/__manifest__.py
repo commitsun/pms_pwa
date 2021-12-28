@@ -35,8 +35,7 @@
         "templates/preloader.xml",
         "views/inherited_form_view.xml",
         "security/pms_pwa_security.xml",
-        # data
-        # "data/delete_data.xml",
+        "security/ir.model.access.csv",
         "data/pms_pwa_data.xml",
         "data/page_data.xml",
         "data/menu_data.xml",
