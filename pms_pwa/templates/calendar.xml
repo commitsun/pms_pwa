@@ -393,7 +393,7 @@
                                                             class="o_pms_pwa_price"
                                                             style="color: $black !important; font-weight: bold !important; float: right; padding-left: 20%; padding-top: 3%;"
                                                           >
-                                                              <t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price"/>
+                                                              <t t-esc="obj.product_id.with_context(quantity=1, date=today, consumption_date=date_list[l], pricelist=default_pricelist, property=current_property).price" t-options="{'widget': 'float', 'precision': 0}"/>
                                                               €
                                                           </span>
                                                         </div>

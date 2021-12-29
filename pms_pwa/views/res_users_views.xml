@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="pms.res_users_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='pms_property_id']" position="after">
+                <field
+                    string="PWA Allowed Properties"
+                    name="pms_pwa_property_ids"
+                    widget="many2many_tags"
+                />
+                <field
+                    string="PWA Current Property"
+                    name="pms_pwa_property_id"
+                    context="{'user_preference': 0}"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

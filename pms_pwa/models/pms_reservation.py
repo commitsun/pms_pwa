@@ -774,7 +774,8 @@ class PmsReservation(models.Model):
             ),
             "readonly_fields": readonly_fields,
             "required_fields": [],
-            "allowed_country_ids": self.pms_property_id._get_allowed_countries(),
+            # "allowed_country_ids": self.pms_property_id._get_allowed_countries(),
+            "to_send_mail": self.to_send_mail,
         }
 
         _logger.info("Values from controller to Frontend:")

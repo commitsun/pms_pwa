@@ -93,7 +93,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                     showDropdowns: true,
                     autoUpdateInput: false,
                     minYear: 1901,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    maxYear: parseInt(moment().format("YYYY"), 10) + 5,
                 },
                 function (start) {
                     //console.log(start);
@@ -137,7 +137,7 @@ odoo.define("pms_pwa.calendar", function (require) {
                     showDropdowns: true,
                     autoUpdateInput: false,
                     minYear: 1901,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    maxYear: parseInt(moment().format("YYYY"), 10) + 5,
                 },
                 function (start) {
                     //console.log(start);

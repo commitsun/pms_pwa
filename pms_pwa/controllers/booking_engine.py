@@ -481,7 +481,7 @@ class BookingEngine(http.Controller):
                         if room_type_id:
                             price_per_room = request.env[
                                 "pms.folio.availability.wizard"
-                            ]._get_price_by_room_type(
+                            ].with_company(pms_property.company_id)._get_price_by_room_type(
                                 room_type_id=room_type_id,
                                 board_service_room_id=board_room_type.id
                                 if board_room_type
@@ -723,7 +723,7 @@ class BookingEngine(http.Controller):
                     if room_type_id or sale_category_id:
                         price_per_room = request.env[
                             "pms.folio.availability.wizard"
-                        ]._get_price_by_room_type(
+                        ].with_company(pms_property.company_id)._get_price_by_room_type(
                             room_type_id=room_type.id,
                             board_service_room_id=board_service_room_id,
                             checkin=checkin,

@@ -728,7 +728,7 @@
 
                                     </div>
                                 </div>
-                                <t t-if="reservation.folio_id.invoice_count > 0">
+                                <t t-if="reservation.with_company(reservation.company_id).folio_id.invoice_count > 0">
                                     <div class="card bg-white shadow mt-4">
                                         <div class="card-header bg-white o_pms_pwa_card_header">
                                             <h3 class="mb-0">
@@ -748,11 +748,12 @@
 
                                                 </thead>
                                                 <tbody>
-                                                    <t t-foreach="reservation.folio_id.move_ids" t-as="i">
+                                                    <t t-foreach="reservation.with_company(reservation.company_id).folio_id.move_ids" t-as="i">
                                                         <tr>
                                                             <td>
-                                                                <a class="o_pms_pwa_theme_color" t-att-href="'/my/invoices/' + str(i.id)">
-                                                                    <t t-esc="i.name" />
+                                                                <a class="o_pms_pwa_theme_color" t-att-href="i.get_portal_url()" t-att-title="i.name">
+                                                                    <t t-esc="i.name" t-if="i.name != '/'"/>
+                                                                    <em t-else="">Draft Invoice</em>
                                                                 </a>
                                                             </td>
                                                             <td class="black_text">

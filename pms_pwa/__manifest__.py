@@ -34,6 +34,7 @@
         "templates/configuration.xml",
         "templates/preloader.xml",
         "views/inherited_form_view.xml",
+        "views/res_users_views.xml",
         "security/pms_pwa_security.xml",
         "security/ir.model.access.csv",
         "data/pms_pwa_data.xml",
