@@ -7,7 +7,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
     var publicWidget = require("web.public.widget");
     // Var csrf_token = core.csrf_token;
 
-    function new_displayDataAlert(result, data_id = false) {
+    function new_displayDataAlert(result, pms_property_id = false) {
         var data = JSON.parse(result);
         if (data && data.result === true) {
             data.type = "success";
@@ -24,12 +24,12 @@ odoo.define("pms_pwa.calendar_config", function (require) {
             alert: data,
         });
         alert_div.append(alert);
-        if (data_id) {
-            self.reloadReservationInfo(data_id);
+        if (pms_property_id) {
+            self.reloadReservationInfo(pms_property_id);
         }
 
-        /* $(String("#reservation_" + data_id)).load(
-            String(window.location.href + " #reservation_" + data_id + " td")
+        /* $(String("#reservation_" + pms_property_id)).load(
+            String(window.location.href + " #reservation_" + pms_property_id + " td")
         ); */
     }
 

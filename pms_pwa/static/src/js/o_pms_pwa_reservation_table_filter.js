@@ -179,22 +179,22 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     return "bottom";
             }
         },
-        secondLaunchLines: function (data_id) {
+        secondLaunchLines: function (pms_property_id) {
             var self = this;
-            data_id = data_id;
+            pms_property_id = pms_property_id;
             var date_list = $('input[name="date_list"]').val();
             var selected_display = $('input[name="selected_display"]').val();
             ajax.jsonRpc("/calendar/line", "call", {
-                data_id: data_id,
+                pms_property_id: pms_property_id,
                 range_date: date_list,
                 selected_display: selected_display,
             }).then(function (data) {
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
-                    data_id: data_id,
+                    pms_property_id: pms_property_id,
                     obj_list: data.reservations,
                     csrf_token: csrf_token,
                 });
-                $(String("#collapse_accordion_" + data_id)).html(html);
+                $(String("#collapse_accordion_" + pms_property_id)).html(html);
                 $('table.o_pms_pwa_reduced_reservation_list_table').tableHover({colClass: 'hover'});
                 // ESTO PARA CREAR EL DRAG
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
@@ -722,27 +722,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         try {
                             //var room_type_id = event.currentTarget.getAttribute("data-id");
                             var date_list = $('input[name="date_list"]').val();
-                            var selected_display = $(
-                                'input[name="selected_display"]'
-                            ).val();
-                            if (selected_display == "ubication") {
-                                var selected_id = updated_data.current_ubication_id;
-                            } else if (selected_display == "room_type") {
-                                var selected_id = updated_data.current_room_type_id;
-                            } else if (selected_display == "pms_property") {
-                                var selected_id = updated_data.current_property_id;
-                            }
                             ajax.jsonRpc("/calendar/line", "call", {
-                                data_id: selected_id,
+                                pms_property_id: updated_data.current_property_id,
                                 range_date: date_list,
-                                selected_display: selected_display,
                             }).then(function (data) {
                                 try{
                                     var html = core.qweb.render("pms_pwa.calendar_line", {
                                         obj_list: data.reservations,
                                         csrf_token: csrf_token,
                                     });
-                                    $(String("#collapse_accordion_" + selected_id)).html(
+                                    $(String("#collapse_accordion_" + updated_data.current_property_id)).html(
                                         html
                                     );
                                 }catch{
@@ -757,7 +746,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         });
                                         $(
                                             String(
-                                                "#collapse_accordion_" + selected_id
+                                                "#collapse_accordion_" + updated_data.current_property_id
                                             )
                                         ).html(html);
                                         console.log("reinicio el calendario");
@@ -784,9 +773,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         //     },
                                         // });
                                     }
-
-
-
                                 }
                             });
                         } catch (error) {
