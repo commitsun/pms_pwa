@@ -215,6 +215,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     classes: {
                         "ui-droppable-active": "ui-state-active",
                         "ui-droppable-hover": "ui-state-hover",
+                        "ui-draggable-handle": "ui-draggable-handle-pwa",
                     },
                     drop: function (event, ui) {
                         console.log("mouseDown", mouseDown);
