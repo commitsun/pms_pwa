@@ -266,9 +266,9 @@
                                             <span class="label label-default" style="color:#575757;">Finalizada</span>
                                         </t>
                                     </h5>
-                                    <t t-if="reservation.to_send_mail == False and reservation.reservation_type != 'out'">
+                                    <!-- <t t-if="reservation.to_send_mail == False and reservation.reservation_type != 'out'">
                                         <i class="fa fa-envelope" style="color:green;" title="Mail de confirmación enviado"></i>
-                                    </t>
+                                    </t> -->
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span class="fa fa-times" />
                                     </button>

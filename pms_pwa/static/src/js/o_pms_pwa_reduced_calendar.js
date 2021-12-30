@@ -175,7 +175,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     // CLASES PARA MOSTRAR CUADROS ACTIVOS Y COLOR DE HOVER
                     classes: {
                         "ui-droppable-active": "ui-state-active",
-                        "ui-droppable-hover": "ui-state-hover",
+                        // "ui-droppable-hover": "ui-state-hover",
                     },
                     drop: function (event, ui) {
                         console.log("mouseDown", mouseDown);
