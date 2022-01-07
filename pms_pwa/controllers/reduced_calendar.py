@@ -50,7 +50,6 @@ class PmsCalendar(http.Controller):
         print("json ---> ", post)
         return self._get_calendar_values(post)
 
-
     def _get_calendar_values(self, post):
         pms_property_id = self._get_property(post)
 
@@ -171,10 +170,15 @@ class PmsCalendar(http.Controller):
                 vals = list(vals)
                 res_count = sum([x[3] for x in vals if x[2] != 'out'])
                 out_count = sum([x[3] for x in vals if x[2] == 'out'])
+                total_rooms = room_type._get_total_rooms(pms_property.id)
+                num_avail = room_type._get_total_rooms(pms_property.id) - (res_count + out_count)
                 dict_result[avail_date][room_type_id] = {
                     'reservations_count': res_count,
                     'outs_count': out_count,
-                    'num_avail': room_type._get_total_rooms(pms_property.id) - (res_count + out_count),
+                    'num_avail': num_avail,
+                    'reservations_percent': int((res_count*100)/total_rooms),
+                    'outs_percent': int((out_count*100)/total_rooms),
+                    'avail_percent': int((num_avail*100)/total_rooms),
                 }
                 if room_type.overnight_room:
                     total_res_count += res_count
@@ -186,12 +190,18 @@ class PmsCalendar(http.Controller):
                         'reservations_count': 0,
                         'outs_count': 0,
                         'num_avail': room_type._get_total_rooms(pms_property.id),
+                        'reservations_percent': 0,
+                        'outs_percent': 0,
+                        'avail_percent': 100,
                     }
             dict_result[avail_date]["property_header"] = {
                 'reservations_count': total_res_count,
                 'outs_count': total_out_count,
                 'percent_occupied': int((total_res_count + total_out_count) * 100 / pms_property._get_total_rooms()),
                 'num_avail': pms_property._get_total_rooms() - (total_res_count + total_out_count),
+                'reservations_percent': 0,
+                'outs_percent': 0,
+                'avail_percent': 100,
             }
         # complete estructure to avoid dates
         for date in dates:

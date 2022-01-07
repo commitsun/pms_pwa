@@ -24,8 +24,8 @@ section.o_pms_pwa_roomdoo {
 
         hr {
             background-color: #dadada;
-            margin-top: 1rem;
-            margin-bottom: -0.5rem;
+            //margin-top: 1rem;
+            //margin-bottom: -0.5rem;
             width: 98%;
         }
 
@@ -117,6 +117,26 @@ section.o_pms_pwa_roomdoo {
             border-spacing: 0 8px;
             margin-bottom: 0px !important;
         }
+        .o_calendar_header_property {
+            min-height: 1rem;
+            background-color: white;
+            border-top: 0px;
+            width: 100px !important;
+            min-width: 100px !important;
+            max-width: 100px !important;
+            .o_pms_pwa_title {
+                color: $black;
+                .o_pms_pwa_info {
+                    color: $theme-color;
+                    position: relative;
+                    top: -1rem;
+                    right: -4rem;
+                    .o_pms_pwa_interrogante-calendar {
+                        width: 13px;
+                    }
+                }
+            }
+        }
         .o_config_pms_pwa_table_cell {
             border: 1px solid $grey-300;
             border-radius: 0.25rem;
@@ -137,6 +157,18 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
             }
+            .progress-bar-success{
+                background-color: $theme-color;
+                color: $white;
+            }
+            .progress-bar-warning{
+                background-color: $black;
+                color: $white;
+            }
+            .progress-bar-danger{
+                background-color: $white;
+                color: $black;
+            }
         }
         .o_pms_pwa_calendar_line {
             // margin: auto;
@@ -150,7 +182,7 @@ section.o_pms_pwa_roomdoo {
 
                 margin-left: 0rem !important;
                 margin-top: 0rem !important;
-                margin-bottom: 0.5rem !important;
+                margin-bottom: 0rem !important;
                 color: $table-text-color;
                 :after,
                 :before {
@@ -193,7 +225,7 @@ section.o_pms_pwa_roomdoo {
             }
             p {
                 input {
-                    width: 50px;
+                    width: 100px;
                     margin-left: 1rem;
                     margin: auto;
                     border-bottom: 1px solid #01b6e3 !important;
@@ -303,9 +335,10 @@ section.o_pms_pwa_roomdoo {
 
             }
             tbody {
+                zoom: 90%;
                 tr {
                     td {
-                        height: 50px;
+                        height: 35px;
                         .circles-container {
                             .circle {
                                 line-height: 1.5;
@@ -321,9 +354,6 @@ section.o_pms_pwa_roomdoo {
                                 background-color:#01b6e3;
                             }
                             div:nth-child(2) > .circle {
-                                background-color:black;
-                            }
-                            div:nth-child(3) > .circle {
                                 color:#000000;
                                 border-radius: 0%;
                                 border-left: 1px solid #dadada;
@@ -516,17 +546,17 @@ section.o_pms_pwa_roomdoo {
             }
             .o_pms_pwa_reduced_reservation_list_table {
                 border-collapse: separate;
-                border-spacing: 0 5px;
+                // border-spacing: 0 5px;
                 margin-bottom: 0px !important;
                 tr.o_pms_pwa_reduced_calendar_line:hover, td.o_pms_pwa_table_cell:hover::before, td.o_pms_pwa_table_cell:hover::after {
-                    background-color: #f1f1f1;
+                    background-color: #c9f0f88f;
                 }
                 // td.o_pms_pwa_range_days_selected { background-color:#c3c3c3; }
                 // td.o_pms_pwa_line_cell_content:hover{
                 //     background-color: #c3c3c3 !important;
                 // }
                 tr.o_pms_pwa_range_days_selecting{
-                    background-color: #f1f1f1;
+                    background-color: #c9f0f88f;
                     // z-index: 9999;
                 }
                 td.o_pms_pwa_range_days_selected{
@@ -542,7 +572,7 @@ section.o_pms_pwa_roomdoo {
                     background-color: #c3c3c3;
                 }
 
-                td.hover, tr.hover { background-color: #f1f1f1; }
+                td.hover, tr.hover { background-color: #c9f0f88f; }
 
                 td[colspan="2"] {
                     width: calc(129.265px * 2) !important;
@@ -838,16 +868,18 @@ section.o_pms_pwa_roomdoo {
                     // }
                 }
                 &_confirmed {
-                    border-bottom: 4px solid $theme-color;
+                    //background-color: $theme-color;;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: $theme-color;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
+                    //.o_pms_pwa_reduced_calendar_line_icon {
+                    //    width: 8px;
+                    //    margin-left: 0.1rem;
+                    //}
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -861,16 +893,17 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_checkin-paid {
-                    border-bottom: 4px solid #00ba39;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #00ba39;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
+                    // .o_pms_pwa_reduced_calendar_line_icon {
+                    //     width: 8px;
+                    //     margin-left: 0.1rem;
+                    // }
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -884,16 +917,14 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_checkin-to-pay {
-                    border-bottom: 4px solid #dc3545;
+
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #dc3545;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -907,16 +938,13 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_checkout-paid {
-                    border-bottom: 4px solid #7e7e7e;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #7e7e7e;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -930,16 +958,13 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_checkout-to-pay {
-                    border-bottom: 4px solid #dc3545;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #dc3545;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -953,16 +978,13 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_out-service {
-                    border-bottom: 4px solid #000000;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #000000;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -976,16 +998,13 @@ section.o_pms_pwa_roomdoo {
                 }
 
                 &_staff {
-                    border-bottom: 4px solid #c08686;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #c08686;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -998,16 +1017,13 @@ section.o_pms_pwa_roomdoo {
                     // }
                 }
                 &_to-assign {
-                    border-bottom: 4px solid #ed722e;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #ed722e;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
                     // &::before {
                     //     content: "|";
                     //     position: relative;
@@ -1042,31 +1058,19 @@ section.o_pms_pwa_roomdoo {
                 //margin-left: 0.5rem;
             }
             &_name {
-                font-weight: bold;
-                font-size: 12px;
-                margin-left: 3.2rem;
-                margin-top: 0rem;
-                width: 100%;
-                margin-bottom: -0.75rem;
+                font-size: 18px;
+                color: white;
                 // overflow
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 75px;
-
             }
             &_name_small {
-                font-weight: bold;
                 font-size: 12px;
-                margin-left: 3.2rem;
-                margin-top: 0rem;
-                width: 100%;
-                margin-bottom: -0.75rem;
                 // overflow
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 40px;
             }
 
         }
@@ -1184,5 +1188,88 @@ section.o_pms_pwa_roomdoo {
                 }
             }
         }
+
+}
+#changesDaysValues.modal{
+    z-index: 9999;
+    .modal-dialog{
+        .modal-content{
+            /* The switch - the box around the slider */
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 40px;
+                height: 20px;
+            }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            /* The slider */
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 12px;
+                width: 12px;
+                left: 2px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            input:checked + .slider {
+                background-color: $theme-color;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px $theme-color;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 18px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+            .modal-footer{
+                .btn-message{
+                    background-color:#01b6e3;
+                    border-radius: 1.5rem;
+                    border: none !important;
+                    color: white;
+                }
+                .close_confirmChange{
+                    background-color: red;
+                    border-radius: 1.5rem;
+                    border: none;
+                }
+            }
+        }
+    }
 
 }

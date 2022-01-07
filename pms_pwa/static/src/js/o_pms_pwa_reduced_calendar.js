@@ -48,6 +48,8 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             "click tr.o_pms_pwa_open_reduced_calendar": "_onClickGetCalendarLine",
             "click .close_confirmChange": "_onClickCloseModal",
             "click .send_ConfirmChanges": "_onClickConfirmModal",
+            "click .open_changeValues": "_onClickChangeValues",
+
         },
         /**
          * @override
@@ -173,7 +175,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     // CLASES PARA MOSTRAR CUADROS ACTIVOS Y COLOR DE HOVER
                     classes: {
                         "ui-droppable-active": "ui-state-active",
-                        // "ui-droppable-hover": "ui-state-hover",
+                        "ui-droppable-hover": "ui-state-hover",
                     },
                     drop: function (event, ui) {
                         console.log("mouseDown", mouseDown);
@@ -518,6 +520,9 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             event.preventDefault();
 
             self.launchLines(event.currentTarget);
+        },
+        _onClickChangeValues: function (event) {
+            $("#changesDaysValues").modal("show");
         },
         _onClickConfirmModal: function (event) {
             console.log("Confirmo en modal.");
