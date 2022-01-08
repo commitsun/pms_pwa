@@ -21,6 +21,11 @@ pp = pprint.PrettyPrinter(indent=4)
 _logger = logging.getLogger(__name__)
 
 
+def defaultconverter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()
+
+
 class PmsCalendar(http.Controller):
 
     @http.route(
@@ -51,6 +56,7 @@ class PmsCalendar(http.Controller):
         return self._get_calendar_values(post)
 
     def _get_calendar_values(self, post):
+
         pms_property_id = self._get_property(post)
 
         calendar_config = self._get_calendar_config(pms_property_id)

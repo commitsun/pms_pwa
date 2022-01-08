@@ -179,21 +179,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     return "bottom";
             }
         },
-        secondLaunchLines: function (pms_property_id) {
-            var self = this;
-            pms_property_id = pms_property_id;
-            var date_list = $('input[name="date_list"]').val();
-            var selected_display = $('input[name="selected_display"]').val();
-            ajax.jsonRpc("/calendar/line", "call", {
-                pms_property_id: pms_property_id,
-                range_date: date_list,
-                selected_display: selected_display,
-            }).then(function (data) {
+        secondLaunchLines: function (data, pms_property_id) {
+
+                console.log("Er carola ->", data.reservations);
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
                     pms_property_id: pms_property_id,
                     obj_list: data.reservations,
                     csrf_token: csrf_token,
                 });
+                console.log("->", pms_property_id);
                 $(String("#collapse_accordion_" + pms_property_id)).html(html);
                 $('table.o_pms_pwa_reduced_reservation_list_table').tableHover({colClass: 'hover'});
                 // ESTO PARA CREAR EL DRAG
@@ -518,7 +512,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         }
                     }
                 );
-            });
         },
         displayContent: function (xmlid, render_values) {
             var html = core.qweb.render(xmlid, render_values);
@@ -712,13 +705,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 console.log("No se puede hacer reload en dashboard");
                 // Mirar si hay que borrar de la campanita el aviso.
             } else {
-
+                console.log("Recargo el calendario¿?");
                 ajax.jsonRpc("/reservation/json_data", "call", {
                     reservation_id: data_id,
                 }).then(function (updated_data) {
                     setTimeout(function () {
                         var date_list = false;
                         try {
+                            console.log("S");
                             //var room_type_id = event.currentTarget.getAttribute("data-id");
                             var date_list = $('input[name="date_list"]').val();
                             ajax.jsonRpc("/calendar/line", "call", {
@@ -726,52 +720,42 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 range_date: date_list,
                             }).then(function (data) {
                                 try{
-                                    var html = core.qweb.render("pms_pwa.calendar_line", {
+                                    console.log("21", data);
+                                    self.secondLaunchLines(data, updated_data.current_property_id);
+                                } catch(err) {
+                                    console.log("Error -", err)
+                                    var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
                                         obj_list: data.reservations,
                                         csrf_token: csrf_token,
                                     });
-                                    $(String("#collapse_accordion_" + updated_data.current_property_id)).html(
-                                        html
-                                    );
-                                }catch{
-                                    try{
+                                    $(
+                                        String(
+                                            "#collapse_accordion_" + updated_data.current_property_id
+                                        )
+                                    ).html(html);
+                                    console.log("reinicio el calendario");
+                                    $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start o_pms_pwa_range_days_end o_pms_pwa_range_days_first");
+                                    $("table.o_pms_pwa_reduced_reservation_list_table tr.o_pms_pwa_reduced_calendar_line").removeClass("o_pms_pwa_range_days_selecting");
+                                    $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").removeClass(
+                                        "ui-draggable ui-draggable-handle"
+                                    ); //we reset
 
-                                        self.secondLaunchLines(data_id);
-                                    } catch(err) {
-                                        console.log("Error -", err)
-                                        var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
-                                            obj_list: data.reservations,
-                                            csrf_token: csrf_token,
-                                        });
-                                        $(
-                                            String(
-                                                "#collapse_accordion_" + updated_data.current_property_id
-                                            )
-                                        ).html(html);
-                                        console.log("reinicio el calendario");
-                                        $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_line_event").removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start o_pms_pwa_range_days_end o_pms_pwa_range_days_first");
-                                        $("table.o_pms_pwa_reduced_reservation_list_table tr.o_pms_pwa_reduced_calendar_line").removeClass("o_pms_pwa_range_days_selecting");
-                                        $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").removeClass(
-                                            "ui-draggable ui-draggable-handle"
-                                        ); //we reset
-
-                                        console.log("reinicio el calendario");
-                                        $(".o_pms_pwa_line_cell_content").removeAttr("style");
-                                        // Destroy original draggable and create new one
-                                        // $(".o_pms_pwa_line_cell_content").draggable("destroy");
-                                        // $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
-                                        //     containment: "#reduced_calendar_table",
-                                        //     revert: "invalid",
-                                        //     start: function (event, ui) {
-                                        //         // event.preventDefault();
-                                        //         console.log("creo de nuevo el dragabble");
-                                        //         $(event.currentTarget).addClass("z-index-all");
-                                        //         $(".o_pms_pwa_line_cell_content").removeAttr("style");
-                                        //         $(".o_pms_pwa_line_cell_content").draggable();
-                                        //         drop_function = true;
-                                        //     },
-                                        // });
-                                    }
+                                    console.log("reinicio el calendario");
+                                    $(".o_pms_pwa_line_cell_content").removeAttr("style");
+                                    // Destroy original draggable and create new one
+                                    // $(".o_pms_pwa_line_cell_content").draggable("destroy");
+                                    // $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
+                                    //     containment: "#reduced_calendar_table",
+                                    //     revert: "invalid",
+                                    //     start: function (event, ui) {
+                                    //         // event.preventDefault();
+                                    //         console.log("creo de nuevo el dragabble");
+                                    //         $(event.currentTarget).addClass("z-index-all");
+                                    //         $(".o_pms_pwa_line_cell_content").removeAttr("style");
+                                    //         $(".o_pms_pwa_line_cell_content").draggable();
+                                    //         drop_function = true;
+                                    //     },
+                                    // });
                                 }
                             });
                         } catch (error) {
@@ -977,10 +961,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         $("#o_pms_pwa_reservation_modal").on(
                             "hidden.bs.modal",
                             function () {
-
+                                console.log("Cierro modal");
                                 try {
                                     var data_id = $("#o_pms_pwa_reservation_modal")[0]
                                         .dataset.id;
+                                    console.log("--->", data_id);
                                     if (data_id) {
                                         self.reloadReservationInfo(data_id);
                                     }
