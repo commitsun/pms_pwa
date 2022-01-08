@@ -1194,6 +1194,10 @@ section.o_pms_pwa_roomdoo {
     z-index: 9999;
     .modal-dialog{
         .modal-content{
+            h3{
+                color: $black !important;
+                font-size: 16px;
+            }
             /* The switch - the box around the slider */
             .switch {
                 position: relative;
@@ -1263,13 +1267,44 @@ section.o_pms_pwa_roomdoo {
                     border: none !important;
                     color: white;
                 }
-                .close_confirmChange{
+                .close_confirmChange, .close_changesDaysValues {
                     background-color: red;
                     border-radius: 1.5rem;
                     border: none;
                 }
             }
+            // .hidde_price, .hidde_cupo{
+            //     display: none;
+            // }
         }
     }
 
+}
+#reduced_calendar_table{
+    .header_date{
+        font-size:13px;
+    }
+    .percentage-container{
+        .percent_occupied_0{
+            border-radius: 5%; background-color:rgb(207, 255, 153); margin-right:80px; margin-left:3px; height:5px;
+        }
+        .percent_occupied_25{
+            border-radius: 5%; background-color:rgb(171, 255, 153); margin-right:80px; margin-left:3px; height:5px;
+        }
+        .percent_occupied_50{
+            border-radius: 5%; background-color:rgb(207, 255, 153); margin-right:60px; margin-left:3px; height:5px;
+        }
+        .percent_occupied_75{
+            border-radius: 5%; background-color:rgb(255, 224, 153); margin-right:40px; margin-left:3px; height:5px;
+        }
+        .percent_occupied_99{
+            border-radius: 5%; background-color:rgb(255, 202, 153); margin-right:20px; margin-left:3px; height:5px;
+        }
+        .percent_occupied_100{
+            border-radius: 5%; background-color:rgb(252, 123, 147); margin-right:2px; margin-left:3px; height:5px;
+        }
+    }
+}
+.property-change{
+    cursor: pointer !important;
 }

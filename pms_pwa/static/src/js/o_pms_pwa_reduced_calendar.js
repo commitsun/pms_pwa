@@ -580,5 +580,130 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             });
         },
     });
+    publicWidget.registry.ReducedCalendarPorpertyChanges = publicWidget.Widget.extend({
+        selector: "#myTab",
+        events: {
+            "click a.property-change": "_onClickPropertyChange",
+
+        },
+        /**
+         * @override
+         */
+        start: function () {
+            var self = this;
+            return this._super.apply(this, arguments);
+        },
+        init: function () {
+            var self = this;
+            return this._super.apply(this, arguments);
+        },
+        _onClickPropertyChange: function(event) {
+            var self = this;
+            event.preventDefault();
+            console.log("er pepe", event);
+            // ajax.jsonRpc("/property/calendar", "call", {
+            //     selected_property: "1",
+            // }).then(function (updated_data) {
+            //     console.log("updated_data");
+            //     // $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
+            // });
+            $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
+        },
+    });
+    // publicWidget.registry.ReducedCalendarMultiChangesModal = publicWidget.Widget.extend({
+    //     selector: ".roomdoo_rules",
+    //     events: {
+    //         "click .hidde_show_rules": "_onClickSwitchChange",
+
+    //     },
+    //     /**
+    //      * @override
+    //      */
+    //     start: function () {
+    //         var self = this;
+    //         console.log("ER PEPE modal");
+    //         $('#hidde_price').hide();
+    //         // $('#hidde_price').addClass("hidde"); // Hide the text input box in default
+    //         return this._super.apply(this, arguments);
+    //     },
+    //     init: function () {
+    //         var self = this;
+    //         return this._super.apply(this, arguments);
+    //     },
+    //     _onClickSwitchChange: function(event) {
+    //         console.log("HOLA");
+    //         if($('.hidde_show_rules').prop('checked')) {
+    //             $('#hidde_price').show();
+    //         } else {
+    //             $('#hidde_price').hide();
+    //         };
+    //     },
+    // });
+    $(document).ready(function() {
+        $(".hidde_show_price").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_price").show();
+            }else{
+                $(".hidde_price").hide();
+            }
+        });
+        $(".hidde_show_cupo").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_cupo").show();
+            }else{
+                $(".hidde_cupo").hide();
+            }
+        });
+        $(".hidde_show_estmin").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_estmin").show();
+            }else{
+                $(".hidde_estmin").hide();
+            }
+        });
+        $(".hidde_show_closed").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_closed").show();
+            }else{
+                $(".hidde_closed").hide();
+            }
+        });
+        $(".hidde_show_max_stay").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_max_stay").show();
+            }else{
+                $(".hidde_max_stay").hide();
+            }
+        });
+        $(".hidde_show_max_dispo").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_max_dispo").show();
+            }else{
+                $(".hidde_max_dispo").hide();
+            }
+        });
+        $(".hidde_show_max_stay_sa").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_max_stay_sa").show();
+            }else{
+                $(".hidde_max_stay_sa").hide();
+            }
+        });
+        $(".hidde_show_max_stay_ll").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_max_stay_ll").show();
+            }else{
+                $(".hidde_max_stay_ll").hide();
+            }
+        });
+        $(".hidde_show_closed_arrival").click(function(event) {
+            if ($(this).is(":checked")){
+                $(".hidde_closed_arrival").show();
+            }else{
+                $(".hidde_closed_arrival").hide();
+            }
+        });
+    });
 });
+
 

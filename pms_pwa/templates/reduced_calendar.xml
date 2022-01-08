@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div id="changesDaysValues" class="modal" tabindex="-1" role="dialog">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Modificaciones de reglas</h5>
@@ -39,63 +39,256 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <p>Deseas modificar</p>
                             <form>
-                                <div class="form-group row">
-                                    <label for="price" class="col-sm-2 col-form-label">Price</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="price" placeholder="Price" />
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group row">
+                                            <label for="desde" class="col-sm-2 col-form-label">Desde</label>
+                                            <div class="col-sm-10">
+                                                <input id="start_date" type="date" class="form-control" name="start_date" placeholder="Desde" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="hasta" class="col-sm-2 col-form-label">Hasta</label>
+                                            <div class="col-sm-10">
+                                                <input id="end_date" type="date" class="form-control" name="end_date" placeholder="Hasta" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group row">
+                                            <label for="pms_property_id" class="col-sm-2 col-form-label">Hotel</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" disabled="disabled" class="form-control" name="pms_property_id" placeholder="Hotel" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="availability_plan_ids" class="col-sm-2 col-form-label">Disponibilidad</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="availability_plan_ids" placeholder="Disponibilidad" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="cupo" class="col-sm-2 col-form-label">Cupo</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="cupo" placeholder="Cupo" />
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group row">
+                                            <label for="room_type" class="col-sm-2 col-form-label">Tipo de habitación</label>
+                                            <div class="col-sm-10">
+                                                <input type="text" class="form-control" name="room_type" placeholder="Tipo de habitación" />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="estmin" class="col-sm-2 col-form-label">Est. Mín</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="estmin" placeholder="Est. Mín" />
+                                <div class="row mt-4">
+                                    <div class="col-12"><h3>Días</h3></div>
+                                    <div class="col-12">
+
+
+                                        <table class="table table-condensed" id="multi_days_values">
+                                            <thead>
+                                                <tr>
+                                                    <td class="o_pms_pwa_theme_color">Todos</td>
+                                                    <td class="o_pms_pwa_theme_color">Lunes</td>
+                                                    <td class="o_pms_pwa_theme_color">Martes</td>
+                                                    <td class="o_pms_pwa_theme_color">Miércoles</td>
+                                                    <td class="o_pms_pwa_theme_color">Jueves</td>
+                                                    <td class="o_pms_pwa_theme_color">Viernes</td>
+                                                    <td class="o_pms_pwa_theme_color">Sábado</td>
+                                                    <td class="o_pms_pwa_theme_color">Domingo</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input name="apply_on_all_week" data-edit="true" t-attf-tabindex="1" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input data-edit="false" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input data-edit="false" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input data-edit="false" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input data-edit="false" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input data-edit="false" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input data-edit="false" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p style="text-align:center">
+                                                            <label class="switch">
+                                                                <input data-edit="false" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
+                                                                <span class="slider round"></span>
+                                                            </label>
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label for="closed" class="col-sm-2 col-form-label">Closed</label>
-                                    <div class="col-sm-10">
-                                        <label class="switch">
-                                            <input data-edit="false" name="closed" type="checkbox" />
-                                            <span class="slider round"></span>
-                                        </label>
+                                <div class="row roomdoo_rules">
+                                    <div class="col-12"><h3>Reglas</h3><hr /></div>
+                                    <div class="col-6">
+                                        <div class="form-group row">
+                                            <div class="col-2 show_price">
+                                                <label class="switch">
+                                                    <input id="show_price_check" class="hidde_show_price" name="show_price" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="price" class="col-sm-2 col-form-label">Price</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control hidde_price" id="price" placeholder="Price" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-2 show_cupo">
+                                                <label class="switch">
+                                                    <input id="show_cupo_check" class="hidde_show_cupo" name="show_cupo" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="cupo" class="col-sm-2 col-form-label">Cupo</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control hidde_cupo" id="cupo" placeholder="Cupo" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-2">
+                                                <label class="switch show_estmin">
+                                                    <input id="show_cupo_check" class="hidde_show_estmin" name="show_estmin" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="estmin" class="col-sm-2 col-form-label">Est. Mín</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control hidde_estmin" id="estmin" placeholder="Est. Mín" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-2 show_closed">
+                                                <label class="switch">
+                                                    <input id="show_closed_check" class="hidde_show_closed" name="show_closed" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="closed" class="col-sm-2 col-form-label">Closed</label>
+                                            <div class="col-sm-8">
+                                                <label class="switch hidde_closed">
+                                                    <input data-edit="false" name="closed" type="checkbox" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-2 show_max_dispo">
+                                                <label class="switch">
+                                                    <input id="show_max_dispo_check" class="hidde_show_max_dispo" name="show_max_dispo" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="max_dispo" class="col-sm-2 col-form-label">Máx. Disp.</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control hidde_max_dispo" id="max_dispo" name="max_dispo" placeholder="Máx. Disp." />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="max_stay" class="col-sm-2 col-form-label">Máx. Disp.</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="max_stay" placeholder="Máx. Disp." />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="max_stay" placeholder="Est. Máx" />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Sa.</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="max_stay" placeholder="Est. Máx Sa." />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Ll.</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="max_stay" placeholder="Est. Máx Ll." />
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="closed_arrival" class="col-sm-2 col-form-label">Cerrar Ll.</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="closed_arrival" placeholder="Cerrar Ll." />
+                                    <div class="col-6">
+
+                                        <div class="form-group row">
+                                            <div class="col-2 show_max_stay">
+                                                <label class="switch">
+                                                    <input id="show_max_stay_check" class="hidde_show_max_stay" name="show_max_stay" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control hidde_max_stay" id="max_stay" name="max_stay" placeholder="Est. Máx" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-2 show_max_stay_sa">
+                                                <label class="switch">
+                                                    <input id="show_max_stay_sa_check" class="hidde_show_max_stay_sa" name="show_max_stay_sa" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Sa.</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control hidde_max_stay_sa" id="max_stay_sa" name="max_stay_sa" placeholder="Est. Máx Sa." />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-2 show_max_stay_ll">
+                                                <label class="switch">
+                                                    <input id="show_max_stay_ll_check" class="hidde_show_max_stay_ll" name="show_max_stay_ll" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Ll.</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control hidde_max_stay_ll" id="max_stay_ll" placeholder="Est. Máx Ll." />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-2 show_closed_arrival">
+                                                <label class="switch">
+                                                    <input id="show_closed_arrival_check" class="hidde_show_closed_arrival" name="show_closed_arrival" type="checkbox" checked="false" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                            <label for="closed_arrival" class="col-sm-2 col-form-label">Cerrar Ll.</label>
+                                            <div class="col-sm-8">
+                                                <label class="switch hidde_closed_arrival">
+                                                    <input data-edit="false" name="closed_arrival" type="checkbox" />
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -119,12 +312,12 @@
                         <t t-foreach="user_id.pms_pwa_property_ids" t-as="selected_property">
                             <li class="nav-item">
                                 <t t-if="selected_property.id == pms_property_id">
-                                    <a class="nav-link active" t-attf-id="property-tab-{{ selected_property.id }}" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                                    <a class="nav-link active property-change" t-attf-id="property-tab-{{ selected_property.id }}" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
                                         <t t-esc="selected_property.name" />
                                     </a>
                                 </t>
                                 <t t-else="">
-                                    <a class="nav-link" t-attf-id="property-tab-{{ selected_property.id }}" t-attf-href="/calendar/reduced?selected_property={{ selected_property.id }}" role="tab" aria-selected="false">
+                                    <a class="nav-link property-change" t-attf-id="property-tab-{{ selected_property.id }}" role="tab" aria-selected="false">
                                         <t t-esc="selected_property.name" />
                                     </a>
                                 </t>
@@ -215,7 +408,7 @@
                         <hr />
                         <div class="table-responsive">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
-                            <table id="reduced_calendar_table" class="table o_pms_pwa_reservation_list_table" data-show-columns="true">
+                            <table id="reduced_calendar_table" class="table o_pms_pwa_reduced_reservation_list_table" data-show-columns="true">
                                 <thead>
                                     <tr>
                                         <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td" style="z-index: none !important; background-color: white !important;">
@@ -237,27 +430,27 @@
                                                 <t t-set="property_total_out_service" t-value="general_headers[day]['property_header']['outs_count']"></t>
                                                 <t t-set="availability_day" t-value="general_headers[day]['property_header']['num_avail']"></t>
                                                 <t t-set="percent_occupied" t-value="general_headers[day]['property_header']['percent_occupied']"></t>
-                                                <span style="font-size:13px;">
+                                                <span class="header_date">
                                                     <t t-esc="day" t-options='{"widget": "date", "format": "EEE dd, MMM"}' />
                                                 </span>
                                                 <div class="row percentage-container">
                                                     <span t-if="percent_occupied == 100" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(252, 123, 147); margin-right:2px; margin-left:3px; height:5px;" />
+                                                        <div class="percent_occupied_100" />
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 74 and percent_occupied &lt; 100" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(255, 202, 153); margin-right:20px; margin-left:3px; height:5px;" />
+                                                        <div class="percent_occupied_99" />
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 49 and percent_occupied &lt; 75" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(255, 224, 153); margin-right:40px; margin-left:3px; height:5px;" />
+                                                        <div class="percent_occupied_75" />
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 24 and percent_occupied &lt; 50" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(207, 255, 153); margin-right:60px; margin-left:3px; height:5px;" />
+                                                        <div class="percent_occupied_50" />
                                                     </span>
                                                     <span t-if="percent_occupied &gt; 0 and percent_occupied &lt; 25" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(171, 255, 153); margin-right:80px; margin-left:3px; height:5px;" />
+                                                        <div class="percent_occupied_25" />
                                                     </span>
                                                     <span t-if="percent_occupied == 0" style="width:100%">
-                                                        <div style="col border-radius: 5%; background-color:rgb(207 255 153 / 0%); margin-right:80px; margin-left:3px; height:5px;" />
+                                                        <div class="percent_occupied_0" />
                                                     </span>
                                                 </div>
                                             </th>

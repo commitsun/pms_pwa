@@ -17,7 +17,7 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
     ];
 
     publicWidget.registry.PMSPWABookingEngineWidget = publicWidget.Widget.extend({
-        selector: ".o_pms_icons, #o_pms_pwa_new_reservation_modal",
+        selector: ".o_pms_icons, #o_pms_pwa_new_reservation_modal, table.o_pms_pwa_reduced_reservation_list_table",
         events: {
             "click #button_reservation_modal": "_onClickPMSPWABookingEngine",
             "change .call_booking_engine": "_onChangePMSPWABookingEngine",
