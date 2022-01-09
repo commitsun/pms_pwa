@@ -255,13 +255,26 @@ class PmsReservation(http.Controller):
                 else:
                     refund_partner_id = reservation.partner_id.id
                 try:
-                    _logger.info("refund_partner_id : {}".format(refund_partner_id))
-                    # Gestionar la devolución
+                    account_journals = (
+                        reservation.folio_id.pms_property_id._get_payment_methods()
+                    )
+                    journal = account_journals.browse(payment_method)
+                    partner = request.env["res.partner"].browse(int(refund_partner_id))
+                    reservation.folio_id.do_refund(
+                        journal,
+                        journal.suspense_account_id,
+                        request.env.user,
+                        payment_amount,
+                        reservation.folio_id,
+                        partner=partner if partner else reservation.partner_id,
+                        date=fields.date.today(),
+                    )
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
                 return json.dumps(
-                    {"result": True, "message": _("Operation completed successfully.")}
+                    {"result": True, "message": _("Devolución realizada correctamente.")}
                 )
+
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
@@ -445,7 +458,7 @@ class PmsReservation(http.Controller):
                         "name": x.journal_id.display_name,
                     },
                     "date": x.date,
-                    "amount": x.amount,
+                    "amount": x.amount if x.payment_type == "inbound" else -x.amount,
                 }
                 for x in payment_lines_batch
             ]
@@ -512,28 +525,66 @@ class PmsReservation(http.Controller):
                         }
                     )
                 elif journal.type == "bank" and payment:
-                    payment.action_draft()
-                    payment.update(
-                        {
-                            "journal_id": journal_id,
-                            "date": date,
-                            "amount": amount,
-                        }
-                    )
-                    payment.action_post()
+                    if payment.journal_id.id != journal_id:
+                        pay_type = "inbound" if amount > 0 else "outbound"
+                        payment.action_draft()
+                        payment.action_draft()
+                        payment.action_cancel()
+                        payment.unlink()
+                        if pay_type == "inbound":
+                            folio.do_payment(
+                                journal,
+                                journal.suspense_account_id,
+                                request.env.user,
+                                amount,
+                                folio,
+                                partner=folio.partner_id,
+                                date=date,
+                            )
+                        else:
+                            folio.do_refund(
+                                journal,
+                                journal.suspense_account_id,
+                                request.env.user,
+                                amount,
+                                folio,
+                                partner=folio.partner_id,
+                                date=date,
+                            )
+                    else:
+                        payment.action_draft()
+                        payment.update(
+                            {
+                                "date": date,
+                                "amount": amount,
+                            }
+                        )
+                        payment.action_post()
                 elif journal.type == "cash" and payment:
+                    pay_type = "inbound" if amount > 0 else "outbound"
                     payment.action_draft()
                     payment.action_cancel()
                     payment.unlink()
-                    folio.do_payment(
-                        journal,
-                        journal.suspense_account_id,
-                        request.env.user,
-                        amount,
-                        folio,
-                        partner=folio.partner_id,
-                        date=date,
-                    )
+                    if pay_type == "inbound":
+                        folio.do_payment(
+                            journal,
+                            journal.suspense_account_id,
+                            request.env.user,
+                            amount,
+                            folio,
+                            partner=folio.partner_id,
+                            date=date,
+                        )
+                    else:
+                        folio.do_refund(
+                            journal,
+                            journal.suspense_account_id,
+                            request.env.user,
+                            amount,
+                            folio,
+                            partner=folio.partner_id,
+                            date=date,
+                        )
                 elif journal.type == "bank" and statement:
                     statement.unlink()
                     folio.do_payment(
