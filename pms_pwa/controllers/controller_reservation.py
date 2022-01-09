@@ -230,6 +230,41 @@ class PmsReservation(http.Controller):
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
+        "/reservation/<int:reservation_id>/refund",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def reservation_refund(self, reservation_id=None, **kw):
+        _logger.info("reservation_id: {}".format(reservation_id))
+        _logger.info("kw: {}".format(kw))
+        _logger.info("http.request.jsonrequest: {}".format(http.request.jsonrequest))
+        if reservation_id:
+            reservation = (
+                request.env["pms.reservation"]
+                .sudo()
+                .search([("id", "=", int(reservation_id))])
+            )
+            if reservation:
+                payload = http.request.jsonrequest.get("params")
+                payment_method = int(payload["payment_method"])
+                payment_amount = float(payload["amount"])
+                if "partner_id" in payload:
+                    refund_partner_id = int(payload["partner_id"])
+                else:
+                    refund_partner_id = reservation.partner_id.id
+                try:
+                    _logger.info("refund_partner_id : {}".format(refund_partner_id))
+                    # Gestionar la devolución
+                except Exception as e:
+                    return json.dumps({"result": False, "message": str(e)})
+                return json.dumps(
+                    {"result": True, "message": _("Operation completed successfully.")}
+                )
+            return json.dumps({"result": False, "message": _("Reservation not found")})
+
+    @http.route(
         "/reservation/<int:reservation_id>/invoice",
         type="json",
         auth="public",
