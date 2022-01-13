@@ -7,14 +7,14 @@ section.o_pms_pwa_roomdoo {
             border: none !important;
         }
         .ui-droppable-hover{
-            background-color: #B0E0E6 !important;
+            background-color: $bg-theme-color !important;
             border: none !important;
         }
         .ui-state-active{
             background-color: $bg-theme-color;
         }
         .ui-state-hover{
-            background-color: #B0E0E6 !important;
+            background-color: $bg-theme-color  !important;
         }
 
         @media (max-width: 991.98px) {
@@ -79,7 +79,7 @@ section.o_pms_pwa_roomdoo {
             border: 1px solid #CED4DA;
             border-radius: 0.25rem;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             align-items: center;
             a {
                 color: $theme-color;
@@ -349,11 +349,16 @@ section.o_pms_pwa_roomdoo {
                                 font-weight: bold;
                                 padding: 0.1rem;
                                 color: white;
+                                i {
+                                    -moz-transform: rotate(0deg);
+                                    -webkit-transform: rotate(0deg);
+                                    transform: rotate(0deg);
+                                }
                             }
                             div:nth-child(1) > .circle {
                                 background-color:#01b6e3;
                             }
-                            div:nth-child(2) > .circle {
+                            div:nth-child(3) > .circle {
                                 color:#000000;
                                 border-radius: 0%;
                                 border-left: 1px solid #dadada;
@@ -361,7 +366,7 @@ section.o_pms_pwa_roomdoo {
                                 border-right: 1px solid white;
                                 border-bottom: 1px solid white;
                                 background-color: white;
-                                margin-right: -21px;
+                                margin-right: -10px;
                                 margin-bottom: -2px;
                             }
                         }
@@ -1307,4 +1312,11 @@ section.o_pms_pwa_roomdoo {
 }
 .property-change{
     cursor: pointer !important;
+}
+#buttom_save {
+    position: absolute;
+    width: 100px;
+    top: 2%;
+    z-index: 999;
+    right: 4%;
 }

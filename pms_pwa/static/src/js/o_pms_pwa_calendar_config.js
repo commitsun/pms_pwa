@@ -41,7 +41,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
 
         _onClickSendCalendarData: function (event) {
             event.preventDefault();
-
+            console.log("envio save");
             var room_type = {};
             var send;
             $(".calendar_config_input input").each(function (index) {

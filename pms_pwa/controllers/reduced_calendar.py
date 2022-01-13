@@ -407,7 +407,7 @@ class PmsCalendar(http.Controller):
                     "Modificar la reserva de "
                     + reservation.partner_name
                     + " a la habitación " + new_room.display_name
-                    + " con checkin " + new_checkin
+                    + " con checkin " + new_checkin.strftime("%d/%M/%Y")
                 )
                 # If new room isn't free in new dates no change
                 # Change Prices??
@@ -420,7 +420,7 @@ class PmsCalendar(http.Controller):
                 # If new room isn't free, Swap reservations??
             elif change_checkin:
                 _logger.info("Change only Checkin")
-                confirmation_mens = ("Modificar la fecha de entrada de %s a %s",reservation.partner_name, new_checkin)
+                confirmation_mens = ("Modificar la fecha de entrada de %s a %s", reservation.partner_name, new_checkin.strftime("%d/%M/%Y"))
                 # Change Prices?
             print("--->", post)
             return {"result": "success", "message": confirmation_mens, "date": post["date"], "reservation": post["id"], "room": post["room"] }

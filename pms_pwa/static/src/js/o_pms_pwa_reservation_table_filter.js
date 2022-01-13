@@ -110,6 +110,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             return this._super.apply(this, arguments);
         },
         convertDay: function (day_to_convert) {
+            var self = this;
             if (document.documentElement.lang === "es-ES") {
                 try {
                     let parts_of_date = day_to_convert.split("/");
@@ -146,6 +147,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             return day_to_convert;
         },
         closestEdge: function (mouse, elem) {
+            var self = this;
             var elemBounding = elem.getBoundingClientRect();
             console.log("elemBounding ---> ", elemBounding);
             var elementLeftEdge = elemBounding.left;
@@ -180,8 +182,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
         },
         secondLaunchLines: function (data, pms_property_id) {
-
-                console.log("Er carola ->", data.reservations);
+                var self = this;
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
                     pms_property_id: pms_property_id,
                     obj_list: data.reservations,
@@ -192,16 +193,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 $('table.o_pms_pwa_reduced_reservation_list_table').tableHover({colClass: 'hover'});
                 // ESTO PARA CREAR EL DRAG
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_reduced_calendar_reservation").draggable({
-                    containment: "#reduced_calendar_table",
-                    revert: "invalid",
-                    start: function (event, ui) {
-                        // event.preventDefault();
-                        console.log("creo el dragabble");
-                        $(event.currentTarget).addClass("z-index-all");
-                        $(".o_pms_pwa_line_cell_content").removeAttr("style");
-                        $(".o_pms_pwa_line_cell_content").draggable();
-                        drop_function = true;
-                    },
+                    containment: "table.o_pms_pwa_reduced_reservation_list_table",
+                    // revert: "invalid",
+                    axis: "y",
+                    // start: function (event, ui) {
+                    //     // event.preventDefault();
+                    //     console.log("creo el dragabble");
+                    //     $(event.currentTarget).addClass("z-index-all");
+                    //     $(".o_pms_pwa_line_cell_content").removeAttr("style");
+                    //     $(".o_pms_pwa_line_cell_content").draggable();
+                    //     drop_function = true;
+                    // },
                 });
                 // ESTO PARA VER DONDE IR Y DROP PARA CONOCER DONDE SE SUELTA
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_line_cell_content").droppable({
@@ -476,37 +478,42 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     .hasClass("o_pms_pwa_range_days_selecting") &&
                                 mouseDown
                             ) {
-                                var went = self.closestEdge(e, $(this)[0]);
 
-                                if (went == "top" || went == "bottom") {
-                                    console.log(went);
-                                    console.log($(this));
-                                    $(".o_pms_pwa_range_days_selecting .o_pms_pwa_range_days_end").removeClass("o_pms_pwa_range_days_end");
-                                    $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
-                                    // $(this).closest('td').next('td').addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
-                                    doneSelecting = true;
-                                    console.log(doneSelecting);
-                                }
-                                if (went == "right") {
-                                    console.log("Right");
-                                    if ($(this).hasClass("o_pms_pwa_range_days_start")) {
-                                        selectingToTheLeft = false;
-                                        selectingToTheRight = true;
-                                    } else {
-                                        $(this).removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
-                                        $(this).addClass("o_pms_pwa_range_days_selected");
-                                    }
-                                }
-                                if (went == "left") {
-                                    console.log("left");
-                                    if ($(this).hasClass("o_pms_pwa_range_days_start")) {
-                                        selectingToTheLeft = true;
-                                        selectingToTheRight = false;
-                                        $(this).removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start");
+                                try{
+                                    var went = self.closestEdge(e, $(this)[0]);
+
+                                    if (went == "top" || went == "bottom") {
+                                        console.log(went);
+                                        console.log($(this));
+                                        $(".o_pms_pwa_range_days_selecting .o_pms_pwa_range_days_end").removeClass("o_pms_pwa_range_days_end");
                                         $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
-                                    } else {
-                                        $(this).removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                        // $(this).closest('td').next('td').addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                        doneSelecting = true;
+                                        console.log(doneSelecting);
                                     }
+                                    if (went == "right") {
+                                        console.log("Right");
+                                        if ($(this).hasClass("o_pms_pwa_range_days_start")) {
+                                            selectingToTheLeft = false;
+                                            selectingToTheRight = true;
+                                        } else {
+                                            $(this).removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                            $(this).addClass("o_pms_pwa_range_days_selected");
+                                        }
+                                    }
+                                    if (went == "left") {
+                                        console.log("left");
+                                        if ($(this).hasClass("o_pms_pwa_range_days_start")) {
+                                            selectingToTheLeft = true;
+                                            selectingToTheRight = false;
+                                            $(this).removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start");
+                                            $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                        } else {
+                                            $(this).removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                        }
+                                    }
+                                }catch{
+                                    console.log("Error");
                                 }
                             }
                         }
@@ -514,6 +521,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 );
         },
         displayContent: function (xmlid, render_values) {
+            var self = this;
             var html = core.qweb.render(xmlid, render_values);
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
@@ -798,6 +806,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             ); */
         },
         refreshMultiModal: function (result, data_id = false) {
+            var self = this;
             var allowed_fields = ["room_numbers"];
             var folio_reservation_data = JSON.parse(result).reservation
                 .folio_reservations;
@@ -876,6 +885,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             }
         },
         _openModalFromExternal: function (event) {
+            var self = this;
             try {
                 var reservation_id = event.currentTarget.getAttribute("data-id");
 
@@ -895,6 +905,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         /* DobleClick event control */
         _onDobleClickReservationButton: function (event) {
+            var self = this;
             event.stopImmediatePropagation();
             event.preventDefault();
             console.log("Double click");
@@ -911,6 +922,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         /* OnClick events */
         _onClickReservationButton: function (event) {
+            var self = this;
             var target = $(event.currentTarget);
             target.prop("disabled", true);
             event.stopImmediatePropagation();
@@ -1803,6 +1815,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             });
         },
         _onClickAssingButton: function (event) {
+            var self = this;
             console.log("-->", event);
             event.preventDefault();
             var button = event.currentTarget;
@@ -1819,6 +1832,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         },
         _onClickNotLastChildA: function (event) {
             event.stopPropagation();
+            var self = this;
         },
         _onClickCheckinButton: function (event) {
             event.preventDefault();
