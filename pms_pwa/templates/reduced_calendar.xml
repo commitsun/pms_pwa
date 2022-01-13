@@ -81,7 +81,9 @@
                                     </div>
                                 </div>
                                 <div class="row mt-4">
-                                    <div class="col-12"><h3>Días</h3></div>
+                                    <div class="col-12">
+                                        <h3>Días</h3>
+                                    </div>
                                     <div class="col-12">
 
 
@@ -170,7 +172,10 @@
                                     </div>
                                 </div>
                                 <div class="row roomdoo_rules">
-                                    <div class="col-12"><h3>Reglas</h3><hr /></div>
+                                    <div class="col-12">
+                                        <h3>Reglas</h3>
+                                        <hr />
+                                    </div>
                                     <div class="col-6">
                                         <div class="form-group row">
                                             <div class="col-2 show_price">
@@ -308,16 +313,16 @@
                 <section class="container-fluid o_pms_pwa_roomdoo">
                     <!-- Calendar -->
 
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <ul class="nav nav-tabs" id="propertyTab" role="tablist">
                         <t t-foreach="user_id.pms_pwa_property_ids" t-as="selected_property">
                             <li class="nav-item">
                                 <t t-if="selected_property.id == pms_property_id">
-                                    <a class="nav-link active property-change" t-attf-id="property-tab-{{ selected_property.id }}" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                                    <a class="nav-link active property-change" t-attf-id="property-tab-{{ selected_property.id }}" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">
                                         <t t-esc="selected_property.name" />
                                     </a>
                                 </t>
                                 <t t-else="">
-                                    <a class="nav-link property-change" t-attf-id="property-tab-{{ selected_property.id }}" role="tab" aria-selected="false">
+                                    <a class="nav-link property-change" t-attf-id="property-tab-{{ selected_property.id }}" data-toggle="tab" role="tab" aria-controls="home" aria-selected="false">
                                         <t t-esc="selected_property.name" />
                                     </a>
                                 </t>
@@ -326,6 +331,11 @@
                     </ul>
 
                     <div class="o_pms_pwa_reduced_calendar o_pms_pwa_full_shadow bg-white p-5">
+                        <div id="buttom_save">
+                            <button id="save" name="save" class="btn btn-radius btn-pms_pwa w-100 d-none">
+                                Guardar
+                            </button>
+                        </div>
                         <div class="row mb-2">
                             <div class="col-12 mb-2 ">
                                 <form action="/reservation/list" method="post" t-att-class="_classes">
@@ -365,11 +375,11 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="row m-0 p-0 mb-2">
-                            <!-- select pricelist -->
-                            <div class="col-6 col-md-3 col-lg-3 col-xl-3 pr-0">
-                                Tarifa:
-                                <form method="post" action="">
+                        <form method="post" action="">
+                            <div class="row m-0 p-0 mb-2">
+                                <!-- select pricelist -->
+                                <div class="col-md-4 col-lg-4 col-xl-4 pr-0">
+                                    Tarifa:
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')" />
                                     <input type="hidden" name="selected_property" t-att-value="pms_property_id" />
@@ -380,46 +390,49 @@
                                             </option>
                                         </t>
                                     </select>
-                                </form>
-                            </div>
-                            <div class="col-6 d-none d-md-block d-lg-none d-xl-none pt-2" />
-                            <div class="col-6 col-md-3 col-lg-3 col-xl-2 pr-0">
-                                <span class="d-block">Fecha:</span>
-                                <div class="o_pms_pwa_month_select form-control px-0">
-
-                                    <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="mx-2 o_pms_pwa_calendar_arrow">
-                                        <i class="fa fa-angle-left" />
-                                    </a>
-                                    <!-- <span class="o_pms_pwa_month_select_calendar_icon">
-                                        <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
-                                    </span> -->
-                                    <input type="hidden" name="calendar_selected_date" t-value="date_start" />
-                                    <input type="hidden" name="selected_property" t-att-value="pms_property_id" />
-                                    <button type="button" class="btn btn-calendar-roomdoo o_pms_pwa_daterangepicker_calendar" data-dismiss="modal">
-                                        <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
-                                    </button>
-
-                                    <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="mx-2 o_pms_pwa_calendar_arrow">
-                                        <i class="fa fa-angle-right" />
-                                    </a>
                                 </div>
+                                <div class="col-md-4 col-lg-4 col-xl-4 pr-0">
+                                    Plan de disponibilidad:
+                                    <select id="select_availability_plan_id" name="pricelist" data-select="allowed_availability_plans" class="form-control o_website_form_input o_input" onchange="javascript:this.form.submit()">
+                                        <t t-foreach="allowed_availability_plans" t-as="availability_plan">
+                                            <option t-att-value="availability_plan['id']" t-att-selected="select_availability_plan_id==availability_plan['id']">
+                                                <t t-esc="availability_plan['name']" />
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="col-md-4 col-lg-4 col-xl-4 pr-0">
+                                    <span class="d-block">Fecha:</span>
+                                    <div class="o_pms_pwa_month_select form-control px-0">
+                                        <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="mx-2 o_pms_pwa_calendar_arrow">
+                                            <i class="fa fa-angle-left" />
+                                        </a>
+                                        <!-- <span class="o_pms_pwa_month_select_calendar_icon">
+                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar icon" />
+                                        </span> -->
+                                        <input type="hidden" name="calendar_selected_date" t-value="date_start" />
+                                        <input type="hidden" name="selected_property" t-att-value="pms_property_id" />
+                                        <button type="button" class="btn btn-calendar-roomdoo o_pms_pwa_daterangepicker_calendar" data-dismiss="modal">
+                                            <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
+                                        </button>
+
+                                        <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="mx-2 o_pms_pwa_calendar_arrow">
+                                            <i class="fa fa-angle-right" />
+                                        </a>
+                                        <a t-attf-href="?selected_date={{today.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="btn btn-pms_pwa" style="color:white;width:100px;" t-if="selected_date.strftime('%d-%m-%Y') != today.strftime('%d-%m-%Y')">Hoy</a>
+                                    </div>
+
+                                </div>
+
                             </div>
-                        </div>
+                        </form>
                         <hr />
                         <div class="table-responsive">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
                             <table id="reduced_calendar_table" class="table o_pms_pwa_reduced_reservation_list_table" data-show-columns="true">
                                 <thead>
                                     <tr>
-                                        <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td" style="z-index: none !important; background-color: white !important;">
-                                            <div id="buttom_save" style="display:none;">
-
-                                                <button id="save" name="save" class="btn btn-radius btn-pms_pwa w-100 ">
-                                                Save
-                                            </button>
-                                            </div>
-
-                                        </th>
+                                        <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td" style="z-index: none !important; background-color: white !important;"></th>
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
                                                     + ('o_pms_pwa_today ' if today.strftime('%d/%m/%Y')==day.strftime('%d/%m/%Y') else ' ')
@@ -463,7 +476,11 @@
                                         <td class="o_pms_pwa_table_first_header_td">
                                             <p class="o_pms_pwa_room_name">
                                                 <i class="fa fa-angle-down"></i>
-                                                Habitaciones
+                                                <t t-foreach="user_id.pms_pwa_property_ids" t-as="selected_property">
+                                                    <t t-if="selected_property.id == pms_property_id">
+                                                        <t t-esc="selected_property.name" />
+                                                    </t>
+                                                </t>
                                             </p>
                                         </td>
                                         <t t-foreach="date_list" t-as="day">
@@ -515,9 +532,10 @@
                                         </td>
                                     </tr>
                                     <t t-foreach="rooms_list" t-as="room">
-                                        <tr class="o_pms_pwa_open_calendar_config" t-attf-data-id="{{ room['id'] }}">
+                                        <tr class="o_pms_pwa_open_calendar_config" t-attf-data-id="{{ room['id'] }}" data-toggle="collapse" t-attf-data-target="#collapse_rooms_type_{{ room['id'] }}" aria-expanded="false">
                                             <td class="o_pms_pwa_table_first_header_td">
                                                 <p class="o_pms_pwa_room_name">
+                                                    <i class="fa fa-angle-down"></i>
                                                     <t t-esc="room['default_code']" />
                                                     <span class="o_pms_pwa_title" style="text-align: center !important;">
                                                         (
@@ -549,19 +567,22 @@
                                                     <p class="calendar_config_input" style="text-align:center; padding-bottom:0; margin-bottom:0;">
                                                         <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day][room['id']]" name="price" />
                                                     </p>
-                                                    <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;">
-                                                        <t t-esc="availability_room" />
-                                                        Libres
-                                                    </p>
+
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
-                                                        <div class="col-8 m-0 pt-1 p-0 row align-items-center justify-content-center" title="editar" style="padding-bottom: 2px !important; padding-top: 0 !important;">
+                                                        <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center" title="editar" style="padding-bottom: 2px !important; padding-top: 0 !important;">
                                                             <div class="circle">
                                                                 <span class="open_changeValues">
                                                                     <i class="fa fa-edit"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center" title="A la venta">
+                                                        <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="A la venta">
+                                                            <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;font-size:14px">
+                                                                <t t-esc="availability_room" />
+                                                                Libres
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center" title="A la venta">
                                                             <t t-if="sale_avail != -1">
                                                                 <div t-if="sale_avail > 0" class="circle">
                                                                     <span>
@@ -593,7 +614,7 @@
                                                 </td>
                                             </t>
                                         </tr>
-                                        <tr class="o_pms_pwa_open_calendar_config" t-attf-data-id="{{ room['id'] }}">
+                                        <tr class="collapse o_pms_pwa_open_calendar_config" t-attf-id="collapse_rooms_type_{{ room['id'] }}" t-attf-aria-labelledby="{{ room['id'] }}">
                                             <td t-att-colspan="len(date_list)+1">
                                                 <table class="table subtable" id="calendar_conf_table_line" style="margin-bottom: 0;  padding-top: 0;">
                                                     <tr t-attf-data-id="len(date_list)+1">
