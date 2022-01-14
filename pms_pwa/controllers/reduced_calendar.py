@@ -94,7 +94,7 @@ class PmsCalendar(http.Controller):
                 'total_rooms': room_type._get_total_rooms(pms_property_id),
                 'default_code': room_type.default_code,
             })
-        return {
+        result = {
             "today": datetime.datetime.now(),
             "date_start": date_start,
             "page_name": "Calendario",
@@ -110,6 +110,8 @@ class PmsCalendar(http.Controller):
             "price_headers": price_headers,
             "rule_headers": rule_headers,
         }
+        pp.pprint(result)
+        return result
 
     @http.route(
         "/calendar/general_headers",
@@ -168,6 +170,7 @@ class PmsCalendar(http.Controller):
         for avail_date, data in groupby(avail_result, date_func):
             total_res_count = 0
             total_out_count = 0
+            avail_date = avail_date.strftime("%d/%m/%Y")
             dict_result[avail_date] = {}
             data = list(filter(lambda x: x[1] != None, data))
             data = sorted(data, key=room_type_func)
@@ -212,6 +215,7 @@ class PmsCalendar(http.Controller):
         # complete estructure to avoid dates
         for date in dates:
             if date not in dict_result:
+                date = date.strftime("%d/%m/%Y")
                 dict_result[date] = {}
                 dict_result[date]["property_header"] = {
                     'reservations_count': 0,
@@ -254,6 +258,7 @@ class PmsCalendar(http.Controller):
         # Prepare data
         dict_result = {}
         for date in dates:
+            date = date.strftime("%d/%m/%Y")
             products = [(
                 r.with_context(
                     quantity=1,
@@ -325,6 +330,8 @@ class PmsCalendar(http.Controller):
 
             rules_result = sorted(rules_result, key=date_func)
             for rule_date, data in groupby(rules_result, date_func):
+                rule_date = rule_date.strftime("%d/%m/%Y")
+                print("rule_date ---> ", rule_date)
                 dict_result[rule_date] = {}
                 data = list(filter(lambda x: x[1] != None, data))
                 data = sorted(data, key=room_type_func)
@@ -360,6 +367,7 @@ class PmsCalendar(http.Controller):
         # complete estructure to avoid dates
         for date in dates:
             if date not in dict_result:
+                date = date.strftime("%d/%m/%Y")
                 dict_result[date] = {}
                 for room_type in room_types:
                     dict_result[date][room_type.id] = {
@@ -718,4 +726,3 @@ class PmsCalendar(http.Controller):
                 }
             )
         return allowed_availability_plans, select_availability_plan.id
-
