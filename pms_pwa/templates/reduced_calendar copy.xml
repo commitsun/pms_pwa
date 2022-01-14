@@ -41,7 +41,7 @@
                         <div class="modal-body">
                             <form>
                                 <div class="row">
-                                    <div class="col-5">
+                                    <div class="col-6">
                                         <div class="form-group row">
                                             <label for="desde" class="col-sm-2 col-form-label">Desde</label>
                                             <div class="col-sm-10">
@@ -55,7 +55,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-7">
+                                    <div class="col-6">
                                         <div class="form-group row">
                                             <label for="pms_property_id" class="col-sm-2 col-form-label">Hotel</label>
                                             <div class="col-sm-10">
@@ -69,7 +69,7 @@
                                         <div class="form-group row">
                                             <label for="availability_plan_ids" class="col-sm-2 col-form-label">Disponibilidad</label>
                                             <div class="col-sm-10">
-                                                <select id="select_availability_plan_id" name="availability_plan_ids" data-select="allowed_availability_plans" class="form-control o_website_form_input o_input">
+                                                <select id="select_availability_plan_id" name="availability_plan_ids" data-select="allowed_availability_plans" class="form-control o_website_form_input o_input" onchange="javascript:this.form.submit()">
                                                     <t t-foreach="allowed_availability_plans" t-as="availability_plan">
                                                         <option t-att-value="availability_plan['id']" t-att-selected="select_availability_plan_id==availability_plan['id']">
                                                             <t t-esc="availability_plan['name']" />
@@ -81,21 +81,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-5">
-                                        <div class="form-group row">
-                                            <label for="room_type" class="col-sm-2 col-form-label">Tarifa</label>
-                                            <div class="col-sm-10">
-                                                <select id="pricelist_id" name="pricelist_id" data-select="allowed_pricelists" class="form-control o_website_form_input o_input">
-                                                    <t t-foreach="allowed_pricelists" t-as="pricelist">
-                                                        <option t-att-value="pricelist['id']" t-att-selected="pricelist['id']==select_pricelist_id">
-                                                            <t t-esc="pricelist['name']" />
-                                                        </option>
-                                                    </t>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-7">
+                                    <div class="col-12">
                                         <div class="form-group row">
                                             <label for="room_type" class="col-sm-2 col-form-label">Tipo de habitación</label>
                                             <div class="col-sm-10">
@@ -208,50 +194,50 @@
                                         <div class="form-group row">
                                             <div class="col-2 show_price">
                                                 <label class="switch">
-                                                    <input id="show_price_check" class="hidde_show_price" name="show_price" type="checkbox"/>
+                                                    <input id="show_price_check" class="hidde_show_price" name="show_price" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="price" class="col-sm-2 col-form-label">Price</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_price" id="price" placeholder="Price"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_price" id="price" placeholder="Price" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_cupo">
                                                 <label class="switch">
-                                                    <input id="show_cupo_check" class="hidde_show_cupo" name="show_cupo" type="checkbox" />
+                                                    <input id="show_cupo_check" class="hidde_show_cupo" name="show_cupo" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="cupo" class="col-sm-2 col-form-label">Cupo</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_cupo" id="cupo" placeholder="Cupo"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_cupo" id="cupo" placeholder="Cupo" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2">
                                                 <label class="switch show_estmin">
-                                                    <input id="show_cupo_check" class="hidde_show_estmin" name="show_estmin" type="checkbox" />
+                                                    <input id="show_cupo_check" class="hidde_show_estmin" name="show_estmin" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="estmin" class="col-sm-2 col-form-label">Est. Mín</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_estmin" id="estmin" placeholder="Est. Mín"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_estmin" id="estmin" placeholder="Est. Mín" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_closed">
                                                 <label class="switch">
-                                                    <input id="show_closed_check" class="hidde_show_closed" name="show_closed" type="checkbox" />
+                                                    <input id="show_closed_check" class="hidde_show_closed" name="show_closed" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="closed" class="col-sm-2 col-form-label">Closed</label>
                                             <div class="col-sm-8">
-                                                <label class="switch hidde_closed"  style="display: none;">
-                                                    <input data-edit="false" name="closed" type="checkbox"/>
+                                                <label class="switch hidde_closed">
+                                                    <input data-edit="false" name="closed" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
@@ -259,13 +245,13 @@
                                         <div class="form-group row">
                                             <div class="col-2 show_max_dispo">
                                                 <label class="switch">
-                                                    <input id="show_max_dispo_check" class="hidde_show_max_dispo" name="show_max_dispo" type="checkbox" />
+                                                    <input id="show_max_dispo_check" class="hidde_show_max_dispo" name="show_max_dispo" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_dispo" class="col-sm-2 col-form-label">Máx. Disp.</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_dispo" id="max_dispo" name="max_dispo" placeholder="Máx. Disp."  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_max_dispo" id="max_dispo" name="max_dispo" placeholder="Máx. Disp." />
                                             </div>
                                         </div>
                                     </div>
@@ -274,50 +260,50 @@
                                         <div class="form-group row">
                                             <div class="col-2 show_max_stay">
                                                 <label class="switch">
-                                                    <input id="show_max_stay_check" class="hidde_show_max_stay" name="show_max_stay" type="checkbox" />
+                                                    <input id="show_max_stay_check" class="hidde_show_max_stay" name="show_max_stay" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_stay" id="max_stay" name="max_stay" placeholder="Est. Máx"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_max_stay" id="max_stay" name="max_stay" placeholder="Est. Máx" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_max_stay_sa">
                                                 <label class="switch">
-                                                    <input id="show_max_stay_sa_check" class="hidde_show_max_stay_sa" name="show_max_stay_sa" type="checkbox" />
+                                                    <input id="show_max_stay_sa_check" class="hidde_show_max_stay_sa" name="show_max_stay_sa" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Sa.</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_stay_sa" id="max_stay_sa" name="max_stay_sa" placeholder="Est. Máx Sa." style="display: none;" />
+                                                <input type="text" class="form-control hidde_max_stay_sa" id="max_stay_sa" name="max_stay_sa" placeholder="Est. Máx Sa." />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_max_stay_ll">
                                                 <label class="switch">
-                                                    <input id="show_max_stay_ll_check" class="hidde_show_max_stay_ll" name="show_max_stay_ll" type="checkbox"/>
+                                                    <input id="show_max_stay_ll_check" class="hidde_show_max_stay_ll" name="show_max_stay_ll" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Ll.</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_stay_ll" id="max_stay_ll" placeholder="Est. Máx Ll." style="display: none;" />
+                                                <input type="text" class="form-control hidde_max_stay_ll" id="max_stay_ll" placeholder="Est. Máx Ll." />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_closed_arrival">
                                                 <label class="switch">
-                                                    <input id="show_closed_arrival_check" class="hidde_show_closed_arrival" name="show_closed_arrival" type="checkbox"/>
+                                                    <input id="show_closed_arrival_check" class="hidde_show_closed_arrival" name="show_closed_arrival" type="checkbox" checked="false" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="closed_arrival" class="col-sm-2 col-form-label">Cerrar Ll.</label>
                                             <div class="col-sm-8">
-                                                <label class="switch hidde_closed_arrival"  style="display: none;">
-                                                    <input data-edit="false" name="closed_arrival" type="checkbox"/>
+                                                <label class="switch hidde_closed_arrival">
+                                                    <input data-edit="false" name="closed_arrival" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
@@ -467,15 +453,10 @@
                                                     + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==5 else ' ')
                                                     + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==6 else ' ')
                                                     " t-att-data-value="x" style="padding-bottom:0;">
-                                                <!-- <t t-set="property_total_day_reservations" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['reservations_count']"></t>
+                                                <t t-set="property_total_day_reservations" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['reservations_count']"></t>
                                                 <t t-set="property_total_out_service" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['outs_count']"></t>
                                                 <t t-set="availability_day" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['num_avail']"></t>
-                                                <t t-set="percent_occupied" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['percent_occupied']"></t> -->
-
-                                                <t t-set="property_total_day_reservations" t-value="general_headers[day]['property_header']['reservations_count']"></t>
-                                                <t t-set="property_total_out_service" t-value="general_headers[day]['property_header']['outs_count']"></t>
-                                                <t t-set="availability_day" t-value="general_headers[day]['property_header']['num_avail']"></t>
-                                                <t t-set="percent_occupied" t-value="general_headers[day]['property_header']['percent_occupied']"></t>
+                                                <t t-set="percent_occupied" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['percent_occupied']"></t>
                                                 <span class="header_date">
                                                     <t t-esc="day" t-options='{"widget": "date", "format": "EEE dd, MMM"}' />
                                                 </span>
@@ -518,14 +499,10 @@
                                         </td>
                                         <t t-foreach="date_list" t-as="day">
 
-                                            <!-- <t t-set="availability_room" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['num_avail']"></t>
+                                            <t t-set="availability_room" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['num_avail']"></t>
                                             <t t-set="rooms_occupied_reservations" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['reservations_count']"></t>
                                             <t t-set="rooms_occupied_out_service" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['outs_count']"></t>
-                                            <t t-set="percent_occupied" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['percent_occupied']"></t> -->
-                                            <t t-set="availability_room" t-value="general_headers[day]['property_header']['num_avail']"></t>
-                                            <t t-set="rooms_occupied_reservations" t-value="general_headers[day]['property_header']['reservations_count']"></t>
-                                            <t t-set="rooms_occupied_out_service" t-value="general_headers[day]['property_header']['outs_count']"></t>
-                                            <t t-set="percent_occupied" t-value="general_headers[day]['property_header']['percent_occupied']"></t>
+                                            <t t-set="percent_occupied" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['percent_occupied']"></t>
                                             <td t-att-class="'o_calendar_header_property '
                                                 + ('o_pms_pwa_dispo_0' if availability_room==0 else ' ')
                                                 + ('o_pms_pwa_dispo_1' if availability_room==1 else ' ')
@@ -564,8 +541,8 @@
                                     </tr>
                                     <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
                                         <td t-att-colspan="len(date_list)+1" t-attf-aria-labelledby="{{ pms_property_id }}" style="width: 100% !important;height: 5px !important;border-radius: 5rem;background-color: #eaeaea;font-size: 14px;padding: 0;">
-                                            <span style="left: 40%;position: sticky;cursor:pointer;">
-                                                <i class="fa fa-angle-down"></i> <strong>Reservas</strong>  <i class="fa fa-angle-down"></i>
+                                            <span style="margin-left:20%;">
+                                                <i class="fa fa-angle-down"></i>
                                             </span>
                                         </td>
                                     </tr>
@@ -584,23 +561,14 @@
                                             </td>
                                             <t t-foreach="date_list" t-as="day">
 
-                                                <!-- <t t-set="sale_avail" t-value="rule_headers[day.strftime('%d/%m/%Y')][room['id']]['plan_avail']"></t>
+                                                <t t-set="sale_avail" t-value="rule_headers[day.strftime('%d/%m/%Y')][room['id']]['plan_avail']"></t>
                                                 <t t-set="availability_room" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['num_avail']" />
                                                 <t t-set="rooms_occupied_reservations" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['reservations_count']"></t>
                                                 <t t-set="rooms_occupied_out_service" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['outs_count']"></t>
 
                                                 <t t-set="availability_room_percent" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['avail_percent']" />
                                                 <t t-set="rooms_occupied_reservations_percent" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['reservations_percent']"></t>
-                                                <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['outs_percent']"></t> -->
-                                                <t t-set="sale_avail" t-value="rule_headers[day][room['id']]['plan_avail']"></t>
-                                                <t t-set="availability_room" t-value="general_headers[day][room['id']]['num_avail']" />
-                                                <t t-set="rooms_occupied_reservations" t-value="general_headers[day][room['id']]['reservations_count']"></t>
-                                                <t t-set="rooms_occupied_out_service" t-value="general_headers[day][room['id']]['outs_count']"></t>
-
-                                                <t t-set="availability_room_percent" t-value="general_headers[day][room['id']]['avail_percent']" />
-                                                <t t-set="rooms_occupied_reservations_percent" t-value="general_headers[day][room['id']]['reservations_percent']"></t>
-                                                <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day][room['id']]['outs_percent']"></t>
-
+                                                <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['outs_percent']"></t>
 
                                                 <td t-att-class="'o_config_pms_pwa_table_cell '
                                                     + ('o_pms_pwa_dispo_0' if availability_room==0 else ' ')
@@ -618,8 +586,7 @@
                                                         </div>
                                                     </div>
                                                     <p class="calendar_config_input" style="text-align:center; padding-bottom:0; margin-bottom:0;">
-                                                        <!-- <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%d/%m/%Y')][room['id']]" name="price" /> -->
-                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day][room['id']]" name="price" />
+                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%d/%m/%Y')][room['id']]" name="price" />
                                                     </p>
 
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
@@ -694,7 +661,7 @@
                                                                           t-attf-tabindex="{{ select_pricelist_id }}2{{room_day}}"
                                                                           style="width:50px;"
                                                                           type="text"
-                                                                          t-attf-value="{{ rule_headers[room_day][room['id']]['quota'] }}"
+                                                                          t-attf-value="{{ rule_headers[room_day.strftime('%d/%m/%Y')][room['id']]['quota'] }}"
                                                                           name="min_stay"
                                                                     />
                                                                 </p>
@@ -708,7 +675,7 @@
                                                                           t-attf-tabindex="{{ select_pricelist_id }}2{{room_day}}"
                                                                           style="width:50px;"
                                                                           type="text"
-                                                                          t-attf-value="{{ rule_headers[room_day][room['id']]['min_stay'] }}"
+                                                                          t-attf-value="{{ rule_headers[room_day.strftime('%d/%m/%Y')][room['id']]['min_stay'] }}"
                                                                           name="min_stay"
                                                                     />
                                                                 </p>
