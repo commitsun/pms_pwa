@@ -499,6 +499,13 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             self.launchLines(event.currentTarget);
         },
         _onClickChangeValues: function (event) {
+            var self = this;
+            event.preventDefault();
+            console.log("event ---> ", event.currentTarget.getAttribute("data-date"));
+            let date_select = event.currentTarget.getAttribute("data-date");
+            $("input[name='start_date']").val(date_select);
+            $("input[name='end_date']").val(date_select);
+            $("input[name='room_type']").val(event.currentTarget.getAttribute("data-room_type"));
             $("#changesDaysValues").modal("show");
         },
         _onClickConfirmModal: function (event) {
@@ -653,6 +660,18 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         var element = document.getElementById("save");
         $(this).data("edit", true);
         element.classList.remove("d-none");
+    });
+    $("#multi_days_values input:checkbox").change(function () {
+        if (this.name == "apply_on_all_week") {
+            $("#multi_days_values input:checkbox").prop(
+                "checked",
+                $(this).prop("checked")
+            );
+        } else {
+            $(
+                "#multi_days_values input[name='apply_on_all_week']:checkbox"
+            ).prop("checked", false);
+        }
     });
 });
 
