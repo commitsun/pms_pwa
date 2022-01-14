@@ -505,7 +505,13 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             let date_select = event.currentTarget.getAttribute("data-date");
             $("input[name='start_date']").val(date_select);
             $("input[name='end_date']").val(date_select);
-            $("input[name='room_type']").val(event.currentTarget.getAttribute("data-room_type"));
+            $('select#room_type_model').selectpicker('deselectAll');
+            $('select#room_type_model').find('[value='+event.currentTarget.getAttribute("data-room_type")+']').prop('selected', true);
+
+            // $('select#room_type_model').selectpicker('val', event.currentTarget.getAttribute("data-room_type") );
+
+            // $("input[name='room_type']").val(event.currentTarget.getAttribute("data-room_type"));
+            console.log("--->", event.currentTarget.getAttribute("data-room_type"));
             $("#changesDaysValues").modal("show");
         },
         _onClickConfirmModal: function (event) {
@@ -580,17 +586,21 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             event.preventDefault();
             $('.active').not($(this)).removeClass('active');
             $(this).addClass('active');
-            console.log("actualizar contenido general", event);
-            // ajax.jsonRpc("/property/calendar", "call", {
-            //     selected_property: "1",
-            // }).then(function (updated_data) {
-            //     console.log("updated_data");
-            //     // $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
-            // });
-            $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
+            console.log("actualizar contenido general", event.currentTarget.getAttribute("data-sl-property"));
+            ajax.jsonRpc("/property/calendar", "call", {
+                selected_property: event.currentTarget.getAttribute("data-sl-property"),
+            }).then(function (updated_data) {
+                console.log("updated_data");
+                setTimeout(function() {
+                    $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*");
+                },5000) ;
+                // $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
+            });
+            // $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
         },
     });
     $(document).ready(function() {
+        $('select#room_type_model').selectpicker();
         $(".hidde_show_price").click(function(event) {
             if ($(this).is(":checked")){
                 $(".hidde_price").show();
