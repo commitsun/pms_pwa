@@ -591,19 +591,29 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         _onClickPropertyChange: function(event) {
             var self = this;
             event.preventDefault();
+            $("#status").toggle();
+            $("#preloader").toggle();
             $('.active').not($(this)).removeClass('active');
+            let urlParams = new URLSearchParams(window.location.search);
+            let selected_date = false;
+            let parameters = "?selected_property="+event.currentTarget.getAttribute("data-sl-property");
+            if(urlParams.has('selected_date')) {
+                selected_date = urlParams.get('selected_date');
+                parameters = parameters + "&selected_date="+selected_date;
+            }
             $(this).addClass('active');
-            console.log("actualizar contenido general", event.currentTarget.getAttribute("data-sl-property"));
-            ajax.jsonRpc("/property/calendar", "call", {
-                selected_property: event.currentTarget.getAttribute("data-sl-property"),
-            }).then(function (updated_data) {
-                console.log("updated_data");
-                setTimeout(function() {
-                    $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*");
-                },5000) ;
-                // $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
-            });
-            // $("#reduced_calendar_table").load(location.href + " #reduced_calendar_table>*", "");
+            console.log("parametros ---> ", parameters);
+            $("#reduced_calendar_table").load("/calendar/reduced"+parameters+ " #reduced_calendar_table>*");
+            $("#preloader").fadeOut(2500);
+            // ajax.jsonRpc("/property/calendar", "call", {
+            //     selected_property: event.currentTarget.getAttribute("data-sl-property"),
+            //     selected_date: selected_date,
+            // }).then(function (updated_data) {
+            //     console.log("updated_data", updated_data);
+
+            //     $("#preloader").fadeOut(2500);
+            // });
+
         },
     });
     $(document).ready(function() {
