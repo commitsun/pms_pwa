@@ -55,20 +55,26 @@ class PmsReservation(models.Model):
 
     @api.model
     def create(self, vals):
-        Users = self.env['res.users']
+        Users = self.env["res.users"]
         record = super(PmsReservation, self).create(vals)
         pms_property = record.pms_property_id
-        notify_users = Users.search([
-            ('active', '=', True),
-            ("pms_pwa_property_ids", "in", pms_property.id),
-            ("id", "!=", record.create_uid.id)
-        ])
+        notify_users = Users.search(
+            [
+                ("active", "=", True),
+                ("pms_pwa_property_ids", "in", pms_property.id),
+                ("id", "!=", record.create_uid.id),
+            ]
+        )
         # We only want one notification by folio (wiht multi reservations, only select the first)
         folio = self.env["pms.folio"].browse(vals["folio_id"])
         if record.to_assign and len(folio.reservation_ids) == 1:
             for notify_user in notify_users:
                 id_notify = "notify_pms_" + str(notify_user.id)
-                mens = pms_property.name + ": Nueva reserva de " + record.channel_type_id.name
+                mens = (
+                    pms_property.name
+                    + ": Nueva reserva de "
+                    + record.channel_type_id.name
+                )
                 if record.agency_id:
                     mens += " (" + record.agency_id.name + ")"
                 else:
@@ -78,6 +84,7 @@ class PmsReservation(models.Model):
                         "id": record.id,
                         "audio": "/pms_pwa/static/audio/book_new.mp3",
                         "message": mens,
+                        "pms_property": pms_property.id,
                     }
                 )
                 self.env["bus.bus"].sendone(id_notify, notify_json)
