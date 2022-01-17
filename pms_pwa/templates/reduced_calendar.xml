@@ -463,19 +463,19 @@
                                         <th class="align-self-end o_pms_pwa_table_week o_pms_pwa_table_first_header_td" style="z-index: none !important; background-color: white !important;"></th>
                                         <t t-foreach="date_list" t-as="day">
                                             <th t-att-class="'text-center o_pms_pwa_table_week '
-                                                    + ('o_pms_pwa_today ' if today.strftime('%d/%m/%Y')==day.strftime('%d/%m/%Y') else ' ')
+                                                    + ('o_pms_pwa_today ' if today.strftime('%Y-%m-%d')==day.strftime('%Y-%m-%d') else ' ')
                                                     + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==5 else ' ')
                                                     + ('o_pms_pwa_weekend ' if int(day.strftime('%w'))==6 else ' ')
                                                     " t-att-data-value="x" style="padding-bottom:0;">
-                                                <!-- <t t-set="property_total_day_reservations" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['reservations_count']"></t>
-                                                <t t-set="property_total_out_service" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['outs_count']"></t>
-                                                <t t-set="availability_day" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['num_avail']"></t>
-                                                <t t-set="percent_occupied" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['percent_occupied']"></t> -->
+                                                <t t-set="property_total_day_reservations" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['reservations_count']"></t>
+                                                <t t-set="property_total_out_service" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['outs_count']"></t>
+                                                <t t-set="availability_day" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['num_avail']"></t>
+                                                <t t-set="percent_occupied" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['percent_occupied']"></t>
 
-                                                <t t-set="property_total_day_reservations" t-value="general_headers[day]['property_header']['reservations_count']"></t>
+                                                <!-- <t t-set="property_total_day_reservations" t-value="general_headers[day]['property_header']['reservations_count']"></t>
                                                 <t t-set="property_total_out_service" t-value="general_headers[day]['property_header']['outs_count']"></t>
                                                 <t t-set="availability_day" t-value="general_headers[day]['property_header']['num_avail']"></t>
-                                                <t t-set="percent_occupied" t-value="general_headers[day]['property_header']['percent_occupied']"></t>
+                                                <t t-set="percent_occupied" t-value="general_headers[day]['property_header']['percent_occupied']"></t> -->
                                                 <span class="header_date">
                                                     <t t-esc="day" t-options='{"widget": "date", "format": "EEE dd, MMM"}' />
                                                 </span>
@@ -518,14 +518,14 @@
                                         </td>
                                         <t t-foreach="date_list" t-as="day">
 
-                                            <!-- <t t-set="availability_room" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['num_avail']"></t>
-                                            <t t-set="rooms_occupied_reservations" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['reservations_count']"></t>
-                                            <t t-set="rooms_occupied_out_service" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['outs_count']"></t>
-                                            <t t-set="percent_occupied" t-value="general_headers[day.strftime('%d/%m/%Y')]['property_header']['percent_occupied']"></t> -->
-                                            <t t-set="availability_room" t-value="general_headers[day]['property_header']['num_avail']"></t>
+                                            <t t-set="availability_room" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['num_avail']"></t>
+                                            <t t-set="rooms_occupied_reservations" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['reservations_count']"></t>
+                                            <t t-set="rooms_occupied_out_service" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['outs_count']"></t>
+                                            <t t-set="percent_occupied" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['percent_occupied']"></t>
+                                            <!-- <t t-set="availability_room" t-value="general_headers[day]['property_header']['num_avail']"></t>
                                             <t t-set="rooms_occupied_reservations" t-value="general_headers[day]['property_header']['reservations_count']"></t>
                                             <t t-set="rooms_occupied_out_service" t-value="general_headers[day]['property_header']['outs_count']"></t>
-                                            <t t-set="percent_occupied" t-value="general_headers[day]['property_header']['percent_occupied']"></t>
+                                            <t t-set="percent_occupied" t-value="general_headers[day]['property_header']['percent_occupied']"></t> -->
                                             <td t-att-class="'o_calendar_header_property '
                                                 + ('o_pms_pwa_dispo_0' if availability_room==0 else ' ')
                                                 + ('o_pms_pwa_dispo_1' if availability_room==1 else ' ')
@@ -584,22 +584,22 @@
                                             </td>
                                             <t t-foreach="date_list" t-as="day">
 
-                                                <!-- <t t-set="sale_avail" t-value="rule_headers[day.strftime('%d/%m/%Y')][room['id']]['plan_avail']"></t>
-                                                <t t-set="availability_room" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['num_avail']" />
-                                                <t t-set="rooms_occupied_reservations" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['reservations_count']"></t>
-                                                <t t-set="rooms_occupied_out_service" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['outs_count']"></t>
+                                                <t t-set="sale_avail" t-value="rule_headers[day.strftime('%Y-%m-%d')][room['id']]['plan_avail']"></t>
+                                                <t t-set="availability_room" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['num_avail']" />
+                                                <t t-set="rooms_occupied_reservations" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['reservations_count']"></t>
+                                                <t t-set="rooms_occupied_out_service" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['outs_count']"></t>
 
-                                                <t t-set="availability_room_percent" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['avail_percent']" />
-                                                <t t-set="rooms_occupied_reservations_percent" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['reservations_percent']"></t>
-                                                <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day.strftime('%d/%m/%Y')][room['id']]['outs_percent']"></t> -->
-                                                <t t-set="sale_avail" t-value="rule_headers[day][room['id']]['plan_avail']"></t>
+                                                <t t-set="availability_room_percent" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['avail_percent']" />
+                                                <t t-set="rooms_occupied_reservations_percent" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['reservations_percent']"></t>
+                                                <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['outs_percent']"></t>
+                                                <!-- <t t-set="sale_avail" t-value="rule_headers[day][room['id']]['plan_avail']"></t>
                                                 <t t-set="availability_room" t-value="general_headers[day][room['id']]['num_avail']" />
                                                 <t t-set="rooms_occupied_reservations" t-value="general_headers[day][room['id']]['reservations_count']"></t>
                                                 <t t-set="rooms_occupied_out_service" t-value="general_headers[day][room['id']]['outs_count']"></t>
 
                                                 <t t-set="availability_room_percent" t-value="general_headers[day][room['id']]['avail_percent']" />
                                                 <t t-set="rooms_occupied_reservations_percent" t-value="general_headers[day][room['id']]['reservations_percent']"></t>
-                                                <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day][room['id']]['outs_percent']"></t>
+                                                <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day][room['id']]['outs_percent']"></t> -->
 
 
                                                 <td t-att-class="'o_config_pms_pwa_table_cell '
@@ -607,19 +607,19 @@
                                                     + ('o_pms_pwa_dispo_1' if availability_room==1 else ' ')
                                                 " style="padding: 0 !important;">
                                                     <div class="progress">
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" t-attf-style="width:{{availability_room_percent}}%">
-                                                            <t t-esc="availability_room" />
-                                                        </div>
-                                                        <div class="progress-bar progress-bar-warning" role="progressbar" t-attf-style="width:{{rooms_occupied_reservations_percent}}%">
+                                                        <div class="progress-bar progress-bar-success" role="progressbar" t-attf-style="width:{{rooms_occupied_reservations_percent}}%">
                                                             <t t-esc="rooms_occupied_reservations" />
                                                         </div>
-                                                        <div class="progress-bar progress-bar-danger" role="progressbar" t-attf-style="width:{{rooms_occupied_out_service_percent}}%">
+                                                        <div class="progress-bar progress-bar-warning" role="progressbar" t-attf-style="width:{{rooms_occupied_out_service_percent}}%">
                                                             <t t-esc="rooms_occupied_out_service" />
+                                                        </div>
+                                                        <div class="progress-bar progress-bar-danger" role="progressbar" t-attf-style="width:{{availability_room_percent}}%">
+                                                            <t t-esc="availability_room" />
                                                         </div>
                                                     </div>
                                                     <p class="calendar_config_input" style="text-align:center; padding-bottom:0; margin-bottom:0;">
-                                                        <!-- <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%d/%m/%Y')][room['id']]" name="price" /> -->
-                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day][room['id']]" name="price" />
+                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />
+                                                        <!-- <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day][room['id']]" name="price" /> -->
                                                     </p>
 
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
@@ -685,7 +685,7 @@
                                                             <td t-att-class="'o_config_pms_pwa_table_cell '
                                                                     " t-attf-data="{{ room_day }}" style="padding-top: 0;">
                                                                 <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
-                                                                    <input
+                                                                    <!-- <input
                                                                           t-attf-data-room="{{ room['id'] }}"
                                                                           t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                           t-attf-data-availability_plan="{{ select_availability_plan_id }}"
@@ -696,10 +696,10 @@
                                                                           type="text"
                                                                           t-attf-value="{{ rule_headers[room_day][room['id']]['quota'] }}"
                                                                           name="min_stay"
-                                                                    />
+                                                                    /> -->
                                                                 </p>
                                                                 <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
-                                                                    <input
+                                                                    <!-- <input
                                                                           t-attf-data-room="{{ room['id'] }}"
                                                                           t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                           t-attf-data-availability_plan="{{ select_availability_plan_id }}"
@@ -710,7 +710,7 @@
                                                                           type="text"
                                                                           t-attf-value="{{ rule_headers[room_day][room['id']]['min_stay'] }}"
                                                                           name="min_stay"
-                                                                    />
+                                                                    /> -->
                                                                 </p>
                                                                 <p class="calendar_config_input" style="text-align:center;">
                                                                     <label class="switch">

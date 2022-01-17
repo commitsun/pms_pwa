@@ -383,10 +383,11 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
 
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_free_day").hover(
                     function (e) {
-                        //console.log(doneSelecting);
+                        console.log("--->", doneSelecting);
                         // Esta función se ejecuta cuando el puntero del ratón entra en el elemento tr
                         $(this).parent("tr.o_pms_pwa_reduced_calendar_line").hasClass("o_pms_pwa_range_days_selecting")
                         if (!doneSelecting) {
+                            console.log("hover");
                             if (
                                 $(this)
                                     .parent("tr.o_pms_pwa_reduced_calendar_line")
@@ -394,14 +395,15 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                                 mouseDown
                             ) {
                                 //only in the selected row
+                                console.log("selectingToTheRight -> ", selectingToTheRight);
                                 if (selectingToTheRight) {
                                     $("td.o_pms_pwa_range_days_end").removeClass("o_pms_pwa_range_days_end"); //we reset any end TD
                                     $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
                                 }
-                                /*
-                              if(selectingToTheLeft){
-                                $(this).addClass("selected start");
-                              }*/
+
+                                if(selectingToTheLeft){
+                                    $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start");
+                                }
                             }
                         }
                     },
@@ -448,8 +450,13 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                                             $(this).removeClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
                                         }
                                     }
+
                                 }catch{
-                                        console.log("error");
+                                    console.log("error");
+                                    // $(".o_pms_pwa_range_days_selecting .o_pms_pwa_range_days_end").removeClass("o_pms_pwa_range_days_end");
+                                    // $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                    // // $(this).closest('td').next('td').addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
+                                    // doneSelecting = true;
                                 }
                             }
                         }
