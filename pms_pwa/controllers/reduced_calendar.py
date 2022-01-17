@@ -110,7 +110,7 @@ class PmsCalendar(http.Controller):
             "price_headers": price_headers,
             "rule_headers": rule_headers,
         }
-        # pp.pprint(result)
+        pp.pprint(result)
         return result
 
     @http.route(
@@ -170,8 +170,8 @@ class PmsCalendar(http.Controller):
         for avail_date, data in groupby(avail_result, date_func):
             total_res_count = 0
             total_out_count = 0
-            # s_avail_date = avail_date.strftime(get_lang(request.env).date_format)
-            dict_result[avail_date] = {}
+            s_avail_date = avail_date.strftime("%Y-%m-%d")
+            dict_result[s_avail_date] = {}
             data = list(filter(lambda x: x[1] != None, data))
             data = sorted(data, key=room_type_func)
             for room_type_id, vals in groupby(data, room_type_func):
@@ -181,7 +181,7 @@ class PmsCalendar(http.Controller):
                 out_count = sum([x[3] for x in vals if x[2] == 'out'])
                 total_rooms = room_type._get_total_rooms(pms_property.id)
                 num_avail = room_type._get_total_rooms(pms_property.id) - (res_count + out_count)
-                dict_result[avail_date][room_type_id] = {
+                dict_result[s_avail_date][room_type_id] = {
                     'reservations_count': res_count,
                     'outs_count': out_count,
                     'num_avail': num_avail,
@@ -194,8 +194,8 @@ class PmsCalendar(http.Controller):
                     total_out_count += out_count
             # complete estructure to avoid room types
             for room_type in room_types:
-                if room_type.id not in dict_result[avail_date]:
-                    dict_result[avail_date][room_type.id] = {
+                if room_type.id not in dict_result[s_avail_date]:
+                    dict_result[s_avail_date][room_type.id] = {
                         'reservations_count': 0,
                         'outs_count': 0,
                         'num_avail': room_type._get_total_rooms(pms_property.id),
@@ -203,7 +203,7 @@ class PmsCalendar(http.Controller):
                         'outs_percent': 0,
                         'avail_percent': 100,
                     }
-            dict_result[avail_date]["property_header"] = {
+            dict_result[s_avail_date]["property_header"] = {
                 'reservations_count': total_res_count,
                 'outs_count': total_out_count,
                 'percent_occupied': int((total_res_count + total_out_count) * 100 / pms_property._get_total_rooms()),
@@ -214,10 +214,10 @@ class PmsCalendar(http.Controller):
             }
         # complete estructure to avoid dates
         for date in dates:
-            if date not in dict_result:
-                # s_date = date.strftime(get_lang(request.env).date_format)
-                dict_result[date] = {}
-                dict_result[date]["property_header"] = {
+            s_date = date.strftime("%Y-%m-%d")
+            if s_date not in dict_result:
+                dict_result[s_date] = {}
+                dict_result[s_date]["property_header"] = {
                     'reservations_count': 0,
                     'outs_count': 0,
                     'percent_occupied': 0,
@@ -227,7 +227,7 @@ class PmsCalendar(http.Controller):
                     'avail_percent': 100,
                 }
                 for room_type in room_types:
-                    dict_result[date][room_type.id] = {
+                    dict_result[s_date][room_type.id] = {
                         'reservations_count': 0,
                         'outs_count': 0,
                         'num_avail': room_type._get_total_rooms(pms_property.id),
@@ -264,7 +264,7 @@ class PmsCalendar(http.Controller):
         # Prepare data
         dict_result = {}
         for date in dates:
-            # a_date = date.strftime(get_lang(request.env).date_format)
+            a_date = date.strftime("%Y-%m-%d")
             products = [(
                 r.with_context(
                     quantity=1,
@@ -275,7 +275,7 @@ class PmsCalendar(http.Controller):
                 False
             ) for r in room_types.product_id]
             date_prices = pricelist._compute_price_rule(products, datetime.datetime.today())
-            dict_result[date] = {
+            dict_result[a_date] = {
                 request.env["product.product"].browse(k).room_type_id.id: v[0] for k, v in date_prices.items()
             }
 
@@ -336,13 +336,13 @@ class PmsCalendar(http.Controller):
 
             rules_result = sorted(rules_result, key=date_func)
             for rule_date, data in groupby(rules_result, date_func):
-                # s_rule_date = rule_date.strftime(get_lang(request.env).date_format)
-                dict_result[rule_date] = {}
+                s_rule_date = rule_date.strftime("%Y-%m-%d")
+                dict_result[s_rule_date] = {}
                 data = list(filter(lambda x: x[1] != None, data))
                 data = sorted(data, key=room_type_func)
                 for room_type_id, vals in groupby(data, room_type_func):
                     vals = list(vals)[0]
-                    dict_result[rule_date][room_type_id] = {
+                    dict_result[s_rule_date][room_type_id] = {
                         'min_stay': vals[2],
                         'closed': vals[3],
                         'quota': vals[4],
@@ -356,8 +356,8 @@ class PmsCalendar(http.Controller):
                     }
                 # complete estructure to avoid room types
                 for room_type in room_types:
-                    if room_type.id not in dict_result[rule_date]:
-                        dict_result[rule_date][room_type_id] = {
+                    if room_type.id not in dict_result[s_rule_date]:
+                        dict_result[s_rule_date][room_type_id] = {
                             'min_stay': 0,
                             'closed': 0,
                             'quota': -1,
@@ -371,11 +371,11 @@ class PmsCalendar(http.Controller):
                         }
         # complete estructure to avoid dates
         for date in dates:
-            if date not in dict_result:
-                #s_date = date.strftime(get_lang(request.env).date_format)
-                dict_result[date] = {}
+            s_date = date.strftime("%Y-%m-%d")
+            if s_date not in dict_result:
+                dict_result[s_date] = {}
                 for room_type in room_types:
-                    dict_result[date][room_type.id] = {
+                    dict_result[s_date][room_type.id] = {
                         'min_stay': 0,
                         'closed': 0,
                         'quota': -1,
