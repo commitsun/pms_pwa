@@ -110,7 +110,7 @@ class PmsCalendar(http.Controller):
             "price_headers": price_headers,
             "rule_headers": rule_headers,
         }
-        pp.pprint(result)
+        # pp.pprint(result)
         return result
 
     @http.route(
@@ -412,7 +412,7 @@ class PmsCalendar(http.Controller):
             change_checkin = True
         if new_room != reservation.preferred_room_id:
             change_room = True
-        print(" ---> ", post.get("submit"))
+        # print(" ---> ", post.get("submit"))
         if not post.get("submit"):
             if change_room and change_checkin:
                 _logger.info("Change ALL")
@@ -435,7 +435,7 @@ class PmsCalendar(http.Controller):
                 _logger.info("Change only Checkin")
                 confirmation_mens = ("Modificar la fecha de entrada de %s a %s", reservation.partner_name, new_checkin.strftime("%d/%M/%Y"))
                 # Change Prices?
-            print("--->", post)
+            # print("--->", post)
             return {"result": "success", "message": confirmation_mens, "date": post["date"], "reservation": post["id"], "room": post["room"] }
         else:
             old_room = reservation.preferred_room_id
@@ -609,7 +609,7 @@ class PmsCalendar(http.Controller):
                     "ocupation": rooms_reservation_values,
                 }
             )
-        pp.pprint(values)
+        # pp.pprint(values)
         return values
 
     def _get_calendar_config(self, pms_property_id):
