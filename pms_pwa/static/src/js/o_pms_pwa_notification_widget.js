@@ -78,6 +78,18 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
                 audio.play();
             }
 
+            if (message.pms_property) {
+                var tab = $("a#property-tab-" + message.pms_property);
+                if (tab.length > 0) {
+                    if (tab.find("span").length > 0) {
+                        tab.find("span").text(parseInt(tab.find("span").text()) + 1);
+                    } else {
+                        var span = $("<span class='o_pms_pwa_rounded_alert'>1</span>");
+                        tab.append(span);
+                    }
+                }
+            }
+
             self.alertButtonsOnClick();
 
             self.addNotificationToCloud(data);
