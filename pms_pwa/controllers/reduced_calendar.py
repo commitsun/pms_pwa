@@ -731,3 +731,15 @@ class PmsCalendar(http.Controller):
                 }
             )
         return allowed_availability_plans, select_availability_plan.id
+
+    @http.route(
+        "/calendar/modal",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def _get_modal_values(self, **post):
+        print("json ---> ", post)
+        return True

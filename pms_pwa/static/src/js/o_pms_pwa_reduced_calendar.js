@@ -404,6 +404,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                                 if(selectingToTheLeft){
                                     $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start");
                                 }
+                                $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_start");
                             }
                         }
                     },
@@ -419,16 +420,17 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                             ) {
                                 try {
                                     var went = self.closestEdge(e, $(this)[0]);
-
+                                    console.log("mouseDown entro")
                                     if (went == "top" || went == "bottom") {
-                                        console.log(went);
-                                        console.log($(this));
+                                        console.log("donde? ->", went);
+                                        console.log("this ->", $(this));
                                         $(".o_pms_pwa_range_days_selecting .o_pms_pwa_range_days_end").removeClass("o_pms_pwa_range_days_end");
                                         $(this).addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
                                         // $(this).closest('td').next('td').addClass("o_pms_pwa_range_days_selected o_pms_pwa_range_days_end");
                                         doneSelecting = true;
-                                        console.log(doneSelecting);
+                                        console.log("top/bottom ->", doneSelecting);
                                     }
+
                                     if (went == "right") {
                                         console.log("Right");
                                         if ($(this).hasClass("o_pms_pwa_range_days_start")) {
@@ -495,7 +497,6 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             ); //we reset
 
             drop_function = false;
-            console.log(event);
             // self.launchLines(event.currentTarget);
         },
 
@@ -508,21 +509,35 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         _onClickChangeValues: function (event) {
             var self = this;
             event.preventDefault();
-            console.log("event ---> ", event.currentTarget.getAttribute("data-date"));
             let date_select = event.currentTarget.getAttribute("data-date");
-            $("input[name='start_date']").val(date_select);
-            $("input[name='end_date']").val(date_select);
-            $('select#room_type_model').selectpicker('deselectAll');
-            $('select#room_type_model').find('[value='+event.currentTarget.getAttribute("data-room_type")+']').prop('selected', true);
+            // Reset values
+            $('input[type=checkbox]').each(function() {
+                this.checked = false;
+            });
+            $('.roomdoo_rules :input[type=text]').val('');
+            $(".hidde_modal").attr("style","display:none;");
+            // Add default values
+            try{
+                $("input[name='modal_start_date']").val(date_select);
+                $("input[name='modal_end_date']").val(date_select);
+                $('select').selectpicker('deselectAll');
+                var text = $("select#room_type_model[name=modal_room_type] option[value='"+event.currentTarget.getAttribute("data-room_type")+"']").text();
+                $('.modal_room_type .bootstrap-select .filter-option').text(text);
+                $('select#room_type_model[name=modal_room_type]').val(event.currentTarget.getAttribute("data-room_type"));
 
-            // $('select#room_type_model').selectpicker('val', event.currentTarget.getAttribute("data-room_type") );
+                var text = $("select#modal_pricelist_id[name=modal_pricelist_id] option[value='"+event.currentTarget.getAttribute("data-pricelist")+"']").text();
+                $('.modal_pricelist_id .bootstrap-select .filter-option').text(text);
+                $('select#modal_pricelist_id[name=modal_pricelist_id]').val(event.currentTarget.getAttribute("data-pricelist"));
 
-            // $("input[name='room_type']").val(event.currentTarget.getAttribute("data-room_type"));
-            console.log("--->", event.currentTarget.getAttribute("data-room_type"));
+                var text = $("select#select_availability_plan_id[name=modal_availability_plan_ids] option[value='"+event.currentTarget.getAttribute("data-availability_plan")+"']").text();
+                $('.modal_availability_plan_ids .bootstrap-select .filter-option').text(text);
+                $('select#select_availability_plan_id[name=modal_availability_plan_ids]').val(event.currentTarget.getAttribute("data-availability_plan"));
+            }catch(err){
+                console.log("ERROR: ", err);
+            }
             $("#changesDaysValues").modal("show");
         },
         _onClickConfirmModal: function (event) {
-            console.log("Confirmo en modal.");
             var self = this;
             event.preventDefault();
             drop_function = false;
@@ -557,7 +572,6 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                                     .remove();
                                 // Destroy draggable
                                 $(".o_pms_pwa_line_cell_content").draggable();
-                                console.log("selected_id -->", selected_id);
                                 self.launchLines(this, selected_id);
                             } catch (error) {
                                 console.log(error);
@@ -602,18 +616,8 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 parameters = parameters + "&selected_date="+selected_date;
             }
             $(this).addClass('active');
-            console.log("parametros ---> ", parameters);
             $("#reduced_calendar_table").load("/calendar/reduced"+parameters+ " #reduced_calendar_table>*");
             $("#preloader").fadeOut(2500);
-            // ajax.jsonRpc("/property/calendar", "call", {
-            //     selected_property: event.currentTarget.getAttribute("data-sl-property"),
-            //     selected_date: selected_date,
-            // }).then(function (updated_data) {
-            //     console.log("updated_data", updated_data);
-
-            //     $("#preloader").fadeOut(2500);
-            // });
-
         },
     });
     $(document).ready(function() {
@@ -699,6 +703,79 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 "#multi_days_values input[name='apply_on_all_week']:checkbox"
             ).prop("checked", false);
         }
+    });
+    publicWidget.registry.ReducedCalendarModalChanges = publicWidget.Widget.extend({
+        selector: "#changesDaysValues",
+        events: {
+            "click a.send_changesDaysValues": "_onClickSendModalChange",
+        },
+        /**
+         * @override
+         */
+        start: function () {
+            var self = this;
+            return this._super.apply(this, arguments);
+        },
+        init: function () {
+            var self = this;
+            return this._super.apply(this, arguments);
+        },
+        _onClickSendModalChange: function(event) {
+            var self = this;
+            event.preventDefault();
+            let send_values = {
+                "start_date": $("select[name=modal_start_date]").val(),
+                "end_date": $("select[name=modal_end_date]").val(),
+                "pms_property_id": $("select[name=modal_pms_property_id]").val(),
+                "availability_plan_ids": $("select[name=modal_availability_plan_ids]").val(),
+                "pricelist_id": $("select[name=modal_pricelist_id]").val(),
+                "room_type": $("select[name=modal_room_type]").val(),
+                "days": {
+                    "apply_on_monday": $("input[name=apply_on_monday]").prop("checked"),
+                    "apply_on_tuesday": $("input[name=apply_on_tuesday]").prop("checked"),
+                    "apply_on_wednesday": $("input[name=apply_on_wednesday]").prop("checked"),
+                    "apply_on_thursday": $("input[name=apply_on_thursday]").prop("checked"),
+                    "apply_on_friday": $("input[name=apply_on_friday]").prop("checked"),
+                    "apply_on_saturday": $("input[name=apply_on_saturday]").prop("checked"),
+                    "apply_on_sunday": $("input[name=apply_on_sunday]").prop("checked"),
+                },
+            };
+            if($("input[name=show_price]").prop("checked")){
+                send_values["price"] = $("input[name=modal_price]").val();
+            };
+            if($("input[name=show_cupo]").prop("checked")){
+                send_values["cupo"] = $("input[name=modal_cupo]").val();
+            };
+            if($("input[name=show_estmin]").prop("checked")){
+                send_values["estmin"] = $("input[name=modal_estmin]").val();
+            };
+            if($("input[name=show_closed]").prop("checked")){
+                send_values["closed"] = $("input[name=modal_closed]").val();
+            };
+            if($("input[name=show_max_dispo]").prop("checked")){
+                send_values["max_dispo"] = $("input[name=modal_max_dispo]").val();
+            };
+            if($("input[name=show_max_stay]").prop("checked")){
+                send_values["max_stay"] = $("input[name=modal_max_stay]").val();
+            };
+            if($("input[name=show_max_stay_sa]").prop("checked")){
+                send_values["max_stay_sa"] = $("input[name=modal_max_stay_sa]").val();
+            };
+            if($("input[name=show_max_stay_ll]").prop("checked")){
+                send_values["max_stay_ll"] = $("input[name=modal_max_stay_ll]").val();
+            };
+            if($("input[name=show_closed_arrival]").prop("checked")){
+                send_values["closed_arrival"] = $("input[name=modal_closed_arrival]").val();
+            };
+
+            ajax.jsonRpc("/calendar/modal", "call", {
+                send_values,
+            }).then(function (updated_data) {
+
+                $("#changesDaysValues").modal("toggle");
+            });
+
+        },
     });
 });
 

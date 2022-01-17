@@ -45,13 +45,13 @@
                                         <div class="form-group row">
                                             <label for="desde" class="col-sm-2 col-form-label">Desde</label>
                                             <div class="col-sm-10">
-                                                <input id="start_date" type="date" class="form-control" name="start_date" placeholder="Desde" />
+                                                <input id="start_date" value="" type="date" class="form-control" name="modal_start_date" placeholder="Desde" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="hasta" class="col-sm-2 col-form-label">Hasta</label>
                                             <div class="col-sm-10">
-                                                <input id="end_date" type="date" class="form-control" name="end_date" placeholder="Hasta" />
+                                                <input id="end_date" value="" type="date" class="form-control" name="modal_end_date" placeholder="Hasta" />
                                             </div>
                                         </div>
                                     </div>
@@ -61,15 +61,16 @@
                                             <div class="col-sm-10">
                                                 <t t-foreach="user_id.pms_pwa_property_ids" t-as="selected_property">
                                                     <t t-if="selected_property.id == pms_property_id">
-                                                        <input type="text" disabled="disabled" class="form-control" name="pms_property_id" t-attf-value="{{ selected_property.name }}" placeholder="Hotel" />
+                                                        <input type="text" disabled="disabled" class="form-control" name="modal_pms_property_name" t-attf-value="{{ selected_property.name }}" placeholder="Hotel" />
+                                                        <input type="hidden" class="form-control" name="modal_pms_property_id" t-attf-value="{{ selected_property.id }}" />
                                                     </t>
                                                 </t>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="availability_plan_ids" class="col-sm-2 col-form-label">Disponibilidad</label>
+                                        <div class="form-group row modal_availability_plan_ids">
+                                            <label for="modal_availability_plan_ids" class="col-sm-2 col-form-label">Disponibilidad</label>
                                             <div class="col-sm-10">
-                                                <select id="select_availability_plan_id" name="availability_plan_ids" data-select="allowed_availability_plans" class="form-control o_website_form_input o_input">
+                                                <select id="select_availability_plan_id" name="modal_availability_plan_ids" class="selectpicker" multiple="multiple" data-mdb-clear-button="true" data-live-search="true">
                                                     <t t-foreach="allowed_availability_plans" t-as="availability_plan">
                                                         <option t-att-value="availability_plan['id']" t-att-selected="select_availability_plan_id==availability_plan['id']">
                                                             <t t-esc="availability_plan['name']" />
@@ -82,10 +83,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-5">
-                                        <div class="form-group row">
-                                            <label for="room_type" class="col-sm-2 col-form-label">Tarifa</label>
+                                        <div class="form-group row modal_pricelist_id">
+                                            <label for="modal_pricelist_id" class="col-sm-2 col-form-label">Tarifa</label>
                                             <div class="col-sm-10">
-                                                <select id="pricelist_id" name="pricelist_id" data-select="allowed_pricelists" class="form-control o_website_form_input o_input">
+                                                <select id="modal_pricelist_id" name="modal_pricelist_id" class="selectpicker" multiple="multiple" data-mdb-clear-button="true" data-live-search="true">
                                                     <t t-foreach="allowed_pricelists" t-as="pricelist">
                                                         <option t-att-value="pricelist['id']" t-att-selected="pricelist['id']==select_pricelist_id">
                                                             <t t-esc="pricelist['name']" />
@@ -96,12 +97,12 @@
                                         </div>
                                     </div>
                                     <div class="col-7">
-                                        <div class="form-group row">
+                                        <div class="form-group row modal_room_type">
                                             <label for="room_type" class="col-sm-2 col-form-label">Tipo de habitación</label>
                                             <div class="col-sm-10">
-                                                <select id="room_type_model" name="room_type" class="selectpicker" multiple="multiple" data-mdb-clear-button="true" data-live-search="true">
+                                                <select id="room_type_model" name="modal_room_type" class="selectpicker" multiple="multiple" data-mdb-clear-button="true" data-live-search="true">
                                                     <t t-foreach="rooms_list" t-as="r_type">
-                                                        <option value="r_type['id']"><t t-esc="r_type['name']"/></option>
+                                                        <option t-att-value="r_type['id']"><t t-esc="r_type['name']"/></option>
                                                     </t>
                                                 </select>
                                             </div>
@@ -113,8 +114,6 @@
                                         <h3>Días</h3>
                                     </div>
                                     <div class="col-12">
-
-
                                         <table class="table table-condensed" id="multi_days_values">
                                             <thead>
                                                 <tr>
@@ -208,50 +207,50 @@
                                         <div class="form-group row">
                                             <div class="col-2 show_price">
                                                 <label class="switch">
-                                                    <input id="show_price_check" class="hidde_show_price" name="show_price" type="checkbox"/>
+                                                    <input data-edit="false" id="show_price_check" class="hidde_show_price" name="show_price" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="price" class="col-sm-2 col-form-label">Price</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_price" id="price" placeholder="Price"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_price hidde_modal" name="modal_price" placeholder="Price"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_cupo">
                                                 <label class="switch">
-                                                    <input id="show_cupo_check" class="hidde_show_cupo" name="show_cupo" type="checkbox" />
+                                                    <input data-edit="false" id="show_cupo_check" class="hidde_show_cupo" name="show_cupo" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="cupo" class="col-sm-2 col-form-label">Cupo</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_cupo" id="cupo" placeholder="Cupo"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_cupo hidde_modal" name="modal_cupo" placeholder="Cupo"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2">
                                                 <label class="switch show_estmin">
-                                                    <input id="show_cupo_check" class="hidde_show_estmin" name="show_estmin" type="checkbox" />
+                                                    <input data-edit="false" id="show_cupo_check" class="hidde_show_estmin" name="show_estmin" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="estmin" class="col-sm-2 col-form-label">Est. Mín</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_estmin" id="estmin" placeholder="Est. Mín"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_estmin hidde_modal" name="modal_estmin" placeholder="Est. Mín"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_closed">
                                                 <label class="switch">
-                                                    <input id="show_closed_check" class="hidde_show_closed" name="show_closed" type="checkbox" />
+                                                    <input data-edit="false" id="show_closed_check" class="hidde_show_closed" name="show_closed" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="closed" class="col-sm-2 col-form-label">Closed</label>
                                             <div class="col-sm-8">
-                                                <label class="switch hidde_closed"  style="display: none;">
-                                                    <input data-edit="false" name="closed" type="checkbox"/>
+                                                <label class="switch hidde_closed hidde_modal">
+                                                    <input data-edit="false" name="modal_closed" type="checkbox"/>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
@@ -259,13 +258,13 @@
                                         <div class="form-group row">
                                             <div class="col-2 show_max_dispo">
                                                 <label class="switch">
-                                                    <input id="show_max_dispo_check" class="hidde_show_max_dispo" name="show_max_dispo" type="checkbox" />
+                                                    <input data-edit="false" id="show_max_dispo_check" class="hidde_show_max_dispo" name="show_max_dispo" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_dispo" class="col-sm-2 col-form-label">Máx. Disp.</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_dispo" id="max_dispo" name="max_dispo" placeholder="Máx. Disp."  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_max_dispo hidde_modal" id="max_dispo" name="modal_max_dispo" placeholder="Máx. Disp."/>
                                             </div>
                                         </div>
                                     </div>
@@ -274,50 +273,50 @@
                                         <div class="form-group row">
                                             <div class="col-2 show_max_stay">
                                                 <label class="switch">
-                                                    <input id="show_max_stay_check" class="hidde_show_max_stay" name="show_max_stay" type="checkbox" />
+                                                    <input data-edit="false" id="show_max_stay_check" class="hidde_show_max_stay" name="show_max_stay" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_stay" id="max_stay" name="max_stay" placeholder="Est. Máx"  style="display: none;"/>
+                                                <input type="text" class="form-control hidde_max_stay hidde_modal" id="max_stay" name="modal_max_stay" placeholder="Est. Máx"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_max_stay_sa">
                                                 <label class="switch">
-                                                    <input id="show_max_stay_sa_check" class="hidde_show_max_stay_sa" name="show_max_stay_sa" type="checkbox" />
+                                                    <input data-edit="false" id="show_max_stay_sa_check" class="hidde_show_max_stay_sa" name="show_max_stay_sa" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Sa.</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_stay_sa" id="max_stay_sa" name="max_stay_sa" placeholder="Est. Máx Sa." style="display: none;" />
+                                                <input type="text" class="form-control hidde_max_stay_sa hidde_modal" id="max_stay_sa" name="modal_max_stay_sa" placeholder="Est. Máx Sa." />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_max_stay_ll">
                                                 <label class="switch">
-                                                    <input id="show_max_stay_ll_check" class="hidde_show_max_stay_ll" name="show_max_stay_ll" type="checkbox"/>
+                                                    <input data-edit="false" id="show_max_stay_ll_check" class="hidde_show_max_stay_ll" name="show_max_stay_ll" type="checkbox"/>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Ll.</label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="form-control hidde_max_stay_ll" id="max_stay_ll" placeholder="Est. Máx Ll." style="display: none;" />
+                                                <input type="text" class="form-control hidde_max_stay_ll hidde_modal" name="modal_max_stay_ll" placeholder="Est. Máx Ll." />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-2 show_closed_arrival">
                                                 <label class="switch">
-                                                    <input id="show_closed_arrival_check" class="hidde_show_closed_arrival" name="show_closed_arrival" type="checkbox"/>
+                                                    <input data-edit="false" id="show_closed_arrival_check" class="hidde_show_closed_arrival" name="show_closed_arrival" type="checkbox"/>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
                                             <label for="closed_arrival" class="col-sm-2 col-form-label">Cerrar Ll.</label>
                                             <div class="col-sm-8">
-                                                <label class="switch hidde_closed_arrival"  style="display: none;">
-                                                    <input data-edit="false" name="closed_arrival" type="checkbox"/>
+                                                <label class="switch hidde_closed_arrival hidde_modal">
+                                                    <input data-edit="false" name="modal_closed_arrival" type="checkbox"/>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
@@ -330,7 +329,7 @@
                             <input type="hidden" name="modal_date" value=""></input>
                             <input type="hidden" name="modal_reservation" value=""></input>
                             <input type="hidden" name="modal_room" value=""></input>
-                            <button type="button" class="btn btn-message send_changesDaysValues">Confirmar cambio</button>
+                            <a type="button" class="btn btn-message send_changesDaysValues">Confirmar cambio</a>
                             <button type="button" class="btn btn-secondary close_changesDaysValues" data-dismiss="modal">Cerrar</button>
                         </div>
                     </div>
@@ -602,7 +601,7 @@
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
                                                         <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center o_pms_pwa_edit_circle" title="editar">
                                                             <div class="circle edit_hide">
-                                                                <span class="open_changeValues" t-attf-data-date="{{ day }}" t-attf-data-room_type="{{ room['id'] }}">
+                                                                <span class="open_changeValues" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" t-attf-data-room_type="{{ room['id'] }}">
                                                                     <i class="fa fa-edit"></i>
                                                                 </span>
                                                             </div>
