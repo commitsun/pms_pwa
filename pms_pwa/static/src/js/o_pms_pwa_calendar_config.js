@@ -55,6 +55,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     var availability_plan = input.data("availability_plan");
                     var room = input.data("room");
                     var date = input.data("date");
+                    var pms_property_id = input.data("pms_property_id");
                     // Var input_name = input.attr("name");
                     var current_datetime = new Date(date);
                     var formatted_date =
@@ -93,13 +94,15 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     room_type[room].pricelist_id[price].date[formatted_date].push(
                         input_array
                     );
+
                     send = {
                         room_type : room_type,
                         availability_plan: availability_plan,
+                        pms_property_id: pms_property_id,
                     }
                 }
             });
-            // Console.log(room_type);
+            console.log(send);
             ajax.jsonRpc("/calendar/config/save", "call", {
                 send
             }).then(function (new_data) {

@@ -28,6 +28,7 @@ class PmsReservation(http.Controller):
         website=True,
     )
     def reservation_list(self, page=0, search=False, sortby=None, **post):
+        # print("post list--->", post)
         if post and "original_search" in post:
             if not search:
                 search = post["original_search"]

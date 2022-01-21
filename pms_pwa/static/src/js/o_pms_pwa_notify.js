@@ -37,6 +37,9 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
                     self._callLocalStorage("setItem", "last", notification.id);
                     self._callLocalStorage("setItem", "last_ts", new Date().getTime());
                 }
+                else if (notification.channel.startsWith("notify_header_pms_")) {
+                    console.log("Nuevo canal.");
+                }
             });
         },
         _addChannelPMS: function () {

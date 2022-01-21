@@ -45,13 +45,15 @@
                                         <div class="form-group row">
                                             <label for="desde" class="col-sm-2 col-form-label">Desde</label>
                                             <div class="col-sm-10">
-                                                <input id="start_date" value="" type="date" class="form-control" name="modal_start_date" placeholder="Desde" />
+
+                                                <input id="start_date" type="date" class="form-control" name="modal_start_date" placeholder="Desde" />
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="hasta" class="col-sm-2 col-form-label">Hasta</label>
                                             <div class="col-sm-10">
-                                                <input id="end_date" value="" type="date" class="form-control" name="modal_end_date" placeholder="Hasta" />
+
+                                                <input id="end_date" type="date" class="form-control" name="modal_end_date" placeholder="Hasta" />
                                             </div>
                                         </div>
                                     </div>
@@ -365,13 +367,14 @@
                         </div>
                         <div class="row mb-2">
                             <div class="col-12 mb-2 ">
-                                <form action="/reservation/list" method="post" t-att-class="_classes">
+                                <form t-attf-action="/reservation/list" method="post" t-att-class="_classes">
 
                                     <div class="row m-0 p-0 align-items-center">
 
                                         <div class="col-10 col-md-8 col-lg-7">
                                             <input type="text" name="search" class="form-control o_pmw_pwa_search_input" placeholder="Buscar" title="Buscar..." />
                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                            <input type="hidden" name="pms_property_id" t-att-value="pms_property_id" />
                                         </div>
 
                                         <div class="col-2 col-md-4 col-lg-5 text-right text-xl-left pr-0">
@@ -384,13 +387,13 @@
                                                     <i class="fa fa-filter d-lg-none"></i>
                                                 </a>
                                             </span>
-                                            <a t-attf-href="/reservation/list?ready_for_checkin=true" label="Checkins" class="btn o_pms_pwa_button_filter align-self-center">
+                                            <a t-attf-href="/reservation/list?ready_for_checkin=true&amp;pms_property_id={{ pms_property_id }}" label="Checkins" class="btn o_pms_pwa_button_filter align-self-center">
                                                 <img src="/pms_pwa/static/img/svg/icon_arrival.svg" width="18px" alt="Checkins" class="img-responsive" />
                                             </a>
-                                            <a t-attf-href="/reservation/list?in_house=true" label="Dentro" class="btn o_pms_pwa_button_filter">
+                                            <a t-attf-href="/reservation/list?in_house=true&amp;pms_property_id={{ pms_property_id }}" label="Dentro" class="btn o_pms_pwa_button_filter">
                                                 <img src="/pms_pwa/static/img/svg/icon_house.svg" width="18px" alt="Dentro" class="img-responsive" />
                                             </a>
-                                            <a t-attf-href="/reservation/list?ready_for_checkout=true" label="Checkouts" class="btn o_pms_pwa_button_filter">
+                                            <a t-attf-href="/reservation/list?ready_for_checkout=true&amp;pms_property_id={{ pms_property_id }}" label="Checkouts" class="btn o_pms_pwa_button_filter">
                                                 <img src="/pms_pwa/static/img/svg/icon_exit.svg" width="18px" alt="Checkouts" class="img-responsive" />
                                             </a>
                                         </div>
@@ -607,10 +610,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="A la venta">
-                                                            <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;font-size:14px">
+                                                            <!-- <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;font-size:14px">
                                                                 <t t-esc="availability_room" />
                                                                 Libres
-                                                            </p>
+                                                            </p> -->
                                                         </div>
                                                         <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center" title="A la venta">
                                                             <t t-if="sale_avail != -1">
@@ -666,6 +669,7 @@
                                                                           t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                           t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                           t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                          t-attf-data-pms_property_id="{{ pms_property_id }}"
                                                                           data-edit="false"
                                                                           t-attf-tabindex="{{ select_pricelist_id }}2{{room_day.strftime('%Y-%m-%d')}}"
                                                                           style="width:50px;"
@@ -680,6 +684,7 @@
                                                                           t-attf-data-pricelist="{{ select_pricelist_id }}"
                                                                           t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                           t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                          t-attf-data-pms_property_id="{{ pms_property_id }}"
                                                                           data-edit="false"
                                                                           t-attf-tabindex="{{ select_pricelist_id }}2{{room_day.strftime('%Y-%m-%d')}}"
                                                                           style="width:50px;"
