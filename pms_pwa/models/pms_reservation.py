@@ -88,6 +88,18 @@ class PmsReservation(models.Model):
                     }
                 )
                 self.env["bus.bus"].sendone(id_notify, notify_json)
+                # Create an user notification
+                model_id = (
+                    self.env["ir.model"].search([("model", "=", record._name)]).id
+                )
+                values = {
+                    "user_id": notify_user.id,
+                    "pms_pwa_property_id": pms_property.id,
+                    "message": mens,
+                    "model_id": model_id,
+                    "record_id": record.id,
+                }
+                self.env["res.users.notifications"].create(values)
         return record
 
     @api.depends("state")

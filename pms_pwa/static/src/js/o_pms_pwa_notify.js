@@ -36,8 +36,10 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
                     self.on_front_message(notification);
                     self._callLocalStorage("setItem", "last", notification.id);
                     self._callLocalStorage("setItem", "last_ts", new Date().getTime());
-                }
-                else if (notification.channel.startsWith("notify_header_pms_")) {
+                } else if (notification.channel.startsWith("notify_header_pms_")) {
+                    // Poner el nombre del canal de verdad
+                    console.log("llamar al método de cabeceras");
+                } else if (notification.channel.startsWith("notify_header_pms_")) {
                     console.log("Nuevo canal.");
                 }
             });

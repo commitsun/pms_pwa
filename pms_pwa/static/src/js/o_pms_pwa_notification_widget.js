@@ -5,6 +5,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
     var ajax = require("web.ajax");
     var core = require("web.core");
     var qweb = core.qweb;
+    const session = require("web.session");
 
     var ReservationTableWidget = require("pms_pwa.reservation_table");
 
@@ -12,6 +13,8 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         "/pms_pwa/static/src/xml/pms_pwa_roomdoo_notification_widget.xml",
         qweb
     );
+
+    ajax.loadXML("/pms_pwa/static/src/xml/pms_pwa_roomdoo_user_notification.xml", qweb);
 
     var publicWidget = require("web.public.widget");
 
@@ -62,6 +65,37 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             event.currentTarget.parentNode.remove();
         },
 
+        recalculateNotificationsSpan: function (span) {
+            if (parseInt(span.text()) > 0 && span.hasClass("d-none")) {
+                span.removeClass("d-none");
+            } else if (parseInt(span.text()) <= 0 && !span.hasClass("d-none")) {
+                span.addClass("d-none");
+            }
+        },
+
+        reloadUserPropertyNotifications: function (pms_property) {
+            var self = this;
+            this._rpc({
+                model: "res.users",
+                method: "get_user_notification_list",
+                args: [[session.user_id]],
+            }).then(function (user_notification_ids) {
+                console.log("user_notification_ids", user_notification_ids);
+                var notifications_button = $(
+                    ".notifications_property_" + String(pms_property)
+                );
+                if (notifications_button.length > 0 && user_notification_ids) {
+                    var notifications_container = qweb.render(
+                        "pms_pwa.user_notification_widget",
+                        {
+                            user_notification_ids: user_notification_ids,
+                        }
+                    );
+                    notifications_button.html(notifications_container);
+                }
+            });
+        },
+
         displayDataAlert: function (data) {
             var self = this;
             var message = JSON.parse(data.message);
@@ -81,13 +115,14 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             if (message.pms_property) {
                 var tab = $("a#property-tab-" + message.pms_property);
                 if (tab.length > 0) {
-                    if (tab.find("span").length > 0) {
-                        tab.find("span").text(parseInt(tab.find("span").text()) + 1);
-                    } else {
-                        var span = $("<span class='o_pms_pwa_rounded_alert'>1</span>");
-                        tab.append(span);
+                    var unread_qty = tab.find("span.o_pms_pwa_rounded_alert");
+                    if (unread_qty.length > 0) {
+                        unread_qty.text(parseInt(unread_qty.text()) + 1);
+                        self.recalculateNotificationsSpan(unread_qty);
                     }
                 }
+
+                this.reloadUserPropertyNotifications(message.pms_property);
             }
 
             self.alertButtonsOnClick();
