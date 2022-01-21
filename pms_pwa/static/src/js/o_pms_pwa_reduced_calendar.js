@@ -507,22 +507,27 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             self.launchLines(event.currentTarget);
         },
         _onClickChangeValues: function (event) {
-
             var self = this;
             event.preventDefault();
-            let date_select = event.currentTarget.getAttribute("data-date");
-            // Reset values
-            $('input[type=checkbox]').each(function() {
-                this.checked = false;
-            });
-            $('.roomdoo_rules :input[type=text]').val('');
-            $(".hidde_modal").attr("style","display:none;");
+            try{
+
+                // Reset values
+                $('input[type=checkbox]').each(function() {
+                    this.checked = false;
+                });
+                $('.roomdoo_rules :input[type=text]').val('');
+                $(".hidde_modal").attr("style","display:none;");
+                console.log("vacio todo");
+            }catch(err){
+                console.log("ERROR: ", err);
+            }
             // Add default values
             try{
-                $('input[type="date"]').datepicker();
+                let date_select = event.currentTarget.getAttribute("data-date");
                 $("input[name='modal_start_date']").val(date_select);
                 $("input[name='modal_end_date']").val(date_select);
-                $('select').selectpicker('deselectAll');
+                $('input[type="date"]').datepicker();
+                // $('select').selectpicker('deselectAll');
                 var text = $("select#room_type_model[name=modal_room_type] option[value='"+event.currentTarget.getAttribute("data-room_type")+"']").text();
                 $('.modal_room_type .bootstrap-select .filter-option').text(text);
                 $('select#room_type_model[name=modal_room_type]').val(event.currentTarget.getAttribute("data-room_type"));
@@ -537,6 +542,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             }catch(err){
                 console.log("ERROR: ", err);
             }
+
             $("#changesDaysValues").modal("show");
         },
         _onClickConfirmModal: function (event) {
