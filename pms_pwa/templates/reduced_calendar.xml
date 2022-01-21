@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="pms_pwa_property_tab" name="PMS PWA Property Tab">
+        <t t-esc="selected_property.name" />
+        <span t-att-class="'o_pms_pwa_rounded_alert '+ ('d-none' if user_notification_qty==0 else ' ')">
+            <t t-esc="user_notification_qty"/>
+        </span>
+    </template>
+
+    <template id="user_property_notifications" name="PMS PWA User Property Notifications">
+        <div class="o_pms_pwa_notification_dropdown dropdown"/>
+        <div t-att-class="'o_pms_pwa_notification_dropdown dropdown '+ (notification_class if notification_class else ' ')">
+            <a type="button" id="dropdownCloudButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="/pms_pwa/static/img/svg/cloud.svg" alt="notificaciones" class="img-responsive" loading="lazy"/>
+            </a>
+            <div class="dropdown-menu o_pms_pwa_notification_dropdown_menu" aria-labelledby="dropdownCloudButton">
+                <t t-if="user_notification_ids">
+                    <t t-foreach="user_notification_ids" t-as="notification">
+                        <span>
+                            <t t-esc="notification.message"/>
+                            <a t-if="notification and notification.model_id and notification.model_id.model == 'pms.reservation'" href="#" class="o_pms_pwa_open_reservation_modal" t-att-data-id="notification.id"> Ver </a>
+                            <i href="#" class="fa fa-trash o_pms_pwa_remove_alert ml-2" t-att-data-pms_property_id="notification.pms_pwa_property_id.id" t-att-data-id="notification.id"/>
+                        </span>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </template>
+
     <template id="roomdoo_reduced_calendar_page" name="Small Calendar">
         <t t-call="website.layout">
             <t t-set="page_title" t-value="today.strftime('%d de %b')" />
@@ -344,15 +371,24 @@
 
                     <ul class="nav nav-tabs" id="propertyTab" role="tablist">
                         <t t-foreach="user_id.pms_pwa_property_ids" t-as="selected_property">
+                            <t t-if="user_id and selected_property">
+                                <t t-set="user_notification_ids" t-value="user_id.user_notification_ids.filtered(lambda x: x.pms_pwa_property_id.id == selected_property.id and x.is_read == False)"/>
+                            </t>
                             <li class="nav-item">
                                 <t t-if="selected_property.id == pms_property_id">
                                     <a class="nav-link active property-change" t-attf-id="property-tab-{{ selected_property.id }}" t-attf-data-sl-property="{{ selected_property.id }}" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">
-                                        <t t-esc="selected_property.name" />
+                                        <t t-call="pms_pwa.pms_pwa_property_tab">
+                                            <t t-set="user_notification_qty" t-value="len(user_notification_ids) or 0"/>
+                                            <t t-set="selected_property" t-value="selected_property"/>
+                                        </t>
                                     </a>
                                 </t>
                                 <t t-else="">
                                     <a class="nav-link property-change" t-attf-id="property-tab-{{ selected_property.id }}" t-attf-data-sl-property="{{ selected_property.id }}" data-toggle="tab" role="tab" aria-controls="home" aria-selected="false">
-                                        <t t-esc="selected_property.name" />
+                                        <t t-call="pms_pwa.pms_pwa_property_tab">
+                                            <t t-set="user_notification_qty" t-value="len(user_notification_ids) or 0"/>
+                                            <t t-set="selected_property" t-value="selected_property"/>
+                                        </t>
                                     </a>
                                 </t>
                             </li>
@@ -360,6 +396,12 @@
                     </ul>
 
                     <div class="o_pms_pwa_reduced_calendar o_pms_pwa_full_shadow bg-white p-5">
+                        <div id="notifications_container" class="notifications_container">
+                            <t t-call="pms_pwa.user_property_notifications">
+                                <t t-set="user_notification_ids" t-value="user_id.user_notification_ids.filtered(lambda x: x.pms_pwa_property_id.id == pms_property_id and x.is_read == False)"/>
+                                <t t-set="notification_class" t-value="'notifications_property_'+ str(pms_property_id)"/>
+                            </t>
+                        </div>
                         <div id="buttom_save">
                             <button id="save" name="save" class="btn btn-radius btn-pms_pwa w-100 d-none">
                                 Guardar

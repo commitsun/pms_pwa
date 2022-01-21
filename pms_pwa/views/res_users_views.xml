@@ -15,6 +15,10 @@
                     name="pms_pwa_property_id"
                     context="{'user_preference': 0}"
                 />
+                <field
+                    name="user_notification_ids"
+                >
+                </field>
             </xpath>
         </field>
     </record>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="pms_pwa" xml:space="preserve">
+    <t t-name="pms_pwa.user_notification_widget">
+        <div class="o_pms_pwa_notification_dropdown dropdown">
+            <a type="button" id="dropdownCloudButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="/pms_pwa/static/img/svg/cloud.svg" alt="notificaciones" class="img-responsive" loading="lazy"/>
+            </a>
+            <div class="dropdown-menu o_pms_pwa_notification_dropdown_menu" aria-labelledby="dropdownCloudButton">
+                <t t-if="user_notification_ids">
+                    <t t-foreach="user_notification_ids" t-as="notification">
+                        <span>
+                            <t t-esc="notification.message"/>
+                            <a t-if="notification and notification.model_id and notification.model_id.model == 'pms.reservation'" href="#" class="o_pms_pwa_open_reservation_modal" t-att-data-id="notification.id"> Ver </a>
+                            <i href="#" class="fa fa-trash o_pms_pwa_remove_alert ml-2" t-att-data-pms_property_id="notification.pms_pwa_property_id.id" t-att-data-id="notification.id"/>
+                        </span>
+                    </t>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

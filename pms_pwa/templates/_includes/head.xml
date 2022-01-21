@@ -151,6 +151,10 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/vendor/jquery-ui.js"
             />
+            <script
+                type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_user_notifications.js"
+            />
         </xpath>
     </template>
 </odoo>
