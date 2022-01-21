@@ -8,6 +8,7 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
     require("web.ServicesMixin");
     var Longpolling = require("bus.Longpolling");
     var NotifyWidget = require("pms_pwa.NotifyWidget");
+    var UpdateCalendar = require("pms_pwa.ReducedCalendarPorpertyChanges");
 
     // Notification example:
     // env['bus.bus'].sendone('notify_pms_2', '{"id":"80", "audio":"https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3", "message": "Incoming call from unknown (985687458)", "type": "success"}')
@@ -37,10 +38,13 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
                     self._callLocalStorage("setItem", "last", notification.id);
                     self._callLocalStorage("setItem", "last_ts", new Date().getTime());
                 } else if (notification.channel.startsWith("notify_header_pms_")) {
-                    // Poner el nombre del canal de verdad
-                    console.log("llamar al método de cabeceras");
-                } else if (notification.channel.startsWith("notify_header_pms_")) {
-                    console.log("Nuevo canal.");
+                    console.log("id ->", notification.id);
+                    console.log("id ->", notification.controller_type);
+                    if(notification.controller_type == "general_header"){
+                        $("#o_pms_pwa_update_calendar").find("#update_calendar").css("display","block");
+                    }else {
+                        self.upload_calendar(notification);
+                    }
                 }
             });
         },
@@ -51,6 +55,11 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
         },
         on_front_message: function (notification) {
             new NotifyWidget(this).displayDataAlert(notification);
+        },
+        upload_calendar: function (notification) {
+            //new UpdateCalendar(this)._onClickPropertyChange(notification);
+            let parameters = "?selected_property="+notification.pms_property_id;
+            $("#reduced_calendar_table").load("/calendar/reduced"+parameters+ " #reduced_calendar_table>*");
         },
     });
 });

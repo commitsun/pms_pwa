@@ -396,6 +396,11 @@
                     </ul>
 
                     <div class="o_pms_pwa_reduced_calendar o_pms_pwa_full_shadow bg-white p-5">
+                        <div id="o_pms_pwa_update_calendar" class="o_pms_pwa_update_calendar">
+                            <button id="update_calendar" name="update_calendar" class="btn btn-radius btn-pms_pwa" style="display:block;">
+                                Actualizar calendario
+                            </button>
+                        </div>
                         <div id="notifications_container" class="notifications_container">
                             <t t-call="pms_pwa.user_property_notifications">
                                 <t t-set="user_notification_ids" t-value="user_id.user_notification_ids.filtered(lambda x: x.pms_pwa_property_id.id == pms_property_id and x.is_read == False)"/>
