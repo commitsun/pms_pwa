@@ -507,6 +507,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             self.launchLines(event.currentTarget);
         },
         _onClickChangeValues: function (event) {
+
             var self = this;
             event.preventDefault();
             let date_select = event.currentTarget.getAttribute("data-date");
@@ -518,6 +519,7 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             $(".hidde_modal").attr("style","display:none;");
             // Add default values
             try{
+                $('input[type="date"]').datepicker();
                 $("input[name='modal_start_date']").val(date_select);
                 $("input[name='modal_end_date']").val(date_select);
                 $('select').selectpicker('deselectAll');
@@ -724,9 +726,9 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             var self = this;
             event.preventDefault();
             let send_values = {
-                "start_date": $("select[name=modal_start_date]").val(),
-                "end_date": $("select[name=modal_end_date]").val(),
-                "pms_property_id": $("select[name=modal_pms_property_id]").val(),
+                "start_date": $("input[name=modal_start_date]").val(),
+                "end_date": $("input[name=modal_end_date]").val(),
+                "pms_property_id": $("input[name=modal_pms_property_id]").val(),
                 "availability_plan_ids": $("select[name=modal_availability_plan_ids]").val(),
                 "pricelist_id": $("select[name=modal_pricelist_id]").val(),
                 "room_type": $("select[name=modal_room_type]").val(),
