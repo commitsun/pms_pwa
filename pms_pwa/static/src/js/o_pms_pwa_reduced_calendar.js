@@ -49,7 +49,6 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
             "click .close_confirmChange": "_onClickCloseModal",
             "click .send_ConfirmChanges": "_onClickConfirmModal",
             "click .open_changeValues": "_onClickChangeValues",
-
         },
         /**
          * @override
@@ -166,14 +165,14 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     containment: "table.o_pms_pwa_reduced_reservation_list_table",
                     // revert: "invalid",
                     axis: "y",
-                    // start: function (event, ui) {
-                    //     // event.preventDefault();
-                    //     console.log("creo el dragabble");
-                    //     $(event.currentTarget).addClass("z-index-all");
-                    //     $(".o_pms_pwa_line_cell_content").removeAttr("style");
-                    //     $(".o_pms_pwa_line_cell_content").draggable();
-                    //     drop_function = true;
-                    // },
+                    start: function (event, ui) {
+                        // event.preventDefault();
+                        console.log("creo el dragabble");
+                        $(event.currentTarget).addClass("z-index-all");
+                        $(".o_pms_pwa_line_cell_content").removeAttr("style");
+                        $(".o_pms_pwa_line_cell_content").draggable();
+                        drop_function = true;
+                    },
                 });
                 // ESTO PARA VER DONDE IR Y DROP PARA CONOCER DONDE SE SUELTA
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_line_cell_content").droppable({
@@ -595,9 +594,10 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
         },
     });
     publicWidget.registry.ReducedCalendarPorpertyChanges = publicWidget.Widget.extend({
-        selector: "#propertyTab",
+        selector: "#propertyTab, #o_pms_pwa_update_calendar",
         events: {
             "click a.property-change": "_onClickPropertyChange",
+            "click #update_calendar": "_onClickPropertyChange",
         },
         /**
          * @override
