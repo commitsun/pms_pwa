@@ -68,8 +68,8 @@ class ResPartner(http.Controller):
                 "lastname2": None,
                 "birthdate_date": None,
                 "document_ids": None,
-                "email": None,
-                "mobile": reservation.mobile if reservation.mobile else None,
+                "email": reservation.email or None,
+                "mobile": reservation.mobile or None,
                 "image_128": None,
                 "gender": None,
                 "nationality_id": {
@@ -146,8 +146,8 @@ class ResPartner(http.Controller):
                     "mobile": kw.get("mobile"),
                     "image_128": kw.get("image_128"),
                     "gender": kw.get("gender"),
-                    "nationality_id": int(kw.get("nationality_id")),
-                    "state_id": int(kw.get("state_id")),
+                    "nationality_id": int(kw.get("nationality_id")) if kw.get("nationality_id") else False,
+                    "state_id": int(kw.get("state_id")) if kw.get("state_id") else False,
                     "is_agency": kw.get("is_agency"),
                     # "channel_type_id": params.get("channel_type_id"),
                     "is_company": kw.get("is_company"),
@@ -156,17 +156,27 @@ class ResPartner(http.Controller):
                     "street2": kw.get("street2"),
                     "city": kw.get("city"),
                     "zip": kw.get("zip"),
-                    "country_id": int(kw.get("country_id")),
+                    "country_id": int(kw.get("country_id")) if kw.get("country_id") else False,
                     "comment": kw.get("comment"),
                     "lang": kw.get("lang"),
                 }
-
                 if kw.get("id"):
                     partner = request.env["res.partner"].browse(int(kw.get("id")))
                     partner.write(values)
                 else:
                     partner = request.env["res.partner"].sudo().create(values)
-                return {"result": True, "partner": partner.parse_res_partner()}
+                    if kw.get("reservation_id"):
+                        folio = (
+                            request.env["pms.reservation"]
+                            .sudo()
+                            .search([("id", "=", int(kw.get("reservation_id")))])
+                        ).folio_id
+                        if not folio.partner_id:
+                            folio.write({"partner_id": partner.id})
+                            for reservation in folio.reservation_ids.filtered(lambda r: not r.partner_id):
+                                reservation.write({"partner_id": partner.id})
+
+                return {"result": True,  "message": "Contacto actualizado", "partner": partner.parse_res_partner()}
             except Exception as e:
                 return {"result": False, "message": str(e)}
         else:
