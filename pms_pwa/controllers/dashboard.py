@@ -396,7 +396,7 @@ class DashBoard(http.Controller):
                     ("journal_id.type", "=", "cash"),
                     ("pms_property_id", "=", pms_property_id),
                     ("state", "=", "open"),
-                ]
+                ], limit=1
             )
         )
         payments = []
@@ -416,7 +416,7 @@ class DashBoard(http.Controller):
                     ("journal_id.type", "=", "cash"),
                     ("pms_property_id", "=", pms_property_id),
                     ("state", "=", "open"),
-                ]
+                ], limit=1
             )
         )
         return statement.balance_end

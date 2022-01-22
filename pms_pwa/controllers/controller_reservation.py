@@ -11,6 +11,7 @@ from odoo import SUPERUSER_ID, _, fields, http
 from odoo.exceptions import MissingError
 from odoo.http import Response, content_disposition, request
 from odoo.tools.misc import get_lang
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 
 from ..utils import pwa_utils
 
@@ -436,19 +437,6 @@ class PmsReservation(http.Controller):
             payment_methods = (
                 request.env.user.pms_pwa_property_id._get_allowed_payments_journals()
             )
-            statement_lines_batch = folio.statement_line_ids
-            statement_lines = [
-                {
-                    "id": x.id,
-                    "journal_id": {
-                        "id": x.journal_id.id,
-                        "name": x.journal_id.display_name,
-                    },
-                    "date": x.date,
-                    "amount": x.amount,
-                }
-                for x in statement_lines_batch
-            ]
             payment_lines_batch = folio.payment_ids
             payment_lines = [
                 {
@@ -462,7 +450,7 @@ class PmsReservation(http.Controller):
                 }
                 for x in payment_lines_batch
             ]
-            total_payments = statement_lines + payment_lines
+            total_payments = payment_lines
             data = {
                 "payment_lines": total_payments,
                 "payment_methods": payment_methods,
@@ -492,20 +480,14 @@ class PmsReservation(http.Controller):
                 )
 
             try:
-                journal_id = int(kw.get("journal_id", False))
-                journal = request.env["account.journal"].browse(journal_id)
-                date = kw.get("date", False)
-                amount = float(kw.get("amount", False))
-                statement = (
-                    request.env["account.bank.statement.line"]
-                    .sudo()
-                    .search(
-                        [
-                            ("id", "=", int(kw.get("id"))),
-                            ("folio_ids", "in", int(folio_id)),
-                        ]
-                    )
+                new_journal_id = int(kw.get("journal_id", False))
+                new_journal = request.env["account.journal"].browse(new_journal_id)
+                new_date = datetime.datetime.strptime(
+                    kw.get("date", False),
+                    DEFAULT_SERVER_DATE_FORMAT,
                 )
+                new_amount = float(kw.get("amount", False))
+                new_pay_type = "inbound" if new_amount > 0 else "outbound"
                 payment = (
                     request.env["account.payment"]
                     .sudo()
@@ -516,87 +498,58 @@ class PmsReservation(http.Controller):
                         ]
                     )
                 )
-                if journal.type == "cash" and statement:
-                    statement.update(
-                        {
-                            "journal_id": journal_id,
-                            "date": date,
-                            "amount": amount,
-                        }
+                # TODO: al eliminar y crear uno nuevo, no se actualiza el id. en el segundo cambio falla.
+                # result False actualiza la página sin devolver ningun mensaje ¿?
+                if not payment:
+                    return json.dumps(
+                        {"result": True, "message": _("No se ha podido actualizar el pago, por favor, actualiza la página y vuelve a intentarlo.")}
                     )
-                elif journal.type == "bank" and payment:
-                    if payment.journal_id.id != journal_id:
-                        pay_type = "inbound" if amount > 0 else "outbound"
-                        payment.action_draft()
-                        payment.action_draft()
-                        payment.action_cancel()
-                        payment.unlink()
-                        if pay_type == "inbound":
-                            folio.do_payment(
-                                journal,
-                                journal.suspense_account_id,
-                                request.env.user,
-                                amount,
-                                folio,
-                                partner=folio.partner_id,
-                                date=date,
-                            )
-                        else:
-                            folio.do_refund(
-                                journal,
-                                journal.suspense_account_id,
-                                request.env.user,
-                                amount,
-                                folio,
-                                partner=folio.partner_id,
-                                date=date,
-                            )
-                    else:
-                        payment.action_draft()
-                        payment.update(
-                            {
-                                "date": date,
-                                "amount": amount,
-                            }
+                old_journal = payment.journal_id
+                old_pay_type = payment.payment_type
+                old_date = payment.date
+                old_amount = payment.amount if payment.payment_type == "inbound" else -payment.amount
+
+                statement_line = False
+                if old_journal.type == "cash":
+                    statement_line = folio.statement_line_ids.filtered(
+                        lambda x: x.journal_id == old_journal
+                        and x.date == old_date
+                        and x.amount == old_amount
+                    )
+
+                if (
+                    new_journal != old_journal
+                    or new_pay_type != old_pay_type
+                    or new_date != old_date
+                    or new_amount != old_amount
+                ):
+                    if payment.reconciled_statement_ids and any(payment.reconciled_statement_ids.state == "posted"):
+                        return json.dumps(
+                            {"result": True, "message": _("El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración.")}
                         )
-                        payment.action_post()
-                elif journal.type == "cash" and payment:
-                    pay_type = "inbound" if amount > 0 else "outbound"
                     payment.action_draft()
                     payment.action_cancel()
                     payment.unlink()
-                    if pay_type == "inbound":
+                    if new_pay_type == "inbound":
                         folio.do_payment(
-                            journal,
-                            journal.suspense_account_id,
+                            new_journal,
+                            new_journal.suspense_account_id,
                             request.env.user,
-                            amount,
+                            abs(new_amount),
                             folio,
                             partner=folio.partner_id,
-                            date=date,
+                            date=new_date,
                         )
                     else:
                         folio.do_refund(
-                            journal,
-                            journal.suspense_account_id,
+                            new_journal,
+                            new_journal.suspense_account_id,
                             request.env.user,
-                            amount,
+                            abs(new_amount),
                             folio,
                             partner=folio.partner_id,
-                            date=date,
+                            date=new_date,
                         )
-                elif journal.type == "bank" and statement:
-                    statement.unlink()
-                    folio.do_payment(
-                        journal,
-                        journal.suspense_account_id,
-                        request.env.user,
-                        amount,
-                        folio,
-                        partner=folio.partner_id,
-                        date=date,
-                    )
-
             except Exception as e:
                 return json.dumps(
                     {
@@ -604,7 +557,7 @@ class PmsReservation(http.Controller):
                         "message": str(e),
                     }
                 )
-            return json.dumps({"result": True, "message": _("Payment updated")})
+            return json.dumps({"result": True, "message": _("Pago actualizado correctamente!")})
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
