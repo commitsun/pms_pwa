@@ -1,0 +1,698 @@
+p {
+    margin-bottom: 0.25rem !important;
+    margin-top: 0.25rem !important;
+}
+section.o_pms_pwa_roomdoo {
+    .o_pms_pwa_reduced_calendar {
+        .property-change {
+            cursor: pointer !important;
+        }
+        #buttom_save {
+            position: absolute;
+            width: 100px;
+            top: 2%;
+            z-index: 999;
+            right: 4%;
+            .btn-pms_pwa {
+                background-image: linear-gradient(to right, yellow 80%, yellow) !important;
+                color: black;
+            }
+        }
+        .notifications_container {
+            position: absolute;
+            width: 100px;
+            top: 2%;
+            right: 6.4%;
+        }
+        // search form
+        form {
+            input.o_pmw_pwa_search_input {
+                background-image: url("/pms_pwa/static/img/searchicon.png");
+                background-position: 10px 10px;
+                background-repeat: no-repeat;
+                background-color: transparent;
+                width: 100%;
+                font-size: 16px;
+                padding: 12px 20px 12px 40px;
+                color: $table-text-color;
+                border: none;
+                border-bottom: 1px solid $theme-color;
+                margin-bottom: 12px;
+                border-radius: 0px;
+            }
+            // button to show modal with filters
+            a.o_pms_pwa_float_right {
+                & > span {
+                    & > i {
+                        margin-left: 15px;
+                        line-height: 22px;
+                    }
+                }
+            }
+            a.o_pms_pwa_button_filter,
+            a.o_pms_pwa_float_right {
+                height: 38px;
+                color: $theme-color;
+                border-color: $theme-color;
+                background-color: $bg-theme-color;
+            }
+            .o_pms_pwa_calendar_arrow {
+                font-size: 16px;
+                font-weight: bold;
+            }
+            .o_pms_pwa_month_select {
+                border: 1px solid #ced4da;
+                border-radius: 0.25rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                a {
+                    color: $theme-color;
+                    text-decoration: none;
+                    i {
+                        font-size: 20px;
+                        font-weight: bold;
+                        align-items: center;
+                    }
+                }
+                // margin-top: 1rem;
+                .o_pms_pwa_month_select_calendar_icon {
+                    pointer-events: none;
+                    color: $theme-color-text;
+                    font-size: 14px;
+                    margin-bottom: 0.25rem;
+                    img {
+                        width: 14px;
+                        margin-bottom: 0.25rem;
+                        margin-right: 0.25rem;
+                    }
+                }
+                .btn-calendar-roomdoo {
+                    color: $theme-color;
+                    margin-top: -0.25rem;
+                }
+            }
+        }
+        // end header form
+        table#reduced_calendar_table{
+            border-collapse: separate;
+            border-spacing: 8px;
+            overflow: auto;
+            position: relative;
+            td.o_pms_pwa_line_cell_content, td.o_pms_pwa_line_cell_header {
+                padding: 0 0.25rem !important;
+                //border-top: none !important;
+                border: 1px solid white;
+            }
+            .header_date {
+                font-size: 13px;
+            }
+            .percentage-container {
+                .percent_occupied_0 {
+                    border-radius: 5%;
+                    background-color: rgb(207, 255, 153);
+                    margin-right: 80px;
+                    margin-left: 3px;
+                    height: 5px;
+                }
+                .percent_occupied_25 {
+                    border-radius: 5%;
+                    background-color: rgb(171, 255, 153);
+                    margin-right: 80px;
+                    margin-left: 3px;
+                    height: 5px;
+                }
+                .percent_occupied_50 {
+                    border-radius: 5%;
+                    background-color: rgb(207, 255, 153);
+                    margin-right: 60px;
+                    margin-left: 3px;
+                    height: 5px;
+                }
+                .percent_occupied_75 {
+                    border-radius: 5%;
+                    background-color: rgb(255, 224, 153);
+                    margin-right: 40px;
+                    margin-left: 3px;
+                    height: 5px;
+                }
+                .percent_occupied_99 {
+                    border-radius: 5%;
+                    background-color: rgb(255, 202, 153);
+                    margin-right: 20px;
+                    margin-left: 3px;
+                    height: 5px;
+                }
+                .percent_occupied_100 {
+                    border-radius: 5%;
+                    background-color: rgb(252, 123, 147);
+                    margin-right: 2px;
+                    margin-left: 3px;
+                    height: 5px;
+                }
+            }
+            .ui-droppable-active {
+                background-color: $theme-color;
+                border: none !important;
+            }
+            .ui-droppable-hover {
+                background-color: $bg-theme-color !important;
+                border: none !important;
+            }
+            .ui-state-active {
+                background-color: $bg-theme-color;
+            }
+            .ui-state-hover {
+                background-color: #dadada !important;
+            }
+            th.o_pms_pwa_hiddenRow, td.o_pms_pwa_hiddenRow {
+                padding: 0 !important;
+                vertical-align: top;
+                border-top: none;
+            }
+            tr[aria-expanded="true"] {
+                i {
+                    -moz-transform: rotate(180deg);
+                    -webkit-transform: rotate(180deg);
+                    transform: rotate(180deg);
+                }
+            }
+            th.o_pms_pwa_table_week {
+                border-top: none;
+                border-bottom: 1px solid $theme-color;
+                border-collapse: collapse;
+                border-spacing: 0;
+                // width: 130px;
+                min-width: 130px !important;
+                &:after {
+                    border-bottom: 1px solid $theme-color !important;
+                }
+                &:before {
+                    border-bottom: 1px solid $theme-color !important;
+                }
+            }
+            th.o_pms_pwa_today {
+                border-bottom: 3px solid $theme-color;
+            }
+            th.o_pms_pwa_table_first_header_td,
+            td.o_pms_pwa_table_first_header_td {
+                background-color: $white;
+                // width: 170px !important;
+                min-width: 170px !important;
+                border: none;
+            }
+            tr.o_pms_pwa_reduced_calendar_line:hover,
+            td.o_pms_pwa_table_cell:hover::before,
+            td.o_pms_pwa_table_cell:hover::after {
+                background-color: #c9f0f88f;
+            }
+            tr.o_pms_pwa_range_days_selecting {
+                background-color: #c9f0f88f;
+
+            }
+            td.o_pms_pwa_range_days_selected {
+                background-color: #c3c3c3 !important;
+            }
+            td.o_pms_pwa_range_days_start {
+                background-color: #c3c3c3;
+            }
+            td.o_pms_pwa_range_days_end {
+                background-color: #c3c3c3;
+            }
+            td.o_pms_pwa_range_days_first {
+                background-color: #c3c3c3;
+            }
+            table.o_pms_pwa_reduced_reservation_list_table{
+                td.hover, tr.hover {
+                    background-color: #c9f0f88f;
+                }
+            }
+            tr.o_pms_pwa_reduced_calendar_line{
+                background-color: $bg-theme-color;
+            }
+            td.o_pms_pwa_line_cell_content{
+                // width: 130px;
+                min-width: 130px !important;
+                padding: 0 0.25rem !important;
+                .o_pms_pwa_reduced_calendar_line {
+
+                    .o_pms_pwa_reduced_calendar_reservation {
+                        cursor: pointer;
+                    }
+                    &_room_type {
+                        position: -webkit-sticky;
+                        position: -moz-sticky;
+                        position: -ms-sticky;
+                        position: -o-sticky;
+                        position: sticky;
+                        left: 0px;
+                        z-index: 2;
+                    }
+                    &_title {
+                        color: $theme-color;
+                        font-weight: normal;
+                        // padding-top: 0.5rem;
+                        // margin-left: 0.5rem;
+                        margin-bottom: 0rem !important;
+                    }
+                    &_content {
+                        color: $black;
+                        // margin-top: -1rem;
+                        // margin-left: 1rem;
+                    }
+                    &_event {
+                        text-align: center;
+                        // margin-top: 0.5rem;
+                    }
+
+                    &_img_bg {
+                        background-color: $white;
+                        float: left;
+                        width: 40px;
+                        // margin-top: 0.25rem;
+                    }
+                    &_hr {
+                        &_prereservation {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            border-bottom: 4px solid #584d76;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+                        &_confirmed {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: $theme-color;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+
+                        &_checkin-paid {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: #00ba39;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+
+                        &_checkin-to-pay {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: #dc3545;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+
+                        &_checkout-paid {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: #7e7e7e;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+
+                        &_checkout-to-pay {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: #dc3545;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+
+                        &_out-service {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: #000000;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+
+                        &_staff {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: #c08686;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+                        &_to-assign {
+                            margin-top: 0.2rem;
+                            height: 100%;
+                            border-radius: 6px;
+                            padding: 1px 1px 0px 2px;
+                            background-color: #ed722e;
+                            width: 100%;
+                            max-width: 100%;
+                            cursor: pointer;
+                        }
+                    }
+                    &_name {
+                        font-size: 14px;
+                        color: white;
+                        // overflow
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    &_name_small {
+                        font-size: 12px;
+                        // overflow
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                }
+                .bg {
+                    &-prereservation {
+                        color: #a24680;
+                        background-color: #a24680 !important;
+                    }
+                    &-confirmed {
+                        color: $theme-color;
+                        background-color: $theme-color !important;
+                    }
+                    &-checkin-paid {
+                        color: #00ba39;
+                        background-color: #00ba39 !important;
+                    }
+                    &-checkin-to-pay {
+                        color: #dc3545;
+                        background-color: #dc3545 !important;
+                    }
+                    &-checkout-paid {
+                        color: #7e7e7e;
+                        background-color: #7e7e7e !important;
+                    }
+                    &-checkout-to-pay {
+                        color: #dc3545;
+                        background-color: #dc3545 !important;
+                    }
+                    &-out-service {
+                        color: #000000;
+                        background-color: #000000 !important;
+                    }
+                    &-staff {
+                        color: #c08686;
+                        background-color: #c08686 !important;
+                    }
+                    &-to-assign {
+                        color: #ed722e;
+                        background-color: #ed722e !important;
+                    }
+                }
+            }
+            td.o_pms_pwa_line_cell_header {
+                width: 170px !important;
+                min-width: 170px !important;
+                border-left: 3px solid $grey-900 !important;
+            }
+            td.o_calendar_header_property {
+                min-height: 1rem;
+                background-color: white;
+                border-top: 0px;
+                width: 100px !important;
+                min-width: 100px !important;
+                max-width: 100px !important;
+                // height: 35px;
+            }
+            td{
+                .circles-container {
+                    .o_pms_pwa_edit_circle {
+                        padding-bottom: 2px !important;
+                        padding-top: 0 !important;
+                    }
+                    .circle {
+                        line-height: 1.5;
+                        height: 25px;
+                        width: 25px;
+                        border-radius: 50%;
+                        font-size: 0.9rem;
+                        font-weight: bold;
+                        padding: 0.1rem;
+                        color: white;
+                        i {
+                            -moz-transform: rotate(0deg);
+                            -webkit-transform: rotate(0deg);
+                            transform: rotate(0deg);
+                        }
+                    }
+                    div:nth-child(1) > .circle {
+                        background-color: #01b6e3;
+                    }
+                    div:nth-child(3) > .circle {
+                        color: #000000;
+                        border-radius: 0%;
+                        border-left: 1px solid #dadada;
+                        border-top: 1px solid #dadada;
+                        border-right: 1px solid white;
+                        border-bottom: 1px solid white;
+                        background-color: white;
+                        margin-right: -10px;
+                        margin-bottom: -2px;
+                    }
+                }
+                .availabilitys-container {
+                    margin: 0;
+                    margin-top: 1rem;
+                    .availability-group {
+                        border-top: 1px solid black;
+                        padding-left: 0;
+                        padding-right: 0;
+                        .availability-value {
+                            padding: 0;
+                        }
+                        .fa {
+                            font-size: 1.1rem;
+                            color: rgba(1, 182, 227, 0.5);
+                        }
+                    }
+                    .availability-group:first-child {
+                        border-right: 1px solid black;
+                    }
+                }
+                .o_pms_pwa_title {
+                    color: $black;
+                    font-size: 14px;
+                    .o_pms_pwa_info {
+                        color: $theme-color;
+                        position: relative;
+                        top: -1rem;
+                        right: -4rem;
+                        .o_pms_pwa_interrogante-calendar {
+                            width: 13px;
+                        }
+                    }
+                }
+            }
+            td.o_config_pms_pwa_table_cell{
+                border: 1px solid $grey-300;
+                border-radius: 0.25rem;
+                min-height: 1rem;
+                background-color: white;
+                .o_pms_pwa_title {
+                    color: $black;
+                    .o_pms_pwa_info {
+                        color: $theme-color;
+                        position: relative;
+                        top: -1rem;
+                        right: -4rem;
+                        .o_pms_pwa_interrogante-calendar {
+                            width: 13px;
+                        }
+                    }
+                }
+                .progress-bar-success {
+                    background-color: $theme-color;
+                    color: $white;
+                }
+                .progress-bar-warning {
+                    background-color: $black;
+                    color: $white;
+                }
+                .progress-bar-danger {
+                    background-color: $white;
+                    color: $black;
+                }
+               .edit_hide {
+                    display: none;
+                }
+            }
+            td.o_config_pms_pwa_table_cell:hover {
+                .edit_hide {
+                    display: block;
+                }
+            }
+            // tr.o_pms_pwa_open_reduced_calendar{
+
+            // }
+
+        }
+
+    }
+}
+
+@media (max-width: 992px) {
+    section.o_pms_pwa_roomdoo {
+        .o_pms_pwa_today:after {
+            display: none;
+        }
+    }
+}
+@media (max-width: 576px) {
+    section.o_pms_pwa_roomdoo {
+        .o_pms_pwa_today:after {
+            display: none;
+        }
+    }
+}
+
+// Calendar Config
+
+.subtable {
+    tr {
+        th,
+        td {
+            border: 0 !important;
+        }
+    }
+}
+
+// modal y drag and drop
+.z-index-all {
+    position: relative;
+    z-index: 9999 !important;
+    background-color: transparent !important;
+}
+#confirmChange.modal {
+    z-index: 9999;
+    .modal-dialog {
+        .modal-content {
+            .modal-footer {
+                .btn-message {
+                    background-color: #01b6e3;
+                    border-radius: 1.5rem;
+                    border: none !important;
+                    color: white;
+                }
+                .close_confirmChange {
+                    background-color: red;
+                    border-radius: 1.5rem;
+                    border: none;
+                }
+            }
+        }
+    }
+}
+#changesDaysValues.modal {
+    z-index: 9999;
+    .modal-dialog {
+        .modal-content {
+            h3 {
+                color: $black !important;
+                font-size: 16px;
+            }
+            /* The switch - the box around the slider */
+            .switch {
+                position: relative;
+                display: inline-block;
+                width: 40px;
+                height: 20px;
+            }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            /* The slider */
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 12px;
+                width: 12px;
+                left: 2px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: 0.4s;
+                transition: 0.4s;
+            }
+
+            input:checked + .slider {
+                background-color: $theme-color;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px $theme-color;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(26px);
+                -ms-transform: translateX(26px);
+                transform: translateX(26px);
+            }
+
+            /* Rounded sliders */
+            .slider.round {
+                border-radius: 18px;
+            }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+            .modal-footer {
+                .btn-message {
+                    background-color: #01b6e3;
+                    border-radius: 1.5rem;
+                    border: none !important;
+                    color: white;
+                }
+                .close_confirmChange,
+                .close_changesDaysValues {
+                    background-color: red;
+                    border-radius: 1.5rem;
+                    border: none;
+                }
+            }
+            // .hidde_price, .hidde_cupo{
+            //     display: none;
+            // }
+        }
+    }
+}

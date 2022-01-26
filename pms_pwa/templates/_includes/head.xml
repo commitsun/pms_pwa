@@ -31,15 +31,20 @@
                 type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_reservation_detail.scss"
             />
-            <link
+            <!-- <link
                 rel="stylesheet"
                 type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_calendar.scss"
-            />
-            <link
+            /> -->
+            <!-- <link
                 rel="stylesheet"
                 type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_reduced_calendar.scss"
+            /> -->
+            <link
+                rel="stylesheet"
+                type="text/scss"
+                href="/pms_pwa/static/src/scss/o_pms_pwa_small_calendar.scss"
             />
             <link
                 rel="stylesheet"
@@ -66,7 +71,7 @@
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/daterangepicker.css"/>
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/bootstrap-select.min.css" />
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/largetable.css" />
-            <!-- <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/print.min.css" /> -->
+            <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/jquery-ui.min.css" />
         </xpath>
     </template>
     <template id="website_roomdoo_js" inherit_id="website.assets_frontend">
@@ -92,10 +97,10 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_reservation_detail_rb.js"
             />
-            <script
+            <!-- <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_calendar.js"
-            />
+            /> -->
             <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_calendar_config.js"

@@ -397,7 +397,7 @@
 
                     <div class="o_pms_pwa_reduced_calendar o_pms_pwa_full_shadow bg-white p-5">
                         <div id="o_pms_pwa_update_calendar" class="o_pms_pwa_update_calendar">
-                            <button id="update_calendar" name="update_calendar" class="btn btn-radius btn-pms_pwa" style="display:block;">
+                            <button id="update_calendar" name="update_calendar" class="btn btn-radius btn-pms_pwa" style="display:none;">
                                 Actualizar calendario
                             </button>
                         </div>

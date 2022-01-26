@@ -165,14 +165,15 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                     containment: "table.o_pms_pwa_reduced_reservation_list_table",
                     // revert: "invalid",
                     axis: "y",
-                    start: function (event, ui) {
-                        // event.preventDefault();
-                        console.log("creo el dragabble");
-                        $(event.currentTarget).addClass("z-index-all");
-                        $(".o_pms_pwa_line_cell_content").removeAttr("style");
-                        $(".o_pms_pwa_line_cell_content").draggable();
-                        drop_function = true;
-                    },
+                    // start: function (event, ui) {
+
+                    //     // console.log("creo el dragabble");
+                    //     $(event.currentTarget).addClass("z-index-all");
+                    //     $(".o_pms_pwa_line_cell_content").removeAttr("style");
+                    //     $(".o_pms_pwa_line_cell_content").draggable();
+                    //     drop_function = true;
+                    //     event.preventDefault();
+                    // },
                 });
                 // ESTO PARA VER DONDE IR Y DROP PARA CONOCER DONDE SE SUELTA
                 $("table.o_pms_pwa_reduced_reservation_list_table td.o_pms_pwa_line_cell_content").droppable({
@@ -481,12 +482,13 @@ odoo.define("pms_pwa.reduced_calendar", function (require) {
                 containment: "table.o_pms_pwa_reduced_reservation_list_table",
                 axis: "y",
                 // start: function (event, ui) {
-                //     // event.preventDefault();
+                //     //event.preventDefault();
                 //     console.log("creo de nuevo el dragabble");
                 //     $(event.currentTarget).addClass("z-index-all");
                 //     $(".o_pms_pwa_line_cell_content").removeAttr("style");
                 //     $(".o_pms_pwa_line_cell_content").draggable();
                 //     drop_function = true;
+                //     event.preventDefault();
                 // },
             });
 
