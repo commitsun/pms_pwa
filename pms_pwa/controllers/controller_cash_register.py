@@ -108,18 +108,17 @@ class CashRegister(http.Controller):
                         "journal_id": statement.journal_id.id,
                     })],
                 })
-            else:
-                amount = float(post.get("amount"))
-                vals = {
-                    "journal_id": journal.id,
-                    "amount": amount,
-                    "date": date,
-                    "payment_type": "outbound",
-                    "partner_type": "supplier",
-                    "state": "draft",
-                }
-                pay = request.env["account.payment"].create(vals)
-                pay.action_post()
+            amount = float(post.get("amount"))
+            vals = {
+                "journal_id": journal.id,
+                "amount": amount,
+                "date": date,
+                "payment_type": "outbound",
+                "partner_type": "supplier",
+                "state": "draft",
+            }
+            pay = request.env["account.payment"].create(vals)
+            pay.action_post()
 
             return json.dumps(
                 {"result": True, "message": _("Pago registrado!")}
