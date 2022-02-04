@@ -79,6 +79,14 @@ class DashBoard(http.Controller):
                         "0,01": 0,
 
                     },
+                    "list": {
+                        "id": "valor",
+                        "id2": "valor2",
+                    }
+                },
+                "journals": {
+                    "id": "valor",
+                    "id2": "valor2",
                 },
                 # Fin cambio documento
                 "tasks": _get_user_activities(
