@@ -360,13 +360,13 @@
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="compare_with">
-                                                            <option name="compare_with" t-foreach="compare_options" t-as="option" t-att-value="option['id']">
-                                                                <t t-esc="option['value']" />
+                                                            <option name="compare_with" t-foreach="cash['list']" t-as="option" t-att-value="option">
+                                                                <t t-esc="option_value" />
                                                             </option>
                                                         </select>
                                                     </div>
                                                     <div class="col-xs-12 col-md-3">
-                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Enviar" />
+                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Buscar" style="width:70px"/>
                                                     </div>
                                                 </div>
                                             </form>
@@ -375,10 +375,24 @@
                                     <hr />
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" t-attf-data-id="1" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
+                                                <i class="fa fa-edit"></i>
+                                            </a>Nombre
+                                        </div>
+                                        <div class="col-3 text-right o_pms_pwa_db_dates">
+                                            50
+                                            €
+                                        </div>
+
+                                    </div>
                                     <t t-foreach="payments" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
-                                                <span t-esc="pm['name']" />
+                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3" t-attf-data-id="{{ pm['id'] }}" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
+                                                    <i class="fa fa-edit"></i>
+                                                </a><span t-esc="pm['name']" />
                                             </div>
                                             <div t-if="pm['amount'] > 0" class="col-3 text-right o_pms_pwa_db_dates">
                                                 <span t-esc="pm['amount']" />
@@ -439,13 +453,13 @@
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="compare_with">
-                                                            <option name="compare_with" t-foreach="compare_options" t-as="option" t-att-value="option['id']">
-                                                                <t t-esc="option['value']" />
+                                                            <option name="compare_with" t-foreach="journals" t-as="option" t-att-value="option">
+                                                                <t t-esc="option_value" />
                                                             </option>
                                                         </select>
                                                     </div>
                                                     <div class="col-xs-12 col-md-3">
-                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Enviar" />
+                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Buscar" style="width:70px"/>
                                                     </div>
                                                 </div>
                                             </form>
