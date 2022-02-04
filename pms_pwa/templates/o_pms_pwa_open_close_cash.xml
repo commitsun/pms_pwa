@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="o_pms_pwa_open_close_cash" name="Cash modal">
+        <div class="modal o_pms_pwa_right fade o_pms_pwa_cash_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_open_close_cash" id="o_pms_pwa_open_close_cash" onload="resetForm()">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <script>
+                        function calculateValue(val, multi, index) {
+                            console.log("val--->", val);
+                            console.log("multi--->", parseFloat(multi).toFixed( 2 ));
+                            console.log("index--->", index);
+                            let val_total = parseFloat(val).toFixed( 2 )*parseFloat(multi).toFixed( 2 );
+                            $('span#coin_'+index).text(val_total+"€");
+                            let amount = $('input[name="amount"]').val() || "0";
+                            amount = parseFloat(amount) + parseFloat(val_total);
+                            console.log(amount);
+                            $('input[name="amount"]').val(amount.toFixed( 2 ));
+                        };
+                    </script>
+                    <div class="modal-header o_pms_pwa_modal_header">
+                        <div class="col-12">
+                            <div class="row o_pms_pwa_modal_header_pad">
+                                <h4 class="modal-title">
+                                    Retirada en caja:
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body o_pms_pwa_modal_body">
+                        <div class="mt-4">
+                            <div class="form-group form-field mt8">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="control-label col-12" for="payment_method">
+                                            Diario
+                                        </label>
+                                        <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
+                                        <t t-else="" t-set="payment_methods" t-value="[]"/>
+                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                            <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
+                                                <t t-esc="key_value['name']" />
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-12 mt-4">
+                                        <table class="table table-condensed">
+                                            <thead><tr><td>Cantidad</td><td>Valor</td><td>Total</td></tr></thead>
+                                            <t t-foreach="cash['coins']" t-as="coin">
+                                                <tr>
+                                                    <td class="align-center">
+                                                        <input type="number" t-att-tabindex="coin_index" t-attf-value="{{coin_value}}" t-att-name="coin" t-attf-onchange="calculateValue(this.value, {{coin}}, {{coin_index}});" style="width: 100px;" ></input>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="coin" />€
+                                                    </td>
+                                                    <td>
+                                                        <span t-attf-id="coin_{{coin_index}}">0€</span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="amount">
+                                            Importe
+                                        </label>
+                                        <input class="form-control" type="number" min="0" step="any" name="amount" tabindex="100"/>
+                                    </div>
+
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="amount">
+                                            Descripción
+                                        </label>
+                                        <input class="form-control" type="text" name="description" tabindex="101"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
+                                    <span>Cerrar</span>
+                                </button>
+                            </div>
+                            <div class="col-6">
+                                <button type="button" class="btn btn-message btn-block o_pms_pwa_cash_register_confirm" data-dismiss="modal" aria-label="Pay">
+                                    <span>Sacar dinero</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal-content -->
+            </div>
+            <!-- modal-dialog -->
+        </div>
+    </template>
+</odoo>
