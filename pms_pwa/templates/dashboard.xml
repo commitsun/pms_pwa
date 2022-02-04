@@ -375,18 +375,6 @@
                                     <hr />
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" t-attf-data-id="1" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
-                                                <i class="fa fa-edit"></i>
-                                            </a>Nombre
-                                        </div>
-                                        <div class="col-3 text-right o_pms_pwa_db_dates">
-                                            50
-                                            €
-                                        </div>
-
-                                    </div>
                                     <t t-foreach="payments" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
