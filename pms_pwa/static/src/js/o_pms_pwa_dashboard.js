@@ -6,8 +6,10 @@ odoo.define("pms_pwa.dashboard", function (require) {
     var _t = core._t;
     var csrf_token = core.csrf_token;
     var publicWidget = require("web.public.widget");
-
-
+    $('#o_pms_pwa_open_close_cash').on('show.bs.modal', function () {
+        $('input[type="number"]').val(0);
+        console.log("reset input");
+    });
     publicWidget.registry.PMSPWADashboardWidget = publicWidget.Widget.extend({
         selector: "div.o_pms_pwa_dashboard",
         events: {
@@ -163,7 +165,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 .val();
             var payment_amount = modal.find("input[name='amount']").val();
             var description = modal.find("input[name='description']").val();
-            
+
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 amount: payment_amount,
@@ -208,4 +210,5 @@ odoo.define("pms_pwa.dashboard", function (require) {
     });
 
     return publicWidget.registry.PMSPWADashboardWidget;
+
 });

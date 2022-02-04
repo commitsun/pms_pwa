@@ -90,6 +90,42 @@ section.o_pms_pwa_dashboard {
             padding-left: 15px;
             float: right;
         }
+        form {
+            div.form-group {
+                label.control-label {
+                    font-weight: 600;
+                    font-size: 16px;
+                    padding-top: 0.15rem;
+                    position: absolute;
+                    left: 3.4rem;
+                    top: 0.3rem;
+                    color: $theme-color-text;
+                }
+                input,
+                select,
+                textarea {
+                    border: 1px solid $theme-color-text;
+                    background-color: $bg-theme-color !important;
+                    &.o_pms_pwa_range_check_date_modal {
+                        font-weight: 500;
+                        font-size: 16px;
+                        padding-top: 0rem;
+                        padding-bottom: 0rem;
+                        padding-left: 5.5rem;
+                    }
+                }
+                .o_pms_pwa_calendar_icon {
+                    position: absolute;
+                    top: 0.46rem;
+                    left: 1.5rem;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    background: $bg-theme-color;
+                    pointer-events: none;
+                    color: $theme-color-text;
+                }
+            }
+        }
     }
     div.card-header {
         min-height: 3rem;
@@ -187,5 +223,19 @@ section.o_pms_pwa_dashboard {
                 }
             }
         }
+    }
+    div.card-footer{
+        background-color: white;
+        a.o_pms_pwa_btn_border {
+            width: 100%;
+            border-radius: 1.5rem;
+            border: 1px solid #01b6e3;
+            color: #01b6e3;
+            text-align: center;
+            cursor: pointer;
+        }
+    }
+    .o_pms_pwa_history{
+        height: 230px !important;
     }
 }

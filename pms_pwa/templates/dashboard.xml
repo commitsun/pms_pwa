@@ -2,9 +2,10 @@
 <odoo>
     <template id="roomdoo_dashboard_page" name="Dashboard">
         <t t-call="website.layout">
-            <t t-set="page_title" t-value="'DASHBOARD'"/>
+            <t t-set="page_title" t-value="'DASHBOARD'" />
             <div class="oe_structure o_pms_pwa_structure mt-4 o_pms_pwa_dashboard">
                 <t t-call="pms_pwa.o_pms_pwa_new_cash_register_payment" />
+                <t t-call="pms_pwa.o_pms_pwa_open_close_cash" />
                 <div class="o_pms_pwa_roomdoo_reservation_modal" />
                 <div class="o_pms_pwa_roomdoo_alerts" />
                 <section class="container-fluid">
@@ -24,11 +25,9 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <hr/>
+                                    <hr />
                                 </div>
-                                <div class="card-body o_pms_pwa_notifications">
-
-                                </div>
+                                <div class="card-body o_pms_pwa_notifications"></div>
                             </div>
                         </div>
                         <div class="col-md-12 col-lg-6 mt-4">
@@ -47,24 +46,24 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <hr/>
+                                        <hr />
                                     </div>
                                     <div class="card-body o_pms_pwa_dbh_force">
 
                                         <div class="row">
                                             <t t-foreach="tasks" t-as="task">
                                                 <div class="col-1 o_pms_pwa_pt_adjust">
-                                                    <input class="o_pms_pwa_checkbox" t-att-data-task-id="task.id" type="checkbox"/>
+                                                    <input class="o_pms_pwa_checkbox" t-att-data-task-id="task.id" type="checkbox" />
                                                 </div>
                                                 <div class="col-6">
-                                                    <t t-esc="task.display_name"/>
+                                                    <t t-esc="task.display_name" />
                                                 </div>
                                                 <div class="col-5 text-right o_pms_pwa_db_dates">
-                                                    <t t-esc="task.date_deadline"/>
+                                                    <t t-esc="task.date_deadline" />
                                                 </div>
                                             </t>
-                                            <input class="o_pms_pwa_checkbox" name="task_ids" type="hidden"/>
-                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input class="o_pms_pwa_checkbox" name="task_ids" type="hidden" />
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                         </div>
                                     </div>
                                 </div>
@@ -82,10 +81,8 @@
                                         LLEGADAS
                                     </h3>
                                     <form method="post" name="arrival_form" class="col-4 invisible float-left">
-                                        <input class="form-control"
-                                            type="date" name="arrival_date" id="arrival_date"
-                                            t-att-value="post['arrival_date'] if post and 'arrival_date' in post else None"/>
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input class="form-control" type="date" name="arrival_date" id="arrival_date" t-att-value="post['arrival_date'] if post and 'arrival_date' in post else None" />
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     </form>
                                     <span class="pr-0 col-4 float-right">
                                         <label class="control-label float-right" for="arrival_date">
@@ -96,19 +93,17 @@
                                 <div class="pt-0 card-body bg-dark">
                                     <div class="row">
                                         <div class="col-12 o_pms_pwa_bb_index">
-                                            Hoy <span class="ml-1 o_pms_pwa_db_dates" t-esc="arrivals['today']['date']"/>
+                                            Hoy
+                                            <span class="ml-1 o_pms_pwa_db_dates" t-esc="arrivals['today']['date']" />
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="arrivals['today']['to_arrive']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="arrivals['today']['to_arrive']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    t-att-style="'width:'+ str((arrivals['today']['to_arrive']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((arrivals['today']['to_arrive']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-success" role="progressbar" t-att-style="'width:'+ str((arrivals['today']['to_arrive']/20)*100) + '%'" t-att-aria-valuenow="str((arrivals['today']['to_arrive']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -117,14 +112,11 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="arrivals['today']['to_check_in']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="arrivals['today']['to_check_in']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                    t-att-style="'width:'+ str((arrivals['today']['to_check_in']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((arrivals['today']['to_check_in']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-danger" role="progressbar" t-att-style="'width:'+ str((arrivals['today']['to_check_in']/20)*100) + '%'" t-att-aria-valuenow="str((arrivals['today']['to_check_in']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -133,19 +125,17 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-12 o_pms_pwa_bb_index">
-                                            Mañana <span class="ml-1 o_pms_pwa_db_dates" t-esc="arrivals['tomorrow']['date']"/>
+                                            Mañana
+                                            <span class="ml-1 o_pms_pwa_db_dates" t-esc="arrivals['tomorrow']['date']" />
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="arrivals['tomorrow']['to_arrive']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="arrivals['tomorrow']['to_arrive']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-info" role="progressbar"
-                                                    t-att-style="'width:'+ str((arrivals['tomorrow']['to_arrive']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((arrivals['tomorrow']['to_arrive']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-info" role="progressbar" t-att-style="'width:'+ str((arrivals['tomorrow']['to_arrive']/20)*100) + '%'" t-att-aria-valuenow="str((arrivals['tomorrow']['to_arrive']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -162,10 +152,8 @@
                                         Salidas
                                     </h3>
                                     <form method="post" name="departure_form" class="col-4 invisible float-left">
-                                        <input class="form-control"
-                                            type="date" name="departure_date" id="departure_date"
-                                            t-att-value="post['departure_date'] if post and 'departure_date' in post else None"/>
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input class="form-control" type="date" name="departure_date" id="departure_date" t-att-value="post['departure_date'] if post and 'departure_date' in post else None" />
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     </form>
                                     <span class="pr-0 col-4 float-right">
                                         <label class="control-label float-right" for="departure_date">
@@ -176,19 +164,17 @@
                                 <div class="pt-0 card-body bg-dark">
                                     <div class="row">
                                         <div class="col-12 o_pms_pwa_bb_index">
-                                            Hoy <span class="ml-1 o_pms_pwa_db_dates" t-esc="departures['today']['date']"/>
+                                            Hoy
+                                            <span class="ml-1 o_pms_pwa_db_dates" t-esc="departures['today']['date']" />
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['today']['to_leave']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['today']['to_leave']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    t-att-style="'width:'+ str((departures['today']['to_leave']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((departures['today']['to_leave']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-success" role="progressbar" t-att-style="'width:'+ str((departures['today']['to_leave']/20)*100) + '%'" t-att-aria-valuenow="str((departures['today']['to_leave']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -197,14 +183,11 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['today']['to_check_out']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['today']['to_check_out']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-danger" role="progressbar"
-                                                    t-att-style="'width:'+ str((departures['today']['to_check_out']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((departures['today']['to_check_out']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-danger" role="progressbar" t-att-style="'width:'+ str((departures['today']['to_check_out']/20)*100) + '%'" t-att-aria-valuenow="str((departures['today']['to_check_out']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -213,19 +196,17 @@
                                     </div>
                                     <div class="row mt-4">
                                         <div class="col-12 o_pms_pwa_bb_index">
-                                            Mañana <span class="ml-1 o_pms_pwa_db_dates" t-esc="departures['tomorrow']['date']"/>
+                                            Mañana
+                                            <span class="ml-1 o_pms_pwa_db_dates" t-esc="departures['tomorrow']['date']" />
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['tomorrow']['to_leave']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="departures['tomorrow']['to_leave']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-info" role="progressbar"
-                                                    t-att-style="'width:'+ str((departures['tomorrow']['to_leave']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((departures['tomorrow']['to_leave']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-info" role="progressbar" t-att-style="'width:'+ str((departures['tomorrow']['to_leave']/20)*100) + '%'" t-att-aria-valuenow="str((departures['tomorrow']['to_leave']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -242,10 +223,8 @@
                                         HABITACIONES
                                     </h3>
                                     <form method="post" name="rooms_form" class="col-4 invisible float-left">
-                                        <input class="form-control"
-                                            type="date" name="rooms_date" id="rooms_date"
-                                            t-att-value="post['rooms_date'] if post and 'rooms_date' in post else None"/>
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input class="form-control" type="date" name="rooms_date" id="rooms_date" t-att-value="post['rooms_date'] if post and 'rooms_date' in post else None" />
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     </form>
                                     <span class="pr-0 col-4 float-right">
                                         <label class="control-label float-right" for="rooms_date">
@@ -256,19 +235,17 @@
                                 <div class="pt-0 card-body bg-dark">
                                     <div class="row">
                                         <div class="col-12 o_pms_pwa_bb_index">
-                                            Hoy <span class="ml-1 o_pms_pwa_db_dates" t-esc="rooms['date']"/>
+                                            Hoy
+                                            <span class="ml-1 o_pms_pwa_db_dates" t-esc="rooms['date']" />
                                         </div>
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['available']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['available']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-success" role="progressbar"
-                                                    t-att-style="'width:'+ str((rooms['available']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((rooms['available']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-success" role="progressbar" t-att-style="'width:'+ str((rooms['available']/20)*100) + '%'" t-att-aria-valuenow="str((rooms['available']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -277,14 +254,11 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-1 pr-0">
-                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['out_of_service']"/>
+                                            <span class="float-right" style="font-size: 24px;margin-top: -0.5rem;" t-esc="rooms['out_of_service']" />
                                         </div>
                                         <div class="col-11">
                                             <div class="progress">
-                                                <div class="progress-bar bg-primary" role="progressbar"
-                                                    t-att-style="'width:'+ str((rooms['out_of_service']/20)*100) + '%'"
-                                                    t-att-aria-valuenow="str((rooms['out_of_service']/20)*100)"
-                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-primary" role="progressbar" t-att-style="'width:'+ str((rooms['out_of_service']/20)*100) + '%'" t-att-aria-valuenow="str((rooms['out_of_service']/20)*100)" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                         <div class="col-12 text-right">
@@ -311,15 +285,18 @@
                                 <div class="card-body o_pms_pwa_blue">
                                     <div class="row">
                                         <div class="col-4">
-                                            <span t-esc="rooms['ready']"/><br/>
+                                            <span t-esc="rooms['ready']" />
+                                            <br />
                                             Listas
                                         </div>
                                         <div class="col-4">
-                                            <span t-esc="rooms['dirty']"/><br/>
+                                            <span t-esc="rooms['dirty']" />
+                                            <br />
                                             Sucias
                                         </div>
                                         <div class="col-4">
-                                            <span t-esc="rooms['cleaning']"/><br/>
+                                            <span t-esc="rooms['cleaning']" />
+                                            <br />
                                             Limpiándose
                                         </div>
                                     </div>
@@ -359,39 +336,79 @@
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <h3 class="mb-0">
                                                 Caja:
-                                                <span t-esc="cash_balance"/> €
+                                                <span t-esc="cash_balance" />
+                                                €
                                             </h3>
                                         </div>
+                                        <div class="col-9">
+                                            <form method="post" name="caja">
+                                                <div class="row">
+                                                    <div class="form-group col-xs-12 col-md-6">
+                                                        <label class="control-label" for="range_check_date_modal">
+                                                            Fechas
+                                                        </label>
+                                                        <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                                                        <input type="hidden" name="checkin" value="" />
+                                                        <input type="hidden" name="checkout" value="" />
+                                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                        <span class="o_pms_pwa_calendar_icon">
+                                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                                        </span>
+                                                    </div>
+                                                    <div class="form-group col-xs-12 col-md-3">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="compare_with">
+                                                            <option name="compare_with" t-foreach="compare_options" t-as="option" t-att-value="option['id']">
+                                                                <t t-esc="option['value']" />
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-3">
+                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Enviar" />
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                </div>
+                                <div class="card-body o_pms_pwa_dbh_force">
+                                    <t t-foreach="payments" t-as="pm">
+                                        <div class="row">
+                                            <div class="col-9">
+                                                <span t-esc="pm['name']" />
+                                            </div>
+                                            <div t-if="pm['amount'] > 0" class="col-3 text-right o_pms_pwa_db_dates">
+                                                <span t-esc="pm['amount']" />
+                                                €
+                                            </div>
+                                            <div t-else="" class="col-3 text-right o_pms_pwa_db_dates" style="color:red;">
+                                                <span t-esc="pm['amount']" />
+                                                €
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
                                         <div class="col-4">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
                                                 CREAR PAGO
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a href=""  type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_cash_register_close">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="open">
+                                                ABRIR CAJA
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_cash_register_close"  data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="close">
                                                 CERRAR CAJA
                                             </a>
                                         </div>
                                     </div>
-                                    <hr/>
-                                </div>
-                                <div class="card-body o_pms_pwa_dbh_force">
-                                    <t t-foreach="payments" t-as="pm">
-                                        <div class="row">
-                                            <div class="col-9">
-                                                <span t-esc="pm['name']"/>
-                                            </div>
-                                            <div t-if="pm['amount'] > 0" class="col-3 text-right o_pms_pwa_db_dates">
-                                                <span t-esc="pm['amount']"/> €
-                                            </div>
-                                            <div t-else="" class="col-3 text-right o_pms_pwa_db_dates" style="color:red;">
-                                                <span t-esc="pm['amount']"/> €
-                                            </div>
-                                        </div>
-                                    </t>
                                 </div>
                             </div>
                         </div>
@@ -399,23 +416,72 @@
                         <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
-                                    <h3 class="mb-0">
-                                        TAREAS PROGRAMADAS
-                                    </h3>
-                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <h3 class="mb-0">
+                                                Diarios banco
+                                            </h3>
+                                        </div>
+                                        <div class="col-8">
+                                            <form method="post" name="caja">
+                                                <div class="row">
+                                                    <div class="form-group col-xs-12 col-md-6">
+                                                        <label class="control-label" for="range_check_date_modal">
+                                                            Fechas
+                                                        </label>
+                                                        <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
+                                                        <input type="hidden" name="checkin" value="" />
+                                                        <input type="hidden" name="checkout" value="" />
+                                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                        <span class="o_pms_pwa_calendar_icon">
+                                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                                        </span>
+                                                    </div>
+                                                    <div class="form-group col-xs-12 col-md-3">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="compare_with">
+                                                            <option name="compare_with" t-foreach="compare_options" t-as="option" t-att-value="option['id']">
+                                                                <t t-esc="option['value']" />
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-12 col-md-3">
+                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Enviar" />
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <hr />
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-
-                                    <t t-foreach="deliveries" t-as="delivery">
+                                    <t t-foreach="payments" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
-                                                <span t-esc="delivery['name']"/>
+                                                <span t-esc="pm['name']" />
                                             </div>
-                                            <div class="col-3 text-right o_pms_pwa_db_dates">
-                                                <span t-esc="delivery['date']"/>
+                                            <div t-if="pm['amount'] > 0" class="col-3 text-right o_pms_pwa_db_dates">
+                                                <span t-esc="pm['amount']" />
+                                                €
+                                            </div>
+                                            <div t-else="" class="col-3 text-right o_pms_pwa_db_dates" style="color:red;">
+                                                <span t-esc="pm['amount']" />
+                                                €
                                             </div>
                                         </div>
                                     </t>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
+                                                CREAR PAGO
+                                            </a>
+                                        </div>
+                                        <div class="col-4">
+                                        </div>
+                                        <div class="col-4">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -426,17 +492,21 @@
                                     <h3 class="mb-0">
                                         HISTÓRICO
                                     </h3>
-                                    <hr/>
+                                    <hr />
                                 </div>
-                                <div class="card-body o_pms_pwa_dbh_force">
+                                <div class="card-body o_pms_pwa_dbh_force o_pms_pwa_history">
 
                                     <t t-foreach="history" t-as="line">
                                         <div class="row">
                                             <div class="col-12">
-                                                <strong><span class="o_pms_pwa_db_dates" t-esc="line['date']"/> <span t-esc="line['hour']"/> <span t-esc="line['name']"/></strong>
+                                                <strong>
+                                                    <span class="o_pms_pwa_db_dates" t-esc="line['date']" />
+                                                    <span t-esc="line['hour']" />
+                                                    <span t-esc="line['name']" />
+                                                </strong>
                                             </div>
                                             <div class="col-12">
-                                                <span t-esc="line['description']"/>
+                                                <span t-esc="line['description']" />
                                             </div>
                                         </div>
                                     </t>
@@ -457,12 +527,12 @@
                             <div class="row mt-3 mb-3">
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <t t-set="i" t-value="1"/>
+                                    <t t-set="i" t-value="1" />
                                     <t t-foreach="evolutions" t-as="evolution">
                                         <li class="nav-item">
-                                            <a t-att-class="'nav-link active' if i == 1 else 'nav-link'" t-att-id="evolution['selector'] + '-tab'" data-toggle="tab" t-att-href="'#' + evolution['selector']" role="tab" t-att-aria-controls="evolution['selector']" aria-selected="true" t-esc="evolution['name']"/>
+                                            <a t-att-class="'nav-link active' if i == 1 else 'nav-link'" t-att-id="evolution['selector'] + '-tab'" data-toggle="tab" t-att-href="'#' + evolution['selector']" role="tab" t-att-aria-controls="evolution['selector']" aria-selected="true" t-esc="evolution['name']" />
                                         </li>
-                                        <t t-set="i" t-value="i+1"/>
+                                        <t t-set="i" t-value="i+1" />
                                     </t>
                                 </ul>
                             </div>
@@ -476,7 +546,7 @@
                                         <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
                                         <input type="hidden" name="checkin" value="" />
                                         <input type="hidden" name="checkout" value="" />
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                         <span class="o_pms_pwa_calendar_icon">
                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                         </span>
@@ -489,31 +559,20 @@
                                         </select>
                                     </div>
                                     <div class="col-xs-12 col-md-3 float-left">
-                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Submit"/>
+                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Submit" />
                                     </div>
                                 </div>
                             </form>
                             <div class="row mt-3">
                                 <!-- Tab panes -->
                                 <div class="tab-content col-12">
-                                    <t t-set="i" t-value="1"/>
+                                    <t t-set="i" t-value="1" />
                                     <t t-foreach="evolutions" t-as="evolution">
                                         <div t-att-class="'tab-pane active' if i == 1 else 'tab-pane'" t-att-id="evolution['selector']" role="tabpanel" t-att-aria-labelledby="evolution['selector'] + '-tab'">
-                                            <h2 class="o_default_snippet_text" t-esc="evolution['name']"/>
-                                            <canvas class="o_pms_pwa_line"
-                                                style="display: block; width: 100%; height: 240px;"
-                                                width="1110" height="240"
-                                                t-att-data-labels="evolution['labels']"
-                                                t-att-data-label_1="evolution['label_1']"
-                                                t-att-data-data_1="evolution['data_1']"
-                                                t-att-data-background_color_1="evolution['backgroundColor_1']"
-                                                t-att-data-border_color_1="evolution['borderColor_1']"
-                                                t-att-data-label_2="evolution['label_2']"
-                                                t-att-data-data_2="evolution['data_2']"
-                                                t-att-data-background_color_2="evolution['backgroundColor_2']"
-                                                t-att-data-border_color_2="evolution['borderColor_2']"/>
+                                            <h2 class="o_default_snippet_text" t-esc="evolution['name']" />
+                                            <canvas class="o_pms_pwa_line" style="display: block; width: 100%; height: 240px;" width="1110" height="240" t-att-data-labels="evolution['labels']" t-att-data-label_1="evolution['label_1']" t-att-data-data_1="evolution['data_1']" t-att-data-background_color_1="evolution['backgroundColor_1']" t-att-data-border_color_1="evolution['borderColor_1']" t-att-data-label_2="evolution['label_2']" t-att-data-data_2="evolution['data_2']" t-att-data-background_color_2="evolution['backgroundColor_2']" t-att-data-border_color_2="evolution['borderColor_2']" />
                                         </div>
-                                        <t t-set="i" t-value="i+1"/>
+                                        <t t-set="i" t-value="i+1" />
                                     </t>
                                 </div>
                             </div>
@@ -538,30 +597,22 @@
                                         <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
                                         <input type="hidden" name="checkin" value="" />
                                         <input type="hidden" name="checkout" value="" />
-                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                         <span class="o_pms_pwa_calendar_icon">
                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                         </span>
                                     </div>
                                     <div class="col-xs-12 col-md-3">
-                                        <input class="btn btn-radius btn-pms_pwa float-left" type="submit" name="Submit"/>
+                                        <input class="btn btn-radius btn-pms_pwa float-left" type="submit" name="Submit" />
                                     </div>
                                 </div>
                             </form>
                             <div class="row mt-3">
                                 <t t-foreach="kpis" t-as="kpi">
                                     <div class="col-xs-12 col-md-4 col-lg-2">
-                                        <canvas class="o_pms_pwa_doughnut"
-                                            style="display: block; width: 1110px; height: 555px;"
-                                            width="1110" height="555"
-                                            t-att-data-labels="kpi['labels']"
-                                            t-att-data-label="kpi['label']"
-                                            t-att-data-data="kpi['data']"
-                                            t-att-data-background_color="kpi['backgroundColor']"
-                                            t-att-data-border_color="kpi['borderColor']" t-esc="kpi['ratio']">
-                                        </canvas>
-                                        <span t-esc="kpi['ratio']" class="o_pms_pwa_kpi_ratio d-block d-lg-none d-xl-block"/>
-                                        <h3 class="o_default_snippet_text text-center" t-esc="kpi['name']"/>
+                                        <canvas class="o_pms_pwa_doughnut" style="display: block; width: 1110px; height: 555px;" width="1110" height="555" t-att-data-labels="kpi['labels']" t-att-data-label="kpi['label']" t-att-data-data="kpi['data']" t-att-data-background_color="kpi['backgroundColor']" t-att-data-border_color="kpi['borderColor']" t-esc="kpi['ratio']"></canvas>
+                                        <span t-esc="kpi['ratio']" class="o_pms_pwa_kpi_ratio d-block d-lg-none d-xl-block" />
+                                        <h3 class="o_default_snippet_text text-center" t-esc="kpi['name']" />
                                     </div>
                                 </t>
                             </div>
