@@ -21,7 +21,7 @@
                         <div class="col-12">
                             <div class="row o_pms_pwa_modal_header_pad">
                                 <h4 class="modal-title">
-                                    Retirada en caja:
+                                    Caja:
                                 </h4>
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                                             <t t-foreach="cash['coins']" t-as="coin">
                                                 <tr>
                                                     <td class="align-center">
-                                                        <input type="number" t-att-tabindex="coin_index" t-attf-value="{{coin_value}}" t-att-name="coin" t-attf-onchange="calculateValue(this.value, {{coin}}, {{coin_index}});" style="width: 100px;height: 10px;padding-top: 2px;min-height: 30px;"></input>
+                                                        <input class="coins" type="number" t-att-tabindex="coin_index" t-attf-value="{{coin_value}}" t-att-name="coin" t-attf-onchange="calculateValue(this.value, {{str(coin)}}, {{coin_index}});" style="width: 100px;height: 10px;padding-top: 2px;min-height: 30px;"></input>
                                                     </td>
                                                     <td>
                                                         <t t-esc="coin" />
@@ -90,8 +90,8 @@
                                 </button>
                             </div>
                             <div class="col-6">
-                                <button type="button" class="btn btn-message btn-block o_pms_pwa_cash_register_confirm" data-dismiss="modal" aria-label="Pay">
-                                    <span>Sacar dinero</span>
+                                <button type="button" class="btn btn-message btn-block o_pms_pwa_cash_register_confirm" aria-label="Pay">
+                                    <span class="modal-button-text">Sacar dinero</span>
                                 </button>
                             </div>
                         </div>

@@ -6,10 +6,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
     var _t = core._t;
     var csrf_token = core.csrf_token;
     var publicWidget = require("web.public.widget");
-    $('#o_pms_pwa_open_close_cash').on('show.bs.modal', function () {
-        $('input[type="number"]').val(0);
-        console.log("reset input");
-    });
+
     publicWidget.registry.PMSPWADashboardWidget = publicWidget.Widget.extend({
         selector: "div.o_pms_pwa_dashboard",
         events: {
@@ -19,6 +16,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             "change input[name='rooms_date']": "_onChangeRoomFormSubmit",
             "click a.o_pms_pwa_cash_register_close": "_onClickCashRegisterCloseButton",
             "click button.o_pms_pwa_cash_register_confirm": "_onClickCashRegisterConfirmButton",
+            "click a.o_pms_pwa_modal_cash_register_close": "_onClickModalCashRegiste",
         },
         pms_pwa_initiate_doughnuts: function () {
             $.each($(".o_pms_pwa_doughnut"), function (
@@ -165,17 +163,39 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 .val();
             var payment_amount = modal.find("input[name='amount']").val();
             var description = modal.find("input[name='description']").val();
-
+            var coins = {};
+            $("input[type=number].coins").each(function(){
+                coins[this.name] = this.value;
+            });
+            console.log(coins);
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 amount: payment_amount,
+                coins: coins,
                 description: description,
             }).then(function (data) {
                 setTimeout(function () {
                     self.displayDataAlert(data);
+                    if(data.result === true){
+                        $('#o_pms_pwa_open_close_cash').modal('toggle');
+                    }
                 }, 0);
             });
-        }
+        },
+        _onClickModalCashRegiste: function(e) {
+            var self = this;
+            e.preventDefault();
+            $('input[type="number"]').val(0);
+            var dataTitle = e.currentTarget.getAttribute("data-title")
+
+            if(dataTitle=="open"){
+                $(".modal-title").html("Abrir caja");
+                $(".modal-button-text").html("Abrir caja");
+            }else{
+                $(".modal-title").html("Cerrar caja");
+                $(".modal-button-text").html("Cerrar caja");
+            }
+        },
     });
 
     $.each(document.getElementsByClassName("o_pms_pwa_line"), function (key, line) {
