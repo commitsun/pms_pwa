@@ -14,6 +14,24 @@ _logger = logging.getLogger(__name__)
 class CashRegister(http.Controller):
 
     @http.route(
+        "/cash_register/open-close",
+        type="json",
+        auth="public",
+        csrf=False,
+        website=True,
+    )
+    def cash_register__open_close(self, **kw):
+        print("kw", kw)
+        if kw.get("force") == True:
+            return json.dumps(
+                {"result": True, "force": False, "message": _("No existe ninguna sesión de caja abierta, la caja se abrirá automáticamente al registrar un pago o un cobro.")}
+            )
+
+        return json.dumps(
+            {"result": False, "force": True, "message": _("No existe ninguna sesión de caja abierta, la caja se abrirá automáticamente al registrar un pago o un cobro.")}
+        )
+
+    @http.route(
         "/cash_register/close",
         type="json",
         auth="public",
@@ -125,3 +143,18 @@ class CashRegister(http.Controller):
             )
         except Exception as e:
             return json.dumps({"result": False, "message": str(e)})
+
+    @http.route(
+        "/cash_register/edit",
+        csrf=False,
+        auth="user",
+        website=True,
+        type="json",
+        methods=["POST"],
+    )
+    def cash_register_edit(self, **kw):
+        # aqui se hace la edición
+        print(kw)
+        return json.dumps(
+            {"result": True, "message": _("Pago registrado!")}
+        )
