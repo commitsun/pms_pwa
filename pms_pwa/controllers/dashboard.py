@@ -88,6 +88,7 @@ class DashBoard(http.Controller):
                     "id": "valor",
                     "id2": "valor2",
                 },
+                "journal_payments": self._get_cash_payments(pms_property_id),
                 # Fin cambio documento
                 "tasks": _get_user_activities(
                     request.session.uid if request.session.uid else False
