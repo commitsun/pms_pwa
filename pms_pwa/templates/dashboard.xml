@@ -454,7 +454,7 @@
                                     <hr />
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <t t-foreach="payments" t-as="pm">
+                                    <t t-foreach="journal_payments" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
                                                 <span t-esc="pm['name']" />
