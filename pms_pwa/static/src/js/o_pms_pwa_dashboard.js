@@ -15,14 +15,14 @@ odoo.define("pms_pwa.dashboard", function (require) {
             "change input[name='departure_date']": "_onChangeDepartureFormSubmit",
             "change input[name='rooms_date']": "_onChangeRoomFormSubmit",
             "click a.o_pms_pwa_cash_register_close": "_onClickCashRegisterCloseButton",
-            "click button.o_pms_pwa_cash_register_confirm": "_onClickCashRegisterConfirmButton",
+            "click button.o_pms_pwa_cash_register_confirm":
+                "_onClickCashRegisterConfirmButton",
             "click a.o_pms_pwa_modal_cash_register_close": "_onClickModalCashRegiste",
+            "click a.o_pms_pwa_edit_payment_modal": "_onClickModalCashEdit",
+            "click button.o_pms_pwa_edit_payment": "_onClickModalEditPayment",
         },
         pms_pwa_initiate_doughnuts: function () {
-            $.each($(".o_pms_pwa_doughnut"), function (
-                key,
-                doughnut
-            ) {
+            $.each($(".o_pms_pwa_doughnut"), function (key, doughnut) {
                 new Chart(doughnut, {
                     type: "doughnut",
                     data: {
@@ -31,9 +31,8 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             {
                                 label: doughnut.dataset.label,
                                 data: doughnut.dataset.data.split(","),
-                                backgroundColor: doughnut.dataset.background_color.split(
-                                    ","
-                                ),
+                                backgroundColor:
+                                    doughnut.dataset.background_color.split(","),
                                 borderColor: doughnut.dataset.border_color.split(","),
                                 borderWidth: 1,
                             },
@@ -57,14 +56,16 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             {
                                 label: line.dataset.label_1,
                                 data: line.dataset.data_1.split(","),
-                                backgroundColor: line.dataset.background_color_1.split(","),
+                                backgroundColor:
+                                    line.dataset.background_color_1.split(","),
                                 borderColor: line.dataset.border_color_1.split(","),
                                 borderWidth: 1,
                             },
                             {
                                 label: line.dataset.label_2,
                                 data: line.dataset.data_2.split(","),
-                                backgroundColor: line.dataset.background_color_2.split(","),
+                                backgroundColor:
+                                    line.dataset.background_color_2.split(","),
                                 borderColor: line.dataset.border_color_2.split(","),
                                 borderWidth: 1,
                             },
@@ -153,7 +154,10 @@ odoo.define("pms_pwa.dashboard", function (require) {
             });
         },
         _onClickCashRegisterConfirmButton: function (ev) {
-            console.log("_onClickCashRegisterConfirmButton");
+            let force = false;
+            if (ev.currentTarget.getAttribute("data-force")) {
+                force = true;
+            }
             var self = this;
             ev.preventDefault();
             var modal = $("div#o_pms_pwa_new_cash_register_payment");
@@ -162,39 +166,77 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 .filter(":selected")
                 .val();
             var payment_amount = modal.find("input[name='amount']").val();
-            var description = modal.find("input[name='description']").val();
             var coins = {};
-            $("input[type=number].coins").each(function(){
+            $("input[type=number].coins").each(function () {
                 coins[this.name] = this.value;
             });
-            console.log(coins);
-            ajax.jsonRpc("/cash_register/add", "call", {
+
+            ajax.jsonRpc("/cash_register/open-close", "call", {
                 payment_method: payment_method,
                 amount: payment_amount,
                 coins: coins,
-                description: description,
+                type: $("input[name=type]").val(),
+                force: force,
             }).then(function (data) {
-                setTimeout(function () {
-                    self.displayDataAlert(data);
-                    if(data.result === true){
-                        $('#o_pms_pwa_open_close_cash').modal('toggle');
+                let obj = JSON.parse(data);
+
+                self.displayDataAlert(data);
+                if (obj["result"] === true) {
+                    $("#confirmaModal").modal("toggle");
+                    $("#o_pms_pwa_open_close_cash").modal("toggle");
+                } else {
+                    if (obj["force"] === true) {
+                        $("#confirmaModal").modal("show");
+                        $("p.title_confirm").html(obj["message"]);
+                        // dos botones, uno revisar, cierra modal y no habre la caja.
+                        // forzar, que abre la caja y cierra las dos modales.
                     }
-                }, 0);
+                }
             });
         },
-        _onClickModalCashRegiste: function(e) {
+        _onClickModalCashRegiste: function (e) {
             var self = this;
             e.preventDefault();
             $('input[type="number"]').val(0);
-            var dataTitle = e.currentTarget.getAttribute("data-title")
+            var dataTitle = e.currentTarget.getAttribute("data-title");
 
-            if(dataTitle=="open"){
+            if (dataTitle == "open") {
                 $(".modal-title").html("Abrir caja");
                 $(".modal-button-text").html("Abrir caja");
-            }else{
+                $('input[type="type"]').val("open");
+            } else {
                 $(".modal-title").html("Cerrar caja");
                 $(".modal-button-text").html("Cerrar caja");
+                $('input[type="type"]').val("close");
             }
+        },
+        _onClickModalCashEdit: function (e) {
+            var self = this;
+            e.preventDefault();
+            var id = e.currentTarget.getAttribute("data-id");
+            var name = e.currentTarget.getAttribute("data-name");
+            var amount = e.currentTarget.getAttribute("data-amount");
+            $('input.payment_id').val(id);
+            $('input.payment_name').val(name);
+            $('input.payment_amount').val(amount);
+        },
+        _onClickModalEditPayment: function(e) {
+            var self = this;
+            e.preventDefault();
+            let payment_id = $('input.payment_id').val();
+            let payment_amount = $('input.payment_name').val();
+            let payment_name = $('input.payment_amount').val();
+            let cash_selected = $('.cash_selected').val();
+            console.log("cash_selected", cash_selected);
+            ajax.jsonRpc("/cash_register/edit", "call", {
+                id: payment_id,
+                amount: payment_amount,
+                name: payment_name,
+                cash: cash_selected,
+            }).then(function (data) {
+                self.displayDataAlert(data);
+                $("section#cash_values").load("/dashboard section#cash_values>*");
+            });
         },
     });
 
@@ -230,5 +272,4 @@ odoo.define("pms_pwa.dashboard", function (require) {
     });
 
     return publicWidget.registry.PMSPWADashboardWidget;
-
 });

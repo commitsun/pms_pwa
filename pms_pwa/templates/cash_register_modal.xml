@@ -8,7 +8,7 @@
                         <div class="col-12">
                             <div class="row o_pms_pwa_modal_header_pad">
                                 <h4 class="modal-title">
-                                    Retirada en caja:
+                                    Movimiento de caja:
                                 </h4>
                             </div>
                         </div>
@@ -21,15 +21,29 @@
                                         <label class="control-label col-12" for="payment_method">
                                             Diario
                                         </label>
-                                        <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
-                                        <t t-else="" t-set="payment_methods" t-value="[]"/>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
-                                            <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
-                                                <t t-esc="key_value['name']" />
-                                            </option>
+                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
+                                            <t t-foreach="cash['list']" t-as="option">
+                                                <t t-if="cash['selected'] == option">
+                                                    <option  t-att-value="option" selected="selected">
+                                                        <t t-esc="option_value" />
+                                                    </option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option t-att-value="option">
+                                                        <t t-esc="option_value" />
+                                                    </option>
+                                                </t>
+
+                                            </t>
                                         </select>
                                     </div>
-
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="partner_id">
+                                            Proveedor
+                                        </label>
+                                        <input class="form-control o_pms_pwa_search_partner" data-supplier="true" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                        <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
+                                    </div>
                                     <div class="col-sm-12 mt-2">
                                         <label class="control-label col-12" for="amount">
                                             Importe
@@ -54,7 +68,7 @@
                             </div>
                             <div class="col-6">
                                 <button type="button" class="btn btn-message btn-block o_pms_pwa_cash_register_confirm" data-dismiss="modal" aria-label="Pay">
-                                    <span>Sacar dinero</span>
+                                    <span>Pagar</span>
                                 </button>
                             </div>
                         </div>

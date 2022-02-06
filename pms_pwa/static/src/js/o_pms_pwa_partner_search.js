@@ -3,12 +3,18 @@ odoo.define("pms_pwa.partner_search", function () {
 
     $(function () {
         $(".o_pms_pwa_search_partner").autocomplete({
+
             source: function (request, response) {
+                let supplier = false;
+                let input = $("input[name=partner_name]");
+                if(input[1].attributes["data-supplier"]){
+                    supplier = true;
+                }
                 $.ajax({
                     url: "/partner/search",
                     method: "GET",
                     dataType: "json",
-                    data: {keywords: request.term, category: false},
+                    data: {keywords: request.term, category: false, supplier: supplier},
                     success: function (data) {
                         response(
                             $.map(data, function (item) {

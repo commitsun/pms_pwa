@@ -61,6 +61,7 @@ class DashBoard(http.Controller):
             {
                 # Cambios documento
                 "cash": {
+                    "status": "open",  # open or close
                     "coins": {
                         "500": 0,
                         "200": 0,
@@ -80,15 +81,22 @@ class DashBoard(http.Controller):
 
                     },
                     "list": {
-                        "id": "valor",
-                        "id2": "valor2",
-                    }
+                        "1": "valor",
+                        "2": "valor2",
+                    },
+                    "selected": "1",
+                    "date": "02/02/2021",
+                    "payments": self._get_cash_payments(pms_property_id),
                 },
-                "journals": {
-                    "id": "valor",
-                    "id2": "valor2",
+                "bank_journals": {
+                    "list": {
+                        "1": "valor",
+                        "2": "valor2",
+                    },
+                    "selected": "2",
+                    "date": "02/02/2021",
+                    "payments": self._get_cash_payments(pms_property_id),
                 },
-                "journal_payments": self._get_cash_payments(pms_property_id),
                 # Fin cambio documento
                 "tasks": _get_user_activities(
                     request.session.uid if request.session.uid else False
@@ -130,7 +138,7 @@ class DashBoard(http.Controller):
                     {"name": "Paula Sánchez", "date": "15/10/2020 10:54:25"},
                 ],
                 "cash_balance": self._get_cash_balance(pms_property_id),
-                "payments": self._get_cash_payments(pms_property_id),
+
                 "deliveries": [
                     {"name": "Envío fichero a la policía", "date": "15/10/2020"},
                     {"name": "Envío facturas al gestor", "date": "15/10/2020"},

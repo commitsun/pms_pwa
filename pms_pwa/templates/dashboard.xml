@@ -306,7 +306,7 @@
                     </div>
                 </section>
 
-                <section class="container-fluid o_pms_pwa_dashboard">
+                <section class="container-fluid o_pms_pwa_dashboard" id="cash_values">
                     <div class="row">
                         <!-- <div class="col-md-12 col-lg-4 mt-4">
                             <div class="card shadow">
@@ -348,10 +348,10 @@
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="row">
                                                     <div class="form-group col-xs-12 col-md-6">
-                                                        <label class="control-label" for="range_check_date_modal">
+                                                        <!-- <label class="control-label" for="range_check_date_modal">
                                                             Fecha
-                                                        </label>
-                                                        <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="cash_date" />
+                                                        </label> -->
+                                                        <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="cash_date" t-att-value="cash['date']" style="padding-left:2.5rem;" />
 
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -359,13 +359,23 @@
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
-                                                            <option name="compare_with" t-foreach="cash['list']" t-as="option" t-att-value="option">
-                                                                <t t-esc="option_value" />
-                                                            </option>
+                                                            <t t-foreach="cash['list']" t-as="option">
+                                                                <t t-if="cash['selected'] == option">
+                                                                    <option t-att-value="option" selected="selected">
+                                                                        <t t-esc="option_value" />
+                                                                    </option>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <option  t-att-value="option">
+                                                                        <t t-esc="option_value" />
+                                                                    </option>
+                                                                </t>
+
+                                                            </t>
                                                         </select>
                                                     </div>
                                                     <div class="col-xs-12 col-md-3">
-                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Buscar" style="width:70px"/>
+                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Ver" style="width:70px"/>
                                                     </div>
                                                 </div>
                                             </form>
@@ -374,10 +384,21 @@
                                     <hr />
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <t t-foreach="payments" t-as="pm">
+                                    <div class="row">
+                                        <!-- <div class="col-9">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-id="1" t-attf-data-name="Prueba" t-attf-data-amount="25" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
+                                                <i class="fa fa-edit"></i>
+                                            </a>Prueba
+                                        </div>
+                                        <div class="col-3 text-right o_pms_pwa_db_dates">
+                                            25
+                                            €
+                                        </div>
+                                    </div> -->
+                                    <t t-foreach="cash['payments']" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
-                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3" t-attf-data-id="{{ pm['id'] }}" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
+                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-id="{{ pm['id'] }}" t-attf-data-name="{{ pm['name'] }}" t-attf-data-amount="{{ pm['amount'] }}" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
                                                     <i class="fa fa-edit"></i>
                                                 </a><span t-esc="pm['name']" />
                                             </div>
@@ -400,15 +421,25 @@
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close" data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="open">
-                                                ABRIR CAJA
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_internal_register_payment">
+                                                INTERNA
                                             </a>
                                         </div>
-                                        <div class="col-4">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close"  data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="close">
-                                                CERRAR CAJA
-                                            </a>
-                                        </div>
+                                        <t t-if="cash['status'] == 'open'">
+                                            <div class="col-4">
+                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close" data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="open">
+                                                    ABRIR CAJA
+                                                </a>
+                                            </div>
+                                        </t>
+                                        <t t-else="">
+                                            <div class="col-4">
+                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close"  data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="close">
+                                                    CERRAR CAJA
+                                                </a>
+                                            </div>
+                                        </t>
+
                                     </div>
                                 </div>
                             </div>
@@ -428,10 +459,10 @@
                                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="row">
                                                     <div class="form-group col-xs-12 col-md-6">
-                                                        <label class="control-label" for="range_check_date_modal">
+                                                        <!-- <label class="control-label" for="range_check_date_modal">
                                                             Fecha
-                                                        </label>
-                                                        <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="journal_date" />
+                                                        </label> -->
+                                                        <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="journal_date" t-att-value="bank_journals['date']" style="padding-left:2.5rem;"  />
 
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
@@ -439,13 +470,23 @@
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
                                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="journal_selected">
-                                                            <option name="compare_with" t-foreach="journals" t-as="option" t-att-value="option">
-                                                                <t t-esc="option_value" />
-                                                            </option>
+                                                            <t t-foreach="bank_journals['list']" t-as="option">
+                                                                <t t-if="bank_journals['selected'] == option">
+                                                                    <option  t-att-value="option" selected="selected">
+                                                                        <t t-esc="option_value" />
+                                                                    </option>
+                                                                </t>
+                                                                <t t-else="">
+                                                                    <option t-att-value="option">
+                                                                        <t t-esc="option_value" />
+                                                                    </option>
+                                                                </t>
+
+                                                            </t>
                                                         </select>
                                                     </div>
                                                     <div class="col-xs-12 col-md-3">
-                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Buscar" style="width:70px"/>
+                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Ver" style="width:70px"/>
                                                     </div>
                                                 </div>
                                             </form>
@@ -454,7 +495,7 @@
                                     <hr />
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <t t-foreach="journal_payments" t-as="pm">
+                                    <t t-foreach="bank_journals['payments']" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
                                                 <span t-esc="pm['name']" />
