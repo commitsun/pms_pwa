@@ -344,22 +344,21 @@
                                             </h3>
                                         </div>
                                         <div class="col-9">
-                                            <form method="post" name="caja">
+                                            <form method="post" name="caja" action="/dashboard" >
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="row">
                                                     <div class="form-group col-xs-12 col-md-6">
                                                         <label class="control-label" for="range_check_date_modal">
-                                                            Fechas
+                                                            Fecha
                                                         </label>
-                                                        <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
-                                                        <input type="hidden" name="checkin" value="" />
-                                                        <input type="hidden" name="checkout" value="" />
-                                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                        <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="cash_date" />
+
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                         </span>
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="compare_with">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
                                                             <option name="compare_with" t-foreach="cash['list']" t-as="option" t-att-value="option">
                                                                 <t t-esc="option_value" />
                                                             </option>
@@ -401,12 +400,12 @@
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="open">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close" data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="open">
                                                 ABRIR CAJA
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_cash_register_close"  data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="close">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close"  data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="close">
                                                 CERRAR CAJA
                                             </a>
                                         </div>
@@ -425,22 +424,21 @@
                                             </h3>
                                         </div>
                                         <div class="col-8">
-                                            <form method="post" name="caja">
+                                            <form method="post" name="caja" action="/dashboard">
+                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="row">
                                                     <div class="form-group col-xs-12 col-md-6">
                                                         <label class="control-label" for="range_check_date_modal">
-                                                            Fechas
+                                                            Fecha
                                                         </label>
-                                                        <input class="form-control float-left o_pms_pwa_range_check_date_modal" type="text" name="range_check_date_modal" t-att-value="post['checkin'] if post and 'checkin' in post else None" />
-                                                        <input type="hidden" name="checkin" value="" />
-                                                        <input type="hidden" name="checkout" value="" />
-                                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                                        <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="journal_date" />
+
                                                         <span class="o_pms_pwa_calendar_icon">
                                                             <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                                         </span>
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="compare_with">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="journal_selected">
                                                             <option name="compare_with" t-foreach="journals" t-as="option" t-att-value="option">
                                                                 <t t-esc="option_value" />
                                                             </option>
