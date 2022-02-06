@@ -493,7 +493,7 @@
                                         <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="mx-2 o_pms_pwa_calendar_arrow">
                                             <i class="fa fa-angle-right" />
                                         </a>
-                                        <a t-attf-href="?selected_date={{(today - datetime.timedelta(days=1)).strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="btn btn-pms_pwa" style="color:white;width:100px;" t-if="(selected_date - datetime.timedelta(days=1)).strftime('%d-%m-%Y') != (today - datetime.timedelta(days=1)).strftime('%d-%m-%Y')">Hoy</a>
+                                        <a t-attf-href="?selected_date={{(today - datetime.timedelta(days=1)).strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="btn btn-pms_pwa" style="color:white;width:100px;" t-if="(selected_date).strftime('%d-%m-%Y') != (today - datetime.timedelta(days=1)).strftime('%d-%m-%Y')">Hoy</a>
                                     </div>
 
                                 </div>
