@@ -384,8 +384,8 @@
                                     <hr />
                                 </div>
                                 <div class="card-body o_pms_pwa_dbh_force">
-                                    <div class="row">
-                                        <!-- <div class="col-9">
+                                    <!-- <div class="row">
+                                        <div class="col-9">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-id="1" t-attf-data-name="Prueba" t-attf-data-amount="25" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
                                                 <i class="fa fa-edit"></i>
                                             </a>Prueba
@@ -422,7 +422,7 @@
                                         </div>
                                         <div class="col-4">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_internal_register_payment">
-                                                INTERNA
+                                                PAGO INTERNO
                                             </a>
                                         </div>
                                         <t t-if="cash['status'] == 'open'">
