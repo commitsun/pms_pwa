@@ -70,11 +70,17 @@ class PmsReservation(models.Model):
         if record.to_assign and len(folio.reservation_ids) == 1:
             for notify_user in notify_users:
                 id_notify = "notify_pms_" + str(notify_user.id)
-                mens = (
-                    pms_property.name
-                    + ": Nueva reserva de "
-                    + record.channel_type_id.name
-                )
+                if vals.get("reservation_type") == "out":
+                    mens = (
+                        pms_property.name
+                        + ": Nuevo Bloqueo"
+                    )
+                else:
+                    mens = (
+                        pms_property.name
+                        + ": Nueva reserva de "
+                        + record.channel_type_id.name
+                    )
                 if record.agency_id:
                     mens += " (" + record.agency_id.name + ")"
                 else:

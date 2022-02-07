@@ -255,7 +255,7 @@ class PmsReservation(http.Controller):
                             request.env["res.partner"]
                             .sudo()
                             .search([("id", "=", int(partner_invoice_id))])
-                        )
+                        ).id
                     else:
                         partner_invoice_values = {}
                         partner_invoice_values["vat"] = payload[0]["partner_values"][0][
@@ -273,7 +273,7 @@ class PmsReservation(http.Controller):
                         # partner_invoice_values["country_id"] = payload[0]["partner_values"][0]["country"]
                         partner_invoice_id = request.env["res.partner"].create(
                             partner_invoice_values
-                        )
+                        ).id
                     lines_to_invoice = dict()
                     for value in invoice_lines[0]:
                         lines_to_invoice[value["id"]] = value["qty"]
