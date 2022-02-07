@@ -441,6 +441,7 @@ class DashBoard(http.Controller):
         payments = []
         for line in statement.line_ids:
             payments.append({
+                "id": line.id,
                 "name": line.payment_ref + " el " + line.create_date.strftime("%d %b - %H:%M") + " (" + line.create_uid.name + ")",
                 "amount": line.amount,
             })
