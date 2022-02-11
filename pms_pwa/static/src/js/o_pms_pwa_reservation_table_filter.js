@@ -298,11 +298,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 console.log("No se puede hacer reload en dashboard");
                 // Mirar si hay que borrar de la campanita el aviso.
             } else {
-                ajax.jsonRpc("/reservation/json_data", "call", {
-                    reservation_id: data_id,
-                }).then(function (updated_data) {
-                    new reduced_calendar(this)._launchLines(false, updated_data.current_property_id);
-                });
+                let modal_property_id = $("input[name='modal_property_id']").val();
+                new reduced_calendar(this)._launchLines(false, modal_property_id);
 
             }
         },

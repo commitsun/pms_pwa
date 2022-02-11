@@ -14,7 +14,7 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
 
     $("a.o_pms_pwa_clear_all").on("click", function (event) {
         event.preventDefault();
-        console.log("Reloading...");
+        // console.log("Reloading...");
         location.reload();
     });
 
@@ -24,7 +24,7 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
             this._addChannelPMS();
         },
         _onPoll: function (notifications) {
-            console.log("notifications", notifications);
+            // console.log("notifications", notifications);
             this.bus_front_notification(notifications);
             this._addChannelPMS();
             return this._super(notifications);

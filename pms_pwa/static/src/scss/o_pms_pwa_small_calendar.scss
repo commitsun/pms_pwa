@@ -152,15 +152,22 @@ section.o_pms_pwa_roomdoo {
                 }
             }
             .ui-droppable-active {
-                background-color: $theme-color;
-                border: none !important;
+                background-color: none  !important;
+                color: #000000  !important;
+                font-family: "Barlow"  !important;
+                font-weight: 400 !important;
+                font-size: 16px  !important;
             }
             .ui-droppable-hover {
                 background-color: $bg-theme-color !important;
                 border: none !important;
             }
             .ui-state-active {
-                background-color: $bg-theme-color;
+                background-color: none  !important;
+                color: #000000  !important;
+                font-family: "Barlow"  !important;
+                font-weight: 400 !important;
+                font-size: 16px  !important;
             }
             .ui-state-hover {
                 background-color: #dadada !important;
