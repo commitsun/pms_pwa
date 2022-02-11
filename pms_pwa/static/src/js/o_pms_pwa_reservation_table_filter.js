@@ -3,10 +3,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     require("web.dom_ready");
     var ajax = require("web.ajax");
     var core = require("web.core");
+    require("web.ServicesMixin");
     // var PortalSidebar = require('portal.PortalSidebar');
     var _t = core._t;
     var publicWidget = require("web.public.widget");
-    var reduced_calendar = require("pms_pwa.reduced_calendar");
+    var reduced_calendar = require("pms_pwa.reducedCalendarRoomdoo");
 
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
@@ -95,79 +96,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             self.notes_text = _t("Notes");
             return this._super.apply(this, arguments);
         },
-        convertDay: function (day_to_convert) {
-            var self = this;
-            if (document.documentElement.lang === "es-ES") {
-                try {
-                    let parts_of_date = day_to_convert.split("/");
-
-                    let new_date =
-                        parts_of_date[1] +
-                        "/" +
-                        parts_of_date[0] +
-                        "/" +
-                        parts_of_date[2];
-
-                    day_to_convert = new_date;
-                } catch (error) {
-                    console.error("Invalid format date");
-                    return false;
-                }
-            } else {
-                try {
-                    let parts_of_date = day_to_convert.split("/");
-
-                    let new_date =
-                        parts_of_date[0] +
-                        "-" +
-                        parts_of_date[1] +
-                        "-" +
-                        parts_of_date[2];
-
-                    day_to_convert = new_date;
-                } catch (error) {
-                    console.error("Invalid format date");
-                    return false;
-                }
-            }
-            return day_to_convert;
-        },
-        closestEdge: function (mouse, elem) {
-            var self = this;
-            var elemBounding = elem.getBoundingClientRect();
-            console.log("elemBounding ---> ", elemBounding);
-            var elementLeftEdge = elemBounding.left;
-            var elementTopEdge = elemBounding.top;
-            var elementRightEdge = elemBounding.right;
-            var elementBottomEdge = elemBounding.bottom;
-
-            var mouseX = mouse.pageX;
-            var mouseY = mouse.pageY;
-
-            var topEdgeDist = Math.abs(elementTopEdge - mouseY);
-            var bottomEdgeDist = Math.abs(elementBottomEdge - mouseY);
-            var leftEdgeDist = Math.abs(elementLeftEdge - mouseX);
-            var rightEdgeDist = Math.abs(elementRightEdge - mouseX);
-
-            var min = Math.min(
-                topEdgeDist,
-                bottomEdgeDist,
-                leftEdgeDist,
-                rightEdgeDist
-            );
-
-            switch (min) {
-                case leftEdgeDist:
-                    return "left";
-                case rightEdgeDist:
-                    return "right";
-                case topEdgeDist:
-                    return "top";
-                case bottomEdgeDist:
-                    return "bottom";
-            }
-        },
-
         displayContent: function (xmlid, render_values) {
             var self = this;
             var html = core.qweb.render(xmlid, render_values);
@@ -373,11 +301,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 ajax.jsonRpc("/reservation/json_data", "call", {
                     reservation_id: data_id,
                 }).then(function (updated_data) {
-                    console.log("Recargo el calendario¿?", updated_data.current_property_id);
-                    console.log("Recargo el calendario¿?", self);
-                    console.log("reduced_calendar -->", reduced_calendar);
-                    // $("#reduced_calendar_table").load("/calendar/reduced #reduced_calendar_table>*");
-                    // $(String("#collapse_accordion_" + updated_data.current_property_id)).collapse('show');
                     new reduced_calendar(this)._launchLines(false, updated_data.current_property_id);
                 });
 
@@ -517,16 +440,16 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             var self = this;
             event.stopImmediatePropagation();
             event.preventDefault();
-            console.log("Double click");
+            // console.log("Double click");
             var target = $(event.currentTarget);
             /* Disable button for 0.5 seconds */
             target.prop("disabled", true);
 
-            console.log("Button disabled");
+            // console.log("Button disabled");
 
             setTimeout(function () {
                 target.prop("disabled", false);
-                console.log("Button enabled");
+                // console.log("Button enabled");
             }, 500);
         },
         /* OnClick events */
@@ -582,11 +505,11 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         $("#o_pms_pwa_reservation_modal").on(
                             "hidden.bs.modal",
                             function () {
-                                console.log("Cierro modal");
+                                // console.log("Cierro modal");
                                 try {
                                     var data_id = $("#o_pms_pwa_reservation_modal")[0]
                                         .dataset.id;
-                                    console.log("--->", data_id);
+                                    // console.log("--->", data_id);
                                     if (data_id) {
                                         self.reloadReservationInfo(data_id);
                                     }
@@ -1210,7 +1133,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     }, 100);
                                 }
                             } catch (error) {
-                                console.log(error);
+                                // console.log(error);
                                 location.href = "/reservation/" + modal_reservation_id;
                             }
                         });
@@ -1420,12 +1343,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     }
                 }, 0);
                 target.prop("disabled", false);
-                console.log("Button enabled");
+                // console.log("Button enabled");
             });
         },
         _onClickAssingButton: function (event) {
             var self = this;
-            console.log("-->", event);
+            // console.log("-->", event);
             event.preventDefault();
             var button = event.currentTarget;
             var tr = button.closest("tr");
@@ -1433,7 +1356,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 ".o_pms_pwa_reservation[data-id=" + tr.getAttribute("data-id") + "]";
             if (!selector) {
                 selector = button.getAttribute("data-id");
-                console.log("selector", selector);
+                // console.log("selector", selector);
                 $(selector).click();
             } else {
                 $(selector).find("td.first-col").click();
@@ -1864,7 +1787,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         id: checkin_partner,
                                     },
                                     success: function (data) {
-                                        console.log("data => ", data);
+                                        // console.log("data => ", data);
                                         response(
                                             $.map(data, function (item) {
                                                 return {
@@ -1884,7 +1807,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 });
                             },
                             select: function (suggestion, term, item) {
-                                console.log("suggestion", suggestion, term, item);
+                                // console.log("suggestion", suggestion, term, item);
                                 if (term && term.item) {
                                     $(suggestion.target.parentElement)
                                         .find('input[name="country_id"]')
@@ -1931,7 +1854,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 });
                             },
                             select: function (suggestion, term, item) {
-                                console.log("suggestion", suggestion, term, item);
+                                // console.log("suggestion", suggestion, term, item);
                                 if (term && term.item) {
                                     $(suggestion.target.parentElement)
                                         .find('input[name="state_id"]')
@@ -1970,7 +1893,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     });
                                 },
                                 select: function (suggestion, term, item) {
-                                    console.log("suggestion", suggestion, term, item);
+                                    // console.log("suggestion", suggestion, term, item);
                                     if (term && term.item) {
                                         $(suggestion.target.parentElement)
                                             .find('input[name="partner_id"]')

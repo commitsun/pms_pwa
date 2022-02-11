@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="pms_pwa" xml:space="preserve">
     <t t-name="pms_pwa.calendar_line">
-        <table class="table o_pms_pwa_reservation_list_table"  >
+        <table class="table o_pms_pwa_reservation_list_table">
             <tbody>
                 <t t-foreach="obj_list" t-as="obj">
                     <tr class="o_pms_pwa_calendar_line" >
