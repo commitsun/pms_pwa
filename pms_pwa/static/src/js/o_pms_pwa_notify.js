@@ -8,7 +8,6 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
     require("web.ServicesMixin");
     var Longpolling = require("bus.Longpolling");
     var NotifyWidget = require("pms_pwa.NotifyWidget");
-    var UpdateCalendar = require("pms_pwa.ReducedCalendarPorpertyChanges");
 
     // Notification example:
     // env['bus.bus'].sendone('notify_pms_2', '{"id":"80", "audio":"https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3", "message": "Incoming call from unknown (985687458)", "type": "success"}')
