@@ -7,6 +7,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     var _t = core._t;
     var publicWidget = require("web.public.widget");
     var reduced_calendar = require("pms_pwa.reduced_calendar");
+
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     const relation_values = {
@@ -374,9 +375,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 }).then(function (updated_data) {
                     console.log("Recargo el calendario¿?", updated_data.current_property_id);
                     console.log("Recargo el calendario¿?", self);
+                    console.log("reduced_calendar -->", reduced_calendar);
                     // $("#reduced_calendar_table").load("/calendar/reduced #reduced_calendar_table>*");
                     // $(String("#collapse_accordion_" + updated_data.current_property_id)).collapse('show');
-                    // new reduced_calendar._launchLines(false, updated_data.current_property_id);
+                    new reduced_calendar(this)._launchLines(false, updated_data.current_property_id);
                 });
 
             }
