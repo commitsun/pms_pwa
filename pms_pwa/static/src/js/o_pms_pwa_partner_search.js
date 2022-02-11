@@ -7,8 +7,12 @@ odoo.define("pms_pwa.partner_search", function () {
             source: function (request, response) {
                 let supplier = false;
                 let input = $("input[name=partner_name]");
-                if(input[1].attributes["data-supplier"]){
-                    supplier = true;
+                try{
+                    if(input[1].attributes["data-supplier"]){
+                        supplier = true;
+                    }
+                }catch{
+                    supplier = false;
                 }
                 $.ajax({
                     url: "/partner/search",
