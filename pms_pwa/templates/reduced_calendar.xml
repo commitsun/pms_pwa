@@ -50,6 +50,7 @@
                             <input type="hidden" name="modal_date" value=""></input>
                             <input type="hidden" name="modal_reservation" value=""></input>
                             <input type="hidden" name="modal_room" value=""></input>
+                            <input type="hidden" name="modal_property_id" t-attf-value="{{current_property}}"></input>
                             <button type="button" class="btn btn-message send_ConfirmChanges">Confirmar cambio</button>
                             <button type="button" class="btn btn-secondary close_confirmChange" data-dismiss="modal">Cerrar</button>
                         </div>

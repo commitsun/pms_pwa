@@ -378,11 +378,13 @@ section.o_pms_pwa_roomdoo {
                         text-overflow: ellipsis;
                     }
                     &_name_small {
-                        font-size: 12px;
+                        font-size: 14px;
+                        color: white;
                         // overflow
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                        width: 120px;
                     }
                 }
                 .bg {
@@ -498,9 +500,9 @@ section.o_pms_pwa_roomdoo {
                     font-size: 14px;
                     .o_pms_pwa_info {
                         color: $theme-color;
-                        position: relative;
-                        top: -1rem;
-                        right: -4rem;
+                        // position: relative;
+                        // top: -1rem;
+                        // right: -4rem;
                         .o_pms_pwa_interrogante-calendar {
                             width: 13px;
                         }
@@ -516,9 +518,9 @@ section.o_pms_pwa_roomdoo {
                     color: $black;
                     .o_pms_pwa_info {
                         color: $theme-color;
-                        position: relative;
-                        top: -1rem;
-                        right: -4rem;
+                        // position: relative;
+                        // top: -1rem;
+                        // right: -4rem;
                         .o_pms_pwa_interrogante-calendar {
                             width: 13px;
                         }
