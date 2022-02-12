@@ -4,6 +4,7 @@
 
 from inspect import isdatadescriptor
 import logging
+import json
 import pprint
 from calendar import monthrange
 from datetime import timedelta
@@ -172,7 +173,7 @@ class PmsCalendar(http.Controller):
             total_out_count = 0
             s_avail_date = avail_date.strftime("%Y-%m-%d")
             dict_result[s_avail_date] = {}
-            data = list(filter(lambda x: x[1] != None, data))
+            data = list(filter(lambda x: x[1] is not None, data))
             data = sorted(data, key=room_type_func)
             for room_type_id, vals in groupby(data, room_type_func):
                 room_type = request.env["pms.room.type"].browse(room_type_id)
@@ -185,9 +186,9 @@ class PmsCalendar(http.Controller):
                     'reservations_count': res_count,
                     'outs_count': out_count,
                     'num_avail': num_avail,
-                    'reservations_percent': int((res_count*100)/total_rooms),
-                    'outs_percent': int((out_count*100)/total_rooms),
-                    'avail_percent': int((num_avail*100)/total_rooms),
+                    'reservations_percent': int((res_count * 100) / total_rooms),
+                    'outs_percent': int((out_count * 100) / total_rooms),
+                    'avail_percent': int((num_avail * 100) / total_rooms),
                 }
                 if room_type.overnight_room:
                     total_res_count += res_count
@@ -338,7 +339,7 @@ class PmsCalendar(http.Controller):
             for rule_date, data in groupby(rules_result, date_func):
                 s_rule_date = rule_date.strftime("%Y-%m-%d")
                 dict_result[s_rule_date] = {}
-                data = list(filter(lambda x: x[1] != None, data))
+                data = list(filter(lambda x: x[1] is not None, data))
                 data = sorted(data, key=room_type_func)
                 for room_type_id, vals in groupby(data, room_type_func):
                     vals = list(vals)[0]
@@ -398,50 +399,64 @@ class PmsCalendar(http.Controller):
         website=True,
     )
     def reduced_calendar_change(self, **post):
-        change_checkin = False
         change_room = False
-        splitted = False
         reservation = request.env["pms.reservation"].browse(int(post["id"]))
-        new_checkin = datetime.datetime.strptime(
+        calendar_date = datetime.datetime.strptime(
             post.get("date"), get_lang(request.env).date_format
         ).date()
         new_room = request.env["pms.room"].browse(int(post["room"]))
-        if reservation.splitted:
-            splitted = True
-        if new_checkin != reservation.checkin:
-            change_checkin = True
-        if new_room != reservation.preferred_room_id:
+        old_room = reservation.reservation_line_ids.filtered(
+            lambda line: line.date == calendar_date
+        ).room_id
+        date_to = False
+        for date_iterator in [
+            calendar_date + datetime.timedelta(days=x)
+            for x in range(0, (reservation.checkout - calendar_date).days)
+        ]:
+            line_room_source = request.env["pms.reservation.line"].search(
+                [("date", "=", date_iterator), ("room_id", "=", old_room.id)]
+            )
+            if not line_room_source:
+                date_to = date_iterator - datetime.timedelta(days=1)
+                break
+        if not date_to:
+            date_to = reservation.checkout - datetime.timedelta(days=1)
+        if new_room != old_room:
             change_room = True
-        # print(" ---> ", post.get("submit"))
         if not post.get("submit"):
-            if change_room and change_checkin:
-                _logger.info("Change ALL")
-                confirmation_mens = (
-                    "Modificar la reserva de "
-                    + reservation.partner_name
-                    + " a la habitación " + new_room.display_name
-                    + " con checkin " + new_checkin.strftime("%d/%M/%Y")
-                )
-                # If new room isn't free in new dates no change
-                # Change Prices??
-            elif change_room:
+            target_room_lines = request.env["pms.reservation.line"].search([
+                ("date", ">=", calendar_date),
+                ("date", "<=", date_to),
+                ("room_id", "=", new_room.id),
+                ("occupies_availability", "=", True)
+            ])
+            if change_room:
                 _logger.info("Change Only ROOM")
-                confirmation_mens = (
-                    "Modificar la reserva de " + reservation.partner_name
-                    + " a la habitación " + new_room.display_name
-                )
-                # If new room isn't free, Swap reservations??
-            elif change_checkin:
-                _logger.info("Change only Checkin")
-                confirmation_mens = ("Modificar la fecha de entrada de %s a %s", reservation.partner_name, new_checkin.strftime("%d/%M/%Y"))
-                # Change Prices?
+                if target_room_lines:
+                    confirmation_mens = (
+                        "Estas soltando la reserva en una habitación ocupada (" + new_room.display_name
+                        + ") si confirmas se intercambiaran las habitaciones de las reservas"
+                    )
+                else:
+                    confirmation_mens = (
+                        "Modificar la reserva de " + reservation.partner_name
+                        + " de la habitación " + old_room.display_name + " a la habitación " + new_room.display_name
+                    )
+            else:
+                confirmation_mens = ("Ningún cambio detectado")
             print("return --->")
-            return {"result": "success", "message": confirmation_mens, "date": post["date"], "reservation": post["id"], "room": post["room"] }
+            return {"result": "success", "message": confirmation_mens, "date": post["date"], "reservation": post["id"], "room": post["room"]}
         else:
-            old_room = reservation.preferred_room_id
-            reservation.checkin = new_checkin
-            reservation.preferred_room_id = new_room
-            return {"result": "success", "reservation": post['id'], "old_group_room": old_room.id, "new_group_room": new_room.id}
+            try:
+                request.env["pms.reservation.split.join.swap.wizard"].reservations_swap(
+                    checkin=calendar_date,
+                    checkout=date_to,
+                    source=old_room.id,
+                    target=new_room.id,
+                )
+                return {"result": "success", "reservation": post['id'], "old_group_room": old_room.id, "new_group_room": new_room.id}
+            except Exception as e:
+                return json.dumps({"result": False, "message": str(e)})
         # return True
 
     @http.route(
@@ -560,7 +575,7 @@ class PmsCalendar(http.Controller):
                         nights += 1
                         used_line_ids.append(line.id)
                         # splitted_reservations_lines -= line
-                        # free_dates.remove(line.date)
+                        free_dates.remove(line.date)
                 rooms_reservation_values.append(
                     {
                         "splitted": True,
@@ -568,9 +583,9 @@ class PmsCalendar(http.Controller):
                         "date": split.date,
                         "reservation_info": {
                             "id": reservation.id,
-                            "partner_name": reservation.partner_name
+                            "partner_name": "Partida! " + reservation.partner_name
                             if main_split
-                            else reservation.rooms,
+                            else "Partida! " + reservation.rooms,
                             "img": "/web/image/pms.reservation/"
                             + str(reservation.id)
                             + "/partner_image_128",
@@ -581,7 +596,7 @@ class PmsCalendar(http.Controller):
                             "icon_payment": reservation.icon_payment,
                             "nigths": nights,
                             "days": nights + 1,
-                            "checkin_in_range": False,
+                            "checkin_in_range": True,
                             "checkout_in_range": True,
                         },
                     }
@@ -609,7 +624,7 @@ class PmsCalendar(http.Controller):
                     "ocupation": rooms_reservation_values,
                 }
             )
-        # pp.pprint(values)
+        pp.pprint(values)
         return values
 
     def _get_calendar_config(self, pms_property_id):
