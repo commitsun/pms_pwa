@@ -4,7 +4,7 @@
         <table class="table o_pms_pwa_reduced_reservation_list_table"  >
             <tbody>
                 <t t-foreach="obj_list" t-as="obj">
-                    <tr class="o_pms_pwa_reduced_calendar_line" >
+                    <tr class="o_pms_pwa_reduced_calendar_line" t-att-data-room="obj.room.id" >
                         <td class="o_pms_pwa_reduced_calendar_line_room_type o_pms_pwa_line_cell_header">
                             <p class="o_pms_pwa_reduced_calendar_line_title">
                                 <t t-esc="obj.room.name" />
@@ -17,9 +17,9 @@
                                         <t t-set="o_pms_pwa_line_color" t-att-value="'o_pms_pwa_reduced_calendar_line_hr_'+reservation.reservation_info.status"/>
                                         <div t-att-class="' '
                                             + (' o_pms_pwa_reduced_calendar_line_hr_'+reservation.reservation_info.status)">
-                                            <span class="o_pms_pwa_reduced_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
+                                            <p class="o_pms_pwa_reduced_calendar_line_name_small" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
                                                 <t t-esc="reservation.reservation_info.partner_name" />
-                                            </span>
+                                            </p>
                                         </div>
                                     </td>
                                 </t>
@@ -29,9 +29,9 @@
                                             <div
                                                 t-att-class="(reservation_last ? 'o_pms_pwa_last_table_cell ' : ' ') + 'o_pms_pwa_reduced_calendar_line_hr_' + (reservation.reservation_info.status)"
                                             >
-                                                <span class="o_pms_pwa_reduced_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
+                                                <p class="o_pms_pwa_reduced_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
                                                     <t t-esc="reservation.reservation_info.partner_name" />
-                                                </span>
+                                                </p>
                                             </div>
 
                                         </td>
@@ -42,9 +42,9 @@
                                                 t-att-class="(reservation_last ? 'o_pms_pwa_last_table_cell ' : ' ') + 'o_pms_pwa_reduced_calendar_line_hr_' + (reservation.reservation_info.status)"
 
                                                 >
-                                                <span class="o_pms_pwa_reduced_calendar_line_name" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
+                                                <p class="o_pms_pwa_reduced_calendar_line_name_small" data-toggle="tooltip" t-attf-title="{{ reservation.reservation_info.partner_name }}" t-attf-data-original-title="{{ reservation.reservation_info.partner_name }}">
                                                     <t t-esc="reservation.reservation_info.partner_name" />
-                                                </span>
+                                                </p>
                                             </div>
                                         </td>
                                     </t>

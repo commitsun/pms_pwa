@@ -435,7 +435,7 @@ class PmsCalendar(http.Controller):
                 _logger.info("Change only Checkin")
                 confirmation_mens = ("Modificar la fecha de entrada de %s a %s", reservation.partner_name, new_checkin.strftime("%d/%M/%Y"))
                 # Change Prices?
-            # print("--->", post)
+            print("return --->")
             return {"result": "success", "message": confirmation_mens, "date": post["date"], "reservation": post["id"], "room": post["room"] }
         else:
             old_room = reservation.preferred_room_id

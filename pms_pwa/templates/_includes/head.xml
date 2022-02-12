@@ -91,6 +91,10 @@
             />
             <script
                 type="text/javascript"
+                src="/pms_pwa/static/src/js/o_pms_pwa_reduced_calendar.js"
+            />
+            <script
+                type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_reservation_table_filter.js"
             />
             <script
@@ -105,10 +109,7 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_calendar_config.js"
             />
-            <script
-                type="text/javascript"
-                src="/pms_pwa/static/src/js/o_pms_pwa_reduced_calendar.js"
-            />
+
             <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_notification_widget.js"
@@ -138,10 +139,6 @@
             <script src="/pms_pwa/static/src/js/vendor/bootstrap-select.min.js"></script>
             <script src="/pms_pwa/static/src/js/vendor/largetable.js"></script>
             <script src="/pms_pwa/static/src/js/vendor/jquery.tablehover.js"></script>
-            <!-- <script
-                type="text/javascript"
-                src="/pms_pwa/static/src/js/vendor/print.min.js"
-            /> -->
 
             <script
                 type="text/javascript"
@@ -152,10 +149,7 @@
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_property_selector.js"
             />
-            <script
-                type="text/javascript"
-                src="/pms_pwa/static/src/js/vendor/jquery-ui.js"
-            />
+
             <script
                 type="text/javascript"
                 src="/pms_pwa/static/src/js/o_pms_pwa_user_notifications.js"
