@@ -635,7 +635,10 @@
                                                     + ('o_pms_pwa_dispo_1' if availability_room==1 else ' ')
                                                 " style="padding: 0 !important;">
                                                     <div class="progress">
-                                                        <div class="progress-bar progress-bar-success" role="progressbar" t-attf-style="width:{{rooms_occupied_reservations_percent}}%">
+                                                        <div
+                                                            class="progress-bar progress-bar-success"
+                                                            role="progressbar"
+                                                            t-attf-style="width:{{rooms_occupied_reservations_percent}}%">
                                                             <t t-esc="rooms_occupied_reservations" />
                                                         </div>
                                                         <div class="progress-bar progress-bar-warning" role="progressbar" t-attf-style="width:{{rooms_occupied_out_service_percent}}%">
@@ -645,11 +648,11 @@
                                                             <t t-esc="availability_room" />
                                                         </div>
                                                     </div>
-                                                    <p class="calendar_config_input" style="text-align:center; padding-bottom:0; margin-bottom:0;">
+                                                    <p class="calendar_config_input" style="text-align:center; padding-top:0 !important; margin-bottom:0 !important;">
                                                         <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />
                                                     </p>
 
-                                                    <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
+                                                    <div class="circles-container text-center row m-0 mt-2 p-0 " style="padding-top:0px !important; margin-top:0px !important">
                                                         <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center o_pms_pwa_edit_circle" title="editar">
                                                             <div class="circle edit_hide">
                                                                 <span class="open_changeValues" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" t-attf-data-room_type="{{ room['id'] }}">
