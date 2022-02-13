@@ -273,9 +273,8 @@ class PmsCalendar(http.Controller):
                 property=pms_property_id,
             )._compute_price_rule(products, datetime.datetime.today())
             dict_result[a_date] = {
-                request.env["product.product"].browse(k).room_type_id.id: v[0] for k, v in date_prices.items()
+                request.env["product.product"].browse(k).room_type_id.id: not v[0].is_integer() and v[0] or int(v[0]) for k, v in date_prices.items()
             }
-
         return dict_result
 
     @http.route(
@@ -755,4 +754,64 @@ class PmsCalendar(http.Controller):
     )
     def _get_modal_values(self, **post):
         print("json ---> ", post)
+        post = post.get("send_values")
+        start_date = datetime.datetime.strptime(
+            post.get("start_date"), "%Y-%m-%d"
+        ).date()
+        end_date = datetime.datetime.strptime(
+            post.get("end_date"), "%Y-%m-%d"
+        ).date()
+        availability_fields = {
+            "cupo": "quota",
+            "estmin": "min_stay",
+            "max_dispo": "max_avail",
+            "closed": "closed",
+            "closed_arrival": "closed_arrival",
+            "max_stay": "max_stay",
+            "max_stay_sa": "max_stay_arrival"
+        }
+        if post.get("price"):
+            wizard = request.env["pms.massive.changes.wizard"].create({
+                "pms_property_ids": [(6 , 0, [int(post.get("pms_property_id"))])],
+                "massive_changes_on": "pricelist",
+                "start_date": start_date,
+                "end_date": end_date,
+            })
+
+            wizard.pricelist_ids = [(6, 0, [int(plan) for plan in post.get("pricelist_id")])]
+            wizard.price = price = post.get("price")
+
+            wizard.room_type_ids = [(6, 0, [int(plan) for plan in post.get("room_type")])]
+            wizard.apply_on_monday = post.get("apply_on_monday")
+            wizard.apply_on_tuesday = post.get("apply_on_tuesday")
+            wizard.apply_on_wednesday = post.get("apply_on_wednesday")
+            wizard.apply_on_thursday = post.get("apply_on_thursday")
+            wizard.apply_on_friday = post.get("apply_on_friday")
+            wizard.apply_on_saturday = post.get("apply_on_saturday")
+            wizard.apply_on_sunday = post.get("apply_on_sunday")
+            wizard.apply_massive_changes()
+        if any(post.get(field) for field in availability_fields.keys()):
+            wizard = request.env["pms.massive.changes.wizard"].create({
+                "pms_property_ids": [(6 , 0, [int(post.get("pms_property_id"))])],
+                "massive_changes_on": "availability_plan",
+                "start_date": start_date,
+                "end_date": end_date,
+            })
+            import wdb; wdb.set_trace()
+            wizard.room_type_ids = [(6, 0, [int(plan) for plan in post.get("room_type")])]
+            wizard.apply_on_monday = post.get("apply_on_monday")
+            wizard.apply_on_tuesday = post.get("apply_on_tuesday")
+            wizard.apply_on_wednesday = post.get("apply_on_wednesday")
+            wizard.apply_on_thursday = post.get("apply_on_thursday")
+            wizard.apply_on_friday = post.get("apply_on_friday")
+            wizard.apply_on_saturday = post.get("apply_on_saturday")
+            wizard.apply_on_sunday = post.get("apply_on_sunday")
+
+            wizard.availability_plan_ids = [(6, 0, [int(plan) for plan in post.get("availability_plan_ids")])]
+            for post_field, wizard_field in availability_fields.items():
+                if post.get(post_field):
+                    wizard[wizard_field] = post.get(post_field)
+                    wizard["apply_" + wizard_field] = True
+            wizard.apply_massive_changes()
+
         return True

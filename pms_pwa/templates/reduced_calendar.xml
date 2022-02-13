@@ -235,50 +235,50 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group row">
-                                            <div class="col-2 show_price">
+                                            <div class="col-2 show_price" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_price_check" class="hidde_show_price" name="show_price" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="price" class="col-sm-2 col-form-label">Price</label>
-                                            <div class="col-sm-8">
+                                            <label for="price" class="col-sm-6 col-form-label">Precio</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control hidde_price hidde_modal" name="modal_price" placeholder="Price"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-2 show_cupo">
+                                            <div class="col-2 show_cupo" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_cupo_check" class="hidde_show_cupo" name="show_cupo" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="cupo" class="col-sm-2 col-form-label">Cupo</label>
-                                            <div class="col-sm-8">
+                                            <label for="cupo" class="col-sm-6 col-form-label">Cupo</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control hidde_cupo hidde_modal" name="modal_cupo" placeholder="Cupo"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-2">
-                                                <label class="switch show_estmin">
+                                            <div class="col-2" style="align-self: end;">
+                                                <label class="switch show_estmin" >
                                                     <input data-edit="false" id="show_cupo_check" class="hidde_show_estmin" name="show_estmin" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="estmin" class="col-sm-2 col-form-label">Est. Mín</label>
-                                            <div class="col-sm-8">
+                                            <label for="estmin" class="col-sm-6 col-form-label">Estancia Mínima</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control hidde_estmin hidde_modal" name="modal_estmin" placeholder="Est. Mín"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-2 show_closed">
+                                            <div class="col-2 show_closed" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_closed_check" class="hidde_show_closed" name="show_closed" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="closed" class="col-sm-2 col-form-label">Closed</label>
-                                            <div class="col-sm-8">
+                                            <label for="closed" class="col-sm-6 col-form-label">Cerrado</label>
+                                            <div class="col-sm-2">
                                                 <label class="switch hidde_closed hidde_modal">
                                                     <input data-edit="false" name="modal_closed" type="checkbox"/>
                                                     <span class="slider round"></span>
@@ -286,14 +286,14 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-2 show_max_dispo">
+                                            <div class="col-2 show_max_dispo" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_max_dispo_check" class="hidde_show_max_dispo" name="show_max_dispo" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="max_dispo" class="col-sm-2 col-form-label">Máx. Disp.</label>
-                                            <div class="col-sm-8">
+                                            <label for="max_dispo" class="col-sm-6 col-form-label">Máxima Disponibilidad</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control hidde_max_dispo hidde_modal" id="max_dispo" name="modal_max_dispo" placeholder="Máx. Disp."/>
                                             </div>
                                         </div>
@@ -301,50 +301,50 @@
                                     <div class="col-6">
 
                                         <div class="form-group row">
-                                            <div class="col-2 show_max_stay">
+                                            <div class="col-2 show_max_stay" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_max_stay_check" class="hidde_show_max_stay" name="show_max_stay" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx</label>
-                                            <div class="col-sm-8">
+                                            <label for="max_stay" class="col-sm-6 col-form-label">Estancia Máxima</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control hidde_max_stay hidde_modal" id="max_stay" name="modal_max_stay" placeholder="Est. Máx"/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-2 show_max_stay_sa">
+                                            <div class="col-2 show_max_stay_sa" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_max_stay_sa_check" class="hidde_show_max_stay_sa" name="show_max_stay_sa" type="checkbox" />
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Sa.</label>
-                                            <div class="col-sm-8">
+                                            <label for="max_stay" class="col-sm-6 col-form-label">Est. Máxima Salidas</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control hidde_max_stay_sa hidde_modal" id="max_stay_sa" name="modal_max_stay_sa" placeholder="Est. Máx Sa." />
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-2 show_max_stay_ll">
+                                            <div class="col-2 show_max_stay_ll" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_max_stay_ll_check" class="hidde_show_max_stay_ll" name="show_max_stay_ll" type="checkbox"/>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="max_stay" class="col-sm-2 col-form-label">Est. Máx Ll.</label>
-                                            <div class="col-sm-8">
+                                            <label for="max_stay" class="col-sm-6 col-form-label">Est. Máxima Llegadas</label>
+                                            <div class="col-sm-2">
                                                 <input type="text" class="form-control hidde_max_stay_ll hidde_modal" name="modal_max_stay_ll" placeholder="Est. Máx Ll." />
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <div class="col-2 show_closed_arrival">
+                                            <div class="col-2 show_closed_arrival" style="align-self: end;">
                                                 <label class="switch">
                                                     <input data-edit="false" id="show_closed_arrival_check" class="hidde_show_closed_arrival" name="show_closed_arrival" type="checkbox"/>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </div>
-                                            <label for="closed_arrival" class="col-sm-2 col-form-label">Cerrar Ll.</label>
-                                            <div class="col-sm-8">
+                                            <label for="closed_arrival" class="col-sm-6 col-form-label">Cerrar Llegadas</label>
+                                            <div class="col-sm-2">
                                                 <label class="switch hidde_closed_arrival hidde_modal">
                                                     <input data-edit="false" name="modal_closed_arrival" type="checkbox"/>
                                                     <span class="slider round"></span>
@@ -649,7 +649,7 @@
                                                         </div>
                                                     </div>
                                                     <p class="calendar_config_input" style="text-align:center; padding-top:0 !important; margin-bottom:0 !important;">
-                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />
+                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="text-align:center; width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />
                                                     </p>
 
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="padding-top:0px !important; margin-top:0px !important">
