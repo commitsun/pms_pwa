@@ -156,8 +156,10 @@ section.o_pms_pwa_roomdoo {
                 }
             }
             .progress-bar-success {
-                background-color: $theme-color;
-                color: $white;
+                border-bottom:ridge;
+                background-color:white;
+                border-color:$theme-color;
+                color: $black;
             }
             .progress-bar-warning {
                 background-color: $black;
