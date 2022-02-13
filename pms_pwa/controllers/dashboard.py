@@ -60,8 +60,9 @@ class DashBoard(http.Controller):
         values.update(
             {
                 # Cambios documento
+                "cash_balance": self._get_cash_balance(int(list(self._get_journals_cash(pms_property_id).keys())[0])),
                 "cash": {
-                    "status": "open",  # open or close
+                    "status": self._get_status_journal(int(list(self._get_journals_cash(pms_property_id).keys())[0])),
                     "coins": {
                         "500": 0,
                         "200": 0,
@@ -80,22 +81,16 @@ class DashBoard(http.Controller):
                         "0.01": 0,
 
                     },
-                    "list": {
-                        "1": "valor",
-                        "2": "valor2",
-                    },
-                    "selected": "1",
-                    "date": "02/02/2021",
-                    "payments": self._get_cash_payments(pms_property_id),
+                    "list": self._get_journals_cash(pms_property_id),
+                    "selected": list(self._get_journals_cash(pms_property_id).keys())[0],
+                    "date": date.strftime(get_lang(request.env).date_format),
+                    "payments": self._get_payments(int(list(self._get_journals_cash(pms_property_id).keys())[0]), date),
                 },
                 "bank_journals": {
-                    "list": {
-                        "1": "valor",
-                        "2": "valor2",
-                    },
-                    "selected": "2",
-                    "date": "02/02/2021",
-                    "payments": self._get_cash_payments(pms_property_id),
+                    "list": self._get_journals_bank(pms_property_id),
+                    "selected": list(self._get_journals_bank(pms_property_id).keys())[0],
+                    "date": date.strftime(get_lang(request.env).date_format),
+                    "payments": self._get_payments(int(list(self._get_journals_bank(pms_property_id).keys())[0]), date)
                 },
                 # Fin cambio documento
                 "tasks": _get_user_activities(
@@ -137,8 +132,6 @@ class DashBoard(http.Controller):
                     {"name": "Juan Manuel Díaz", "date": "15/10/2020 10:19:25"},
                     {"name": "Paula Sánchez", "date": "15/10/2020 10:54:25"},
                 ],
-                "cash_balance": self._get_cash_balance(pms_property_id),
-
                 "deliveries": [
                     {"name": "Envío fichero a la policía", "date": "15/10/2020"},
                     {"name": "Envío facturas al gestor", "date": "15/10/2020"},
@@ -426,16 +419,15 @@ class DashBoard(http.Controller):
         ]
         return request.env["pms.reservation"].search_count(domain)
 
-    def _get_cash_payments(self, pms_property_id):
+    def _get_payments(self, journal_id, date):
         statement = (
             request.env["account.bank.statement"]
             .sudo()
             .search(
                 [
-                    ("journal_id.type", "=", "cash"),
-                    ("pms_property_id", "=", pms_property_id),
-                    ("state", "=", "open"),
-                ], limit=1
+                    ("journal_id", "=", journal_id),
+                    ("date", "=", date),
+                ]
             )
         )
         payments = []
@@ -447,17 +439,63 @@ class DashBoard(http.Controller):
             })
         return payments
 
-    def _get_cash_balance(self, pms_property_id):
+    def _get_cash_balance(self, journal_id):
         statement = (
             request.env["account.bank.statement"]
             .sudo()
             .search(
                 [
-                    ("journal_id.type", "=", "cash"),
-                    ("pms_property_id", "=", pms_property_id),
-                    ("state", "=", "open"),
+                    ("journal_id", "=", journal_id),
                 ], limit=1
             )
         )
         return statement.balance_end
 
+    def _get_journals_cash(self, pms_property_id):
+        journals = (
+            request.env["account.journal"]
+            .sudo()
+            .search(
+                [
+                    ("type", "=", "cash"),
+                    ("pms_property_ids", "in", pms_property_id),
+                ]
+            )
+        )
+        data_journals = {}
+        for journal in journals:
+            data_journals[str(journal.id)] = journal.name
+        return data_journals
+
+    def _get_journals_bank(self, pms_property_id):
+        journals = (
+            request.env["account.journal"]
+            .sudo()
+            .search(
+                [
+                    ("type", "=", "bank"),
+                    ("pms_property_ids", "in", pms_property_id),
+                ]
+            )
+        )
+        data_journals = {}
+        for journal in journals:
+            data_journals[str(journal.id)] = journal.name
+        return data_journals
+
+    def _get_status_journal(self, journal_id):
+        statement = (
+            request.env["account.bank.statement"]
+            .sudo()
+            .search(
+                [
+                    ("journal_id", "=", journal_id),
+                    ("date", "=", datetime.datetime.today()),
+                    ("balance_end_real", "=", 0),
+                ]
+            )
+        )
+        if statement:
+            return "close"
+        else:
+            return "open"
