@@ -266,16 +266,12 @@ class PmsCalendar(http.Controller):
         dict_result = {}
         for date in dates:
             a_date = date.strftime("%Y-%m-%d")
-            products = [(
-                r.with_context(
-                    quantity=1,
-                    consumption_date=date,
-                    property=pms_property_id,
-                ),
-                1,
-                False
-            ) for r in room_types.product_id]
-            date_prices = pricelist._compute_price_rule(products, datetime.datetime.today())
+            products = [(r, 1, False) for r in room_types.product_id]
+            date_prices = pricelist.with_context(
+                quantity=1,
+                consumption_date=date,
+                property=pms_property_id,
+            )._compute_price_rule(products, datetime.datetime.today())
             dict_result[a_date] = {
                 request.env["product.product"].browse(k).room_type_id.id: v[0] for k, v in date_prices.items()
             }
@@ -309,6 +305,8 @@ class PmsCalendar(http.Controller):
 
         # Prepare data
         dict_result = {}
+        if not availability_plan:
+            availability_plan = request.env["pms.availability.plan"].search([], limit=1)
         if availability_plan:
             request.env.cr.execute(
                 """
@@ -350,15 +348,15 @@ class PmsCalendar(http.Controller):
                         'max_avail': vals[5],
                         'plan_avail': vals[6],
                         'min_stay_arrival': vals[7],
-                        'max_stay': vals[9],
-                        'max_stay_arrival': vals[10],
-                        'closed_departure': vals[11],
-                        'closed_arrival': vals[12],
+                        'max_stay': vals[8],
+                        'max_stay_arrival': vals[9],
+                        'closed_departure': vals[10],
+                        'closed_arrival': vals[11],
                     }
                 # complete estructure to avoid room types
                 for room_type in room_types:
                     if room_type.id not in dict_result[s_rule_date]:
-                        dict_result[s_rule_date][room_type_id] = {
+                        dict_result[s_rule_date][room_type.id] = {
                             'min_stay': 0,
                             'closed': 0,
                             'quota': -1,
