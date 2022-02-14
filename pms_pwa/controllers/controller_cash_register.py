@@ -22,14 +22,83 @@ class CashRegister(http.Controller):
     )
     def cash_register__open_close(self, **kw):
         print("kw", kw)
-        if kw.get("force") == True:
-            return json.dumps(
-                {"result": True, "force": False, "message": _("No existe ninguna sesión de caja abierta, la caja se abrirá automáticamente al registrar un pago o un cobro.")}
+        amount = float(kw["amount"])
+        pms_property_id = request.env.user.pms_pwa_property_id.id
+        journal = (
+            request.env["account.journal"]
+            .sudo()
+            .search(
+                [
+                    ("type", "=", "cash"),
+                    ("pms_property_ids", "in", pms_property_id),
+                ]
             )
+        )  # TODO: pasar el diario seleccionado (caso de multiples cajas)
+        if kw["type"] == "open":  # TODO: siempre llega close
+            statement = (
+                request.env["account.bank.statement"]
+                .sudo()
+                .search(
+                    [
+                        ("journal_id", "=", journal.id),
+                    ], limit=1,
+                )
+            )
+            if statement.balance_end_real == amount or kw.get("force"):
+                request.env["account.bank.statement"].create({
+                    "name": datetime.datetime.today().strftime(
+                        get_lang(request.env).date_format
+                    ) + " (" + request.env.user.login + ")",
+                    "date": datetime.datetime.today(),
+                    "balance_start": amount,
+                    "journal_id": journal.id,
+                    "pms_property_id": pms_property_id,
+                })
+                return json.dumps(
+                    {"result": True, "force": False, "message": _("Caja abierta correctamente!")}
+                )
+            else:
+                dif = amount - statement.balance_end_real
+                return json.dumps(
+                    {"result": False, "force": True, "message": _("Existe una diferencia de " + str(dif) + " entre el último cierre y el valor introducido, revisa la caja y si el valor introducido es correcto fuerza la apertura")}
+                )
+        elif kw["type"] == "close":
+            statement = (
+                request.env["account.bank.statement"]
+                .sudo()
+                .search(
+                    [
+                        ("journal_id", "=", journal.id),
+                    ], limit=1,
+                )
+            )
+            if statement.balance_end == amount:
+                statement.button_post()
+                return json.dumps(
+                    {"result": True, "force": False, "message": _("Caja cerrarda correctamente!")}
+                )
+            elif kw.get("force"):
+                # Not call to button post to avoid create profit/loss line (_check_balance_end_real_same_as_computed)
+                if not statement.name:
+                    statement._set_next_sequence()
 
-        return json.dumps(
-            {"result": False, "force": True, "message": _("No existe ninguna sesión de caja abierta, la caja se abrirá automáticamente al registrar un pago o un cobro.")}
-        )
+                statement.write({'state': 'posted'})
+                lines_of_moves_to_post = statement.line_ids.filtered(lambda line: line.move_id.state != 'posted')
+                if lines_of_moves_to_post:
+                    lines_of_moves_to_post.move_id._post(soft=False)
+                return json.dumps(
+                    {"result": True, "force": False, "message": _("Caja cerrarda correctamente!")}
+                )
+            # TODO: Close with profit/loss lines?
+            else:
+                dif = amount - statement.balance_end_real
+                return json.dumps(
+                    {"result": False, "force": True, "message": _("Existe una diferencia de " + str(dif) + " entre el último cierre y el valor introducido, revisa la caja y si el valor introducido es correcto fuerza la apertura")}
+                )
+        # if kw.get("force"):
+        #     return json.dumps(
+        #         {"result": True, "force": False, "message": _("No existe ninguna sesión de caja abierta, la caja se abrirá automáticamente al registrar un pago o un cobro.")}
+        #     )
 
     @http.route(
         "/cash_register/close",
@@ -65,7 +134,7 @@ class CashRegister(http.Controller):
         statement.balance_end_real = statement.balance_end
         statement.button_post()
         return json.dumps(
-            {"result": True, "message": _("Sesión de caja cerrada correctamente!.")}
+            {"result": True, "message": _("Caja cerrada correctamente!.")}
         )
 
     @http.route(

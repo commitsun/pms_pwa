@@ -158,83 +158,84 @@ class PmsCalendarConfig(http.Controller):
                         availability_plan = request.env['pms.availability.plan'].browse(
                             int(params["send"]["availability_plan"])
                         )
-                        # price
-                        if "price" in items[0]:
-                            # REVIEW: Necesary date (sale) start/end = False???
-                            price_item = request.env["product.pricelist.item"].search(
-                                [
-                                    ("product_id", "=", room_type.product_id.id),
-                                    ("date_start_consumption", "=", item_date),
-                                    ("date_end_consumption", "=", item_date),
-                                    ("pricelist_id", "=", pricelist.id),
-                                    ("pms_property_ids", "in", pms_property_id),
-                                ]
-                            )
-                            if price_item:
-                                price_item.write(
-                                    {"fixed_price": float(items[0]["price"])}
-                                )
-                            else:
-                                price_item.create(
-                                    {
-                                        "applied_on": "0_product_variant",
-                                        "product_id": room_type.product_id.id,
-                                        "date_start_consumption": item_date,
-                                        "date_end_consumption": item_date,
-                                        "pricelist_id": pricelist.id,
-                                        "pms_property_ids": [pms_property_id],
-                                        "fixed_price": float(items[0]["price"]),
-                                    }
-                                )
-                        if availability_plan:
-                            avail_vals = {}
-                            if "quota" in items[0]:
-                                avail_vals["quota"] = int(items[0]["quota"])
-                            if "max_avail" in items[0]:
-                                avail_vals["max_avail"] = int(items[0]["max_avail"])
-                            if "min_stay" in items[0]:
-                                avail_vals["min_stay"] = int(items[0]["min_stay"])
-                            if "max_stay" in items[0]:
-                                avail_vals["max_stay"] = int(items[0]["max_stay"])
-                            if "closed" in items[0]:
-                                avail_vals["closed"] = bool(items[0]["closed"])
-                            if "closed_arrival" in items[0]:
-                                avail_vals["closed"] = bool(items[0]["closed_arrival"])
-                            if "min_stay_arrival" in items[0]:
-                                avail_vals["min_stay_arrival"] = int(
-                                    items[0]["min_stay_arrival"]
-                                )
-                            if "max_stay_arrival" in items[0]:
-                                avail_vals["max_stay_arrival"] = int(
-                                    items[0]["max_stay_arrival"]
-                                )
-                            if any(avail_vals):
-                                avail_rule_item = request.env[
-                                    "pms.availability.plan.rule"
-                                ].search(
+                        for item in items:
+                            # price
+                            if "price" in item:
+                                # REVIEW: Necesary date (sale) start/end = False???
+                                price_item = request.env["product.pricelist.item"].search(
                                     [
-                                        ("room_type_id", "=", room_type.id),
-                                        ("date", "=", item_date),
-                                        (
-                                            "availability_plan_id",
-                                            "=",
-                                            availability_plan.id,
-                                        ),
-                                        ("pms_property_id", "=", pms_property_id),
+                                        ("product_id", "=", room_type.product_id.id),
+                                        ("date_start_consumption", "=", item_date),
+                                        ("date_end_consumption", "=", item_date),
+                                        ("pricelist_id", "=", pricelist.id),
+                                        ("pms_property_ids", "in", pms_property_id),
                                     ]
                                 )
-                                if avail_rule_item:
-                                    avail_rule_item.write(avail_vals)
+                                if price_item:
+                                    price_item.write(
+                                        {"fixed_price": float(item["price"])}
+                                    )
                                 else:
-                                    avail_vals.update(
+                                    price_item.create(
                                         {
-                                            "room_type_id": room_type.id,
-                                            "date": item_date,
-                                            "availability_plan_id": availability_plan.id,
-                                            "pms_property_id": pms_property_id,
+                                            "applied_on": "0_product_variant",
+                                            "product_id": room_type.product_id.id,
+                                            "date_start_consumption": item_date,
+                                            "date_end_consumption": item_date,
+                                            "pricelist_id": pricelist.id,
+                                            "pms_property_ids": [pms_property_id],
+                                            "fixed_price": float(item["price"]),
                                         }
                                     )
-                                    avail_rule_item.create(avail_vals)
+                            if availability_plan:
+                                avail_vals = {}
+                                if "cupo" in item:
+                                    avail_vals["quota"] = int(item["cupo"])
+                                if "max_avail" in item:
+                                    avail_vals["max_avail"] = int(item["max_avail"])
+                                if "min_stay" in item:
+                                    avail_vals["min_stay"] = int(item["min_stay"])
+                                if "max_stay" in item:
+                                    avail_vals["max_stay"] = int(item["max_stay"])
+                                if "closed" in item:
+                                    avail_vals["closed"] = bool(item["closed"])
+                                if "closed_arrival" in item:
+                                    avail_vals["closed"] = bool(item["closed_arrival"])
+                                if "min_stay_arrival" in item:
+                                    avail_vals["min_stay_arrival"] = int(
+                                        item["min_stay_arrival"]
+                                    )
+                                if "max_stay_arrival" in item:
+                                    avail_vals["max_stay_arrival"] = int(
+                                        item["max_stay_arrival"]
+                                    )
+                                if any(avail_vals):
+                                    avail_rule_item = request.env[
+                                        "pms.availability.plan.rule"
+                                    ].search(
+                                        [
+                                            ("room_type_id", "=", room_type.id),
+                                            ("date", "=", item_date),
+                                            (
+                                                "availability_plan_id",
+                                                "=",
+                                                availability_plan.id,
+                                            ),
+                                            ("pms_property_id", "=", pms_property_id),
+                                        ]
+                                    )
+                                    if avail_rule_item:
+                                        avail_rule_item.write(avail_vals)
+                                    else:
+                                        avail_vals.update(
+                                            {
+                                                "room_type_id": room_type.id,
+                                                "date": item_date,
+                                                "availability_plan_id": availability_plan.id,
+                                                "pms_property_id": pms_property_id,
+                                            }
+                                        )
+                                        avail_rule_item.create(avail_vals)
             return json.dumps(
                 {
                     "result": True,

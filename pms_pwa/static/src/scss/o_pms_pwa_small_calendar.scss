@@ -535,15 +535,24 @@ section.o_pms_pwa_roomdoo {
                     }
                 }
                 .progress-bar-success {
-                    background-color: $theme-color;
-                    color: $white;
+                    border-bottom:inset;
+                    background-color:white;
+                    border-color:$theme-color;
+                    border-bottom-width: 2.2px !important;
+                    color: $black;
                 }
                 .progress-bar-warning {
-                    background-color: $black;
-                    color: $white;
+                    border-bottom:inset;
+                    background-color:white;
+                    border-color:$black;
+                    border-bottom-width: 2.2px !important;
+                    color: $black;
                 }
                 .progress-bar-danger {
-                    background-color: $white;
+                    border-bottom:inset;
+                    background-color:white;
+                    border-color:#abff99;
+                    border-bottom-width: 2.2px !important;
                     color: $black;
                 }
                .edit_hide {
