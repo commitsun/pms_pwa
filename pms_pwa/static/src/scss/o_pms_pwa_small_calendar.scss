@@ -562,12 +562,9 @@ section.o_pms_pwa_roomdoo {
             td.o_config_pms_pwa_table_cell:hover {
                 .edit_hide {
                     display: block;
+
                 }
             }
-            // tr.o_pms_pwa_open_reduced_calendar{
-
-            // }
-
         }
 
     }
@@ -713,5 +710,8 @@ section.o_pms_pwa_roomdoo {
             //     display: none;
             // }
         }
+    }
+    .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn){
+        width: 100% !important;
     }
 }

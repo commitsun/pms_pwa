@@ -91,7 +91,7 @@ class CashRegister(http.Controller):
                 )
             # TODO: Close with profit/loss lines?
             else:
-                dif = amount - statement.balance_end_real
+                dif = amount - statement.balance_end
                 return json.dumps(
                     {"result": False, "force": True, "message": _("Existe una diferencia de " + str(dif) + " entre el último cierre y el valor introducido, revisa la caja y si el valor introducido es correcto fuerza la apertura")}
                 )
@@ -99,43 +99,6 @@ class CashRegister(http.Controller):
         #     return json.dumps(
         #         {"result": True, "force": False, "message": _("No existe ninguna sesión de caja abierta, la caja se abrirá automáticamente al registrar un pago o un cobro.")}
         #     )
-
-    @http.route(
-        "/cash_register/close",
-        type="json",
-        auth="public",
-        csrf=False,
-        website=True,
-    )
-    def cash_register_close(self, **kw):
-        _logger.info("FUNCTION: cash_register_close")
-        _logger.info("USER: {}".format(request.env.user))
-        _logger.info("PARAMS: {}".format(kw))
-        pms_property_id = request.env.user.pms_pwa_property_id.id
-        statement = (
-            request.env["account.bank.statement"]
-            .sudo()
-            .search(
-                [
-                    ("journal_id.type", "=", "cash"),
-                    ("pms_property_id", "=", pms_property_id),
-                    ("state", "=", "open"),
-                ]
-            )
-        )
-        if not statement:
-            return json.dumps(
-                {"result": False, "message": _("No existe ninguna sesión de caja abierta, la caja se abrirá automáticamente al registrar un pago o un cobro.")}
-            )
-        if statement.create_uid != request.env.user:
-            return json.dumps(
-                {"result": False, "message": _("La caja debe ser cerrada por " + statement.create_uid.name + ", ponte en contacto con un responsable")}
-            )
-        statement.balance_end_real = statement.balance_end
-        statement.button_post()
-        return json.dumps(
-            {"result": True, "message": _("Caja cerrada correctamente!.")}
-        )
 
     @http.route(
         ["/cash_register/add"],

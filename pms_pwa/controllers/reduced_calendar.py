@@ -756,10 +756,10 @@ class PmsCalendar(http.Controller):
         print("json ---> ", post)
         post = post.get("send_values")
         start_date = datetime.datetime.strptime(
-            post.get("start_date"), "%Y-%m-%d"
+            post.get("start_date"), "%d/%m/%Y"
         ).date()
         end_date = datetime.datetime.strptime(
-            post.get("end_date"), "%Y-%m-%d"
+            post.get("end_date"), "%d/%m/%Y"
         ).date()
         availability_fields = {
             "cupo": "quota",
@@ -779,7 +779,7 @@ class PmsCalendar(http.Controller):
             })
 
             wizard.pricelist_ids = [(6, 0, [int(plan) for plan in post.get("pricelist_id")])]
-            wizard.price = price = post.get("price")
+            wizard.price = float(post.get("price"))
 
             wizard.room_type_ids = [(6, 0, [int(plan) for plan in post.get("room_type")])]
             wizard.apply_on_monday = post.get("apply_on_monday")
@@ -797,7 +797,6 @@ class PmsCalendar(http.Controller):
                 "start_date": start_date,
                 "end_date": end_date,
             })
-            import wdb; wdb.set_trace()
             wizard.room_type_ids = [(6, 0, [int(plan) for plan in post.get("room_type")])]
             wizard.apply_on_monday = post.get("apply_on_monday")
             wizard.apply_on_tuesday = post.get("apply_on_tuesday")
@@ -810,7 +809,7 @@ class PmsCalendar(http.Controller):
             wizard.availability_plan_ids = [(6, 0, [int(plan) for plan in post.get("availability_plan_ids")])]
             for post_field, wizard_field in availability_fields.items():
                 if post.get(post_field):
-                    wizard[wizard_field] = post.get(post_field)
+                    wizard[wizard_field] = int(post.get(post_field))
                     wizard["apply_" + wizard_field] = True
             wizard.apply_massive_changes()
 

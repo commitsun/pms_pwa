@@ -74,14 +74,14 @@
                                             <label for="desde" class="col-sm-2 col-form-label">Desde</label>
                                             <div class="col-sm-10">
 
-                                                <input id="start_date" type="date" class="form-control" name="modal_start_date" placeholder="Desde" />
+                                                <input id="start_date" type="text" class="modaldate form-control" name="modal_start_date" placeholder="Desde" value=""/>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="hasta" class="col-sm-2 col-form-label">Hasta</label>
                                             <div class="col-sm-10">
 
-                                                <input id="end_date" type="date" class="form-control" name="modal_end_date" placeholder="Hasta" />
+                                                <input id="end_date" type="text" class="modaldate form-control" name="modal_end_date" placeholder="Hasta" value=""/>
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                                         <div class="form-group row modal_room_type">
                                             <label for="room_type" class="col-sm-2 col-form-label">Tipo de habitación</label>
                                             <div class="col-sm-10">
-                                                <select id="room_type_model" name="modal_room_type" class="selectpicker" multiple="multiple" data-mdb-clear-button="true" data-live-search="true">
+                                                <select id="room_type_model" name="modal_room_type" class="selectpicker" data-mdb-clear-button="true" data-live-search="true">
                                                     <t t-foreach="rooms_list" t-as="r_type">
                                                         <option t-att-value="r_type['id']"><t t-esc="r_type['name']"/></option>
                                                     </t>
@@ -170,7 +170,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="false" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
+                                                                <input data-edit="true" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -178,7 +178,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="false" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
+                                                                <input data-edit="true" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -186,7 +186,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="false" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
+                                                                <input data-edit="true" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -194,7 +194,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="false" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
+                                                                <input data-edit="true" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -202,7 +202,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="false" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
+                                                                <input data-edit="true" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -210,7 +210,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="false" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
+                                                                <input data-edit="true" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -218,7 +218,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="false" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
+                                                                <input data-edit="true" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -454,14 +454,14 @@
                             </div>
                         </div>
                         <form method="post" action="">
-                            <div class="row m-0 p-0 mb-2">
+                            <div class="row m-0 p-0 mb-2" id="o_pms_pwa_calendar_filters">
                                 <!-- select pricelist -->
                                 <div class="col-md-4 col-lg-4 col-xl-4 pr-0">
                                     Tarifa:
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')" />
                                     <input type="hidden" name="selected_property" t-att-value="pms_property_id" />
-                                    <select id="pricelist_select" name="pricelist" data-select="allowed_pricelists" class="form-control o_website_form_input o_input" onchange="javascript:this.form.submit()">
+                                    <select id="pricelist_select" name="pricelist" data-select="allowed_pricelists" t-att-data-property="pms_property_id" class="form-control o_website_form_input o_input select_calendar">
                                         <t t-foreach="allowed_pricelists" t-as="pricelist">
                                             <option t-att-value="pricelist['id']" t-att-selected="select_pricelist_id==pricelist['id']">
                                                 <t t-esc="pricelist['name']" />
@@ -471,7 +471,7 @@
                                 </div>
                                 <div class="col-md-4 col-lg-4 col-xl-4 pr-0">
                                     Plan de disponibilidad:
-                                    <select id="select_availability_plan_id" name="pricelist" data-select="allowed_availability_plans" class="form-control o_website_form_input o_input" onchange="javascript:this.form.submit()">
+                                    <select id="select_availability_plan_id" name="availability_plan" data-select="allowed_availability_plans" t-att-data-property="pms_property_id" class="form-control o_website_form_input o_input select_calendar">
                                         <t t-foreach="allowed_availability_plans" t-as="availability_plan">
                                             <option t-att-value="availability_plan['id']" t-att-selected="select_availability_plan_id==availability_plan['id']">
                                                 <t t-esc="availability_plan['name']" />
@@ -482,7 +482,7 @@
                                 <div class="col-md-4 col-lg-4 col-xl-4 pr-0">
                                     <span class="d-block">Fecha:</span>
                                     <div class="o_pms_pwa_month_select form-control px-0">
-                                        <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="mx-2 o_pms_pwa_calendar_arrow">
+                                        <a t-attf-href="?previous_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}&amp;selected_property={{ pms_property_id }}" class="mx-2 o_pms_pwa_calendar_arrow">
                                             <i class="fa fa-angle-left" />
                                         </a>
                                         <input type="hidden" name="calendar_selected_date" t-value="date_start" />
@@ -491,10 +491,10 @@
                                             <t t-esc="date_start" t-options='{"widget": "date", "format": "MMMM dd"}' />
                                         </button>
 
-                                        <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="mx-2 o_pms_pwa_calendar_arrow">
+                                        <a t-attf-href="?next_month={{date_start.strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}&amp;selected_property={{ pms_property_id }}" class="mx-2 o_pms_pwa_calendar_arrow">
                                             <i class="fa fa-angle-right" />
                                         </a>
-                                        <a t-attf-href="?selected_date={{(today - datetime.timedelta(days=1)).strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}" class="btn btn-pms_pwa" style="background:white;width:100px;" t-if="(selected_date).strftime('%d-%m-%Y') != (today - datetime.timedelta(days=1)).strftime('%d-%m-%Y')">Hoy</a>
+                                        <a t-attf-href="?selected_date={{(today - datetime.timedelta(days=1)).strftime('%d/%m/%Y')}}&amp;pricelist={{select_pricelist_id}}&amp;selected_property={{ pms_property_id }}" class="btn btn-pms_pwa" style="background:white;width:100px;" t-if="(selected_date).strftime('%d-%m-%Y') != (today - datetime.timedelta(days=1)).strftime('%d-%m-%Y')">Hoy</a>
                                     </div>
 
                                 </div>
@@ -502,7 +502,7 @@
                             </div>
                         </form>
                         <hr />
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="o_pms_pwa_table_reduced">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
                             <table id="reduced_calendar_table" class="table o_pms_pwa_reduced_reservation_list_table" data-show-columns="true">
                                 <thead>
@@ -746,7 +746,29 @@
                                                                 </p>
                                                                 <p class="calendar_config_input" style="text-align:center;">
                                                                     <label class="switch">
-                                                                        <input data-edit="false" name="closed" type="checkbox" />
+                                                                        <t t-if="rule_headers[room_day.strftime('%Y-%m-%d')][room['id']]['closed']">
+                                                                            <input
+                                                                                t-attf-data-room="{{ room['id'] }}"
+                                                                                t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                                t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                                t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                                t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                data-edit="true"
+                                                                                name="closed"
+                                                                                type="checkbox"
+                                                                                checked="true"/>
+                                                                        </t>
+                                                                        <t t-else="">
+                                                                            <input
+                                                                                t-attf-data-room="{{ room['id'] }}"
+                                                                                t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                                t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                                t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                                t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                data-edit="false"
+                                                                                name="closed"
+                                                                                type="checkbox"/>
+                                                                        </t>
                                                                         <span class="slider round"></span>
                                                                     </label>
                                                                 </p>

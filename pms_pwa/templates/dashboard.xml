@@ -344,8 +344,7 @@
                                             </h3>
                                         </div>
                                         <div class="col-9">
-                                            <form method="post" name="caja" action="/dashboard" >
-                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+
                                                 <div class="row">
                                                     <div class="form-group col-xs-12 col-md-6">
                                                         <!-- <label class="control-label" for="range_check_date_modal">
@@ -375,30 +374,18 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-xs-12 col-md-3">
-                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Ver" style="width:70px"/>
+                                                        <a class="btn btn-radius btn-pms_pwa o_pms_pwa_send_cash_filters"  style="width:70px">Ver</a>
                                                     </div>
                                                 </div>
-                                            </form>
                                         </div>
                                     </div>
                                     <hr />
                                 </div>
-                                <div class="card-body o_pms_pwa_dbh_force">
-                                    <!-- <div class="row">
-                                        <div class="col-9">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-id="1" t-attf-data-name="Prueba" t-attf-data-amount="25" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
-                                                <i class="fa fa-edit"></i>
-                                            </a>Prueba
-                                        </div>
-                                        <div class="col-3 text-right o_pms_pwa_db_dates">
-                                            25
-                                            €
-                                        </div>
-                                    </div> -->
+                                <div class="card-body o_pms_pwa_dbh_force" id="o_pms_pwa_dashboard_cash_journals">
                                     <t t-foreach="cash['payments']" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
-                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-id="{{ pm['id'] }}" t-attf-data-name="{{ pm['name'] }}" t-attf-data-amount="{{ pm['amount'] }}" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
+                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-id="{{ pm['id'] }}" t-attf-data-name="{{ pm['simple_name'] }}" t-attf-data-amount="{{ pm['amount'] }}" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
                                                     <i class="fa fa-edit"></i>
                                                 </a><span t-esc="pm['name']" />
                                             </div>
@@ -416,12 +403,12 @@
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-4">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="caja" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
                                                 CREAR PAGO
                                             </a>
                                         </div>
                                         <div class="col-4">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_internal_register_payment">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="interno" data-toggle="modal" data-target="#o_pms_pwa_internal_register_payment">
                                                 PAGO INTERNO
                                             </a>
                                         </div>
@@ -455,8 +442,6 @@
                                             </h3>
                                         </div>
                                         <div class="col-8">
-                                            <form method="post" name="caja" action="/dashboard">
-                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                                 <div class="row">
                                                     <div class="form-group col-xs-12 col-md-6">
                                                         <!-- <label class="control-label" for="range_check_date_modal">
@@ -486,19 +471,21 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-xs-12 col-md-3">
-                                                        <input class="btn btn-radius btn-pms_pwa" type="submit" name="Ver" style="width:70px"/>
+                                                        <a class="btn btn-radius btn-pms_pwa o_pms_pwa_send_bank_filters"  style="width:70px">Ver</a>
                                                     </div>
                                                 </div>
-                                            </form>
+
                                         </div>
                                     </div>
                                     <hr />
                                 </div>
-                                <div class="card-body o_pms_pwa_dbh_force">
+                                <div class="card-body o_pms_pwa_dbh_force" id="o_pms_pwa_dashboard_bank_journals">
                                     <t t-foreach="bank_journals['payments']" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
-                                                <span t-esc="pm['name']" />
+                                                <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-id="{{ pm['id'] }}" t-attf-data-name="{{ pm['simple_name'] }}" t-attf-data-amount="{{ pm['amount'] }}" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
+                                                    <i class="fa fa-edit"></i>
+                                                </a><span t-esc="pm['name']" />
                                             </div>
                                             <div t-if="pm['amount'] > 0" class="col-3 text-right o_pms_pwa_db_dates">
                                                 <span t-esc="pm['amount']" />
@@ -514,7 +501,7 @@
                                 <div class="card-footer">
                                     <div class="row">
                                         <div class="col-4">
-                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
+                                            <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="banco" data-toggle="modal" data-target="#o_pms_pwa_new_bank_register_payment">
                                                 CREAR PAGO
                                             </a>
                                         </div>

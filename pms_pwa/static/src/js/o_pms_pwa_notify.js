@@ -58,7 +58,8 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
         upload_calendar: function (notification) {
             //new UpdateCalendar(this)._onClickPropertyChange(notification);
             let parameters = "?selected_property="+notification.pms_property_id;
-            $("#reduced_calendar_table").load("/calendar/reduced"+parameters+ " #reduced_calendar_table>*");
+            window.location = "/calendar/reduced" + parameters;
+            // $("#o_pms_pwa_table_reduced").load("/calendar/reduced"+parameters+ " #o_pms_pwa_table_reduced>*");
         },
     });
 });

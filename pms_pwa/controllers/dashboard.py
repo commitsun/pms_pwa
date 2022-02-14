@@ -420,24 +420,27 @@ class DashBoard(http.Controller):
         return request.env["pms.reservation"].search_count(domain)
 
     def _get_payments(self, journal_id, date):
-        statement = (
-            request.env["account.bank.statement"]
+        payments = (
+            request.env["account.payment"]
             .sudo()
             .search(
                 [
                     ("journal_id", "=", journal_id),
-                    # ("date", "=", date), Developer Tets
+                    ("date", "=", date),
                 ]
             )
         )
-        payments = []
-        for line in statement.line_ids:
-            payments.append({
+        payment_vals = []
+        for line in payments:
+            payment_vals.append({
                 "id": line.id,
-                "name": line.payment_ref + " el " + line.create_date.strftime("%d %b - %H:%M") + " (" + line.create_uid.name + ")",
+                "partner_id": line.partner_id and line.partner_id.id,
+                "partner_name": line.partner_id and line.partner_id.name,
+                "simple_name": line.ref or "No indicado",
+                "name": line.ref or "No indicado" + " el " + line.create_date.strftime("%d %b - %H:%M") + " (" + line.create_uid.name + ")",
                 "amount": line.amount,
             })
-        return payments
+        return payment_vals
 
     def _get_cash_balance(self, journal_id):
         statement = (
@@ -452,6 +455,7 @@ class DashBoard(http.Controller):
         return statement.balance_end
 
     def _get_journals_cash(self, pms_property_id):
+
         journals = (
             request.env["account.journal"]
             .sudo()
@@ -463,6 +467,9 @@ class DashBoard(http.Controller):
             )
         )
         data_journals = {}
+        if not journals:
+            data_journals["0"] = ""
+            return data_journals
         for journal in journals:
             data_journals[str(journal.id)] = journal.name
         return data_journals
@@ -479,6 +486,9 @@ class DashBoard(http.Controller):
             )
         )
         data_journals = {}
+        if not journals:
+            data_journals["0"] = ""
+            return data_journals
         for journal in journals:
             data_journals[str(journal.id)] = journal.name
         return data_journals
@@ -499,3 +509,76 @@ class DashBoard(http.Controller):
             return "close"
         else:
             return "open"
+
+    @http.route(
+        "/dashboard/cash_journal",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def dashboard_cash_journal(self, **post):
+        # en post tiene que llegar diario y fecha
+        print(post)
+        journal_id = int(post.get("journal_id"))
+        journal_date = datetime.datetime.strptime(
+            post.get("journal_date"), get_lang(request.env).date_format
+        ).date()
+        pms_property_id = request.env.user.pms_pwa_property_id.id
+        values = {}
+        values.update({
+            "cash": {
+                "status": self._get_status_journal(journal_id),
+                "coins": {
+                    "500": 0,
+                    "200": 0,
+                    "100": 0,
+                    "50": 0,
+                    "20": 0,
+                    "10": 0,
+                    "5": 0,
+                    "2": 0,
+                    "1": 0,
+                    "0.5": 0,
+                    "0.2": 0,
+                    "0.1": 0,
+                    "0.05": 0,
+                    "0.02": 0,
+                    "0.01": 0,
+
+                },
+                "list": self._get_journals_cash(pms_property_id),
+                "selected": journal_id,
+                "date": journal_date,
+                "payments": self._get_payments(journal_id, journal_date),
+            },
+        })
+        return values
+
+    @http.route(
+        "/dashboard/bank_journals",
+        type="json",
+        auth="public",
+        csrf=False,
+        methods=["POST"],
+        website=True,
+    )
+    def dashboard_bank_journals(self, **post):
+        # en post tiene que llegar diario y fecha
+        print(post)
+        journal_id = int(post.get("journal_id"))
+        journal_date = datetime.datetime.strptime(
+            post.get("journal_date"), get_lang(request.env).date_format
+        ).date()
+        pms_property_id = request.env.user.pms_pwa_property_id.id
+        values = {}
+        values.update({
+            "bank_journals": {
+                "list": self._get_journals_bank(pms_property_id),
+                "selected": journal_id,
+                "date": journal_date,
+                "payments": self._get_payments(journal_id, journal_date),
+            },
+        })
+        return values

@@ -200,7 +200,7 @@ class PmsCalendarConfig(http.Controller):
                                 if "closed" in item:
                                     avail_vals["closed"] = bool(item["closed"])
                                 if "closed_arrival" in item:
-                                    avail_vals["closed"] = bool(item["closed_arrival"])
+                                    avail_vals["closed_arrival"] = bool(item["closed_arrival"])
                                 if "min_stay_arrival" in item:
                                     avail_vals["min_stay_arrival"] = int(
                                         item["min_stay_arrival"]
