@@ -50,6 +50,13 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                 if (input.data("edit") === true) {
                     var input_array = {};
                     // Value['pricelist_id'].push(input.data('pricelist'));
+
+                    if(input.val() == 'on'){
+                        input.val(1);
+                    }
+                    if(input.val() == 'off'){
+                        input.val(0);
+                    }
                     input_array[input.attr("name")] = input.val();
                     var price = input.data("pricelist");
                     var availability_plan = input.data("availability_plan");
@@ -102,14 +109,26 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     }
                 }
             });
-            console.log(send);
+
             ajax.jsonRpc("/calendar/config/save", "call", {
                 send
             }).then(function (new_data) {
-                if (!JSON.parse(new_data).result) {
-                    new_displayDataAlert(new_data);
+                let data = JSON.parse(new_data);
+                if (data.result == true) {
+                    $("#status").toggle();
+                    $("#preloader").toggle();
+                    let property = $("input[name='selected_property']").val();
+                    let parameters = "?selected_property="+property;
+                    window.location = "/calendar/reduced" + parameters;
+                    // $("#o_pms_pwa_table_reduced").load(
+                    //     "/calendar/reduced" + parameters + " #o_pms_pwa_table_reduced>*"
+                    // );
+                    var element = document.getElementById("save");
+                    element.classList.add("d-none");
+                    $("#preloader").fadeOut(2500);
                 } else {
-                    window.location = window.location.href;
+                    new_displayDataAlert(new_data);
+                    //window.location = window.location.href;
                 }
             });
         },

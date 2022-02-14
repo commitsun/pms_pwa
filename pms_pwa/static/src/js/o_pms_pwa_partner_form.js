@@ -177,7 +177,7 @@ odoo.define("pms_pwa.partner_form", function (require) {
 
         _dateRangeActive: function () {
             $("form#partner_form input.o_pms_pwa_datepicker").datepicker({
-                format: "mm/dd/yyyy",
+                format: "dd/mm/yyyy",
             });
         },
     });

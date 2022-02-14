@@ -20,6 +20,12 @@ odoo.define("pms_pwa.dashboard", function (require) {
             "click a.o_pms_pwa_modal_cash_register_close": "_onClickModalCashRegiste",
             "click a.o_pms_pwa_edit_payment_modal": "_onClickModalCashEdit",
             "click button.o_pms_pwa_edit_payment": "_onClickModalEditPayment",
+            "click button.o_pms_pwa_cash_register": "_onClickCashPayment",
+            "click button.o_pms_pwa_cash_internal": "_onClickCashInternal",
+            "click a.o_pms_pwa_modal_cash_payment": "_onClickModalCashPayment",
+            "click button.o_pms_pwa_modal_bank_payment": "_onClickBankPayment",
+            "click a.o_pms_pwa_send_cash_filters": "_onClickCashFilter",
+            "click a.o_pms_pwa_send_bank_filters": "_onClickBankFilter",
         },
         pms_pwa_initiate_doughnuts: function () {
             $.each($(".o_pms_pwa_doughnut"), function (key, doughnut) {
@@ -160,7 +166,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             }
             var self = this;
             ev.preventDefault();
-            var modal = $("div#o_pms_pwa_new_cash_register_payment");
+            var modal = $("div#o_pms_pwa_open_close_cash");
             var payment_method = modal
                 .find("select[name='payment_method'] option")
                 .filter(":selected")
@@ -179,8 +185,6 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 force: force,
             }).then(function (data) {
                 let obj = JSON.parse(data);
-
-                self.displayDataAlert(data);
                 if (obj["result"] === true) {
                     $("#confirmaModal").modal("toggle");
                     $("#o_pms_pwa_open_close_cash").modal("toggle");
@@ -190,9 +194,104 @@ odoo.define("pms_pwa.dashboard", function (require) {
                         $("p.title_confirm").html(obj["message"]);
                         // dos botones, uno revisar, cierra modal y no habre la caja.
                         // forzar, que abre la caja y cierra las dos modales.
+                        $("section#cash_values").load(
+                            "/dashboard section#cash_values>*"
+                        );
+                    } else {
+                        self.displayDataAlert(data);
                     }
                 }
             });
+        },
+        _onClickCashPayment: function (ev) {
+            var self = this;
+            ev.preventDefault();
+            let modal = $("div#o_pms_pwa_new_cash_register_payment");
+            let payment_method = modal
+                .find("select[name='cash_selected'] option")
+                .filter(":selected")
+                .val();
+            let partner_id = modal.find("input[name='partner_id']").val();
+            let payment_amount = modal.find("input[name='amount']").val();
+            let description = modal.find("input[name='description']").val();
+            console.log("payment_method", payment_method);
+            ajax.jsonRpc("/cash_register/add", "call", {
+                payment_method: payment_method,
+                partner_id: partner_id,
+                amount: payment_amount,
+                description: description,
+            }).then(function (data) {
+                let obj = JSON.parse(data);
+                self.displayDataAlert(data);
+                $("section#cash_values").load("/dashboard section#cash_values>*");
+            });
+        },
+        _onClickBankPayment: function (ev) {
+            var self = this;
+            ev.preventDefault();
+            let modal = $("div#o_pms_pwa_new_bank_register_payment");
+            let payment_method = modal
+                .find("select[name='cash_selected'] option")
+                .filter(":selected")
+                .val();
+            let partner_id = modal.find("input[name='partner_id']").val();
+            let payment_amount = modal.find("input[name='amount']").val();
+            let description = modal.find("input[name='description']").val();
+            console.log("payment_method", payment_method);
+            ajax.jsonRpc("/cash_register/add", "call", {
+                payment_method: payment_method,
+                partner_id: partner_id,
+                amount: payment_amount,
+                description: description,
+            }).then(function (data) {
+                let obj = JSON.parse(data);
+                self.displayDataAlert(data);
+                $("section#cash_values").load("/dashboard section#cash_values>*");
+            });
+        },
+        _onClickCashInternal: function (ev) {
+            var self = this;
+            ev.preventDefault();
+            let modal = $("div#o_pms_pwa_internal_register_payment");
+            let origin_payment_method = modal
+                .find("select[name='origin_payment_method'] option")
+                .filter(":selected")
+                .val();
+            let target_payment_method = modal
+                .find("select[name='target_payment_method'] option")
+                .filter(":selected")
+                .val();
+            let payment_amount = modal.find("input[name='amount']").val();
+            let description = modal.find("textarea[name='description']").val();
+            ajax.jsonRpc("/cash_register/add", "call", {
+                payment_method: origin_payment_method,
+                target_payment_method: target_payment_method,
+                amount: payment_amount,
+                description: description,
+            }).then(function (data) {
+                let obj = JSON.parse(data);
+                self.displayDataAlert(data);
+                $("section#cash_values").load("/dashboard section#cash_values>*");
+            });
+        },
+        _onClickModalCashPayment: function (e) {
+            var self = this;
+            e.preventDefault();
+            let modal = $("div#o_pms_pwa_new_bank_register_payment");
+
+            modal.find('input[type="number"]').val(0);
+            modal.find('input[type="text"]').val("");
+            modal.find('textarea[name="description"]').val("");
+            var dataTitle = e.currentTarget.getAttribute("data-title");
+            if (dataTitle == "caja") {
+                $(".modal-title").html("Movimiento caja");
+            } else {
+                if (dataTitle == "interno") {
+                    $(".modal-title").html("Pago interno");
+                } else {
+                    $(".modal-title").html("Movimiento banco");
+                }
+            }
         },
         _onClickModalCashRegiste: function (e) {
             var self = this;
@@ -203,11 +302,11 @@ odoo.define("pms_pwa.dashboard", function (require) {
             if (dataTitle == "open") {
                 $(".modal-title").html("Abrir caja");
                 $(".modal-button-text").html("Abrir caja");
-                $('input[type="type"]').val("open");
+                $('input[name="type"]').val("open");
             } else {
                 $(".modal-title").html("Cerrar caja");
                 $(".modal-button-text").html("Cerrar caja");
-                $('input[type="type"]').val("close");
+                $('input[name="type"]').val("close");
             }
         },
         _onClickModalCashEdit: function (e) {
@@ -216,26 +315,128 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var id = e.currentTarget.getAttribute("data-id");
             var name = e.currentTarget.getAttribute("data-name");
             var amount = e.currentTarget.getAttribute("data-amount");
-            $('input.payment_id').val(id);
-            $('input.payment_name').val(name);
-            $('input.payment_amount').val(amount);
+
+            $("input.payment_id").val(id);
+            $("input.payment_name").val(name);
+            $("input.payment_amount").val(amount);
         },
-        _onClickModalEditPayment: function(e) {
+        _onClickModalEditPayment: function (e) {
             var self = this;
             e.preventDefault();
-            let payment_id = $('input.payment_id').val();
-            let payment_amount = $('input.payment_name').val();
-            let payment_name = $('input.payment_amount').val();
-            let cash_selected = $('.cash_selected').val();
+            let modal = $("div#o_pms_pwa_edit_payment_modal");
+            let payment_id = $("input.payment_id").val();
+            let payment_amount = $("input.payment_amount").val();
+            let payment_name = $("input.payment_name").val();
+            let cash_selected = modal
+                .find("select[name='cash_selected'] option")
+                .filter(":selected")
+                .val();
             console.log("cash_selected", cash_selected);
             ajax.jsonRpc("/cash_register/edit", "call", {
                 id: payment_id,
                 amount: payment_amount,
                 name: payment_name,
-                cash: cash_selected,
+                journal_id: cash_selected,
             }).then(function (data) {
                 self.displayDataAlert(data);
                 $("section#cash_values").load("/dashboard section#cash_values>*");
+            });
+        },
+        _onClickBankFilter: function (e) {
+            var self = this;
+            e.preventDefault();
+            let journal_date = $('input[name="journal_date"]').val();
+            let journal_selected = $("select[name='journal_selected'] option")
+                .filter(":selected")
+                .val();
+            console.log("journal_selected", journal_selected);
+            ajax.jsonRpc("/dashboard/bank_journals", "call", {
+                journal_date: journal_date,
+                journal_id: journal_selected,
+            }).then(function (data) {
+                let new_html = "";
+                let payments = data["bank_journals"]["payments"];
+                for (let val in payments) {
+                    if(payments[val]["amount"] < 0){
+                        new_html =
+                            new_html +
+                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
+                            payments[val]["id"] +
+                            '" data-name="' +
+                            payments[val]["simple_name"] +
+                            '" data-amount="' +
+                            payments[val]["amount"] +
+                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
+                            payments[val]["name"] +
+                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates" style="color:red;"><span>' +
+                            payments[val]["amount"] +
+                            "</span>€</div></div>";
+                    }else{
+                        new_html =
+                            new_html +
+                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
+                            payments[val]["id"] +
+                            '" data-name="' +
+                            payments[val]["simple_name"] +
+                            '" data-amount="' +
+                            payments[val]["amount"] +
+                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
+                            payments[val]["name"] +
+                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates"><span>' +
+                            payments[val]["amount"] +
+                            "</span>€</div></div>";
+                    }
+                }
+                $("#o_pms_pwa_dashboard_bank_journals").html(new_html);
+            });
+        },
+        _onClickCashFilter: function (e) {
+            var self = this;
+            e.preventDefault();
+            let journal_date = $('input[name="cash_date"]').val();
+            let journal_selected = $("select[name='cash_selected'] option")
+                .filter(":selected")
+                .val();
+            console.log("journal_selected", journal_selected);
+            ajax.jsonRpc("/dashboard/cash_journal", "call", {
+                journal_date: journal_date,
+                journal_id: journal_selected,
+            }).then(function (data) {
+                console.log("data", data);
+                let new_html = "";
+                let payments = data["cash"]["payments"];
+                for (let val in payments) {
+                    if(payments[val]["amount"] < 0){
+                        new_html =
+                            new_html +
+                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
+                            payments[val]["id"] +
+                            '" data-name="' +
+                            payments[val]["simple_name"] +
+                            '" data-amount="' +
+                            payments[val]["amount"] +
+                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
+                            payments[val]["name"] +
+                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates" style="color:red;"><span>' +
+                            payments[val]["amount"] +
+                            "</span>€</div></div>";
+                    }else{
+                        new_html =
+                            new_html +
+                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
+                            payments[val]["id"] +
+                            '" data-name="' +
+                            payments[val]["simple_name"] +
+                            '" data-amount="' +
+                            payments[val]["amount"] +
+                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
+                            payments[val]["name"] +
+                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates"><span>' +
+                            payments[val]["amount"] +
+                            "</span>€</div></div>";
+                    }
+                }
+                $("#o_pms_pwa_dashboard_cash_journals").html(new_html);
             });
         },
     });

@@ -164,11 +164,19 @@
                                         <label for="name">Nombre:</label>
                                         <input type="text" class="form-control payment_name" name="name" placeholder="Enter name" id="name" value="Prueba"/>
                                     </div>
+                                    <!-- <div class="form-group">
+                                        <label class="control-label col-12" for="partner_id">
+                                            Proveedor
+                                        </label>
+                                        <input class="form-control o_pms_pwa_search_partner" type="text" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                        <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
+                                    </div> -->
                                     <div class="form-group">
                                         <label for="price">Valor:</label>
                                         <input type="number" class="form-control payment_amount" id="amount" name="amount" value="25"/>
-                                        <input type="hidden" class="form-control payment_id" value="4"/>
+                                        <input type="hidden" class="form-control payment_id" name="id" value="4"/>
                                     </div>
+
                                 </div>
                             </div>
                             <div class="row">
@@ -211,7 +219,7 @@
                                     </label>
                                     <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
-                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="origin_payment_method">
                                         <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
                                             <t t-esc="key_value['name']" />
                                         </option>
@@ -223,7 +231,7 @@
                                     </label>
                                     <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
-                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="target_payment_method">
                                         <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
                                             <t t-esc="key_value['name']" />
                                         </option>
@@ -247,7 +255,7 @@
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-message btn-block o_pms_pwa_cash_register_confirm" data-dismiss="modal" aria-label="Pay">
+                                    <button type="button" class="btn btn-message btn-block o_pms_pwa_cash_internal" data-dismiss="modal" aria-label="Pay">
                                         <span>Guardar</span>
                                     </button>
                                 </div>
