@@ -9,3 +9,4 @@ from . import pms_property
 from . import res_partner
 from . import res_users
 from . import pms_user_calendar_property
+from . import account_bank_statement

@@ -438,7 +438,7 @@ class DashBoard(http.Controller):
                 "partner_name": line.partner_id and line.partner_id.name,
                 "simple_name": line.ref or "No indicado",
                 "name": line.ref or "No indicado" + " el " + line.create_date.strftime("%d %b - %H:%M") + " (" + line.create_uid.name + ")",
-                "amount": line.amount,
+                "amount": line.amount if line.payment_type == "inbound" else -line.amount,
             })
         return payment_vals
 
@@ -449,9 +449,21 @@ class DashBoard(http.Controller):
             .search(
                 [
                     ("journal_id", "=", journal_id),
+                    ("state", "=", "open"),
+                    ("date", "=", fields.Date.today()),
                 ], limit=1
             )
         )
+        if not statement:
+            statement = (
+                request.env["account.bank.statement"]
+                .sudo()
+                .search(
+                    [
+                        ("journal_id", "=", journal_id),
+                    ], limit=1
+                )
+            )
         return statement.balance_end
 
     def _get_journals_cash(self, pms_property_id):
