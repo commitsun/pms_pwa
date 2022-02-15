@@ -403,7 +403,7 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="caja" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
-                                                Crear Pago
+                                                Pago Proveedor
                                             </a>
                                         </div>
                                         <div class="col-4">
@@ -500,7 +500,7 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="banco" data-toggle="modal" data-target="#o_pms_pwa_new_bank_register_payment">
-                                                Crear Pago
+                                                Pago Proveedor
                                             </a>
                                         </div>
                                         <div class="col-4">
