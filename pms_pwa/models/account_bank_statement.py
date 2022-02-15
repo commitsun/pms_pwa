@@ -3,7 +3,7 @@ from odoo import fields, models
 
 class AccountBankStatement(models.Model):
     _inherit = "account.bank.statement"
-    _order = "date desc, cash_turn asc, name desc, id desc"
+    _order = "date desc, cash_turn desc, name desc, id desc"
 
     cash_turn = fields.Integer(
         string="Turn",
