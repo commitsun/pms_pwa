@@ -160,7 +160,12 @@ class PmsProperty(models.Model):
 
     @api.model
     def _get_allowed_countries(self):
-        allowed_countries = []
+        allowed_countries = [
+            {
+                "id": False,
+                "name": "",
+            }
+        ]
         for country in self.env["res.country"].search([]):
             allowed_countries.append(
                 {

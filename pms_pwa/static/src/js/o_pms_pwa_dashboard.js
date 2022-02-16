@@ -204,7 +204,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             ev.preventDefault();
             let modal = $("div#o_pms_pwa_new_cash_register_payment");
             let payment_method = modal
-                .find("select[name='cash_selected'] option")
+                .find("select[name='payment_method'] option")
                 .filter(":selected")
                 .val();
             let partner_id = modal.find("input[name='partner_id']").val();
@@ -226,7 +226,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             ev.preventDefault();
             let modal = $("div#o_pms_pwa_new_bank_register_payment");
             let payment_method = modal
-                .find("select[name='cash_selected'] option")
+                .find("select[name='payment_method'] option")
                 .filter(":selected")
                 .val();
             let partner_id = modal.find("input[name='partner_id']").val();
@@ -322,15 +322,15 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let payment_id = $("input.payment_id").val();
             let payment_amount = $("input.payment_amount").val();
             let payment_name = $("input.payment_name").val();
-            let cash_selected = modal
-                .find("select[name='cash_selected'] option")
+            let payment_method = modal
+                .find("select[name='payment_method'] option")
                 .filter(":selected")
                 .val();
             ajax.jsonRpc("/cash_register/edit", "call", {
                 id: payment_id,
                 amount: payment_amount,
                 name: payment_name,
-                journal_id: cash_selected,
+                journal_id: payment_method,
             }).then(function (data) {
                 self.displayDataAlert(data);
                 $("section#cash_values").load("/dashboard section#cash_values>*");
@@ -387,7 +387,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var self = this;
             e.preventDefault();
             let journal_date = $('input[name="cash_date"]').val();
-            let journal_selected = $("select[name='cash_selected'] option")
+            let journal_selected = $("select[name='payment_method'] option")
                 .filter(":selected")
                 .val();
             ajax.jsonRpc("/dashboard/cash_journal", "call", {

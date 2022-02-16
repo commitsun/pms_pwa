@@ -52,7 +52,7 @@
                             <input type="hidden" name="modal_room" value=""></input>
                             <input type="hidden" name="modal_property_id" t-attf-value="{{current_property}}"></input>
                             <button type="button" class="btn btn-message send_ConfirmChanges">Confirmar cambio</button>
-                            <button type="button" class="btn btn-secondary close_confirmChange" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary close_confirmChange" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -360,7 +360,7 @@
                             <input type="hidden" name="modal_reservation" value=""></input>
                             <input type="hidden" name="modal_room" value=""></input>
                             <a type="button" class="btn btn-message send_changesDaysValues">Confirmar cambio</a>
-                            <button type="button" class="btn btn-secondary close_changesDaysValues" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-secondary close_changesDaysValues" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
                 </div>
@@ -649,7 +649,7 @@
                                                         </div>
                                                     </div>
                                                     <p class="calendar_config_input" style="text-align:center; padding-top:0 !important; margin-bottom:0 !important;">
-                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="text-align:center; width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />
+                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="text-align:center; width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />€
                                                     </p>
 
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="padding-top:0px !important; margin-top:0px !important">

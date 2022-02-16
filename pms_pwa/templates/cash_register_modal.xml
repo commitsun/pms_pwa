@@ -21,7 +21,7 @@
                                         <label class="control-label col-12" for="payment_method">
                                             Diario
                                         </label>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
+                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                             <t t-foreach="cash['list']" t-as="option">
                                                 <t t-if="cash['selected'] == option">
                                                     <option  t-att-value="option" selected="selected">
@@ -63,7 +63,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
-                                    <span>Cerrar</span>
+                                    <span>Cancelar</span>
                                 </button>
                             </div>
                             <div class="col-6">
@@ -98,7 +98,7 @@
                                         <label class="control-label col-12" for="payment_method">
                                             Banco
                                         </label>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
+                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                             <t t-foreach="bank_journals['list']" t-as="option">
                                                 <t t-if="bank_journals['selected'] == option">
                                                     <option  t-att-value="option" selected="selected">
@@ -140,7 +140,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
-                                    <span>Cerrar</span>
+                                    <span>Cancelar</span>
                                 </button>
                             </div>
                             <div class="col-6">

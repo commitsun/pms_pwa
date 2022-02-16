@@ -64,6 +64,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click .o_pms_pwa_button_cancelar": "_onClickCancelButton",
             "click .o_pms_pwa_button_checkout": "_onClickCheckoutButton",
             "click .o_pms_pwa_button_pagar": "_onClickPaymentButton",
+            "click .o_pms_pwa_button_refund": "_onClickRefundButton",
             "click .o_pms_pwa_button_facturar": "_onClickInvoiceButton",
             "click .o_pms_pwa_button_new_reservation": "_onClickNewReservation",
         },
@@ -119,11 +120,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         if (res) {
                             if (JSON.parse(res).result) {
                                 self.displayDataAlert(res);
-                                $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_asignar").hide();
+                                $(
+                                    "div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_asignar"
+                                ).hide();
                             }
                         }
                     });
-
                 }
             );
 
@@ -147,6 +149,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 function (event) {
                     event.preventDefault();
                     self._onClickPaymentButton(event);
+                }
+            );
+
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_refund").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickRefundButton(event);
                 }
             );
 
@@ -1991,6 +2001,49 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         new_event.preventDefault();
                         var selector =
                             "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                        var div = $(selector);
+                        var payment_method = div
+                            .find("select[name='payment_method'] option")
+                            .filter(":selected")
+                            .val();
+                        var payment_amount = div.find("input[name='amount']").val();
+                        ajax.jsonRpc(button.attributes.url.value, "call", {
+                            payment_method: payment_method,
+                            amount: payment_amount,
+                        }).then(function (new_data) {
+                            self.displayDataAlert(new_data, data.id);
+                        });
+                    });
+                }
+            });
+        },
+        _onClickRefundButton: function (event) {
+            event.preventDefault();
+            var self = this;
+            var button = event.currentTarget;
+            var reservation_id = false;
+            try {
+                reservation_id = button.closest("tr").getAttribute("data-id");
+            } catch (error) {
+                try {
+                    reservation_id = button.getAttribute("data-id");
+                } catch (error) {
+                    reservation_id = $("input[name='id']").val();
+                }
+            }
+            ajax.jsonRpc("/reservation/json_data", "call", {
+                reservation_id: reservation_id,
+            }).then(function (data) {
+                if (data) {
+                    self.displayContent("pms_pwa.reservation_refund_modal", {
+                        reservation: data,
+                    });
+                    $(".o_pms_pwa_button_refund_confirm").on("click", function (
+                        new_event
+                    ) {
+                        new_event.preventDefault();
+                        var selector =
+                            "div.modal-dialog[refund-data-id=" + reservation_id + "]";
                         var div = $(selector);
                         var payment_method = div
                             .find("select[name='payment_method'] option")

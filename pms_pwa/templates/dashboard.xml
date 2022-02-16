@@ -344,7 +344,6 @@
                                             </h3>
                                         </div>
                                         <div class="col-9">
-
                                                 <div class="row">
                                                     <div class="form-group col-xs-12 col-md-6">
                                                         <!-- <label class="control-label" for="range_check_date_modal">
@@ -357,7 +356,7 @@
                                                         </span>
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
+                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                                             <t t-foreach="cash['list']" t-as="option">
                                                                 <t t-if="cash['selected'] == option">
                                                                     <option t-att-value="option" selected="selected">
@@ -404,25 +403,25 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="caja" data-toggle="modal" data-target="#o_pms_pwa_new_cash_register_payment">
-                                                CREAR PAGO
+                                                Pago Proveedor
                                             </a>
                                         </div>
                                         <div class="col-4">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="interno" data-toggle="modal" data-target="#o_pms_pwa_internal_register_payment">
-                                                PAGO INTERNO
+                                                Tranf. Interna
                                             </a>
                                         </div>
                                         <t t-if="cash['status'] == 'open'">
                                             <div class="col-4">
                                                 <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close" data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="open">
-                                                    ABRIR CAJA
+                                                    Abrir Caja
                                                 </a>
                                             </div>
                                         </t>
                                         <t t-else="">
                                             <div class="col-4">
                                                 <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_register_close"  data-toggle="modal" data-target="#o_pms_pwa_open_close_cash" data-title="close">
-                                                    CERRAR CAJA
+                                                    Cerrar Caja
                                                 </a>
                                             </div>
                                         </t>
@@ -436,45 +435,44 @@
                             <div class="card shadow">
                                 <div class="card-header bg-white o_pms_pwa_card_header">
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <h3 class="mb-0">
-                                                Diarios banco
+                                                Bancos
                                             </h3>
                                         </div>
-                                        <div class="col-8">
-                                                <div class="row">
-                                                    <div class="form-group col-xs-12 col-md-6">
-                                                        <!-- <label class="control-label" for="range_check_date_modal">
-                                                            Fecha
-                                                        </label> -->
-                                                        <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="journal_date" t-att-value="bank_journals['date']" style="padding-left:2.5rem;"  />
+                                        <div class="col-9">
+                                            <div class="row">
+                                                <div class="form-group col-xs-12 col-md-6">
+                                                    <!-- <label class="control-label" for="range_check_date_modal">
+                                                        Fecha
+                                                    </label> -->
+                                                    <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="journal_date" t-att-value="bank_journals['date']" style="padding-left:2.5rem;"  />
 
-                                                        <span class="o_pms_pwa_calendar_icon">
-                                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
-                                                        </span>
-                                                    </div>
-                                                    <div class="form-group col-xs-12 col-md-3">
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="journal_selected">
-                                                            <t t-foreach="bank_journals['list']" t-as="option">
-                                                                <t t-if="bank_journals['selected'] == option">
-                                                                    <option  t-att-value="option" selected="selected">
-                                                                        <t t-esc="option_value" />
-                                                                    </option>
-                                                                </t>
-                                                                <t t-else="">
-                                                                    <option t-att-value="option">
-                                                                        <t t-esc="option_value" />
-                                                                    </option>
-                                                                </t>
-
-                                                            </t>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-xs-12 col-md-3">
-                                                        <a class="btn btn-radius btn-pms_pwa o_pms_pwa_send_bank_filters"  style="width:70px">Ver</a>
-                                                    </div>
+                                                    <span class="o_pms_pwa_calendar_icon">
+                                                        <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                                    </span>
                                                 </div>
+                                                <div class="form-group col-xs-12 col-md-3">
+                                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="journal_selected">
+                                                        <t t-foreach="bank_journals['list']" t-as="option">
+                                                            <t t-if="bank_journals['selected'] == option">
+                                                                <option  t-att-value="option" selected="selected">
+                                                                    <t t-esc="option_value" />
+                                                                </option>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <option t-att-value="option">
+                                                                    <t t-esc="option_value" />
+                                                                </option>
+                                                            </t>
 
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                                <div class="col-xs-12 col-md-3">
+                                                    <a class="btn btn-radius btn-pms_pwa o_pms_pwa_send_bank_filters"  style="width:70px">Ver</a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <hr />
@@ -502,7 +500,7 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_modal_cash_payment" data-title="banco" data-toggle="modal" data-target="#o_pms_pwa_new_bank_register_payment">
-                                                CREAR PAGO
+                                                Pago Proveedor
                                             </a>
                                         </div>
                                         <div class="col-4">
