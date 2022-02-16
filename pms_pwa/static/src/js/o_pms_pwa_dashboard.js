@@ -188,15 +188,11 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 if (obj["result"] === true) {
                     $("#confirmaModal").modal("toggle");
                     $("#o_pms_pwa_open_close_cash").modal("toggle");
+                    window.location = "/dashboard";
                 } else {
                     if (obj["force"] === true) {
                         $("#confirmaModal").modal("show");
                         $("p.title_confirm").html(obj["message"]);
-                        // dos botones, uno revisar, cierra modal y no habre la caja.
-                        // forzar, que abre la caja y cierra las dos modales.
-                        $("section#cash_values").load(
-                            "/dashboard section#cash_values>*"
-                        );
                     } else {
                         self.displayDataAlert(data);
                     }
@@ -214,7 +210,6 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let partner_id = modal.find("input[name='partner_id']").val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("input[name='description']").val();
-            console.log("payment_method", payment_method);
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 partner_id: partner_id,
@@ -237,7 +232,6 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let partner_id = modal.find("input[name='partner_id']").val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("input[name='description']").val();
-            console.log("payment_method", payment_method);
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 partner_id: partner_id,
@@ -277,21 +271,22 @@ odoo.define("pms_pwa.dashboard", function (require) {
         _onClickModalCashPayment: function (e) {
             var self = this;
             e.preventDefault();
-            let modal = $("div#o_pms_pwa_new_bank_register_payment");
-
-            modal.find('input[type="number"]').val(0);
-            modal.find('input[type="text"]').val("");
-            modal.find('textarea[name="description"]').val("");
+            let modal = $("div#o_pms_pwa_new_cash_register_payment");
             var dataTitle = e.currentTarget.getAttribute("data-title");
             if (dataTitle == "caja") {
                 $(".modal-title").html("Movimiento caja");
             } else {
                 if (dataTitle == "interno") {
                     $(".modal-title").html("Pago interno");
+                    modal = $("div#o_pms_pwa_internal_register_payment");
                 } else {
                     $(".modal-title").html("Movimiento banco");
+                    modal = $("div#o_pms_pwa_new_bank_register_payment");
                 }
             }
+            modal.find('input[type="number"]').val(0);
+            modal.find('input[type="text"]').val("");
+            modal.find('textarea[name="description"]').val("");
         },
         _onClickModalCashRegiste: function (e) {
             var self = this;
@@ -331,7 +326,6 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 .find("select[name='cash_selected'] option")
                 .filter(":selected")
                 .val();
-            console.log("cash_selected", cash_selected);
             ajax.jsonRpc("/cash_register/edit", "call", {
                 id: payment_id,
                 amount: payment_amount,
@@ -349,7 +343,6 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let journal_selected = $("select[name='journal_selected'] option")
                 .filter(":selected")
                 .val();
-            console.log("journal_selected", journal_selected);
             ajax.jsonRpc("/dashboard/bank_journals", "call", {
                 journal_date: journal_date,
                 journal_id: journal_selected,
@@ -397,12 +390,10 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let journal_selected = $("select[name='cash_selected'] option")
                 .filter(":selected")
                 .val();
-            console.log("journal_selected", journal_selected);
             ajax.jsonRpc("/dashboard/cash_journal", "call", {
                 journal_date: journal_date,
                 journal_id: journal_selected,
             }).then(function (data) {
-                console.log("data", data);
                 let new_html = "";
                 let payments = data["cash"]["payments"];
                 for (let val in payments) {
