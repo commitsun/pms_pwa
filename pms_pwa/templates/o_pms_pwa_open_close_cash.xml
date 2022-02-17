@@ -23,15 +23,12 @@
                 <div class="modal-content">
                     <script>
                         function calculateValue(val, multi, index) {
-                            console.log("val--->", val);
-                            console.log("multi--->", parseFloat(multi).toFixed( 2 ));
-                            console.log("index--->", index);
                             let val_total = parseFloat(val).toFixed( 2 )*parseFloat(multi).toFixed( 2 );
                             $('span#coin_'+index).text(val_total+"€");
-                            let amount = $('input[name="amount"]').val() || "0";
-                            amount = parseFloat(amount) + parseFloat(val_total);
-                            console.log(amount);
-                            $('input[name="amount"]').val(amount.toFixed( 2 ));
+                            let total_amount = $("span.coin_total").text().split("€");
+                            let sum = 0;
+                            $.each(total_amount,function(){sum+=parseFloat(this) || 0;});
+                            $('input[name="amount"]').val(sum.toFixed( 2 ));
                         };
                     </script>
                     <div class="modal-header o_pms_pwa_modal_header">
@@ -88,7 +85,7 @@
                                                         €
                                                     </td>
                                                     <td>
-                                                        <span t-attf-id="coin_{{coin_index}}">0€</span>
+                                                        <span class="coin_total" t-attf-id="coin_{{coin_index}}">0€</span>
                                                     </td>
                                                 </tr>
                                             </t>
@@ -241,6 +238,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-12" for="name">Importe</label>
                                         <input type="text" class="form-control" name="amount" placeholder="Enter name" id="amount"/>
+
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-12" for="price">Descripción:</label>
