@@ -688,9 +688,11 @@ class PmsCalendar(http.Controller):
     def _get_room_types(self, pms_property_id):
         Room = request.env["pms.room"]
         rooms = Room.search([("pms_property_id", "=", pms_property_id)])
-        room_types = request.env["pms.room.type"].browse(
-            rooms.mapped("room_type_id.id")
-        )
+        room_type_ids = rooms.mapped("room_type_id.id")
+        room_types = request.env["pms.room.type"].search([
+            ("id", "in", room_type_ids),
+        ], order="sequence")
+
         return room_types
 
     def _get_pricelists(self, calendar_config, post):

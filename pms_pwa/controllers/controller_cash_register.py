@@ -39,7 +39,7 @@ class CashRegister(http.Controller):
                 )
             )
             if statement.balance_end_real == amount or kw.get("force"):
-                request.env["account.bank.statement"].create({
+                request.env["account.bank.statement"].sudo().create({
                     "name": datetime.date.today().strftime(
                         get_lang(request.env).date_format
                     ) + " (" + request.env.user.login + ")",
@@ -68,15 +68,15 @@ class CashRegister(http.Controller):
                 )
             )
             if statement.balance_end == amount:
-                statement.balance_end_real = amount
-                statement.button_post()
+                statement.sudo().balance_end_real = amount
+                statement.sudo().button_post()
                 return json.dumps(
                     {"result": True, "force": False, "message": _("Caja cerrarda correctamente!")}
                 )
             elif kw.get("force"):
                 # Not call to button post to avoid create profit/loss line (_check_balance_end_real_same_as_computed)
                 if not statement.name:
-                    statement._set_next_sequence()
+                    statement.sudo()._set_next_sequence()
 
                 statement.write({'state': 'posted'})
                 lines_of_moves_to_post = statement.line_ids.filtered(lambda line: line.move_id.state != 'posted')

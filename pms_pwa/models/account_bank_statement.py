@@ -13,9 +13,10 @@ class AccountBankStatement(models.Model):
     )
 
     def create(self, vals):
-        daily_statements = self.env["account.bank.statement"].search([
-            ("date", "=", vals.get("date") or fields.Date.today()),
-        ])
+        domain = [("date", "=", vals.get("date") or fields.Date.today())]
+        if "pms_property_id" in vals:
+            domain.append(("pms_property_id", "=", vals["pms_property_id"]))
+        daily_statements = self.env["account.bank.statement"].search(domain)
         if daily_statements:
             vals["cash_turn"] = max(daily_statements.mapped("cash_turn")) + 1
         else:
