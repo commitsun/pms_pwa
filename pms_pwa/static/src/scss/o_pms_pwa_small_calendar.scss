@@ -93,12 +93,18 @@ section.o_pms_pwa_roomdoo {
                 }
             }
         }
+        .table-responsive {
+            height: calc(55vh);
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+        }
         // end header form
         table#reduced_calendar_table{
             border-collapse: separate;
             border-spacing: 8px;
-            overflow: auto;
-            position: relative;
+            // overflow: auto;
+            // position: relative;
             tr{
                 th{
                     background-color: $white;
