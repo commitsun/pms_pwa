@@ -77,7 +77,7 @@ class CashRegister(http.Controller):
                 # Not call to button post to avoid create profit/loss line (_check_balance_end_real_same_as_computed)
                 if not statement.name:
                     statement.sudo()._set_next_sequence()
-
+                statement.sudo().balance_end_real = amount
                 statement.write({'state': 'posted'})
                 lines_of_moves_to_post = statement.line_ids.filtered(lambda line: line.move_id.state != 'posted')
                 if lines_of_moves_to_post:
@@ -89,7 +89,7 @@ class CashRegister(http.Controller):
             else:
                 dif = round(amount - statement.balance_end, 2)
                 return json.dumps(
-                    {"result": False, "force": True, "message": _("Existe una diferencia de " + str(dif) + " Euros entre el importe calculado y el introducido, revisa la caja y los pagos registrados para lo localizar el error. Puedes forzar el cierre para revisarlo más adelante")}
+                    {"result": False, "force": True, "message": _("Existe una diferencia de " + str(dif) + " Euros entre el importe calculado y el introducido, revisa la caja y los pagos registrados para localizar el error. Puedes forzar el cierre para revisarlo más adelante")}
                 )
         # if kw.get("force"):
         #     return json.dumps(
@@ -113,7 +113,9 @@ class CashRegister(http.Controller):
             if "payment_method" not in post or "amount" not in post or "description" not in post:
                 return json.dumps({"result": False, "message": "Los campos método de pago, cantidad y descripción son obligatorios"})
             journal_id = int(post.get("payment_method"))
-            partner_id = int(post.get("partner_id")) if post.get("partner_id") != '' else False
+            partner_id = False
+            if post.get("partner_id") and post.get("partner_id") != "":
+                partner_id = int(post.get("partner_id"))
             journal = request.env["account.journal"].browse(journal_id)
             description = post.get("description")
             pms_property_id = request.env.user.pms_pwa_property_id.id

@@ -464,7 +464,7 @@ class DashBoard(http.Controller):
                     ], limit=1
                 )
             )
-        return statement.balance_end
+        return statement.balance_end_real if statement.state != "open" else statement.balance_end
 
     def _get_journals_cash(self, pms_property_id):
 
@@ -513,7 +513,7 @@ class DashBoard(http.Controller):
                 [
                     ("journal_id", "=", journal_id),
                     ("date", "=", datetime.datetime.today()),
-                    ("balance_end_real", "=", 0),
+                    ("state", "=", "open"),
                 ]
             )
         )
