@@ -48,7 +48,7 @@
                                         <label class="control-label col-12" for="payment_method">
                                             Diario
                                         </label>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
+                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                             <t t-foreach="cash['list']" t-as="option">
                                                 <t t-if="cash['selected'] == option">
                                                     <option  t-att-value="option" selected="selected">
@@ -104,7 +104,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
-                                    <span>Cerrar</span>
+                                    <span>Cancelar</span>
                                 </button>
                             </div>
                             <div class="col-6">
@@ -139,7 +139,7 @@
                                     <label class="control-label col-12" for="payment_method">
                                         Diario
                                     </label>
-                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="cash_selected">
+                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                         <t t-foreach="cash['list']" t-as="option">
                                             <t t-if="cash['selected'] == option">
                                                 <option  t-att-value="option" selected="selected">
@@ -179,7 +179,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
-                                        <span>Cerrar</span>
+                                        <span>Cancelar</span>
                                     </button>
                                 </div>
                                 <div class="col-6">
@@ -212,7 +212,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="control-label col-12" for="payment_method">
-                                        origin_journal_id
+                                        Desde:
                                     </label>
                                     <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
@@ -224,7 +224,7 @@
                                 </div>
                                 <div class="col-sm-12 mt-2">
                                     <label class="control-label col-12" for="payment_method">
-                                        tarjet_journal_id
+                                        hacia:
                                     </label>
                                     <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
@@ -236,11 +236,12 @@
                                 </div>
                                 <div class="col-12 mt-2">
                                     <div class="form-group">
-                                        <label for="name">Amount</label>
-                                        <input type="number" class="form-control" name="amount" placeholder="Enter name" id="amount"/>
+                                        <label class="control-label col-12" for="name">Importe</label>
+                                        <input type="text" class="form-control" name="amount" placeholder="Enter name" id="amount"/>
+
                                     </div>
                                     <div class="form-group">
-                                        <label for="price">Description:</label>
+                                        <label class="control-label col-12" for="price">Descripción:</label>
                                         <textarea class="form-control" id="description" name="description"></textarea>
                                     </div>
                                 </div>
@@ -248,7 +249,7 @@
                             <div class="row">
                                 <div class="col-6">
                                     <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
-                                        <span>Cerrar</span>
+                                        <span>Cancelar</span>
                                     </button>
                                 </div>
                                 <div class="col-6">

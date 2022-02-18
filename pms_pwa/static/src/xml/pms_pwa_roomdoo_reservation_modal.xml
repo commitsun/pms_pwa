@@ -318,6 +318,14 @@
                                     >
                                         Cancelar
                                     </button>
+                                    <button
+                                        class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_refund"
+                                        type="button"
+                                        t-attf-data-id="{{ reservation.id }}"
+                                        t-attf-url="/reservation/{{ reservation.id }}/refund"
+                                    >
+                                        Devolución
+                                    </button>
                                 </div>
                                 <!-- <div class="col-sm-4">
                                     <t t-raw="reservation.primary_button" />
@@ -1077,6 +1085,96 @@
                                 <div class="col-6">
                                     <button type="button" class="btn btn-message btn-block o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
                                         <span>Pagar</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- modal-content -->
+                </div>
+                <!-- modal-dialog -->
+            </div>
+        </t>
+    </t>
+
+    <t t-name="pms_pwa.reservation_refund_modal">
+        <t t-if="reservation">
+            <div class="modal o_pms_pwa_right fade o_pms_pwa_reservation_modal" tabindex="-1" role="dialog" aria-labelledby="o_pms_pwa_reservation_modal">
+                <div class="modal-dialog" role="document" t-att-refund-data-id="reservation.id">
+                    <div class="modal-content">
+                        <div class="modal-header o_pms_pwa_modal_header">
+                            <div class="col-12">
+                                <div class="row o_pms_pwa_modal_header_pad">
+                                    <h4 class="modal-title">
+                                        Devolución de reserva:
+                                        <span t-esc="reservation.id" />
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body o_pms_pwa_modal_body">
+                            <div class="o_pms_pwa_shadow">
+                                <div class="row">
+                                    <div class="col-3 align-self-center">
+                                        <img t-att-src="'/web/image/pms.reservation/'+reservation.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
+                                    </div>
+                                    <div class="col-9 ">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <strong>
+                                                    <span class="o_pms_pwa_reservation_name" t-esc="reservation.partner_id.name" />
+                                                </strong>
+                                            </div>
+                                            <div class="col-12" style="margin-top:-0.5rem">
+                                                <a t-att-href="'tel:' + reservation.partner_id.mobile">
+                                                    <span class="o_pms_pwa_reservation_anchor" t-esc="reservation.partner_id.mobile" />
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="progress mt-2">
+                                    <div t-if="reservation.state == 'onboard'" class="progress-bar bg-success" role="progressbar" t-att-style="'width:'+ reservation.checkins_ratio + '%'" t-att-aria-valuenow="reservation.checkins_ratio" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div t-elif="reservation.state == 'cancel' or reservation.state == 'done' or reservation.state == 'no_show' or reservation.state ==  'no_checkout'" class="progress-bar bg-light" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &gt; 75" class="progress-bar bg-success" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div t-elif="reservation.state == 'confirm' and 75 &gt; reservation.ratio_checkin_data &gt; 50" class="progress-bar bg-warning" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div t-elif="reservation.state == 'confirm' and reservation.ratio_checkin_data &lt; 50" class="progress-bar bg-danger" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div t-else="" class="progress-bar" role="progressbar" t-att-style="'width:'+ reservation.ratio_checkin_data + '%'" t-att-aria-valuenow="reservation.ratio_checkin_data" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <div class="form-group form-field mt8">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-12" for="payment_method">
+                                                Método de pago
+                                            </label>
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                                <option t-foreach="reservation.payment_methods" t-as="key" t-att-value="key.id">
+                                                    <t t-esc="key.name" />
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-sm-12 mt-2">
+                                            <label class="control-label col-12" for="amount">
+                                                Importe
+                                            </label>
+                                            <input class="form-control" type="number" min="0" step="any" name="amount" t-att-value="reservation.folio_pending_amount" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-block o_pms_pwa_btn_border" data-dismiss="modal" aria-label="Close">
+                                        <span>Cerrar</span>
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-message btn-block o_pms_pwa_button_refund_confirm" data-dismiss="modal" aria-label="Refund">
+                                        <span>Devolver</span>
                                     </button>
                                 </div>
                             </div>
