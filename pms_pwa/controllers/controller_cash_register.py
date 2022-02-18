@@ -113,7 +113,7 @@ class CashRegister(http.Controller):
             if "payment_method" not in post or "amount" not in post or "description" not in post:
                 return json.dumps({"result": False, "message": "Los campos método de pago, cantidad y descripción son obligatorios"})
             journal_id = int(post.get("payment_method"))
-            partner_id = post.get("partner_id") and int(post.get("partner_id"))
+            partner_id = int(post.get("partner_id")) if post.get("partner_id") != '' else False
             journal = request.env["account.journal"].browse(journal_id)
             description = post.get("description")
             pms_property_id = request.env.user.pms_pwa_property_id.id

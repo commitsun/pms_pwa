@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class AccountBankStatement(models.Model):
@@ -10,17 +10,29 @@ class AccountBankStatement(models.Model):
         help="Set the day turn of the cash statement",
         copy=False,
         readonly=True,
+        compute="_compute_cash_turn",
+        store=True,
     )
 
-    def create(self, vals):
-        domain = [("date", "=", vals.get("date") or fields.Date.today())]
-        if "pms_property_id" in vals:
-            domain.append(("pms_property_id", "=", vals["pms_property_id"]))
-        daily_statements = self.env["account.bank.statement"].search(domain)
-        if daily_statements:
-            vals["cash_turn"] = max(daily_statements.mapped("cash_turn")) + 1
-        else:
-            vals["cash_turn"] = 1
-        if "name" in vals:
-            vals["name"] = "{} - {}".format(vals["name"], vals["cash_turn"])
-        return super(AccountBankStatement, self).create(vals)
+    @api.depends("journal_id", "pms_property_id", "date")
+    def _compute_cash_turn(self):
+        for record in self:
+            if (
+                record.journal_id.type == "cash"
+                and record.pms_property_id
+            ):
+                day_statements = self.search([
+                    ("journal_id.type", "=", "cash"),
+                    ("pms_property_id", "=", record.pms_property_id.id),
+                    ("date", "=", record.date),
+                ], order="create_date asc")
+                record.cash_turn = list(day_statements).index(record) + 1
+
+    def name_get(self):
+        result = []
+        for record in self:
+            name = record.name
+            if record.cash_turn:
+                name += " [%s]" % str(record.cash_turn) + " (" + record.create_uid.name + ")"
+            result.append((record.id, name))
+        return result
