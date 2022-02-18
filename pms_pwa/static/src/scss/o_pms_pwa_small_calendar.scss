@@ -99,6 +99,18 @@ section.o_pms_pwa_roomdoo {
             border-spacing: 8px;
             overflow: auto;
             position: relative;
+            tr{
+                th{
+                    background-color: $white;
+                    position: -webkit-sticky;
+                    position: -moz-sticky;
+                    position: -ms-sticky;
+                    position: -o-sticky;
+                    position: sticky;
+                    top: 0;
+                    z-index: 99 !important;
+                }
+            }
             td.o_pms_pwa_line_cell_content, td.o_pms_pwa_line_cell_header {
                 padding: 0 0.25rem !important;
                 //border-top: none !important;
@@ -191,8 +203,9 @@ section.o_pms_pwa_roomdoo {
                 border-bottom: 1px solid $theme-color;
                 border-collapse: collapse;
                 border-spacing: 0;
-                // width: 130px;
+                width: 130px;
                 min-width: 130px !important;
+
                 &:after {
                     border-bottom: 1px solid $theme-color !important;
                 }
@@ -258,6 +271,7 @@ section.o_pms_pwa_roomdoo {
                         position: sticky;
                         left: 0px;
                         z-index: 2;
+
                     }
                     &_title {
                         color: $theme-color;
@@ -441,6 +455,14 @@ section.o_pms_pwa_roomdoo {
                 width: 170px !important;
                 min-width: 170px !important;
                 border-left: 3px solid $grey-900 !important;
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
+                position: sticky;
+                left: 0px;
+                z-index: 2;
+                background-color: $bg-theme-color;
             }
             td.o_calendar_header_property {
                 min-height: 1rem;
