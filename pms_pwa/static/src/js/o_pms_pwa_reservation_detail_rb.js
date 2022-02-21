@@ -7,9 +7,11 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     var core = require("web.core");
     var _t = core._t;
     var folio_id = $(
-        "form[name='reservation_detail_form'] input[name='folio_id']"
+        "form#reservation_detail input[name='reservation_folio_id']"
     ).val();
-    var reservation_id = $("input[name='reservation_id']").val();
+    var reservation_id = $(
+        "form#reservation_detail input[name='reservation_reservation_id']"
+    ).val();
 
     // Calendario
     function new_displayDataAlert(result, data_id = false) {
@@ -310,6 +312,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             invoice_lines: false,
             folio_id: folio_id,
         }).then(function (data) {
+            console.log("data ->", data);
             if (data.reservation_lines) {
                 var lines = data.reservation_lines;
                 $("#total_amount").html(parseFloat(data.total_amount).toFixed(2));
@@ -492,9 +495,9 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             $("#collapseDatos form div.o_pms_pwa_partner_modal_show")[0].dataset.partnerId = ev.currentTarget.value;
         } else {
             $("#collapseDatos form input[type!='hidden']").parent().removeClass("d-none");
-            $("#collapseDatos form div.o_pms_pwa_partner_modal_show").addClass("d-none");            
+            $("#collapseDatos form div.o_pms_pwa_partner_modal_show").addClass("d-none");
         }
-    });        
+    });
 
     // Método de pago
     $(document).on("click", "#invoice_button", function () {
