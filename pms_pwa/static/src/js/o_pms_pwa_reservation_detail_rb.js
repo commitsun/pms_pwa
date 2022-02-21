@@ -312,7 +312,6 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             invoice_lines: false,
             folio_id: folio_id,
         }).then(function (data) {
-            console.log("data ->", data);
             if (data.reservation_lines) {
                 var lines = data.reservation_lines;
                 $("#total_amount").html(parseFloat(data.total_amount).toFixed(2));

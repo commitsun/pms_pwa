@@ -385,8 +385,6 @@ class PmsReservation(http.Controller):
     def reservation_lines_json(
         self, reservation_ids=False, invoice_lines=False, folio_id=False, **kw
     ):
-        print(reservation_ids)
-        print(folio_id)
         if folio_id and reservation_ids:
             folio = request.env["pms.folio"].sudo().search([("id", "=", int(folio_id))])
             if not folio:
