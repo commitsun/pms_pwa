@@ -109,7 +109,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     }
                 }
             });
-
+            console.log("send --> ", send);
             ajax.jsonRpc("/calendar/config/save", "call", {
                 send
             }).then(function (new_data) {

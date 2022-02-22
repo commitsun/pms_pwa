@@ -143,7 +143,7 @@ class PmsCalendarConfig(http.Controller):
     def calendar_config_list(self, search="", **post):
         params = http.request.jsonrequest.get("params")
         try:
-            pms_property_id = request.env.user.pms_pwa_property_id.id
+            pms_property_id = int(params["send"]['pms_property_id'])
             _logger.info(params)
             for room_type_id, pricelists in params["send"]["room_type"].items():
                 room_type = request.env["pms.room.type"].browse(int(room_type_id))

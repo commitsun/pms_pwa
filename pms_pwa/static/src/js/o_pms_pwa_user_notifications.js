@@ -30,14 +30,14 @@ odoo.define("pms_pwa.UserNotifications", function (require) {
             var self = this;
 
             try {
-                var reservation_id = ev.currentTarget.getAttribute("data-id");
+                var notification_id = ev.currentTarget.getAttribute("data-id");
                 var pms_property_id = ev.currentTarget.getAttribute(
                     "data-pms_property_id"
                 );
                 this._rpc({
                     model: "res.users.notifications",
                     method: "mark_as_read",
-                    args: [[parseInt(reservation_id)]],
+                    args: [[parseInt(notification_id)]],
                 });
                 // Metiéndolo en el then hace todo menos el reloadUserPropertyNotifications. REVISAR
                 setTimeout(function () {

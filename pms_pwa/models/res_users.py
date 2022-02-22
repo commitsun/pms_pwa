@@ -89,3 +89,14 @@ class ResUsersNotifications(models.Model):
     def mark_as_read(self):
         for notification in self:
             notification.is_read = True
+
+    @api.model
+    def mark_as_read_by_user(self, user_id):
+        notifications = self.env["res.users.notifications"].search(
+            [
+                ("user_id", "=", user_id),
+                ("is_read", "=", False),
+            ]
+        )
+        for notification in notifications:
+            notification.is_read = True

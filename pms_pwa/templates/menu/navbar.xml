@@ -27,9 +27,8 @@
                                     Portal
                                 </div>
                         </div>
-
                         <div class="col-lg-2 col-md-12 col-sm-12">
-                            <div class="o_pms_pwa_dropdown-check-list float-right" tabindex="100">
+                            <div t-if="'/calendar/reduced' not in request.httprequest.url" class="o_pms_pwa_dropdown-check-list float-right" tabindex="100">
                                 <span class="anchor" t-esc="user_id.pms_pwa_property_id.name" />
                                 <ul class="items">
                                     <t t-foreach="user_id.pms_property_ids" t-as="i">
@@ -59,16 +58,16 @@
                             <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="ayuda" class="img-responsive" style="width:30px;" />
                             <div class="o_pms_pwa_cloud_dropdown dropdown">
                                 <a type="button" id="dropdownCloudButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="/pms_pwa/static/img/svg/cloud.svg" alt="notificaciones" class="img-responsive o_pms_pwa_cloud_off" style="width:40px;" />
+                                    <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive o_pms_pwa_cloud_off" style="width:30px;" />
                                 </a>
                                 <div class="dropdown-menu o_pms_pwa_cloud_dropdown_menu" aria-labelledby="dropdownCloudButton"/>
                             </div>
-                            <div class="o_pms_pwa_bell_dropdown dropdown">
+                            <!-- <div class="o_pms_pwa_bell_dropdown dropdown">
                                 <a type="button" id="dropdownBellButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src="/pms_pwa/static/img/svg/campana-azul.svg" alt="notificaciones" class="img-responsive o_pms_pwa_bell_off" style="width:30px;" />
                                 </a>
                                 <div class="dropdown-menu o_pms_pwa_bell_dropdown_menu" aria-labelledby="dropdownBellButton"/>
-                            </div>
+                            </div> -->
                         </div>
 
                         <div class="col-lg-2 d-none d-lg-block o_pms_user_img">
