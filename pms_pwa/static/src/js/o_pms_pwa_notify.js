@@ -37,8 +37,6 @@ odoo.define("pms_pwa.LongpollingFront", function (require) {
                     self._callLocalStorage("setItem", "last", notification.id);
                     self._callLocalStorage("setItem", "last_ts", new Date().getTime());
                 } else if (notification.channel.startsWith("notify_header_pms_")) {
-                    console.log("id ->", notification.id);
-                    console.log("id ->", notification.controller_type);
                     if(notification.controller_type == "general_header"){
                         $("#o_pms_pwa_update_calendar").find("#update_calendar").css("display","block");
                     }else {

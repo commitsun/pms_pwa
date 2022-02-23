@@ -18,10 +18,12 @@
                     <t t-foreach="user_notification_ids" t-as="notification">
                         <span>
                             <t t-esc="notification.message"/>
-                            <a t-if="notification and notification.model_id and notification.model_id.model == 'pms.reservation'" href="#" class="o_pms_pwa_open_reservation_modal" t-att-data-id="notification.id"> Ver </a>
-                            <i href="#" class="fa fa-trash o_pms_pwa_remove_alert ml-2" t-att-data-pms_property_id="notification.pms_pwa_property_id.id" t-att-data-id="notification.id"/>
+                            <a t-if="notification and notification.model_id and notification.model_id.model == 'pms.reservation'" href="#" class="o_pms_pwa_open_reservation_modal" t-att-data-id="notification.record_id"> Ver </a>
+                            <i href="#" class="fa fa-trash o_pms_pwa_remove_alert ml-2" t-att-data-pms_property_id="notification.pms_pwa_property_id.id" t-att-data-id="notification.record_id"/>
                         </span>
+                        <hr />
                     </t>
+                    <span class="o_pms_pwa_remove_all_notifications"><a href="#" class="o_pms_pwa_remove_all_alert ml-2" t-att-data-user_id="user_id.id" ><i class="fa fa-trash "/> Eliminar todas</a></span>
                 </t>
             </div>
         </div>
@@ -649,13 +651,13 @@
                                                         </div>
                                                     </div>
                                                     <p class="calendar_config_input" style="text-align:center; padding-top:0 !important; margin-bottom:0 !important;">
-                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="text-align:center; width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />€
+                                                        <input t-attf-data-room="{{ room['id'] }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-pms_property_id="{{ pms_property_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" data-edit="false" t-attf-tabindex="{{ select_pricelist_id }}1" style="text-align:center; width:35%; border:0; margin-top:2px; color: $black !important; font-weight: bold !important;" type="text" t-att-value="price_headers[day.strftime('%Y-%m-%d')][room['id']]" name="price" />€
                                                     </p>
 
                                                     <div class="circles-container text-center row m-0 mt-2 p-0 " style="padding-top:0px !important; margin-top:0px !important">
                                                         <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center o_pms_pwa_edit_circle" title="editar">
                                                             <div class="circle edit_hide">
-                                                                <span class="open_changeValues" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" t-attf-data-room_type="{{ room['id'] }}">
+                                                                <span class="open_changeValues" t-attf-data-pms_property_id="{{ pms_property_id }}" t-attf-data-pricelist="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-date="{{ day }}" t-attf-data-room_type="{{ room['id'] }}">
                                                                     <i class="fa fa-edit"></i>
                                                                 </span>
                                                             </div>

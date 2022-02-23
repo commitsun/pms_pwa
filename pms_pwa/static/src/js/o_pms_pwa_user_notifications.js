@@ -15,6 +15,7 @@ odoo.define("pms_pwa.UserNotifications", function (require) {
             "click a.o_pms_pwa_open_reservation_modal":
                 "_onClickPMSPWAOpenReservationModal",
             "click i.o_pms_pwa_remove_alert": "_onClickPMSPWARemoveAlert",
+            "click a.o_pms_pwa_remove_all_alert": "_onClickPMSPWARemoveAllAlerts",
         },
 
         init: function () {
@@ -30,14 +31,14 @@ odoo.define("pms_pwa.UserNotifications", function (require) {
             var self = this;
 
             try {
-                var reservation_id = ev.currentTarget.getAttribute("data-id");
+                var notification_id = ev.currentTarget.getAttribute("data-id");
                 var pms_property_id = ev.currentTarget.getAttribute(
                     "data-pms_property_id"
                 );
                 this._rpc({
                     model: "res.users.notifications",
                     method: "mark_as_read",
-                    args: [[parseInt(reservation_id)]],
+                    args: [[parseInt(notification_id)]],
                 });
                 // Metiéndolo en el then hace todo menos el reloadUserPropertyNotifications. REVISAR
                 setTimeout(function () {
@@ -58,7 +59,22 @@ odoo.define("pms_pwa.UserNotifications", function (require) {
                 console.log(error);
             }
         },
-
+        _onClickPMSPWARemoveAllAlerts: function (ev) {
+            var self = this;
+            let pms_property_id = $("input[name='selected_property']").val();
+            try {
+                var user_id = ev.currentTarget.getAttribute("data-user_id");
+                this._rpc({
+                    model: "res.users.notifications",
+                    method: "mark_as_read_by_user",
+                    args: [[parseInt(user_id)]],
+                });
+                let parameters = "?selected_property="+pms_property_id;
+                window.location = "/calendar/reduced" + parameters;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         _onClickPMSPWAOpenReservationModal: function (ev) {
             var self = this;
             new ReservationTableWidget(this)._openModalFromExternal(ev);

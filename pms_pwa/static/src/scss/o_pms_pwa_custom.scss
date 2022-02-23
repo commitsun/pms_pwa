@@ -966,6 +966,7 @@ table#bookengine_table {
 
 i.o_pms_pwa_remove_alert {
     color: $badge-color;
+    cursor: pointer;
 }
 
 @keyframes blinker {
