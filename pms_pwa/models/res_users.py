@@ -48,7 +48,7 @@ class ResPartner(models.Model):
     def get_user_notification_list(self):
         notifications = []
         for notification in self.user_notification_ids.filtered(
-            lambda x: x.is_read == False
+            lambda x: not x.is_read
         ):
             data = {
                 "id": notification.id,
@@ -100,3 +100,8 @@ class ResUsersNotifications(models.Model):
         )
         for notification in notifications:
             notification.is_read = True
+
+    @api.model
+    def clean_pwa_notifications(self):
+        notifications = self.env["res.users.notifications"].search([])
+        notifications.unlink()

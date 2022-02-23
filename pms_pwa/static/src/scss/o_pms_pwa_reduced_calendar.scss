@@ -849,16 +849,13 @@ section.o_pms_pwa_roomdoo {
             }
             &_hr {
                 &_prereservation {
-                    border-bottom: 4px solid #584d76;
+                    height: 100%;
+                    border-radius: 6px;
+                    padding: 1px 1px 0px 2px;
+                    background-color: #584d76;
                     position: relative;
                     width: 100%;
-                    margin-left: 2rem;
-                    margin-bottom: 0.25rem;
                     z-index: 99;
-                    .o_pms_pwa_reduced_calendar_line_icon {
-                        width: 8px;
-                        margin-left: 0.1rem;
-                    }
                     // &::before {
                     //     content: "|";
                     //     position: relative;

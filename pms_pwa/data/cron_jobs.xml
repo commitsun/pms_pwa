@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- Set reservation like No Show if the client does not show up  -->
+        <record model="ir.cron" id="pwa_notifications_clean">
+            <field name="name">Clean notifications calendar pwa</field>
+            <field name="interval_number">1</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False" />
+            <field name="state">code</field>
+            <field name="model_id" ref="model_res_users_notifications" />
+            <field
+                name="nextcall"
+                eval="(DateTime.now()).strftime('%Y-%m-%d 06:00:00')"
+            />
+            <field name="code">model.clean_pwa_notifications()</field>
+        </record>
+    </data>
+</odoo>

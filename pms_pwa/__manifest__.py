@@ -41,6 +41,7 @@
         "data/pms_pwa_data.xml",
         "data/page_data.xml",
         "data/menu_data.xml",
+        "data/cron_jobs.xml",
     ],
     "images": [
         "/static/description/icon.png",
