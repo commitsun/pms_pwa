@@ -21,7 +21,9 @@
                             <a t-if="notification and notification.model_id and notification.model_id.model == 'pms.reservation'" href="#" class="o_pms_pwa_open_reservation_modal" t-att-data-id="notification.record_id"> Ver </a>
                             <i href="#" class="fa fa-trash o_pms_pwa_remove_alert ml-2" t-att-data-pms_property_id="notification.pms_pwa_property_id.id" t-att-data-id="notification.record_id"/>
                         </span>
+                        <hr />
                     </t>
+                    <span class="o_pms_pwa_remove_all_notifications"><a href="#" class="o_pms_pwa_remove_all_alert ml-2" t-att-data-user_id="user_id.id" ><i class="fa fa-trash "/> Eliminar todas</a></span>
                 </t>
             </div>
         </div>
