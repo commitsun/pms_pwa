@@ -17,6 +17,7 @@
                 />
                 <field
                     name="user_notification_ids"
+                    invisible="1"
                 >
                 </field>
             </xpath>
