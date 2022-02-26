@@ -8,7 +8,7 @@ import logging
 import pprint
 
 from odoo import SUPERUSER_ID, _, fields, http
-from odoo.exceptions import MissingError
+from odoo.exceptions import MissingError, UserError
 from odoo.http import Response, content_disposition, request
 from odoo.tools.misc import get_lang
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
@@ -319,16 +319,34 @@ class PmsReservation(http.Controller):
                         partner_invoice_values["city"] = payload[0]["partner_values"][
                             0
                         ]["city"]
-                        # partner_invoice_values["country_id"] = payload[0]["partner_values"][0]["country"]
-                        partner_invoice_id = request.env["res.partner"].create(
+                        partner_invoice_values["street"] = payload[0]["partner_values"][
+                            0
+                        ]["address"]
+                        country = request.env["res.country"].search([
+                            ("name","=",payload[0]["partner_values"][0]["country"])
+                        ])
+                        if not country:
+                            raise UserError(
+                                _("País no encontrado: {}".format(
+                                    payload[0]["partner_values"][0]["country"]
+                                ))
+                            )
+                        partner_invoice_values["country_id"] = country.id
+                        partner_invoice = request.env["res.partner"].create(
                             partner_invoice_values
-                        ).id
+                        )
+                    if not partner_invoice._check_enought_invoice_data():
+                        raise UserError(
+                            _(
+                                "No se pudo crear la factura. Por favor, complete los datos del cliente."
+                            )
+                        )
                     lines_to_invoice = dict()
                     for value in invoice_lines[0]:
                         lines_to_invoice[value["id"]] = value["qty"]
                     invoices = reservation.folio_id._create_invoices(
                         lines_to_invoice=lines_to_invoice,
-                        partner_invoice_id=partner_invoice_id,
+                        partner_invoice_id=partner_invoice.id,
                         grouped=True,
                     )
                     invoices.action_post()
