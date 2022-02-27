@@ -1,6 +1,7 @@
 import json
 import logging
 from odoo.tools.misc import get_lang
+from odoo.exceptions import UserError
 
 from odoo import http, _
 import datetime
@@ -258,7 +259,10 @@ class CashRegister(http.Controller):
             old_amount = old_payment.amount
 
             is_internal_transfer = old_payment.is_internal_transfer
-
+            if is_internal_transfer:
+                return json.dumps(
+                    {"result": False, "message": _("No se puede editar una transferencia interna. Ponte en contacto con un responsable de administración.")}
+                )
             if (
                 new_journal != old_journal
                 or new_pay_type != old_pay_type
@@ -269,10 +273,16 @@ class CashRegister(http.Controller):
                     return json.dumps(
                         {"result": False, "message": _("El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración.")}
                     )
-                if old_journal.type == "cash" and new_journal != old_journal:
+                if old_journal.type == "cash":
                     statement_line = old_payment.reconciled_statement_ids.filter(lambda x: x.date == old_date and x.amount == old_amount)
-                    if statement_line:
+                    if not statement_line:
+                        raise UserError(_("No se ha encontrado la línea de extracto para el pago. Ponte en contacto con el responsable de administración."))
+                    if new_journal != old_journal:
                         statement_line.unlink()
+                    else:
+                        statement_line.write({
+                            "amount": new_amount,
+                        })
                 if new_journal.type == "cash" and new_journal != old_journal:
                     if old_date != datetime.date.today():
                         return json.dumps(
