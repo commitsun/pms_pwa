@@ -471,21 +471,24 @@ class PmsCalendar(http.Controller):
         from_date = min(dates)
         to_date = max(dates)
         pms_property_id = int(post.get("pms_property_id"))
+        pms_property = request.env["pms.property"].browse(pms_property_id)
+        company = pms_property.company_id
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]
         domain = [
             ("date", ">=", from_date),
             ("date", "<=", to_date),
             ("state", "!=", "cancel"),
+            ("pms_property_id", "=", pms_property_id),
         ]
-        reservation_lines = ReservationLine.search(domain)
+        reservation_lines = ReservationLine.with_company(company).search(domain)
         reservations = Reservation.browse(reservation_lines.mapped("reservation_id.id"))
         values = {}
         # REVIEW: revisar estructura
         values["reservations"] = []
         room_ids = (
             request.env["pms.room"]
-            .search(
+            .with_company(company).search(
                 [
                     ("pms_property_id", "=", pms_property_id),
                 ], order="sequence"
@@ -498,7 +501,6 @@ class PmsCalendar(http.Controller):
             rooms_reservation_values = []
             for reservation in reservations.filtered(
                 lambda r: r.preferred_room_id.id == room_id
-                and r.pms_property_id.id == pms_property_id
             ):
                 min_reservation_date = min(
                     reservation.reservation_line_ids.filtered(

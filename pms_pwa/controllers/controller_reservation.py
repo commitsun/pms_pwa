@@ -721,13 +721,17 @@ class PmsReservation(http.Controller):
                     elif (
                         param == "board_service_room_id"
                         and int(params["board_service_room_id"])
-                        != reservation.board_service_room_id.id
+                        != reservation.board_service_room_id.pms_board_service_id.id
                     ):
-                        reservation_values["board_service_room_id"] = (
+                        board_service_room_id = (
                             request.env["pms.board.service.room.type"]
-                            .browse(int(params["board_service_room_id"]))
-                            .id
-                        )
+                            .search([
+                                ("pms_board_service_id", "=", int(params["board_service_room_id"])),
+                                ("pms_room_type_id", "=", reservation.room_type_id.id),
+                                ("pms_property_ids", "in", reservation.pms_property_id.id),
+                            ])
+                        ).id
+                        reservation_values["board_service_room_id"] = board_service_room_id
 
                     # PRICELIST
                     elif (
