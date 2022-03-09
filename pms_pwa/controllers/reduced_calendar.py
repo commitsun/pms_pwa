@@ -168,6 +168,20 @@ class PmsCalendar(http.Controller):
         avail_result = request.env.cr.fetchall()
         avail_result = sorted(avail_result, key=date_func)
         dict_result = {}
+        overbooking_lines = request.env["pms.reservation"].search([
+            ("pms_property_id", "=", pms_property_id),
+            ("overbooking", "=", True),
+            ("state", "!=", "cancel"),
+            ("checkin", "<=", dates[-1]),
+            ("checkout", ">", dates[0]),
+        ]).mapped("reservation_line_ids")
+        pwa_events = request.env["pms.pwa.event"].search([
+            ("date", ">=", dates[0]),
+            ("date", "<=", dates[-1]),
+            '|',
+            ("pms_property_ids", "in", pms_property_id),
+            ("pms_property_ids", "=", False),
+        ])
         for avail_date, data in groupby(avail_result, date_func):
             total_res_count = 0
             total_out_count = 0
@@ -182,6 +196,8 @@ class PmsCalendar(http.Controller):
                 out_count = sum([x[3] for x in vals if x[2] == 'out'])
                 total_rooms = room_type._get_total_rooms(pms_property.id)
                 num_avail = room_type._get_total_rooms(pms_property.id) - (res_count + out_count)
+                notifications_warning = self._get_notifications_warning(pms_property_id, date, overbooking_lines)
+                notifications_info = self._get_notifications_info(pms_property_id, date, pwa_events)
                 dict_result[s_avail_date][room_type_id] = {
                     'reservations_count': res_count,
                     'outs_count': out_count,
@@ -189,6 +205,8 @@ class PmsCalendar(http.Controller):
                     'reservations_percent': int((res_count * 100) / total_rooms),
                     'outs_percent': int((out_count * 100) / total_rooms),
                     'avail_percent': int((num_avail * 100) / total_rooms),
+                    'notifications_warning': notifications_warning,
+                    'notifications_info': notifications_info,
                 }
                 if room_type.overnight_room:
                     total_res_count += res_count
@@ -809,3 +827,76 @@ class PmsCalendar(http.Controller):
             wizard.apply_massive_changes()
 
         return True
+
+    def _get_notifications_warning(self, pms_property_id, date, overbooking_lines=False):
+        """
+        Get the notifications warning for the date
+        :param
+            pms_property_id: pms_property_id
+            date: date
+            overbooking_lines: overbooking_lines
+        :return:
+            dicts array with the notifications warning and
+            optional id reservation
+        """
+        property_id = request.env["pms.property"].browse(pms_property_id)
+        wargings = []
+        if date in overbooking_lines.mapped("date"):
+            date_lines = overbooking_lines.filtered(lambda l: l.date == date)
+            for line in date_lines:
+                wargings.append({
+                    "message": "Reserva en OverBooking: {}".format(
+                        line.reservation_id.name,
+                    ),
+                    "reservation_id": line.reservation_id.id
+                })
+        return wargings
+
+    def _get_notifications_info(self, pms_property_id, date, pwa_events=False):
+        """
+        Get the notifications info for the date
+        :param
+            pms_property_id: pms_property_id
+            date: date
+        :return:
+            dicts array with the notifications info and
+            optional id reservation
+        """
+        property_id = request.env["pms.property"].browse(pms_property_id)
+        info = []
+        if date in pwa_events.mapped("date"):
+            events = pwa_events.filtered(lambda l: l.date == date)
+            for event in events:
+                info.append({
+                    "message": event.description,
+                    "reservation_id": False,
+                })
+        return info
+
+    @http.route(
+        "/pms_pwa_event/new",
+        csrf=False,
+        auth="user",
+        website=True,
+        type="json",
+        methods=["POST"],
+    )
+    def _pms_pwa_event_new(self, **post):
+        """
+        Create a new event
+        :param
+            post: date, description, pms_property_id
+        :return:
+            True if the event was created
+        """
+        pms_property_id = post.get("pms_property_id")
+        date = datetime.datetime.strptime(
+            post.get("date"), "%d/%m/%Y"
+        ).date()
+        pwa_event = request.env["pms.pwa.event"].create({
+            "name": post.get("name"),
+            "date": date,
+            "description": post.get("description"),
+            "pms_property_ids": [(6, 0, [int(pms_property_id)])],
+        })
+        return json.dumps({"result": True, "message": _("Evento creado")})
