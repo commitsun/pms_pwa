@@ -454,7 +454,7 @@ class PmsReservation(http.Controller):
                 raise MissingError(_("This document does not exist."))
 
             payment_methods = (
-                request.env.user.pms_pwa_property_id._get_allowed_payments_journals()
+                folio.pms_property_id._get_allowed_payments_journals()
             )
             payment_lines_batch = folio.payment_ids
             payment_lines = [
