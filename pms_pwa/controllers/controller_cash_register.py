@@ -120,7 +120,10 @@ class CashRegister(http.Controller):
             journal = request.env["account.journal"].browse(journal_id)
             description = post.get("description")
             pms_property_id = request.env.user.pms_pwa_property_id.id
-            date = datetime.date.today()
+            date = datetime.datetime.strptime(
+                post.get("date", datetime.date.today()),
+                DEFAULT_SERVER_DATE_FORMAT,
+            )
             amount = float(post.get("amount"))
             amount = amount if amount >= 0 else -amount
             # Supplier Payment
@@ -235,10 +238,10 @@ class CashRegister(http.Controller):
         try:
             new_journal_id = int(kw.get("journal_id", False))
             new_journal = request.env["account.journal"].browse(new_journal_id)
-            # new_date = datetime.datetime.strptime(
-            #     kw.get("date", False),
-            #     DEFAULT_SERVER_DATE_FORMAT,
-            # )
+            new_date = datetime.datetime.strptime(
+                kw.get("date", datetime.date.today()),
+                DEFAULT_SERVER_DATE_FORMAT,
+            )
             new_amount = round(float(kw.get("amount", False)), 2)
             payment_ref = kw.get("name", False)
             new_pay_type = "inbound" if new_amount > 0 else "outbound"

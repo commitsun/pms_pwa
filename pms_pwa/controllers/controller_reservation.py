@@ -200,6 +200,10 @@ class PmsReservation(http.Controller):
                 payload = http.request.jsonrequest.get("params")
                 payment_method = int(payload["payment_method"])
                 payment_amount = float(payload["amount"])
+                payment_date = datetime.datetime.strptime(
+                    kw.get("date", False),
+                    DEFAULT_SERVER_DATE_FORMAT,
+                )
                 if "partner_id" in payload:
                     payment_partner_id = int(payload["partner_id"])
                 else:
@@ -218,7 +222,7 @@ class PmsReservation(http.Controller):
                             payment_amount,
                             reservation.folio_id,
                             partner=partner if partner else reservation.partner_id,
-                            date=fields.date.today(),
+                            date=payment_date if payment_date else fields.date.today(),
                         )
                     else:
                         return json.dumps(
@@ -252,6 +256,10 @@ class PmsReservation(http.Controller):
                 payload = http.request.jsonrequest.get("params")
                 payment_method = int(payload["payment_method"])
                 payment_amount = float(payload["amount"])
+                payment_date = datetime.datetime.strptime(
+                    kw.get("date", False),
+                    DEFAULT_SERVER_DATE_FORMAT,
+                )
                 if "partner_id" in payload:
                     refund_partner_id = int(payload["partner_id"])
                 else:
@@ -269,7 +277,7 @@ class PmsReservation(http.Controller):
                         payment_amount,
                         reservation.folio_id,
                         partner=partner if partner else reservation.partner_id,
-                        date=fields.date.today(),
+                        date=payment_date if payment_date else fields.date.today(),
                     )
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
