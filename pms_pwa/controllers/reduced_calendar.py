@@ -490,6 +490,7 @@ class PmsCalendar(http.Controller):
         to_date = max(dates)
         pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
+        pricelist_id = int(post.get("pricelist_id"))
         company = pms_property.company_id
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]
@@ -536,6 +537,7 @@ class PmsCalendar(http.Controller):
                 rooms_reservation_values.append(
                     {
                         "date": min_reservation_date,
+                        "restrictions_info": False,
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": reservation.partner_name,
@@ -598,6 +600,7 @@ class PmsCalendar(http.Controller):
                         "splitted": True,
                         "main_split": main_split,
                         "date": split.date,
+                        "restrictions_info": False,
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": "Partida! " + reservation.partner_name
@@ -619,10 +622,41 @@ class PmsCalendar(http.Controller):
                     }
                 )
             for day in free_dates:
+                pricelist = request.env["product.pricelist"].browse(pricelist_id)
+                plan = pricelist.availability_plan_id
+                restriction_message = False
+                if plan:
+                    rule = request.env["pms.availability.plan.rule"].search([
+                        "room_type_id", "=", room.pms_room_type_id.id,
+                        "date", "=", day,
+                        "pms_property_id", "=", pms_property_id,
+                        "availability_plan_id", "=", plan.id,
+                    ])
+                    if rule:
+                        restriction_message = ""
+                        if rule.min_stay:
+                            restriction_message += "Minimo de " + str(rule.min_stay) + " noches" + "<br/>"
+                        if rule.max_stay:
+                            restriction_message += "Máximo de " + str(rule.max_stay) + " noches" + "<br/>"
+                        if rule.closed_arrival:
+                            restriction_message += "No se admite llegadas" + "<br/>"
+                        if rule.closed_departure:
+                            restriction_message += "No se admite salidas" + "<br/>"
+                        if rule.min_stay_arrival:
+                            restriction_message += "No se admite llegadas con menos de " + str(
+                                rule.min_stay_arrival
+                            ) + " noches" + "<br/>"
+                        if rule.max_stay_arrival:
+                            restriction_message += "No se admite llegadas con más de " + str(
+                                rule.max_stay_arrival
+                            ) + " noches" + "<br/>"
+                        if rule.closed:
+                            restriction_message += "No disponible" + "<br/>"
                 rooms_reservation_values.append(
                     {
                         "date": day,
                         "reservation_info": False,
+                        "restrictions_info": restriction_message,
                     }
                 )
             rooms_reservation_values = sorted(
