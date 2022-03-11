@@ -7,7 +7,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     // var PortalSidebar = require('portal.PortalSidebar');
     var _t = core._t;
     var publicWidget = require("web.public.widget");
-    var reduced_calendar = require("pms_pwa.reducedCalendarRoomdoo");
+    //var reduced_calendar = require("pms_pwa.reducedCalendarRoomdoo");
 
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
@@ -298,9 +298,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 console.log("No se puede hacer reload en dashboard");
                 // Mirar si hay que borrar de la campanita el aviso.
             } else {
-                let modal_property_id = $("input[name='modal_property_id']").val();
-                new reduced_calendar(this)._launchLines(false, modal_property_id);
-
+                //let modal_property_id = $("input[name='modal_property_id']").val();
+                //new reduced_calendar(this)._launchLines(false, modal_property_id);
+                $("span#o_pms_pwa_close_modal_otf button.close_confirmChange").click();
             }
         },
         displayDataAlert: function (result, data_id = false) {

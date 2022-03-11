@@ -15,7 +15,9 @@
     ],
     "website": "https://github.com/OCA/pms",
     "depends": ["base", "website", "pms", "bus"],
-    "extra_dependencies": ["avinit"],
+    "external_dependencies": {
+        "python": ["avinit"],
+    },
     "data": [
         "templates/_includes/head.xml",
         "templates/modal.xml",
