@@ -506,6 +506,9 @@
                         <hr />
                         <div class="table-responsive" id="o_pms_pwa_table_reduced">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
+                            <span class="d-none" id="o_pms_pwa_close_modal_otf">
+                                <button class="close_confirmChange"/>
+                            </span>
                             <table id="reduced_calendar_table" class="table o_pms_pwa_reduced_reservation_list_table" data-show-columns="true">
                                 <thead>
                                     <tr>

@@ -184,7 +184,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
         },
     });
     publicWidget.registry.ReducedCalendarCollapseWidget = publicWidget.Widget.extend({
-        selector: "#reduced_calendar_table, #confirmChange, #o_pms_pwa_calendar_filters",
+        selector: "#reduced_calendar_table, #confirmChange, #o_pms_pwa_calendar_filters, #o_pms_pwa_close_modal_otf",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reduced_calendar_line.xml",
         ],
