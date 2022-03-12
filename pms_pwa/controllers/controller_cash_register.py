@@ -119,6 +119,8 @@ class CashRegister(http.Controller):
                 partner_id = int(post.get("partner_id"))
             journal = request.env["account.journal"].browse(journal_id)
             description = post.get("description")
+            if not description:
+                return json.dumps({"result": False, "message": "La descripción es obligatoria"})
             pms_property_id = request.env.user.pms_pwa_property_id.id
             date = datetime.datetime.strptime(
                 post.get("date", datetime.date.today()),
