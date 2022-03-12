@@ -174,6 +174,6 @@ class PmsFolio(models.Model):
     def get_reservation_json(self):
         self.ensure_one()
         res_json = []
-        for res in self.reservation_ids:
+        for res in self.reservation_ids.sorted("id"):
             res_json.append(res.get_json())
         return res_json
