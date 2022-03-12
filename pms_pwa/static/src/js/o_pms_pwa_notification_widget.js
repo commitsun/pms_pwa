@@ -47,7 +47,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         cloudColorToDefault: function () {
             $(".o_pms_pwa_cloud_dropdown")
                 .find("img")
-                .attr("src", "/pms_pwa/static/img/svg/cloud.svg")
+                .attr("src", "/pms_pwa/static/img/svg/campana-naranja.svg")
                 .removeClass("o_pms_pwa_cloud_on")
                 .addClass("o_pms_pwa_cloud_off");
         },

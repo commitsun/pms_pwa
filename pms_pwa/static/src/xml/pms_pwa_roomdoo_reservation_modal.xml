@@ -1102,7 +1102,15 @@
                                                 </option>
                                             </select>
                                         </div>
-
+                                        <div class="col-sm-12 mt-2">
+                                            <label class="control-label col-12" for="date">
+                                                Fecha
+                                            </label>
+                                            <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="date" />
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                            </span>
+                                        </div>
                                         <div class="col-sm-12 mt-2">
                                             <label class="control-label col-12" for="amount">
                                                 Importe
@@ -1204,7 +1212,15 @@
                                                 </option>
                                             </select>
                                         </div>
-
+                                        <div class="col-sm-12 mt-2">
+                                            <label class="control-label col-12" for="date">
+                                                Fecha
+                                            </label>
+                                            <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="date" t-att-value="today" />
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                  <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                            </span>
+                                        </div>
                                         <div class="col-sm-12 mt-2">
                                             <label class="control-label col-12" for="amount">
                                                 Importe
