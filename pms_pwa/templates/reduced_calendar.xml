@@ -576,13 +576,23 @@
                                                 <div class="float-center o_pms_pwa_title" style="text-align: center !important; font-weight: bold !important; margin-bottom: 0px !important;">
                                                     <t t-esc="percent_occupied" t-options="{'widget': 'float', 'precision': 0}" />
                                                     %
+                                                    <div t-if="notifications_info" class="dropdown" style="float:right;">
+                                                        <a class="dropdown-toggle" t-attf-id="dropdownInfo{{day}}" type="button" data-toggle="dropdown">
+                                                            <i class="fa fa-info"></i>
+                                                        </a>
+                                                        <div class="dropdown-menu" t-attf-aria-labelledby="dropdownInfo{{day}}">
+                                                            <t t-foreach="notifications_info" t-as="notifi">
+                                                                <a class="dropdown-item" href="#"><t t-esc="notifi"/></a>
+                                                            </t>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;">
                                                     <t t-esc="availability_room" />
                                                     Libres
                                                 </p>
                                                 <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
-                                                    <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Reservas" style="padding-bottom: 2px !important; padding-top: 0 !important;">
+                                                    <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Reservas" style="padding-bottom: 2px !important; padding-top: 0 !important;">
                                                         <div t-if="rooms_occupied_reservations > 0" class="circle" style="-0.6rem !important;">
                                                             <span>
                                                                 <t t-esc="rooms_occupied_reservations" />
@@ -590,11 +600,26 @@
                                                         </div>
                                                         <div t-else="" style="min-height: 25px;"></div>
                                                     </div>
-                                                    <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Fuera de servicio" style="padding-bottom: 2px !important; padding-top: 0 !important;">
+                                                    <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Fuera de servicio" style="padding-bottom: 2px !important; padding-top: 0 !important;">
                                                         <div t-if="rooms_occupied_out_service > 0" class="circle" style="-0.6rem !important;">
                                                             <span>
                                                                 <t t-esc="rooms_occupied_out_service" />
                                                             </span>
+                                                        </div>
+                                                        <div t-else="" style="min-height: 25px;"></div>
+                                                    </div>
+                                                    <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Warning" style="padding-bottom: 2px !important; padding-top: 0 !important;">
+                                                        <div t-if="notifications_warning" style="-0.6rem !important;">
+                                                            <div class="dropdown">
+                                                                <a class="dropdown-toggle" t-attf-id="dropdownMenu{{day}}" type="button" data-toggle="dropdown">
+                                                                  <img src="/pms_pwa/static/img/warning.png" alt="warning" width="15" />
+                                                                </a>
+                                                                <div class="dropdown-menu" t-attf-aria-labelledby="dropdownMenu{{day}}">
+                                                                    <t t-foreach="notifications_warning" t-as="notifi">
+                                                                        <a class="dropdown-item" href="#"><t t-esc="notifi"/></a>
+                                                                    </t>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div t-else="" style="min-height: 25px;"></div>
                                                     </div>

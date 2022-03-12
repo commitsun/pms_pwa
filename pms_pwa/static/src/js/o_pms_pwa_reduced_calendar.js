@@ -284,9 +284,11 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             }
             var date_list = $('input[name="date_list"]').val();
             var selected_display = $('input[name="selected_display"]').val();
+            var pricelist_id = "1"; // $('input[name="pricelist_id"]').val();
             ajax.jsonRpc("/calendar/line", "call", {
                 pms_property_id: pms_property_id,
                 range_date: date_list,
+                pricelist_id: pricelist_id,
             }).then(function (data) {
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
                     pms_property_id: pms_property_id,
