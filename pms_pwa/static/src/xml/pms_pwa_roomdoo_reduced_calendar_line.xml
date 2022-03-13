@@ -52,7 +52,7 @@
                             </t>
                             <t t-else="">
                                 <t t-if="reservation.restrictions_info">
-                                    <td class="o_pms_pwa_restrictions_info" t-attf-data-select_pricelist_id="{{ line_selected_property}}" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" t-attf-data-price_per_room="{{ obj.room.price }}">
+                                    <td class="o_pms_pwa_restrictions_info" t-att-title="reservation.restrictions_info" t-attf-data-select_pricelist_id="{{ line_selected_property}}" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" t-attf-data-price_per_room="{{ obj.room.price }}">
                                         <button type="button" class="btn btn-add open-calendar-modalDialog" t-attf-data-date="{{ reservation.date }}" t-attf-data-calendar-room="{{ obj.room.id }}" t-attf-data-pricelist="{{ default_pricelist }}" t-attf-data-price_per_room="{{ obj.room.price }}" data-toggle="modal" data-target="#o_pms_pwa_new_reservation_modal" style="display:none;" rel="nofollow">+</button>
                                     </td>
                                 </t>
