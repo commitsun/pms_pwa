@@ -452,6 +452,7 @@ section.o_pms_pwa_roomdoo {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+
                     }
                     &_name_small {
                         font-size: 14px;
@@ -791,5 +792,13 @@ section.o_pms_pwa_roomdoo {
         width: 100% !important;
     }
 }
-
-
+.o_pms_pwa_notification_day_dropdown{
+    border: none;
+    background: transparent;
+    .dropdown-toggle::after{
+        display: none;
+    }
+}
+.o_pms_pwa_room_name{
+    cursor: pointer;
+}

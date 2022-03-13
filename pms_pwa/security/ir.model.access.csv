@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_pms_user_calendar_property,access_pms_user_calendar_property,model_pms_user_calendar_property,base.group_user,1,1,1,1
 access_pms_user_notifications,access_pms_user_notifications,model_res_users_notifications,base.group_user,1,1,1,1
+manager_access_pms_pwa_event,manager_access_pms_pwa_event,model_pms_pwa_event,pms.group_pms_manager,1,1,1,1
