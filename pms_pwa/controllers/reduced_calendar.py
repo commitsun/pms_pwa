@@ -189,6 +189,8 @@ class PmsCalendar(http.Controller):
             dict_result[s_avail_date] = {}
             data = list(filter(lambda x: x[1] is not None, data))
             data = sorted(data, key=room_type_func)
+            notifications_warning = self._get_notifications_warning(pms_property_id, avail_date, overbooking_lines)
+            notifications_info = self._get_notifications_info(pms_property_id, avail_date, pwa_events)
             for room_type_id, vals in groupby(data, room_type_func):
                 room_type = request.env["pms.room.type"].browse(room_type_id)
                 vals = list(vals)
@@ -196,8 +198,7 @@ class PmsCalendar(http.Controller):
                 out_count = sum([x[3] for x in vals if x[2] == 'out'])
                 total_rooms = room_type._get_total_rooms(pms_property.id)
                 num_avail = room_type._get_total_rooms(pms_property.id) - (res_count + out_count)
-                notifications_warning = self._get_notifications_warning(pms_property_id, s_avail_date, overbooking_lines)
-                notifications_info = self._get_notifications_info(pms_property_id, s_avail_date, pwa_events)
+
                 dict_result[s_avail_date][room_type_id] = {
                     'reservations_count': res_count,
                     'outs_count': out_count,
@@ -221,8 +222,8 @@ class PmsCalendar(http.Controller):
                         'reservations_percent': 0,
                         'outs_percent': 0,
                         'avail_percent': 100,
-                        'notifications_warning': False,
-                        'notifications_info': False,
+                        'notifications_warning': notifications_warning,
+                        'notifications_info': notifications_info,
                     }
             dict_result[s_avail_date]["property_header"] = {
                 'reservations_count': total_res_count,
@@ -232,8 +233,8 @@ class PmsCalendar(http.Controller):
                 'reservations_percent': 0,
                 'outs_percent': 0,
                 'avail_percent': 100,
-                'notifications_warning': False,
-                'notifications_info': False,
+                'notifications_warning': notifications_warning,
+                'notifications_info': notifications_info,
             }
         # complete estructure to avoid dates
         for date in dates:
@@ -941,11 +942,16 @@ class PmsCalendar(http.Controller):
             True if the event was created
         """
         pms_property_id = post.get("pms_property_id")
-        date = datetime.datetime.strptime(
-            post.get("date"), "%d/%m/%Y"
-        ).date()
+        try:
+            date = datetime.datetime.strptime(
+                post.get("date"), "%d/%m/%Y"
+            ).date()
+        except:
+            date = datetime.datetime.strptime(
+                post.get("date"), "%m/%d/%Y"
+            ).date()
         pwa_event = request.env["pms.pwa.event"].create({
-            "name": post.get("name"),
+            # "name": post.get("name"),
             "date": date,
             "description": post.get("description"),
             "pms_property_ids": [(6, 0, [int(pms_property_id)])],
