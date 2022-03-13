@@ -196,8 +196,8 @@ class PmsCalendar(http.Controller):
                 out_count = sum([x[3] for x in vals if x[2] == 'out'])
                 total_rooms = room_type._get_total_rooms(pms_property.id)
                 num_avail = room_type._get_total_rooms(pms_property.id) - (res_count + out_count)
-                notifications_warning = self._get_notifications_warning(pms_property_id, date, overbooking_lines)
-                notifications_info = self._get_notifications_info(pms_property_id, date, pwa_events)
+                notifications_warning = self._get_notifications_warning(pms_property_id, s_avail_date, overbooking_lines)
+                notifications_info = self._get_notifications_info(pms_property_id, s_avail_date, pwa_events)
                 dict_result[s_avail_date][room_type_id] = {
                     'reservations_count': res_count,
                     'outs_count': out_count,
@@ -221,6 +221,8 @@ class PmsCalendar(http.Controller):
                         'reservations_percent': 0,
                         'outs_percent': 0,
                         'avail_percent': 100,
+                        'notifications_warning': False,
+                        'notifications_info': False,
                     }
             dict_result[s_avail_date]["property_header"] = {
                 'reservations_count': total_res_count,
@@ -230,6 +232,8 @@ class PmsCalendar(http.Controller):
                 'reservations_percent': 0,
                 'outs_percent': 0,
                 'avail_percent': 100,
+                'notifications_warning': False,
+                'notifications_info': False,
             }
         # complete estructure to avoid dates
         for date in dates:
@@ -244,6 +248,8 @@ class PmsCalendar(http.Controller):
                     'reservations_percent': 0,
                     'outs_percent': 0,
                     'avail_percent': 100,
+                    'notifications_warning': False,
+                    'notifications_info': False,
                 }
                 for room_type in room_types:
                     dict_result[s_date][room_type.id] = {
@@ -253,6 +259,8 @@ class PmsCalendar(http.Controller):
                         'reservations_percent': 0,
                         'outs_percent': 0,
                         'avail_percent': 100,
+                        'notifications_warning': False,
+                        'notifications_info': False,
                     }
         return dict_result
 
