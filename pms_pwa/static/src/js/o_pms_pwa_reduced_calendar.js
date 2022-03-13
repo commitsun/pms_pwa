@@ -277,7 +277,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             }
         },
 
-        _launchLines: function (event, pms_property_id = false) {
+        _launchLines: function (event, pms_property_id = false, pricelist_id=false) {
             var self = this;
             if (pms_property_id) {
                 pms_property_id = pms_property_id;
@@ -285,8 +285,17 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                 pms_property_id = event.getAttribute("data-id");
             }
             var date_list = $('input[name="date_list"]').val();
-            var selected_display = $('input[name="selected_display"]').val();
-            var pricelist_id = "1"; // $('input[name="pricelist_id"]').val();
+            // var selected_display = $('input[name="selected_display"]').val();
+            if (pricelist_id){
+                var pricelist_id = pricelist_id;
+            }else{
+                try{
+                    var pricelist_id = event.getAttribute("data-select_pricelist_id");
+                }catch{
+                    var pricelist_id = $('input[name="selected_property"]').val();
+                }
+            }
+
             ajax.jsonRpc("/calendar/line", "call", {
                 pms_property_id: pms_property_id,
                 range_date: date_list,
@@ -295,6 +304,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
                     pms_property_id: pms_property_id,
                     obj_list: data.reservations,
+                    line_selected_property: pricelist_id,
                     csrf_token: csrf_token,
                 });
                 $(String("#collapse_accordion_" + pms_property_id)).html(html);
@@ -328,12 +338,14 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                     drop: function (event, ui) {
                         event.preventDefault();
                         var room = $(this).data("room");
+                        let selected_pricelist = ui.draggable.data("select_pricelist_id");
                         if(room){
                             ajax.jsonRpc("/calendar/reduced-change", "call", {
                                 id: ui.draggable.data("id"),
                                 date: ui.draggable.data("date"),
                                 room: room,
                                 pms_property_id: pms_property_id,
+                                pricelist_id: selected_pricelist,
                                 // selected_display: selected_display,
                             }).then(function (data) {
                                 if (data && String(data["result"]) == "success") {
@@ -357,6 +369,10 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                                             $("input[name='modal_room']").val(
                                                 String(data["room"])
                                             );
+                                            $("input[name='modal_pricelist_id']").val(
+                                                String(selected_pricelist)
+                                            );
+
                                         }
                                     );
                                     $("#confirmChange").modal("show");
@@ -627,8 +643,9 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             var self = this;
             event.preventDefault();
             let modal_property_id = $("input[name='modal_property_id']").val();
+            let modal_pricelist_id = $("input[name='modal_pricelist_id']").val();
             drop_function = false;
-            self._launchLines(event.currentTarget, modal_property_id);
+            self._launchLines(event.currentTarget, modal_property_id, modal_pricelist_id);
         },
         _onClickGetCalendarLine: function (event) {
             var self = this;
@@ -659,8 +676,9 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                     document.documentElement.lang,
                     date_options
                 );
-                console.log("date_select", checkin_date);
+                // console.log("date_select", checkin_date);
                 let property = $("input[name='selected_property']").val();
+
                 modal.find("input[name='modal_start_date']").val(checkin_date);
                 modal.find("input[name='modal_end_date']").val(checkin_date);
 
@@ -679,7 +697,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                         maxYear: parseInt(moment().format("YYYY"), 10),
                     },
                     function (start) {
-                        console.log(start);
+                        //console.log(start);
                         const start_date = new Date(start);
                         var select_date = start_date.toLocaleDateString(
                             document.documentElement.lang,
@@ -696,7 +714,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                         event.currentTarget.getAttribute("data-room_type") +
                         "']"
                 ).text();
-                console.log(text);
+                // console.log(text);
                 // modal.find(".modal_room_type .bootstrap-select .filter-option").text(text);
                 // modal.find("select#room_type_model[name=modal_room_type]").val(
                 //     event.currentTarget.getAttribute("data-room_type")
@@ -736,10 +754,12 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             var send_date = $("input[name='modal_date']").val();
             var send_reservation = $("input[name='modal_reservation']").val();
             var send_room = $("input[name='modal_room']").val();
+            let pricelist_id = $("input[name='modal_pricelist_id']").val();
             ajax.jsonRpc("/calendar/reduced-change", "call", {
                 id: send_reservation,
                 date: send_date,
                 room: send_room,
+                pricelist_id: pricelist_id,
                 submit: true,
                 // selected_display: selected_display,
             }).then(function (data) {
@@ -787,7 +807,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                     document.documentElement.lang,
                     date_options
                 );
-                console.log("date_select", checkin_date);
+                // console.log("date_select", checkin_date);
                 modal.find("input[name='event_date']").val(checkin_date);
 
                 modal.find('input[type="text"].eventmodaldate').daterangepicker(
@@ -805,7 +825,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                         maxYear: parseInt(moment().format("YYYY"), 10),
                     },
                     function (start) {
-                        console.log(start);
+                        // console.log(start);
                         const start_date = new Date(start);
                         var select_date = start_date.toLocaleDateString(
                             document.documentElement.lang,

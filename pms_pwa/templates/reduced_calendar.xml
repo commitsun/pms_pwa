@@ -52,6 +52,7 @@
                             <input type="hidden" name="modal_date" value=""></input>
                             <input type="hidden" name="modal_reservation" value=""></input>
                             <input type="hidden" name="modal_room" value=""></input>
+                            <input type="hidden" name="modal_pricelist_id" value=""></input>
                             <input type="hidden" name="modal_property_id" t-attf-value="{{current_property}}"></input>
                             <button type="button" class="btn btn-message send_ConfirmChanges">Confirmar cambio</button>
                             <button type="button" class="btn btn-secondary close_confirmChange" data-dismiss="modal">Cancelar</button>
@@ -618,7 +619,7 @@
 
                                 </thead>
                                 <tbody>
-                                    <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
+                                    <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-select_pricelist_id="{{ select_pricelist_id }}" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
                                         <td class="o_pms_pwa_table_first_header_td">
                                             <p class="o_pms_pwa_room_name">
                                                 <i class="fa fa-angle-down"></i>
@@ -706,7 +707,7 @@
                                     <tr>
                                         <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(pms_property_id)" t-attf-aria-labelledby="{{ pms_property_id }}" style="width:100% !important"></td>
                                     </tr>
-                                    <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
+                                    <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-select_pricelist_id="{{ select_pricelist_id }}" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
                                         <td t-att-colspan="len(date_list)+1" t-attf-aria-labelledby="{{ pms_property_id }}" style="width: 100% !important;height: 5px !important;border-radius: 5rem;background-color: #eaeaea;font-size: 14px;padding: 0;">
                                             <span style="left: 40%;position: sticky;cursor:pointer;">
                                                 <i class="fa fa-angle-down"></i> <strong>Reservas</strong>  <i class="fa fa-angle-down"></i>
