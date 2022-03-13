@@ -59,6 +59,72 @@
                     </div>
                 </div>
             </div>
+            <div id="modalPMSEvent" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nuevo evento</h5>
+                            <button type="button" class="close close_confirmChange" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-field mt8">
+                                <div class="row">
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="pms_property_id">
+                                            Hotel
+                                        </label>
+                                        <select id="event_pms_property_id" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="event_pms_property_id">
+                                            <t t-foreach="user_id.pms_pwa_property_ids" t-as="property_modal">
+                                                <t t-if="selected_property == property_modal">
+                                                    <option  t-att-value="property_modal.id" selected="selected">
+                                                        <t t-esc="property_modal.name" />
+                                                    </option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option t-att-value="property_modal.id">
+                                                        <t t-esc="property_modal.name" />
+                                                    </option>
+                                                </t>
+
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <!-- <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="name">
+                                            Nombre
+                                        </label>
+                                        <input class="form-control" type="text" name="event_name"/>
+                                    </div> -->
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="date">
+                                            Fecha
+                                        </label>
+                                        <input class="form-control float-left eventmodaldate" type="text" name="event_date" t-att-value="today.strftime('%d/%m/%Y')" />
+                                        <span class="o_pms_pwa_calendar_icon" style="top:2.5em;">
+                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="description">
+                                            Mensaje
+                                        </label>
+                                        <input class="form-control" type="text" name="event_description"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <input type="hidden" name="modal_property_id" t-attf-value="{{current_property}}"></input>
+                            <button type="button" class="btn btn-message-form send_NewEvent">Crear evento</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="changesDaysValues" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
@@ -577,7 +643,6 @@
                                                     <t t-set="notifications_info" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['notifications_info']"></t>
                                                     <t t-esc="percent_occupied" t-options="{'widget': 'float', 'precision': 0}" />
                                                     %
-
                                                     <div t-if="notifications_info" class="dropdown" style="float:right;">
                                                         <div class="dropdown">
                                                             <button class="dropdown-toggle o_pms_pwa_notification_day_dropdown" type="button" t-attf-id="dropdownInfo{{day.strftime('%Y%m%d')}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -585,10 +650,16 @@
                                                             </button>
                                                             <div class="dropdown-menu" t-attf-aria-labelledby="dropdownInfo{{day.strftime('%Y%m%d')}}">
                                                                 <t t-foreach="notifications_info" t-as="notifi">
-                                                                    <a class="dropdown-item" href="#"><t t-esc="notifi"/></a>
+                                                                    <a class="dropdown-item" href="#"><t t-esc="notifi['message']"/></a>
                                                                 </t>
+                                                                <br /><br />
+                                                                <button class="btn btn-message-form open_NewEvent" type="button" t-attf-data-date="{{ day }}" title="nuevo evento">Nuevo evento</button>
+                                                                <br />
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div t-else="" style="float:right;" >
+                                                        <button class="o_pms_pwa_new_calendar_event open_NewEvent" t-attf-data-date="{{ day }}" type="button" title="nuevo evento"><i class="fa fa-plus"></i></button>
                                                     </div>
                                                 </div>
                                                 <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;">
@@ -621,7 +692,7 @@
                                                                 </button>
                                                                 <div class="dropdown-menu" t-attf-aria-labelledby="dropdownMenu{{day.strftime('%Y%m%d')}}">
                                                                     <t t-foreach="notifications_warning" t-as="notifi">
-                                                                        <a class="dropdown-item" href="#"><t t-esc="notifi"/></a>
+                                                                        <a class="dropdown-item" href="#"><t t-esc="notifi['message']"/></a>
                                                                     </t>
                                                                 </div>
                                                             </div>
