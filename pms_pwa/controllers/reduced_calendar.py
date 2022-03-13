@@ -937,7 +937,8 @@ class PmsCalendar(http.Controller):
             date = datetime.datetime.strptime(
                 post.get("date"), "%d/%m/%Y"
             ).date()
-        except:
+        except Exception as e:
+            print("Error formato fecha, compruebo americana", e)
             date = datetime.datetime.strptime(
                 post.get("date"), "%m/%d/%Y"
             ).date()

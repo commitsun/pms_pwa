@@ -19,7 +19,7 @@
                     <div class="modal-body">
                         <form autocomplete="off" class="mt-2 o_pms_pwa_partner_form" id="partner_form" target="_self" action="/new_partner" method="post" enctype="multipart/form-data">
                             <div class="form-group form-field mt8">
-                                <div class="row mt-3">
+                                <!-- <div class="row mt-3">
                                     <div class="col-sm-12">
                                         <h4>Tipo de cliente</h4>
                                     </div>
@@ -33,44 +33,76 @@
                                             <option value="agency">Agencia</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-sm-12">
-                                        <h4>Datos personales</h4>
+                                </div> -->
+                                <t t-if="partner.is_company or partner.is_agency">
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Datos</h4>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="firstname">
+                                                Nombre
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="firstname" t-att-value="partner.firstname or none" />
+                                        </div>
+                                        <div class="col-sm-6" >
+                                            <label class="control-label col-6" for="vat">
+                                                CIF
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="firstname">
-                                            Nombre
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="firstname" t-att-value="partner.firstname or none" />
+                                    <t t-if="partner.is_agency">
+                                        <div class="row mt-3">
+                                            <div class="col-sm-12" >
+                                                <label class="control-label col-12" for="allowed_channel_types">
+                                                    Canal de Venta
+                                                </label>
+                                                <select data-select="allowed_channel_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="channel_type_id" />
+                                            </div>
+                                        </div>
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Datos personales</h4>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="firstname">
+                                                Nombre
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="firstname" t-att-value="partner.firstname or none" />
+                                        </div>
+                                        <div class="col-sm-6" >
+                                            <label class="control-label col-6" for="lastname">
+                                                Primer apellido
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="lastname" t-att-value="partner.lastname or none" />
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="lastname">
-                                            Primer apellido
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="lastname" t-att-value="partner.lastname or none" />
-                                    </div>
-                                </div>
 
-                                <div class="row mt-3">
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="lastname2">
-                                            Segundo apellido
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="lastname2" t-att-value="partner.lastname2 or none" />
+                                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="lastname2">
+                                                Segundo apellido
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="lastname2" t-att-value="partner.lastname2 or none" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="vat">
+                                                NIF
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
+                                        </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="vat">
-                                            NIF
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
-                                    </div>
-                                </div>
-
+                                </t>
                                 <div class="row mt-3">
                                     <div class="col-sm-12">
                                         <h4>Datos de contacto</h4>
@@ -204,7 +236,13 @@
                                 </div>
 
                                 <div class="row mt-3">
-
+                                    <div class="col-sm-6">
+                                        <label class="control-label col-6" for="city">
+                                            Ciudad
+                                        </label>
+                                        <input
+                                            class="form-control" type="text" name="city" t-att-value="partner.city or none" />
+                                    </div>
                                     <div class="col-sm-6">
                                         <label class="control-label col-6" for="zip">
                                             CP
