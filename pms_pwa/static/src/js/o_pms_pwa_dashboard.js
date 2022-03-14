@@ -222,6 +222,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             });
         },
         _onClickBankPayment: function (ev) {
+            console.log("AQui _onClickBankPayment");
             var self = this;
             ev.preventDefault();
             let modal = $("div#o_pms_pwa_new_bank_register_payment");
@@ -232,11 +233,13 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let partner_id = modal.find("input[name='partner_id']").val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("input[name='description']").val();
+            let date = modal.find("input[name='date']").val();
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 partner_id: partner_id,
                 amount: payment_amount,
                 description: description,
+                date: date,
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 self.displayDataAlert(data);
@@ -257,11 +260,13 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 .val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("textarea[name='description']").val();
+            let date = modal.find("input[name='date']").val();
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: origin_payment_method,
                 target_payment_method: target_payment_method,
                 amount: payment_amount,
                 description: description,
+                date: date,
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 self.displayDataAlert(data);
@@ -272,6 +277,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var self = this;
             e.preventDefault();
             let modal = $("div#o_pms_pwa_new_cash_register_payment");
+
             var dataTitle = e.currentTarget.getAttribute("data-title");
             if (dataTitle == "caja") {
                 $(".modal-title").html("Movimiento caja");
@@ -287,6 +293,31 @@ odoo.define("pms_pwa.dashboard", function (require) {
             modal.find('input[type="number"]').val(0);
             modal.find('input[type="text"]').val("");
             modal.find('textarea[name="description"]').val("");
+            modal.find('input[name="date"]').val(moment().format('DD/MM/YYYY'));
+            $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    console.log(start);
+                    const start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        date_options
+                    );
+                    this.element.val(select_date);
+                }
+            );
         },
         _onClickModalCashRegiste: function (e) {
             var self = this;

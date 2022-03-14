@@ -1049,6 +1049,29 @@
                                             $(new_selector).click();
                                             $(new_selector).remove();
                                         });
+                                        $(".o_pms_pwa_modal_daterangepicker").daterangepicker({
+                                                locale: {
+                                                    direction: "ltr",
+                                                    format: "DD/MM/YYYY",
+                                                    applyLabel: "Aplicar",
+                                                    cancelLabel: "Cancelar",
+                                                },
+                                                singleDatePicker: true,
+                                                showDropdowns: true,
+                                                autoUpdateInput: false,
+                                                minYear: 1901,
+                                                maxYear: parseInt(moment().format("YYYY"), 10),
+                                            },
+                                            function (start) {
+                                                console.log(start);
+                                                const start_date = new Date(start);
+                                                var select_date = start_date.toLocaleDateString(
+                                                    document.documentElement.lang,
+                                                    date_options
+                                                );
+                                                this.element.val(select_date);
+                                            }
+                                        );
                                     </script>
                                     <a class="mr-4 o_pms_pwa_return" t-attf-data-id="{{reservation.id}}" href="#"><i class="fa fa-arrow-left"></i> Volver</a>
                                     <h4 class="modal-title">
@@ -1106,7 +1129,7 @@
                                             <label class="control-label col-12" for="date">
                                                 Fecha
                                             </label>
-                                            <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="date" />
+                                            <input class="form-control float-left o_pms_pwa_modal_daterangepicker" type="text" name="date" />
                                             <span class="o_pms_pwa_calendar_icon">
                                                 <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                             </span>
@@ -1159,6 +1182,29 @@
                                             $(new_selector).click();
                                             $(new_selector).remove();
                                         });
+                                        $(".o_pms_pwa_modal_daterangepicker").daterangepicker({
+                                            locale: {
+                                                direction: "ltr",
+                                                format: "DD/MM/YYYY",
+                                                applyLabel: "Aplicar",
+                                                cancelLabel: "Cancelar",
+                                            },
+                                            singleDatePicker: true,
+                                            showDropdowns: true,
+                                            autoUpdateInput: false,
+                                            minYear: 1901,
+                                            maxYear: parseInt(moment().format("YYYY"), 10),
+                                        },
+                                        function (start) {
+                                            console.log(start);
+                                            const start_date = new Date(start);
+                                            var select_date = start_date.toLocaleDateString(
+                                                document.documentElement.lang,
+                                                date_options
+                                            );
+                                            this.element.val(select_date);
+                                        }
+                                    );
                                     </script>
                                     <a class="mr-4 o_pms_pwa_return" t-attf-data-id="{{reservation.id}}" href="#"><i class="fa fa-arrow-left"></i> Volver</a>
                                     <h4 class="modal-title">
@@ -1216,7 +1262,7 @@
                                             <label class="control-label col-12" for="date">
                                                 Fecha
                                             </label>
-                                            <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="date" t-att-value="today" />
+                                            <input class="form-control float-left o_pms_pwa_modal_daterangepicker" type="text" name="date" t-att-value="today" />
                                             <span class="o_pms_pwa_calendar_icon">
                                                   <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                             </span>

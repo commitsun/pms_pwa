@@ -1988,6 +1988,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     reservation_id = $("input[name='id']").val();
                 }
             }
+
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (data) {
