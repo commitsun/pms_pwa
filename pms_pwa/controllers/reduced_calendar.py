@@ -501,7 +501,7 @@ class PmsCalendar(http.Controller):
         to_date = max(dates)
         pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
-        pricelist_id = 1 # int(post.get("pricelist_id"))
+        pricelist_id = int(post.get("pricelist_id"))
         company = pms_property.company_id
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]

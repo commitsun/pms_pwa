@@ -19,7 +19,7 @@
                     <div class="modal-body">
                         <form autocomplete="off" class="mt-2 o_pms_pwa_partner_form" id="partner_form" target="_self" action="/new_partner" method="post" enctype="multipart/form-data">
                             <div class="form-group form-field mt8">
-                                <div class="row mt-3">
+                                <!-- <div class="row mt-3">
                                     <div class="col-sm-12">
                                         <h4>Tipo de cliente</h4>
                                     </div>
@@ -33,7 +33,7 @@
                                             <option value="agency">Agencia</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> -->
                                 <t t-if="partner.is_company or partner.is_agency">
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
@@ -54,7 +54,7 @@
                                                 class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
                                         </div>
                                     </div>
-                                    <!-- <t t-if="partner.is_agency">
+                                    <t t-if="partner.is_agency">
                                         <div class="row mt-3">
                                             <div class="col-sm-12" >
                                                 <label class="control-label col-12" for="allowed_channel_types">
@@ -63,7 +63,7 @@
                                                 <select data-select="allowed_channel_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="channel_type_id" />
                                             </div>
                                         </div>
-                                    </t> -->
+                                    </t>
                                 </t>
                                 <t t-else="">
                                     <div class="row mt-3">
