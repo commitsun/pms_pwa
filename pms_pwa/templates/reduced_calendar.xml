@@ -694,7 +694,7 @@
                                                                 </button>
                                                                 <div class="dropdown-menu" t-attf-aria-labelledby="dropdownMenu{{day.strftime('%Y%m%d')}}">
                                                                     <t t-foreach="notifications_warning" t-as="notifi">
-                                                                        <a class="dropdown-item" href="#"><t t-esc="notifi['message']"/></a>
+                                                                        <a class="dropdown-item launch_for_notification" href="#" t-att-data-id="notifi['reservation_id']"><t t-esc="notifi['message']"/></a>
                                                                     </t>
                                                                 </div>
                                                             </div>

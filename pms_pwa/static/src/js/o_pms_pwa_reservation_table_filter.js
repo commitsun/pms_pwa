@@ -56,6 +56,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click td.o_pms_pwa_reduced_calendar_reservation": "_onClickReservationButton",
             "dblclick td.o_pms_pwa_reduced_calendar_reservation":
                 "_onDobleClickReservationButton",
+            "click a.launch_for_notification": "_onClickReservationButton",
             "click td.launch_modal": "_onClickReservationButton",
             "dblclick td.launch_modal": "_onDobleClickReservationButton",
             "click .o_pms_pwa_button_asignar": "_onClickAssingButton",
