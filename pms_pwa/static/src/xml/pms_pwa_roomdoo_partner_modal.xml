@@ -19,7 +19,7 @@
                     <div class="modal-body">
                         <form autocomplete="off" class="mt-2 o_pms_pwa_partner_form" id="partner_form" target="_self" action="/new_partner" method="post" enctype="multipart/form-data">
                             <div class="form-group form-field mt8">
-                                <!-- <div class="row mt-3">
+                                <div class="row mt-3">
                                     <div class="col-sm-12">
                                         <h4>Tipo de cliente</h4>
                                     </div>
@@ -27,46 +27,43 @@
                                         <label class="control-label col-12" for="partner_type">
                                             Tipo
                                         </label>
-                                        <select class="form-control" name="partner_type">
+                                        <select class="form-control" id="partner_type_change" name="partner_type">
                                             <option value="person">Individual</option>
                                             <option value="company">Compañía</option>
                                             <option value="agency">Agencia</option>
                                         </select>
                                     </div>
-                                </div> -->
-                                <t t-if="partner.is_company or partner.is_agency">
-                                    <div class="row mt-3">
-                                        <div class="col-sm-12">
-                                            <h4>Datos</h4>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <label class="control-label col-6" for="firstname">
-                                                Nombre
-                                            </label>
-                                            <input
-                                                class="form-control" type="text" name="firstname" t-att-value="partner.firstname or none" />
-                                        </div>
-                                        <div class="col-sm-6" >
-                                            <label class="control-label col-6" for="vat">
-                                                CIF
-                                            </label>
-                                            <input
-                                                class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
-                                        </div>
+                                </div>
+                                <div class="row mt-3 is_company">
+                                    <div class="col-sm-12">
+                                        <h4>Datos</h4>
                                     </div>
-                                    <t t-if="partner.is_agency">
-                                        <div class="row mt-3">
-                                            <div class="col-sm-12" >
-                                                <label class="control-label col-12" for="allowed_channel_types">
-                                                    Canal de Venta
-                                                </label>
-                                                <select data-select="allowed_channel_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="sale_channel_id" />
-                                            </div>
-                                        </div>
-                                    </t>
-                                </t>
-                                <t t-else="">
-                                    <div class="row mt-3">
+                                    <div class="col-sm-6">
+                                        <label class="control-label col-6" for="firstname">
+                                            Nombre
+                                        </label>
+                                        <input
+                                            class="form-control" type="text" name="firstname" t-att-value="partner.firstname or none" />
+                                    </div>
+                                    <div class="col-sm-6" >
+                                        <label class="control-label col-6" for="vat">
+                                            CIF
+                                        </label>
+                                        <input
+                                            class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 is_agency">
+                                    <div class="col-sm-12" >
+                                        <label class="control-label col-12" for="allowed_channel_types">
+                                            Canal de Venta
+                                        </label>
+                                        <select data-select="allowed_channel_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="sale_channel_id" />
+                                    </div>
+                                </div>
+
+                                    <div class="row mt-3 is_person">
                                         <div class="col-sm-12">
                                             <h4>Datos personales</h4>
                                         </div>
@@ -86,7 +83,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 is_person">
                                         <div class="col-sm-6">
                                             <label class="control-label col-6" for="lastname2">
                                                 Segundo apellido
@@ -103,7 +100,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 is_person">
                                         <div class="col-sm-6">
                                             <label class="control-label col-6" for="email">
                                                 E-mail
@@ -120,12 +117,12 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 is_person">
                                         <div class="col-sm-6">
                                             <label class="control-label col-6" for="nationality_id">
                                                 Nacionalidad
                                             </label>
-                                            <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="nationality_id">
+                                            <select data-select="allowed_nationality_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="nationality_id">
                                                 <t t-if="partner.nationality_id and partner.nationality_id.id">
                                                     <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.nationality_id.id === country_value['id'] ? 'selected' : None">
                                                         <t t-esc="country_value['name']" />
@@ -170,7 +167,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 is_person">
                                         <div class="col-sm-12">
                                             <h4>Residencia</h4>
                                         </div>
@@ -190,7 +187,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 is_person">
                                         <div class="col-sm-6">
                                             <label class="control-label col-6" for="country_id">
                                                 País
@@ -210,7 +207,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-6 is_person">
                                             <label class="control-label col-6" for="state_id">
                                                 Provincia
                                             </label>
@@ -230,7 +227,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row mt-3">
+                                    <div class="row mt-3 is_person">
                                         <div class="col-sm-6">
                                             <label class="control-label col-6" for="city">
                                                 Ciudad
@@ -245,7 +242,6 @@
                                             <input class="form-control" type="text" name="zip" t-att-value="partner.zip or none" />
                                         </div>
                                     </div>
-                                </t>
                                 <div class="row mt-3">
                                     <div class="col-sm-12">
                                         <h4>Facturación</h4>
@@ -271,7 +267,7 @@
                                         <label class="control-label col-6" for="country_id">
                                             País
                                         </label>
-                                        <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_country_id">
+                                        <select data-select="allowed_invoice_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_country_id">
                                             <t t-if="partner.invoice_country_id and partner.invoice_country_id.id">
                                                 <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.invoice_country_id.id === country_value['id'] ? 'selected' : None">
                                                     <t t-esc="country_value['name']" />
@@ -290,7 +286,7 @@
                                         <label class="control-label col-6" for="state_id">
                                             Provincia
                                         </label>
-                                        <select data-select="invoice_state_id" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_state_id">
+                                        <select data-select="allowed_invoice_state_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_state_id">
                                             <t t-if="partner.invoice_state_id and partner.invoice_country_id.id">
                                                 <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" t-att-selected="partner.invoice_state_id.id === state_value['id'] ? 'selected' : None">
                                                     <t t-esc="state_value['name']" />

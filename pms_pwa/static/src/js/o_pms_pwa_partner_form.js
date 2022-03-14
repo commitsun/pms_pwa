@@ -12,14 +12,16 @@ odoo.define("pms_pwa.partner_form", function (require) {
         xmlDependencies: ["/pms_pwa/static/src/xml/pms_pwa_roomdoo_partner_modal.xml"],
         events: {
             "click div.o_pms_pwa_partner_modal_show": "_onClickOpenPartnerModal",
-            "change select[name=country_id]": "_onChangeCountryId",
+            // "change select[name=country_id]": "_onChangeCountryId",
+            // "change select[name=invoice_country_id]": "_onChangeCountryId",
+            "change select#partner_type_change": "_onPartnerTypeChange",
             "click button.send_form_partner": "_submitForm",
         },
 
         init: function () {
             this._super.apply(this, arguments);
-            this.allowed_fields = ["allowed_country_ids", "allowed_states"];
-            this.m2o_fields = ["country_id", "state_id", "nationality_id"];
+            this.allowed_fields = ["allowed_nationality_ids", "allowed_country_ids", "allowed_states", "allowed_invoice_country_ids", "allowed_invoice_state_ids",];
+            this.m2o_fields = ["country_id", "state_id", "nationality_id", "invoice_country_id", "invoice_state_id",];
         },
 
         start: function () {
@@ -67,6 +69,7 @@ odoo.define("pms_pwa.partner_form", function (require) {
 
             // Allowed fields
             $.each(self.allowed_fields, function (key, value) {
+
                 try {
                     var select = $('form#partner_form [data-select="' + value + '"]');
                 } catch (error) {
@@ -85,7 +88,7 @@ odoo.define("pms_pwa.partner_form", function (require) {
                         select.append(option);
                     });
 
-                    delete form_fields[value];
+                    //delete form_fields[value];
                 }
             });
 
@@ -113,7 +116,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
                 }
             });
         },
-
         _onClickOpenPartnerModal: function (event) {
             event.preventDefault();
             var self = this;
@@ -129,11 +131,28 @@ odoo.define("pms_pwa.partner_form", function (require) {
             }).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
-                        console.log("partner_data.result ---------> ", partner_data.partner);
+
                         $("div.o_pms_pwa_reservation_modal").modal("toggle");
                         self.displayContent("pms_pwa.roomdoo_partner_modal", {
                             partner: partner_data.partner,
                         });
+
+                        if(partner_data.partner.partner_type == "person"){
+
+                            $(".is_agency").hide();
+                            $(".is_company").hide();
+                            $(".is_person").show();
+                        }else{
+                            if(partner_data.partner.partner_type == "company"){
+                                $(".is_person").hide();
+                                $(".is_agency").hide();
+                                $(".is_company").show();
+                            }else{
+                                $(".is_person").hide();
+                                $(".is_company").show();
+                                $(".is_agency").show();
+                            }
+                        }
                         self._dateRangeActive();
                     } else {
                         self.displayDataAlert(partner_data);
@@ -148,13 +167,14 @@ odoo.define("pms_pwa.partner_form", function (require) {
             var values = $("form#partner_form").serializeArray();
             values = this.formToJson(values);
             values.submit = true;
-            console.log("values --->", values);
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
-                        console.log("partner_data.result ---------> ", partner_data.partner);
-                        self._updateFormFields(partner_data.partner);
+                        $("#o_pms_pwa_partner_modal").modal("toggle");
+                        self._updateFormFields(partner_data);
+                        //self._updateFormFields(partner_data.partner);
+
                     } else {
                         self.displayDataAlert(partner_data);
                     }
@@ -182,6 +202,26 @@ odoo.define("pms_pwa.partner_form", function (require) {
             $("form#partner_form input.o_pms_pwa_datepicker").datepicker({
                 format: "dd/mm/yyyy",
             });
+        },
+        _onPartnerTypeChange: function (event) {
+            event.preventDefault();
+            var self = this;
+            let select_value = $("select#partner_type_change").val();
+            if(select_value  == "person"){
+                $(".is_agency").hide();
+                $(".is_company").hide();
+                $(".is_person").show();
+            }else{
+                if(select_value == "company"){
+                    $(".is_person").hide();
+                    $(".is_agency").hide();
+                    $(".is_company").show();
+                }else{
+                    $(".is_person").hide();
+                    $(".is_company").show();
+                    $(".is_agency").show();
+                }
+            }
         },
     });
 

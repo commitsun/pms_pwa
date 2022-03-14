@@ -194,7 +194,7 @@ class ResPartner(http.Controller):
                 for channel in channel_types:
                     allowed_channel_types.append({"id": channel.id, "name": channel.name})
             elif kw.get("partner_type") == "person":
-                document_types = request.env["res.partner.is.category"].sudo().search([])
+                document_types = request.env["res.partner.category"].sudo().search([])
                 for type in document_types:
                     allowed_document_types.append({"id": type.id, "name": type.name})
             data_json = {

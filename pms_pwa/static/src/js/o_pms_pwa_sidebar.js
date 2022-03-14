@@ -22,8 +22,8 @@ odoo.define("pms_pwa.sidebar", function () {
     // Preload
     $(document).ready(function () {
         $("#status").fadeOut();
-        $("#preloader").delay(10).fadeOut(100);
-        $("body").delay(10).css({overflow: "visible"});
+        $("#preloader").fadeOut();
+        $("body").css({overflow: "visible"});
     });
     $("li.o_pms_pwa_nav_item a").click(function () {
         $("#status").toggle();

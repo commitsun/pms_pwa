@@ -199,7 +199,7 @@
                                         <div class="form-group row modal_room_type">
                                             <label for="room_type" class="col-sm-2 col-form-label">Tipo de habitación</label>
                                             <div class="col-sm-10">
-                                                <select id="room_type_model" name="modal_room_type" class="selectpicker" data-mdb-clear-button="true" data-live-search="true">
+                                                <select id="room_type_model" name="modal_room_type" multiple="multiple" class="selectpicker" data-mdb-clear-button="true" data-live-search="true">
                                                     <t t-foreach="rooms_list" t-as="r_type">
                                                         <option t-att-value="r_type['id']"><t t-esc="r_type['name']"/></option>
                                                     </t>
@@ -231,7 +231,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input name="apply_on_all_week" data-edit="true" t-attf-tabindex="1" type="checkbox" />
+                                                                <input name="apply_on_all_week" data-edit="false" tabindex="1" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -239,7 +239,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="2" name="apply_on_monday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -247,7 +247,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="3" name="apply_on_tuesday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -255,7 +255,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="4" name="apply_on_wednesday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -263,7 +263,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="5" name="apply_on_thursday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -271,7 +271,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="6" name="apply_on_friday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -279,7 +279,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="7" name="apply_on_saturday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -287,7 +287,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="8" name="apply_on_sunday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -428,7 +428,8 @@
                             <input type="hidden" name="modal_date" value=""></input>
                             <input type="hidden" name="modal_reservation" value=""></input>
                             <input type="hidden" name="modal_room" value=""></input>
-                            <a type="button" class="btn btn-message send_changesDaysValues">Confirmar cambio</a>
+                            <a type="button" class="btn btn-message send_changesDaysValues" data-continue="true" >Guardar y continuar editando</a>
+                            <a type="button" class="btn btn-message send_changesDaysValues">Guardar</a>
                             <button type="button" class="btn btn-secondary close_changesDaysValues" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>

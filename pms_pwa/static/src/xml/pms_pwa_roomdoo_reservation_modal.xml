@@ -32,7 +32,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input name="apply_on_all_week" data-edit="true" t-attf-tabindex="1" type="checkbox" />
+                                                <input name="apply_on_all_week" data-edit="true" tabindex="1" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -40,7 +40,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
+                                                <input data-edit="false" tabindex="2" name="apply_on_monday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -48,7 +48,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
+                                                <input data-edit="false" tabindex="3" name="apply_on_tuesday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -56,7 +56,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
+                                                <input data-edit="false" tabindex="4" name="apply_on_wednesday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -64,7 +64,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
+                                                <input data-edit="false" tabindex="5" name="apply_on_thursday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -72,7 +72,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
+                                                <input data-edit="false" tabindex="6" name="apply_on_friday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -80,7 +80,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
+                                                <input data-edit="false" tabindex="7" name="apply_on_saturday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -88,7 +88,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
+                                                <input data-edit="false" tabindex="8" name="apply_on_sunday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
