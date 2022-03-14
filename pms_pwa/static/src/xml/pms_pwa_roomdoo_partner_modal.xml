@@ -9,8 +9,8 @@
                 <div class="modal-content">
                     <div class="modal-header o_pms_pwa_modal_header">
                         <h5 class="modal-title">
-                            <img t-if="partner.id" t-att-src="'/web/image/res.partner/'+partner.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="partner.name" t-att-alt="partner.name" width="55" />
-                            <img t-else="" t-att-src="'/web/image/pms.reservation/'+partner.reservation_id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="partner.name" t-att-alt="partner.name" width="55" />
+                            <img t-if="partner.image_128" t-attf-src="data:image/png;base64,{{partner.image_128}}" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="partner.firstname" t-att-alt="partner.firstname" width="55" />
+                            <img t-else="" t-att-src="'/web/image/pms.reservation/'+partner.reservation_id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="partner.firstname" t-att-alt="partner.firstname" width="55" />
                             Modificar cliente</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span class="fa fa-times"></span>
@@ -60,7 +60,7 @@
                                                 <label class="control-label col-12" for="allowed_channel_types">
                                                     Canal de Venta
                                                 </label>
-                                                <select data-select="allowed_channel_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="channel_type_id" />
+                                                <select data-select="allowed_channel_types" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="sale_channel_id" />
                                             </div>
                                         </div>
                                     </t>
@@ -77,7 +77,7 @@
                                             <input
                                                 class="form-control" type="text" name="firstname" t-att-value="partner.firstname or none" />
                                         </div>
-                                        <div class="col-sm-6" >
+                                        <div class="col-sm-6">
                                             <label class="control-label col-6" for="lastname">
                                                 Primer apellido
                                             </label>
@@ -102,84 +102,167 @@
                                                 class="form-control" type="text" name="vat" t-att-value="partner.vat or none" />
                                         </div>
                                     </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="email">
+                                                E-mail
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="email" t-att-value="partner.email or none" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="mobile">
+                                                Móvil
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="mobile" t-att-value="partner.mobile or none" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="nationality_id">
+                                                Nacionalidad
+                                            </label>
+                                            <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="nationality_id">
+                                                <t t-if="partner.nationality_id and partner.nationality_id.id">
+                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.nationality_id.id === country_value['id'] ? 'selected' : None">
+                                                        <t t-esc="country_value['name']" />
+                                                    </option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option value="" selected="selected"></option>
+                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" >
+                                                        <t t-esc="country_value['name']" />
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col-6">
+                                            <label class="control-label col-6" for="birthdate_date">
+                                                Fecha de nacimiento
+                                            </label>
+                                            <input class="form-control o_pms_pwa_datepicker" type="text" name="birthdate_date" t-att-value="partner.birthdate_date ? partner.birthdate_date : ''" />
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                            </span>
+                                        </div>
+
+                                        <div class="col-sm-6 mt-3">
+                                            <label class="control-label col-6" for="gender">
+                                                Género
+                                            </label>
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="gender">
+                                                <option name="gender" value="" t-att-selected="partner.gender == false ? 'selected' : None"></option>
+                                                <option name="gender" value="male" t-att-selected="partner.gender == 'male' ? 'selected' : None">
+                                                    Hombre
+                                                </option>
+                                                <option name="gender" value="female" t-att-selected="partner.gender == 'female' ? 'selected' : None">
+                                                    Mujer
+                                                </option>
+                                                <option name="gender" value="other" t-att-selected="partner.gender == 'other' ? 'selected' : None">
+                                                    Otro
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-12">
+                                            <h4>Residencia</h4>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <label class="control-label col-6" for="street">
+                                                Dirección
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="street" t-att-value="partner.street or none" />
+                                        </div>
+                                        <div class="col-sm-12 mt-3">
+                                            <label class="control-label col-9" for="street2">
+                                                Dirección (segunda línea)
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="street2" t-att-value="partner.street2 or none" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="country_id">
+                                                País
+                                            </label>
+                                            <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
+                                                <t t-if="partner.country_id and partner.country_id.id">
+                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.country_id.id === country_value['id'] ? 'selected' : None">
+                                                        <t t-esc="country_value['name']" />
+                                                    </option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option value="" selected="selected"></option>
+                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" >
+                                                        <t t-esc="country_value['name']" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="state_id">
+                                                Provincia
+                                            </label>
+                                            <select data-select="allowed_states" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="state_id">
+                                                <t t-if="partner.state_id">
+                                                    <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" t-att-selected="partner.state_id.id == state_value['id'] ? 'selected' : None">
+                                                        <t t-esc="state_value['name']" />
+                                                    </option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option value="" selected="selected"></option>
+                                                    <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" >
+                                                        <t t-esc="state_value['name']" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="city">
+                                                Ciudad
+                                            </label>
+                                            <input
+                                                class="form-control" type="text" name="city" t-att-value="partner.city or none" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="control-label col-6" for="zip">
+                                                CP
+                                            </label>
+                                            <input class="form-control" type="text" name="zip" t-att-value="partner.zip or none" />
+                                        </div>
+                                    </div>
                                 </t>
                                 <div class="row mt-3">
                                     <div class="col-sm-12">
-                                        <h4>Datos de contacto</h4>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="email">
-                                            E-mail
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="email" t-att-value="partner.email or none" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="mobile">
-                                            Móvil
-                                        </label>
-                                        <input
-                                            class="form-control" type="text" name="mobile" t-att-value="partner.mobile or none" />
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-sm-12">
-                                        <h4>Otros datos</h4>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="control-label col-6" for="nationality_id">
-                                            Nacionalidad
-                                        </label>
-
-                                    </div>
-
-                                    <div class="col-6">
-                                        <label class="control-label col-6" for="birthdate_date">
-                                            Fecha de nacimiento
-                                        </label>
-                                        <input class="form-control o_pms_pwa_datepicker" type="text" name="birthdate_date" t-att-value="partner.birthdate_date ? partner.birthdate_date : ''" />
-                                        <span class="o_pms_pwa_calendar_icon">
-                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
-                                        </span>
-                                    </div>
-
-                                    <div class="col-sm-6 mt-3">
-                                        <label class="control-label col-6" for="gender">
-                                            Género
-                                        </label>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="gender">
-                                            <option name="gender" value="" t-att-selected="partner.gender == false ? 'selected' : None"></option>
-                                            <option name="gender" value="male" t-att-selected="partner.gender == 'male' ? 'selected' : None">
-                                                Hombre
-                                            </option>
-                                            <option name="gender" value="female" t-att-selected="partner.gender == 'female' ? 'selected' : None">
-                                                Mujer
-                                            </option>
-                                            <option name="gender" value="other" t-att-selected="partner.gender == 'other' ? 'selected' : None">
-                                                Otro
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row mt-3">
-                                    <div class="col-sm-12">
-                                        <h4>Localización</h4>
+                                        <h4>Facturación</h4>
                                     </div>
                                     <div class="col-sm-12">
-                                        <label class="control-label col-6" for="street">
+                                        <label class="control-label col-6" for="invoice_street">
                                             Dirección
                                         </label>
                                         <input
-                                            class="form-control" type="text" name="street" t-att-value="partner.street or none" />
+                                            class="form-control" type="text" name="invoice_street" t-att-value="partner.invoice_street or none" />
                                     </div>
                                     <div class="col-sm-12 mt-3">
-                                        <label class="control-label col-9" for="street2">
+                                        <label class="control-label col-9" for="invoice_street2">
                                             Dirección (segunda línea)
                                         </label>
                                         <input
-                                            class="form-control" type="text" name="street2" t-att-value="partner.street2 or none" />
+                                            class="form-control" type="text" name="invoice_street2" t-att-value="partner.invoice_street2 or none" />
                                     </div>
                                 </div>
 
@@ -188,31 +271,55 @@
                                         <label class="control-label col-6" for="country_id">
                                             País
                                         </label>
-
+                                        <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_country_id">
+                                            <t t-if="partner.invoice_country_id and partner.invoice_country_id.id">
+                                                <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.invoice_country_id.id === country_value['id'] ? 'selected' : None">
+                                                    <t t-esc="country_value['name']" />
+                                                </option>
+                                            </t>
+                                            <t t-else="">
+                                                <option value="" selected="selected"></option>
+                                                <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" >
+                                                    <t t-esc="country_value['name']" />
+                                                </option>
+                                            </t>
+                                        </select>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <label class="control-label col-6" for="state_id">
                                             Provincia
                                         </label>
-
+                                        <select data-select="invoice_state_id" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_state_id">
+                                            <t t-if="partner.invoice_state_id and partner.invoice_country_id.id">
+                                                <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" t-att-selected="partner.invoice_state_id.id === state_value['id'] ? 'selected' : None">
+                                                    <t t-esc="state_value['name']" />
+                                                </option>
+                                            </t>
+                                            <t t-else="">
+                                                <option value="" selected="selected"></option>
+                                                <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" >
+                                                    <t t-esc="state_value['name']" />
+                                                </option>
+                                            </t>
+                                        </select>
                                     </div>
                                 </div>
 
                                 <div class="row mt-3">
                                     <div class="col-sm-6">
-                                        <label class="control-label col-6" for="city">
+                                        <label class="control-label col-6" for="invoice_city">
                                             Ciudad
                                         </label>
                                         <input
-                                            class="form-control" type="text" name="city" t-att-value="partner.city or none" />
+                                            class="form-control" type="text" name="invoice_city" t-att-value="partner.invoice_city or none" />
                                     </div>
                                     <div class="col-sm-6">
-                                        <label class="control-label col-6" for="zip">
+                                        <label class="control-label col-6" for="invoice_zip">
                                             CP
                                         </label>
                                         <input
-                                            class="form-control" type="text" name="zip" t-att-value="partner.zip or none" />
+                                            class="form-control" type="text" name="invoice_zip" t-att-value="partner.invoice_zip or none" />
                                     </div>
                                 </div>
                             </div>

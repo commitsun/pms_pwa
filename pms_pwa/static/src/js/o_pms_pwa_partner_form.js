@@ -129,6 +129,7 @@ odoo.define("pms_pwa.partner_form", function (require) {
             }).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
+                        console.log("partner_data.result ---------> ", partner_data.partner);
                         $("div.o_pms_pwa_reservation_modal").modal("toggle");
                         self.displayContent("pms_pwa.roomdoo_partner_modal", {
                             partner: partner_data.partner,
@@ -147,10 +148,12 @@ odoo.define("pms_pwa.partner_form", function (require) {
             var values = $("form#partner_form").serializeArray();
             values = this.formToJson(values);
             values.submit = true;
+            console.log("values --->", values);
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
+                        console.log("partner_data.result ---------> ", partner_data.partner);
                         self._updateFormFields(partner_data.partner);
                     } else {
                         self.displayDataAlert(partner_data);
