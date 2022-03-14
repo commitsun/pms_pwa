@@ -124,7 +124,7 @@ class CashRegister(http.Controller):
             pms_property_id = request.env.user.pms_pwa_property_id.id
             date = datetime.datetime.strptime(
                 post.get("date", datetime.date.today()),
-                DEFAULT_SERVER_DATE_FORMAT,
+                get_lang(request.env).date_format,
             )
             amount = float(post.get("amount"))
             amount = amount if amount >= 0 else -amount
@@ -242,7 +242,7 @@ class CashRegister(http.Controller):
             new_journal = request.env["account.journal"].browse(new_journal_id)
             new_date = datetime.datetime.strptime(
                 kw.get("date", datetime.date.today()),
-                DEFAULT_SERVER_DATE_FORMAT,
+                get_lang(request.env).date_format,
             )
             new_amount = round(float(kw.get("amount", False)), 2)
             payment_ref = kw.get("name", False)

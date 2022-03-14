@@ -202,7 +202,7 @@ class PmsReservation(http.Controller):
                 payment_amount = float(payload["amount"])
                 payment_date = datetime.datetime.strptime(
                     kw.get("date", False),
-                    DEFAULT_SERVER_DATE_FORMAT,
+                    get_lang(request.env).date_format,
                 )
                 if "partner_id" in payload:
                     payment_partner_id = int(payload["partner_id"])
@@ -258,7 +258,7 @@ class PmsReservation(http.Controller):
                 payment_amount = float(payload["amount"])
                 payment_date = datetime.datetime.strptime(
                     kw.get("date", False),
-                    DEFAULT_SERVER_DATE_FORMAT,
+                    get_lang(request.env).date_format,
                 )
                 if "partner_id" in payload:
                     refund_partner_id = int(payload["partner_id"])
@@ -511,7 +511,7 @@ class PmsReservation(http.Controller):
                 new_journal = request.env["account.journal"].browse(new_journal_id)
                 new_date = datetime.datetime.strptime(
                     kw.get("date", False),
-                    DEFAULT_SERVER_DATE_FORMAT,
+                    get_lang(request.env).date_format,
                 )
                 new_amount = float(kw.get("amount", False))
                 new_pay_type = "inbound" if new_amount > 0 else "outbound"

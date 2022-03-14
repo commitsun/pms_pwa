@@ -275,6 +275,18 @@ section.o_pms_pwa_roomdoo {
                 left: 0px;
                 z-index: 2;
             }
+            td.o_pms_pwa_show_table{
+                background-color: $white;
+                border: none;
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
+                position: sticky;
+                left: 0px;
+                z-index: 2;
+                width: 150px !important;
+            }
             tr.o_pms_pwa_reduced_calendar_line:hover,
             td.o_pms_pwa_table_cell:hover::before,
             td.o_pms_pwa_table_cell:hover::after {
@@ -803,5 +815,7 @@ section.o_pms_pwa_roomdoo {
     cursor: pointer;
 }
 .o_pms_pwa_restrictions_info{
-    background-color: #e6afd2 !important;
+    background: repeating-linear-gradient(
+        142deg,rgba(0, 0, 0, 0) 20px, rgba(0, 0, 0, 0) 40px, #c6eaf3 10px, #c6eaf3 48px
+    );
 }

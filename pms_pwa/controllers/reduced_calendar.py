@@ -240,6 +240,8 @@ class PmsCalendar(http.Controller):
         for date in dates:
             s_date = date.strftime("%Y-%m-%d")
             if s_date not in dict_result:
+                notifications_warning = self._get_notifications_warning(pms_property_id, date, overbooking_lines)
+                notifications_info = self._get_notifications_info(pms_property_id, date, pwa_events)
                 dict_result[s_date] = {}
                 dict_result[s_date]["property_header"] = {
                     'reservations_count': 0,
@@ -249,8 +251,8 @@ class PmsCalendar(http.Controller):
                     'reservations_percent': 0,
                     'outs_percent': 0,
                     'avail_percent': 100,
-                    'notifications_warning': False,
-                    'notifications_info': False,
+                    'notifications_warning': notifications_warning,
+                    'notifications_info': notifications_info,
                 }
                 for room_type in room_types:
                     dict_result[s_date][room_type.id] = {
@@ -260,8 +262,8 @@ class PmsCalendar(http.Controller):
                         'reservations_percent': 0,
                         'outs_percent': 0,
                         'avail_percent': 100,
-                        'notifications_warning': False,
-                        'notifications_info': False,
+                        'notifications_warning': notifications_warning,
+                        'notifications_info': notifications_info,
                     }
         return dict_result
 
@@ -499,7 +501,7 @@ class PmsCalendar(http.Controller):
         to_date = max(dates)
         pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
-        pricelist_id = int(post.get("pricelist_id"))
+        pricelist_id = 1 # int(post.get("pricelist_id"))
         company = pms_property.company_id
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]
@@ -636,31 +638,31 @@ class PmsCalendar(http.Controller):
                 restriction_message = False
                 if plan:
                     rule = request.env["pms.availability.plan.rule"].search([
-                        "room_type_id", "=", room.pms_room_type_id.id,
-                        "date", "=", day,
-                        "pms_property_id", "=", pms_property_id,
-                        "availability_plan_id", "=", plan.id,
+                        ("room_type_id", "=", room.room_type_id.id),
+                        ("date", "=", day),
+                        ("pms_property_id", "=", pms_property_id),
+                        ("availability_plan_id", "=", plan.id),
                     ])
                     if rule:
                         restriction_message = ""
                         if rule.min_stay:
-                            restriction_message += "Minimo de " + str(rule.min_stay) + " noches" + "<br/>"
+                            restriction_message += "Minimo de " + str(rule.min_stay) + " noches" + "\n"
                         if rule.max_stay:
-                            restriction_message += "Máximo de " + str(rule.max_stay) + " noches" + "<br/>"
+                            restriction_message += "Máximo de " + str(rule.max_stay) + " noches" + "\n"
                         if rule.closed_arrival:
-                            restriction_message += "No se admite llegadas" + "<br/>"
+                            restriction_message += "No se admite llegadas" + "\n"
                         if rule.closed_departure:
-                            restriction_message += "No se admite salidas" + "<br/>"
+                            restriction_message += "No se admite salidas" + "\n"
                         if rule.min_stay_arrival:
                             restriction_message += "No se admite llegadas con menos de " + str(
                                 rule.min_stay_arrival
-                            ) + " noches" + "<br/>"
+                            ) + " noches" + "\n"
                         if rule.max_stay_arrival:
                             restriction_message += "No se admite llegadas con más de " + str(
                                 rule.max_stay_arrival
-                            ) + " noches" + "<br/>"
+                            ) + " noches" + "\n"
                         if rule.closed:
-                            restriction_message += "No disponible" + "<br/>"
+                            restriction_message += "No disponible" + "\n"
                 rooms_reservation_values.append(
                     {
                         "date": day,
