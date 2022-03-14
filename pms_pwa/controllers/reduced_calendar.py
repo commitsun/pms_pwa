@@ -786,13 +786,9 @@ class PmsCalendar(http.Controller):
             wizard.price = float(post.get("price"))
 
             wizard.room_type_ids = [(6, 0, [int(plan) for plan in post.get("room_type")])]
-            wizard.apply_on_monday = post.get("apply_on_monday")
-            wizard.apply_on_tuesday = post.get("apply_on_tuesday")
-            wizard.apply_on_wednesday = post.get("apply_on_wednesday")
-            wizard.apply_on_thursday = post.get("apply_on_thursday")
-            wizard.apply_on_friday = post.get("apply_on_friday")
-            wizard.apply_on_saturday = post.get("apply_on_saturday")
-            wizard.apply_on_sunday = post.get("apply_on_sunday")
+            wizard.apply_on_all_week = False
+            for post_day, day_value in post.get("days").items():
+                wizard[post_day] = day_value
             wizard.apply_massive_changes()
         if any(post.get(field) for field in availability_fields.keys()):
             wizard = request.env["pms.massive.changes.wizard"].create({
@@ -802,14 +798,9 @@ class PmsCalendar(http.Controller):
                 "end_date": end_date,
             })
             wizard.room_type_ids = [(6, 0, [int(plan) for plan in post.get("room_type")])]
-            wizard.apply_on_monday = post.get("apply_on_monday")
-            wizard.apply_on_tuesday = post.get("apply_on_tuesday")
-            wizard.apply_on_wednesday = post.get("apply_on_wednesday")
-            wizard.apply_on_thursday = post.get("apply_on_thursday")
-            wizard.apply_on_friday = post.get("apply_on_friday")
-            wizard.apply_on_saturday = post.get("apply_on_saturday")
-            wizard.apply_on_sunday = post.get("apply_on_sunday")
-
+            wizard.apply_on_all_week = False
+            for post_day, day_value in post.get("days").items():
+                wizard[post_day] = day_value
             wizard.availability_plan_ids = [(6, 0, [int(plan) for plan in post.get("availability_plan_ids")])]
             for post_field, wizard_field in availability_fields.items():
                 if post.get(post_field):
