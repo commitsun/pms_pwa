@@ -62,6 +62,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         _onClickDismissAlert: function (event) {
             event.stopPropagation();
             event.preventDefault();
+            this.cloudColorToDefault();
             event.currentTarget.parentNode.remove();
         },
 
