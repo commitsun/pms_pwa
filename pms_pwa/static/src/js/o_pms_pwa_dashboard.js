@@ -210,11 +210,13 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let partner_id = modal.find("input[name='partner_id']").val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("input[name='description']").val();
+            let date = modal.find("input[name='date']").val();
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 partner_id: partner_id,
                 amount: payment_amount,
                 description: description,
+                date: date,
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 self.displayDataAlert(data);
@@ -341,10 +343,14 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var id = e.currentTarget.getAttribute("data-id");
             var name = e.currentTarget.getAttribute("data-name");
             var amount = e.currentTarget.getAttribute("data-amount");
-
+            var date = e.currentTarget.getAttribute("data-date");
+            if(!date){
+                date = moment().format('DD/MM/YYYY');
+            }
             $("input.payment_id").val(id);
             $("input.payment_name").val(name);
             $("input.payment_amount").val(amount);
+            $("input[name=date]").val(date);
         },
         _onClickModalEditPayment: function (e) {
             var self = this;
@@ -353,6 +359,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let payment_id = $("input.payment_id").val();
             let payment_amount = $("input.payment_amount").val();
             let payment_name = $("input.payment_name").val();
+            let payment_date = $("input[name=date]").val();
             let payment_method = modal
                 .find("select[name='payment_method'] option")
                 .filter(":selected")
@@ -362,6 +369,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 amount: payment_amount,
                 name: payment_name,
                 journal_id: payment_method,
+                date: payment_date,
             }).then(function (data) {
                 self.displayDataAlert(data);
                 $("section#cash_values").load("/dashboard section#cash_values>*");

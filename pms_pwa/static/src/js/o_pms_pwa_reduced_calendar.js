@@ -161,8 +161,8 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
         _onClickPropertyChange: function (event) {
             var self = this;
             event.preventDefault();
-            // $("#status").toggle();
-            // $("#preloader").toggle();
+            $("#status").toggle();
+            $("#preloader").toggle();
             $(".active").not($(this)).removeClass("active");
             let urlParams = new URLSearchParams(window.location.search);
             let selected_date = false;
@@ -180,7 +180,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             window.location = "/calendar/reduced" + parameters;
             $("input[name='selected_property']").val(property);
             $("input[name='pms_property_id']").val(property);
-            // $("#preloader").fadeOut(2500);
+            $("#preloader").fadeOut(2500);
         },
     });
     publicWidget.registry.ReducedCalendarCollapseWidget = publicWidget.Widget.extend({
@@ -295,11 +295,17 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                     var pricelist_id = $('input[name="selected_property"]').val();
                 }
             }
+            try{
+                var availability_plan = event.getAttribute("data-availability_plan");
+            }catch{
+                var availability_plan = $('input[name="availability_plan"]').val();
+            }
 
             ajax.jsonRpc("/calendar/line", "call", {
                 pms_property_id: pms_property_id,
                 range_date: date_list,
                 pricelist_id: pricelist_id,
+                availability_plan: availability_plan,
             }).then(function (data) {
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
                     pms_property_id: pms_property_id,

@@ -161,6 +161,7 @@
                                         <label for="name">Nombre:</label>
                                         <input type="text" class="form-control payment_name" name="name" placeholder="Enter name" id="name" value="Prueba"/>
                                     </div>
+
                                     <!-- <div class="form-group">
                                         <label class="control-label col-12" for="partner_id">
                                             Proveedor
@@ -169,11 +170,20 @@
                                         <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
                                     </div> -->
                                     <div class="form-group">
-                                        <label for="price">Valor:</label>
+                                        <label for="price">Importe:</label>
                                         <input type="number" class="form-control payment_amount" id="amount" name="amount" value="25"/>
                                         <input type="hidden" class="form-control payment_id" name="id" value="4"/>
                                     </div>
 
+                                </div>
+                                <div class="col-sm-12 mb-2">
+                                    <label class="control-label col-12" for="date">
+                                        Fecha
+                                    </label>
+                                    <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="date" t-att-value="today" />
+                                    <span class="o_pms_pwa_calendar_icon">
+                                          <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                    </span>
                                 </div>
                             </div>
                             <div class="row">
