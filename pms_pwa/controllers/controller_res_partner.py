@@ -144,9 +144,9 @@ class ResPartner(http.Controller):
                     })
                     if kw.get("document_type") and kw.get("document_number"):
                         values["document_ids"] = [(0, 0, {
-                            "document_type": int(kw.get("document_type")),
-                            "document_number": kw.get("document_number"),
-                            "document_expedition_date": datetime.strptime(
+                            "category_id": int(kw.get("document_type")),
+                            "number": kw.get("document_number"),
+                            "valid_from": datetime.strptime(
                                 kw.get("document_expedition_date"), get_lang(request.env).date_format
                             ).date() if kw.get("document_expedition_date") else False,
                         })]

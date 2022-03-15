@@ -16,7 +16,7 @@ class ResPartner(models.Model):
             for document in self.id_numbers:
                 documents.append(
                     {
-                        "document_type": {"id": document.document_type.id, "name": document.document_type.name},
+                        "document_type": {"id": document.category_id.id, "name": document.category_id.name},
                         "document_number": document.name,
                         "document_expedition_date": document.valid_from.strftime(
                             get_lang(self.env).date_format
