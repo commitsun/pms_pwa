@@ -28,7 +28,7 @@ class CashRegister(http.Controller):
         amount = round(float(kw["amount"]), 2)
         pms_property_id = request.env.user.pms_pwa_property_id.id
         journal_id = int(kw.get("payment_method"))
-        journal = request.env["account.journal"].browse(journal_id)
+        journal = request.env["account.journal"].sudo().browse(journal_id)
         if kw["type"] == "open":
             statement = (
                 request.env["account.bank.statement"]
@@ -117,7 +117,7 @@ class CashRegister(http.Controller):
             partner_id = False
             if post.get("partner_id") and post.get("partner_id") != "":
                 partner_id = int(post.get("partner_id"))
-            journal = request.env["account.journal"].browse(journal_id)
+            journal = request.env["account.journal"].sudo().browse(journal_id)
             description = post.get("description")
             if not description:
                 return json.dumps({"result": False, "message": "La descripción es obligatoria"})
@@ -143,13 +143,13 @@ class CashRegister(http.Controller):
                     "ref": description,
                     "partner_id": partner_id,
                 }
-                pay = request.env["account.payment"].create(vals)
-                pay.action_post()
+                pay = request.env["account.payment"].sudo().create(vals)
+                pay.sudo().action_post()
                 mens = "Pago registrado correctamente"
             # Internal Transfer
             else:
                 target_journal_id = int(post.get("target_payment_method"))
-                target_journal = request.env["account.journal"].browse(target_journal_id)
+                target_journal = request.env["account.journal"].sudo().browse(target_journal_id)
                 partner_id = target_journal.company_id.id
                 if journal.type == "cash":
                     statement1 = self._create_statement_line(pms_property_id, journal_id, date, -amount, description, partner_id)
@@ -164,8 +164,8 @@ class CashRegister(http.Controller):
                     "is_internal_transfer": True,
                     "partner_bank_id": journal.bank_account_id.id,
                 }
-                pay1 = request.env["account.payment"].create(payment_vals)
-                pay1.action_post()
+                pay1 = request.env["account.payment"].sudo().create(payment_vals)
+                pay1.sudo().action_post()
                 if target_journal.type == "cash":
                     statement2 = self._create_statement_line(pms_property_id, target_journal_id, date, amount, description, partner_id)
                 payment_vals = {
@@ -178,7 +178,7 @@ class CashRegister(http.Controller):
                     "partner_id": partner_id,
                     "is_internal_transfer": True,
                 }
-                pay2 = request.env["account.payment"].create(payment_vals)
+                pay2 = request.env["account.payment"].sudo().create(payment_vals)
                 pay2.action_post()
                 mens = "Transferencia registrada correctamente"
 
@@ -216,7 +216,7 @@ class CashRegister(http.Controller):
                 .sudo()
                 .create(st_values)
             )
-        statement.write({
+        statement.sudo().write({
             "line_ids": [(0, 0, {
                 "date": date,
                 "amount": amount,
@@ -239,7 +239,7 @@ class CashRegister(http.Controller):
         print(kw)
         try:
             new_journal_id = int(kw.get("journal_id", False))
-            new_journal = request.env["account.journal"].browse(new_journal_id)
+            new_journal = request.env["account.journal"].sudo().browse(new_journal_id)
             new_date = datetime.datetime.strptime(
                 kw.get("date", datetime.date.today()),
                 get_lang(request.env).date_format,
@@ -283,9 +283,9 @@ class CashRegister(http.Controller):
                     if not statement_line:
                         raise UserError(_("No se ha encontrado la línea de extracto para el pago. Ponte en contacto con el responsable de administración."))
                     if new_journal != old_journal:
-                        statement_line.unlink()
+                        statement_line.sudo().unlink()
                     else:
-                        statement_line.write({
+                        statement_line.sudo().write({
                             "amount": new_amount,
                         })
                 if new_journal.type == "cash" and new_journal != old_journal:
@@ -306,11 +306,11 @@ class CashRegister(http.Controller):
                     "folio_ids": [(6, 0, old_payment.folio_ids.ids)],
                     "ref": payment_ref,
                 }
-                request.env["account.payment"].create(new_payment_vals)
+                request.env["account.payment"].sudo().create(new_payment_vals)
 
-                old_payment.action_draft()
-                old_payment.action_cancel()
-                old_payment.unlink()
+                old_payment.sudo().action_draft()
+                old_payment.sudo().action_cancel()
+                old_payment.sudo().unlink()
         except Exception as e:
             return json.dumps(
                 {

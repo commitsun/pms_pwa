@@ -214,7 +214,7 @@
                                     <label class="control-label col-12" for="payment_method">
                                         Desde:
                                     </label>
-                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
+                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id.sudo()._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
                                     <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="origin_payment_method">
                                         <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
@@ -226,7 +226,7 @@
                                     <label class="control-label col-12" for="payment_method">
                                         hacia:
                                     </label>
-                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
+                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id.sudo()._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
                                     <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="target_payment_method">
                                         <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
