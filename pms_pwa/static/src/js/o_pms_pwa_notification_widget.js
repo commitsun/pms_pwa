@@ -108,11 +108,27 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
 
             // Browser does not allow playing audio without user interaction. TO REVIEW
 
-            // if (message.audio) {
+            if (message.audio) {
+                var audio = new Audio();
+                audio.src = message.audio;
+                // when the sound has been loaded, execute your code
+                audio.oncanplaythrough = (event) => {
+                    var playedPromise = audio.play();
+                    if (playedPromise) {
+                        playedPromise.catch((e) => {
+                            console.log(e)
+                            if (e.name === 'NotAllowedError' || e.name === 'NotSupportedError') {
+                                console.log(e.name);
+                            }
+                        }).then(() => {
+                            console.log("playing sound !!!");
+                        });
+                    }
+                }
 
-            //     var audio = new Audio(message.audio);
-            //     audio.play();
-            // }
+                // var audio = new Audio(message.audio);
+                // audio.play();
+            }
 
             if (message.pms_property) {
                 var tab = $("a#property-tab-" + message.pms_property);
