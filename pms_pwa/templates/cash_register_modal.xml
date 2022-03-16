@@ -37,12 +37,15 @@
                                             </t>
                                         </select>
                                     </div>
-                                    <div class="col-sm-12 mt-2">
+                                    <div class="col-sm-8 mt-2">
                                         <label class="control-label col-12" for="partner_id">
                                             Proveedor
                                         </label>
                                         <input class="form-control o_pms_pwa_search_partner" data-supplier="true" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
                                         <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
+                                    </div>
+                                    <div class="col-sm-4 mt-2">
+                                        <button class="btn btn-message o_pms_pwa_new_partner_modal_show">Nuevo</button>
                                     </div>
                                     <div class="col-sm-12 mt-2">
                                         <label class="control-label col-12" for="amount">
@@ -122,12 +125,15 @@
                                             </t>
                                         </select>
                                     </div>
-                                    <div class="col-sm-12 mt-2">
+                                    <div class="col-sm-8 mt-2">
                                         <label class="control-label col-12" for="partner_id">
                                             Proveedor
                                         </label>
                                         <input class="form-control o_pms_pwa_search_partner" data-supplier="true" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
                                         <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
+                                    </div>
+                                    <div class="col-sm-4 mt-2">
+                                        <button class="btn btn-message o_pms_pwa_new_partner_modal_show">Nuevo</button>
                                     </div>
                                     <div class="col-sm-12 mt-2">
                                         <label class="control-label col-12" for="date">

@@ -315,7 +315,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
                     const start_date = new Date(start);
                     var select_date = start_date.toLocaleDateString(
                         document.documentElement.lang,
-                        date_options
+                        {year: "numeric", month: "2-digit", day: "2-digit"}
                     );
                     this.element.val(select_date);
                 }
@@ -346,11 +346,37 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var date = e.currentTarget.getAttribute("data-date");
             if(!date){
                 date = moment().format('DD/MM/YYYY');
+            }else{
+                date = moment(date).format('DD/MM/YYYY');
             }
             $("input.payment_id").val(id);
             $("input.payment_name").val(name);
             $("input.payment_amount").val(amount);
             $("input[name=date]").val(date);
+            $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    console.log(start);
+                    const start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        {year: "numeric", month: "2-digit", day: "2-digit"}
+                    );
+                    this.element.val(select_date);
+                }
+            );
         },
         _onClickModalEditPayment: function (e) {
             var self = this;

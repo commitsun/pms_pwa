@@ -1049,29 +1049,7 @@
                                             $(new_selector).click();
                                             $(new_selector).remove();
                                         });
-                                        $(".o_pms_pwa_modal_daterangepicker").daterangepicker({
-                                                locale: {
-                                                    direction: "ltr",
-                                                    format: "DD/MM/YYYY",
-                                                    applyLabel: "Aplicar",
-                                                    cancelLabel: "Cancelar",
-                                                },
-                                                singleDatePicker: true,
-                                                showDropdowns: true,
-                                                autoUpdateInput: false,
-                                                minYear: 1901,
-                                                maxYear: parseInt(moment().format("YYYY"), 10),
-                                            },
-                                            function (start) {
-                                                console.log(start);
-                                                const start_date = new Date(start);
-                                                var select_date = start_date.toLocaleDateString(
-                                                    document.documentElement.lang,
-                                                    date_options
-                                                );
-                                                this.element.val(select_date);
-                                            }
-                                        );
+
                                     </script>
                                     <a class="mr-4 o_pms_pwa_return" t-attf-data-id="{{reservation.id}}" href="#"><i class="fa fa-arrow-left"></i> Volver</a>
                                     <h4 class="modal-title">
@@ -1182,29 +1160,6 @@
                                             $(new_selector).click();
                                             $(new_selector).remove();
                                         });
-                                        $(".o_pms_pwa_modal_daterangepicker").daterangepicker({
-                                            locale: {
-                                                direction: "ltr",
-                                                format: "DD/MM/YYYY",
-                                                applyLabel: "Aplicar",
-                                                cancelLabel: "Cancelar",
-                                            },
-                                            singleDatePicker: true,
-                                            showDropdowns: true,
-                                            autoUpdateInput: false,
-                                            minYear: 1901,
-                                            maxYear: parseInt(moment().format("YYYY"), 10),
-                                        },
-                                        function (start) {
-                                            console.log(start);
-                                            const start_date = new Date(start);
-                                            var select_date = start_date.toLocaleDateString(
-                                                document.documentElement.lang,
-                                                date_options
-                                            );
-                                            this.element.val(select_date);
-                                        }
-                                    );
                                     </script>
                                     <a class="mr-4 o_pms_pwa_return" t-attf-data-id="{{reservation.id}}" href="#"><i class="fa fa-arrow-left"></i> Volver</a>
                                     <h4 class="modal-title">

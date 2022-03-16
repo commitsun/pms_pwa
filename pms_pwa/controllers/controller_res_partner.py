@@ -82,7 +82,6 @@ class ResPartner(http.Controller):
                 "invoice_city": False,
                 "invoice_zip": False,
                 "invoice_country_id": False,
-                "comment": False,
                 "lang": False,
                 "allowed_channel_types": [],
                 "allowed_country_ids": request.env[
@@ -124,12 +123,11 @@ class ResPartner(http.Controller):
                     "city": kw.get("invoice_city"),
                     "zip": kw.get("invoice_zip"),
                     "country_id": int(kw.get("invoice_country_id")) if kw.get("invoice_country_id") else False,
+                    "state_id": int(kw.get("invoice_state_id")) if kw.get("invoice_state_id") else False,
                 }
 
                 if is_agency:
-                    values["sale_channel_id"] = int(kw.get("sale_channel_id")) if kw.get(
-                        "sale_channel_id"
-                    ) else False
+                    values["sale_channel_id"] = int(kw.get("sale_channel_id")) if kw.get("sale_channel_id") else False
 
                 if company_type == "person":
                     values.update({
@@ -140,7 +138,13 @@ class ResPartner(http.Controller):
                         ).date() if kw.get("birthdate_date") else False,
                         "gender": kw.get("gender"),
                         "nationality_id": int(kw.get("nationality_id")) if kw.get("nationality_id") else False,
-                        "state_id": int(kw.get("state_id")) if kw.get("state_id") else False,
+                        # "street": kw.get("street"),
+                        # "street2": kw.get("street2"),
+                        # "city": kw.get("city"),
+                        # "zip": kw.get("zip"),
+                        # "country_id": int(kw.get("country_id")) if kw.get("country_id") else False,
+                        # "state_id": int(kw.get("state_id")) if kw.get("state_id") else False,
+
                     })
                     if kw.get("document_type") and kw.get("document_number"):
                         values["document_ids"] = [(0, 0, {
@@ -197,13 +201,18 @@ class ResPartner(http.Controller):
                 document_types = request.env["res.partner.category"].sudo().search([])
                 for type in document_types:
                     allowed_document_types.append({"id": type.id, "name": type.name})
+            country_list = request.env["pms.property"]._get_allowed_countries()
+
             data_json = {
+                "partner_type": "person",
                 # "allowed_langs": request.env['res.lang'].get_installed(),
                 "allowed_channel_types": allowed_channel_types,
-                "allowed_invoice_country_ids": request.env[
-                    "pms.property"
-                ]._get_allowed_countries(),
+                "allowed_invoice_country_ids": country_list,
+                "allowed_country_ids": country_list,
+                "allowed_invoice_country_ids": country_list,
+                "allowed_nationality_ids": country_list,
                 "allowed_invoice_states": allowed_states,
+                "allowed_states": allowed_states,
                 "allowed_document_types": allowed_document_types,
             }
-            return json.dumps(data_json)
+            return data_json

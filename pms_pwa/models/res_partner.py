@@ -41,12 +41,17 @@ class ResPartner(models.Model):
                 )
 
         allowed_channel_types = []
+        allowed_document_types = []
         if self.is_agency:
             domain = [("channel_type", "=", "indirect")]
             channel_types = self.env["pms.sale.channel"].search(domain)
             for channel in channel_types:
                 allowed_channel_types.append({"id": channel.id, "name": channel.name})
 
+        document_types = self.env["res.partner.category"].sudo().search([])
+        for type in document_types:
+            allowed_document_types.append({"id": type.id, "name": type.name})
+        country_list = self.env["pms.property"]._get_allowed_countries()
         partner_json = {
             "id": self.id,
             "partner_type": "agency" if self.is_agency else self.company_type,
@@ -88,9 +93,11 @@ class ResPartner(models.Model):
             "comment": self.comment or False,
             # "lang": [(self.lang.code, self.lang.name)] if self.lang else False,
             "allowed_channel_types": allowed_channel_types,
-            "allowed_invoice_country_ids": self.env[
-                "pms.property"
-            ]._get_allowed_countries(),
+            "allowed_country_ids": country_list,
+            "allowed_invoice_country_ids": country_list,
+            "allowed_nationality_ids": country_list,
             "allowed_invoice_states": allowed_states,
+            "allowed_states": allowed_states,
+            "allowed_document_types": allowed_document_types,
         }
         return partner_json

@@ -1978,6 +1978,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         _onClickPaymentButton: function (event) {
             event.preventDefault();
             var self = this;
+            let modal = $("div#o_pms_pwa_new_cash_register_payment");
             var button = event.currentTarget;
             var reservation_id = false;
             try {
@@ -1997,6 +1998,31 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self.displayContent("pms_pwa.reservation_payment_modal", {
                         reservation: data,
                     });
+                    $('input[name="date"]').val(moment().format('DD/MM/YYYY'));
+                    $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                        {
+                            locale: {
+                                direction: "ltr",
+                                format: "DD/MM/YYYY",
+                                applyLabel: "Aplicar",
+                                cancelLabel: "Cancelar",
+                            },
+                            singleDatePicker: true,
+                            showDropdowns: true,
+                            autoUpdateInput: false,
+                            minYear: 1901,
+                            maxYear: parseInt(moment().format("YYYY"), 10),
+                        },
+                        function (start) {
+                            console.log(start);
+                            const start_date = new Date(start);
+                            var select_date = start_date.toLocaleDateString(
+                                document.documentElement.lang,
+                                date_options
+                            );
+                            this.element.val(select_date);
+                        }
+                    );
                     $(".o_pms_pwa_button_payment_confirm").on("click", function (
                         new_event
                     ) {
@@ -2040,6 +2066,31 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self.displayContent("pms_pwa.reservation_refund_modal", {
                         reservation: data,
                     });
+                    var date = moment(date).format('DD/MM/YYYY');
+                    $("input[name=date]").val(date);
+                    $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                        {
+                            locale: {
+                                direction: "ltr",
+                                format: "DD/MM/YYYY",
+                                applyLabel: "Aplicar",
+                                cancelLabel: "Cancelar",
+                            },
+                            singleDatePicker: true,
+                            showDropdowns: true,
+                            autoUpdateInput: false,
+                            minYear: 1901,
+                            maxYear: parseInt(moment().format("YYYY"), 10),
+                        },
+                        function (start) {
+                            const start_date = new Date(start);
+                            var select_date = start_date.toLocaleDateString(
+                                document.documentElement.lang,
+                                {year: "numeric", month: "2-digit", day: "2-digit"}
+                            );
+                            this.element.val(select_date);
+                        }
+                    );
                     $(".o_pms_pwa_button_refund_confirm").on("click", function (
                         new_event
                     ) {

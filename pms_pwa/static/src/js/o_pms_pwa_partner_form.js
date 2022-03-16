@@ -12,6 +12,7 @@ odoo.define("pms_pwa.partner_form", function (require) {
         xmlDependencies: ["/pms_pwa/static/src/xml/pms_pwa_roomdoo_partner_modal.xml"],
         events: {
             "click div.o_pms_pwa_partner_modal_show": "_onClickOpenPartnerModal",
+            "click .o_pms_pwa_new_partner_modal_show": "_onClickNewPartnerModal",
             // "change select[name=country_id]": "_onChangeCountryId",
             // "change select[name=invoice_country_id]": "_onChangeCountryId",
             "change select#partner_type_change": "_onPartnerTypeChange",
@@ -20,8 +21,8 @@ odoo.define("pms_pwa.partner_form", function (require) {
 
         init: function () {
             this._super.apply(this, arguments);
-            this.allowed_fields = ["allowed_nationality_ids", "allowed_country_ids", "allowed_states", "allowed_invoice_country_ids", "allowed_invoice_state_ids",];
-            this.m2o_fields = ["country_id", "state_id", "nationality_id", "invoice_country_id", "invoice_state_id",];
+            this.allowed_fields = ["allowed_nationality_ids", "allowed_country_ids", "allowed_states", "allowed_invoice_country_ids", "allowed_invoice_states"];
+            this.m2o_fields = ["country_id", "state_id", "nationality_id", "invoice_country_id", "invoice_state_id"];
         },
 
         start: function () {
@@ -116,6 +117,43 @@ odoo.define("pms_pwa.partner_form", function (require) {
                 }
             });
         },
+        _onClickNewPartnerModal: function (event) {
+            event.preventDefault();
+            var self = this;
+            var partner_data = false;
+            $('.modal').modal('hide');
+            /* RPC call to get the reservation data */
+            ajax.jsonRpc("/new_partner", "call", {
+            }).then(function (partner_data) {
+                setTimeout(function () {
+                    if (partner_data) {
+                        $("div.o_pms_pwa_reservation_modal").modal("toggle");
+                        self.displayContent("pms_pwa.roomdoo_partner_modal", {
+                            partner: partner_data,
+                        });
+                        if(partner_data.partner_type == "person"){
+
+                            $(".is_agency").hide();
+                            $(".is_company").hide();
+                            $(".is_person").show();
+                        }else{
+                            if(partner_data.partner_type == "company"){
+                                $(".is_person").hide();
+                                $(".is_agency").hide();
+                                $(".is_company").show();
+                            }else{
+                                $(".is_person").hide();
+                                $(".is_company").show();
+                                $(".is_agency").show();
+                            }
+                        }
+                        self._dateRangeActive();
+                    } else {
+                        self.displayDataAlert(partner_data);
+                    }
+                }, 0);
+            });
+        },
         _onClickOpenPartnerModal: function (event) {
             event.preventDefault();
             var self = this;
@@ -131,7 +169,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
             }).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
-
                         $("div.o_pms_pwa_reservation_modal").modal("toggle");
                         self.displayContent("pms_pwa.roomdoo_partner_modal", {
                             partner: partner_data.partner,
@@ -199,9 +236,29 @@ odoo.define("pms_pwa.partner_form", function (require) {
         },
 
         _dateRangeActive: function () {
-            $("form#partner_form input.o_pms_pwa_datepicker").datepicker({
-                format: "dd/mm/yyyy",
-            });
+            $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    const start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        {year: "numeric", month: "2-digit", day: "2-digit"}
+                    );
+                    this.element.val(select_date);
+                }
+            );
         },
         _onPartnerTypeChange: function (event) {
             event.preventDefault();
