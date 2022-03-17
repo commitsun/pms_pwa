@@ -200,10 +200,13 @@ class PmsReservation(http.Controller):
                 payload = http.request.jsonrequest.get("params")
                 payment_method = int(payload["payment_method"])
                 payment_amount = float(payload["amount"])
-                payment_date = datetime.datetime.strptime(
-                    kw.get("date", False),
-                    get_lang(request.env).date_format,
-                )
+                if payload.get("date"):
+                    payment_date = datetime.datetime.strptime(
+                        payload.get("date", False),
+                        get_lang(request.env).date_format,
+                    )
+                else:
+                    payment_date = datetime.datetime.today()
                 if "partner_id" in payload:
                     payment_partner_id = int(payload["partner_id"])
                 else:
@@ -256,10 +259,13 @@ class PmsReservation(http.Controller):
                 payload = http.request.jsonrequest.get("params")
                 payment_method = int(payload["payment_method"])
                 payment_amount = float(payload["amount"])
-                payment_date = datetime.datetime.strptime(
-                    kw.get("date", False),
-                    get_lang(request.env).date_format,
-                )
+                if payload.get("date"):
+                    payment_date = datetime.datetime.strptime(
+                        payload.get("date", False),
+                        get_lang(request.env).date_format,
+                    )
+                else:
+                    payment_date = datetime.datetime.today()
                 if "partner_id" in payload:
                     refund_partner_id = int(payload["partner_id"])
                 else:
