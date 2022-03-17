@@ -162,7 +162,7 @@ class PmsCalendar(http.Controller):
             (
                 pms_property_id,
                 tuple(dates),
-                tuple(room_types.ids),
+                tuple(room_types.ids) if room_types else (0,),
             )
         )
         avail_result = request.env.cr.fetchall()
@@ -502,6 +502,13 @@ class PmsCalendar(http.Controller):
         pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
         pricelist_id = int(post.get("pricelist_id"))
+        pricelist = request.env["product.pricelist"].browse(pricelist_id)
+        if post.get("availability_plan"):
+            availability_plan = request.env["pms.availability.plan"].browse(
+                int(post.get("availability_plan"))
+            )
+        else:
+            availability_plan = pricelist.availability_plan_id
         company = pms_property.company_id
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]
@@ -633,15 +640,13 @@ class PmsCalendar(http.Controller):
                     }
                 )
             for day in free_dates:
-                pricelist = request.env["product.pricelist"].browse(pricelist_id)
-                plan = pricelist.availability_plan_id
                 restriction_message = False
-                if plan:
+                if availability_plan:
                     rule = request.env["pms.availability.plan.rule"].search([
                         ("room_type_id", "=", room.room_type_id.id),
                         ("date", "=", day),
                         ("pms_property_id", "=", pms_property_id),
-                        ("availability_plan_id", "=", plan.id),
+                        ("availability_plan_id", "=", availability_plan.id),
                     ])
                     if rule:
                         restriction_message = ""
