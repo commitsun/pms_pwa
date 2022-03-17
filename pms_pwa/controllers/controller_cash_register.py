@@ -279,7 +279,7 @@ class CashRegister(http.Controller):
                         {"result": False, "message": _("El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración.")}
                     )
                 if old_journal.type == "cash":
-                    statement_line = old_payment.reconciled_statement_ids.filter(lambda x: x.date == old_date and x.amount == old_amount)
+                    statement_line = old_payment.reconciled_statement_ids.filtered(lambda x: x.date == old_date and x.amount == old_amount)
                     if not statement_line:
                         raise UserError(_("No se ha encontrado la línea de extracto para el pago. Ponte en contacto con el responsable de administración."))
                     if new_journal != old_journal:
