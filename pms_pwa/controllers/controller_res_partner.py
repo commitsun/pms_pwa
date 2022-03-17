@@ -84,10 +84,10 @@ class ResPartner(http.Controller):
                 "invoice_country_id": False,
                 "lang": False,
                 "allowed_channel_types": [],
-                "allowed_country_ids": request.env[
-                    "pms.property"
-                ]._get_allowed_countries(),
-                "allowed_states": [],
+                # "allowed_country_ids": request.env[
+                #     "pms.property"
+                # ]._get_allowed_countries(),
+                # "allowed_states": [],
                 "comment": False,
             }
             return {"result": True, "partner": partner_data}
@@ -178,17 +178,17 @@ class ResPartner(http.Controller):
             except Exception as e:
                 return {"result": False, "message": str(e)}
         else:
-            allowed_states = []
-            if kw.get("invoice_country_id"):
-                for state in request.env["res.country.state"].search(
-                    [("country_id", "=", int(kw["invoice_country_id"]))]
-                ):
-                    allowed_states.append(
-                        {
-                            "id": state.id,
-                            "name": state.name,
-                        }
-                    )
+            # allowed_states = []
+            # if kw.get("invoice_country_id"):
+            #     for state in request.env["res.country.state"].search(
+            #         [("country_id", "=", int(kw["invoice_country_id"]))]
+            #     ):
+            #         allowed_states.append(
+            #             {
+            #                 "id": state.id,
+            #                 "name": state.name,
+            #             }
+            #         )
             is_agency = True if kw.get("partner_type") == "agency" else False
             allowed_channel_types = []
             allowed_document_types = []
@@ -201,18 +201,17 @@ class ResPartner(http.Controller):
                 document_types = request.env["res.partner.id_category"].sudo().search([])
                 for type in document_types:
                     allowed_document_types.append({"id": type.id, "name": type.name})
-            country_list = request.env["pms.property"]._get_allowed_countries()
+            # country_list = request.env["pms.property"]._get_allowed_countries()
 
             data_json = {
                 "partner_type": "person",
                 # "allowed_langs": request.env['res.lang'].get_installed(),
                 "allowed_channel_types": allowed_channel_types,
-                "allowed_invoice_country_ids": country_list,
-                "allowed_country_ids": country_list,
-                "allowed_invoice_country_ids": country_list,
-                "allowed_nationality_ids": country_list,
-                "allowed_invoice_states": allowed_states,
-                "allowed_states": allowed_states,
+                # "allowed_invoice_country_ids": country_list,
+                # "allowed_country_ids": country_list,
+                # "allowed_nationality_ids": country_list,
+                # "allowed_invoice_states": allowed_states,
+                # "allowed_states": allowed_states,
                 "allowed_document_types": allowed_document_types,
             }
             return data_json

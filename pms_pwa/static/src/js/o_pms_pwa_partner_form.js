@@ -13,16 +13,14 @@ odoo.define("pms_pwa.partner_form", function (require) {
         events: {
             "click div.o_pms_pwa_partner_modal_show": "_onClickOpenPartnerModal",
             "click .o_pms_pwa_new_partner_modal_show": "_onClickNewPartnerModal",
-            // "change select[name=country_id]": "_onChangeCountryId",
-            // "change select[name=invoice_country_id]": "_onChangeCountryId",
             "change select#partner_type_change": "_onPartnerTypeChange",
             "click button.send_form_partner": "_submitForm",
         },
 
         init: function () {
             this._super.apply(this, arguments);
-            this.allowed_fields = ["allowed_nationality_ids", "allowed_country_ids", "allowed_states", "allowed_invoice_country_ids", "allowed_invoice_states"];
-            this.m2o_fields = ["country_id", "state_id", "nationality_id", "invoice_country_id", "invoice_state_id"];
+            // this.allowed_fields = ["allowed_nationality_ids", "allowed_country_ids", "allowed_states", "allowed_invoice_country_ids", "allowed_invoice_states"];
+            // this.m2o_fields = ["country_id", "state_id", "nationality_id", "invoice_country_id", "invoice_state_id"];
         },
 
         start: function () {
@@ -148,6 +146,8 @@ odoo.define("pms_pwa.partner_form", function (require) {
                             }
                         }
                         self._dateRangeActive();
+                        self._searchCountry();
+                        self._searchState();
                     } else {
                         self.displayDataAlert(partner_data);
                     }
@@ -161,7 +161,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
             var reservation_id = event.currentTarget.getAttribute(
                 "data-reservation-id"
             );
-
             var partner_data = false;
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/partner/" + partner_id, "call", {
@@ -191,6 +190,8 @@ odoo.define("pms_pwa.partner_form", function (require) {
                             }
                         }
                         self._dateRangeActive();
+                        self._searchCountry();
+                        self._searchState();
                     } else {
                         self.displayDataAlert(partner_data);
                     }
@@ -205,11 +206,14 @@ odoo.define("pms_pwa.partner_form", function (require) {
             values = this.formToJson(values);
             values.submit = true;
             /* RPC call to get the reservation data */
+            if(values.partney_type != 'person'){
+                values.firstname = values.company_name;
+            }
             ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
                         $("#o_pms_pwa_partner_modal").modal("toggle");
-                        self._updateFormFields(partner_data);
+                        // self._updateFormFields(partner_data);
                         //self._updateFormFields(partner_data.partner);
 
                     } else {
@@ -218,23 +222,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
                 }, 0);
             });
         },
-
-        _onChangeCountryId: function (event) {
-            event.preventDefault();
-            var self = this;
-            var values = $("form#partner_form").serializeArray();
-            values = this.formToJson(values);
-
-            ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
-                partner_data = JSON.parse(partner_data);
-                setTimeout(function () {
-                    if (partner_data) {
-                        self._updateFormFields(partner_data);
-                    }
-                }, 0);
-            });
-        },
-
         _dateRangeActive: function () {
             $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
                 {
@@ -259,6 +246,87 @@ odoo.define("pms_pwa.partner_form", function (require) {
                     this.element.val(select_date);
                 }
             );
+        },
+        _searchCountry: function () {
+            $(".o_pms_pwa_search_country_name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/pms_checkin_partner/search",
+                        method: "GET",
+                        dataType: "json",
+                        data: {keywords: request.term, model: "res.country", id: null},
+                        success: function (data) {
+                            response(
+                                $.map(data, function (item) {
+                                    return {
+                                        label:
+                                            (item.type === "c" ? "Category: " : "") +
+                                            item.name,
+                                        value: item.name,
+                                        id: item.id,
+                                    };
+                                })
+                            );
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                    });
+                },
+                select: function (suggestion, term, item) {
+                    if (term && term.item) {
+                        $(suggestion.target.parentElement)
+                            .find('.country')
+                            .val(term.item.id);
+                    }
+                },
+                minLength: 1,
+            });
+        },
+        _searchState: function(){
+            $(".o_pms_pwa_search_state_name").autocomplete({
+                source: function (request, response) {
+                    var checkin_partner = $(
+                        ".bs-stepper-content .o_pms_pwa_search_state_name"
+                    ).data("id");
+                    $.ajax({
+                        url: "/pms_checkin_partner/search",
+                        method: "GET",
+                        dataType: "json",
+                        data: {
+                            keywords: request.term,
+                            model: "res.country.state",
+                            id: checkin_partner,
+                        },
+                        success: function (data) {
+                            response(
+                                $.map(data, function (item) {
+                                    return {
+                                        label:
+                                            (item.type === "c"
+                                                ? "Category: "
+                                                : "") + item.name,
+                                        value: item.name,
+                                        id: item.id,
+                                    };
+                                })
+                            );
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                    });
+                },
+                select: function (suggestion, term, item) {
+                    // console.log("suggestion", suggestion, term, item);
+                    if (term && term.item) {
+                        $(suggestion.target.parentElement)
+                            .find('.state')
+                            .val(term.item.id);
+                    }
+                },
+                minLength: 1,
+            });
         },
         _onPartnerTypeChange: function (event) {
             event.preventDefault();

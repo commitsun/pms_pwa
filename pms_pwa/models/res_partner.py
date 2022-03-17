@@ -29,16 +29,16 @@ class ResPartner(models.Model):
                 "name": "",
             }
         ]
-        if self.country_id:
-            for state in self.env["res.country.state"].search(
-                [("country_id", "=", self.country_id.id)]
-            ):
-                allowed_states.append(
-                    {
-                        "id": state.id,
-                        "name": state.name,
-                    }
-                )
+        # if self.country_id:
+        #     for state in self.env["res.country.state"].search(
+        #         [("country_id", "=", self.country_id.id)]
+        #     ):
+        #         allowed_states.append(
+        #             {
+        #                 "id": state.id,
+        #                 "name": state.name,
+        #             }
+        #         )
 
         allowed_channel_types = []
         allowed_document_types = []
@@ -51,7 +51,7 @@ class ResPartner(models.Model):
         document_types = self.env["res.partner.id_category"].sudo().search([])
         for type in document_types:
             allowed_document_types.append({"id": type.id, "name": type.name})
-        country_list = self.env["pms.property"]._get_allowed_countries()
+        # country_list = self.env["pms.property"]._get_allowed_countries()
         partner_json = {
             "id": self.id,
             "partner_type": "agency" if self.is_agency else self.company_type,
@@ -93,11 +93,11 @@ class ResPartner(models.Model):
             "comment": self.comment or False,
             # "lang": [(self.lang.code, self.lang.name)] if self.lang else False,
             "allowed_channel_types": allowed_channel_types,
-            "allowed_country_ids": country_list,
-            "allowed_invoice_country_ids": country_list,
-            "allowed_nationality_ids": country_list,
-            "allowed_invoice_states": allowed_states,
-            "allowed_states": allowed_states,
+            # "allowed_country_ids": country_list,
+            # "allowed_invoice_country_ids": country_list,
+            # "allowed_nationality_ids": country_list,
+            # "allowed_invoice_states": allowed_states,
+            # "allowed_states": allowed_states,
             "allowed_document_types": allowed_document_types,
         }
         return partner_json

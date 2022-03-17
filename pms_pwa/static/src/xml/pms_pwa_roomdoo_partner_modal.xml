@@ -51,11 +51,11 @@
                                         <h4>Datos</h4>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label class="control-label col-6" for="firstname">
+                                        <label class="control-label col-6" for="company_name">
                                             Nombre
                                         </label>
                                         <input
-                                            class="form-control" type="text" name="firstname" t-att-value="partner.firstname or none" />
+                                            class="form-control" type="text" name="company_name" t-att-value="partner.firstname or none" />
                                     </div>
                                     <div class="col-sm-6" >
                                         <label class="control-label col-6" for="vat">
@@ -174,20 +174,8 @@
                                             <label class="control-label col-6" for="nationality_id">
                                                 Nacionalidad
                                             </label>
-                                            <select data-select="allowed_nationality_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="nationality_id">
-                                                <t t-if="partner.nationality_id and partner.nationality_id.id">
-                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.nationality_id.id === country_value['id'] ? 'selected' : None">
-                                                        <t t-esc="country_value['name']" />
-                                                    </option>
-                                                </t>
-                                                <t t-else="">
-                                                    <option value="" selected="selected"></option>
-                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" >
-                                                        <t t-esc="country_value['name']" />
-                                                    </option>
-                                                </t>
-                                            </select>
-
+                                            <input autocomplete="off" autofill="off" t-att-data-id="partner.nationality_id ? partner.nationality_id.id : ''" class="form-control o_pms_pwa_search_country_name" type="text" name="nationality_name" placeholder="País" t-att-value="partner.nationality_id ? partner.nationality_id.name : ''" />
+                                            <input class="country" type="hidden" name="nationality_id" t-att-value="partner.nationality_id ? partner.nationality_id.id : ''" />
                                         </div>
 
                                         <div class="col-6">
@@ -244,38 +232,17 @@
                                             <label class="control-label col-6" for="country_id">
                                                 País
                                             </label>
-                                            <select data-select="allowed_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="country_id">
-                                                <t t-if="partner.country_id and partner.country_id.id">
-                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.country_id.id === country_value['id'] ? 'selected' : None">
-                                                        <t t-esc="country_value['name']" />
-                                                    </option>
-                                                </t>
-                                                <t t-else="">
-                                                    <option value="" selected="selected"></option>
-                                                    <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" >
-                                                        <t t-esc="country_value['name']" />
-                                                    </option>
-                                                </t>
-                                            </select>
+                                            <input autocomplete="off" autofill="off" t-att-data-id="partner.country_id ? partner.country_id.id : ''" class="form-control o_pms_pwa_search_country_name" type="text" name="country_name" placeholder="País" t-att-value="partner.country_id ? partner.country_id.name : ''" />
+                                            <input class="country" type="hidden" name="country_id" t-att-value="partner.country_id ? partner.country_id.id : ''" />
+
                                         </div>
 
                                         <div class="col-sm-6 is_person">
                                             <label class="control-label col-6" for="state_id">
                                                 Provincia
                                             </label>
-                                            <select data-select="allowed_states" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="state_id">
-                                                <t t-if="partner.state_id">
-                                                    <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" t-att-selected="partner.state_id.id == state_value['id'] ? 'selected' : None">
-                                                        <t t-esc="state_value['name']" />
-                                                    </option>
-                                                </t>
-                                                <t t-else="">
-                                                    <option value="" selected="selected"></option>
-                                                    <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" >
-                                                        <t t-esc="state_value['name']" />
-                                                    </option>
-                                                </t>
-                                            </select>
+                                            <input autocomplete="off" autofill="off" t-att-data-id="partner.state_id ? partner.state_id.id : ''" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner.state_id ? partner.state_id.name : ''" />
+                                            <input class="state" type="hidden" name="state_id" t-att-value="partner.state_id ? partner.state_id.id : ''" />
                                         </div>
                                     </div>
 
@@ -313,47 +280,24 @@
                                             class="form-control" type="text" name="invoice_street2" t-att-value="partner.invoice_street2 or none" />
                                     </div>
                                 </div>
-
                                 <div class="row mt-3">
                                     <div class="col-sm-6">
-                                        <label class="control-label col-6" for="country_id">
+                                        <label class="control-label col-6" for="invoice_country_id">
                                             País
                                         </label>
-                                        <select data-select="allowed_invoice_country_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_country_id">
-                                            <t t-if="partner.invoice_country_id and partner.invoice_country_id.id">
-                                                <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" t-att-selected="partner.invoice_country_id.id === country_value['id'] ? 'selected' : None">
-                                                    <t t-esc="country_value['name']" />
-                                                </option>
-                                            </t>
-                                            <t t-else="">
-                                                <option value="" selected="selected"></option>
-                                                <option t-foreach="partner.allowed_invoice_country_ids" t-as="country" t-att-value="country_value['id']" >
-                                                    <t t-esc="country_value['name']" />
-                                                </option>
-                                            </t>
-                                        </select>
+                                        <input autocomplete="off" autofill="off" t-att-data-id="partner.invoice_country_id ? partner.invoice_country_id.id : ''" class="form-control o_pms_pwa_search_country_name" type="text" name="invoice_country_name" placeholder="País" t-att-value="partner.invoice_country_id ? partner.invoice_country_id.name : ''" />
+                                        <input class="country" type="hidden" name="invoice_country_id" t-att-value="partner.invoice_country_id ? partner.invoice_country_id.id : ''" />
+
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <label class="control-label col-6" for="state_id">
+                                        <label class="control-label col-6" for="invoice_state_id">
                                             Provincia
                                         </label>
-                                        <select data-select="allowed_invoice_state_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="invoice_state_id">
-                                            <t t-if="partner.invoice_state_id and partner.invoice_country_id.id">
-                                                <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" t-att-selected="partner.invoice_state_id.id === state_value['id'] ? 'selected' : None">
-                                                    <t t-esc="state_value['name']" />
-                                                </option>
-                                            </t>
-                                            <t t-else="">
-                                                <option value="" selected="selected"></option>
-                                                <option t-foreach="partner.allowed_invoice_states" t-as="state" t-att-value="state_value['id']" >
-                                                    <t t-esc="state_value['name']" />
-                                                </option>
-                                            </t>
-                                        </select>
+                                        <input autocomplete="off" autofill="off" t-att-data-id="partner.invoice_state_id ? partner.invoice_state_id.id : ''" class="form-control o_pms_pwa_search_state_name" type="text" name="invoice_state_name" placeholder="Provincia" t-att-value="partner.invoice_state_id ? partner.invoice_state_id.name : ''" />
+                                        <input class="state" type="hidden" name="invoice_state_id" t-att-value="partner.invoice_state_id ? partner.invoice_state_id.id : ''" />
                                     </div>
                                 </div>
-
                                 <div class="row mt-3">
                                     <div class="col-sm-6">
                                         <label class="control-label col-6" for="invoice_city">
