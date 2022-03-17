@@ -19,8 +19,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
 
         init: function () {
             this._super.apply(this, arguments);
-            // this.allowed_fields = ["allowed_nationality_ids", "allowed_country_ids", "allowed_states", "allowed_invoice_country_ids", "allowed_invoice_states"];
-            // this.m2o_fields = ["country_id", "state_id", "nationality_id", "invoice_country_id", "invoice_state_id"];
         },
 
         start: function () {
@@ -61,59 +59,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
                 }
             });
             return form_object;
-        },
-
-        _updateFormFields: function (form_fields) {
-            var self = this;
-
-            // Allowed fields
-            $.each(self.allowed_fields, function (key, value) {
-
-                try {
-                    var select = $('form#partner_form [data-select="' + value + '"]');
-                } catch (error) {
-                    console.log(error);
-                }
-                if (select.length != 0) {
-                    select.empty();
-                    $.each(form_fields[value], function (subkey, subvalue) {
-                        var option = new Option(
-                            subvalue.name,
-                            subvalue.id,
-                            false,
-                            false
-                        );
-                        $(option).html(subvalue.name);
-                        select.append(option);
-                    });
-
-                    //delete form_fields[value];
-                }
-            });
-
-            // Regular fields
-            $.each(form_fields, function (key, value) {
-                var input = $("form#partner_form input[name='" + key + "']");
-                if (input.length != 0) {
-                    input.val(value);
-                } else if (self.m2o_fields.includes(key)) {
-                    $(
-                        "form#partner_form select[name='" +
-                            key +
-                            "'] option[value='" +
-                            value.id +
-                            "']"
-                    ).prop("selected", true);
-                } else {
-                    $(
-                        "form#partner_form select[name='" +
-                            key +
-                            "'] option[value='" +
-                            value +
-                            "']"
-                    ).prop("selected", true);
-                }
-            });
         },
         _onClickNewPartnerModal: function (event) {
             event.preventDefault();
@@ -213,9 +158,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
                         $("#o_pms_pwa_partner_modal").modal("toggle");
-                        // self._updateFormFields(partner_data);
-                        //self._updateFormFields(partner_data.partner);
-
                     } else {
                         self.displayDataAlert(partner_data);
                     }
