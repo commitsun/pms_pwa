@@ -514,7 +514,7 @@ class PmsReservation(http.Controller):
 
             try:
                 new_journal_id = int(kw.get("journal_id", False))
-                new_journal = request.env["account.journal"].browse(new_journal_id)
+                new_journal = request.env["account.journal"].sudo().browse(new_journal_id)
                 new_date = datetime.datetime.strptime(
                     kw.get("date", False),
                     get_lang(request.env).date_format,
@@ -541,7 +541,6 @@ class PmsReservation(http.Controller):
                 old_pay_type = payment.payment_type
                 old_date = payment.date
                 old_amount = payment.amount if payment.payment_type == "inbound" else -payment.amount
-
                 statement_line = False
                 if old_journal.type == "cash":
                     statement_line = folio.statement_line_ids.filtered(
@@ -560,9 +559,9 @@ class PmsReservation(http.Controller):
                         return json.dumps(
                             {"result": True, "message": _("El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración.")}
                         )
-                    payment.action_draft()
-                    payment.action_cancel()
-                    payment.unlink()
+                    payment.sudo().action_draft()
+                    payment.sudo().action_cancel()
+                    payment.sudo().unlink()
                     if new_pay_type == "inbound":
                         folio.do_payment(
                             new_journal,
@@ -572,7 +571,7 @@ class PmsReservation(http.Controller):
                             folio,
                             partner=folio.partner_id,
                             date=new_date,
-                        )
+                        ).with_user(request.env.user)
                     else:
                         folio.do_refund(
                             new_journal,
@@ -582,7 +581,7 @@ class PmsReservation(http.Controller):
                             folio,
                             partner=folio.partner_id,
                             date=new_date,
-                        )
+                        ).with_user(request.env.user)
             except Exception as e:
                 return json.dumps(
                     {

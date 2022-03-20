@@ -150,7 +150,7 @@ class CashRegister(http.Controller):
             else:
                 target_journal_id = int(post.get("target_payment_method"))
                 target_journal = request.env["account.journal"].sudo().browse(target_journal_id)
-                partner_id = target_journal.company_id.id
+                partner_id = target_journal.company_id.partner_id.id
                 if journal.type == "cash":
                     statement1 = self._create_statement_line(pms_property_id, journal_id, date, -amount, description, partner_id)
                 payment_vals = {
@@ -162,7 +162,7 @@ class CashRegister(http.Controller):
                     "ref": description,
                     "partner_id": partner_id,
                     "is_internal_transfer": True,
-                    "partner_bank_id": journal.bank_account_id.id,
+                    "partner_bank_id": target_journal.bank_account_id.id,
                 }
                 pay1 = request.env["account.payment"].sudo().create(payment_vals)
                 pay1.sudo().action_post()
