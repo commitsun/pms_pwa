@@ -102,6 +102,29 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             var html = core.qweb.render(xmlid, render_values);
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
+            let modal = $("div.o_pms_pwa_reservation_modal");
+            $('input[name="date"]').val(moment().format('DD/MM/YYYY'));
+            $(".o_pms_pwa_payment_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    console.log(start);
+                    let start_date = moment(start).format('DD/MM/YYYY');
+                    modal.find('input[name="modal_date"]').val(start_date)
+                    this.element.val(start_date);
+                }
+            );
         },
         modalButtonsOnChange: function () {
             var self = this;
@@ -1998,31 +2021,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self.displayContent("pms_pwa.reservation_payment_modal", {
                         reservation: data,
                     });
-                    $('input[name="date"]').val(moment().format('DD/MM/YYYY'));
-                    $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
-                        {
-                            locale: {
-                                direction: "ltr",
-                                format: "DD/MM/YYYY",
-                                applyLabel: "Aplicar",
-                                cancelLabel: "Cancelar",
-                            },
-                            singleDatePicker: true,
-                            showDropdowns: true,
-                            autoUpdateInput: false,
-                            minYear: 1901,
-                            maxYear: parseInt(moment().format("YYYY"), 10),
-                        },
-                        function (start) {
-                            console.log(start);
-                            const start_date = new Date(start);
-                            var select_date = start_date.toLocaleDateString(
-                                document.documentElement.lang,
-                                date_options
-                            );
-                            this.element.val(select_date);
-                        }
-                    );
+
                     $(".o_pms_pwa_button_payment_confirm").on("click", function (
                         new_event
                     ) {
@@ -2035,9 +2034,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .filter(":selected")
                             .val();
                         var payment_amount = div.find("input[name='amount']").val();
+                        var payment_date = div.find("input[name='date']").val();
+                        if(!payment_date){
+                            payment_date = moment().format('DD/MM/YYYY');
+                        }
                         ajax.jsonRpc(button.attributes.url.value, "call", {
                             payment_method: payment_method,
                             amount: payment_amount,
+                            date: payment_date,
                         }).then(function (new_data) {
                             self.displayDataAlert(new_data, data.id);
                         });
@@ -2066,31 +2070,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self.displayContent("pms_pwa.reservation_refund_modal", {
                         reservation: data,
                     });
-                    var date = moment(date).format('DD/MM/YYYY');
-                    $("input[name=date]").val(date);
-                    $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
-                        {
-                            locale: {
-                                direction: "ltr",
-                                format: "DD/MM/YYYY",
-                                applyLabel: "Aplicar",
-                                cancelLabel: "Cancelar",
-                            },
-                            singleDatePicker: true,
-                            showDropdowns: true,
-                            autoUpdateInput: false,
-                            minYear: 1901,
-                            maxYear: parseInt(moment().format("YYYY"), 10),
-                        },
-                        function (start) {
-                            const start_date = new Date(start);
-                            var select_date = start_date.toLocaleDateString(
-                                document.documentElement.lang,
-                                {year: "numeric", month: "2-digit", day: "2-digit"}
-                            );
-                            this.element.val(select_date);
-                        }
-                    );
                     $(".o_pms_pwa_button_refund_confirm").on("click", function (
                         new_event
                     ) {
@@ -2103,9 +2082,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .filter(":selected")
                             .val();
                         var payment_amount = div.find("input[name='amount']").val();
+                        var payment_date = div.find("input[name='date']").val();
+                        if(!payment_date){
+                            payment_date = moment().format("dd/mm/YYYY");
+                        }
+
                         ajax.jsonRpc(button.attributes.url.value, "call", {
                             payment_method: payment_method,
                             amount: payment_amount,
+                            date: payment_date,
                         }).then(function (new_data) {
                             self.displayDataAlert(new_data, data.id);
                         });

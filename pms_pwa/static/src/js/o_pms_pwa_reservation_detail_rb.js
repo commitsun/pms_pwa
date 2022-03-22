@@ -41,6 +41,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     }
 
     $(function () {
+
         const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
         if (document.documentElement.lang === "es-ES") {
             $('input[name="range_check_date_detail_reservation"]').daterangepicker(
@@ -293,6 +294,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
     });
     // Cargamos la página y las líneas
     $(document).ready(function () {
+
         // Mark all the reservations as checked and trigger the change
         $("input[name='reservation_ids']").prop('checked', true);
         $("input[name='reservation_ids']").trigger("change");
@@ -357,6 +359,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
         }).then(function (data) {
             var html = "";
             if (data.payment_lines) {
+
                 var lines = data.payment_lines;
                 for (const i in lines) {
                     var options = "";
@@ -374,6 +377,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         }
                     });
                     html +=
+
                         '<tr class="o_roomdoo_hide_show2" data-id=' +
                         lines[i].id +
                         ">" +
@@ -381,9 +385,14 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         '<td><select disabled="disabled" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">' +
                         options +
                         "</td>" +
-                        '<td class="text-right"><input disabled="disabled" type="date" name="date" value="' +
-                        lines[i].date +
-                        '" /></td>' +
+                        '<td class="text-right">'+
+                        '<script>'+
+                            'var format = "dd/mm/yy";'+
+                            '$( function() {'+
+                                '$( "#paymentdate'+lines[i].id+'" ).datepicker({ dateFormat: format}).datepicker("setDate", '+moment(lines[i].date).format("DD/MM/YYYY")+');'+
+                            '} );'+
+                        '</script>'+
+                        '<input disabled="disabled" id="paymentdate'+lines[i].id+'" type="text" name="date" class="datepicker"/></td>' +
                         '<td class="text-right"><input size="6" disabled="disabled" type="number" step="0.01" name="amount" value="' +
                         parseFloat(lines[i].amount).toFixed(2) +
                         '" /></td>' +
@@ -397,6 +406,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             // Activar o desactivar edición
 
             $("td.o_pms_pwa_payment_edit").on("click", function (ev) {
+                console.log($(ev.currentTarget).parent().find('input[name="date"]').val());
                 var fa = $(ev.currentTarget).find(".fa");
                 if (fa[0].classList.contains("fa-edit")) {
                     $(ev.currentTarget)

@@ -1107,7 +1107,7 @@
                                             <label class="control-label col-12" for="date">
                                                 Fecha
                                             </label>
-                                            <input class="form-control float-left o_pms_pwa_modal_daterangepicker" type="text" name="date" />
+                                            <input class="form-control float-left o_pms_pwa_payment_modal_daterangepicker" type="text" name="date" value="" />
                                             <span class="o_pms_pwa_calendar_icon">
                                                 <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                             </span>
@@ -1217,7 +1217,7 @@
                                             <label class="control-label col-12" for="date">
                                                 Fecha
                                             </label>
-                                            <input class="form-control float-left o_pms_pwa_modal_daterangepicker" type="text" name="date" t-att-value="today" />
+                                            <input class="form-control float-left o_pms_pwa_payment_modal_daterangepicker" type="text" name="date" t-att-value="today" />
                                             <span class="o_pms_pwa_calendar_icon">
                                                   <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
                                             </span>
