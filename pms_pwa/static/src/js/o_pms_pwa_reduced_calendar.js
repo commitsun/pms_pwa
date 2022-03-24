@@ -1010,7 +1010,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             }
             if ($("input[name=show_closed]").prop("checked")) {
                 // intentar que se envíe 0 o 1, 0 desactivado, 1 activo
-                if($("input[name=modal_closed]").val() == "on"){
+                if($("input[name=modal_closed]").prop("checked") == true){
                     send_values["closed"] = "1";
                 }else{
                     send_values["closed"] = "0";
@@ -1030,7 +1030,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             }
             if ($("input[name=show_closed_arrival]").prop("checked")) {
                 // intentar que se envíe 0 o 1, 0 desactivado, 1 activo
-                if($("input[name=modal_closed_arrival]").val() == "on"){
+                if($("input[name=modal_closed_arrival]").prop("checked") == true){
                     send_values["closed_arrival"] = "1";
                 }else{
                     send_values["closed_arrival"] = "0";

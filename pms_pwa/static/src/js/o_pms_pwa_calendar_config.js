@@ -45,7 +45,6 @@ odoo.define("pms_pwa.calendar_config", function (require) {
             var room_type = {};
             var send;
             $(".calendar_config_input input").each(function (index) {
-                // console.log(index);
                 var input = $(this);
                 if (input.data("edit") === true) {
                     var input_array = {};
