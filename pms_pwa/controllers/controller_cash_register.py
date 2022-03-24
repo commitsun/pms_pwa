@@ -262,6 +262,7 @@ class CashRegister(http.Controller):
             old_pay_type = old_payment.payment_type
             old_date = old_payment.date
             old_amount = old_payment.amount
+            old_ref = old_payment.ref
 
             is_internal_transfer = old_payment.is_internal_transfer
             if is_internal_transfer:
@@ -271,34 +272,35 @@ class CashRegister(http.Controller):
             if (
                 new_journal != old_journal
                 or new_pay_type != old_pay_type
-                # or new_date != old_date
+                or new_date != old_date
                 or new_amount != old_amount
             ):
                 if old_payment.reconciled_statement_ids and any(old_payment.reconciled_statement_ids.state == "posted"):
                     return json.dumps(
                         {"result": False, "message": _("El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración.")}
                     )
+                old_statement_line = False
                 if old_journal.type == "cash":
-                    statement_line = old_payment.reconciled_statement_ids.filtered(lambda x: x.date == old_date and x.amount == old_amount)
-                    if not statement_line:
+                    old_statement_line = request.env["account.bank.statement.line"].sudo().search([
+                        ("date", "=", old_date),
+                        ("amount", "=", old_amount if old_pay_type == "inbound" else -old_amount),
+                        ("payment_ref", "=", old_ref),
+                        ("statement_id.journal_id", "=", old_journal.id),
+                    ])
+                    if not old_statement_line:
                         raise UserError(_("No se ha encontrado la línea de extracto para el pago. Ponte en contacto con el responsable de administración."))
-                    if new_journal != old_journal:
-                        statement_line.sudo().unlink()
-                    else:
-                        statement_line.sudo().write({
-                            "amount": new_amount,
-                        })
+
                 if new_journal.type == "cash" and new_journal != old_journal:
                     if old_date != datetime.date.today():
                         return json.dumps(
                             {"result": False, "message": _("No se puede modificar movimientos de efectivo en cajas ya conciliadas, Para rectificarlo ponte en contacto con el responsable de administración.")}
                         )
-                    self._create_statement_line(request.env.user.pms_pwa_property_id.id, new_journal.id, old_date, abs(new_amount), old_payment.ref, old_payment.partner_id.id)
+                    self._create_statement_line(request.env.user.pms_pwa_property_id.id, new_journal.id, new_date, new_amount, old_payment.ref, old_payment.partner_id.id)
 
                 new_payment_vals = {
                     "journal_id": new_journal.id,
                     "amount": abs(new_amount),
-                    "date": old_date,
+                    "date": new_date,
                     "payment_type": old_payment.payment_type,
                     "partner_type": old_payment.partner_type,
                     "state": "draft",
@@ -306,11 +308,15 @@ class CashRegister(http.Controller):
                     "folio_ids": [(6, 0, old_payment.folio_ids.ids)],
                     "ref": payment_ref,
                 }
-                request.env["account.payment"].sudo().create(new_payment_vals)
+                pay = request.env["account.payment"].sudo().create(new_payment_vals)
+                pay.sudo().action_post()
 
                 old_payment.sudo().action_draft()
                 old_payment.sudo().action_cancel()
                 old_payment.sudo().unlink()
+                if old_statement_line:
+                    old_statement_line.sudo().unlink()
+
         except Exception as e:
             return json.dumps(
                 {

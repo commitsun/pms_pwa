@@ -1474,6 +1474,27 @@
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="address">
+                                                            Dirección
+                                                        </label>
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control" type="text" name="address" placeholder="Dirección" t-att-value="partner_value['address'] ? partner_value['address'] : ''" />
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="zip">
+                                                            Cogigo Postal
+                                                        </label>
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control" type="text" name="zip" placeholder="C.P." t-att-value="partner_value['zip'] ? partner_value['zip'] : ''" />
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="residence_city">
+                                                            Ciudad
+                                                        </label>
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control" type="text" name="residence_city" placeholder="Ciudad" t-att-value="partner_value['residence_city'] ? partner_value['residence_city'] : ''" />
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="country_name">
                                                             País
                                                         </label>
@@ -1486,7 +1507,7 @@
                                                             Provincia
                                                         </label>
                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner_value['state_name'] ? partner_value['state_name'] : ''" />
-                                                       <input type="hidden" name="state_id" t-att-value="partner_value['state_id'] ? partner_value['state_id']['id'] : ''" />
+                                                       <input type="hidden" name="residence_state_id" t-att-value="partner_value['residence_state_id'] ? partner_value['residence_state_id']['id'] : ''" />
                                                     </div>
 
                                                 </div>

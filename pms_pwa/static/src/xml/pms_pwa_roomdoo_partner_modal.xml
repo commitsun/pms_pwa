@@ -55,7 +55,7 @@
                                             Nombre
                                         </label>
                                         <input
-                                            class="form-control" type="text" name="company_name" t-att-value="partner.firstname or none" />
+                                            class="form-control" type="text" name="company_name" t-att-value="partner.firstname or partner.lastname or None" />
                                     </div>
                                     <div class="col-sm-6" >
                                         <label class="control-label col-6" for="vat">
@@ -152,7 +152,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="row mt-3 is_person">
+                                    <div class="row mt-3">
                                         <div class="col-sm-6">
                                             <label class="control-label col-6" for="email">
                                                 E-mail
@@ -232,17 +232,17 @@
                                             <label class="control-label col-6" for="country_id">
                                                 País
                                             </label>
-                                            <input autocomplete="off" autofill="off" t-att-data-id="partner.country_id ? partner.country_id.id : ''" class="form-control o_pms_pwa_search_country_name" type="text" name="country_name" placeholder="País" t-att-value="partner.country_id ? partner.country_id.name : ''" />
-                                            <input class="country" type="hidden" name="country_id" t-att-value="partner.country_id ? partner.country_id.id : ''" />
+                                            <input autocomplete="off" autofill="off" t-att-data-id="partner.residence_country_id ? partner.residence_country_id.id : ''" class="form-control o_pms_pwa_search_country_name" type="text" name="country_name" placeholder="País" t-att-value="partner.residence_country_id ? partner.residence_country_id.name : ''" />
+                                            <input class="country" type="hidden" name="country_id" t-att-value="partner.residence_country_id ? partner.residence_country_id.id : ''" />
 
                                         </div>
 
                                         <div class="col-sm-6 is_person">
-                                            <label class="control-label col-6" for="state_id">
+                                            <label class="control-label col-6" for="residence_state_id">
                                                 Provincia
                                             </label>
-                                            <input autocomplete="off" autofill="off" t-att-data-id="partner.state_id ? partner.state_id.id : ''" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner.state_id ? partner.state_id.name : ''" />
-                                            <input class="state" type="hidden" name="state_id" t-att-value="partner.state_id ? partner.state_id.id : ''" />
+                                            <input autocomplete="off" autofill="off" t-att-data-id="partner.residence_state_id ? partner.residence_state_id.id : ''" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner.residence_state_id ? partner.residence_state_id.name : ''" />
+                                            <input class="state" type="hidden" name="residence_state_id" t-att-value="partner.residence_state_id ? partner.residence_state_id.id : ''" />
                                         </div>
                                     </div>
 

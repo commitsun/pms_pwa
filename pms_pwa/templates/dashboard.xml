@@ -384,7 +384,6 @@
                                     <t t-foreach="cash['payments']" t-as="pm">
                                         <div class="row">
                                             <div class="col-9">
-                                                <t t-esc="{{ pm['date'] }}"></t>
                                                 <a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" t-attf-data-date="{{ pm['date'] }}" t-attf-data-id="{{ pm['id'] }}" t-attf-data-name="{{ pm['simple_name'] }}" t-attf-data-amount="{{ pm['amount'] }}" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal">
                                                     <i class="fa fa-edit"></i>
                                                 </a><span t-esc="pm['name']" />

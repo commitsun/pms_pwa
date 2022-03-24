@@ -14,6 +14,7 @@ odoo.define("pms_pwa.partner_form", function (require) {
             "click div.o_pms_pwa_partner_modal_show": "_onClickOpenPartnerModal",
             "click .o_pms_pwa_new_partner_modal_show": "_onClickNewPartnerModal",
             "change select#partner_type_change": "_onPartnerTypeChange",
+            // "change input[name='invoice_zip']": "_onInvoicingZipChange",
             "click button.send_form_partner": "_submitForm",
         },
 
@@ -164,6 +165,26 @@ odoo.define("pms_pwa.partner_form", function (require) {
                 }, 0);
             });
         },
+        // _onInvoicingZipChange: function (event) {
+        //     event.preventDefault();
+        //     var self = this;
+        //     var values = $("form#partner_form").serializeArray();
+        //     values = this.formToJson(values);
+        //     values.submit = false;
+        //     /* RPC call to get the reservation data */
+        //     if(values.partney_type != 'person'){
+        //         values.firstname = values.company_name;
+        //     }
+        //     ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
+        //         setTimeout(function () {
+        //             if (partner_data) {
+        //                 self.displayContent("pms_pwa.roomdoo_partner_modal", {
+        //                     partner: partner_data,
+        //                 });
+        //             }
+        //         }, 0);
+        //     });
+        // },
         _dateRangeActive: function () {
             $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
                 {

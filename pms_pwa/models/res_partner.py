@@ -62,7 +62,10 @@ class ResPartner(models.Model):
                 get_lang(self.env).date_format
             ) if self.birthdate_date else False,
             "parent_id": self.parent_id.id if self.parent_id else False,
-            "document_type": documents[0]["document_type"]["id"] if documents else False,
+            "document_type": {
+                "id": documents[0]["document_type"]["id"] if documents else False,
+                "name": documents[0]["document_type"]["name"] if documents else False,
+            },
             "document_number": documents[0]["document_number"] if documents else False,
             "document_expedition_date": documents[0]["document_expedition_date"] if documents else False,
             "email": self.email or False,
@@ -73,10 +76,6 @@ class ResPartner(models.Model):
                 "id": self.nationality_id and self.nationality_id.id or False,
                 "name": self.nationality_id and self.nationality_id.name or False,
             },
-            "invoice_state_id": {
-                "id": self.state_id and self.state_id.id or False,
-                "name": self.state_id and self.state_id.name or False,
-            },
             "sale_channel_id": {
                 "id": self.sale_channel_id.id,
                 "name": self.sale_channel_id.name,
@@ -86,10 +85,26 @@ class ResPartner(models.Model):
             "invoice_street2": self.street2 or False,
             "invoice_city": self.city or False,
             "invoice_zip": self.zip or False,
+            "invoice_state_id": {
+                "id": self.state_id and self.state_id.id or False,
+                "name": self.state_id and self.state_id.name or False,
+            },
             "invoice_country_id": {
                 "id": self.country_id and self.country_id.id or False,
                 "name": self.country_id and self.country_id.name or False,
             } if self.country_id else False,
+            "street": self.residence_street or False,
+            "street2": self.residence_street2 or False,
+            "city": self.residence_city or False,
+            "zip": self.residence_zip or False,
+            "country_id": {
+                "id": self.residence_country_id and self.residence_country_id.id or False,
+                "name": self.residence_country_id and self.residence_country_id.name or False,
+            } if self.residence_country_id else False,
+            "state_id": {
+                "id": self.residence_state_id and self.residence_state_id.id or False,
+                "name": self.residence_state_id and self.residence_state_id.name or False,
+            } if self.residence_state_id else False,
             "comment": self.comment or False,
             # "lang": [(self.lang.code, self.lang.name)] if self.lang else False,
             "allowed_channel_types": allowed_channel_types,

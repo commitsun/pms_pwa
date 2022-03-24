@@ -339,12 +339,25 @@ class PmsReservation(http.Controller):
                         country = request.env["res.country"].search([
                             ("name","=",payload[0]["partner_values"][0]["country"])
                         ])
+                        zip_code = request.env["res.city.zip"].search([
+                            ("name", "=", partner_invoice_values["zip"])
+                        ])
+                        if zip_code:
+                            if country and country != zip_code.country_id:
+                                raise Exception("El código postal no pertenece al país seleccionado")
+                            if not country:
+                                country = zip_code.country_id
+                            if not partner_invoice_values["city"]:
+                                partner_invoice_values["city"] = zip_code.city_id.name
+                            partner_invoice_values["state_id"] = zip_code.state_id.id if zip_code.state_id else False
+
                         if not country:
                             raise UserError(
                                 _("País no encontrado: {}".format(
                                     payload[0]["partner_values"][0]["country"]
                                 ))
                             )
+
                         partner_invoice_values["country_id"] = country.id
                         partner_invoice = request.env["res.partner"].create(
                             partner_invoice_values

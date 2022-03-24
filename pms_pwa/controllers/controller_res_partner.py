@@ -73,7 +73,6 @@ class ResPartner(http.Controller):
                 "image_128": False,
                 "gender": False,
                 "nationality_id": False,
-                "invoice_state_id": False,
                 "partner_type": "person",
                 "sale_channel_id": False,
                 "vat": False,
@@ -82,6 +81,13 @@ class ResPartner(http.Controller):
                 "invoice_city": False,
                 "invoice_zip": False,
                 "invoice_country_id": False,
+                "invoice_state_id": False,
+                "street": False,
+                "street2": False,
+                "city": False,
+                "zip": False,
+                "country_id": False,
+                "state_id": False,
                 "lang": False,
                 "allowed_channel_types": [],
                 # "allowed_country_ids": request.env[
@@ -107,6 +113,7 @@ class ResPartner(http.Controller):
             try:
                 company_type = "person" if kw.get("partner_type") == "person" else "company"
                 is_agency = True if kw.get("partner_type") == "agency" else False
+                id_number_vals = False
                 values = {
                     "company_type": company_type,
                     "is_agency": is_agency,
@@ -117,7 +124,6 @@ class ResPartner(http.Controller):
                     "parent_id": int(kw.get("parent_id")) if kw.get("parent_id") else False,
                     "comment": kw.get("comment"),
                     "lang": kw.get("lang"),
-                    "vat": kw.get("vat"),
                     "street": kw.get("invoice_street"),
                     "street2": kw.get("invoice_street2"),
                     "city": kw.get("invoice_city"),
@@ -129,6 +135,9 @@ class ResPartner(http.Controller):
                 if is_agency:
                     values["sale_channel_id"] = int(kw.get("sale_channel_id")) if kw.get("sale_channel_id") else False
 
+                if company_type == "company":
+                    values["vat"] = kw.get("vat")
+
                 if company_type == "person":
                     values.update({
                         "lastname": kw.get("lastname"),
@@ -138,22 +147,22 @@ class ResPartner(http.Controller):
                         ).date() if kw.get("birthdate_date") else False,
                         "gender": kw.get("gender"),
                         "nationality_id": int(kw.get("nationality_id")) if kw.get("nationality_id") else False,
-                        # "street": kw.get("street"),
-                        # "street2": kw.get("street2"),
-                        # "city": kw.get("city"),
-                        # "zip": kw.get("zip"),
-                        # "country_id": int(kw.get("country_id")) if kw.get("country_id") else False,
-                        # "state_id": int(kw.get("state_id")) if kw.get("state_id") else False,
+                        "residence_street": kw.get("street"),
+                        "residence_street2": kw.get("street2"),
+                        "residence_city": kw.get("city"),
+                        "residence_zip": kw.get("zip"),
+                        "residence_country_id": int(kw.get("country_id")) if kw.get("country_id") else False,
+                        "residence_state_id": int(kw.get("residence_state_id")) if kw.get("residence_state_id") else False,
 
                     })
                     if kw.get("document_type") and kw.get("document_number"):
-                        values["document_ids"] = [(0, 0, {
+                        id_number_vals = {
                             "category_id": int(kw.get("document_type")),
-                            "number": kw.get("document_number"),
+                            "name": kw.get("document_number"),
                             "valid_from": datetime.strptime(
                                 kw.get("document_expedition_date"), get_lang(request.env).date_format
                             ).date() if kw.get("document_expedition_date") else False,
-                        })]
+                        }
                 if kw.get("id"):
                     partner = request.env["res.partner"].browse(int(kw.get("id")))
                     update_vals = {}
@@ -161,7 +170,17 @@ class ResPartner(http.Controller):
                         if value and value != "":
                             update_vals[key] = value
                     partner.write(update_vals)
+                    if partner.id_number_ids:
+                        for id_number in partner.id_numbers:
+                            if id_number_vals.get("category_id") == id_number.category_id.id:
+                                id_number.write(id_number_vals)
+                            elif id_number_vals:
+                                partner.id_numbers.write({
+                                    "id_numbers": [(0, 0, id_number_vals)]
+                                })
                 else:
+                    if id_number_vals:
+                        values["id_numbers"] = [(0, 0, id_number_vals)]
                     partner = request.env["res.partner"].sudo().create(values)
                     if kw.get("reservation_id"):
                         folio = (
@@ -197,7 +216,7 @@ class ResPartner(http.Controller):
                 channel_types = self.env["pms.sale.channel"].search(domain)
                 for channel in channel_types:
                     allowed_channel_types.append({"id": channel.id, "name": channel.name})
-            elif kw.get("partner_type") == "person":
+            elif not kw.get("partner_type") or kw.get("partner_type") == "person":
                 document_types = request.env["res.partner.id_category"].sudo().search([])
                 for type in document_types:
                     allowed_document_types.append({"id": type.id, "name": type.name})
