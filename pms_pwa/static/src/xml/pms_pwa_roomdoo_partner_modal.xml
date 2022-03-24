@@ -72,9 +72,9 @@
                                             Canal de Venta
                                         </label>
                                         <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" required="required" name="sale_channel_id">
-                                            <t t-if="partner.allowed_channel_types and partner.allowed_channel_types.id">
-                                                <option t-foreach="partner.allowed_channel_types" t-as="channel" t-att-value="channel_value['id']" t-att-selected="partner.allowed_channel_types.id === channel_value['id'] ? 'selected' : None">
-                                                    <t t-esc="document_value['name']" />
+                                            <t t-if="partner.sale_channel_id.id">
+                                                <option t-foreach="partner.allowed_channel_types" t-as="channel" t-att-value="channel_value['id']" t-att-selected="partner.sale_channel_id.id === channel_value['id'] ? 'selected' : None">
+                                                    <t t-esc="channel_value['name']" />
                                                 </option>
                                             </t>
                                             <t t-else="">
@@ -129,8 +129,8 @@
                                                 Tipo de documento
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
-                                                <t t-if="partner.document_type and partner.document_type.id">
-                                                    <option t-foreach="partner.allowed_document_types" t-as="document" t-att-value="document_value['id']" t-att-selected="partner.allowed_document_types.id === document_value['id'] ? 'selected' : None">
+                                                <t t-if="partner.document_type.id">
+                                                    <option t-foreach="partner.allowed_document_types" t-as="document" t-att-value="document_value['id']" t-att-selected="partner.document_type.id === document_value['id'] ? 'selected' : None">
                                                         <t t-esc="document_value['name']" />
                                                     </option>
                                                 </t>

@@ -442,6 +442,8 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             payments[val]["simple_name"] +
                             '" data-date="' +
                             payments[val]["date"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
                             '" data-amount="' +
                             payments[val]["amount"] +
                             '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +

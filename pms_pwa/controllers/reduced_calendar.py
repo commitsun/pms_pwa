@@ -691,7 +691,7 @@ class PmsCalendar(http.Controller):
                     "ocupation": rooms_reservation_values,
                 }
             )
-        pp.pprint(values)
+        # pp.pprint(values)
         return values
 
     def _get_calendar_config(self, pms_property_id):
