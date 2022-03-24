@@ -184,6 +184,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 let obj = JSON.parse(data);
                 if (obj["result"] === true) {
                     $("#o_pms_pwa_open_close_cash").modal("toggle");
+                    self.displayDataAlert(data);
                     window.location = "/dashboard";
                 } else {
                     if (obj["force"] === true) {
@@ -219,6 +220,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
                     location.reload();
                 }else{
                     self.displayDataAlert(data);
@@ -249,6 +251,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
                     location.reload();
                 }else{
                     self.displayDataAlert(data);
@@ -279,6 +282,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
                     location.reload();
                 }else{
                     self.displayDataAlert(data);
@@ -406,6 +410,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             }).then(function (data) {
                 var obj = JSON.parse(data);
                 if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
                     location.reload();
                 }else{
                     self.displayDataAlert(data);
