@@ -356,7 +356,7 @@
                                                         </span>
                                                     </div>
                                                     <div class="form-group col-xs-12 col-md-3">
-                                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                                        <select id="cash_payment_method" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                                             <t t-foreach="cash['list']" t-as="option">
                                                                 <t t-if="cash['selected'] == option">
                                                                     <option t-att-value="option" selected="selected">
@@ -364,7 +364,7 @@
                                                                     </option>
                                                                 </t>
                                                                 <t t-else="">
-                                                                    <option  t-att-value="option">
+                                                                    <option t-att-value="option">
                                                                         <t t-esc="option_value" />
                                                                     </option>
                                                                 </t>
@@ -453,7 +453,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="form-group col-xs-12 col-md-3">
-                                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="journal_selected">
+                                                    <select id="bank_payment_method" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="journal_selected">
                                                         <t t-foreach="bank_journals['list']" t-as="option">
                                                             <t t-if="bank_journals['selected'] == option">
                                                                 <option  t-att-value="option" selected="selected">

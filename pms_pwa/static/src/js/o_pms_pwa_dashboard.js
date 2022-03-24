@@ -167,10 +167,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var self = this;
             ev.preventDefault();
             var modal = $("div#o_pms_pwa_open_close_cash");
-            var payment_method = modal
-                .find("select[name='payment_method'] option")
-                .filter(":selected")
-                .val();
+            var payment_method = modal.find("select#open_close_payment_method").val();
             var payment_amount = modal.find("input[name='amount']").val();
             var coins = {};
             $("input[type=number].coins").each(function () {
@@ -186,7 +183,6 @@ odoo.define("pms_pwa.dashboard", function (require) {
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 if (obj["result"] === true) {
-                    $("#confirmaModal").modal("toggle");
                     $("#o_pms_pwa_open_close_cash").modal("toggle");
                     window.location = "/dashboard";
                 } else {
@@ -211,7 +207,6 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("input[name='description']").val();
             let date = modal.find("input[name='date']").val();
-            console.log("da ---> ", date);
             if(!date){
                 date = moment().format('DD/MM/YYYY');
             }
@@ -358,6 +353,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var name = e.currentTarget.getAttribute("data-name");
             var amount = e.currentTarget.getAttribute("data-amount");
             var date = e.currentTarget.getAttribute("data-date");
+            var journal_id = e.currentTarget.getAttribute("data-journal_id");
             if(!date){
                 date = moment().format('DD/MM/YYYY');
             }else{
@@ -367,6 +363,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             modal.find("input.payment_name").val(name);
             modal.find("input.payment_amount").val(amount);
             modal.find("input[name=date]").val(date);
+            modal.find("select[name='payment_method']").val(journal_id);
             $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
                 {
                     locale: {
@@ -399,11 +396,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let payment_amount = modal.find("input.payment_amount").val();
             let payment_name = modal.find("input.payment_name").val();
             let payment_date = modal.find("input[name=date]").val();
-
-            let payment_method = modal
-                .find("select[name='payment_method'] option")
-                .filter(":selected")
-                .val();
+            let payment_method = modal.find("select#modal_edit_payment_methods").val();
             ajax.jsonRpc("/cash_register/edit", "call", {
                 id: payment_id,
                 amount: payment_amount,
@@ -423,15 +416,68 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var self = this;
             e.preventDefault();
             let journal_date = $('input[name="journal_date"]').val();
-            let journal_selected = $("select[name='journal_selected'] option")
-                .filter(":selected")
-                .val();
+            let journal_selected = $("select#bank_payment_method option:selected").val();
             ajax.jsonRpc("/dashboard/bank_journals", "call", {
                 journal_date: journal_date,
                 journal_id: journal_selected,
             }).then(function (data) {
                 let new_html = "";
                 let payments = data["bank_journals"]["payments"];
+                for (let val in payments) {
+                    if(payments[val]["amount"] < 0){
+                        new_html =
+                            new_html +
+                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
+                            payments[val]["id"] +
+                            '" data-name="' +
+                            payments[val]["simple_name"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
+                            '" data-date="' +
+                            payments[val]["date"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
+                            '" data-amount="' +
+                            payments[val]["amount"] +
+                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
+                            payments[val]["name"] +
+                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates" style="color:red;"><span>' +
+                            payments[val]["amount"] +
+                            "</span>€</div></div>";
+                    }else{
+                        new_html =
+                            new_html +
+                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
+                            payments[val]["id"] +
+                            '" data-name="' +
+                            payments[val]["simple_name"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
+                            '" data-date="' +
+                            payments[val]["date"] +
+                            '" data-amount="' +
+                            payments[val]["amount"] +
+                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
+                            payments[val]["name"] +
+                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates"><span>' +
+                            payments[val]["amount"] +
+                            "</span>€</div></div>";
+                    }
+                }
+                $("#o_pms_pwa_dashboard_bank_journals").html(new_html);
+            });
+        },
+        _onClickCashFilter: function (e) {
+            var self = this;
+            e.preventDefault();
+            let journal_date = $('input[name="cash_date"]').val();
+            let journal_selected = $("select#cash_payment_method option:selected").val();
+            ajax.jsonRpc("/dashboard/cash_journal", "call", {
+                journal_date: journal_date,
+                journal_id: journal_selected,
+            }).then(function (data) {
+                let new_html = "";
+                let payments = data["cash"]["payments"];
                 for (let val in payments) {
                     if(payments[val]["amount"] < 0){
                         new_html =
@@ -460,57 +506,8 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             payments[val]["simple_name"] +
                             '" data-date="' +
                             payments[val]["date"] +
-                            '" data-amount="' +
-                            payments[val]["amount"] +
-                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
-                            payments[val]["name"] +
-                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates"><span>' +
-                            payments[val]["amount"] +
-                            "</span>€</div></div>";
-                    }
-                }
-                $("#o_pms_pwa_dashboard_bank_journals").html(new_html);
-            });
-        },
-        _onClickCashFilter: function (e) {
-            var self = this;
-            e.preventDefault();
-            let journal_date = $('input[name="cash_date"]').val();
-            let journal_selected = $("select[name='payment_method'] option")
-                .filter(":selected")
-                .val();
-            ajax.jsonRpc("/dashboard/cash_journal", "call", {
-                journal_date: journal_date,
-                journal_id: journal_selected,
-            }).then(function (data) {
-                let new_html = "";
-                let payments = data["cash"]["payments"];
-                for (let val in payments) {
-                    if(payments[val]["amount"] < 0){
-                        new_html =
-                            new_html +
-                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
-                            payments[val]["id"] +
-                            '" data-name="' +
-                            payments[val]["simple_name"] +
-                            '" data-date="' +
-                            payments[val]["date"] +
-                            '" data-amount="' +
-                            payments[val]["amount"] +
-                            '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
-                            payments[val]["name"] +
-                            '</span></div><div class="col-3 text-right o_pms_pwa_db_dates" style="color:red;"><span>' +
-                            payments[val]["amount"] +
-                            "</span>€</div></div>";
-                    }else{
-                        new_html =
-                            new_html +
-                            '<div class="row"><div class="col-9"><a href="" type="button" class="o_pms_pwa_btn_border px-3 o_pms_pwa_edit_payment_modal" data-id="' +
-                            payments[val]["id"] +
-                            '" data-name="' +
-                            payments[val]["simple_name"] +
-                            '" data-date="' +
-                            payments[val]["date"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
                             '" data-amount="' +
                             payments[val]["amount"] +
                             '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +

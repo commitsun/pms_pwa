@@ -441,6 +441,7 @@ class DashBoard(http.Controller):
                 "name": line.ref or "No indicado" + " el " + line.create_date.strftime("%d %b - %H:%M") + " (" + line.create_uid.name + ")",
                 "amount": line.amount if line.payment_type == "inbound" else -line.amount,
                 "date": line.date,
+                "journal_id": line.journal_id.id,
             })
         return payment_vals
 

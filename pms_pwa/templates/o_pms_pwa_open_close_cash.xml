@@ -48,7 +48,7 @@
                                         <label class="control-label col-12" for="payment_method">
                                             Diario
                                         </label>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                        <select id="open_close_payment_method" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                             <t t-foreach="cash['list']" t-as="option">
                                                 <t t-if="cash['selected'] == option">
                                                     <option  t-att-value="option" selected="selected">
@@ -141,18 +141,11 @@
                                     </label>
                                     <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id.sudo()._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
-                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                    <select id="modal_edit_payment_methods" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                         <t t-foreach="payment_methods" t-as="option">
-                                            <t t-if="int(cash['selected']) == int(option_value['id'])">
-                                                <option  t-att-value="option_value['id']" selected="selected">
-                                                    <t t-esc="option_value['name']" />
-                                                </option>
-                                            </t>
-                                            <t t-else="">
-                                                <option t-att-value="option_value['id']">
-                                                    <t t-esc="option_value['name']" />
-                                                </option>
-                                            </t>
+                                            <option t-att-value="option_value['id']">
+                                                <t t-esc="option_value['name']" />
+                                            </option>
                                         </t>
                                     </select>
                                 </div>
