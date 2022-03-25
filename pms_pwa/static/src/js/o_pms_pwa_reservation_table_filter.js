@@ -1521,6 +1521,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         mobile: element
                                             .find("input[name='mobile']")
                                             .val(),
+                                        email: element
+                                            .find("input[name='email']")
+                                            .val(),
+                                        pms_property_id: element
+                                            .find("input[name='pms_property_id']")
+                                            .val(),
                                         address: element
                                             .find("input[name='address']")
                                             .val(),
@@ -1529,12 +1535,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             .val(),
                                         city: element
                                             .find("input[name='city']")
-                                            .val(),
-                                        email: element
-                                            .find("input[name='email']")
-                                            .val(),
-                                        pms_property_id: element
-                                            .find("input[name='pms_property_id']")
                                             .val(),
                                         country_id: element
                                             .find("input[name='country_id']")
@@ -1697,6 +1697,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     email: element.find("input[name='email']").val(),
                                     pms_property_id: element
                                         .find("input[name='pms_property_id']")
+                                        .val(),
+                                    address: element
+                                        .find("input[name='address']")
+                                        .val(),
+                                    zip: element
+                                        .find("input[name='zip']")
+                                        .val(),
+                                    city: element
+                                        .find("input[name='city']")
                                         .val(),
                                     country_id: element
                                         .find("input[name='country_id']")
