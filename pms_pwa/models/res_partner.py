@@ -16,7 +16,7 @@ class ResPartner(models.Model):
             for document in self.id_numbers:
                 documents.append(
                     {
-                        "document_type": document.category_id.name,
+                        "document_type": {"id": document.category_id.id, "name": document.category_id.name},
                         "document_number": document.name,
                         "document_expedition_date": document.valid_from.strftime(
                             get_lang(self.env).date_format
@@ -29,61 +29,90 @@ class ResPartner(models.Model):
                 "name": "",
             }
         ]
-        if self.country_id:
-            for state in self.env["res.country.state"].search(
-                [("country_id", "=", self.country_id.id)]
-            ):
-                allowed_states.append(
-                    {
-                        "id": state.id,
-                        "name": state.name,
-                    }
-                )
+        # if self.country_id:
+        #     for state in self.env["res.country.state"].search(
+        #         [("country_id", "=", self.country_id.id)]
+        #     ):
+        #         allowed_states.append(
+        #             {
+        #                 "id": state.id,
+        #                 "name": state.name,
+        #             }
+        #         )
 
+        allowed_channel_types = []
+        allowed_document_types = []
+        if self.is_agency:
+            domain = [("channel_type", "=", "indirect")]
+            channel_types = self.env["pms.sale.channel"].search(domain)
+            for channel in channel_types:
+                allowed_channel_types.append({"id": channel.id, "name": channel.name})
+
+        document_types = self.env["res.partner.id_category"].sudo().search([])
+        for type in document_types:
+            allowed_document_types.append({"id": type.id, "name": type.name})
+        # country_list = self.env["pms.property"]._get_allowed_countries()
         partner_json = {
             "id": self.id,
-            "firstname": self.firstname or None,
-            "lastname": self.lastname or None,
-            "lastname2": self.lastname2 or None,
+            "partner_type": "agency" if self.is_agency else self.company_type,
+            "firstname": self.firstname or False,
+            "lastname": self.lastname or False,
+            "lastname2": self.lastname2 or False,
             "birthdate_date": self.birthdate_date.strftime(
                 get_lang(self.env).date_format
-            ) if self.birthdate_date else None,
-            "document_ids": documents,
-            "email": self.email or None,
-            "mobile": self.mobile or None,
-            "image_128": self.image_128 or None,
-            "gender": self.gender or None,
+            ) if self.birthdate_date else False,
+            "parent_id": self.parent_id.id if self.parent_id else False,
+            "document_type": {
+                "id": documents[0]["document_type"]["id"] if documents else False,
+                "name": documents[0]["document_type"]["name"] if documents else False,
+            },
+            "document_number": documents[0]["document_number"] if documents else False,
+            "document_expedition_date": documents[0]["document_expedition_date"] if documents else False,
+            "email": self.email or False,
+            "mobile": self.mobile or False,
+            "image_128": self.image_128 or False,
+            "gender": self.gender or False,
             "nationality_id": {
                 "id": self.nationality_id and self.nationality_id.id or False,
                 "name": self.nationality_id and self.nationality_id.name or False,
             },
-            "state_id": {
+            "sale_channel_id": {
+                "id": self.sale_channel_id.id,
+                "name": self.sale_channel_id.name,
+            } if self.sale_channel_id else False,
+            "vat": self.vat or False,
+            "invoice_street": self.street or False,
+            "invoice_street2": self.street2 or False,
+            "invoice_city": self.city or False,
+            "invoice_zip": self.zip or False,
+            "invoice_state_id": {
                 "id": self.state_id and self.state_id.id or False,
                 "name": self.state_id and self.state_id.name or False,
             },
-            "is_agency": self.is_agency or None,
-            # "channel_type_id": {
-            #    "id": self.channel_type_id.id if self.channel_type_id else False,
-            #    "name": self.channel_type_id.name if self.channel_type_id else False,
-            # },
-            "is_company": self.is_company or None,
-            "vat": self.vat or None,
-            "street": self.street or None,
-            "street2": self.street2 or None,
-            "city": self.city or None,
-            "zip": self.zip or None,
-            "country_id": {
+            "invoice_country_id": {
                 "id": self.country_id and self.country_id.id or False,
                 "name": self.country_id and self.country_id.name or False,
-            },
-            "comment": self.comment or None,
-            "lang": self.lang or None,
-            "allowed_channel_types": self.env[
-                "pms.property"
-            ]._get_allowed_channel_type_ids(),
-            "allowed_country_ids": self.env[
-                "pms.property"
-            ]._get_allowed_countries(),
-            "allowed_states": allowed_states,
+            } if self.country_id else False,
+            "street": self.residence_street or False,
+            "street2": self.residence_street2 or False,
+            "city": self.residence_city or False,
+            "zip": self.residence_zip or False,
+            "country_id": {
+                "id": self.residence_country_id and self.residence_country_id.id or False,
+                "name": self.residence_country_id and self.residence_country_id.name or False,
+            } if self.residence_country_id else False,
+            "state_id": {
+                "id": self.residence_state_id and self.residence_state_id.id or False,
+                "name": self.residence_state_id and self.residence_state_id.name or False,
+            } if self.residence_state_id else False,
+            "comment": self.comment or False,
+            # "lang": [(self.lang.code, self.lang.name)] if self.lang else False,
+            "allowed_channel_types": allowed_channel_types,
+            # "allowed_country_ids": country_list,
+            # "allowed_invoice_country_ids": country_list,
+            # "allowed_nationality_ids": country_list,
+            # "allowed_invoice_states": allowed_states,
+            # "allowed_states": allowed_states,
+            "allowed_document_types": allowed_document_types,
         }
         return partner_json

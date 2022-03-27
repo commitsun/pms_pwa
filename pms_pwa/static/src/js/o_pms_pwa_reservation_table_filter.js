@@ -22,7 +22,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         room_numbers: "preferred_room_id",
         room_types: "room_type_id",
         allowed_country_ids: "country_id",
-        allowed_state_ids: "state_id",
+        allowed_state_ids: "residence_state_id",
         allowed_sale_category_ids: "sale_category_id",
         allowed_amenity_ids: "amenity_ids",
     };
@@ -56,6 +56,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click td.o_pms_pwa_reduced_calendar_reservation": "_onClickReservationButton",
             "dblclick td.o_pms_pwa_reduced_calendar_reservation":
                 "_onDobleClickReservationButton",
+            "click a.launch_for_notification": "_onClickReservationButton",
             "click td.launch_modal": "_onClickReservationButton",
             "dblclick td.launch_modal": "_onDobleClickReservationButton",
             "click .o_pms_pwa_button_asignar": "_onClickAssingButton",
@@ -101,6 +102,29 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             var html = core.qweb.render(xmlid, render_values);
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
+            let modal = $("div.o_pms_pwa_reservation_modal");
+            $('input[name="date"]').val(moment().format('DD/MM/YYYY'));
+            $(".o_pms_pwa_payment_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    console.log(start);
+                    let start_date = moment(start).format('DD/MM/YYYY');
+                    modal.find('input[name="modal_date"]').val(start_date)
+                    this.element.val(start_date);
+                }
+            );
         },
         modalButtonsOnChange: function () {
             var self = this;
@@ -1503,11 +1527,20 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         pms_property_id: element
                                             .find("input[name='pms_property_id']")
                                             .val(),
+                                        address: element
+                                            .find("input[name='address']")
+                                            .val(),
+                                        zip: element
+                                            .find("input[name='zip']")
+                                            .val(),
+                                        city: element
+                                            .find("input[name='city']")
+                                            .val(),
                                         country_id: element
                                             .find("input[name='country_id']")
                                             .val(),
-                                        state_id: element
-                                            .find("input[name='state_id']")
+                                        residence_state_id: element
+                                            .find("input[name='residence_state_id']")
                                             .val(),
                                     });
                                 }
@@ -1665,11 +1698,20 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     pms_property_id: element
                                         .find("input[name='pms_property_id']")
                                         .val(),
+                                    address: element
+                                        .find("input[name='address']")
+                                        .val(),
+                                    zip: element
+                                        .find("input[name='zip']")
+                                        .val(),
+                                    city: element
+                                        .find("input[name='city']")
+                                        .val(),
                                     country_id: element
                                         .find("input[name='country_id']")
                                         .val(),
-                                    state_id: element
-                                        .find("input[name='state_id']")
+                                    residence_state_id: element
+                                        .find("input[name='residence_state_id']")
                                         .val(),
                                 });
                             }
@@ -1854,7 +1896,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 // console.log("suggestion", suggestion, term, item);
                                 if (term && term.item) {
                                     $(suggestion.target.parentElement)
-                                        .find('input[name="state_id"]')
+                                        .find('input[name="residence_state_id"]')
                                         .val(term.item.id);
                                 }
                             },
@@ -1977,6 +2019,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         _onClickPaymentButton: function (event) {
             event.preventDefault();
             var self = this;
+            let modal = $("div#o_pms_pwa_new_cash_register_payment");
             var button = event.currentTarget;
             var reservation_id = false;
             try {
@@ -1988,6 +2031,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     reservation_id = $("input[name='id']").val();
                 }
             }
+
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (data) {
@@ -1995,6 +2039,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self.displayContent("pms_pwa.reservation_payment_modal", {
                         reservation: data,
                     });
+
                     $(".o_pms_pwa_button_payment_confirm").on("click", function (
                         new_event
                     ) {
@@ -2007,9 +2052,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .filter(":selected")
                             .val();
                         var payment_amount = div.find("input[name='amount']").val();
+                        var payment_date = div.find("input[name='date']").val();
+                        if(!payment_date){
+                            payment_date = moment().format('DD/MM/YYYY');
+                        }
                         ajax.jsonRpc(button.attributes.url.value, "call", {
                             payment_method: payment_method,
                             amount: payment_amount,
+                            date: payment_date,
                         }).then(function (new_data) {
                             self.displayDataAlert(new_data, data.id);
                         });
@@ -2050,9 +2100,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .filter(":selected")
                             .val();
                         var payment_amount = div.find("input[name='amount']").val();
+                        var payment_date = div.find("input[name='date']").val();
+                        if(!payment_date){
+                            payment_date = moment().format("dd/mm/YYYY");
+                        }
+
                         ajax.jsonRpc(button.attributes.url.value, "call", {
                             payment_method: payment_method,
                             amount: payment_amount,
+                            date: payment_date,
                         }).then(function (new_data) {
                             self.displayDataAlert(new_data, data.id);
                         });

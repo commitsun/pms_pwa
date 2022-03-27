@@ -212,16 +212,33 @@ class PmsReservation(models.Model):
                             .search([("code", "=", guest["document_type"])])
                             .id
                         )
+                    zip_code = False
+                    if guest.get("zip") and guest.get("zip") != "false":
+                        guest["residence_zip"] = int(guest["zip"])
+                        zip_code = self.env["res.city.zip"].search([
+                            ("name", "=", guest["residence_zip"]),
+                        ])
+                    guest.pop("zip")
                     # REVIEW: avoid send "false" to controller
                     if guest.get("country_id") and guest.get("country_id") != "false":
                         guest["nationality_id"] = int(guest["country_id"])
+                    elif zip_code:
+                        guest["nationality_id"] = zip_code.country_id.id
                     guest.pop("country_id")
 
+                    if guest.get("city") and guest.get("city") != "false":
+                        guest["residence_city"] = int(guest["city"])
+                    elif zip_code:
+                        guest["residence_city"] = zip_code.city_id.name
+                    guest.pop("city")
+
                     # REVIEW: avoid send "false" to controller
-                    if guest.get("state_id") == "false":
-                        guest.pop("state_id")
-                    elif guest.get("state_id"):
-                        guest["state_id"] = int(guest["state_id"])
+                    if guest.get("residence_state_id") == "false" and not zip_code:
+                        guest.pop("residence_state_id")
+                    elif guest.get("residence_state_id") and guest.get("residence_state_id") != "false":
+                        guest["residence_state_id"] = int(guest["residence_state_id"])
+                    elif zip_code:
+                        guest["residence_state_id"] = zip_code.state_id.id
 
                     if guest.get("birthdate_date"):
                         guest["birthdate_date"] = datetime.datetime.strptime(
@@ -233,6 +250,10 @@ class PmsReservation(models.Model):
                             guest["document_expedition_date"],
                             get_lang(self.env).date_format,
                         ).date()
+
+                    if guest.get("address") and guest.get("address") != "false":
+                        guest["residence_street"] = guest["address"]
+                    guest.pop("address")
 
                     checkin_partner = self.env["pms.checkin.partner"].browse(
                         int(guest["id"])
@@ -252,7 +273,6 @@ class PmsReservation(models.Model):
                             and guest.get(checkin_field) != record_value
                         ):
                             vals[checkin_field] = guest[checkin_field]
-                    # pprint(vals)
                     if len(vals) >= 1:
                         checkin_partner.write(vals)
                     if action_on_board:
@@ -358,12 +378,12 @@ class PmsReservation(models.Model):
                 "mobile": checkin.mobile,
                 "email": checkin.email,
                 "gender": checkin.gender,
-                "state_id": {
-                    "id": checkin.state_id.id if checkin.state_id else False,
-                    "name": checkin.state_id.name if checkin.state_id else "",
+                "residence_state_id": {
+                    "id": checkin.residence_state_id.id if checkin.residence_state_id else False,
+                    "name": checkin.residence_state_id.name if checkin.residence_state_id else "",
                 },
-                "state_name": checkin.state_id.display_name
-                if checkin.state_id
+                "state_name": checkin.residence_state_id.display_name
+                if checkin.residence_state_id
                 else None,
                 "country_id": {
                     "id": checkin.nationality_id.id
@@ -376,6 +396,9 @@ class PmsReservation(models.Model):
                 "country_name": checkin.nationality_id.display_name
                 if checkin.nationality_id
                 else None,
+                "city": checkin.residence_city,
+                "address": checkin.residence_street,
+                "zip": checkin.residence_zip,
                 "allowed_state_ids": allowed_states,
                 "state": checkin.state or False,
                 "readonly_fields": self._get_checkin_read_only_fields(checkin),

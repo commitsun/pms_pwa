@@ -37,12 +37,15 @@
                                             </t>
                                         </select>
                                     </div>
-                                    <div class="col-sm-12 mt-2">
+                                    <div class="col-sm-8 mt-2">
                                         <label class="control-label col-12" for="partner_id">
                                             Proveedor
                                         </label>
                                         <input class="form-control o_pms_pwa_search_partner" data-supplier="true" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
                                         <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
+                                    </div>
+                                    <div class="col-sm-4 mt-2">
+                                        <button class="btn btn-message o_pms_pwa_new_partner_modal_show">Nuevo</button>
                                     </div>
                                     <div class="col-sm-12 mt-2">
                                         <label class="control-label col-12" for="amount">
@@ -50,7 +53,15 @@
                                         </label>
                                         <input class="form-control" type="number" min="0" step="any" name="amount"/>
                                     </div>
-
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="date">
+                                            Fecha
+                                        </label>
+                                        <input class="form-control float-left o_pms_pwa_modal_daterangepicker" type="text" name="date" value="" />
+                                        <span class="o_pms_pwa_calendar_icon">
+                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                        </span>
+                                    </div>
                                     <div class="col-sm-12 mt-2">
                                         <label class="control-label col-12" for="amount">
                                             Descripción
@@ -114,12 +125,24 @@
                                             </t>
                                         </select>
                                     </div>
-                                    <div class="col-sm-12 mt-2">
+                                    <div class="col-sm-8 mt-2">
                                         <label class="control-label col-12" for="partner_id">
                                             Proveedor
                                         </label>
                                         <input class="form-control o_pms_pwa_search_partner" data-supplier="true" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
                                         <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
+                                    </div>
+                                    <div class="col-sm-4 mt-2">
+                                        <button class="btn btn-message o_pms_pwa_new_partner_modal_show">Nuevo</button>
+                                    </div>
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="date">
+                                            Fecha
+                                        </label>
+                                        <input class="form-control float-left o_pms_pwa_modal_daterangepicker" type="text" name="date" value="" />
+                                        <span class="o_pms_pwa_calendar_icon">
+                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                        </span>
                                     </div>
                                     <div class="col-sm-12 mt-2">
                                         <label class="control-label col-12" for="amount">

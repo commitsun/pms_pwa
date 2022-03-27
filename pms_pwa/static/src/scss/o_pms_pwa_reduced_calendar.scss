@@ -850,7 +850,7 @@ section.o_pms_pwa_roomdoo {
             &_hr {
                 &_prereservation {
                     height: 100%;
-                    border-radius: 6px;
+                    // border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #584d76;
                     position: relative;
@@ -870,7 +870,7 @@ section.o_pms_pwa_roomdoo {
                 &_confirmed {
                     //background-color: $theme-color;;
                     height: 100%;
-                    border-radius: 6px;
+                    // border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: $theme-color;
                     position: relative;
@@ -894,7 +894,7 @@ section.o_pms_pwa_roomdoo {
 
                 &_checkin-paid {
                     height: 100%;
-                    border-radius: 6px;
+                    //border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #00ba39;
                     position: relative;
@@ -918,7 +918,7 @@ section.o_pms_pwa_roomdoo {
 
                 &_checkin-to-pay {
                     height: 100%;
-                    border-radius: 6px;
+                    //border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #dc3545;
                     position: relative;
@@ -938,7 +938,7 @@ section.o_pms_pwa_roomdoo {
 
                 &_checkout-paid {
                     height: 100%;
-                    border-radius: 6px;
+                    //border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #7e7e7e;
                     position: relative;
@@ -958,7 +958,7 @@ section.o_pms_pwa_roomdoo {
 
                 &_checkout-to-pay {
                     height: 100%;
-                    border-radius: 6px;
+                    //border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #dc3545;
                     position: relative;
@@ -978,7 +978,7 @@ section.o_pms_pwa_roomdoo {
 
                 &_out-service {
                     height: 100%;
-                    border-radius: 6px;
+                    //border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #000000;
                     position: relative;
@@ -998,7 +998,7 @@ section.o_pms_pwa_roomdoo {
 
                 &_staff {
                     height: 100%;
-                    border-radius: 6px;
+                    //border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #c08686;
                     position: relative;
@@ -1017,7 +1017,7 @@ section.o_pms_pwa_roomdoo {
                 }
                 &_to-assign {
                     height: 100%;
-                    border-radius: 6px;
+                    //border-radius: 6px;
                     padding: 1px 1px 0px 2px;
                     background-color: #ed722e;
                     position: relative;

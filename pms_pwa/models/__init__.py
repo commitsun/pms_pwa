@@ -10,3 +10,4 @@ from . import res_partner
 from . import res_users
 from . import pms_user_calendar_property
 from . import account_bank_statement
+from . import pms_pwa_event

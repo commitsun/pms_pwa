@@ -47,7 +47,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         cloudColorToDefault: function () {
             $(".o_pms_pwa_cloud_dropdown")
                 .find("img")
-                .attr("src", "/pms_pwa/static/img/svg/cloud.svg")
+                .attr("src", "/pms_pwa/static/img/svg/campana-azul.svg")
                 .removeClass("o_pms_pwa_cloud_on")
                 .addClass("o_pms_pwa_cloud_off");
         },
@@ -62,6 +62,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
         _onClickDismissAlert: function (event) {
             event.stopPropagation();
             event.preventDefault();
+            this.cloudColorToDefault();
             event.currentTarget.parentNode.remove();
         },
 
@@ -108,8 +109,25 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             // Browser does not allow playing audio without user interaction. TO REVIEW
 
             if (message.audio) {
-                var audio = new Audio(message.audio);
-                audio.play();
+                var audio = new Audio();
+                audio.src = message.audio;
+                // when the sound has been loaded, execute your code
+                audio.oncanplaythrough = (event) => {
+                    var playedPromise = audio.play();
+                    if (playedPromise) {
+                        playedPromise.catch((e) => {
+                            console.log(e)
+                            if (e.name === 'NotAllowedError' || e.name === 'NotSupportedError') {
+                                console.log(e.name);
+                            }
+                        }).then(() => {
+                            console.log("playing sound !!!");
+                        });
+                    }
+                }
+
+                // var audio = new Audio(message.audio);
+                // audio.play();
             }
 
             if (message.pms_property) {
@@ -175,7 +193,7 @@ odoo.define("pms_pwa.NotifyWidget", function (require) {
             if (child_count > 0 && cloud_off) {
                 $(".o_pms_pwa_cloud_dropdown")
                     .find("img")
-                    .attr("src", "/pms_pwa/static/img/svg/cloud-to-assign.svg")
+                    .attr("src", "/pms_pwa/static/img/svg/campana-naranja.svg")
                     .removeClass("o_pms_pwa_cloud_off")
                     .addClass("o_pms_pwa_cloud_on");
             }

@@ -167,10 +167,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var self = this;
             ev.preventDefault();
             var modal = $("div#o_pms_pwa_open_close_cash");
-            var payment_method = modal
-                .find("select[name='payment_method'] option")
-                .filter(":selected")
-                .val();
+            var payment_method = modal.find("select#open_close_payment_method").val();
             var payment_amount = modal.find("input[name='amount']").val();
             var coins = {};
             $("input[type=number].coins").each(function () {
@@ -186,8 +183,8 @@ odoo.define("pms_pwa.dashboard", function (require) {
             }).then(function (data) {
                 let obj = JSON.parse(data);
                 if (obj["result"] === true) {
-                    $("#confirmaModal").modal("toggle");
                     $("#o_pms_pwa_open_close_cash").modal("toggle");
+                    self.displayDataAlert(data);
                     window.location = "/dashboard";
                 } else {
                     if (obj["force"] === true) {
@@ -210,15 +207,24 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let partner_id = modal.find("input[name='partner_id']").val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("input[name='description']").val();
+            let date = modal.find("input[name='date']").val();
+            if(!date){
+                date = moment().format('DD/MM/YYYY');
+            }
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 partner_id: partner_id,
                 amount: payment_amount,
                 description: description,
+                date: date,
             }).then(function (data) {
                 let obj = JSON.parse(data);
-                self.displayDataAlert(data);
-                $("section#cash_values").load("/dashboard section#cash_values>*");
+                if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
+                    location.reload();
+                }else{
+                    self.displayDataAlert(data);
+                }
             });
         },
         _onClickBankPayment: function (ev) {
@@ -232,15 +238,24 @@ odoo.define("pms_pwa.dashboard", function (require) {
             let partner_id = modal.find("input[name='partner_id']").val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("input[name='description']").val();
+            let date = modal.find("input[name='date']").val();
+            if(!date){
+                date = moment().format('DD/MM/YYYY')
+            }
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: payment_method,
                 partner_id: partner_id,
                 amount: payment_amount,
                 description: description,
+                date: date,
             }).then(function (data) {
                 let obj = JSON.parse(data);
-                self.displayDataAlert(data);
-                $("section#cash_values").load("/dashboard section#cash_values>*");
+                if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
+                    location.reload();
+                }else{
+                    self.displayDataAlert(data);
+                }
             });
         },
         _onClickCashInternal: function (ev) {
@@ -257,15 +272,21 @@ odoo.define("pms_pwa.dashboard", function (require) {
                 .val();
             let payment_amount = modal.find("input[name='amount']").val();
             let description = modal.find("textarea[name='description']").val();
+            let date = modal.find("input[name='date']").val();
             ajax.jsonRpc("/cash_register/add", "call", {
                 payment_method: origin_payment_method,
                 target_payment_method: target_payment_method,
                 amount: payment_amount,
                 description: description,
+                date: date,
             }).then(function (data) {
                 let obj = JSON.parse(data);
-                self.displayDataAlert(data);
-                $("section#cash_values").load("/dashboard section#cash_values>*");
+                if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
+                    location.reload();
+                }else{
+                    self.displayDataAlert(data);
+                }
             });
         },
         _onClickModalCashPayment: function (e) {
@@ -287,6 +308,30 @@ odoo.define("pms_pwa.dashboard", function (require) {
             modal.find('input[type="number"]').val(0);
             modal.find('input[type="text"]').val("");
             modal.find('textarea[name="description"]').val("");
+            modal.find('input[name="date"]').val(moment().format('DD/MM/YYYY'));
+            $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start, end, label) {
+                    var start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        {year: "numeric", month: "2-digit", day: "2-digit"}
+                    );
+                    this.element.val(select_date);
+                }
+            );
         },
         _onClickModalCashRegiste: function (e) {
             var self = this;
@@ -307,42 +352,76 @@ odoo.define("pms_pwa.dashboard", function (require) {
         _onClickModalCashEdit: function (e) {
             var self = this;
             e.preventDefault();
+            let modal = $("div#o_pms_pwa_edit_payment_modal");
             var id = e.currentTarget.getAttribute("data-id");
             var name = e.currentTarget.getAttribute("data-name");
             var amount = e.currentTarget.getAttribute("data-amount");
-
-            $("input.payment_id").val(id);
-            $("input.payment_name").val(name);
-            $("input.payment_amount").val(amount);
+            var date = e.currentTarget.getAttribute("data-date");
+            var journal_id = e.currentTarget.getAttribute("data-journal_id");
+            if(!date){
+                date = moment().format('DD/MM/YYYY');
+            }else{
+                date = moment(date).format('DD/MM/YYYY');
+            }
+            modal.find("input.payment_id").val(id);
+            modal.find("input.payment_name").val(name);
+            modal.find("input.payment_amount").val(amount);
+            modal.find("input[name=date]").val(date);
+            modal.find("select[name='payment_method']").val(journal_id);
+            $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start, end, label) {
+                    var start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        {year: "numeric", month: "2-digit", day: "2-digit"}
+                    );
+                    this.element.val(select_date);
+                }
+            );
         },
         _onClickModalEditPayment: function (e) {
             var self = this;
             e.preventDefault();
             let modal = $("div#o_pms_pwa_edit_payment_modal");
-            let payment_id = $("input.payment_id").val();
-            let payment_amount = $("input.payment_amount").val();
-            let payment_name = $("input.payment_name").val();
-            let payment_method = modal
-                .find("select[name='payment_method'] option")
-                .filter(":selected")
-                .val();
+            let payment_id = modal.find("input.payment_id").val();
+            let payment_amount = modal.find("input.payment_amount").val();
+            let payment_name = modal.find("input.payment_name").val();
+            let payment_date = modal.find("input[name=date]").val();
+            let payment_method = modal.find("select#modal_edit_payment_methods").val();
             ajax.jsonRpc("/cash_register/edit", "call", {
                 id: payment_id,
                 amount: payment_amount,
                 name: payment_name,
                 journal_id: payment_method,
+                date: payment_date,
             }).then(function (data) {
-                self.displayDataAlert(data);
-                $("section#cash_values").load("/dashboard section#cash_values>*");
+                var obj = JSON.parse(data);
+                if (obj && obj.result === true) {
+                    self.displayDataAlert(data);
+                    location.reload();
+                }else{
+                    self.displayDataAlert(data);
+                }
             });
         },
         _onClickBankFilter: function (e) {
             var self = this;
             e.preventDefault();
             let journal_date = $('input[name="journal_date"]').val();
-            let journal_selected = $("select[name='journal_selected'] option")
-                .filter(":selected")
-                .val();
+            let journal_selected = $("select#bank_payment_method option:selected").val();
             ajax.jsonRpc("/dashboard/bank_journals", "call", {
                 journal_date: journal_date,
                 journal_id: journal_selected,
@@ -357,6 +436,12 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             payments[val]["id"] +
                             '" data-name="' +
                             payments[val]["simple_name"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
+                            '" data-date="' +
+                            payments[val]["date"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
                             '" data-amount="' +
                             payments[val]["amount"] +
                             '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
@@ -371,6 +456,10 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             payments[val]["id"] +
                             '" data-name="' +
                             payments[val]["simple_name"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
+                            '" data-date="' +
+                            payments[val]["date"] +
                             '" data-amount="' +
                             payments[val]["amount"] +
                             '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
@@ -387,9 +476,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
             var self = this;
             e.preventDefault();
             let journal_date = $('input[name="cash_date"]').val();
-            let journal_selected = $("select[name='payment_method'] option")
-                .filter(":selected")
-                .val();
+            let journal_selected = $("select#cash_payment_method option:selected").val();
             ajax.jsonRpc("/dashboard/cash_journal", "call", {
                 journal_date: journal_date,
                 journal_id: journal_selected,
@@ -404,6 +491,10 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             payments[val]["id"] +
                             '" data-name="' +
                             payments[val]["simple_name"] +
+                            '" data-date="' +
+                            payments[val]["date"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
                             '" data-amount="' +
                             payments[val]["amount"] +
                             '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +
@@ -418,6 +509,10 @@ odoo.define("pms_pwa.dashboard", function (require) {
                             payments[val]["id"] +
                             '" data-name="' +
                             payments[val]["simple_name"] +
+                            '" data-date="' +
+                            payments[val]["date"] +
+                            '" data-journal_id="' +
+                            payments[val]["journal_id"] +
                             '" data-amount="' +
                             payments[val]["amount"] +
                             '" data-toggle="modal" data-target="#o_pms_pwa_edit_payment_modal"><i class="fa fa-edit"></i></a><span>' +

@@ -32,7 +32,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input name="apply_on_all_week" data-edit="true" t-attf-tabindex="1" type="checkbox" />
+                                                <input name="apply_on_all_week" data-edit="true" tabindex="1" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -40,7 +40,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
+                                                <input data-edit="false" tabindex="2" name="apply_on_monday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -48,7 +48,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
+                                                <input data-edit="false" tabindex="3" name="apply_on_tuesday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -56,7 +56,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
+                                                <input data-edit="false" tabindex="4" name="apply_on_wednesday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -64,7 +64,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
+                                                <input data-edit="false" tabindex="5" name="apply_on_thursday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -72,7 +72,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
+                                                <input data-edit="false" tabindex="6" name="apply_on_friday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -80,7 +80,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
+                                                <input data-edit="false" tabindex="7" name="apply_on_saturday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -88,7 +88,7 @@
                                     <td>
                                         <p style="text-align:center">
                                             <label class="switch">
-                                                <input data-edit="false" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
+                                                <input data-edit="false" tabindex="8" name="apply_on_sunday" type="checkbox" />
                                                 <span class="slider round"></span>
                                             </label>
                                         </p>
@@ -1049,6 +1049,7 @@
                                             $(new_selector).click();
                                             $(new_selector).remove();
                                         });
+
                                     </script>
                                     <a class="mr-4 o_pms_pwa_return" t-attf-data-id="{{reservation.id}}" href="#"><i class="fa fa-arrow-left"></i> Volver</a>
                                     <h4 class="modal-title">
@@ -1102,7 +1103,15 @@
                                                 </option>
                                             </select>
                                         </div>
-
+                                        <div class="col-sm-12 mt-2">
+                                            <label class="control-label col-12" for="date">
+                                                Fecha
+                                            </label>
+                                            <input class="form-control float-left o_pms_pwa_payment_modal_daterangepicker" type="text" name="date" value="" />
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                            </span>
+                                        </div>
                                         <div class="col-sm-12 mt-2">
                                             <label class="control-label col-12" for="amount">
                                                 Importe
@@ -1204,7 +1213,15 @@
                                                 </option>
                                             </select>
                                         </div>
-
+                                        <div class="col-sm-12 mt-2">
+                                            <label class="control-label col-12" for="date">
+                                                Fecha
+                                            </label>
+                                            <input class="form-control float-left o_pms_pwa_payment_modal_daterangepicker" type="text" name="date" t-att-value="today" />
+                                            <span class="o_pms_pwa_calendar_icon">
+                                                  <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                            </span>
+                                        </div>
                                         <div class="col-sm-12 mt-2">
                                             <label class="control-label col-12" for="amount">
                                                 Importe
@@ -1457,6 +1474,27 @@
                                                     </div>
 
                                                     <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="address">
+                                                            Dirección
+                                                        </label>
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control" type="text" name="address" placeholder="Dirección" t-att-value="partner_value['address'] ? partner_value['address'] : ''" />
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="zip">
+                                                            Cogigo Postal
+                                                        </label>
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control" type="text" name="zip" placeholder="C.P." t-att-value="partner_value['zip'] ? partner_value['zip'] : ''" />
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
+                                                        <label class="control-label col-12" for="residence_city">
+                                                            Ciudad
+                                                        </label>
+                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control" type="text" name="residence_city" placeholder="Ciudad" t-att-value="partner_value['residence_city'] ? partner_value['residence_city'] : ''" />
+                                                    </div>
+
+                                                    <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="country_name">
                                                             País
                                                         </label>
@@ -1469,7 +1507,7 @@
                                                             Provincia
                                                         </label>
                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner_value['state_name'] ? partner_value['state_name'] : ''" />
-                                                       <input type="hidden" name="state_id" t-att-value="partner_value['state_id'] ? partner_value['state_id']['id'] : ''" />
+                                                       <input type="hidden" name="residence_state_id" t-att-value="partner_value['residence_state_id'] ? partner_value['residence_state_id']['id'] : ''" />
                                                     </div>
 
                                                 </div>

@@ -52,6 +52,7 @@
                             <input type="hidden" name="modal_date" value=""></input>
                             <input type="hidden" name="modal_reservation" value=""></input>
                             <input type="hidden" name="modal_room" value=""></input>
+                            <input type="hidden" name="modal_pricelist_id" value=""></input>
                             <input type="hidden" name="modal_property_id" t-attf-value="{{current_property}}"></input>
                             <button type="button" class="btn btn-message send_ConfirmChanges">Confirmar cambio</button>
                             <button type="button" class="btn btn-secondary close_confirmChange" data-dismiss="modal">Cancelar</button>
@@ -59,6 +60,72 @@
                     </div>
                 </div>
             </div>
+            <div id="modalPMSEvent" class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Nuevo evento</h5>
+                            <button type="button" class="close close_confirmChange" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-field mt8">
+                                <div class="row">
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="pms_property_id">
+                                            Hotel
+                                        </label>
+                                        <select id="event_pms_property_id" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="event_pms_property_id">
+                                            <t t-foreach="user_id.pms_pwa_property_ids" t-as="property_modal">
+                                                <t t-if="selected_property == property_modal">
+                                                    <option  t-att-value="property_modal.id" selected="selected">
+                                                        <t t-esc="property_modal.name" />
+                                                    </option>
+                                                </t>
+                                                <t t-else="">
+                                                    <option t-att-value="property_modal.id">
+                                                        <t t-esc="property_modal.name" />
+                                                    </option>
+                                                </t>
+
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <!-- <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="name">
+                                            Nombre
+                                        </label>
+                                        <input class="form-control" type="text" name="event_name"/>
+                                    </div> -->
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="date">
+                                            Fecha
+                                        </label>
+                                        <input class="form-control float-left eventmodaldate" type="text" name="event_date" t-att-value="today.strftime('%d/%m/%Y')" />
+                                        <span class="o_pms_pwa_calendar_icon" style="top:2.5em;">
+                                            <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-12 mt-2">
+                                        <label class="control-label col-12" for="description">
+                                            Mensaje
+                                        </label>
+                                        <input class="form-control" type="text" name="event_description"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+
+                            <input type="hidden" name="modal_property_id" t-attf-value="{{current_property}}"></input>
+                            <button type="button" class="btn btn-message-form send_NewEvent">Crear evento</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div id="changesDaysValues" class="modal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
@@ -132,7 +199,7 @@
                                         <div class="form-group row modal_room_type">
                                             <label for="room_type" class="col-sm-2 col-form-label">Tipo de habitación</label>
                                             <div class="col-sm-10">
-                                                <select id="room_type_model" name="modal_room_type" class="selectpicker" data-mdb-clear-button="true" data-live-search="true">
+                                                <select id="room_type_model" name="modal_room_type" multiple="multiple" class="selectpicker" data-mdb-clear-button="true" data-live-search="true">
                                                     <t t-foreach="rooms_list" t-as="r_type">
                                                         <option t-att-value="r_type['id']"><t t-esc="r_type['name']"/></option>
                                                     </t>
@@ -164,7 +231,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input name="apply_on_all_week" data-edit="true" t-attf-tabindex="1" type="checkbox" />
+                                                                <input name="apply_on_all_week" data-edit="false" tabindex="1" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -172,7 +239,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="2" name="apply_on_monday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="2" name="apply_on_monday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -180,7 +247,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="3" name="apply_on_tuesday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="3" name="apply_on_tuesday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -188,7 +255,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="4" name="apply_on_wednesday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="4" name="apply_on_wednesday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -196,7 +263,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="5" name="apply_on_thursday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="5" name="apply_on_thursday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -204,7 +271,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="6" name="apply_on_friday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="6" name="apply_on_friday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -212,7 +279,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="7" name="apply_on_saturday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="7" name="apply_on_saturday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -220,7 +287,7 @@
                                                     <td>
                                                         <p style="text-align:center">
                                                             <label class="switch">
-                                                                <input data-edit="true" t-attf-tabindex="8" name="apply_on_sunday" type="checkbox" />
+                                                                <input data-edit="false" tabindex="8" name="apply_on_sunday" type="checkbox" />
                                                                 <span class="slider round"></span>
                                                             </label>
                                                         </p>
@@ -361,7 +428,8 @@
                             <input type="hidden" name="modal_date" value=""></input>
                             <input type="hidden" name="modal_reservation" value=""></input>
                             <input type="hidden" name="modal_room" value=""></input>
-                            <a type="button" class="btn btn-message send_changesDaysValues">Confirmar cambio</a>
+                            <a type="button" class="btn btn-message send_changesDaysValues" data-continue="true" >Guardar y continuar editando</a>
+                            <a type="button" class="btn btn-message send_changesDaysValues">Guardar</a>
                             <button type="button" class="btn btn-secondary close_changesDaysValues" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
@@ -463,6 +531,7 @@
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                                     <input type="hidden" name="selected_date" t-att-value="selected_date.strftime('%d/%m/%Y')" />
                                     <input type="hidden" name="selected_property" t-att-value="pms_property_id" />
+                                    <input type="hidden" name="availability_plan" t-att-value="select_availability_plan_id" />
                                     <select id="pricelist_select" name="pricelist" data-select="allowed_pricelists" t-att-data-property="pms_property_id" class="form-control o_website_form_input o_input select_calendar">
                                         <t t-foreach="allowed_pricelists" t-as="pricelist">
                                             <option t-att-value="pricelist['id']" t-att-selected="select_pricelist_id==pricelist['id']">
@@ -507,7 +576,7 @@
                         <div class="table-responsive" id="o_pms_pwa_table_reduced">
                             <input type="hidden" name="date_list" t-attf-value="{{ date_list }}" />
                             <span class="d-none" id="o_pms_pwa_close_modal_otf">
-                                <button class="close_confirmChange"/>
+                                <button class="close_confirmChange" t-att-data-select_pricelist_id="select_pricelist_id" />
                             </span>
                             <table id="reduced_calendar_table" class="table o_pms_pwa_reduced_reservation_list_table" data-show-columns="true">
                                 <thead>
@@ -552,7 +621,7 @@
 
                                 </thead>
                                 <tbody>
-                                    <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
+                                    <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-select_pricelist_id="{{ select_pricelist_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
                                         <td class="o_pms_pwa_table_first_header_td">
                                             <p class="o_pms_pwa_room_name">
                                                 <i class="fa fa-angle-down"></i>
@@ -574,15 +643,34 @@
                                                 + ('o_pms_pwa_dispo_1' if availability_room==1 else ' ')
                                             " style="padding: 0 !important;">
                                                 <div class="float-center o_pms_pwa_title" style="text-align: center !important; font-weight: bold !important; margin-bottom: 0px !important;">
+                                                    <t t-set="notifications_info" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['notifications_info']"></t>
                                                     <t t-esc="percent_occupied" t-options="{'widget': 'float', 'precision': 0}" />
                                                     %
+                                                    <div t-if="notifications_info" class="dropdown" style="float:right;">
+                                                        <div class="dropdown">
+                                                            <button class="dropdown-toggle o_pms_pwa_notification_day_dropdown" type="button" t-attf-id="dropdownInfo{{day.strftime('%Y%m%d')}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <img src="/pms_pwa/static/img/svg/interrogante-azul.svg" alt="warning" width="15" t-att-title="notifications_info"/>
+                                                            </button>
+                                                            <div class="dropdown-menu" t-attf-aria-labelledby="dropdownInfo{{day.strftime('%Y%m%d')}}">
+                                                                <t t-foreach="notifications_info" t-as="notifi">
+                                                                    <a class="dropdown-item" href="#"><t t-esc="notifi['message']"/></a>
+                                                                </t>
+                                                                <br /><br />
+                                                                <button class="btn btn-message-form open_NewEvent" type="button" t-attf-data-date="{{ day }}" title="nuevo evento">Nuevo evento</button>
+                                                                <br />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div t-else="" style="float:right;" >
+                                                        <button class="o_pms_pwa_new_calendar_event open_NewEvent" t-attf-data-date="{{ day }}" type="button" title="nuevo evento"><i class="fa fa-plus"></i></button>
+                                                    </div>
                                                 </div>
                                                 <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;">
                                                     <t t-esc="availability_room" />
                                                     Libres
                                                 </p>
                                                 <div class="circles-container text-center row m-0 mt-2 p-0 " style="">
-                                                    <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Reservas" style="padding-bottom: 2px !important; padding-top: 0 !important;">
+                                                    <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Reservas" style="padding-bottom: 2px !important; padding-top: 0 !important;">
                                                         <div t-if="rooms_occupied_reservations > 0" class="circle" style="-0.6rem !important;">
                                                             <span>
                                                                 <t t-esc="rooms_occupied_reservations" />
@@ -590,11 +678,27 @@
                                                         </div>
                                                         <div t-else="" style="min-height: 25px;"></div>
                                                     </div>
-                                                    <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Fuera de servicio" style="padding-bottom: 2px !important; padding-top: 0 !important;">
+                                                    <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Fuera de servicio" style="padding-bottom: 2px !important; padding-top: 0 !important;">
                                                         <div t-if="rooms_occupied_out_service > 0" class="circle" style="-0.6rem !important;">
                                                             <span>
                                                                 <t t-esc="rooms_occupied_out_service" />
                                                             </span>
+                                                        </div>
+                                                        <div t-else="" style="min-height: 25px;"></div>
+                                                    </div>
+                                                    <div class="col-4 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Warning" style="padding-bottom: 2px !important; padding-top: 0 !important;">
+                                                        <t t-set="notifications_warning" t-value="general_headers[day.strftime('%Y-%m-%d')]['property_header']['notifications_warning']"></t>
+                                                        <div t-if="notifications_warning" style="-0.6rem !important;">
+                                                            <div class="dropdown">
+                                                                <button class="dropdown-toggle o_pms_pwa_notification_day_dropdown" type="button" t-attf-id="dropdownMenu{{day.strftime('%Y%m%d')}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <img src="/pms_pwa/static/img/svg/restrictions.svg" alt="warning" width="15" t-att-title="notifications_warning" aria-expanded="false"/>
+                                                                </button>
+                                                                <div class="dropdown-menu" t-attf-aria-labelledby="dropdownMenu{{day.strftime('%Y%m%d')}}">
+                                                                    <t t-foreach="notifications_warning" t-as="notifi">
+                                                                        <a class="dropdown-item launch_for_notification" href="#" t-att-data-id="notifi['reservation_id']"><t t-esc="notifi['message']"/></a>
+                                                                    </t>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div t-else="" style="min-height: 25px;"></div>
                                                     </div>
@@ -603,9 +707,9 @@
                                         </t>
                                     </tr>
                                     <tr>
-                                        <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(pms_property_id)" t-attf-aria-labelledby="{{ pms_property_id }}" style="width:100% !important"></td>
+                                        <td t-att-colspan="len(date_list)+1" class="o_pms_pwa_hiddenRow collapse" t-att-id="'collapse_accordion_'+str(pms_property_id)" t-attf-aria-labelledby="{{ pms_property_id }}" t-attf-data-availability_plan="{{ select_availability_plan_id }}" style="width:100% !important"></td>
                                     </tr>
-                                    <tr class="o_pms_pwa_open_reduced_calendar" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
+                                    <tr style="cursor:pointer;" class="o_pms_pwa_open_reduced_calendar" t-attf-data-availability_plan="{{ select_availability_plan_id }}" t-attf-data-select_pricelist_id="{{ select_pricelist_id }}" t-attf-data-id="{{ pms_property_id }}" data-toggle="collapse" t-att-data-target="'#collapse_accordion_'+str(pms_property_id)" aria-expanded="false">
                                         <td t-att-colspan="len(date_list)+1" t-attf-aria-labelledby="{{ pms_property_id }}" style="width: 100% !important;height: 5px !important;border-radius: 5rem;background-color: #eaeaea;font-size: 14px;padding: 0;">
                                             <span style="left: 40%;position: sticky;cursor:pointer;">
                                                 <i class="fa fa-angle-down"></i> <strong>Reservas</strong>  <i class="fa fa-angle-down"></i>

@@ -184,7 +184,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
         },
     });
     publicWidget.registry.ReducedCalendarCollapseWidget = publicWidget.Widget.extend({
-        selector: "#reduced_calendar_table, #confirmChange, #o_pms_pwa_calendar_filters, #o_pms_pwa_close_modal_otf",
+        selector: "#reduced_calendar_table, #confirmChange, #o_pms_pwa_calendar_filters, #o_pms_pwa_close_modal_otf, #modalPMSEvent",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reduced_calendar_line.xml",
         ],
@@ -194,6 +194,8 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             "click .send_ConfirmChanges": "_onClickConfirmModal",
             "click .open_changeValues": "_onClickChangeValues",
             "change .select_calendar": "_onChangeSelectValue",
+            "click .open_NewEvent": "_onClickOpenEventModal",
+            "click .send_NewEvent": "_onClickCreateEvent",
         },
         /**
          * @override
@@ -275,7 +277,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             }
         },
 
-        _launchLines: function (event, pms_property_id = false) {
+        _launchLines: function (event, pms_property_id = false, pricelist_id=false) {
             var self = this;
             if (pms_property_id) {
                 pms_property_id = pms_property_id;
@@ -283,14 +285,32 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                 pms_property_id = event.getAttribute("data-id");
             }
             var date_list = $('input[name="date_list"]').val();
-            var selected_display = $('input[name="selected_display"]').val();
+            // var selected_display = $('input[name="selected_display"]').val();
+            if (pricelist_id){
+                var pricelist_id = pricelist_id;
+            }else{
+                try{
+                    var pricelist_id = event.getAttribute("data-select_pricelist_id");
+                }catch{
+                    var pricelist_id = $('input[name="selected_property"]').val();
+                }
+            }
+            try{
+                var availability_plan = event.getAttribute("data-availability_plan");
+            }catch{
+                var availability_plan = $('input[name="availability_plan"]').val();
+            }
+
             ajax.jsonRpc("/calendar/line", "call", {
                 pms_property_id: pms_property_id,
                 range_date: date_list,
+                pricelist_id: pricelist_id,
+                availability_plan: availability_plan,
             }).then(function (data) {
                 var html = core.qweb.render("pms_pwa.reduced_calendar_line", {
                     pms_property_id: pms_property_id,
                     obj_list: data.reservations,
+                    line_selected_property: pricelist_id,
                     csrf_token: csrf_token,
                 });
                 $(String("#collapse_accordion_" + pms_property_id)).html(html);
@@ -324,12 +344,14 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                     drop: function (event, ui) {
                         event.preventDefault();
                         var room = $(this).data("room");
+                        let selected_pricelist = ui.draggable.data("select_pricelist_id");
                         if(room){
                             ajax.jsonRpc("/calendar/reduced-change", "call", {
                                 id: ui.draggable.data("id"),
                                 date: ui.draggable.data("date"),
                                 room: room,
                                 pms_property_id: pms_property_id,
+                                pricelist_id: selected_pricelist,
                                 // selected_display: selected_display,
                             }).then(function (data) {
                                 if (data && String(data["result"]) == "success") {
@@ -353,6 +375,10 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                                             $("input[name='modal_room']").val(
                                                 String(data["room"])
                                             );
+                                            $("input[name='modal_pricelist_id']").val(
+                                                String(selected_pricelist)
+                                            );
+
                                         }
                                     );
                                     $("#confirmChange").modal("show");
@@ -623,8 +649,9 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             var self = this;
             event.preventDefault();
             let modal_property_id = $("input[name='modal_property_id']").val();
+            let modal_pricelist_id = $("input[name='modal_pricelist_id']").val();
             drop_function = false;
-            self._launchLines(event.currentTarget, modal_property_id);
+            self._launchLines(event.currentTarget, modal_property_id, modal_pricelist_id);
         },
         _onClickGetCalendarLine: function (event) {
             var self = this;
@@ -639,6 +666,10 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                 $("input[type=checkbox]").each(function () {
                     this.checked = false;
                 });
+                $("#multi_days_values input[type=checkbox]").each(function () {
+                    this.checked = true;
+                });
+                $("select#room_type_model[name=modal_room_type]").val(event.currentTarget.getAttribute("data-room_type")).change();
                 $(".roomdoo_rules :input[type=text]").val("");
                 $(".hidde_modal").attr("style", "display:none;");
                 // console.log("vacio todo");
@@ -655,8 +686,9 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                     document.documentElement.lang,
                     date_options
                 );
-                console.log("date_select", checkin_date);
+                // console.log("date_select", checkin_date);
                 let property = $("input[name='selected_property']").val();
+
                 modal.find("input[name='modal_start_date']").val(checkin_date);
                 modal.find("input[name='modal_end_date']").val(checkin_date);
 
@@ -675,7 +707,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                         maxYear: parseInt(moment().format("YYYY"), 10),
                     },
                     function (start) {
-                        console.log(start);
+                        //console.log(start);
                         const start_date = new Date(start);
                         var select_date = start_date.toLocaleDateString(
                             document.documentElement.lang,
@@ -684,41 +716,6 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                         this.element.val(select_date);
                     }
                 );
-                // $('select').selectpicker('deselectAll');
-                // $('input[name="modal_pms_property_name"]').val()
-                // $('input[name="modal_pms_property_name"]').val()
-                var text = modal.find(
-                    "select#room_type_model[name=modal_room_type] option[value='" +
-                        event.currentTarget.getAttribute("data-room_type") +
-                        "']"
-                ).text();
-                console.log(text);
-                // modal.find(".modal_room_type .bootstrap-select .filter-option").text(text);
-                // modal.find("select#room_type_model[name=modal_room_type]").val(
-                //     event.currentTarget.getAttribute("data-room_type")
-                // );
-
-                // var text2 = modal.find(
-                //     "select#modal_pricelist_id[name=modal_pricelist_id] option[value='" +
-                //         event.currentTarget.getAttribute("data-pricelist") +
-                //         "']"
-                // ).text();
-                // modal.find(".modal_pricelist_id .bootstrap-select .filter-option").text(text2);
-                // modal.find("select#modal_pricelist_id[name=modal_pricelist_id]").val(
-                //     event.currentTarget.getAttribute("data-pricelist")
-                // );
-
-                // var text3 = modal.find(
-                //     "select#select_availability_plan_id[name=modal_availability_plan_ids] option[value='" +
-                //         event.currentTarget.getAttribute("data-availability_plan") +
-                //         "']"
-                // ).text();
-                // modal.find(".modal_availability_plan_ids .bootstrap-select .filter-option").text(
-                //     text3
-                // );
-                // modal.find(
-                //     "select#select_availability_plan_id[name=modal_availability_plan_ids]"
-                // ).val(event.currentTarget.getAttribute("data-availability_plan"));
             } catch (err) {
                 console.log("ERROR: ", err);
             }
@@ -732,10 +729,12 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             var send_date = $("input[name='modal_date']").val();
             var send_reservation = $("input[name='modal_reservation']").val();
             var send_room = $("input[name='modal_room']").val();
+            let pricelist_id = $("input[name='modal_pricelist_id']").val();
             ajax.jsonRpc("/calendar/reduced-change", "call", {
                 id: send_reservation,
                 date: send_date,
                 room: send_room,
+                pricelist_id: pricelist_id,
                 submit: true,
                 // selected_display: selected_display,
             }).then(function (data) {
@@ -761,6 +760,80 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                         }
                     });
                 });
+            });
+        },
+        _onClickOpenEventModal: function (event) {
+            var self = this;
+            event.preventDefault();
+            try {
+                $(".roomdoo_rules :input[type=text]").val("");
+                $(".hidde_modal").attr("style", "display:none;");
+                // console.log("vacio todo");
+            } catch (err) {
+                console.log("ERROR: ", err);
+            }
+            // Add default values
+            try {
+                let date_select = event.currentTarget.getAttribute("data-date");
+
+                let modal = $("div#modalPMSEvent");
+                const start_date = new Date(date_select);
+                var checkin_date = start_date.toLocaleDateString(
+                    document.documentElement.lang,
+                    date_options
+                );
+                // console.log("date_select", checkin_date);
+                modal.find("input[name='event_date']").val(checkin_date);
+
+                modal.find('input[type="text"].eventmodaldate').daterangepicker(
+                    {
+                        locale: {
+                            direction: "ltr",
+                            format: "DD/MM/YYYY",
+                            applyLabel: "Aplicar",
+                            cancelLabel: "Cancelar",
+                        },
+                        singleDatePicker: true,
+                        showDropdowns: true,
+                        autoUpdateInput: false,
+                        minYear: 1901,
+                        maxYear: parseInt(moment().format("YYYY"), 10),
+                    },
+                    function (start) {
+                        // console.log(start);
+                        const start_date = new Date(start);
+                        var select_date = start_date.toLocaleDateString(
+                            document.documentElement.lang,
+                            date_options
+                        );
+                        this.element.val(select_date);
+                    }
+                );
+
+            } catch (err) {
+                console.log("ERROR: ", err);
+            }
+
+            $("#modalPMSEvent").modal("show");
+        },
+        _onClickCreateEvent: function (event) {
+            var self = this;
+            event.preventDefault();
+            drop_function = false;
+            var send_date = $("input[name='event_date']").val();
+            var send_description = $("input[name='event_description']").val();
+            // var send_name = $("input[name='event_name']").val();
+            var send_pms_property_id = $( "#event_pms_property_id option:selected" ).val();
+            ajax.jsonRpc("/pms_pwa_event/new", "call", {
+                pms_property_id: send_pms_property_id,
+                date: send_date,
+                description: send_description,
+                // name: send_name,
+                submit: true,
+                // selected_display: selected_display,
+            }).then(function (data) {
+                $("#modalPMSEvent").modal("hide");
+                location.reload();
             });
         },
         _onChangeSelectValue: function (event) {
@@ -898,9 +971,9 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             return this._super.apply(this, arguments);
         },
         _onClickSendModalChange: function (event) {
-            console.log("Vamos!!!");
             var self = this;
             event.preventDefault();
+            var continuar = event.currentTarget.getAttribute("data-continue");
             let send_values = {
                 start_date: $("input[name=modal_start_date]").val(),
                 end_date: $("input[name=modal_end_date]").val(),
@@ -909,7 +982,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                     "select[name=modal_availability_plan_ids]"
                 ).val(),
                 pricelist_id: $("select[name=modal_pricelist_id]").val(),
-                room_type: [$("select[name=modal_room_type]").val(),],
+                room_type: $("select[name=modal_room_type]").val(),
                 days: {
                     apply_on_monday: $("input[name=apply_on_monday]").prop("checked"),
                     apply_on_tuesday: $("input[name=apply_on_tuesday]").prop("checked"),
@@ -937,7 +1010,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             }
             if ($("input[name=show_closed]").prop("checked")) {
                 // intentar que se envíe 0 o 1, 0 desactivado, 1 activo
-                if($("input[name=modal_closed]").val() == "on"){
+                if($("input[name=modal_closed]").prop("checked") == true){
                     send_values["closed"] = "1";
                 }else{
                     send_values["closed"] = "0";
@@ -957,20 +1030,24 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             }
             if ($("input[name=show_closed_arrival]").prop("checked")) {
                 // intentar que se envíe 0 o 1, 0 desactivado, 1 activo
-                if($("input[name=modal_closed_arrival]").val() == "on"){
+                if($("input[name=modal_closed_arrival]").prop("checked") == true){
                     send_values["closed_arrival"] = "1";
                 }else{
                     send_values["closed_arrival"] = "0";
                 }
             }
-
             ajax.jsonRpc("/calendar/modal", "call", {
                 send_values,
             }).then(function (updated_data) {
-                $("#changesDaysValues").modal("toggle");
-                let property = $("input[name='selected_property']").val();
-                let parameters = "?selected_property="+property;
-                window.location = "/calendar/reduced" + parameters;
+                if(continuar){
+                    alert("Los datos cambios han sido guardados.");
+                }else{
+                    $("#changesDaysValues").modal("toggle");
+                    let property = $("input[name='selected_property']").val();
+                    let parameters = "?selected_property="+property;
+                    window.location = "/calendar/reduced" + parameters;
+                }
+
             });
         },
     });

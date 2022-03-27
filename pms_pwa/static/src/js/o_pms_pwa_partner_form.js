@@ -12,14 +12,14 @@ odoo.define("pms_pwa.partner_form", function (require) {
         xmlDependencies: ["/pms_pwa/static/src/xml/pms_pwa_roomdoo_partner_modal.xml"],
         events: {
             "click div.o_pms_pwa_partner_modal_show": "_onClickOpenPartnerModal",
-            "change select[name=country_id]": "_onChangeCountryId",
+            "click .o_pms_pwa_new_partner_modal_show": "_onClickNewPartnerModal",
+            "change select#partner_type_change": "_onPartnerTypeChange",
+            // "change input[name='invoice_zip']": "_onInvoicingZipChange",
             "click button.send_form_partner": "_submitForm",
         },
 
         init: function () {
             this._super.apply(this, arguments);
-            this.allowed_fields = ["allowed_country_ids", "allowed_states"];
-            this.m2o_fields = ["country_id", "state_id", "nationality_id"];
         },
 
         start: function () {
@@ -61,59 +61,45 @@ odoo.define("pms_pwa.partner_form", function (require) {
             });
             return form_object;
         },
-
-        _updateFormFields: function (form_fields) {
+        _onClickNewPartnerModal: function (event) {
+            event.preventDefault();
             var self = this;
+            var partner_data = false;
+            $('.modal').modal('hide');
+            /* RPC call to get the reservation data */
+            ajax.jsonRpc("/new_partner", "call", {
+            }).then(function (partner_data) {
+                setTimeout(function () {
+                    if (partner_data) {
+                        $("div.o_pms_pwa_reservation_modal").modal("toggle");
+                        self.displayContent("pms_pwa.roomdoo_partner_modal", {
+                            partner: partner_data,
+                        });
+                        if(partner_data.partner_type == "person"){
 
-            // Allowed fields
-            $.each(self.allowed_fields, function (key, value) {
-                try {
-                    var select = $('form#partner_form [data-select="' + value + '"]');
-                } catch (error) {
-                    console.log(error);
-                }
-                if (select.length != 0) {
-                    select.empty();
-                    $.each(form_fields[value], function (subkey, subvalue) {
-                        var option = new Option(
-                            subvalue.name,
-                            subvalue.id,
-                            false,
-                            false
-                        );
-                        $(option).html(subvalue.name);
-                        select.append(option);
-                    });
-
-                    delete form_fields[value];
-                }
-            });
-
-            // Regular fields
-            $.each(form_fields, function (key, value) {
-                var input = $("form#partner_form input[name='" + key + "']");
-                if (input.length != 0) {
-                    input.val(value);
-                } else if (self.m2o_fields.includes(key)) {
-                    $(
-                        "form#partner_form select[name='" +
-                            key +
-                            "'] option[value='" +
-                            value.id +
-                            "']"
-                    ).prop("selected", true);
-                } else {
-                    $(
-                        "form#partner_form select[name='" +
-                            key +
-                            "'] option[value='" +
-                            value +
-                            "']"
-                    ).prop("selected", true);
-                }
+                            $(".is_agency").hide();
+                            $(".is_company").hide();
+                            $(".is_person").show();
+                        }else{
+                            if(partner_data.partner_type == "company"){
+                                $(".is_person").hide();
+                                $(".is_agency").hide();
+                                $(".is_company").show();
+                            }else{
+                                $(".is_person").hide();
+                                $(".is_company").show();
+                                $(".is_agency").show();
+                            }
+                        }
+                        self._dateRangeActive();
+                        self._searchCountry();
+                        self._searchState();
+                    } else {
+                        self.displayDataAlert(partner_data);
+                    }
+                }, 0);
             });
         },
-
         _onClickOpenPartnerModal: function (event) {
             event.preventDefault();
             var self = this;
@@ -121,7 +107,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
             var reservation_id = event.currentTarget.getAttribute(
                 "data-reservation-id"
             );
-
             var partner_data = false;
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/partner/" + partner_id, "call", {
@@ -133,7 +118,26 @@ odoo.define("pms_pwa.partner_form", function (require) {
                         self.displayContent("pms_pwa.roomdoo_partner_modal", {
                             partner: partner_data.partner,
                         });
+
+                        if(partner_data.partner.partner_type == "person"){
+
+                            $(".is_agency").hide();
+                            $(".is_company").hide();
+                            $(".is_person").show();
+                        }else{
+                            if(partner_data.partner.partner_type == "company"){
+                                $(".is_person").hide();
+                                $(".is_agency").hide();
+                                $(".is_company").show();
+                            }else{
+                                $(".is_person").hide();
+                                $(".is_company").show();
+                                $(".is_agency").show();
+                            }
+                        }
                         self._dateRangeActive();
+                        self._searchCountry();
+                        self._searchState();
                     } else {
                         self.displayDataAlert(partner_data);
                     }
@@ -148,37 +152,164 @@ odoo.define("pms_pwa.partner_form", function (require) {
             values = this.formToJson(values);
             values.submit = true;
             /* RPC call to get the reservation data */
+            if(values.partney_type != 'person'){
+                values.firstname = values.company_name;
+            }
             ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
                 setTimeout(function () {
                     if (partner_data.result == true) {
-                        self._updateFormFields(partner_data.partner);
+                        $("#o_pms_pwa_partner_modal").modal("toggle");
                     } else {
                         self.displayDataAlert(partner_data);
                     }
                 }, 0);
             });
         },
-
-        _onChangeCountryId: function (event) {
-            event.preventDefault();
-            var self = this;
-            var values = $("form#partner_form").serializeArray();
-            values = this.formToJson(values);
-
-            ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
-                partner_data = JSON.parse(partner_data);
-                setTimeout(function () {
-                    if (partner_data) {
-                        self._updateFormFields(partner_data);
+        // _onInvoicingZipChange: function (event) {
+        //     event.preventDefault();
+        //     var self = this;
+        //     var values = $("form#partner_form").serializeArray();
+        //     values = this.formToJson(values);
+        //     values.submit = false;
+        //     /* RPC call to get the reservation data */
+        //     if(values.partney_type != 'person'){
+        //         values.firstname = values.company_name;
+        //     }
+        //     ajax.jsonRpc("/new_partner/", "call", values).then(function (partner_data) {
+        //         setTimeout(function () {
+        //             if (partner_data) {
+        //                 self.displayContent("pms_pwa.roomdoo_partner_modal", {
+        //                     partner: partner_data,
+        //                 });
+        //             }
+        //         }, 0);
+        //     });
+        // },
+        _dateRangeActive: function () {
+            $(".o_pms_pwa_modal_daterangepicker").daterangepicker(
+                {
+                    locale: {
+                        direction: "ltr",
+                        format: "DD/MM/YYYY",
+                        applyLabel: "Aplicar",
+                        cancelLabel: "Cancelar",
+                    },
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                    autoUpdateInput: false,
+                    minYear: 1901,
+                    maxYear: parseInt(moment().format("YYYY"), 10),
+                },
+                function (start) {
+                    const start_date = new Date(start);
+                    var select_date = start_date.toLocaleDateString(
+                        document.documentElement.lang,
+                        {year: "numeric", month: "2-digit", day: "2-digit"}
+                    );
+                    this.element.val(select_date);
+                }
+            );
+        },
+        _searchCountry: function () {
+            $(".o_pms_pwa_search_country_name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/pms_checkin_partner/search",
+                        method: "GET",
+                        dataType: "json",
+                        data: {keywords: request.term, model: "res.country", id: null},
+                        success: function (data) {
+                            response(
+                                $.map(data, function (item) {
+                                    return {
+                                        label:
+                                            (item.type === "c" ? "Category: " : "") +
+                                            item.name,
+                                        value: item.name,
+                                        id: item.id,
+                                    };
+                                })
+                            );
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                    });
+                },
+                select: function (suggestion, term, item) {
+                    if (term && term.item) {
+                        $(suggestion.target.parentElement)
+                            .find('.country')
+                            .val(term.item.id);
                     }
-                }, 0);
+                },
+                minLength: 1,
             });
         },
-
-        _dateRangeActive: function () {
-            $("form#partner_form input.o_pms_pwa_datepicker").datepicker({
-                format: "dd/mm/yyyy",
+        _searchState: function(){
+            $(".o_pms_pwa_search_state_name").autocomplete({
+                source: function (request, response) {
+                    var checkin_partner = $(
+                        ".bs-stepper-content .o_pms_pwa_search_state_name"
+                    ).data("id");
+                    $.ajax({
+                        url: "/pms_checkin_partner/search",
+                        method: "GET",
+                        dataType: "json",
+                        data: {
+                            keywords: request.term,
+                            model: "res.country.state",
+                            id: checkin_partner,
+                        },
+                        success: function (data) {
+                            response(
+                                $.map(data, function (item) {
+                                    return {
+                                        label:
+                                            (item.type === "c"
+                                                ? "Category: "
+                                                : "") + item.name,
+                                        value: item.name,
+                                        id: item.id,
+                                    };
+                                })
+                            );
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                    });
+                },
+                select: function (suggestion, term, item) {
+                    // console.log("suggestion", suggestion, term, item);
+                    if (term && term.item) {
+                        $(suggestion.target.parentElement)
+                            .find('.state')
+                            .val(term.item.id);
+                    }
+                },
+                minLength: 1,
             });
+        },
+        _onPartnerTypeChange: function (event) {
+            event.preventDefault();
+            var self = this;
+            let select_value = $("select#partner_type_change").val();
+            if(select_value  == "person"){
+                $(".is_agency").hide();
+                $(".is_company").hide();
+                $(".is_person").show();
+            }else{
+                if(select_value == "company"){
+                    $(".is_person").hide();
+                    $(".is_agency").hide();
+                    $(".is_company").show();
+                }else{
+                    $(".is_person").hide();
+                    $(".is_company").show();
+                    $(".is_agency").show();
+                }
+            }
         },
     });
 

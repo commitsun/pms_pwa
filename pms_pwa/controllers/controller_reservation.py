@@ -200,10 +200,13 @@ class PmsReservation(http.Controller):
                 payload = http.request.jsonrequest.get("params")
                 payment_method = int(payload["payment_method"])
                 payment_amount = float(payload["amount"])
-                payment_date = datetime.datetime.strptime(
-                    kw.get("date", False),
-                    DEFAULT_SERVER_DATE_FORMAT,
-                )
+                if payload.get("date"):
+                    payment_date = datetime.datetime.strptime(
+                        payload.get("date", False),
+                        get_lang(request.env).date_format,
+                    )
+                else:
+                    payment_date = datetime.datetime.today()
                 if "partner_id" in payload:
                     payment_partner_id = int(payload["partner_id"])
                 else:
@@ -256,10 +259,13 @@ class PmsReservation(http.Controller):
                 payload = http.request.jsonrequest.get("params")
                 payment_method = int(payload["payment_method"])
                 payment_amount = float(payload["amount"])
-                payment_date = datetime.datetime.strptime(
-                    kw.get("date", False),
-                    DEFAULT_SERVER_DATE_FORMAT,
-                )
+                if payload.get("date"):
+                    payment_date = datetime.datetime.strptime(
+                        payload.get("date", False),
+                        get_lang(request.env).date_format,
+                    )
+                else:
+                    payment_date = datetime.datetime.today()
                 if "partner_id" in payload:
                     refund_partner_id = int(payload["partner_id"])
                 else:
@@ -333,12 +339,25 @@ class PmsReservation(http.Controller):
                         country = request.env["res.country"].search([
                             ("name","=",payload[0]["partner_values"][0]["country"])
                         ])
+                        zip_code = request.env["res.city.zip"].search([
+                            ("name", "=", partner_invoice_values["zip"])
+                        ])
+                        if zip_code:
+                            if country and country != zip_code.country_id:
+                                raise Exception("El código postal no pertenece al país seleccionado")
+                            if not country:
+                                country = zip_code.country_id
+                            if not partner_invoice_values["city"]:
+                                partner_invoice_values["city"] = zip_code.city_id.name
+                            partner_invoice_values["state_id"] = zip_code.state_id.id if zip_code.state_id else False
+
                         if not country:
                             raise UserError(
                                 _("País no encontrado: {}".format(
                                     payload[0]["partner_values"][0]["country"]
                                 ))
                             )
+
                         partner_invoice_values["country_id"] = country.id
                         partner_invoice = request.env["res.partner"].create(
                             partner_invoice_values
@@ -508,10 +527,10 @@ class PmsReservation(http.Controller):
 
             try:
                 new_journal_id = int(kw.get("journal_id", False))
-                new_journal = request.env["account.journal"].browse(new_journal_id)
+                new_journal = request.env["account.journal"].sudo().browse(new_journal_id)
                 new_date = datetime.datetime.strptime(
                     kw.get("date", False),
-                    DEFAULT_SERVER_DATE_FORMAT,
+                    get_lang(request.env).date_format,
                 )
                 new_amount = float(kw.get("amount", False))
                 new_pay_type = "inbound" if new_amount > 0 else "outbound"
@@ -535,7 +554,6 @@ class PmsReservation(http.Controller):
                 old_pay_type = payment.payment_type
                 old_date = payment.date
                 old_amount = payment.amount if payment.payment_type == "inbound" else -payment.amount
-
                 statement_line = False
                 if old_journal.type == "cash":
                     statement_line = folio.statement_line_ids.filtered(
@@ -554,9 +572,9 @@ class PmsReservation(http.Controller):
                         return json.dumps(
                             {"result": True, "message": _("El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración.")}
                         )
-                    payment.action_draft()
-                    payment.action_cancel()
-                    payment.unlink()
+                    payment.sudo().action_draft()
+                    payment.sudo().action_cancel()
+                    payment.sudo().unlink()
                     if new_pay_type == "inbound":
                         folio.do_payment(
                             new_journal,
@@ -566,7 +584,7 @@ class PmsReservation(http.Controller):
                             folio,
                             partner=folio.partner_id,
                             date=new_date,
-                        )
+                        ).with_user(request.env.user)
                     else:
                         folio.do_refund(
                             new_journal,
@@ -576,7 +594,7 @@ class PmsReservation(http.Controller):
                             folio,
                             partner=folio.partner_id,
                             date=new_date,
-                        )
+                        ).with_user(request.env.user)
             except Exception as e:
                 return json.dumps(
                     {

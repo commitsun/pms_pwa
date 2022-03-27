@@ -92,6 +92,7 @@ class DashBoard(http.Controller):
                     "date": date.strftime(get_lang(request.env).date_format),
                     "payments": self._get_payments(int(list(self._get_journals_bank(pms_property_id).keys())[0]), date)
                 },
+                "today": date.strftime(get_lang(request.env).date_format),
                 # Fin cambio documento
                 "tasks": _get_user_activities(
                     request.session.uid if request.session.uid else False
@@ -440,6 +441,7 @@ class DashBoard(http.Controller):
                 "name": line.ref or "No indicado" + " el " + line.create_date.strftime("%d %b - %H:%M") + " (" + line.create_uid.name + ")",
                 "amount": line.amount if line.payment_type == "inbound" else -line.amount,
                 "date": line.date,
+                "journal_id": line.journal_id.id,
             })
         return payment_vals
 

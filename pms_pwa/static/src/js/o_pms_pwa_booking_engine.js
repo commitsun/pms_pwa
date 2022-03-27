@@ -958,7 +958,8 @@ odoo.define("pms_pwa.pms_pwa_booking_engine", function (require) {
         _onClickPMSPWABookingEngineCloseButton: function (event) {
             event.preventDefault();
             let modal_property_id = $("input[name='modal_property_id']").val();
-            new reduced_calendar(this)._launchLines(event, modal_property_id);
+            let modal_pricelist_id = $("input[name='modal_pricelist_id']").val();
+            new reduced_calendar(this)._launchLines(event, modal_property_id, modal_pricelist_id);
             const today = new Date();
             const tomorrow = new Date();
             tomorrow.setDate(today.getDate() + 1);

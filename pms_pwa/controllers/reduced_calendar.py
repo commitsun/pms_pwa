@@ -162,12 +162,26 @@ class PmsCalendar(http.Controller):
             (
                 pms_property_id,
                 tuple(dates),
-                tuple(room_types.ids),
+                tuple(room_types.ids) if room_types else (0,),
             )
         )
         avail_result = request.env.cr.fetchall()
         avail_result = sorted(avail_result, key=date_func)
         dict_result = {}
+        overbooking_lines = request.env["pms.reservation"].search([
+            ("pms_property_id", "=", pms_property_id),
+            ("overbooking", "=", True),
+            ("state", "!=", "cancel"),
+            ("checkin", "<=", dates[-1]),
+            ("checkout", ">", dates[0]),
+        ]).mapped("reservation_line_ids")
+        pwa_events = request.env["pms.pwa.event"].search([
+            ("date", ">=", dates[0]),
+            ("date", "<=", dates[-1]),
+            '|',
+            ("pms_property_ids", "in", pms_property_id),
+            ("pms_property_ids", "=", False),
+        ])
         for avail_date, data in groupby(avail_result, date_func):
             total_res_count = 0
             total_out_count = 0
@@ -175,6 +189,8 @@ class PmsCalendar(http.Controller):
             dict_result[s_avail_date] = {}
             data = list(filter(lambda x: x[1] is not None, data))
             data = sorted(data, key=room_type_func)
+            notifications_warning = self._get_notifications_warning(pms_property_id, avail_date, overbooking_lines)
+            notifications_info = self._get_notifications_info(pms_property_id, avail_date, pwa_events)
             for room_type_id, vals in groupby(data, room_type_func):
                 room_type = request.env["pms.room.type"].browse(room_type_id)
                 vals = list(vals)
@@ -182,6 +198,7 @@ class PmsCalendar(http.Controller):
                 out_count = sum([x[3] for x in vals if x[2] == 'out'])
                 total_rooms = room_type._get_total_rooms(pms_property.id)
                 num_avail = room_type._get_total_rooms(pms_property.id) - (res_count + out_count)
+
                 dict_result[s_avail_date][room_type_id] = {
                     'reservations_count': res_count,
                     'outs_count': out_count,
@@ -189,6 +206,8 @@ class PmsCalendar(http.Controller):
                     'reservations_percent': int((res_count * 100) / total_rooms),
                     'outs_percent': int((out_count * 100) / total_rooms),
                     'avail_percent': int((num_avail * 100) / total_rooms),
+                    'notifications_warning': notifications_warning,
+                    'notifications_info': notifications_info,
                 }
                 if room_type.overnight_room:
                     total_res_count += res_count
@@ -203,6 +222,8 @@ class PmsCalendar(http.Controller):
                         'reservations_percent': 0,
                         'outs_percent': 0,
                         'avail_percent': 100,
+                        'notifications_warning': notifications_warning,
+                        'notifications_info': notifications_info,
                     }
             dict_result[s_avail_date]["property_header"] = {
                 'reservations_count': total_res_count,
@@ -212,11 +233,15 @@ class PmsCalendar(http.Controller):
                 'reservations_percent': 0,
                 'outs_percent': 0,
                 'avail_percent': 100,
+                'notifications_warning': notifications_warning,
+                'notifications_info': notifications_info,
             }
         # complete estructure to avoid dates
         for date in dates:
             s_date = date.strftime("%Y-%m-%d")
             if s_date not in dict_result:
+                notifications_warning = self._get_notifications_warning(pms_property_id, date, overbooking_lines)
+                notifications_info = self._get_notifications_info(pms_property_id, date, pwa_events)
                 dict_result[s_date] = {}
                 dict_result[s_date]["property_header"] = {
                     'reservations_count': 0,
@@ -226,6 +251,8 @@ class PmsCalendar(http.Controller):
                     'reservations_percent': 0,
                     'outs_percent': 0,
                     'avail_percent': 100,
+                    'notifications_warning': notifications_warning,
+                    'notifications_info': notifications_info,
                 }
                 for room_type in room_types:
                     dict_result[s_date][room_type.id] = {
@@ -235,6 +262,8 @@ class PmsCalendar(http.Controller):
                         'reservations_percent': 0,
                         'outs_percent': 0,
                         'avail_percent': 100,
+                        'notifications_warning': notifications_warning,
+                        'notifications_info': notifications_info,
                     }
         return dict_result
 
@@ -472,6 +501,14 @@ class PmsCalendar(http.Controller):
         to_date = max(dates)
         pms_property_id = int(post.get("pms_property_id"))
         pms_property = request.env["pms.property"].browse(pms_property_id)
+        pricelist_id = int(post.get("pricelist_id"))
+        pricelist = request.env["product.pricelist"].browse(pricelist_id)
+        if post.get("availability_plan"):
+            availability_plan = request.env["pms.availability.plan"].browse(
+                int(post.get("availability_plan"))
+            )
+        else:
+            availability_plan = pricelist.availability_plan_id
         company = pms_property.company_id
         Reservation = request.env["pms.reservation"]
         ReservationLine = request.env["pms.reservation.line"]
@@ -518,6 +555,7 @@ class PmsCalendar(http.Controller):
                 rooms_reservation_values.append(
                     {
                         "date": min_reservation_date,
+                        "restrictions_info": False,
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": reservation.partner_name,
@@ -580,6 +618,7 @@ class PmsCalendar(http.Controller):
                         "splitted": True,
                         "main_split": main_split,
                         "date": split.date,
+                        "restrictions_info": False,
                         "reservation_info": {
                             "id": reservation.id,
                             "partner_name": "Partida! " + reservation.partner_name
@@ -601,10 +640,39 @@ class PmsCalendar(http.Controller):
                     }
                 )
             for day in free_dates:
+                restriction_message = False
+                if availability_plan:
+                    rule = request.env["pms.availability.plan.rule"].search([
+                        ("room_type_id", "=", room.room_type_id.id),
+                        ("date", "=", day),
+                        ("pms_property_id", "=", pms_property_id),
+                        ("availability_plan_id", "=", availability_plan.id),
+                    ])
+                    if rule:
+                        restriction_message = ""
+                        if rule.min_stay:
+                            restriction_message += "Minimo de " + str(rule.min_stay) + " noches" + "\n"
+                        if rule.max_stay:
+                            restriction_message += "Máximo de " + str(rule.max_stay) + " noches" + "\n"
+                        if rule.closed_arrival:
+                            restriction_message += "No se admite llegadas" + "\n"
+                        if rule.closed_departure:
+                            restriction_message += "No se admite salidas" + "\n"
+                        if rule.min_stay_arrival:
+                            restriction_message += "No se admite llegadas con menos de " + str(
+                                rule.min_stay_arrival
+                            ) + " noches" + "\n"
+                        if rule.max_stay_arrival:
+                            restriction_message += "No se admite llegadas con más de " + str(
+                                rule.max_stay_arrival
+                            ) + " noches" + "\n"
+                        if rule.closed:
+                            restriction_message += "No disponible" + "\n"
                 rooms_reservation_values.append(
                     {
                         "date": day,
                         "reservation_info": False,
+                        "restrictions_info": restriction_message,
                     }
                 )
             rooms_reservation_values = sorted(
@@ -623,7 +691,7 @@ class PmsCalendar(http.Controller):
                     "ocupation": rooms_reservation_values,
                 }
             )
-        pp.pprint(values)
+        # pp.pprint(values)
         return values
 
     def _get_calendar_config(self, pms_property_id):
@@ -809,3 +877,82 @@ class PmsCalendar(http.Controller):
             wizard.apply_massive_changes()
 
         return True
+
+    def _get_notifications_warning(self, pms_property_id, date, overbooking_lines=False):
+        """
+        Get the notifications warning for the date
+        :param
+            pms_property_id: pms_property_id
+            date: date
+            overbooking_lines: overbooking_lines
+        :return:
+            dicts array with the notifications warning and
+            optional id reservation
+        """
+        property_id = request.env["pms.property"].browse(pms_property_id)
+        wargings = []
+        if date in overbooking_lines.mapped("date"):
+            date_lines = overbooking_lines.filtered(lambda l: l.date == date)
+            for line in date_lines:
+                wargings.append({
+                    "message": "Reserva en OverBooking: {}".format(
+                        line.reservation_id.name,
+                    ),
+                    "reservation_id": line.reservation_id.id
+                })
+        return wargings
+
+    def _get_notifications_info(self, pms_property_id, date, pwa_events=False):
+        """
+        Get the notifications info for the date
+        :param
+            pms_property_id: pms_property_id
+            date: date
+        :return:
+            dicts array with the notifications info and
+            optional id reservation
+        """
+        property_id = request.env["pms.property"].browse(pms_property_id)
+        info = []
+        if date in pwa_events.mapped("date"):
+            events = pwa_events.filtered(lambda l: l.date == date)
+            for event in events:
+                info.append({
+                    "message": event.description,
+                    "reservation_id": False,
+                })
+        return info
+
+    @http.route(
+        "/pms_pwa_event/new",
+        csrf=False,
+        auth="user",
+        website=True,
+        type="json",
+        methods=["POST"],
+    )
+    def _pms_pwa_event_new(self, **post):
+        """
+        Create a new event
+        :param
+            post: date, description, pms_property_id
+        :return:
+            True if the event was created
+        """
+        pms_property_id = post.get("pms_property_id")
+        try:
+            date = datetime.datetime.strptime(
+                post.get("date"), "%d/%m/%Y"
+            ).date()
+        except Exception as e:
+            print("Error formato fecha, compruebo americana", e)
+            date = datetime.datetime.strptime(
+                post.get("date"), "%m/%d/%Y"
+            ).date()
+        pwa_event = request.env["pms.pwa.event"].create({
+            # "name": post.get("name"),
+            "date": date,
+            "description": post.get("description"),
+            "pms_property_ids": [(6, 0, [int(pms_property_id)])],
+        })
+        return json.dumps({"result": True, "message": _("Evento creado")})

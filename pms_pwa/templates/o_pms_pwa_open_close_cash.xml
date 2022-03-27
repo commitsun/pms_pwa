@@ -48,7 +48,7 @@
                                         <label class="control-label col-12" for="payment_method">
                                             Diario
                                         </label>
-                                        <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                        <select id="open_close_payment_method" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
                                             <t t-foreach="cash['list']" t-as="option">
                                                 <t t-if="cash['selected'] == option">
                                                     <option  t-att-value="option" selected="selected">
@@ -139,19 +139,13 @@
                                     <label class="control-label col-12" for="payment_method">
                                         Diario
                                     </label>
-                                    <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
-                                        <t t-foreach="cash['list']" t-as="option">
-                                            <t t-if="cash['selected'] == option">
-                                                <option  t-att-value="option" selected="selected">
-                                                    <t t-esc="option_value" />
-                                                </option>
-                                            </t>
-                                            <t t-else="">
-                                                <option t-att-value="option">
-                                                    <t t-esc="option_value" />
-                                                </option>
-                                            </t>
-
+                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id.sudo()._get_allowed_payments_journals()" />
+                                    <t t-else="" t-set="payment_methods" t-value="[]" />
+                                    <select id="modal_edit_payment_methods" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                        <t t-foreach="payment_methods" t-as="option">
+                                            <option t-att-value="option_value['id']">
+                                                <t t-esc="option_value['name']" />
+                                            </option>
                                         </t>
                                     </select>
                                 </div>
@@ -161,6 +155,7 @@
                                         <label for="name">Nombre:</label>
                                         <input type="text" class="form-control payment_name" name="name" placeholder="Enter name" id="name" value="Prueba"/>
                                     </div>
+
                                     <!-- <div class="form-group">
                                         <label class="control-label col-12" for="partner_id">
                                             Proveedor
@@ -169,11 +164,20 @@
                                         <input type="hidden" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
                                     </div> -->
                                     <div class="form-group">
-                                        <label for="price">Valor:</label>
+                                        <label for="price">Importe:</label>
                                         <input type="number" class="form-control payment_amount" id="amount" name="amount" value="25"/>
                                         <input type="hidden" class="form-control payment_id" name="id" value="4"/>
                                     </div>
 
+                                </div>
+                                <div class="col-sm-12 mb-2">
+                                    <label class="control-label col-12" for="date">
+                                        Fecha
+                                    </label>
+                                    <input class="form-control float-left o_pms_pwa_daterangepicker" type="text" name="date" value="" />
+                                    <span class="o_pms_pwa_calendar_icon">
+                                          <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                    </span>
                                 </div>
                             </div>
                             <div class="row">
@@ -214,7 +218,7 @@
                                     <label class="control-label col-12" for="payment_method">
                                         Desde:
                                     </label>
-                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
+                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id.sudo()._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
                                     <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="origin_payment_method">
                                         <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
@@ -226,7 +230,7 @@
                                     <label class="control-label col-12" for="payment_method">
                                         hacia:
                                     </label>
-                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id._get_allowed_payments_journals()" />
+                                    <t t-if="user_id and user_id.pms_pwa_property_id" t-set="payment_methods" t-value="user_id.pms_pwa_property_id.sudo()._get_allowed_payments_journals()" />
                                     <t t-else="" t-set="payment_methods" t-value="[]" />
                                     <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="target_payment_method">
                                         <option t-foreach="payment_methods" t-as="key" t-att-value="key_value['id']">
@@ -234,10 +238,19 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div class="col-sm-12 mt-2">
+                                    <label class="control-label col-12" for="date">
+                                        Fecha
+                                    </label>
+                                    <input class="form-control float-left o_pms_pwa_modal_daterangepicker" type="text" name="date" value="" />
+                                    <span class="o_pms_pwa_calendar_icon">
+                                          <img src="/pms_pwa/static/img/svg/calendario-azul.svg" alt="calendar icon" title="calendar" width="20" />
+                                    </span>
+                                </div>
                                 <div class="col-12 mt-2">
                                     <div class="form-group">
                                         <label class="control-label col-12" for="name">Importe</label>
-                                        <input type="text" class="form-control" name="amount" placeholder="Enter name" id="amount"/>
+                                        <input type="number" class="form-control" name="amount" id="amount"/>
 
                                     </div>
                                     <div class="form-group">

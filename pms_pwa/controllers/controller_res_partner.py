@@ -59,51 +59,42 @@ class ResPartner(http.Controller):
             )
 
             partner_data = {
-                "id": None,
+                "id": False,
                 "reservation_id": kw.get("reservation_id"),
                 "firstname": reservation.partner_name
                 if reservation.partner_name
-                else None,
-                "lastname": None,
-                "lastname2": None,
-                "birthdate_date": None,
-                "document_ids": None,
-                "email": reservation.email or None,
-                "mobile": reservation.mobile or None,
-                "image_128": None,
-                "gender": None,
-                "nationality_id": {
-                    "id": False,
-                    "name": False,
-                },
-                "state_id": {
-                    "id": False,
-                    "name": False,
-                },
-                "is_agency": None,
-                # "channel_type_id": {
-                #    "id": self.channel_type_id.id if self.channel_type_id else False,
-                #    "name": self.channel_type_id.name if self.channel_type_id else False,
-                # },
-                "is_company": None,
-                "vat": None,
-                "street": None,
-                "street2": None,
-                "city": None,
-                "zip": None,
-                "country_id": {
-                    "id": False,
-                    "name": False,
-                },
-                "comment": None,
-                "lang": None,
-                "allowed_channel_types": request.env[
-                    "pms.property"
-                ]._get_allowed_channel_type_ids(),
-                "allowed_country_ids": request.env[
-                    "pms.property"
-                ]._get_allowed_countries(),
-                "allowed_states": [],
+                else False,
+                "lastname": False,
+                "lastname2": False,
+                "birthdate_date": False,
+                "document_ids": False,
+                "email": reservation.email or False,
+                "mobile": reservation.mobile or False,
+                "image_128": False,
+                "gender": False,
+                "nationality_id": False,
+                "partner_type": "person",
+                "sale_channel_id": False,
+                "vat": False,
+                "invoice_street": False,
+                "invoice_street2": False,
+                "invoice_city": False,
+                "invoice_zip": False,
+                "invoice_country_id": False,
+                "invoice_state_id": False,
+                "street": False,
+                "street2": False,
+                "city": False,
+                "zip": False,
+                "country_id": False,
+                "state_id": False,
+                "lang": False,
+                "allowed_channel_types": [],
+                # "allowed_country_ids": request.env[
+                #     "pms.property"
+                # ]._get_allowed_countries(),
+                # "allowed_states": [],
+                "comment": False,
             }
             return {"result": True, "partner": partner_data}
         else:
@@ -120,50 +111,76 @@ class ResPartner(http.Controller):
     def new_partner(self, **kw):
         if kw.get("submit"):
             try:
+                company_type = "person" if kw.get("partner_type") == "person" else "company"
+                is_agency = True if kw.get("partner_type") == "agency" else False
+                id_number_vals = False
                 values = {
+                    "company_type": company_type,
+                    "is_agency": is_agency,
                     "firstname": kw.get("firstname"),
-                    "lastname": kw.get("lastname"),
-                    "lastname2": kw.get("lastname2"),
-                    "birthdate_date": datetime.strptime(
-                        kw.get("birthdate_date"), get_lang(request.env).date_format
-                    ).date()
-                    if kw.get("birthdate_date")
-                    else None,
-                    # "document_ids": [
-                    #    (
-                    #        0,
-                    #        0,
-                    #        {
-                    #            "document_type": params.get("document_type"),
-                    #            "document_number": params.get("document_number"),
-                    #            "document_expedition_date": params.get(
-                    #                "document_expedition_date"
-                    #            ),
-                    #        },
-                    #    )
-                    # ],
                     "email": kw.get("email"),
                     "mobile": kw.get("mobile"),
                     "image_128": kw.get("image_128"),
-                    "gender": kw.get("gender"),
-                    "nationality_id": int(kw.get("nationality_id")) if kw.get("nationality_id") else False,
-                    "state_id": int(kw.get("state_id")) if kw.get("state_id") else False,
-                    "is_agency": kw.get("is_agency"),
-                    # "channel_type_id": params.get("channel_type_id"),
-                    "is_company": kw.get("is_company"),
-                    "vat": kw.get("vat"),
-                    "street": kw.get("street"),
-                    "street2": kw.get("street2"),
-                    "city": kw.get("city"),
-                    "zip": kw.get("zip"),
-                    "country_id": int(kw.get("country_id")) if kw.get("country_id") else False,
+                    "parent_id": int(kw.get("parent_id")) if kw.get("parent_id") else False,
                     "comment": kw.get("comment"),
                     "lang": kw.get("lang"),
+                    "street": kw.get("invoice_street"),
+                    "street2": kw.get("invoice_street2"),
+                    "city": kw.get("invoice_city"),
+                    "zip": kw.get("invoice_zip"),
+                    "country_id": int(kw.get("invoice_country_id")) if kw.get("invoice_country_id") else False,
+                    "state_id": int(kw.get("invoice_state_id")) if kw.get("invoice_state_id") else False,
                 }
+
+                if is_agency:
+                    values["sale_channel_id"] = int(kw.get("sale_channel_id")) if kw.get("sale_channel_id") else False
+
+                if company_type == "company":
+                    values["vat"] = kw.get("vat")
+
+                if company_type == "person":
+                    values.update({
+                        "lastname": kw.get("lastname"),
+                        "lastname2": kw.get("lastname2"),
+                        "birthdate_date": datetime.strptime(
+                            kw.get("birthdate_date"), get_lang(request.env).date_format
+                        ).date() if kw.get("birthdate_date") else False,
+                        "gender": kw.get("gender"),
+                        "nationality_id": int(kw.get("nationality_id")) if kw.get("nationality_id") else False,
+                        "residence_street": kw.get("street"),
+                        "residence_street2": kw.get("street2"),
+                        "residence_city": kw.get("city"),
+                        "residence_zip": kw.get("zip"),
+                        "residence_country_id": int(kw.get("country_id")) if kw.get("country_id") else False,
+                        "residence_state_id": int(kw.get("residence_state_id")) if kw.get("residence_state_id") else False,
+
+                    })
+                    if kw.get("document_type") and kw.get("document_number"):
+                        id_number_vals = {
+                            "category_id": int(kw.get("document_type")),
+                            "name": kw.get("document_number"),
+                            "valid_from": datetime.strptime(
+                                kw.get("document_expedition_date"), get_lang(request.env).date_format
+                            ).date() if kw.get("document_expedition_date") else False,
+                        }
                 if kw.get("id"):
                     partner = request.env["res.partner"].browse(int(kw.get("id")))
-                    partner.write(values)
+                    update_vals = {}
+                    for key, value in values.items():
+                        if value and value != "":
+                            update_vals[key] = value
+                    partner.write(update_vals)
+                    if partner.id_number_ids:
+                        for id_number in partner.id_numbers:
+                            if id_number_vals.get("category_id") == id_number.category_id.id:
+                                id_number.write(id_number_vals)
+                            elif id_number_vals:
+                                partner.id_numbers.write({
+                                    "id_numbers": [(0, 0, id_number_vals)]
+                                })
                 else:
+                    if id_number_vals:
+                        values["id_numbers"] = [(0, 0, id_number_vals)]
                     partner = request.env["res.partner"].sudo().create(values)
                     if kw.get("reservation_id"):
                         folio = (
@@ -176,39 +193,44 @@ class ResPartner(http.Controller):
                             for reservation in folio.reservation_ids.filtered(lambda r: not r.partner_id):
                                 reservation.write({"partner_id": partner.id})
 
-                return {"result": True,  "message": "Contacto actualizado", "partner": partner.parse_res_partner()}
+                return {"result": True, "message": "Contacto actualizado", "partner": partner.parse_res_partner()}
             except Exception as e:
                 return {"result": False, "message": str(e)}
         else:
-            allowed_states = []
-            if kw.get("country_id"):
-                for state in request.env["res.country.state"].search(
-                    [("country_id", "=", int(kw["country_id"]))]
-                ):
-                    allowed_states.append(
-                        {
-                            "id": state.id,
-                            "name": state.name,
-                        }
-                    )
+            # allowed_states = []
+            # if kw.get("invoice_country_id"):
+            #     for state in request.env["res.country.state"].search(
+            #         [("country_id", "=", int(kw["invoice_country_id"]))]
+            #     ):
+            #         allowed_states.append(
+            #             {
+            #                 "id": state.id,
+            #                 "name": state.name,
+            #             }
+            #         )
+            is_agency = True if kw.get("partner_type") == "agency" else False
+            allowed_channel_types = []
+            allowed_document_types = []
+            if is_agency:
+                domain = [("channel_type", "=", "indirect")]
+                channel_types = self.env["pms.sale.channel"].search(domain)
+                for channel in channel_types:
+                    allowed_channel_types.append({"id": channel.id, "name": channel.name})
+            elif not kw.get("partner_type") or kw.get("partner_type") == "person":
+                document_types = request.env["res.partner.id_category"].sudo().search([])
+                for type in document_types:
+                    allowed_document_types.append({"id": type.id, "name": type.name})
+            # country_list = request.env["pms.property"]._get_allowed_countries()
+
             data_json = {
-                "allowed_langs": request.env["pms.property"]._get_langs(),
-                "allowed_channel_types": request.env[
-                    "pms.property"
-                ]._get_allowed_channel_type_ids(),
-                "allowed_country_ids": request.env[
-                    "pms.property"
-                ]._get_allowed_countries(),
-                "allowed_states": allowed_states,
-                "country_id": {
-                    "id": int(kw.get("country_id")) if kw.get("country_id") else None,
-                    "name": None,
-                },
-                "nationality_id": {
-                    "id": int(kw.get("nationality_id"))
-                    if kw.get("nationality_id")
-                    else None,
-                    "name": None,
-                },
+                "partner_type": "person",
+                # "allowed_langs": request.env['res.lang'].get_installed(),
+                "allowed_channel_types": allowed_channel_types,
+                # "allowed_invoice_country_ids": country_list,
+                # "allowed_country_ids": country_list,
+                # "allowed_nationality_ids": country_list,
+                # "allowed_invoice_states": allowed_states,
+                # "allowed_states": allowed_states,
+                "allowed_document_types": allowed_document_types,
             }
-            return json.dumps(data_json)
+            return data_json

@@ -275,6 +275,18 @@ section.o_pms_pwa_roomdoo {
                 left: 0px;
                 z-index: 2;
             }
+            td.o_pms_pwa_show_table{
+                background-color: $white;
+                border: none;
+                position: -webkit-sticky;
+                position: -moz-sticky;
+                position: -ms-sticky;
+                position: -o-sticky;
+                position: sticky;
+                left: 0px;
+                z-index: 2;
+                width: 150px !important;
+            }
             tr.o_pms_pwa_reduced_calendar_line:hover,
             td.o_pms_pwa_table_cell:hover::before,
             td.o_pms_pwa_table_cell:hover::after {
@@ -351,9 +363,9 @@ section.o_pms_pwa_roomdoo {
                         &_prereservation {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
-                            background-color: 4px solid #584d76;
+                            background-color: #584d76;
                             width: 100%;
                             max-width: 100%;
                             cursor: pointer;
@@ -361,7 +373,7 @@ section.o_pms_pwa_roomdoo {
                         &_confirmed {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: $theme-color;
                             width: 100%;
@@ -372,7 +384,7 @@ section.o_pms_pwa_roomdoo {
                         &_checkin-paid {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: #00ba39;
                             width: 100%;
@@ -383,7 +395,7 @@ section.o_pms_pwa_roomdoo {
                         &_checkin-to-pay {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: #dc3545;
                             width: 100%;
@@ -394,7 +406,7 @@ section.o_pms_pwa_roomdoo {
                         &_checkout-paid {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: #7e7e7e;
                             width: 100%;
@@ -405,7 +417,7 @@ section.o_pms_pwa_roomdoo {
                         &_checkout-to-pay {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: #dc3545;
                             width: 100%;
@@ -416,7 +428,7 @@ section.o_pms_pwa_roomdoo {
                         &_out-service {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: #000000;
                             width: 100%;
@@ -427,7 +439,7 @@ section.o_pms_pwa_roomdoo {
                         &_staff {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: #c08686;
                             width: 100%;
@@ -437,7 +449,7 @@ section.o_pms_pwa_roomdoo {
                         &_to-assign {
                             margin-top: 0.2rem;
                             height: 100%;
-                            border-radius: 6px;
+                            //border-radius: 6px;
                             padding: 1px 1px 0px 2px;
                             background-color: #ed722e;
                             width: 100%;
@@ -452,6 +464,7 @@ section.o_pms_pwa_roomdoo {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+
                     }
                     &_name_small {
                         font-size: 14px;
@@ -791,5 +804,18 @@ section.o_pms_pwa_roomdoo {
         width: 100% !important;
     }
 }
-
-
+.o_pms_pwa_notification_day_dropdown, .o_pms_pwa_new_calendar_event{
+    border: none;
+    background: transparent;
+    .dropdown-toggle::after{
+        display: none;
+    }
+}
+.o_pms_pwa_room_name{
+    cursor: pointer;
+}
+.o_pms_pwa_restrictions_info{
+    background: repeating-linear-gradient(
+        142deg,rgba(0, 0, 0, 0) 20px, rgba(0, 0, 0, 0) 40px, #c6eaf3 10px, #c6eaf3 48px
+    );
+}
