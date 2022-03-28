@@ -547,7 +547,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
             ),
         });
         // Console.log(reservation_data);
-        ajax.jsonRpc("/reservation/" + reservation_id + "/invoice", "call", {
+        ajax.jsonRpc("/reservation/" + reservation_id + "/old_invoice", "call", {
             data: reservation_data,
             reservation_id: reservation_id,
         }).then(function (result) {
