@@ -298,7 +298,6 @@
                                     <button
                                         class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_facturar"
                                         type="button"
-                                        t-att-href="'/reservation/' + reservation.id"
                                         t-att-data-id="reservation.id"
                                     >
                                         Facturar
