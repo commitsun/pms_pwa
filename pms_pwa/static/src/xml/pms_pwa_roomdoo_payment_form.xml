@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="pms_pwa_roomdoo_payment_form" name="Payment modal">
+        <div class="modal fade o_pms_pwa_right o_pms_pwa_new_reservation_modal" tabindex="-1" data-backdrop="static" role="dialog" id="pms_pwa_roomdoo_payment_form" aria-labelledby="pms_pwa_roomdoo_payment_form" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title" id="modalLabel">Facturas</div>
+                        <button class="close" data-dismiss="modal">
+                            <span>
+                                <span class="fa fa-times" />
+                            </span>
+                        </button>
+                    </div>
+                    <div class="modal-body o_pms_pwa_modal_body">
+                        <div class="container-fluid">
+                            <div class="row mt-3 not_out_type">
+                                <div class="col-sm-12">
+                                    <h4>Datos de Contacto</h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="control-label col-12" for="partner_name">
+                                                Nombre
+                                            </label>
+                                    <input class="form-control o_pms_pwa_search_partner" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="post['partner_name'] if post and 'partner_name' in post else None" />
+                                    <input type="hidden" class="call_booking_engine" name="partner_id" t-att-value="post['partner_id'] if post and 'partner_id' in post else None" />
+                                </div>
+                            </div>
+                            <div class="row mt-3 not_out_type">
+                                <div class="col-sm-6">
+                                    <label class="control-label col-12" for="mobile">
+                                                Teléfono
+                                            </label>
+                                    <input class="form-control" type="text" name="mobile" required="required" placeholder="Móvil" t-att-value="post['mobile'] if post and 'mobile' in post else None" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="control-label col-12" for="email">
+                                                E-mail
+                                            </label>
+                                    <input class="form-control" type="text" name="email" required="required" placeholder="Mail" t-att-value="post['email'] if post and 'email' in post else None" />
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-12">
+                                    <label class="control-label col-12" for="internal_comment">
+                                                Comentarios internos
+                                            </label>
+                                    <input class="form-control" type="textarea" name="internal_comment" placeholder="Comentarios internos" t-att-value="post['internal_comment'] if post and 'internal_comment' in post else None" />
+                                </div>
+                            </div>
+
+                            <div class="row mt-3 mb-3">
+                                <div class="col-sm-12 text-center">
+                                    <input type="hidden" name="id" />
+                                    <input type="hidden" name="folio_id" />
+                                    <a class="btn btn-message" id="o_pms_pwa_send_form">Confirmar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+</odoo>
