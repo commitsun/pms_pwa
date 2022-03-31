@@ -8,7 +8,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
     var _t = core._t;
     var publicWidget = require("web.public.widget");
     //var reduced_calendar = require("pms_pwa.reducedCalendarRoomdoo");
-
     var csrf_token = core.csrf_token;
     const date_options = {year: "numeric", month: "2-digit", day: "2-digit"};
     const relation_values = {
@@ -41,9 +40,10 @@ odoo.define("pms_pwa.reservation_table", function (require) {
 
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
         selector:
-            "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal, table.o_pms_pwa_reduced_reservation_list_table",
+            "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal, table.o_pms_pwa_reduced_reservation_list_table, .o_pms_pwa_modal_buttons",
         xmlDependencies: [
             "/pms_pwa/static/src/xml/pms_pwa_roomdoo_reservation_modal.xml",
+            "/pms_pwa/static/src/xml/pms_pwa_roomdoo_payment_form.xml",
         ],
         events: {
             "click tr.o_pms_pwa_reservation:not(.accordion) > td:not(:last-child)":
@@ -66,7 +66,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click .o_pms_pwa_button_checkout": "_onClickCheckoutButton",
             "click .o_pms_pwa_button_pagar": "_onClickPaymentButton",
             "click .o_pms_pwa_button_refund": "_onClickRefundButton",
-            "click .o_pms_pwa_button_facturar": "_onClickInvoiceButton",
+            // "click .o_pms_pwa_button_facturar": "_onClickOpenPaymentForm",
             "click .o_pms_pwa_button_new_reservation": "_onClickNewReservation",
         },
         /**
@@ -183,12 +183,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     self._onClickRefundButton(event);
                 }
             );
-
+            // Boton llamada incial a la modal de facturación
             $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_facturar").on(
                 "click",
                 function (event) {
                     event.preventDefault();
-                    self._onClickInvoiceButton(event);
+                    self._onClickOpenPaymentForm(event);
                 }
             );
 
@@ -435,6 +435,30 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         input.val(value);
                     }
                 });
+            }
+        },
+        // Llamada incial a la modal de facturación
+        _onClickOpenPaymentForm: function (event) {
+            event.preventDefault();
+            var button = event.currentTarget;
+            var reservation_id = button.getAttribute("data-id");
+            $(".o_pms_pwa_reservation_modal").modal("toggle");
+            if (reservation_id) {
+                ajax.jsonRpc("/reservation/" + reservation_id + "/invoice", "call", {
+                    reservation_id: reservation_id,
+                }).then(function (data) {
+                    console.log("recibo->>", data);
+                    console.log("Abrir modal");
+                    // var result = JSON.parse(data);
+                    // console.log("recibo->>", result);
+                    var html = core.qweb.render("pms_pwa.pms_pwa_roomdoo_payment_form", {
+                        data: data,
+                    });
+                    $("div.pms_pwa_roomdoo_payment_form").html(html);
+                    $("div.pms_pwa_roomdoo_payment_form").modal();
+                });
+            } else {
+                console.log("ERROR, no hay reservation_id");
             }
         },
         _openModalFromExternal: function (event) {
@@ -2116,21 +2140,21 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 }
             });
         },
-        _onClickInvoiceButton: function (event) {
-            event.preventDefault();
-            var button = event.currentTarget;
-            var reservation_id = false;
-            try {
-                reservation_id = button.closest("tr").getAttribute("data-id");
-            } catch (error) {
-                try {
-                    reservation_id = button.getAttribute("data-id");
-                } catch (error) {
-                    reservation_id = $("input[name='id']").val();
-                }
-            }
-            location.href = "/reservation/" + reservation_id;
-        },
+        // _onClickInvoiceButton: function (event) {
+        //     event.preventDefault();
+        //     var button = event.currentTarget;
+        //     var reservation_id = false;
+        //     try {
+        //         reservation_id = button.closest("tr").getAttribute("data-id");
+        //     } catch (error) {
+        //         try {
+        //             reservation_id = button.getAttribute("data-id");
+        //         } catch (error) {
+        //             reservation_id = $("input[name='id']").val();
+        //         }
+        //     }
+        //     location.href = "/reservation/" + reservation_id;
+        // },
         _onClickNewReservation: function (event) {
             event.preventDefault();
             var button = event.currentTarget;

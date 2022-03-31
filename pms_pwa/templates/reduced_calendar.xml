@@ -34,6 +34,7 @@
             <t t-set="page_title" t-value="today.strftime('%d de %b')" />
             <t t-set="current_property" t-value="user_id.pms_pwa_property_id.id" />
             <t t-call="pms_pwa.o_pms_pwa_edit_modal" />
+            <div class="pms_pwa_roomdoo_payment_form" />
             <div class="o_pms_pwa_roomdoo_reservation_modal" />
             <div class="o_pms_pwa_roomdoo_alerts" />
             <div id="confirmChange" class="modal" tabindex="-1" role="dialog">
