@@ -31,14 +31,21 @@ class FolioInvoice(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             if reservation:
-                payload = http.request.jsonrequest["params"]["data"]
+
                 folio = request.env["pms.folio"].browse(reservation.folio_id.id)
-                new_invoice = payload[0]["new_invoice"] or {}
-                invoice_ids = payload[0]["invoice_ids"] or []
-                submit = payload[0]["submit"]
+                submit = False
+                invoice_ids = []
+                new_invoice = {}
+                try:
+                    payload = http.request.jsonrequest["params"]["data"]
+                    new_invoice = payload[0]["new_invoice"] or {}
+                    invoice_ids = payload[0]["invoice_ids"] or []
+                    submit = payload[0]["submit"]
+                except:
+                    pass
                 wizard_invoice = {}
                 wizard_invoice["reservation_id"] = reservation.id
-                wizard_invoice["total_amount"] = folio.total_amount
+                wizard_invoice["total_amount"] = folio.amount_total
                 wizard_invoice["total_to_invoice"] = self._get_total_to_invoice(folio)
                 wizard_invoice["invoice_ids"] = self._get_invoice_ids(folio, invoice_ids)
                 wizard_invoice["new_invoice"] = self._prepare_new_invoice(folio, new_invoice)
@@ -87,7 +94,7 @@ class FolioInvoice(http.Controller):
                 total_to_invoice += self._get_amount_line(line.id, line.qty_to_invoice)
         return total_to_invoice
 
-    def _get_invoice_ids(self, folio):
+    def _get_invoice_ids(self, folio, invoice_ids):
         invoice_ids = []
         for invoice in folio.move_ids:
             invoice_ids.append({
@@ -101,9 +108,10 @@ class FolioInvoice(http.Controller):
     def _prepare_new_invoice(self, folio, new_invoice):
         if folio.invoice_status != "to_invoice":
             return False
-        new_invoice["amount_to_invoice"] = 0
+        # new_invoice["amount_to_invoice"] = 0
         if not new_invoice:
             new_invoice = {}
+            new_invoice["amount_to_invoice"] = 0
             new_lines = []
             for sale_line in folio.sale_line_ids:
                 if sale_line.qty_to_invoice > 0:
@@ -115,8 +123,9 @@ class FolioInvoice(http.Controller):
                         "amount": sale_line.price_total,
                         "included": True,
                     })
-                new_invoice["amount_to_invoice"] += line["amount"]
+                # new_invoice["amount_to_invoice"] += line["amount"]
         else:
+            new_invoice["amount_to_invoice"] = 0
             new_lines = []
             for line in new_invoice["lines"]:
                 new_line = self._parse_line(line)
@@ -124,11 +133,12 @@ class FolioInvoice(http.Controller):
                 if new_line["qty_to_invoice"] > 0 and new_line["included"]:
                     new_invoice["amount_to_invoice"] += new_line["amount"]
         new_invoice["lines"] = new_lines
-        new_invoice["partner"] = self._prepare_partner(new_invoice["partner"])
+        # new_invoice["partner"] = self._prepare_partner(new_invoice["partner"])
+        new_invoice["partner"] = {}
         return new_invoice
 
     def _get_amount_line(self, sale_line_id, qty_to_invoice):
-        sale_line = request.env["folio.sale.lin"].browse(sale_line_id)
+        sale_line = request.env["folio.sale.line"].browse(sale_line_id)
         price = sale_line.price_unit * (1 - (sale_line.discount or 0.0) / 100.0)
         taxes = sale_line.tax_ids.compute_all(
             price,
@@ -152,26 +162,27 @@ class FolioInvoice(http.Controller):
         partner_name = partner_vat = partner_email = partner_mobile = \
             partner_invoice_street = partner_zip = partner_city = \
             partner_state_id = partner_country_id = False
-        if partner_vals.get("name"):
-            partner_name = partner_vals["name"]
-        if partner_vals.get("vat"):
-            partner_vat = partner_vals["vat"]
-        if partner_vals.get("email"):
-            partner_email = partner_vals["email"]
-        if partner_vals.get("mobile"):
-            partner_mobile = partner_vals["mobile"]
-        if partner_vals.get("invoice_street"):
-            partner_invoice_street = partner_vals["invoice_street"]
-        if partner_vals.get("invoice_zip"):
-            partner_zip = partner_vals["invoice_zip"]
-        if partner_vals.get("invoice_city"):
-            partner_city = partner_vals["invoice_city"]
-        if partner_vals.get("invoice_state_id"):
-            partner_state_id = partner_vals["invoice_state_id"]["id"]
-        if partner_vals.get("invoice_country_id"):
-            partner_country_id = partner_vals["invoice_country_id"]["id"]
+        if partner_vals:
+            if partner_vals.get("name"):
+                partner_name = partner_vals["name"]
+            if partner_vals.get("vat"):
+                partner_vat = partner_vals["vat"]
+            if partner_vals.get("email"):
+                partner_email = partner_vals["email"]
+            if partner_vals.get("mobile"):
+                partner_mobile = partner_vals["mobile"]
+            if partner_vals.get("invoice_street"):
+                partner_invoice_street = partner_vals["invoice_street"]
+            if partner_vals.get("invoice_zip"):
+                partner_zip = partner_vals["invoice_zip"]
+            if partner_vals.get("invoice_city"):
+                partner_city = partner_vals["invoice_city"]
+            if partner_vals.get("invoice_state_id"):
+                partner_state_id = partner_vals["invoice_state_id"]["id"]
+            if partner_vals.get("invoice_country_id"):
+                partner_country_id = partner_vals["invoice_country_id"]["id"]
 
-        partner = self._get_partner_invoice(partner_vals)
+            partner = self._get_partner_invoice(partner_vals)
         if not partner_name:
             partner_name = partner.name if partner else False
         if not partner_vat:
