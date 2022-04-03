@@ -170,7 +170,7 @@ class ResPartner(http.Controller):
                         if value and value != "":
                             update_vals[key] = value
                     partner.write(update_vals)
-                    if partner.id_number_ids:
+                    if partner.id_numbers:
                         for id_number in partner.id_numbers:
                             if id_number_vals.get("category_id") == id_number.category_id.id:
                                 id_number.write(id_number_vals)

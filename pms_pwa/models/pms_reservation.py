@@ -213,29 +213,30 @@ class PmsReservation(models.Model):
                             .id
                         )
                     zip_code = False
-                    if guest.get("zip") and guest.get("zip") != "false":
+                    if "zip" in guest.keys() and guest.get("zip") != '' and guest.get("zip") != "False":
                         guest["residence_zip"] = int(guest["zip"])
                         zip_code = self.env["res.city.zip"].search([
                             ("name", "=", guest["residence_zip"]),
-                        ])
-                    guest.pop("zip")
+                        ], limit=1)
+                    if "zip" in guest.keys():
+                        guest.pop("zip")
                     # REVIEW: avoid send "false" to controller
-                    if guest.get("country_id") and guest.get("country_id") != "false":
+                    if "country_id" in guest.keys() and guest.get("country_id") != "false" and guest.get("country_id") != "":
                         guest["nationality_id"] = int(guest["country_id"])
                     elif zip_code:
                         guest["nationality_id"] = zip_code.country_id.id
-                    guest.pop("country_id")
+                    if "country_id" in guest:
+                        guest.pop("country_id")
 
-                    if guest.get("city") and guest.get("city") != "false":
-                        guest["residence_city"] = int(guest["city"])
+                    if "residence_city" in guest.keys() and guest.get("residence_city") != "false" and guest.get("residence_city") != "":
+                        guest["residence_city"] = int(guest["residence_city"])
                     elif zip_code:
                         guest["residence_city"] = zip_code.city_id.name
-                    guest.pop("city")
 
                     # REVIEW: avoid send "false" to controller
                     if guest.get("residence_state_id") == "false" and not zip_code:
                         guest.pop("residence_state_id")
-                    elif guest.get("residence_state_id") and guest.get("residence_state_id") != "false":
+                    elif guest.get("residence_state_id") and guest.get("residence_state_id") != "false" and guest.get("residence_state_id") != "":
                         guest["residence_state_id"] = int(guest["residence_state_id"])
                     elif zip_code:
                         guest["residence_state_id"] = zip_code.state_id.id
@@ -251,9 +252,10 @@ class PmsReservation(models.Model):
                             get_lang(self.env).date_format,
                         ).date()
 
-                    if guest.get("address") and guest.get("address") != "false":
+                    if "address" in guest and guest.get("address") != "false":
                         guest["residence_street"] = guest["address"]
-                    guest.pop("address")
+                    if "address" in guest:
+                        guest.pop("address")
 
                     checkin_partner = self.env["pms.checkin.partner"].browse(
                         int(guest["id"])
@@ -396,7 +398,7 @@ class PmsReservation(models.Model):
                 "country_name": checkin.nationality_id.display_name
                 if checkin.nationality_id
                 else None,
-                "city": checkin.residence_city,
+                "residence_city": checkin.residence_city,
                 "address": checkin.residence_street,
                 "zip": checkin.residence_zip,
                 "allowed_state_ids": allowed_states,
