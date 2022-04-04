@@ -974,3 +974,13 @@ i.o_pms_pwa_remove_alert {
         opacity: 0;
     }
 }
+
+// Disabled td
+tr.o_pms_pwa_disabled {
+    background-color: rgba(150, 150, 220, 0.3);
+}
+
+// Edit icon
+i.pms_pwa_payment_edit {
+    color: $theme-color;
+}
