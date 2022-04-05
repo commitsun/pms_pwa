@@ -32,14 +32,37 @@ odoo.define("pms_pwa.payment_form", function (require) {
             return this._super.apply(this, arguments);
         },
 
-        formToJson: function (formData) {
-            var form_object = {};
-            $.each(formData, function (i, v) {
-                if (v.value != "false") {
-                    form_object[v.name] = v.value;
-                }
-            });
-            return form_object;
+        _getPartnerValues: function () {
+            var form = $("form.o_pms_pwa_payment_form");
+            var partner_id = false;
+            var invoice_country_id = false;
+            var invoice_state_id = false;
+            if(form.find("input[name='partner']")[0].value) {
+                partner_id = parseInt(form.find("input[name='partner']")[0].value);
+            }
+            if(form.find("input[name='partner_invoice_country_id']")[0].value) {
+                invoice_country_id = parseInt(form.find("input[name='partner_invoice_country_id']")[0].value);
+            }
+            if(form.find("input[name='partner_invoice_state_id']")[0].value) {
+                invoice_state_id = parseInt(form.find("input[name='partner_invoice_state_id']")[0].value);
+            }
+            
+            var partner = {
+                id: partner_id,
+                partner_type: form.find("select#partner_type_change")[0].value,
+                vat: form.find("input[name='vat']")[0].value,
+                name: form.find("input[name='partner_name']")[0].value,
+                invoice_street: form.find("input[name='partner_invoice_street']")[0].value,
+                invoice_zip: form.find("input[name='partner_invoice_zip']")[0].value,
+                invoice_country_id: invoice_country_id,
+                invoice_country_name: form.find("input[name='partner_invoice_country_name']")[0].value,
+                invoice_state_id: invoice_state_id,
+                invoice_city: form.find("input[name='partner_invoice_city']")[0].value,
+                email: form.find("input[name='partner_email']")[0].value,
+                mobile: form.find("input[name='partner_mobile']")[0].value,
+                mobile: form.find("input[name='partner_mobile']")[0].value, 
+            }
+            return partner;
         },
 
         displayDataAlert: function (data) {
@@ -147,22 +170,25 @@ odoo.define("pms_pwa.payment_form", function (require) {
         _onClickSubmitButton: function (event) {
             event.preventDefault();
             var self = this;
-            var values = $("form.o_pms_pwa_payment_form").serializeArray();
-            values = this.formToJson(values);
+            var values = {};
+            var reservation_id = $("form.o_pms_pwa_payment_form").find("input[name='reservation_id']")[0].value
+            values.partner = self._getPartnerValues();
             var lines_to_invoice = $(".o_pms_pwa_lines_to_invoice");
             var lines = [];
             $.each(lines_to_invoice, function (i, v) {
                 lines.push({
                     id: $(v).data("id"),
                     description: $(v).find("span.o_pms_pwa_description")[0].innerText,
-                    qty_to_invoice: $(v).find("span.o_pms_pwa_qty_to_invoice")[0].innerText,
+                    qty_to_invoice: parseFloat($(v).find("span.o_pms_pwa_qty_to_invoice")[0].innerText),
                     included: $(v).find("input.o_pms_pwa_included")[0].checked,
+                    max_qty: parseFloat($(v).find("span.o_pms_pwa_max_qty")[0].innerText),
+                    amount: parseFloat($(v).find("span.o_pms_pwa_amount")[0].innerText),
                 })
             });
             values.lines = lines;
             values.submit = true;
 
-            ajax.jsonRpc("/reservation/"+ values.reservation_id +"/invoice", "call", {new_invoice: values}).then(function (reservation_data) {
+            ajax.jsonRpc("/reservation/"+ reservation_id +"/invoice", "call", {new_invoice: values}).then(function (reservation_data) {
                 var reservation = JSON.parse(reservation_data);
                 setTimeout(function () {
                     if (reservation.result == true) {
@@ -265,21 +291,24 @@ odoo.define("pms_pwa.payment_form", function (require) {
         _onChangeInput: function (event) {
             event.preventDefault();
             var self = this;
-            var values = $("form.o_pms_pwa_payment_form").serializeArray();
-            values = this.formToJson(values);
+            var reservation_id = $("form.o_pms_pwa_payment_form").find("input[name='reservation_id']")[0].value;
+            var values = {};
+            values.partner = self._getPartnerValues();
             var lines_to_invoice = $(".o_pms_pwa_lines_to_invoice");
             var lines = [];
             $.each(lines_to_invoice, function (i, v) {
                 lines.push({
                     id: $(v).data("id"),
                     description: $(v).find("span.o_pms_pwa_description")[0].innerText,
-                    qty_to_invoice: $(v).find("span.o_pms_pwa_qty_to_invoice")[0].innerText,
+                    qty_to_invoice: parseFloat($(v).find("span.o_pms_pwa_qty_to_invoice")[0].innerText),
                     included: $(v).find("input.o_pms_pwa_included")[0].checked,
+                    max_qty: parseFloat($(v).find("span.o_pms_pwa_max_qty")[0].innerText),
+                    amount: parseFloat($(v).find("span.o_pms_pwa_amount")[0].innerText),
                 })
             });
             values.lines = lines;
 
-            ajax.jsonRpc("/reservation/"+ values.reservation_id +"/invoice", "call", {new_invoice: values}).then(function (reservation_data) {
+            ajax.jsonRpc("/reservation/"+ reservation_id +"/invoice", "call", {new_invoice: values}).then(function (reservation_data) {
                 setTimeout(function () {
                     var reservation = JSON.parse(reservation_data);
                     if (reservation.result == true) {
