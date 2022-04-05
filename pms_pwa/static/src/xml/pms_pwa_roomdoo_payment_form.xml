@@ -12,6 +12,15 @@
                                     Por facturar: <t t-esc="data.total_to_invoice"></t>
                                     <span>Total <t t-esc="data.total_amount"></t></span>
                                 </h4>
+                                <a
+                                    t-att-href="'/reservation/' + data.reservation_id"
+                                    style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc; margin-left: 10px;"
+                                    class="col-3 btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_preloader"
+                                    t-att-data-id="data.reservation_id"
+                                    target="_blank"
+                                >
+                                    Ver Detalle
+                                </a>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span class="fa fa-times" />
                                 </button>
@@ -24,14 +33,18 @@
                                 <thead>
                                     <tr>
                                         <th class="o_pms_pwa_theme_color">Factura</th>
+                                        <th class="o_pms_pwa_theme_color">Cliente</th>
+                                        <th class="o_pms_pwa_theme_color">Cantidad</th>
                                         <th class="o_pms_pwa_theme_color text-right"></th>
                                         <th class="o_pms_pwa_theme_color text-right"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <t t-foreach="data.invoice_ids" t-as="line">
-                                        <tr>
+                                        <tr class="o_pms_pwa_payment_invoice_lines">
                                             <td><t t-esc="line.name"></t></td>
+                                            <td><t t-esc="line.partner"></t></td>
+                                            <td><t t-esc="line.amount"></t></td>
                                             <td>Imprimir</td>
                                             <td><a t-attf-href="{{ line.url }}" >Ver Detalle</a></td>
                                         </tr>
@@ -73,10 +86,8 @@
                                     <label class="control-label col-6" for="partner">
                                         Cliente
                                     </label>
-                                    <input
-                                        class="form-control" type="text" name="partner" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.name ? data.new_invoice.partner.name : None" />
-                                    <input
-                                        class="form-control" type="hidden" name="partner_id" t-att-value="data.new_invoice and data.new_invoice.partner ? data.new_invoice.partner.id : None" />
+                                    <input class="form-control o_pms_pwa_search_partner" data-supplier="true" type="text" required="required" name="partner_name" placeholder="A nombre de... (búsqueda por tlf, mail o nif)" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.name ? data.new_invoice.partner.name : None" />
+                                    <input type="hidden" name="partner" t-att-value="data.new_invoice and data.new_invoice.partner ? data.new_invoice.partner.id : None" />
                                     <input
                                         class="form-control" type="hidden" name="reservation_id" t-att-value="data.reservation_id"/>
                                 </div>
@@ -133,8 +144,8 @@
                                     <label class="control-label col-6" for="partner_invoice_country_id">
                                         Pais
                                     </label>
-                                    <input
-                                        class="form-control" type="text" name="partner_invoice_country_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_id ? data.new_invoice.partner.invoice_country_id : None" />
+                                    <input autocomplete="off" class="form-control o_pms_pwa_search_country_name" type="text" name="partner_invoice_country_name" placeholder="País" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_name ? data.new_invoice.partner.invoice_country_name : None" />
+                                    <input type="hidden" name="partner_invoice_country_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_id ? data.new_invoice.partner.invoice_country_id : None" />
                                 </div>
                             </div>
                             <div class="row mt-3">

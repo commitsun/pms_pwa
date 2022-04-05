@@ -984,3 +984,11 @@ tr.o_pms_pwa_disabled {
 i.pms_pwa_payment_edit {
     color: $theme-color;
 }
+
+tr.o_pms_pwa_payment_invoice_lines {
+    color: white;
+}
+
+div.pms_pwa_roomdoo_payment_form th.o_pms_pwa_theme_color {
+    border-top: unset;
+}

@@ -88,7 +88,12 @@ class FolioInvoice(http.Controller):
                             "wizard_invoice": wizard_invoice,
                         }
                     )
-                return wizard_invoice
+                return json.dumps(
+                    {
+                        "result": True,
+                        "wizard_invoice": wizard_invoice,
+                    }
+                )
             return json.dumps({"result": False, "message": _("Reservation not found")})
 
     def _get_total_to_invoice(self, folio):
@@ -100,7 +105,7 @@ class FolioInvoice(http.Controller):
 
     def _get_invoice_ids(self, folio, invoice_ids):
         invoice_ids = []
-        for invoice in folio.move_ids:
+        """ for invoice in folio.move_ids:
             invoice_ids.append({
                 "id": invoice.id,
                 "name": invoice.name,
@@ -108,7 +113,24 @@ class FolioInvoice(http.Controller):
                 "partner": invoice.partner_id.name,
                 "url": invoice.get_portal_url(),
                 "state": invoice.state,
-            })
+            }) """
+        
+        invoice_ids.append({
+            "id": "17",
+            "name": "R205874",
+            "amount": "75.00",
+            "partner": "Manuel",
+            "url": "/reservation/2",
+            "state": "paid",
+        })
+        invoice_ids.append({
+            "id": "15",
+            "name": "R205875",
+            "amount": "150.00",
+            "partner": "Gonzalo",
+            "url": "/reservation/1",
+            "state": "pending",
+        })
         if len(invoice_ids) == 0:
             invoice_ids = False
         return invoice_ids
