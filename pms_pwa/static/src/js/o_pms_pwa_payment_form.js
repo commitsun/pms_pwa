@@ -17,6 +17,10 @@ odoo.define("pms_pwa.payment_form", function (require) {
             "click td > input.o_pms_pwa_included": "_onClickInputIncluded",
             "click a.o_pms_pwa_reset_form": "_onClickButtonReset",
             "click a.o_pms_pwa_send_form": "_onClickSubmitButton",
+            "click input.o_pms_pwa_search_partner": "_initPartnerAutocomplete",
+            "click input.o_pms_pwa_search_country_name": "_initCountryAutocomplete",
+            "change input": "_onChangeInput",
+            "click .o_pms_pwa_return": "_onClickReturn",
         },
 
         init: function () {
@@ -66,8 +70,9 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 ajax.jsonRpc("/reservation/" + reservation_id + "/invoice", "call", {
                     reservation_id: reservation_id,
                 }).then(function (data) {
+                    var data = JSON.parse(data);
                     var html = core.qweb.render("pms_pwa.pms_pwa_roomdoo_payment_form", {
-                        data: data,
+                        data: data.wizard_invoice,
                     });
                     $("div.pms_pwa_roomdoo_payment_form").html(html);
                     $("div.pms_pwa_roomdoo_payment_form").modal();
@@ -161,11 +166,216 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 var reservation = JSON.parse(reservation_data);
                 setTimeout(function () {
                     if (reservation.result == true) {
-                        //$("#o_pms_pwa_partner_modal").modal("toggle");
+                        self._reloadModal();
                     } else {
                         self.displayDataAlert(reservation);
                     }
                 }, 0);
+            });
+        },
+
+        _initPartnerAutocomplete: function () {
+            $("form.o_pms_pwa_payment_form .o_pms_pwa_search_partner").autocomplete({
+                source: function (request, response) {
+                    let supplier = false;
+                    let input = $("input[name=partner_name]");
+                    try{
+                        if(input[1].attributes["data-supplier"]){
+                            supplier = true;
+                        }
+                    }catch{
+                        supplier = false;
+                    }
+                    $.ajax({
+                        url: "/partner/search",
+                        method: "GET",
+                        dataType: "json",
+                        data: {keywords: request.term, category: false, supplier: supplier},
+                        success: function (data) {
+                            response(
+                                $.map(data, function (item) {
+                                    return {
+                                        label:
+                                            (item.type === "c" ? "Category: " : "") +
+                                            item.name,
+                                        value: item.name,
+                                        id: item.id,
+                                    };
+                                })
+                            );
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                    });
+                },
+                select: function (suggestion, term, item) {
+                    if (term && term.item) {
+                        $(suggestion.target.parentElement)
+                            .find('input[name="partner"]')
+                            .val(term.item.id);
+                        setTimeout(function () {
+                            $(suggestion.target.parentElement)
+                                .find('input[name="partner"]')
+                                .trigger("change");
+                        }, 100);
+                    }
+                },
+                minLength: 1,
+            });
+        },
+
+        _initCountryAutocomplete: function () {
+            $("form.o_pms_pwa_payment_form input.o_pms_pwa_search_country_name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/pms_checkin_partner/search",
+                        method: "GET",
+                        dataType: "json",
+                        data: {keywords: request.term, model: "res.country", id: null},
+                        success: function (data) {
+                            response(
+                                $.map(data, function (item) {
+                                    return {
+                                        label:
+                                            (item.type === "c" ? "Category: " : "") +
+                                            item.name,
+                                        value: item.name,
+                                        id: item.id,
+                                    };
+                                })
+                            );
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                    });
+                },
+                select: function (suggestion, term, item) {
+                    if (term && term.item) {
+                        $(suggestion.target.parentElement)
+                            .find('input[name="partner_invoice_country_id"]')
+                            .val(term.item.id);
+                    }
+                },
+                minLength: 1,
+            });
+        },
+
+        _onChangeInput: function (event) {
+            event.preventDefault();
+            var self = this;
+            var values = $("form.o_pms_pwa_payment_form").serializeArray();
+            values = this.formToJson(values);
+            var lines_to_invoice = $(".o_pms_pwa_lines_to_invoice");
+            var lines = [];
+            $.each(lines_to_invoice, function (i, v) {
+                lines.push({
+                    id: $(v).data("id"),
+                    description: $(v).find("span.o_pms_pwa_description")[0].innerText,
+                    qty_to_invoice: $(v).find("span.o_pms_pwa_qty_to_invoice")[0].innerText,
+                    included: $(v).find("input.o_pms_pwa_included")[0].checked,
+                })
+            });
+            values.lines = lines;
+
+            ajax.jsonRpc("/reservation/"+ values.reservation_id +"/invoice", "call", {new_invoice: values}).then(function (reservation_data) {
+                setTimeout(function () {
+                    var reservation = JSON.parse(reservation_data);
+                    if (reservation.result == true) {
+                        if (reservation && reservation.wizard_invoice && reservation.wizard_invoice.partner) {
+                            this._updateFields(reservation.wizard_invoice.partner);
+                        }
+                    } else {
+                        self.displayDataAlert(reservation);
+                    }
+                }, 0);
+            });
+        },
+
+        _reloadModal: function () {
+            console.log("reload");
+            var self = this;
+            $(".pms_pwa_roomdoo_payment_form").modal("toggle");
+            
+            var reservation_id = parseInt($("form.o_pms_pwa_payment_form input[name='reservation_id']")[0].value);
+
+            if (reservation_id) {
+                ajax.jsonRpc("/reservation/" + reservation_id + "/invoice", "call", {
+                    reservation_id: reservation_id,
+                }).then(function (data) {
+                    var data = JSON.parse(data);
+                    var html = core.qweb.render("pms_pwa.pms_pwa_roomdoo_payment_form", {
+                        data: data.wizard_invoice,
+                    });
+                    $("div.pms_pwa_roomdoo_payment_form").html(html);
+                    $("div.pms_pwa_roomdoo_payment_form").modal();
+                });
+            } else {
+                console.log("ERROR, no hay reservation_id");
+            }
+        },
+
+        _onClickReturn: function (event) {
+            console.log("return");
+            $("div.pms_pwa_roomdoo_payment_form").modal("toggle");
+            try {
+                var reservation_id = event.currentTarget.getAttribute("data-id");
+                var selector =
+                    "tr[data-id=" +reservation_id +"]";
+                var test = $(selector).find(
+                    "td.first-col"
+                );
+                if (test.length != 0) {
+                    test.click();
+                } else {
+                    // abre modal
+                    var selector =
+                        "td[data-id=" +reservation_id +"]";
+                    if ($(selector).length > 0) {
+                        $(selector).click();
+                    } else {
+                        var new_selector = $(
+                            "<td class='launch_modal' data-id='" +
+                            reservation_id +
+                                "'>Pincha aqui</td>"
+                        );
+                        new_selector.appendTo(
+                            "table.launch_modal"
+                        );
+                        setTimeout(function () {
+                            $(new_selector).click();
+                            $(
+                                new_selector
+                            ).remove();
+                        }, 100);
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        _updateFields: function(data) {
+            console.log("data => ", data);
+            $.each(new_data, function (key, value) {
+                var input = $("form.o_pms_pwa_payment_form input[name='" + key + "']");
+                if (input.length > 0) {
+                    input.val(value);
+                } else {
+                    try {
+                        $(
+                            "form.o_pms_pwa_payment_form select[name='" +
+                                key +
+                                "'] option[value='" +
+                                value +
+                                "']"
+                        ).prop("selected", true);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+                delete new_data[value];
             });
         },
 
