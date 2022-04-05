@@ -12,15 +12,6 @@
                                     Por facturar: <t t-esc="data.total_to_invoice"></t>
                                     <span>Total <t t-esc="data.total_amount"></t></span>
                                 </h4>
-                                <a
-                                    t-att-href="'/reservation/' + data.reservation_id"
-                                    style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc; margin-left: 10px;"
-                                    class="col-3 btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_preloader"
-                                    t-att-data-id="data.reservation_id"
-                                    target="_blank"
-                                >
-                                    Ver Detalle
-                                </a>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span class="fa fa-times" />
                                 </button>
@@ -46,7 +37,7 @@
                                             <td><t t-esc="line.partner"></t></td>
                                             <td><t t-esc="line.amount"></t></td>
                                             <td>Imprimir</td>
-                                            <td><a t-attf-href="{{ line.url }}" >Ver Detalle</a></td>
+                                            <td><a target="_blank" t-attf-href="{{ line.url }}" >Ver Detalle</a></td>
                                         </tr>
                                     </t>
                                 </tbody>
@@ -68,7 +59,7 @@
                                         <tr class="o_pms_pwa_lines_to_invoice" t-att-data-id="line.id">
                                             <td data-field="description"><span class="o_pms_pwa_description" t-esc="line.description"/> <i class='pms_pwa_payment_edit fa fa-edit'/></td>
                                             <td data-field="qty_to_invoice"><span class="o_pms_pwa_qty_to_invoice" t-esc="line.qty_to_invoice"/>  <i class='pms_pwa_payment_edit fa fa-edit'/>/<span class="o_pms_pwa_max_qty" t-esc="line.max_qty"/></td>
-                                            <td><t t-esc="line.amount"/></td>
+                                            <td><span class="o_pms_pwa_amount" t-esc="line.amount"/></td>
                                             <td><input class="form-control o_pms_pwa_included" type="checkbox" name="included" t-att-checked="line.included ? 'checked' : None"/></td>
                                         </tr>
                                     </t>
@@ -141,7 +132,7 @@
                                         class="form-control" type="text" name="partner_invoice_zip" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_zip ? data.new_invoice.partner.invoice_zip : None" />
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="control-label col-6" for="partner_invoice_country_id">
+                                    <label class="control-label col-6" for="partner_invoice_country_name">
                                         Pais
                                     </label>
                                     <input autocomplete="off" class="form-control o_pms_pwa_search_country_name" type="text" name="partner_invoice_country_name" placeholder="País" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_name ? data.new_invoice.partner.invoice_country_name : None" />
