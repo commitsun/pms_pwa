@@ -36,7 +36,7 @@ class FolioInvoice(http.Controller):
                 submit = False
                 invoice_ids = []
                 new_invoice = {}
-                
+
                 payload = http.request.jsonrequest["params"]
 
                 if "new_invoice" in payload:
@@ -45,14 +45,14 @@ class FolioInvoice(http.Controller):
                     invoice_ids = payload["invoice_ids"]
                 if "submit" in payload:
                     submit = payload["submit"]
-                
+
                 wizard_invoice = {}
                 wizard_invoice["reservation_id"] = reservation.id
                 wizard_invoice["total_amount"] = folio.amount_total
                 wizard_invoice["total_to_invoice"] = self._get_total_to_invoice(folio)
                 wizard_invoice["invoice_ids"] = self._get_invoice_ids(folio, invoice_ids)
                 wizard_invoice["new_invoice"] = self._prepare_new_invoice(folio, new_invoice)
-                
+
                 if submit:
                     try:
                         partner_invoice = self._get_partner(wizard_invoice["new_invoice"]["partner"])
@@ -104,6 +104,8 @@ class FolioInvoice(http.Controller):
             invoice_ids.append({
                 "id": invoice.id,
                 "name": invoice.name,
+                "amount": invoice.amount_total,
+                "partner": invoice.partner_id.name,
                 "url": invoice.get_portal_url(),
                 "state": invoice.state,
             })
@@ -222,7 +224,7 @@ class FolioInvoice(http.Controller):
                 }
             else:
                 partner_state_id = False
-            
+
         if not partner_country_id:
             if zip_code:
                 partner_country_id = {
