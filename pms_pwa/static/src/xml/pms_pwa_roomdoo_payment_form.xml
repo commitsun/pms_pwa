@@ -107,68 +107,68 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-12">
-                                    <label class="control-label col-6" for="partner_name">
+                                    <label class="control-label col-6" for="name">
                                         Nombre
                                     </label>
                                     <input
-                                        class="form-control" type="text" name="partner_name" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.name ? data.new_invoice.partner.name : None" />
+                                        class="form-control" type="text" name="name" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.name ? data.new_invoice.partner.name : None" />
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-12">
-                                    <label class="control-label col-6" for="partner_invoice_street">
+                                    <label class="control-label col-6" for="invoice_street">
                                         Dirección
                                     </label>
                                     <input
-                                        class="form-control" type="text" name="partner_invoice_street" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_street ? data.new_invoice.partner.invoice_street : None" />
+                                        class="form-control" type="text" name="invoice_street" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_street ? data.new_invoice.partner.invoice_street : None" />
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-6">
-                                    <label class="control-label col-6" for="partner_invoice_zip">
+                                    <label class="control-label col-6" for="invoice_zip">
                                         C.P
                                     </label>
                                     <input
-                                        class="form-control" type="text" name="partner_invoice_zip" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_zip ? data.new_invoice.partner.invoice_zip : None" />
+                                        class="form-control" type="text" name="invoice_zip" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_zip ? data.new_invoice.partner.invoice_zip : None" />
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="control-label col-6" for="partner_invoice_country_name">
+                                    <label class="control-label col-6" for="invoice_country_name">
                                         Pais
                                     </label>
-                                    <input autocomplete="off" class="form-control o_pms_pwa_search_country_name" type="text" name="partner_invoice_country_name" placeholder="País" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_name ? data.new_invoice.partner.invoice_country_name : None" />
-                                    <input type="hidden" name="partner_invoice_country_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_id ? data.new_invoice.partner.invoice_country_id : None" />
+                                    <input autocomplete="off" class="form-control o_pms_pwa_search_country_name" type="text" name="invoice_country_name" placeholder="País" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_name ? data.new_invoice.partner.invoice_country_name : None" />
+                                    <input type="hidden" name="invoice_country_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_country_id ? data.new_invoice.partner.invoice_country_id : None" />
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-6">
-                                    <label class="control-label col-6" for="partner_invoice_state_id">
+                                    <label class="control-label col-6" for="invoice_state_id">
                                         Provincia
                                     </label>
                                     <input
-                                        class="form-control" type="text" name="partner_invoice_state_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_state_id ? data.new_invoice.partner.invoice_state_id : None" />
+                                        class="form-control" type="text" name="invoice_state_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_state_id ? data.new_invoice.partner.invoice_state_id : None" />
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="control-label col-6" for="partner_invoice_city">
+                                    <label class="control-label col-6" for="invoice_city">
                                         Ciudad
                                     </label>
                                     <input
-                                        class="form-control" type="text" name="partner_invoice_city" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_city ? data.new_invoice.partner.invoice_city : None" />
+                                        class="form-control" type="text" name="invoice_city" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_city ? data.new_invoice.partner.invoice_city : None" />
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-6">
-                                    <label class="control-label col-6" for="partner_email">
+                                    <label class="control-label col-6" for="email">
                                         Email
                                     </label>
                                     <input
-                                        class="form-control" type="text" name="partner_email" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.email ? data.new_invoice.partner.email : None" />
+                                        class="form-control" type="text" name="email" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.email ? data.new_invoice.partner.email : None" />
                                 </div>
                                 <div class="col-sm-6">
-                                    <label class="control-label col-6" for="partner_mobile">
+                                    <label class="control-label col-6" for="mobile">
                                         Teléfono
                                     </label>
                                     <input
-                                        class="form-control" type="text" name="partner_mobile" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.mobile ? data.new_invoice.partner.mobile : None" />
+                                        class="form-control" type="text" name="mobile" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.mobile ? data.new_invoice.partner.mobile : None" />
                                 </div>
                             </div>
                         </form>
