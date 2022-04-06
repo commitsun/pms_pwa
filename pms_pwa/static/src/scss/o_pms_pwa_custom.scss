@@ -974,20 +974,39 @@ i.o_pms_pwa_remove_alert {
         opacity: 0;
     }
 }
+.pms_pwa_roomdoo_payment_form{
+    .modal-title{
+        span{
+            margin-left: 5rem;
+        }
+    }
+    table.o_pms_pwa_table_new_invoice{
+        tr.o_pms_pwa_lines_to_invoice{
+            line-height: 1rem;
+            input{
+                min-height: 15px !important;
+                height: 15px !important;
+            }
+        }
+        // Disabled td
+        tr.o_pms_pwa_disabled {
+            background-color: rgba(150, 150, 220, 0.3);
+        }
+    }
 
-// Disabled td
-tr.o_pms_pwa_disabled {
-    background-color: rgba(150, 150, 220, 0.3);
+
+    // Edit icon
+    i.pms_pwa_payment_edit {
+        color: $theme-color;
+    }
+
+    table.o_pms_pwa_table_invoice_ids{
+        tr.o_pms_pwa_payment_invoice_lines {
+            color: white;
+        }
+    }
 }
 
-// Edit icon
-i.pms_pwa_payment_edit {
-    color: $theme-color;
-}
-
-tr.o_pms_pwa_payment_invoice_lines {
-    color: white;
-}
 
 div.pms_pwa_roomdoo_payment_form th.o_pms_pwa_theme_color {
     border-top: unset;
