@@ -31,20 +31,15 @@ class FolioInvoice(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             if reservation:
-
                 folio = request.env["pms.folio"].browse(reservation.folio_id.id)
-                submit = False
                 invoice_ids = []
                 new_invoice = {}
 
                 payload = http.request.jsonrequest["params"]
-
                 if "new_invoice" in payload:
                     new_invoice = payload["new_invoice"]
                 if "invoice_ids" in payload:
                     invoice_ids = payload["invoice_ids"]
-                if "submit" in payload:
-                    submit = payload["submit"]
 
                 wizard_invoice = {}
                 wizard_invoice["reservation_id"] = reservation.id
@@ -52,8 +47,7 @@ class FolioInvoice(http.Controller):
                 wizard_invoice["total_to_invoice"] = self._get_total_to_invoice(folio)
                 wizard_invoice["invoice_ids"] = self._get_invoice_ids(folio, invoice_ids)
                 wizard_invoice["new_invoice"] = self._prepare_new_invoice(folio, new_invoice)
-
-                if submit:
+                if new_invoice and 'submit' in new_invoice:
                     try:
                         partner_invoice = self._get_partner(wizard_invoice["new_invoice"]["partner"])
                         if not partner_invoice._check_enought_invoice_data():
@@ -88,6 +82,7 @@ class FolioInvoice(http.Controller):
                             "wizard_invoice": wizard_invoice,
                         }
                     )
+                _logger.info(wizard_invoice)
                 return json.dumps(
                     {
                         "result": True,
@@ -207,9 +202,9 @@ class FolioInvoice(http.Controller):
             partner_invoice_street = partner.street if partner else False
         if not partner_zip:
             zip_code = partner.zip if partner else False
-            partner_zip = zip_code.name if zip_code else False
+            partner_zip = zip_code or False
         else:
-            zip_code = request.env["res.partner.zip"].search(
+            zip_code = request.env["res.city.zip"].search(
                 [("name", "=", partner_zip)]
             )
         if not partner_city:
@@ -245,6 +240,7 @@ class FolioInvoice(http.Controller):
                 partner_country_id = False
 
         return {
+            "id": partner.id if partner else False,
             "name": partner_name,
             "vat": partner_vat,
             "email": partner_email,
