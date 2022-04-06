@@ -19,7 +19,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
             "click a.o_pms_pwa_send_form": "_onClickSubmitButton",
             "click input.o_pms_pwa_search_partner": "_initPartnerAutocomplete",
             "click input.o_pms_pwa_search_country_name": "_initCountryAutocomplete",
-            "change input": "_onChangeInput",
+            "change form.o_pms_pwa_payment_form input": "_onChangeInput",
             "click .o_pms_pwa_return": "_onClickReturn",
         },
 
@@ -40,33 +40,31 @@ odoo.define("pms_pwa.payment_form", function (require) {
             if(form.find("input[name='partner']")[0].value) {
                 partner_id = parseInt(form.find("input[name='partner']")[0].value);
             }
-            if(form.find("input[name='partner_invoice_country_id']")[0].value) {
-                invoice_country_id = parseInt(form.find("input[name='partner_invoice_country_id']")[0].value);
+            if(form.find("input[name='invoice_country_id']")[0].value) {
+                invoice_country_id = parseInt(form.find("input[name='invoice_country_id']")[0].value);
             }
-            if(form.find("input[name='partner_invoice_state_id']")[0].value) {
-                invoice_state_id = parseInt(form.find("input[name='partner_invoice_state_id']")[0].value);
+            if(form.find("input[name='invoice_state_id']")[0].value) {
+                invoice_state_id = parseInt(form.find("input[name='invoice_state_id']")[0].value);
             }
             
             var partner = {
                 id: partner_id,
                 partner_type: form.find("select#partner_type_change")[0].value,
                 vat: form.find("input[name='vat']")[0].value,
-                name: form.find("input[name='partner_name']")[0].value,
-                invoice_street: form.find("input[name='partner_invoice_street']")[0].value,
-                invoice_zip: form.find("input[name='partner_invoice_zip']")[0].value,
+                name: form.find("input[name='name']")[0].value,
+                invoice_street: form.find("input[name='invoice_street']")[0].value,
+                invoice_zip: form.find("input[name='invoice_zip']")[0].value,
                 invoice_country_id: invoice_country_id,
-                invoice_country_name: form.find("input[name='partner_invoice_country_name']")[0].value,
+                invoice_country_name: form.find("input[name='invoice_country_name']")[0].value,
                 invoice_state_id: invoice_state_id,
-                invoice_city: form.find("input[name='partner_invoice_city']")[0].value,
-                email: form.find("input[name='partner_email']")[0].value,
-                mobile: form.find("input[name='partner_mobile']")[0].value,
-                mobile: form.find("input[name='partner_mobile']")[0].value, 
+                invoice_city: form.find("input[name='invoice_city']")[0].value,
+                email: form.find("input[name='email']")[0].value,
+                mobile: form.find("input[name='mobile']")[0].value,
             }
             return partner;
         },
 
         displayDataAlert: function (data) {
-            console.log("data => ", data);
             var self = this;
             if (data && data.result === true) {
                 data.type = "success";
@@ -280,7 +278,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 select: function (suggestion, term, item) {
                     if (term && term.item) {
                         $(suggestion.target.parentElement)
-                            .find('input[name="partner_invoice_country_id"]')
+                            .find('input[name="invoice_country_id"]')
                             .val(term.item.id);
                     }
                 },
@@ -312,8 +310,8 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 setTimeout(function () {
                     var reservation = JSON.parse(reservation_data);
                     if (reservation.result == true) {
-                        if (reservation && reservation.wizard_invoice && reservation.wizard_invoice.partner) {
-                            this._updateFields(reservation.wizard_invoice.partner);
+                        if (reservation && reservation.wizard_invoice && reservation.wizard_invoice.new_invoice && reservation.wizard_invoice.new_invoice.partner) {
+                            self._updateFields(reservation.wizard_invoice.new_invoice.partner);
                         }
                     } else {
                         self.displayDataAlert(reservation);
@@ -323,7 +321,6 @@ odoo.define("pms_pwa.payment_form", function (require) {
         },
 
         _reloadModal: function () {
-            console.log("reload");
             var self = this;
             $(".pms_pwa_roomdoo_payment_form").modal("toggle");
             
@@ -346,7 +343,6 @@ odoo.define("pms_pwa.payment_form", function (require) {
         },
 
         _onClickReturn: function (event) {
-            console.log("return");
             $("div.pms_pwa_roomdoo_payment_form").modal("toggle");
             try {
                 var reservation_id = event.currentTarget.getAttribute("data-id");
@@ -386,11 +382,14 @@ odoo.define("pms_pwa.payment_form", function (require) {
         },
 
         _updateFields: function(data) {
-            console.log("data => ", data);
-            $.each(new_data, function (key, value) {
+            $.each(data, function (key, value) {
                 var input = $("form.o_pms_pwa_payment_form input[name='" + key + "']");
                 if (input.length > 0) {
-                    input.val(value);
+                    if (value) {
+                        input.val(value);
+                    } else {
+                        input.val();
+                    }                    
                 } else {
                     try {
                         $(
@@ -404,7 +403,6 @@ odoo.define("pms_pwa.payment_form", function (require) {
                         console.log(error);
                     }
                 }
-                delete new_data[value];
             });
         },
 
