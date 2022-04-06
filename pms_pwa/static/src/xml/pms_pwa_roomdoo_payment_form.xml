@@ -20,7 +20,7 @@
                     </div>
                     <div class="modal-body o_pms_pwa_modal_body">
                         <div class="card-body bg-dark" t-if="data.invoice_ids">
-                            <table class="table">
+                            <table class="table o_pms_pwa_table_invoice_ids">
                                 <thead>
                                     <tr>
                                         <th class="o_pms_pwa_theme_color">Factura</th>
@@ -45,7 +45,7 @@
                         </div>
                         <hr t-if="data.invoice_ids"/>
                         <div class="form-group" t-if="data.new_invoice">
-                            <table class="table">
+                            <table class="table o_pms_pwa_table_new_invoice">
                                 <thead>
                                     <tr>
                                         <th class="o_pms_pwa_theme_color">Descripción</th>
