@@ -210,40 +210,40 @@ class FolioInvoice(http.Controller):
         if not partner_zip:
             code = partner.zip if partner else False
             partner_zip = code or False
-        # zip_code = request.env["res.city.zip"].search(
-        #     [("name", "=", partner_zip)], limit=1
-        # )
-        # if not partner_city:
-        #     partner_city = zip_code.city_id.name if zip_code else False
-        #     if not partner_city and partner:
-        #         partner_city = partner.city
-        # if not partner_state_id:
-        #     if zip_code:
-        #         partner_state_id = {
-        #             "id": zip_code.state_id.id,
-        #             "name": zip_code.state_id.name,
-        #         }
-        #     elif partner:
-        #         partner_state_id = {
-        #             "id": partner.state_id.id,
-        #             "name": partner.state_id.name,
-        #         }
-        #     else:
-        #         partner_state_id = False
+        zip_code = request.env["res.city.zip"].search(
+            [("name", "=", partner_zip)], limit=1
+        )
+        if not partner_city:
+            partner_city = zip_code.city_id.name if zip_code else False
+            if not partner_city and partner:
+                partner_city = partner.city
+        if not partner_state_id:
+            if zip_code:
+                partner_state_id = {
+                    "id": zip_code.state_id.id,
+                    "name": zip_code.state_id.name,
+                }
+            elif partner:
+                partner_state_id = {
+                    "id": partner.state_id.id,
+                    "name": partner.state_id.name,
+                }
+            else:
+                partner_state_id = False
 
-        # if not partner_country_id:
-        #     if zip_code:
-        #         partner_country_id = {
-        #             "id": zip_code.country_id.id,
-        #             "name": zip_code.country_id.name,
-        #         }
-        #     elif partner:
-        #         partner_country_id = {
-        #             "id": partner.country_id.id,
-        #             "name": partner.country_id.name,
-        #         }
-        #     else:
-        #         partner_country_id = False
+        if not partner_country_id:
+            if zip_code:
+                partner_country_id = {
+                    "id": zip_code.country_id.id,
+                    "name": zip_code.country_id.name,
+                }
+            elif partner:
+                partner_country_id = {
+                    "id": partner.country_id.id,
+                    "name": partner.country_id.name,
+                }
+            else:
+                partner_country_id = False
 
         return {
             "id": partner.id if partner else False,

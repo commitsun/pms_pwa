@@ -42,10 +42,16 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 partner_id = parseInt(form.find("input[name='partner']")[0].value);
             }
             if(form.find("input[name='invoice_country_id']")[0].value) {
-                invoice_country_id = parseInt(form.find("input[name='invoice_country_id']")[0].value);
+                invoice_country_id = {
+                    'id': parseInt(form.find("input[name='invoice_country_id']")[0].value),
+                    'name': form.find("input[name='invoice_country_name']")[0].value,
+                }
             }
             if(form.find("input[name='invoice_state_id']")[0].value) {
-                invoice_state_id = parseInt(form.find("input[name='invoice_state_id']")[0].value);
+                invoice_state_id = {
+                    'id': parseInt(form.find("input[name='invoice_state_id']")[0].value),
+                    'name': form.find("input[name='invoice_state_name']")[0].value,
+                }
             }
 
             var partner = {
@@ -56,7 +62,6 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 invoice_street: form.find("input[name='invoice_street']")[0].value,
                 invoice_zip: form.find("input[name='invoice_zip']")[0].value,
                 invoice_country_id: invoice_country_id,
-                invoice_country_name: form.find("input[name='invoice_country_name']")[0].value,
                 invoice_state_id: invoice_state_id,
                 invoice_city: form.find("input[name='invoice_city']")[0].value,
                 email: form.find("input[name='email']")[0].value,
@@ -288,7 +293,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
             });
         },
         _initStateAutocomplete: function(){
-            $(".o_pms_pwa_search_state_name").autocomplete({
+            $("form.o_pms_pwa_payment_form input.o_pms_pwa_search_state_name").autocomplete({
                 source: function (request, response) {
                     $.ajax({
                         url: "/pms_checkin_partner/search",
@@ -319,7 +324,6 @@ odoo.define("pms_pwa.payment_form", function (require) {
                     });
                 },
                 select: function (suggestion, term, item) {
-                    // console.log("suggestion", suggestion, term, item);
                     if (term && term.item) {
                         $(suggestion.target.parentElement)
                             .find('input[name="invoice_state_id"]')
@@ -426,13 +430,27 @@ odoo.define("pms_pwa.payment_form", function (require) {
         },
 
         _updateFields: function(data) {
+            var special_fields = ['invoice_country_id', 'invoice_state_id'];
+            var special_name_fields = {
+                'invoice_country_id': 'invoice_country_name',
+                'invoice_state_id': 'invoice_state_name',
+            }
             $.each(data, function (key, value) {
+
                 var input = $("form.o_pms_pwa_payment_form input[name='" + key + "']");
                 if (input.length > 0) {
-                    if (value) {
-                        input.val(value);
+                    if (special_fields.indexOf(key) != -1) {
+                        input.val(value.id);
+                        var name_input = $("form.o_pms_pwa_payment_form input[name='" + special_name_fields[key] + "']");
+                        if (name_input.length > 0) {
+                            name_input.val(value.name);
+                        }
                     } else {
-                        input.val();
+                        if (value) {
+                            input.val(value);
+                        } else {
+                            input.val();
+                        }
                     }
                 } else {
                     try {
