@@ -25,25 +25,27 @@
                                     <tr>
                                         <th class="o_pms_pwa_theme_color">Factura</th>
                                         <th class="o_pms_pwa_theme_color">Cliente</th>
-                                        <th class="o_pms_pwa_theme_color">Cantidad</th>
-                                        <th class="o_pms_pwa_theme_color text-right"></th>
-                                        <th class="o_pms_pwa_theme_color text-right"></th>
+                                        <th class="o_pms_pwa_theme_color text-right">Importe</th>
+                                        <!-- <th class="o_pms_pwa_theme_color text-right"></th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <t t-foreach="data.invoice_ids" t-as="line">
                                         <tr class="o_pms_pwa_payment_invoice_lines">
-                                            <td><t t-esc="line.name"></t></td>
+                                            <td><a target="_blank" t-attf-href="{{ line.url }}" ><t t-esc="line.name"></t></a></td>
                                             <td><t t-esc="line.partner"></t></td>
-                                            <td><t t-esc="line.amount"></t></td>
-                                            <td>Imprimir</td>
-                                            <td><a target="_blank" t-attf-href="{{ line.url }}" >Ver Detalle</a></td>
+                                            <td class="text-right"><t t-esc="line.amount"></t></td>
                                         </tr>
                                     </t>
                                 </tbody>
                             </table>
                         </div>
                         <hr t-if="data.invoice_ids"/>
+                        <div class="row mt-3" t-if="data.new_invoice">
+                            <div class="col-sm-12">
+                                <h3 style="text-align-last: center;">Nueva factura</h3>
+                            </div>
+                        </div>
                         <div class="form-group" t-if="data.new_invoice">
                             <table class="table o_pms_pwa_table_new_invoice">
                                 <thead>
@@ -66,12 +68,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <form class="o_pms_pwa_payment_form form-group form-field mt5">
-                            <div class="row mt-3">
-                                <div class="col-sm-12">
-                                    <h4>Nueva factura</h4>
-                                </div>
-                            </div>
+                        <form class="o_pms_pwa_payment_form form-group form-field mt-5" t-if="data.new_invoice">
                             <div class="row mt-3">
                                 <div class="col-sm-8">
                                     <label class="control-label col-6" for="partner">
@@ -83,7 +80,7 @@
                                         class="form-control" type="hidden" name="reservation_id" t-att-value="data.reservation_id"/>
                                 </div>
                                 <div class="col-sm-4">
-                                    <a class="o_pms_pwa_reset_form btn btn-message">Nuevo</a>
+                                    <a class="o_pms_pwa_reset_form btn btn-message" t-att-data-reservation_id="data.reservation_id">Restablecer</a>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -144,8 +141,8 @@
                                     <label class="control-label col-6" for="invoice_state_id">
                                         Provincia
                                     </label>
-                                    <input
-                                        class="form-control" type="text" name="invoice_state_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_state_id ? data.new_invoice.partner.invoice_state_id : None" />
+                                    <input autocomplete="off" class="form-control o_pms_pwa_search_state_name" type="text" name="invoice_state_name" placeholder="Provincia" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_state_name ? data.new_invoice.partner.invoice_state_name : None" />
+                                    <input type="hidden" name="invoice_state_id" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.invoice_state_id ? data.new_invoice.partner.invoice_state_id : None" />
                                 </div>
                                 <div class="col-sm-6">
                                     <label class="control-label col-6" for="invoice_city">
@@ -158,7 +155,7 @@
                             <div class="row mt-3">
                                 <div class="col-sm-6">
                                     <label class="control-label col-6" for="email">
-                                        Email
+                                        <small>Email</small>
                                     </label>
                                     <input
                                         class="form-control" type="text" name="email" t-att-value="data.new_invoice and data.new_invoice.partner and data.new_invoice.partner.email ? data.new_invoice.partner.email : None" />
@@ -172,7 +169,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div class="container-fluid">
+                        <div class="container-fluid" t-if="data.new_invoice">
                             <div class="row mt-3 mb-3">
                                 <div class="col-sm-12 text-center">
                                     <a class="btn btn-message o_pms_pwa_send_form">Confirmar</a>

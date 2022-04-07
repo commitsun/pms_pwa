@@ -19,6 +19,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
             "click a.o_pms_pwa_send_form": "_onClickSubmitButton",
             "click input.o_pms_pwa_search_partner": "_initPartnerAutocomplete",
             "click input.o_pms_pwa_search_country_name": "_initCountryAutocomplete",
+            "click input.o_pms_pwa_search_state_name": "_initStateAutocomplete",
             "change form.o_pms_pwa_payment_form input": "_onChangeInput",
             "click .o_pms_pwa_return": "_onClickReturn",
         },
@@ -46,7 +47,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
             if(form.find("input[name='invoice_state_id']")[0].value) {
                 invoice_state_id = parseInt(form.find("input[name='invoice_state_id']")[0].value);
             }
-            
+
             var partner = {
                 id: partner_id,
                 partner_type: form.find("select#partner_type_change")[0].value,
@@ -117,7 +118,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 parent.html('<input class="o_pms_pwa_edit_in_line form-control" type="number" value="' + value +'"/>')
             } else {
                 parent.html('<input class="o_pms_pwa_edit_in_line form-control" type="text" value="' + value +'"/>')
-            }            
+            }
 
             $(".o_pms_pwa_edit_in_line").focus();
             $(".o_pms_pwa_edit_in_line").keyup(function (subEvent) {
@@ -163,6 +164,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
             var a = event.currentTarget;
             var form = $(a).parent().parent().parent().parent();
             form.find("input").val('');
+            form.find("input[name='reservation_id']").val(a.getAttribute("data-reservation_id"));
         },
 
         _onClickSubmitButton: function (event) {
@@ -285,6 +287,48 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 minLength: 1,
             });
         },
+        _initStateAutocomplete: function(){
+            $(".o_pms_pwa_search_state_name").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/pms_checkin_partner/search",
+                        method: "GET",
+                        dataType: "json",
+                        data: {
+                            keywords: request.term,
+                            model: "res.country.state",
+                            id: null,
+                        },
+                        success: function (data) {
+                            response(
+                                $.map(data, function (item) {
+                                    return {
+                                        label:
+                                            (item.type === "c"
+                                                ? "Category: "
+                                                : "") + item.name,
+                                        value: item.name,
+                                        id: item.id,
+                                    };
+                                })
+                            );
+                        },
+                        error: function (error) {
+                            console.error(error);
+                        },
+                    });
+                },
+                select: function (suggestion, term, item) {
+                    // console.log("suggestion", suggestion, term, item);
+                    if (term && term.item) {
+                        $(suggestion.target.parentElement)
+                            .find('input[name="invoice_state_id"]')
+                            .val(term.item.id);
+                    }
+                },
+                minLength: 1,
+            });
+        },
 
         _onChangeInput: function (event) {
             event.preventDefault();
@@ -323,7 +367,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
         _reloadModal: function () {
             var self = this;
             $(".pms_pwa_roomdoo_payment_form").modal("toggle");
-            
+
             var reservation_id = parseInt($("form.o_pms_pwa_payment_form input[name='reservation_id']")[0].value);
 
             if (reservation_id) {
@@ -389,7 +433,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
                         input.val(value);
                     } else {
                         input.val();
-                    }                    
+                    }
                 } else {
                     try {
                         $(

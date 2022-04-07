@@ -1001,6 +1001,8 @@ i.o_pms_pwa_remove_alert {
     }
 
     table.o_pms_pwa_table_invoice_ids{
+        font-size: 14px;
+        margin: auto;
         tr.o_pms_pwa_payment_invoice_lines {
             color: white;
         }
