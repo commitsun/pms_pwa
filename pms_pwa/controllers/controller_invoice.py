@@ -36,11 +36,11 @@ class FolioInvoice(http.Controller):
                 new_invoice = {}
 
                 payload = http.request.jsonrequest["params"]
+                _logger.info("payload: %s", payload)
                 if "new_invoice" in payload:
                     new_invoice = payload["new_invoice"]
                 if "invoice_ids" in payload:
                     invoice_ids = payload["invoice_ids"]
-
                 wizard_invoice = {}
                 wizard_invoice["reservation_id"] = reservation.id
                 wizard_invoice["total_amount"] = folio.amount_total
@@ -58,7 +58,8 @@ class FolioInvoice(http.Controller):
                             )
                         lines_to_invoice = dict()
                         for line in wizard_invoice["new_invoice"]["lines"]:
-                            lines_to_invoice[line["id"]] = line["qty_to_invoice"]
+                            if line["included"]:
+                                lines_to_invoice[line["id"]] = line["qty_to_invoice"]
                         invoices = reservation.folio_id._create_invoices(
                             lines_to_invoice=lines_to_invoice,
                             partner_invoice_id=partner_invoice.id,
@@ -66,12 +67,13 @@ class FolioInvoice(http.Controller):
                         )
                         # Overwrite description line invoice with vals
                         for line in wizard_invoice["new_invoice"]["lines"]:
-                            inv_line = invoices.invoice_line_ids.filtered(
-                                lambda x: x.folio_line_ids in line["id"]
+                            if not line["included"]:
+                                continue
+                            inv_line = next(
+                                inv_line for inv_line in invoices.invoice_line_ids if line["id"] in inv_line.folio_line_ids.ids
                             )
                             if inv_line and inv_line.name != line["description"]:
                                 inv_line.name = line["description"]
-
                         invoices.action_post()
                     except Exception as e:
                         return json.dumps({"result": False, "message": str(e)})
@@ -168,8 +170,11 @@ class FolioInvoice(http.Controller):
     def _prepare_partner(self, partner_vals):
         partner_name = partner_vat = partner_email = partner_mobile = \
             partner_invoice_street = partner_zip = partner_city = \
-            partner_state_id = partner_country_id = False
+            partner_state_id = partner_type = partner_country_id = \
+            is_agency = False
         if partner_vals:
+            if partner_vals.get("partner_type"):
+                partner_type = partner_vals["partner_type"]
             if partner_vals.get("name"):
                 partner_name = partner_vals["name"]
             if partner_vals.get("vat"):
@@ -190,6 +195,8 @@ class FolioInvoice(http.Controller):
                 partner_country_id = partner_vals["invoice_country_id"]
 
         partner = self._get_partner_invoice(partner_vals)
+        if not partner_type:
+            partner_type = "person"
         if not partner_name:
             partner_name = partner.name if partner else False
         if not partner_vat:
@@ -201,12 +208,11 @@ class FolioInvoice(http.Controller):
         if not partner_invoice_street:
             partner_invoice_street = partner.street if partner else False
         if not partner_zip:
-            zip_code = partner.zip if partner else False
-            partner_zip = zip_code or False
-        else:
-            zip_code = request.env["res.city.zip"].search(
-                [("name", "=", partner_zip)]
-            )
+            code = partner.zip if partner else False
+            partner_zip = code or False
+        zip_code = request.env["res.city.zip"].search(
+            [("name", "=", partner_zip)], limit=1
+        )
         if not partner_city:
             partner_city = zip_code.city_id.name if zip_code else False
             if not partner_city and partner:
@@ -255,11 +261,42 @@ class FolioInvoice(http.Controller):
     def _get_partner_invoice(self, partner_vals):
         if partner_vals and partner_vals.get("id"):
             return request.env["res.partner"].browse(partner_vals.get("id"))
-        if partner_vals and  partner_vals.get("vat"):
+        if partner_vals and partner_vals.get("vat"):
             return request.env["res.partner"].search([("vat", "=", partner_vals.get("vat"))])
         return False
 
     def _get_partner(self, partner_vals):
         partner = False
+        vals = {}
         if partner_vals.get("id"):
-            return request.env["res.partner"].browse(partner_vals.get("id"))
+            partner = request.env["res.partner"].browse(partner_vals.get("id"))
+        if partner_vals.get("partner_type"):
+            vals["company_type"] = partner_vals["partner_type"]
+            if vals["company_type"] == "agency":
+                vals["company_type"] = "company"
+                vals["is_agency"] = True
+        if partner_vals.get("name"):
+            vals["name"] = partner_vals["name"]
+        if partner_vals.get("vat"):
+            vals["vat"] = partner_vals["vat"]
+        if partner_vals.get("email"):
+            vals["email"] = partner_vals["email"]
+        if partner_vals.get("mobile"):
+            vals["mobile"] = partner_vals["mobile"]
+        if partner_vals.get("invoice_street"):
+            vals["street"] = partner_vals["invoice_street"]
+        if partner_vals.get("invoice_zip"):
+            vals["zip"] = partner_vals["invoice_zip"]
+        if partner_vals.get("invoice_city"):
+            vals["city"] = partner_vals["invoice_city"]
+        if partner_vals.get("invoice_state_id"):
+            vals["state_id"] = partner_vals["invoice_state_id"]["id"]
+        if partner_vals.get("invoice_country_id"):
+            vals["country_id"] = partner_vals["invoice_country_id"]["id"]
+        if partner:
+            for key, value in vals.items():
+                if value:
+                    partner[key] = value
+        else:
+            partner = request.env["res.partner"].create(vals)
+        return partner
