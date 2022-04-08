@@ -21,6 +21,7 @@ odoo.define("pms_pwa.payment_form", function (require) {
             "click input.o_pms_pwa_search_country_name": "_initCountryAutocomplete",
             "click input.o_pms_pwa_search_state_name": "_initStateAutocomplete",
             "change form.o_pms_pwa_payment_form input": "_onChangeInput",
+            "change form.o_pms_pwa_payment_form select": "_onChangeInput",
             "click .o_pms_pwa_return": "_onClickReturn",
         },
 
@@ -136,8 +137,18 @@ odoo.define("pms_pwa.payment_form", function (require) {
                 }
             });
 
+            $(".o_pms_pwa_edit_in_line").keydown(function (subEvent) {
+                if (subEvent.keyCode === 9) {
+                    html ='<span class="o_pms_pwa_' + field +'">' + $(".o_pms_pwa_edit_in_line").val().trim() + '</span><i class="pms_pwa_payment_edit fa fa-edit"></i>';
+                    if (max_qty) {
+                        html = html + '/<span class="o_pms_pwa_max_qty">'+ max_qty +'</span>';
+                    }
+                    parent.html(html);
+                }
+            });
+
             $(".o_pms_pwa_edit_in_line").focusout(function () {
-                html = '<span class="o_pms_pwa_' + field +'">' + value + '</span><i class="pms_pwa_payment_edit fa fa-edit"></i>';
+                html ='<span class="o_pms_pwa_' + field +'">' + $(".o_pms_pwa_edit_in_line").val().trim() + '</span><i class="pms_pwa_payment_edit fa fa-edit"></i>';
                 if (max_qty) {
                     html = html + '/<span class="o_pms_pwa_max_qty">'+ max_qty +'</span>';
                 }
