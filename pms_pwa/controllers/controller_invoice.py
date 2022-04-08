@@ -249,6 +249,7 @@ class FolioInvoice(http.Controller):
             "partner_type": partner_type,
             "name": partner_name,
             "vat": partner_vat,
+            "partner_type": partner_type,
             "email": partner_email,
             "mobile": partner_mobile,
             "invoice_street": partner_invoice_street,

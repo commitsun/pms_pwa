@@ -300,7 +300,7 @@ class PmsReservation(http.Controller):
         csrf=False,
         website=True,
     )
-    def reservation_invoice(self, reservation_id=None, **kw):
+    def reservation_old_invoice(self, reservation_id=None, **kw):
         if reservation_id:
             reservation = (
                 request.env["pms.reservation"]
