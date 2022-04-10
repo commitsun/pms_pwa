@@ -170,8 +170,7 @@ class FolioInvoice(http.Controller):
     def _prepare_partner(self, partner_vals):
         partner_name = partner_vat = partner_email = partner_mobile = \
             partner_invoice_street = partner_zip = partner_city = \
-            partner_state_id = partner_type = partner_country_id = \
-            is_agency = False
+            partner_state_id = partner_type = partner_country_id = False
         if partner_vals:
             if partner_vals.get("partner_type"):
                 partner_type = partner_vals["partner_type"]
@@ -194,9 +193,9 @@ class FolioInvoice(http.Controller):
             if partner_vals.get("invoice_country_id"):
                 partner_country_id = partner_vals["invoice_country_id"]
 
-        partner = self._get_partner_invoice(partner_vals)
-        if not partner_type:
-            partner_type = "person"
+        partner, company_type = self._get_partner_invoice(partner_vals)
+        if company_type or not partner_type:
+            partner_type = company_type
         if not partner_name:
             partner_name = partner.name if partner else False
         if not partner_vat:
@@ -247,6 +246,7 @@ class FolioInvoice(http.Controller):
 
         return {
             "id": partner.id if partner else False,
+            "partner_type": partner_type,
             "name": partner_name,
             "vat": partner_vat,
             "email": partner_email,
@@ -259,11 +259,17 @@ class FolioInvoice(http.Controller):
         }
 
     def _get_partner_invoice(self, partner_vals):
+        partner = False
+        partner_type = "person"
         if partner_vals and partner_vals.get("id"):
-            return request.env["res.partner"].browse(partner_vals.get("id"))
+            partner = request.env["res.partner"].browse(partner_vals["id"])
+            partner_type = partner.company_type
         if partner_vals and partner_vals.get("vat"):
-            return request.env["res.partner"].search([("vat", "=", partner_vals.get("vat"))])
-        return False
+            partner = request.env["res.partner"].search([("vat", "=", partner_vals.get("vat"))])
+            partner_type = partner.company_type
+        if partner and partner.is_agency:
+            partner_type = "agency"
+        return partner, partner_type
 
     def _get_partner(self, partner_vals):
         partner = False
