@@ -389,7 +389,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                         '<script>'+
                             'var format = "dd/mm/yy";'+
                             '$( function() {'+
-                                '$( "#paymentdate'+lines[i].id+'" ).datepicker({ dateFormat: format}).datepicker("setDate", '+moment(lines[i].date).format("DD/MM/YYYY")+');'+
+                                '$( "#paymentdate'+lines[i].id+'" ).datepicker({ dateFormat: format}).datepicker("setDate", "'+moment(lines[i].date).format("DD/MM/YYYY")+'");'+
                             '} );'+
                         '</script>'+
                         '<input disabled="disabled" id="paymentdate'+lines[i].id+'" type="text" name="date" class="datepicker"/></td>' +
