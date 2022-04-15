@@ -1059,9 +1059,9 @@ class PmsReservation(http.Controller):
                     if params[day]:
                         days_week[day] = True
             if params.get("new_price"):
-                new_price = params["new_price"]
+                new_price = float(params["new_price"])
             if params.get("new_discount"):
-                new_discount = params["new_discount"]
+                new_discount = float(params["new_discount"])
             if params.get("new_board_service_id"):
                 new_board_service_id = int(params["new_board_service_id"])
             wizard_changes = request.env["wizard.folio.changes"].create(
@@ -1079,8 +1079,14 @@ class PmsReservation(http.Controller):
                     "new_discount": new_discount,
                     "new_board_service_id": new_board_service_id,
                     "reservation_ids": reservation_ids,
+                    "change_from_date": min(reservations.mapped("checkin")),
+                    "change_to_date": max(reservations.mapped("checkout")),
                 }
             )
+            wizard_changes.apply_discount = True if new_discount else False
+            wizard_changes.apply_price = True if new_price else False
+            wizard_changes.apply_board_service = True if new_board_service_id else False
+            wizard_changes.modification_type = "reservations"
             wizard_changes.button_change()
 
         except Exception as e:

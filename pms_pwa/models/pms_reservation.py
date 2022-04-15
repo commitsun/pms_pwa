@@ -257,6 +257,12 @@ class PmsReservation(models.Model):
                     if "address" in guest:
                         guest.pop("address")
 
+                    if "segmentation_ids" in guest:
+                        segmentation_ids = [(6, 0, [int(segmentation) for segmentation in guest.get("segmentation_ids")])]
+                        if segmentation_ids and segmentation_ids != reservation.segmentation_ids.ids:
+                            reservation.segmentation_ids = [(6, 0, segmentation_ids)]
+                        guest.pop("segmentation_ids")
+
                     checkin_partner = self.env["pms.checkin.partner"].browse(
                         int(guest["id"])
                     )
@@ -403,6 +409,10 @@ class PmsReservation(models.Model):
                 "zip": checkin.residence_zip,
                 "allowed_state_ids": allowed_states,
                 "state": checkin.state or False,
+                "segmentation_ids": [
+                    {"id": segmentation.id, "name": segmentation.name}
+                    for segmentation in checkin.reservation_id.segmentation_ids
+                ] if checkin.reservation_id.segmentation_ids else False,
                 "readonly_fields": self._get_checkin_read_only_fields(checkin),
                 "invisible_fields": self._get_checkin_invisible_fields(checkin),
             }
