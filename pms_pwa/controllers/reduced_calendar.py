@@ -840,7 +840,8 @@ class PmsCalendar(http.Controller):
             "closed": "closed",
             "closed_arrival": "closed_arrival",
             "max_stay": "max_stay",
-            "max_stay_sa": "max_stay_arrival"
+            "max_stay_ll": "max_stay_arrival",
+            "closed_departure": "closed_departure",
         }
         if post.get("price"):
             wizard = request.env["pms.massive.changes.wizard"].create({

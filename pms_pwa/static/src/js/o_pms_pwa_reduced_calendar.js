@@ -907,11 +907,11 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                 $(".hidde_max_dispo").hide();
             }
         });
-        $(".hidde_show_max_stay_sa").click(function (event) {
+        $(".hidde_show_closed_departure").click(function (event) {
             if ($(this).is(":checked")) {
-                $(".hidde_max_stay_sa").show();
+                $(".hidde_closed_departure").show();
             } else {
-                $(".hidde_max_stay_sa").hide();
+                $(".hidde_closed_departure").hide();
             }
         });
         $(".hidde_show_max_stay_ll").click(function (event) {
@@ -1022,8 +1022,13 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
             if ($("input[name=show_max_stay]").prop("checked")) {
                 send_values["max_stay"] = $("input[name=modal_max_stay]").val();
             }
-            if ($("input[name=show_max_stay_sa]").prop("checked")) {
-                send_values["max_stay_sa"] = $("input[name=modal_max_stay_sa]").val();
+            if ($("input[name=show_closed_departure]").prop("checked")) {
+                // intentar que se envíe 0 o 1, 0 desactivado, 1 activo
+                if($("input[name=modal_closed_departure]").prop("checked") == true){
+                    send_values["closed_departure"] = "1";
+                }else{
+                    send_values["closed_departure"] = "0";
+                }
             }
             if ($("input[name=show_max_stay_ll]").prop("checked")) {
                 send_values["max_stay_ll"] = $("input[name=modal_max_stay_ll]").val();
