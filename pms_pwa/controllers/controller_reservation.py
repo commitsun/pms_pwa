@@ -1047,6 +1047,7 @@ class PmsReservation(http.Controller):
         new_price = False
         new_discount = False
         new_board_service_id = False
+
         try:
             reservation_ids = [
                 int(item) for item in params["reservation_ids"] if item != "on"
@@ -1056,7 +1057,7 @@ class PmsReservation(http.Controller):
                 apply_on_all_week = True
             else:
                 for day in days_week:
-                    if params[day]:
+                    if params.get("days_week").get(day):
                         days_week[day] = True
             if params.get("new_price"):
                 new_price = float(params["new_price"])
