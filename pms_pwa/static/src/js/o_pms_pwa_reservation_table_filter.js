@@ -118,7 +118,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     maxYear: parseInt(moment().format("YYYY"), 10),
                 },
                 function (start) {
-                    console.log(start);
+                    // console.log(start);
                     let start_date = moment(start).format('DD/MM/YYYY');
                     modal.find('input[name="modal_date"]').val(start_date)
                     this.element.val(start_date);
@@ -1352,6 +1352,9 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         new_discount: $(
                                             "#multiChangeModal input[name='new_discount']"
                                         ).val(),
+                                        new_board_service_id: $(
+                                            "#multiChangeModal select[name='new_board_service_id']"
+                                        ).val(),
                                     }).then(function (new_data) {
                                         self.displayDataAlert(new_data);
                                     });
@@ -1404,7 +1407,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         self.displayContent("pms_pwa.reservation_checkin_modal", {
                             reservation: data,
                         });
-
                         if (document.documentElement.lang === "es-ES") {
                             $(".o_pms_pwa_daterangepicker").daterangepicker(
                                 {
@@ -1419,8 +1421,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     singleDatePicker: true,
                                     showDropdowns: true,
                                     autoUpdateInput: false,
-                                    minYear: 1901,
-                                    maxYear: parseInt(moment().format("YYYY"), 10),
+                                    minYear: 1921,
+                                    maxYear: 2050,
                                 },
                                 function (start) {
                                     const start_date = new Date(start);
@@ -1444,8 +1446,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     singleDatePicker: true,
                                     showDropdowns: true,
                                     autoUpdateInput: false,
-                                    minYear: 1901,
-                                    maxYear: parseInt(moment().format("YYYY"), 10),
+                                    minYear: 1921,
+                                    maxYear: 2050,
                                 },
                                 function (start) {
                                     const start_date = new Date(start);
@@ -1459,6 +1461,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             );
                         }
 
+                        $(".selectpicker").selectpicker();
                         /* eslint-disable no-alert, no-console */
                         new Stepper($(".bs-stepper")[0], {
                             linear: false,
@@ -1480,7 +1483,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     reservation_id +
                                     "] .content";
                                 var contents = $(selector);
-
                                 for (var i = 1; i <= contents.length; i++) {
                                     var element = $(
                                         "#" + contents[i - 1].getAttribute("id")
@@ -1541,9 +1543,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         residence_state_id: element
                                             .find("input[name='residence_state_id']")
                                             .val(),
+                                        segmentation_ids: element
+                                            .find("select[name='segmentation_ids']")
+                                            .val(),
                                     });
                                 }
-
+                                // console.log(" on change guest_list ->", guest_list);
                                 ajax.jsonRpc(
                                     "/reservation/" + reservation_id + "/checkin",
                                     "call",
@@ -1647,6 +1652,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             }
                         );
                         /* eslint-enable no-alert */
+
                         $(".o_pms_pwa_button_checkin_confirm").on("click", function (
                             new_event
                         ) {
@@ -1712,8 +1718,12 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     residence_state_id: element
                                         .find("input[name='residence_state_id']")
                                         .val(),
+                                    segmentation_ids: element
+                                    .find("select[name='segmentation_ids']")
+                                    .val(),
                                 });
                             }
+                            // console.log(" boton checkin guest_list ->", guest_list);
                             ajax.jsonRpc(button.attributes.url.value, "call", {
                                 guests_list: guest_list,
                                 action_on_board: true,
