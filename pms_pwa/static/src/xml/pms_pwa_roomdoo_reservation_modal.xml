@@ -1471,7 +1471,6 @@
                                                             </option>
                                                         </select>
                                                     </div>
-
                                                     <div class="col-sm-12 mt-2">
                                                         <label class="control-label col-12" for="address">
                                                             Dirección
@@ -1508,10 +1507,24 @@
                                                        <input autocomplete="off" t-att-data-id="partner_value['id']" class="form-control o_pms_pwa_search_state_name" type="text" name="state_name" placeholder="Provincia" t-att-value="partner_value['state_name'] ? partner_value['state_name'] : ''" />
                                                        <input type="hidden" name="residence_state_id" t-att-value="partner_value['residence_state_id'] ? partner_value['residence_state_id']['id'] : ''" />
                                                     </div>
-
+                                                </div>
+                                                <!-- <hr t-if="reservation.allowed_segmentations" /> -->
+                                                <div class="row" t-if="reservation.allowed_segmentations">
+                                                    <div class="col-sm-12 mt-2" >
+                                                        <div class="form-group row">
+                                                            <div for="segmentation_ids" class="col-sm-4 col-form-label">Motivo del viaje</div>
+                                                            <div class="col-sm-8">
+                                                                <select id="segmentation_ids" name="segmentation_ids" class="selectpicker" multiple="multiple" data-mdb-clear-button="true" data-live-search="true">
+                                                                    <t t-foreach="reservation.allowed_segmentations" t-as="segmentation">
+                                                                        <option t-att-value="segmentation.id" t-att-selected="partner_value['segmentation_ids'] and segmentation.id in partner_value['segmentation_ids'] ? 'selected' : None"><t t-esc="segmentation.name"/></option>
+                                                                    </t>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12 mt-2">
                                                         <button type="button" t-attf-data-id="reservation.id" class="btn btn-block o_pms_pwa_btn_border o_pms_pwa_30w float-right" data-dismiss="modal" aria-label="Close">
                                                             <span>Cerrar</span>
                                                         </button>

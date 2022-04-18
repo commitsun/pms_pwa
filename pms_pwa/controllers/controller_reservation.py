@@ -1047,7 +1047,6 @@ class PmsReservation(http.Controller):
         new_price = False
         new_discount = False
         new_board_service_id = False
-
         try:
             reservation_ids = [
                 int(item) for item in params["reservation_ids"] if item != "on"
