@@ -258,7 +258,7 @@ class PmsReservation(models.Model):
                         guest.pop("address")
 
                     if "segmentation_ids" in guest:
-                        segmentation_ids = [(6, 0, [int(segmentation) for segmentation in guest.get("segmentation_ids")])]
+                        segmentation_ids = [int(segmentation) for segmentation in guest.get("segmentation_ids")]
                         if segmentation_ids and segmentation_ids != reservation.segmentation_ids.ids:
                             reservation.segmentation_ids = [(6, 0, segmentation_ids)]
                         guest.pop("segmentation_ids")
