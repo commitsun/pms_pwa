@@ -2073,6 +2073,17 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         }).then(function (new_data) {
                             self.displayDataAlert(new_data, data.id);
                         });
+
+                        var new_selector = $(
+                            "<td class='o_pms_pwa_button_pagar' data-id='" +
+                            data.id +
+                                "'>Pincha aqui</td>"
+                        );
+                        new_selector.appendTo("table.launch_modal");
+                        setTimeout(function () {
+                            $(new_selector).click();
+                            $(new_selector).remove();
+                        }, 100);
                     });
 
                     // Cargamos pagos

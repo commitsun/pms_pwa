@@ -1148,7 +1148,7 @@
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-message btn-block o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
+                                    <button t-att-data-id="reservation.id" type="button" class="btn btn-message btn-block o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
                                         <span>Pagar</span>
                                     </button>
                                 </div>
