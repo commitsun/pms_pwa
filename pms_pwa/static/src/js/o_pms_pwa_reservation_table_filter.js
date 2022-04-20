@@ -2045,6 +2045,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 reservation_id: reservation_id,
             }).then(function (data) {
                 if (data) {
+                    var folio_id = data.folio_id.id;
                     self.displayContent("pms_pwa.reservation_payment_modal", {
                         reservation: data,
                     });
@@ -2077,7 +2078,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     // Cargamos pagos
 
                     ajax.jsonRpc("/reservation/reservation_payments", "call", {
-                        folio_id: data.folio_id.id,
+                        folio_id: folio_id,
                     }).then(function (data) {
                         var html = "";
                         if (data.payment_lines.length > 0) {
@@ -2163,10 +2164,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                 }).then(function (result) {
                                     if (JSON.parse(result).result) {
                                         new_displayDataAlert(result);
-                                    } else {
-                                        $("#status").toggle();
-                                        $("#preloader").toggle();
-                                        window.location = window.location.href;
                                     }
                                 });
                             }
