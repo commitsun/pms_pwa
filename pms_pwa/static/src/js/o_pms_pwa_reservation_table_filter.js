@@ -2073,6 +2073,105 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             self.displayDataAlert(new_data, data.id);
                         });
                     });
+
+                    // Cargamos pagos
+
+                    ajax.jsonRpc("/reservation/reservation_payments", "call", {
+                        folio_id: data.folio_id.id,
+                    }).then(function (data) {
+                        var html = "";
+                        if (data.payment_lines.length > 0) {
+
+                            var lines = data.payment_lines;
+                            for (const i in lines) {
+                                var options = "";
+                                $.each(data.payment_methods, function (index, v) {
+                                    if (v.id === lines[i].journal_id.id) {
+                                        options +=
+                                            '<option selected="selected" value=' +
+                                            v.id +
+                                            ">" +
+                                            v.name +
+                                            "</option>";
+                                    } else {
+                                        options +=
+                                            "<option value=" + v.id + ">" + v.name + "</option>";
+                                    }
+                                });
+                                html +=
+
+                                    '<tr class="o_roomdoo_hide_show2" data-id=' +
+                                    lines[i].id +
+                                    ">" +
+                                    '<td class="o_pms_pwa_payment_edit"><i class="fa fa-edit" ></i></td>' +
+                                    '<td><select disabled="disabled" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">' +
+                                    options +
+                                    "</td>" +
+                                    '<td class="text-right">'+
+                                    '<script>'+
+                                        'var format = "dd/mm/yy";'+
+                                        '$( function() {'+
+                                            '$( "#paymentdate'+lines[i].id+'" ).datepicker({ dateFormat: format}).datepicker("setDate", "'+moment(lines[i].date).format("DD/MM/YYYY")+'");'+
+                                        '} );'+
+                                    '</script>'+
+                                    '<input disabled="disabled" id="paymentdate'+lines[i].id+'" type="text" name="date" class="datepicker"/></td>' +
+                                    '<td class="text-right"><input size="6" disabled="disabled" type="number" step="0.01" name="amount" value="' +
+                                    parseFloat(lines[i].amount).toFixed(2) +
+                                    '" /></td>' +
+                                    "</tr>";
+                            }
+                        } else {
+                            html = "<tr><td colspan='4'> No hay pagos registrados. </td></tr>";
+                        }
+                        var selector = "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                        $(selector).find("#payments_list").html(html);
+
+                        // Activar o desactivar edición
+
+                        $(selector).find("#payments_list").find("td.o_pms_pwa_payment_edit").on("click", function (ev) {
+                            var fa = $(ev.currentTarget).find(".fa");
+                            if (fa[0].classList.contains("fa-edit")) {
+                                $(ev.currentTarget)
+                                    .find(".fa-edit")
+                                    .removeClass("fa-edit")
+                                    .addClass("fa-floppy-o");
+                                $(ev.currentTarget).parent().find("select").prop("disabled", false);
+                                $(ev.currentTarget).parent().find("input").prop("disabled", false);
+                            } else if (fa[0].classList.contains("fa-floppy-o")) {
+                                $(ev.currentTarget)
+                                    .find(".fa-floppy-o")
+                                    .removeClass("fa-floppy-o")
+                                    .addClass("fa-edit");
+                                $(ev.currentTarget).parent().find("select").prop("disabled", true);
+                                $(ev.currentTarget).parent().find("input").prop("disabled", true);
+
+                                ajax.jsonRpc("/reservation/update_payment", "call", {
+                                    folio_id: folio_id,
+                                    id: $(ev.currentTarget).parent().attr("data-id"),
+                                    journal_id: $(ev.currentTarget)
+                                        .parent()
+                                        .find("select[name='payment_method'] option:selected")
+                                        .val(),
+                                    date: $(ev.currentTarget)
+                                        .parent()
+                                        .find('input[name="date"]')
+                                        .val(),
+                                    amount: $(ev.currentTarget)
+                                        .parent()
+                                        .find('input[name="amount"]')
+                                        .val(),
+                                }).then(function (result) {
+                                    if (JSON.parse(result).result) {
+                                        new_displayDataAlert(result);
+                                    } else {
+                                        $("#status").toggle();
+                                        $("#preloader").toggle();
+                                        window.location = window.location.href;
+                                    }
+                                });
+                            }
+                        });
+                    });
                 }
             });
         },

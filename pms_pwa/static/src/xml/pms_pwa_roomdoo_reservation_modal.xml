@@ -1059,7 +1059,28 @@
                             </div>
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
-                            <div class="o_pms_pwa_shadow">
+                            <div class="card bg-dark shadow">
+                                <div class="card-header o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        Listado de pagos
+                                    </h3>
+                                </div>
+                                <div class="card-body bg-dark">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="o_pms_pwa_theme_color"></th>
+                                                <th class="o_pms_pwa_theme_color">método de pago</th>
+                                                <th class="o_pms_pwa_theme_color text-right">fecha</th>
+                                                <th class="o_pms_pwa_theme_color text-right">importe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="payments_list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="o_pms_pwa_shadow mt-4">
                                 <div class="row">
                                     <div class="col-3 align-self-center">
                                         <img t-att-src="'/web/image/pms.reservation/'+reservation.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
