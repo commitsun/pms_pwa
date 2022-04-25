@@ -49,12 +49,12 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                 if (input.data("edit") === true) {
                     var input_array = {};
                     // Value['pricelist_id'].push(input.data('pricelist'));
-
-                    if(input.val() == 'on'){
-                        input.val(1);
-                    }
-                    if(input.val() == 'off'){
-                        input.val(0);
+                    if(input.is(':checkbox')){
+                        if(input.is(':checked')){
+                            input.val(1);
+                        }else{
+                            input.val(0);
+                        }
                     }
                     input_array[input.attr("name")] = input.val();
                     var price = input.data("pricelist");
@@ -79,8 +79,6 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                             "/" +
                             current_datetime.getFullYear();
                     }
-                    // console.log(formatted_date);
-                    // Console.log("price ", price);
                     if (!room_type[room]) {
                         room_type[room] = {};
                     }
@@ -108,7 +106,7 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     }
                 }
             });
-            console.log("send --> ", send);
+            // console.log("send --> ", send);
             ajax.jsonRpc("/calendar/config/save", "call", {
                 send
             }).then(function (new_data) {
@@ -119,9 +117,6 @@ odoo.define("pms_pwa.calendar_config", function (require) {
                     let property = $("input[name='selected_property']").val();
                     let parameters = "?selected_property="+property;
                     window.location = "/calendar/reduced" + parameters;
-                    // $("#o_pms_pwa_table_reduced").load(
-                    //     "/calendar/reduced" + parameters + " #o_pms_pwa_table_reduced>*"
-                    // );
                     var element = document.getElementById("save");
                     element.classList.add("d-none");
                     $("#preloader").fadeOut(2500);
@@ -133,12 +128,13 @@ odoo.define("pms_pwa.calendar_config", function (require) {
         },
     });
 
-    $("#calendar_config_table").on("change", "input[type='text']", function () {
-        this.style.backgroundColor = "yellow";
-        var element = document.getElementById("save");
-        $(this).data("edit", true);
-        element.classList.remove("d-none");
-    });
+    // $("#calendar_config_table").on("change", "input[type='text']", function () {
+    //     this.style.backgroundColor = "yellow";
+    //     var element = document.getElementById("save");
+    //     $(this).data("edit", true);
+    //     console.log("this -->", $(this))
+    //     element.classList.remove("d-none");
+    // });
 
     // $(".o_pms_pwa_open_collapse").on("click", function () {
     //     $(".o_pms_pwa_hiddenRow").addClass("show");

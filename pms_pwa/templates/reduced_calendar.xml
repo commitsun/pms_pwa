@@ -912,7 +912,7 @@
                                                                                 t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
                                                                                 t-attf-data-pms_property_id="{{ pms_property_id }}"
                                                                                 t-attf-tabindex="{{ select_pricelist_id }}6{{room_day.strftime('%Y-%m-%d')}}"
-                                                                                data-edit="true"
+                                                                                data-edit="false"
                                                                                 name="closed"
                                                                                 type="checkbox"
                                                                                 checked="true"/>
@@ -942,7 +942,7 @@
                                                                                 t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
                                                                                 t-attf-data-pms_property_id="{{ pms_property_id }}"
                                                                                 t-attf-tabindex="{{ select_pricelist_id }}7{{room_day.strftime('%Y-%m-%d')}}"
-                                                                                data-edit="true"
+                                                                                data-edit="false"
                                                                                 name="closed_arrival"
                                                                                 type="checkbox"
                                                                                 checked="true"/>
@@ -972,7 +972,7 @@
                                                                                 t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
                                                                                 t-attf-data-pms_property_id="{{ pms_property_id }}"
                                                                                 t-attf-tabindex="{{ select_pricelist_id }}8{{room_day.strftime('%Y-%m-%d')}}"
-                                                                                data-edit="true"
+                                                                                data-edit="false"
                                                                                 name="closed_departure"
                                                                                 type="checkbox"
                                                                                 checked="true"/>
