@@ -1058,11 +1058,11 @@ class PmsReservation(http.Controller):
                 for day in days_week:
                     if params.get("days_week").get(day):
                         days_week[day] = True
-            if params.get("new_price"):
+            if params.get("new_price") and params.get("new_price") != "false":
                 new_price = float(params["new_price"])
-            if params.get("new_discount"):
+            if params.get("new_discount") and params.get("new_discount") != "false":
                 new_discount = float(params["new_discount"])
-            if params.get("new_board_service_id"):
+            if params.get("new_board_service_id") and params.get("new_board_service_id") != "false":
                 new_board_service_id = int(params["new_board_service_id"])
             wizard_changes = request.env["wizard.folio.changes"].create(
                 {
