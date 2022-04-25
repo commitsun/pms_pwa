@@ -266,7 +266,7 @@ class FolioInvoice(http.Controller):
             partner = request.env["res.partner"].browse(partner_vals["id"])
             partner_type = partner.company_type
         if partner_vals and partner_vals.get("vat"):
-            partner = request.env["res.partner"].search([("vat", "=", partner_vals.get("vat"))])
+            partner = request.env["res.partner"].search([("vat", "=", partner_vals.get("vat"))], limit=1)
             partner_type = partner.company_type
         if partner and partner.is_agency:
             partner_type = "agency"
