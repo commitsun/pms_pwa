@@ -381,6 +381,16 @@ class PmsCalendar(http.Controller):
                         'closed_departure': vals[10],
                         'closed_arrival': vals[11],
                     }
+                    count_restrictions = 0
+                    for key, value in dict_result[s_rule_date][room_type_id].items():
+                        if key == "closed" and value > 0:
+                            count_restrictions = 0
+                            break
+                        elif key in ('min_stay', 'min_stay_arrival', 'max_stay', 'max_stay_arrival') and value > 0:
+                            count_restrictions += 1
+                        elif key in ('closed_departure', 'closed_arrival') and value > 0:
+                            count_restrictions += 1
+                    dict_result[s_rule_date][room_type_id]['count_restrictions'] = count_restrictions
                 # complete estructure to avoid room types
                 for room_type in room_types:
                     if room_type.id not in dict_result[s_rule_date]:
@@ -395,6 +405,7 @@ class PmsCalendar(http.Controller):
                             'max_stay_arrival': 0,
                             'closed_departure': 0,
                             'closed_arrival': 0,
+                            'count_restrictions': 0,
                         }
         # complete estructure to avoid dates
         for date in dates:
@@ -413,6 +424,7 @@ class PmsCalendar(http.Controller):
                         'max_stay_arrival': 0,
                         'closed_departure': 0,
                         'closed_arrival': 0,
+                        'count_restrictions': 0,
                     }
         return dict_result
 

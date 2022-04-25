@@ -739,7 +739,7 @@
                                                 <t t-set="availability_room" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['num_avail']" />
                                                 <t t-set="rooms_occupied_reservations" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['reservations_count']"></t>
                                                 <t t-set="rooms_occupied_out_service" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['outs_count']"></t>
-
+                                                <t t-set="count_restrictions" t-value="rule_headers[day.strftime('%Y-%m-%d')][room['id']]['count_restrictions']"></t>
                                                 <t t-set="availability_room_percent" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['avail_percent']" />
                                                 <t t-set="rooms_occupied_reservations_percent" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['reservations_percent']"></t>
                                                 <t t-set="rooms_occupied_out_service_percent" t-value="general_headers[day.strftime('%Y-%m-%d')][room['id']]['outs_percent']"></t>
@@ -773,11 +773,11 @@
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="A la venta">
-                                                            <!-- <p class="o_pms_pwa_title" style="text-align: center !important; margin-bottom: 0px !important;font-size:14px">
-                                                                <t t-esc="availability_room" />
-                                                                Libres
-                                                            </p> -->
+                                                        <div class="col-6 m-0 pt-1 p-0 row align-items-center justify-content-center" title="Restricciones">
+                                                            <div t-if="rule_headers[day.strftime('%Y-%m-%d')][room['id']]['closed']" class="circle" style="background-color: black; color: black;"/>
+                                                            <div t-if="count_restrictions > 0" class="circle" style="color: rgb(252, 123, 147);">
+                                                                + <t t-esc="count_restrictions" />
+                                                            </div>
                                                         </div>
                                                         <div class="col-3 m-0 pt-1 p-0 row align-items-center justify-content-center" title="A la venta">
                                                             <t t-if="sale_avail != -1">
@@ -822,6 +822,21 @@
                                                             <p style="text-align:end; height:28px;">
                                                                 <span style="min-width:80px !important;">Est. Mín</span>
                                                             </p>
+                                                            <p style="text-align:end; height:28px;">
+                                                                <span style="min-width:80px !important;">Max. Dispo</span>
+                                                            </p>
+                                                            <p style="text-align:end; height:28px;">
+                                                                <span style="min-width:80px !important;">Mín. Estancia Lleg.</span>
+                                                            </p>
+                                                            <p style="text-align:end; height:28px;">
+                                                                <span style="min-width:80px !important;">Cerrada</span>
+                                                            </p>
+                                                            <p style="text-align:end; height:28px;">
+                                                                <span style="min-width:80px !important;">Cerrar Llegadas</span>
+                                                            </p>
+                                                            <p style="text-align:end; height:28px;">
+                                                                <span style="min-width:80px !important;">Cerrar Salidas</span>
+                                                            </p>
                                                         </td>
 
                                                         <t t-foreach="date_list" t-as="room_day">
@@ -850,11 +865,41 @@
                                                                           t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
                                                                           t-attf-data-pms_property_id="{{ pms_property_id }}"
                                                                           data-edit="false"
-                                                                          t-attf-tabindex="{{ select_pricelist_id }}2{{room_day.strftime('%Y-%m-%d')}}"
+                                                                          t-attf-tabindex="{{ select_pricelist_id }}3{{room_day.strftime('%Y-%m-%d')}}"
                                                                           style="width:50px;"
                                                                           type="text"
                                                                           t-attf-value="{{ rule_headers[room_day.strftime('%Y-%m-%d')][room['id']]['min_stay'] }}"
                                                                           name="min_stay"
+                                                                    />
+                                                                </p>
+                                                                <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
+                                                                    <input
+                                                                          t-attf-data-room="{{ room['id'] }}"
+                                                                          t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                          t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                          t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                          t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                          data-edit="false"
+                                                                          t-attf-tabindex="{{ select_pricelist_id }}4{{room_day.strftime('%Y-%m-%d')}}"
+                                                                          style="width:50px;"
+                                                                          type="text"
+                                                                          t-attf-value="{{ rule_headers[room_day.strftime('%Y-%m-%d')][room['id']]['max_avail'] }}"
+                                                                          name="max_avail"
+                                                                    />
+                                                                </p>
+                                                                <p class="calendar_config_input" style="text-align:center;margin-right: 0.25rem;">
+                                                                    <input
+                                                                          t-attf-data-room="{{ room['id'] }}"
+                                                                          t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                          t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                          t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                          t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                          data-edit="false"
+                                                                          t-attf-tabindex="{{ select_pricelist_id }}5{{room_day.strftime('%Y-%m-%d')}}"
+                                                                          style="width:50px;"
+                                                                          type="text"
+                                                                          t-attf-value="{{ rule_headers[room_day.strftime('%Y-%m-%d')][room['id']]['min_stay_arrival'] }}"
+                                                                          name="min_stay_arrival"
                                                                     />
                                                                 </p>
                                                                 <p class="calendar_config_input" style="text-align:center;">
@@ -866,6 +911,7 @@
                                                                                 t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                                 t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
                                                                                 t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                t-attf-tabindex="{{ select_pricelist_id }}6{{room_day.strftime('%Y-%m-%d')}}"
                                                                                 data-edit="true"
                                                                                 name="closed"
                                                                                 type="checkbox"
@@ -878,8 +924,69 @@
                                                                                 t-attf-data-availability_plan="{{ select_availability_plan_id }}"
                                                                                 t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
                                                                                 t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                t-attf-tabindex="{{ select_pricelist_id }}6{{room_day.strftime('%Y-%m-%d')}}"
                                                                                 data-edit="false"
                                                                                 name="closed"
+                                                                                type="checkbox"/>
+                                                                        </t>
+                                                                        <span class="slider round"></span>
+                                                                    </label>
+                                                                </p>
+                                                                <p class="calendar_config_input" style="text-align:center;">
+                                                                    <label class="switch">
+                                                                        <t t-if="rule_headers[room_day.strftime('%Y-%m-%d')][room['id']]['closed_arrival']">
+                                                                            <input
+                                                                                t-attf-data-room="{{ room['id'] }}"
+                                                                                t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                                t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                                t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                                t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                t-attf-tabindex="{{ select_pricelist_id }}7{{room_day.strftime('%Y-%m-%d')}}"
+                                                                                data-edit="true"
+                                                                                name="closed_arrival"
+                                                                                type="checkbox"
+                                                                                checked="true"/>
+                                                                        </t>
+                                                                        <t t-else="">
+                                                                            <input
+                                                                                t-attf-data-room="{{ room['id'] }}"
+                                                                                t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                                t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                                t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                                t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                t-attf-tabindex="{{ select_pricelist_id }}7{{room_day.strftime('%Y-%m-%d')}}"
+                                                                                data-edit="false"
+                                                                                name="closed_arrival"
+                                                                                type="checkbox"/>
+                                                                        </t>
+                                                                        <span class="slider round"></span>
+                                                                    </label>
+                                                                </p>
+                                                                <p class="calendar_config_input" style="text-align:center;">
+                                                                    <label class="switch">
+                                                                        <t t-if="rule_headers[room_day.strftime('%Y-%m-%d')][room['id']]['closed_departure']">
+                                                                            <input
+                                                                                t-attf-data-room="{{ room['id'] }}"
+                                                                                t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                                t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                                t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                                t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                t-attf-tabindex="{{ select_pricelist_id }}8{{room_day.strftime('%Y-%m-%d')}}"
+                                                                                data-edit="true"
+                                                                                name="closed_departure"
+                                                                                type="checkbox"
+                                                                                checked="true"/>
+                                                                        </t>
+                                                                        <t t-else="">
+                                                                            <input
+                                                                                t-attf-data-room="{{ room['id'] }}"
+                                                                                t-attf-data-pricelist="{{ select_pricelist_id }}"
+                                                                                t-attf-data-availability_plan="{{ select_availability_plan_id }}"
+                                                                                t-attf-data-date="{{ room_day.strftime('%Y-%m-%d') }}"
+                                                                                t-attf-data-pms_property_id="{{ pms_property_id }}"
+                                                                                t-attf-tabindex="{{ select_pricelist_id }}8{room_day.strftime('%Y-%m-%d')}}"
+                                                                                data-edit="false"
+                                                                                name="closed_departure"
                                                                                 type="checkbox"/>
                                                                         </t>
                                                                         <span class="slider round"></span>
