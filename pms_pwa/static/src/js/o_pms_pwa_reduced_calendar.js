@@ -936,7 +936,6 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
         element.classList.remove("d-none");
     });
     $("#reduced_calendar_table").on("change", "input[type='checkbox']", function () {
-        this.style.backgroundColor = "yellow";
         var element = document.getElementById("save");
         $(this).data("edit", true);
         element.classList.remove("d-none");
