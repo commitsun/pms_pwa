@@ -67,6 +67,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click .o_pms_pwa_button_pagar": "_onClickPaymentButton",
             "click .o_pms_pwa_button_refund": "_onClickRefundButton",
             "click .o_pms_pwa_button_new_reservation": "_onClickNewReservation",
+            "click .o_pms_pwa_button_chat": "_onClickOpenChat",
         },
         /**
          * @override
@@ -190,7 +191,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     new payment_form(this)._onClickOpenPaymentForm(event);
                 }
             );
-
             $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_cancelar").on(
                 "click",
                 function (event) {
@@ -204,6 +204,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 function (event) {
                     event.preventDefault();
                     self._onClickNewReservation(event);
+                }
+            );
+            // llamar al chat
+            $("div.o_pms_pwa_modal_buttons button.o_pms_pwa_button_chat").on(
+                "click",
+                function (event) {
+                    event.preventDefault();
+                    self._onClickOpenChat(event);
                 }
             );
         },
@@ -452,6 +460,32 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     $(new_selector).remove();
                 }, 100);
             } catch (error) {
+                console.log(error);
+            }
+        },
+        /* Abrir modal del chat */
+        _onClickOpenChat: function (event) {
+            // abrir modal: modalChat
+            var self = this;
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            try {
+                var reservation_id = event.currentTarget.getAttribute("data-id");
+                let url = event.currentTarget.getAttribute("url");
+                ajax.jsonRpc(url, "call", {
+                    reservation_id: reservation_id,
+                }).then(function (messages) {
+
+                    $("div.o_pms_pwa_reservation_modal").modal("toggle");
+                    var modal_html = core.qweb.render("pms_pwa.roomdoo_chat_modal", {
+                        messages: messages,
+                        reservation: reservation_id,
+                    });
+                    $("div.o_pms_pwa_modal_chat").html(modal_html);
+                    $("div.o_pms_pwa_modal_chat").modal()
+                });
+            } catch (error) {
+
                 console.log(error);
             }
         },

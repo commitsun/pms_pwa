@@ -66,6 +66,11 @@
                 type="text/scss"
                 href="/pms_pwa/static/src/scss/o_pms_pwa_responsive_table.scss"
             />
+            <link
+                rel="stylesheet"
+                type="text/scss"
+                href="/pms_pwa/static/src/scss/o_pms_pwa_chat.scss"
+            />
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/o_pms_pwa_preloader.scss"/>
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/bs-stepper.min.css"/>
             <link rel="stylesheet" href="/pms_pwa/static/src/scss/vendor/daterangepicker.css"/>
