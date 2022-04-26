@@ -320,6 +320,7 @@ div.o_pms_pwa_reservation_modal,
 div.o_pms_pwa_filters_modal,
 div.o_pms_pwa_partner_modal,
 div.o_pms_pwa_new_reservation_modal,
+div.o_pms_pwa_modal_chat,
 div.o_pms_pwa_cash_modal {
     &.modal.o_pms_pwa_right .modal-dialog {
         position: fixed;
@@ -401,6 +402,7 @@ div.o_pms_pwa_cash_modal {
 }
 
 div.o_pms_pwa_reservation_modal,
+div.o_pms_pwa_modal_chat,
 div.o_pms_pwa_cash_modal {
     div.modal-header.o_pms_pwa_modal_header {
         display: block;
