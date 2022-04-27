@@ -129,7 +129,8 @@
                                                 Tipo de documento
                                             </label>
                                             <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="document_type">
-                                                <t t-if="partner and partner.document_type.id">
+                                                <t t-if="partner and partner.document_type and partner.document_type.id">
+
                                                     <option t-foreach="partner.allowed_document_types" t-as="document" t-att-value="document_value['id']" t-att-selected="partner.document_type.id === document_value['id'] ? 'selected' : None">
                                                         <t t-esc="document_value['name']" />
                                                     </option>
