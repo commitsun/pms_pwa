@@ -69,7 +69,6 @@ odoo.define("pms_pwa.partner_form", function (require) {
             /* RPC call to get the reservation data */
             ajax.jsonRpc("/new_partner", "call", {
             }).then(function (partner_data) {
-                console.log(partner_data);
                 setTimeout(function () {
                     if (partner_data) {
                         $("div.o_pms_pwa_reservation_modal").modal("toggle");
