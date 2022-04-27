@@ -100,7 +100,7 @@ class FolioMessages(http.Controller):
             )
             if reservation:
                 folio = request.env["pms.folio"].browse(reservation.folio_id.id)
-                mail_type = kw.get("mail_type") # confirmation, modification, cancelation
+                mail_type = kw.get("mail_type")  # confirmation, modification, cancelation
                 # partner_to = kw.get("partner_to")
                 # if partner_to:
                 #     email_to = partner_to.email

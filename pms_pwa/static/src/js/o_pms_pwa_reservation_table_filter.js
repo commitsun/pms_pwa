@@ -475,7 +475,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 ajax.jsonRpc(url, "call", {
                     reservation_id: reservation_id,
                 }).then(function (messages) {
-
                     $("div.o_pms_pwa_reservation_modal").modal("toggle");
                     var modal_html = core.qweb.render("pms_pwa.roomdoo_chat_modal", {
                         messages: messages,
@@ -483,6 +482,28 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     });
                     $("div.o_pms_pwa_modal_chat").html(modal_html);
                     $("div.o_pms_pwa_modal_chat").modal()
+                    $(".o_pms_pwa_sendEmail").on("click", function (e) {
+                        var email_to = e.currentTarget.getAttribute("data-email");
+                        var email_type = e.currentTarget.getAttribute("data-type");
+                        let email_modal = $("div#roomdooSendEmail");
+                        email_modal.find("input[name='email_to']").val(email_to);
+                        email_modal.find("input[name='email_type']").val(email_type);
+                        email_modal.find("input[name='reservation_id']").val(reservation_id);
+                    });
+                    $(".sendModalEmail").on("click", function (e) {
+                        let email_modal = $("div#roomdooSendEmail");
+
+                        let send_url = "/reservation/"+reservation_id+"/template_mail"
+                        ajax.jsonRpc(send_url, "call", {
+                            reservation_id: reservation_id,
+                            email_to: email_modal.find("input[name='email_to']").val(),
+                            mail_type: email_modal.find("input[name='email_type']").val(),
+                        }).then(function (data) {
+                            self.displayDataAlert(data);
+                            email_modal.modal("toggle");
+                        });
+                    });
+
                 });
             } catch (error) {
 

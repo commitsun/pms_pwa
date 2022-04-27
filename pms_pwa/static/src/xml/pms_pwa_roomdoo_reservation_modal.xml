@@ -61,36 +61,44 @@
                                     </div>
                                 </div>
                                 <div class="publisher bt-1 border-light">
+                                    <h6>Enviar email:</h6>
                                     <t t-if="messages.message_folios.allowed_cancellation_mail">
                                         <button
-                                            class="btn btn-secondary o_pms_pwa_button_chat"
+                                            class="btn btn-secondary o_pms_pwa_sendEmail"
                                             style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
                                             type="button"
                                             t-attf-data-id="{{ reservation }}"
-                                            t-attf-default-email="{{ default_email_to }}"
+                                            t-attf-data-email="{{ messages.default_email_to }}"
                                             t-attf-url="/reservation/{{ reservation }}/template_mail"
+                                            data-type="cancellation"
+                                            data-toggle="modal" data-target="#roomdooSendEmail"
                                         > Cancelación</button>
                                     </t>
                                     <t t-if="messages.message_folios.allowed_confirmation_mail">
                                         <button
-                                            class="btn btn-secondary o_pms_pwa_button_chat"
+                                            class="btn btn-secondary o_pms_pwa_sendEmail"
                                             style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
                                             type="button"
                                             t-attf-data-id="{{ reservation }}"
-                                            t-attf-default-email="{{ default_email_to }}"
+                                            t-attf-data-email="{{ messages.default_email_to }}"
                                             t-attf-url="/reservation/{{ reservation }}/template_mail"
+                                            data-type="confirmation"
+                                            data-toggle="modal" data-target="#roomdooSendEmail"
                                         > Confirmación</button>
                                     </t>
                                     <t t-if="messages.message_folios.allowed_departure_mail">
                                         <button
-                                            class="btn btn-secondary o_pms_pwa_button_chat"
+                                            class="btn btn-secondary o_pms_pwa_sendEmail"
                                             style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
                                             type="button"
                                             t-attf-data-id="{{ reservation }}"
-                                            t-attf-default-email="{{ default_email_to }}"
+                                            t-attf-data-email="{{ messages.default_email_to }}"
                                             t-attf-url="/reservation/{{ reservation }}/template_mail"
+                                            data-type="modification"
+                                            data-toggle="modal" data-target="#roomdooSendEmail"
                                         > Salida</button>
                                     </t>
+
                                     <!-- <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="..." />
                                     <input class="publisher-input" type="text" placeholder="Write something" />
                                     <a class="publisher-btn text-info" href="#" data-abc="true"><i class="fa fa-paper-plane"></i></a> -->
@@ -98,6 +106,39 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="modal fade" id="roomdooSendEmail" tabindex="-1" role="dialog" aria-labelledby="roomdoosendEmail" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="roomdoosendEmail">Enviar email</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="control-label" for="Email">
+                                    Email
+                                </label>
+                                <input class="form-control" type="text" name="email_to" />
+                                <input type="hidden" name="reservation_id" />
+                                <input type="hidden" name="email_type" />
+                            </div>
+                            <!-- <div class="col-5">
+                                <label class="control-label col-12" for="Precio">
+                                    Descuento
+                                </label>
+                                <input class="form-control" type="number" name="new_discount"></input>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary sendModalEmail">Enviar</button>
+                    </div>
+                  </div>
                 </div>
             </div>
             <!-- Modal -->
