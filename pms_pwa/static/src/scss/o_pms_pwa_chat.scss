@@ -137,7 +137,7 @@
         background-color: #f5f6f7;
         border-radius: 3px;
         font-weight: 100;
-        color: #9b9b9b
+        color: #2c2929
     }
 
     .media>* {
@@ -150,13 +150,14 @@
         opacity: .8
     }
     .media-chat-reverse .media-body p.meta {
-        color: #8b95a5 !important;
+        background-color: white !important;
+        color: black !important;
     }
     .media-chat .media-body p.o_pms_pwa_author,
     .media-chat-reverse .media-body p.o_pms_pwa_author {
-        color: black !important;
-        background-color: white !important;
+        color: #404246 !important;
         font-size: 12px;
+        background-color: white;
     }
 
     .media-meta-day {

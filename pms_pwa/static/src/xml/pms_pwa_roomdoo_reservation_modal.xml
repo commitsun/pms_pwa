@@ -36,16 +36,16 @@
                                     <t t-if="messages.message_folios.messages_list">
                                         <t t-foreach="messages.message_folios.messages_list" t-as="message">
                                             <div class="media media-chat">
-                                                <img class="avatar" t-attf-src="data:image/png;base64,{{message.avatar}}" t-attf-alt="{{message.author}}" />
+                                                <img class="avatar" t-attf-src="/web/image/res.partner/{{message.avatar}}/image_128" t-attf-alt="{{message.author}}" />
                                                 <div class="media-body">
-                                                    <p class="o_pms_pwa_author"><t t-esc="message.author"></t></p>
+                                                    <p class="o_pms_pwa_author"><t t-esc="message.author"></t><br/><time t-attf-datetime="{{message.date}}"><t t-esc="message.date" /></time></p>
                                                     <t t-if="message.message_type == 'email'">
                                                         <p><t t-esc="message.subject" /></p>
                                                     </t>
                                                     <t t-else="">
                                                         <t t-raw="message.message" />
                                                     </t>
-                                                    <p class="meta"><time t-attf-datetime="{{message.date}}"><t t-esc="message.date" /></time></p>
+                                                    <p class="meta"></p>
                                                 </div>
                                             </div>
                                         </t>
