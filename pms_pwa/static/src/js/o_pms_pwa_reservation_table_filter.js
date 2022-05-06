@@ -2174,7 +2174,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         .val(),
                                 }).then(function (result) {
                                     if (JSON.parse(result).result) {
-                                        new_displayDataAlert(result);
+                                        self.displayDataAlert(result);
                                     }
                                 });
                             }

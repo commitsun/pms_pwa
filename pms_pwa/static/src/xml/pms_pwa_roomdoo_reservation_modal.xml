@@ -1070,9 +1070,9 @@
                                         <thead>
                                             <tr>
                                                 <th class="o_pms_pwa_theme_color"></th>
-                                                <th class="o_pms_pwa_theme_color">método de pago</th>
-                                                <th class="o_pms_pwa_theme_color text-right">fecha</th>
-                                                <th class="o_pms_pwa_theme_color text-right">importe</th>
+                                                <th class="o_pms_pwa_theme_color">Método de pago</th>
+                                                <th class="o_pms_pwa_theme_color text-right">Fecha</th>
+                                                <th class="o_pms_pwa_theme_color text-right">Importe</th>
                                             </tr>
                                         </thead>
                                         <tbody id="payments_list"></tbody>
