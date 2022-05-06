@@ -482,6 +482,15 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     });
                     $("div.o_pms_pwa_modal_chat").html(modal_html);
                     $("div.o_pms_pwa_modal_chat").modal()
+                    $("div.o_pms_pwa_modal_chat .o_pms_pwa_return").on("click", function (e) {
+                        event.preventDefault();
+                        let reservation_id = event.target.getAttribute("data-id");
+                        $("div.o_pms_pwa_modal_chat").modal('hide');
+                        var new_selector = $('<td class="launch_modal" data-id="'+reservation_id+'">Pincha aqui</td>');
+                        new_selector.appendTo("table.launch_modal");
+                        $(new_selector).click();
+                        $(new_selector).remove();
+                    });
                     $(".o_pms_pwa_sendEmail").on("click", function (e) {
                         var email_to = e.currentTarget.getAttribute("data-email");
                         var email_type = e.currentTarget.getAttribute("data-type");
