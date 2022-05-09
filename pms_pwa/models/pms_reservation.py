@@ -214,7 +214,7 @@ class PmsReservation(models.Model):
                         )
                     zip_code = False
                     if "zip" in guest.keys() and guest.get("zip") != '' and guest.get("zip") != "False":
-                        guest["residence_zip"] = int(guest["zip"])
+                        guest["residence_zip"] = str(guest["zip"])
                         zip_code = self.env["res.city.zip"].search([
                             ("name", "=", guest["residence_zip"]),
                         ], limit=1)
