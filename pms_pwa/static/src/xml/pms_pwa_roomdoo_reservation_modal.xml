@@ -1133,10 +1133,10 @@
                                             </span>
                                         </div>
                                         <div class="col-sm-12 mt-2">
-                                            <label class="control-label col-12" for="amount">
+                                            <label class="control-label col-12" for="payment_amount">
                                                 Importe
                                             </label>
-                                            <input class="form-control" type="number" min="0" step="any" name="amount" t-att-value="reservation.folio_pending_amount" />
+                                            <input class="form-control" type="number" min="0" step="any" name="payment_amount" t-att-value="reservation.folio_pending_amount" />
                                         </div>
                                     </div>
                                 </div>

@@ -2041,6 +2041,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 }
             }
 
+
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (data) {
@@ -2061,12 +2062,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .find("select[name='payment_method'] option")
                             .filter(":selected")
                             .val();
-                        var payment_amount = div.find("input[name='amount']").val();
+                        var payment_amount = div.find("input[name='payment_amount']").val();
+                        console.log("payment_amount => ", payment_amount);
                         var payment_date = div.find("input[name='date']").val();
                         if(!payment_date){
                             payment_date = moment().format('DD/MM/YYYY');
                         }
-                        ajax.jsonRpc(button.attributes.url.value, "call", {
+                        ajax.jsonRpc("/reservation/"+reservation_id+"/payment", "call", {
                             payment_method: payment_method,
                             amount: payment_amount,
                             date: payment_date,
