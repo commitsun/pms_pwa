@@ -2063,7 +2063,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .filter(":selected")
                             .val();
                         var payment_amount = div.find("input[name='payment_amount']").val();
-                        console.log("payment_amount => ", payment_amount);
                         var payment_date = div.find("input[name='date']").val();
                         if(!payment_date){
                             payment_date = moment().format('DD/MM/YYYY');
