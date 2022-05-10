@@ -1013,3 +1013,22 @@ i.o_pms_pwa_remove_alert {
 div.pms_pwa_roomdoo_payment_form th.o_pms_pwa_theme_color {
     border-top: unset;
 }
+
+tbody#payments_list {
+    input {
+        min-height: unset;
+        padding-top: unset;
+        &:disabled {
+            color: black;
+            font-weight: 500;
+        }
+    }
+    select {
+        min-height: unset;
+        padding-top: unset;
+        height: unset;
+    }
+    .datepicker {
+        max-width: 95px;;
+    }
+}

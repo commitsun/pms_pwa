@@ -366,7 +366,7 @@ odoo.define("pms_pwa.reservation_detail", function (require) {
                     $.each(data.payment_methods, function (index, v) {
                         if (v.id === lines[i].journal_id.id) {
                             options +=
-                                '<option selected="selected" value=' +
+                                "<option selected='selected' value=" +
                                 v.id +
                                 ">" +
                                 v.name +

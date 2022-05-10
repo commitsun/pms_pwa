@@ -1,9 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="pms_pwa" xml:space="preserve">
-    <t t-name="pms_pwa.roomdoo_reservation_modal">
+    <t t-name="pms_pwa.roomdoo_chat_modal">
         <!-- Modal -->
         <t t-if="reservation">
+            <!-- Modal chat -->
+            <div class="modal o_pms_pwa_right fade o_pms_pwa_modal_chat" id="modalChat" tabindex="-1" role="dialog" aria-labelledby="modalChatLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header o_pms_pwa_modal_header">
+                            <div class="col-12">
+                                <div class="row o_pms_pwa_modal_header_pad">
+                                    <a class="mr-4 o_pms_pwa_return" t-attf-data-id="{{reservation}}" href="#"><i class="fa fa-arrow-left"></i> Volver</a>
+                                    <h4 class="modal-title">
+                                        Mensajes
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-body o_pms_pwa_modal_body">
+
+                            <div class="card card-bordered">
+
+                                <div class="ps-container ps-theme-default ps-active-y" id="chat-content" style="overflow-y: scroll !important; height:75vh !important;">
+                                    <t t-if="messages.message_folios.messages_list">
+                                        <t t-foreach="messages.message_folios.messages_list" t-as="message">
+                                            <div class="media media-chat">
+                                                <img class="avatar" t-attf-src="/web/image/res.partner/{{message.avatar}}/image_128" t-attf-alt="{{message.author}}" />
+                                                <div class="media-body">
+                                                    <p class="o_pms_pwa_author"><t t-esc="message.author"></t><br/><time t-attf-datetime="{{message.date}}"><t t-esc="message.date" /></time></p>
+                                                    <t t-if="message.message_type == 'email'">
+                                                        <p><t t-esc="message.subject" /></p>
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t t-raw="message.message" />
+                                                    </t>
+                                                    <p class="meta"></p>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </t>
+                                    <t t-else="">
+                                        <h5>No hay mensajes</h5>
+                                    </t>
+                                    <div class="ps-scrollbar-x-rail" style="left: 0px; bottom: 0px;">
+                                        <div class="ps-scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                                    </div>
+                                    <div class="ps-scrollbar-y-rail" style="top: 0px; height: 0px; right: 2px;">
+                                        <div class="ps-scrollbar-y" tabindex="0" style="top: 0px; height: 2px;"></div>
+                                    </div>
+                                </div>
+                                <div class="publisher bt-1 border-light">
+                                    <h6>Enviar email:</h6>
+                                    <t t-if="messages.message_folios.allowed_cancellation_mail">
+                                        <button
+                                            class="btn btn-secondary o_pms_pwa_sendEmail"
+                                            style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                            type="button"
+                                            t-attf-data-id="{{ reservation }}"
+                                            t-attf-data-email="{{ messages.default_email_to }}"
+                                            t-attf-url="/reservation/{{ reservation }}/template_mail"
+                                            data-type="cancellation"
+                                            data-toggle="modal" data-target="#roomdooSendEmail"
+                                        > Cancelación</button>
+                                    </t>
+                                    <t t-if="messages.message_folios.allowed_confirmation_mail">
+                                        <button
+                                            class="btn btn-secondary o_pms_pwa_sendEmail"
+                                            style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                            type="button"
+                                            t-attf-data-id="{{ reservation }}"
+                                            t-attf-data-email="{{ messages.default_email_to }}"
+                                            t-attf-url="/reservation/{{ reservation }}/template_mail"
+                                            data-type="confirmation"
+                                            data-toggle="modal" data-target="#roomdooSendEmail"
+                                        > Confirmación</button>
+                                    </t>
+                                    <t t-if="messages.message_folios.allowed_departure_mail">
+                                        <button
+                                            class="btn btn-secondary o_pms_pwa_sendEmail"
+                                            style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                            type="button"
+                                            t-attf-data-id="{{ reservation }}"
+                                            t-attf-data-email="{{ messages.default_email_to }}"
+                                            t-attf-url="/reservation/{{ reservation }}/template_mail"
+                                            data-type="modification"
+                                            data-toggle="modal" data-target="#roomdooSendEmail"
+                                        > Salida</button>
+                                    </t>
+
+                                    <!-- <img class="avatar avatar-xs" src="https://img.icons8.com/color/36/000000/administrator-male.png" alt="..." />
+                                    <input class="publisher-input" type="text" placeholder="Write something" />
+                                    <a class="publisher-btn text-info" href="#" data-abc="true"><i class="fa fa-paper-plane"></i></a> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="roomdooSendEmail" tabindex="-1" role="dialog" aria-labelledby="roomdoosendEmail" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="roomdoosendEmail">Enviar email</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">x</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="control-label" for="Email">
+                                    Email
+                                </label>
+                                <input class="form-control" type="text" name="email_to" />
+                                <input type="hidden" name="reservation_id" />
+                                <input type="hidden" name="email_type" />
+                            </div>
+                            <!-- <div class="col-5">
+                                <label class="control-label col-12" for="Precio">
+                                    Descuento
+                                </label>
+                                <input class="form-control" type="number" name="new_discount"></input>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary sendModalEmail">Enviar</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
             <!-- Modal -->
+        </t>
+    </t>
+    <t t-name="pms_pwa.roomdoo_reservation_modal">
+                <!-- Modal -->
+        <t t-if="reservation">
             <div class="modal fade" id="multiChangeModal" tabindex="-2" role="dialog" aria-labelledby="multiChangeModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -282,26 +414,46 @@
                                     t-attf-data-id="{{ reservation.id }}"
                                     t-attf-url="/reservation/{{ reservation.id }}/payment"
                                 >
-                                    Cobrar
+                                    Cobros
                                 </button>
-                                <a
+                                <button
+                                    class="col-3 btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_facturar"
+                                    style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                    type="button"
+                                    t-attf-data-id="{{ reservation.id }}"
+                                    t-attf-url="/reservation/{{ reservation.id }}/payment"
+                                >
+                                    Facturas
+                                </button>
+                                <button
+                                    class="col-3 btn btn-secondary o_pms_pwa_button_chat"
+                                    style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
+                                    type="button"
+                                    t-attf-data-id="{{ reservation.id }}"
+                                    t-attf-url="/reservation/{{ reservation.id }}/messages"
+                                >
+                                    Mensajes
+                                </button>
+                                <!-- <a
                                     t-att-href="'/reservation/' + reservation.id"
                                     style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;"
                                     class="col-3 btn btn-secondary o_pms_pwa_abutton o_pms_pwa_button_preloader"
                                     t-att-data-id="reservation.id"
                                 >
                                     Ver Detalle
+                                </a> -->
+                                <a role="button" class="col-2 btn btn-secondary dropdown-toggle" style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;" data-toggle="dropdown" href="#" >
+                                    Otros
                                 </a>
-                                <a role="button" class="col-4 btn btn-secondary dropdown-toggle" style="margin:1px; color: #01b6e3; border-color: #01b6e3; background-color: #daf7fc;" data-toggle="dropdown" href="#" >Más Opciones</a>
 
                                 <div class="dropdown-menu" aria-labelledby="dLabel">
-                                    <button
+                                    <!-- <button
                                         class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_facturar"
                                         type="button"
                                         t-att-data-id="reservation.id"
                                     >
-                                        Facturar
-                                    </button>
+                                        Facturas
+                                    </button> -->
                                     <button
                                         class="dropdown-item o_pms_pwa_abutton o_pms_pwa_button_new_reservation"
                                         t-att-data-folio_id="reservation.folio_id.id"
@@ -326,6 +478,7 @@
                                         Devolución
                                     </button>
                                 </div>
+
                                 <!-- <div class="col-sm-4">
                                     <t t-raw="reservation.primary_button" />
                                 </div>
@@ -1059,7 +1212,28 @@
                             </div>
                         </div>
                         <div class="modal-body o_pms_pwa_modal_body">
-                            <div class="o_pms_pwa_shadow">
+                            <div class="card bg-dark shadow">
+                                <div class="card-header o_pms_pwa_card_header">
+                                    <h3 class="mb-0">
+                                        Listado de pagos
+                                    </h3>
+                                </div>
+                                <div class="card-body bg-dark">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="o_pms_pwa_theme_color"></th>
+                                                <th class="o_pms_pwa_theme_color">Método de pago</th>
+                                                <th class="o_pms_pwa_theme_color text-right">Fecha</th>
+                                                <th class="o_pms_pwa_theme_color text-right">Importe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="payments_list"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="o_pms_pwa_shadow mt-4">
                                 <div class="row">
                                     <div class="col-3 align-self-center">
                                         <img t-att-src="'/web/image/pms.reservation/'+reservation.id+'/partner_image_128'" class="img-thumbnail rounded-circle o_pms_pwa_img_rounded_bg" t-att-title="reservation.partner_id.name" t-att-alt="reservation.partner_id.name" width="55" />
@@ -1112,10 +1286,10 @@
                                             </span>
                                         </div>
                                         <div class="col-sm-12 mt-2">
-                                            <label class="control-label col-12" for="amount">
+                                            <label class="control-label col-12" for="payment_amount">
                                                 Importe
                                             </label>
-                                            <input class="form-control" type="number" min="0" step="any" name="amount" t-att-value="reservation.folio_pending_amount" />
+                                            <input class="form-control" type="number" min="0" step="any" name="payment_amount" t-att-value="reservation.folio_pending_amount" />
                                         </div>
                                     </div>
                                 </div>
@@ -1127,7 +1301,7 @@
                                     </button>
                                 </div>
                                 <div class="col-6">
-                                    <button type="button" class="btn btn-message btn-block o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
+                                    <button t-att-data-id="reservation.id" type="button" class="btn btn-message btn-block o_pms_pwa_button_payment_confirm" data-dismiss="modal" aria-label="Pay">
                                         <span>Pagar</span>
                                     </button>
                                 </div>
