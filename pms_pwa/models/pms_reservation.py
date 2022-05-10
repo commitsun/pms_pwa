@@ -218,28 +218,43 @@ class PmsReservation(models.Model):
                         zip_code = self.env["res.city.zip"].search([
                             ("name", "=", guest["residence_zip"]),
                         ], limit=1)
+                        zips = self.env["res.city.zip"].search([
+                            ("name", "=", guest["residence_zip"]),
+                        ])
                     if "zip" in guest.keys():
                         guest.pop("zip")
                     # REVIEW: avoid send "false" to controller
                     if "country_id" in guest.keys() and guest.get("country_id") != "false" and guest.get("country_id") != "":
-                        guest["nationality_id"] = int(guest["country_id"])
-                    elif zip_code:
+                        guest["country_id"] = int(guest["country_id"])
+                    else:
+                        guest["country_id"] = False
+                    if zip_code and guest["country_id"] not in zips.mapped("country_id.id"):
                         guest["nationality_id"] = zip_code.country_id.id
+                    elif guest.get("country_id"):
+                        guest["nationality_id"] = int(guest["country_id"])
                     if "country_id" in guest:
                         guest.pop("country_id")
 
                     if "residence_city" in guest.keys() and guest.get("residence_city") != "false" and guest.get("residence_city") != "":
                         guest["residence_city"] = int(guest["residence_city"])
-                    elif zip_code:
+
+                    if zip_code and guest.get("residence_city") not in zips.mapped("city_id.name"):
                         guest["residence_city"] = zip_code.city_id.name
+                    elif guest.get("residence_city"):
+                        guest["residence_city"] = str(guest["residence_city"])
 
                     # REVIEW: avoid send "false" to controller
-                    if guest.get("residence_state_id") == "false" and not zip_code:
-                        guest.pop("residence_state_id")
-                    elif guest.get("residence_state_id") and guest.get("residence_state_id") != "false" and guest.get("residence_state_id") != "":
+                    if guest.get("residence_state_id") and guest.get("residence_state_id") != "false" and guest.get("residence_state_id") != "":
                         guest["residence_state_id"] = int(guest["residence_state_id"])
-                    elif zip_code:
+                    else:
+                        guest["residence_state_id"] = False
+
+                    if zip_code and guest.get("residence_state_id") not in zips.mapped("state_id.id"):
                         guest["residence_state_id"] = zip_code.state_id.id
+                    elif guest.get("residence_state_id"):
+                        guest["residence_state_id"] = int(guest["residence_state_id"])
+                    else:
+                        guest.pop("residence_state_id")
 
                     if guest.get("birthdate_date"):
                         guest["birthdate_date"] = datetime.datetime.strptime(
