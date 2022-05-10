@@ -10,17 +10,6 @@
                         <div class="modal-header o_pms_pwa_modal_header">
                             <div class="col-12">
                                 <div class="row o_pms_pwa_modal_header_pad">
-                                    <script>
-                                        $(".o_pms_pwa_return").click(function (event) {
-                                            event.preventDefault();
-                                            let reservation_id = event.target.getAttribute("data-id");
-                                            $("div.o_pms_pwa_modal_chat").modal('hide');
-                                            var new_selector = $('<td class="launch_modal" data-id="'+reservation_id+'">Pincha aqui</td>');
-                                            new_selector.appendTo("table.launch_modal");
-                                            $(new_selector).click();
-                                            $(new_selector).remove();
-                                        });
-                                    </script>
                                     <a class="mr-4 o_pms_pwa_return" t-attf-data-id="{{reservation}}" href="#"><i class="fa fa-arrow-left"></i> Volver</a>
                                     <h4 class="modal-title">
                                         Mensajes

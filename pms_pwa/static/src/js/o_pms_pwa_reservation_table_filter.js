@@ -38,7 +38,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         $("form").submit();
     });
 
-
     publicWidget.registry.ReservationTableWidget = publicWidget.Widget.extend({
         selector:
             "table.o_pms_pwa_reservation_list_table, #o_pms_detail_reservation, table.launch_modal, table.o_pms_pwa_reduced_reservation_list_table, .o_pms_pwa_modal_buttons",
@@ -53,7 +52,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             "click td.o_pms_pwa_calendar_reservation": "_onClickReservationButton",
             "dblclick td.o_pms_pwa_calendar_reservation":
                 "_onDobleClickReservationButton",
-            "click td.o_pms_pwa_reduced_calendar_reservation": "_onClickReservationButton",
+            "click td.o_pms_pwa_reduced_calendar_reservation":
+                "_onClickReservationButton",
             "dblclick td.o_pms_pwa_reduced_calendar_reservation":
                 "_onDobleClickReservationButton",
             "click a.launch_for_notification": "_onClickReservationButton",
@@ -103,7 +103,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
             $("div.o_pms_pwa_roomdoo_reservation_modal").html(html);
             $("div.o_pms_pwa_reservation_modal").modal();
             let modal = $("div.o_pms_pwa_reservation_modal");
-            $('input[name="date"]').val(moment().format('DD/MM/YYYY'));
+            $('input[name="date"]').val(moment().format("DD/MM/YYYY"));
             $(".o_pms_pwa_payment_modal_daterangepicker").daterangepicker(
                 {
                     locale: {
@@ -120,8 +120,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 },
                 function (start) {
                     // console.log(start);
-                    let start_date = moment(start).format('DD/MM/YYYY');
-                    modal.find('input[name="modal_date"]').val(start_date)
+                    let start_date = moment(start).format("DD/MM/YYYY");
+                    modal.find('input[name="modal_date"]').val(start_date);
                     this.element.val(start_date);
                 }
             );
@@ -481,32 +481,51 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         reservation: reservation_id,
                     });
                     $("div.o_pms_pwa_modal_chat").html(modal_html);
-                    $("div.o_pms_pwa_modal_chat").modal()
+                    $("div.o_pms_pwa_modal_chat").modal();
+                    $("div.o_pms_pwa_modal_chat .o_pms_pwa_return").on(
+                        "click",
+                        function (e) {
+                            event.preventDefault();
+                            let reservation_id = event.target.getAttribute("data-id");
+                            $("div.o_pms_pwa_modal_chat").modal("hide");
+                            var new_selector = $(
+                                '<td class="launch_modal" data-id="' +
+                                    reservation_id +
+                                    '">Pincha aqui</td>'
+                            );
+                            new_selector.appendTo("table.launch_modal");
+                            $(new_selector).click();
+                            $(new_selector).remove();
+                        }
+                    );
                     $(".o_pms_pwa_sendEmail").on("click", function (e) {
                         var email_to = e.currentTarget.getAttribute("data-email");
                         var email_type = e.currentTarget.getAttribute("data-type");
                         let email_modal = $("div#roomdooSendEmail");
                         email_modal.find("input[name='email_to']").val(email_to);
                         email_modal.find("input[name='email_type']").val(email_type);
-                        email_modal.find("input[name='reservation_id']").val(reservation_id);
+                        email_modal
+                            .find("input[name='reservation_id']")
+                            .val(reservation_id);
                     });
                     $(".sendModalEmail").on("click", function (e) {
                         let email_modal = $("div#roomdooSendEmail");
 
-                        let send_url = "/reservation/"+reservation_id+"/template_mail"
+                        let send_url =
+                            "/reservation/" + reservation_id + "/template_mail";
                         ajax.jsonRpc(send_url, "call", {
                             reservation_id: reservation_id,
                             email_to: email_modal.find("input[name='email_to']").val(),
-                            mail_type: email_modal.find("input[name='email_type']").val(),
+                            mail_type: email_modal
+                                .find("input[name='email_type']")
+                                .val(),
                         }).then(function (data) {
                             self.displayDataAlert(data);
                             email_modal.modal("toggle");
                         });
                     });
-
                 });
             } catch (error) {
-
                 console.log(error);
             }
         },
@@ -1586,12 +1605,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         address: element
                                             .find("input[name='address']")
                                             .val(),
-                                        zip: element
-                                            .find("input[name='zip']")
-                                            .val(),
-                                        city: element
-                                            .find("input[name='city']")
-                                            .val(),
+                                        zip: element.find("input[name='zip']").val(),
+                                        city: element.find("input[name='city']").val(),
                                         country_id: element
                                             .find("input[name='country_id']")
                                             .val(),
@@ -1761,12 +1776,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     address: element
                                         .find("input[name='address']")
                                         .val(),
-                                    zip: element
-                                        .find("input[name='zip']")
-                                        .val(),
-                                    city: element
-                                        .find("input[name='city']")
-                                        .val(),
+                                    zip: element.find("input[name='zip']").val(),
+                                    city: element.find("input[name='city']").val(),
                                     country_id: element
                                         .find("input[name='country_id']")
                                         .val(),
@@ -1774,8 +1785,8 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         .find("input[name='residence_state_id']")
                                         .val(),
                                     segmentation_ids: element
-                                    .find("select[name='segmentation_ids']")
-                                    .val(),
+                                        .find("select[name='segmentation_ids']")
+                                        .val(),
                                 });
                             }
                             // console.log(" boton checkin guest_list ->", guest_list);
@@ -2096,7 +2107,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 }
             }
 
-
             ajax.jsonRpc("/reservation/json_data", "call", {
                 reservation_id: reservation_id,
             }).then(function (data) {
@@ -2117,23 +2127,29 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .find("select[name='payment_method'] option")
                             .filter(":selected")
                             .val();
-                        var payment_amount = div.find("input[name='payment_amount']").val();
+                        var payment_amount = div
+                            .find("input[name='payment_amount']")
+                            .val();
                         console.log("payment_amount => ", payment_amount);
                         var payment_date = div.find("input[name='date']").val();
-                        if(!payment_date){
-                            payment_date = moment().format('DD/MM/YYYY');
+                        if (!payment_date) {
+                            payment_date = moment().format("DD/MM/YYYY");
                         }
-                        ajax.jsonRpc("/reservation/"+reservation_id+"/payment", "call", {
-                            payment_method: payment_method,
-                            amount: payment_amount,
-                            date: payment_date,
-                        }).then(function (new_data) {
+                        ajax.jsonRpc(
+                            "/reservation/" + reservation_id + "/payment",
+                            "call",
+                            {
+                                payment_method: payment_method,
+                                amount: payment_amount,
+                                date: payment_date,
+                            }
+                        ).then(function (new_data) {
                             self.displayDataAlert(new_data, data.id);
                         });
 
                         var new_selector = $(
                             "<td class='o_pms_pwa_button_pagar' data-id='" +
-                            data.id +
+                                data.id +
                                 "'>Pincha aqui</td>"
                         );
                         new_selector.appendTo("table.launch_modal");
@@ -2150,7 +2166,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                     }).then(function (data) {
                         var html = "";
                         if (data.payment_lines.length > 0) {
-
                             var lines = data.payment_lines;
                             for (const i in lines) {
                                 var options = "";
@@ -2164,11 +2179,14 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                             "</option>";
                                     } else {
                                         options +=
-                                            "<option value=" + v.id + ">" + v.name + "</option>";
+                                            "<option value=" +
+                                            v.id +
+                                            ">" +
+                                            v.name +
+                                            "</option>";
                                     }
                                 });
                                 html +=
-
                                     '<tr class="o_roomdoo_hide_show2" data-id=' +
                                     lines[i].id +
                                     ">" +
@@ -2176,66 +2194,97 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                     '<td><select disabled="disabled" class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">' +
                                     options +
                                     "</td>" +
-                                    '<td class="text-right">'+
-                                    '<script>'+
-                                        'var format = "dd/mm/yy";'+
-                                        '$( function() {'+
-                                            '$( "#paymentdate'+lines[i].id+'" ).datepicker({ dateFormat: format}).datepicker("setDate", "'+moment(lines[i].date).format("DD/MM/YYYY")+'");'+
-                                        '} );'+
-                                    '</script>'+
-                                    '<input disabled="disabled" id="paymentdate'+lines[i].id+'" type="text" name="date" class="datepicker"/></td>' +
+                                    '<td class="text-right">' +
+                                    "<script>" +
+                                    'var format = "dd/mm/yy";' +
+                                    "$( function() {" +
+                                    '$( "#paymentdate' +
+                                    lines[i].id +
+                                    '" ).datepicker({ dateFormat: format}).datepicker("setDate", "' +
+                                    moment(lines[i].date).format("DD/MM/YYYY") +
+                                    '");' +
+                                    "} );" +
+                                    "</script>" +
+                                    '<input disabled="disabled" id="paymentdate' +
+                                    lines[i].id +
+                                    '" type="text" name="date" class="datepicker"/></td>' +
                                     '<td class="text-right"><input size="6" disabled="disabled" type="number" step="0.01" name="amount" value="' +
                                     parseFloat(lines[i].amount).toFixed(2) +
                                     '" /></td>' +
                                     "</tr>";
                             }
                         } else {
-                            html = "<tr><td colspan='4'> No hay pagos registrados. </td></tr>";
+                            html =
+                                "<tr><td colspan='4'> No hay pagos registrados. </td></tr>";
                         }
-                        var selector = "div.modal-dialog[payment-data-id=" + reservation_id + "]";
+                        var selector =
+                            "div.modal-dialog[payment-data-id=" + reservation_id + "]";
                         $(selector).find("#payments_list").html(html);
 
                         // Activar o desactivar edición
 
-                        $(selector).find("#payments_list").find("td.o_pms_pwa_payment_edit").on("click", function (ev) {
-                            var fa = $(ev.currentTarget).find(".fa");
-                            if (fa[0].classList.contains("fa-edit")) {
-                                $(ev.currentTarget)
-                                    .find(".fa-edit")
-                                    .removeClass("fa-edit")
-                                    .addClass("fa-floppy-o");
-                                $(ev.currentTarget).parent().find("select").prop("disabled", false);
-                                $(ev.currentTarget).parent().find("input").prop("disabled", false);
-                            } else if (fa[0].classList.contains("fa-floppy-o")) {
-                                $(ev.currentTarget)
-                                    .find(".fa-floppy-o")
-                                    .removeClass("fa-floppy-o")
-                                    .addClass("fa-edit");
-                                $(ev.currentTarget).parent().find("select").prop("disabled", true);
-                                $(ev.currentTarget).parent().find("input").prop("disabled", true);
+                        $(selector)
+                            .find("#payments_list")
+                            .find("td.o_pms_pwa_payment_edit")
+                            .on("click", function (ev) {
+                                var fa = $(ev.currentTarget).find(".fa");
+                                if (fa[0].classList.contains("fa-edit")) {
+                                    $(ev.currentTarget)
+                                        .find(".fa-edit")
+                                        .removeClass("fa-edit")
+                                        .addClass("fa-floppy-o");
+                                    $(ev.currentTarget)
+                                        .parent()
+                                        .find("select")
+                                        .prop("disabled", false);
+                                    $(ev.currentTarget)
+                                        .parent()
+                                        .find("input")
+                                        .prop("disabled", false);
+                                } else if (fa[0].classList.contains("fa-floppy-o")) {
+                                    $(ev.currentTarget)
+                                        .find(".fa-floppy-o")
+                                        .removeClass("fa-floppy-o")
+                                        .addClass("fa-edit");
+                                    $(ev.currentTarget)
+                                        .parent()
+                                        .find("select")
+                                        .prop("disabled", true);
+                                    $(ev.currentTarget)
+                                        .parent()
+                                        .find("input")
+                                        .prop("disabled", true);
 
-                                ajax.jsonRpc("/reservation/update_payment", "call", {
-                                    folio_id: folio_id,
-                                    id: $(ev.currentTarget).parent().attr("data-id"),
-                                    journal_id: $(ev.currentTarget)
-                                        .parent()
-                                        .find("select[name='payment_method'] option:selected")
-                                        .val(),
-                                    date: $(ev.currentTarget)
-                                        .parent()
-                                        .find('input[name="date"]')
-                                        .val(),
-                                    amount: $(ev.currentTarget)
-                                        .parent()
-                                        .find('input[name="amount"]')
-                                        .val(),
-                                }).then(function (result) {
-                                    if (JSON.parse(result).result) {
-                                        self.displayDataAlert(result);
-                                    }
-                                });
-                            }
-                        });
+                                    ajax.jsonRpc(
+                                        "/reservation/update_payment",
+                                        "call",
+                                        {
+                                            folio_id: folio_id,
+                                            id: $(ev.currentTarget)
+                                                .parent()
+                                                .attr("data-id"),
+                                            journal_id: $(ev.currentTarget)
+                                                .parent()
+                                                .find(
+                                                    "select[name='payment_method'] option:selected"
+                                                )
+                                                .val(),
+                                            date: $(ev.currentTarget)
+                                                .parent()
+                                                .find('input[name="date"]')
+                                                .val(),
+                                            amount: $(ev.currentTarget)
+                                                .parent()
+                                                .find('input[name="amount"]')
+                                                .val(),
+                                        }
+                                    ).then(function (result) {
+                                        if (JSON.parse(result).result) {
+                                            self.displayDataAlert(result);
+                                        }
+                                    });
+                                }
+                            });
                     });
                 }
             });
@@ -2274,7 +2323,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             .val();
                         var payment_amount = div.find("input[name='amount']").val();
                         var payment_date = div.find("input[name='date']").val();
-                        if(!payment_date){
+                        if (!payment_date) {
                             payment_date = moment().format("dd/mm/YYYY");
                         }
 
@@ -2322,7 +2371,6 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                 $("button#button_reservation_modal").click();
             }
         },
-
     });
 
     return publicWidget.registry.ReservationTableWidget;
