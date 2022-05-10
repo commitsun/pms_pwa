@@ -2084,7 +2084,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                         setTimeout(function () {
                             $(new_selector).click();
                             $(new_selector).remove();
-                        }, 100);
+                        }, 250);
                     });
 
                     // Cargamos pagos
