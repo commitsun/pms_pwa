@@ -1268,10 +1268,10 @@
                                 <div class="form-group form-field mt8">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <label class="control-label col-12" for="payment_method">
+                                            <label class="control-label col-12" for="selected_payment_method">
                                                 Método de pago
                                             </label>
-                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="payment_method">
+                                            <select class="form-control o_website_form_input o_domain_leaf_operator_select o_input" name="selected_payment_method">
                                                 <option t-foreach="reservation.payment_methods" t-as="key" t-att-value="key.id">
                                                     <t t-esc="key.name" />
                                                 </option>

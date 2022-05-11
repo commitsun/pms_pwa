@@ -2124,39 +2124,35 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                             "div.modal-dialog[payment-data-id=" + reservation_id + "]";
                         var div = $(selector);
                         var payment_method = div
-                            .find("select[name='payment_method'] option")
+                            .find("select[name='selected_payment_method'] option")
                             .filter(":selected")
                             .val();
                         var payment_amount = div
                             .find("input[name='payment_amount']")
                             .val();
-                        console.log("payment_amount => ", payment_amount);
-                        var payment_date = div.find("input[name='date']").val();
+                        var payment_date = div.find("input[name='date'].o_pms_pwa_payment_modal_daterangepicker").val();
                         if (!payment_date) {
                             payment_date = moment().format("DD/MM/YYYY");
                         }
-                        ajax.jsonRpc(
-                            "/reservation/" + reservation_id + "/payment",
-                            "call",
-                            {
-                                payment_method: payment_method,
-                                amount: payment_amount,
-                                date: payment_date,
-                            }
-                        ).then(function (new_data) {
-                            self.displayDataAlert(new_data, data.id);
+                        ajax.jsonRpc("/reservation/"+reservation_id+"/payment", "call", {
+                            payment_method: payment_method,
+                            amount: payment_amount,
+                            date: payment_date,
+                        }).then(function (new_data) {
+                            setTimeout(function () {
+                                self.displayDataAlert(new_data, data.id);
+                                var new_selector = $(
+                                    "<td class='o_pms_pwa_button_pagar' data-id='" +
+                                    data.id +
+                                        "'>Pincha aqui</td>"
+                                );
+                                new_selector.appendTo("table.launch_modal");
+                                setTimeout(function () {
+                                    $(new_selector).click();
+                                    $(new_selector).remove();
+                                }, 100);
+                            }, 250);
                         });
-
-                        var new_selector = $(
-                            "<td class='o_pms_pwa_button_pagar' data-id='" +
-                                data.id +
-                                "'>Pincha aqui</td>"
-                        );
-                        new_selector.appendTo("table.launch_modal");
-                        setTimeout(function () {
-                            $(new_selector).click();
-                            $(new_selector).remove();
-                        }, 100);
                     });
 
                     // Cargamos pagos
