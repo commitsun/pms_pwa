@@ -576,7 +576,7 @@ class PmsReservation(http.Controller):
                     payment.sudo().action_cancel()
                     payment.sudo().unlink()
                     if new_pay_type == "inbound":
-                        folio.do_payment(
+                        folio.with_user(request.env.user).do_payment(
                             new_journal,
                             new_journal.suspense_account_id,
                             request.env.user,
@@ -584,9 +584,9 @@ class PmsReservation(http.Controller):
                             folio,
                             partner=folio.partner_id,
                             date=new_date,
-                        ).with_user(request.env.user)
+                        )
                     else:
-                        folio.do_refund(
+                        folio.with_user(request.env.user).do_refund(
                             new_journal,
                             new_journal.suspense_account_id,
                             request.env.user,
@@ -594,7 +594,7 @@ class PmsReservation(http.Controller):
                             folio,
                             partner=folio.partner_id,
                             date=new_date,
-                        ).with_user(request.env.user)
+                        )
             except Exception as e:
                 return json.dumps(
                     {
