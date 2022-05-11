@@ -960,9 +960,10 @@
                                         <h4>
                                             <t t-esc="texts.notes_text || _t('Observaciones')" />
                                         </h4>
-                                        <div>
-                                            <t t-esc="reservation.folio_internal_comment" />
-                                        </div>
+                                        <input
+                                            autocomplete="off"
+                                            class="form-control" type="text" name="folio_internal_comment" t-att-value="reservation.folio_internal_comment"
+                                        />
                                     </div>
                                 </div>
 
