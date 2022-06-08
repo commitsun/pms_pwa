@@ -624,7 +624,8 @@ class PmsCalendar(http.Controller):
                         nights += 1
                         used_line_ids.append(line.id)
                         # splitted_reservations_lines -= line
-                        free_dates.remove(line.date)
+                        if line.date in free_dates:
+                            free_dates.remove(line.date)
                 rooms_reservation_values.append(
                     {
                         "splitted": True,
