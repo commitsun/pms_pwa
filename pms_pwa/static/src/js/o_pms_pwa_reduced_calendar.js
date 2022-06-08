@@ -507,6 +507,7 @@ odoo.define("pms_pwa.reducedCalendarRoomdoo", function (require) {
                                 $(
                                     'form#booking_engine_form input[name="checkout"]'
                                 ).val(last_day);
+                                $('form#booking_engine_form input[name="folio_id"]').val(false);
                                 $("form#booking_engine_form")
                                     .find(
                                         "input[name='new_reservation_date_modal_reservation']"
