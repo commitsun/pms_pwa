@@ -847,6 +847,7 @@ class PmsReservation(models.Model):
                     "reservation_id": self.id,
                 },
             ),
+            "invoice_to_agency": self.folio_id.invoice_to_agency,
             "readonly_fields": readonly_fields,
             "required_fields": [],
             # "allowed_country_ids": self.pms_property_id._get_allowed_countries(),

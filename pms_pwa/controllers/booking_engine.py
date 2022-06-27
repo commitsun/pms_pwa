@@ -178,7 +178,7 @@ class BookingEngine(http.Controller):
                     "id": agency.sale_channel_id.id,
                     "name": agency.sale_channel_id.name,
                 }
-                if agency and agency.invoice_to_agency:
+                if agency and agency.invoice_to_agency == "always":
                     folio_values["partner_name"] = agency.name
                     folio_values["partner_id"] = agency.id
                     folio_values["email"] = agency.email or ""
