@@ -339,8 +339,8 @@
                 t-att-title="obj.agency_id.name"
                 t-att-alt="obj.agency_id.name"/>
             <span t-else="">
-                <span t-if="obj.channel_type_id" t-esc="obj.channel_type_id.name"/><br/>
-                <span t-if="obj.channel_type_id" class="o_pms_pwa_wler" t-esc="obj.user_id.name"/><br/>
+                <span t-if="obj.sale_channel_origin_id" t-esc="obj.sale_channel_origin_id.name"/><br/>
+                <span t-if="obj.sale_channel_origin_id" class="o_pms_pwa_wler" t-esc="obj.user_id.name"/><br/>
             </span>
         </td>
         <td class="o_pms_pwa_lh45 text-center o_pms_pwa_priority-3">

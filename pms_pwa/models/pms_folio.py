@@ -60,7 +60,7 @@ def _get_search_domain(pms_property_ids, search=False, **post):
             domain_fields.append(("reservation_ids.write_date", "<=", d))
         elif v and k == "origin":
             domain_fields.extend(
-                ["|", ("agency_id.name", "=", v), ("channel_type_id.name", "=", v)]
+                ["|", ("agency_id.name", "=", v), ("sale_channel_origin_id.name", "=", v)]
             )
         elif v and k == "ready_for_checkin":
             domain_fields.append(("reservation_ids.checkin", "=", fields.date.today()))

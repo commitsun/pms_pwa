@@ -127,7 +127,7 @@ class FolioMessages(http.Controller):
                 template.send_mail(
                     res_id, force_send=True, email_values=email_values
                 )
-                reservation.to_send_mail = False
+                reservation.to_send_confirmation_mail = False
                 return json.dumps({"result": True, "message": _("Correo Enviado")})
             return json.dumps({"result": False, "message": _("Reservation not found")})
 

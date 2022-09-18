@@ -398,9 +398,6 @@
                                             <span class="label label-default" style="color:#575757;">Finalizada</span>
                                         </t>
                                     </h5>
-                                    <!-- <t t-if="reservation.to_send_mail == False and reservation.reservation_type != 'out'">
-                                        <i class="fa fa-envelope" style="color:green;" title="Mail de confirmación enviado"></i>
-                                    </t> -->
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span class="fa fa-times" />
                                     </button>
@@ -521,7 +518,7 @@
                                     <div class="col-3 align-self-center">
                                         <img t-if="reservation.agency_id and reservation.agency_id.id" style="float:right;border:0;" class="img-thumbnail" t-att-src="'/web/image/res.partner/'+reservation.agency_id.id+'/image_128'" width="60" t-att-title="reservation.agency_id.name" t-att-alt="reservation.agency_id.name" />
                                         <span t-else="">
-                                            <span t-if="reservation.channel_type_id" t-esc="reservation.channel_type_id.name" />
+                                            <span t-if="reservation.sale_channel_origin_id" t-esc="reservation.sale_channel_origin_id.name" />
                                         </span>
                                     </div>
                                 </div>

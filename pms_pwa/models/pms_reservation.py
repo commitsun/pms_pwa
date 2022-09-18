@@ -79,7 +79,7 @@ class PmsReservation(models.Model):
                     mens = (
                         pms_property.name
                         + ": Nueva reserva de "
-                        + record.channel_type_id.name
+                        + record.sale_channel_origin_id.name
                     )
                 if record.agency_id:
                     mens += " (" + record.agency_id.name + ")"
@@ -757,9 +757,9 @@ class PmsReservation(models.Model):
                 "id": self.preferred_room_id.id if self.preferred_room_id else False,
                 "name": self.rooms if self.rooms else "",
             },
-            "channel_type_id": {
-                "id": self.channel_type_id.id if self.channel_type_id else False,
-                "name": self.channel_type_id.name if self.channel_type_id else "",
+            "sale_channel_origin_id": {
+                "id": self.sale_channel_origin_id.id if self.sale_channel_origin_id else False,
+                "name": self.sale_channel_origin_id.name if self.sale_channel_origin_id else "",
             },
             "agency_id": {
                 "id": self.agency_id.id if self.agency_id else False,
@@ -821,8 +821,8 @@ class PmsReservation(models.Model):
             "allowed_segmentations": self._get_allowed_segmentations(),
             "allowed_channel_type_ids": self.pms_property_id._get_allowed_channel_type_ids(),
             "allowed_agency_ids": self.pms_property_id._get_allowed_agency_ids(
-                channel_type_id=self.channel_type_id.id
-                if self.channel_type_id
+                channel_type_id=self.sale_channel_origin_id.id
+                if self.sale_channel_origin_id
                 else False
             ),
             "segmentation_ids": self.segmentation_ids.ids,
@@ -850,8 +850,6 @@ class PmsReservation(models.Model):
             "invoice_to_agency": self.folio_id.invoice_to_agency,
             "readonly_fields": readonly_fields,
             "required_fields": [],
-            # "allowed_country_ids": self.pms_property_id._get_allowed_countries(),
-            # "to_send_mail": self.to_send_mail,
         }
 
         _logger.info("Values from controller to Frontend:")
@@ -953,10 +951,10 @@ class PmsReservation(models.Model):
     def _get_reservation_read_only_fields(self):
         self.ensure_one()
         fields_readonly = [("nights")]
-        if self.channel_type_id.is_on_line:
+        if self.sale_channel_origin_id.is_on_line:
             fields_readonly.extend(
                 [
-                    "channel_type_id",
+                    "sale_channel_origin_id",
                     "pms_property_id",
                     "room_type_id",
                     "agency_id",

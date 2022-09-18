@@ -152,10 +152,10 @@ class BookingEngine(http.Controller):
 
             # Channel and Agency
             if folio_values.get("folio_id"):
-                folio_values["channel_type_id"] = (
+                folio_values["sale_channel_origin_id"] = (
                     request.env["pms.folio"]
                     .browse(int(folio_values["folio_id"]))
-                    .channel_type_id.id
+                    .sale_channel_origin_id.id
                 )
                 folio_values["agency_id"] = (
                     request.env["pms.folio"]
@@ -174,7 +174,7 @@ class BookingEngine(http.Controller):
                     "id": agency.id,
                     "name": agency.name,
                 }
-                folio_values["channel_type_id"] = {
+                folio_values["sale_channel_origin_id"] = {
                     "id": agency.sale_channel_id.id,
                     "name": agency.sale_channel_id.name,
                 }
@@ -188,13 +188,13 @@ class BookingEngine(http.Controller):
             else:
                 channel_type = False
                 if (
-                    folio_values.get("channel_type_id")
-                    and folio_values.get("channel_type_id") != "false"
+                    folio_values.get("sale_channel_origin_id")
+                    and folio_values.get("sale_channel_origin_id") != "false"
                 ):
                     channel_type = request.env["pms.sale.channel"].browse(
-                        int(folio_values.get("channel_type_id"))
+                        int(folio_values.get("sale_channel_origin_id"))
                     )
-                folio_values["channel_type_id"] = {
+                folio_values["sale_channel_origin_id"] = {
                     "id": channel_type.id if channel_type else False,
                     "name": channel_type.name if channel_type else False,
                 }
@@ -236,7 +236,7 @@ class BookingEngine(http.Controller):
                 self._get_allowed_selections_values(
                     pms_property=pms_property,
                     channel_type=request.env["pms.sale.channel"].browse(
-                        folio_values["channel_type_id"]["id"]
+                        folio_values["sale_channel_origin_id"]["id"]
                     ),
                 )
             )
@@ -385,11 +385,11 @@ class BookingEngine(http.Controller):
                     item["id"] for item in folio_values["allowed_segmentations"]
                 ]:
                     folio_values["segmentation_ids"].remove(segmentation)
-        if folio_values.get("channel_type_id"):
-            if int(folio_values["channel_type_id"]["id"]) not in [
+        if folio_values.get("sale_channel_origin_id"):
+            if int(folio_values["sale_channel_origin_id"]["id"]) not in [
                 item["id"] for item in folio_values["allowed_channel_type_ids"]
             ]:
-                folio_values["channel_type_id"] = False
+                folio_values["sale_channel_origin_id"] = False
         if folio_values.get("agency_id"):
             if int(folio_values["agency_id"]["id"]) not in [
                 item["id"] for item in folio_values["allowed_agency_ids"]
@@ -773,7 +773,7 @@ class BookingEngine(http.Controller):
                 pms_property = folio.pms_property_id
                 vals["pms_property_id"] = pms_property.id
                 vals["reservation_type"] = folio.reservation_type
-                vals["channel_type_id"] = folio.channel_type_id.id
+                vals["sale_channel_origin_id"] = folio.sale_channel_origin_id.id
                 vals["agency_id"] = folio.agency_id.id
                 vals["closure_reason_id"] = folio.closure_reason_id
             else:
@@ -821,10 +821,10 @@ class BookingEngine(http.Controller):
 
                 # Channel and Agency
                 if (
-                    folio_values.get("channel_type_id")
-                    and folio_values.get("channel_type_id") != ""
+                    folio_values.get("sale_channel_origin_id")
+                    and folio_values.get("sale_channel_origin_id") != ""
                 ):
-                    vals["channel_type_id"] = int(folio_values.get("channel_type_id"))
+                    vals["sale_channel_origin_id"] = int(folio_values.get("sale_channel_origin_id"))
 
                 if folio_values.get("internal_comment"):
                     vals["internal_comment"] = folio_values.get("internal_comment")
@@ -834,7 +834,7 @@ class BookingEngine(http.Controller):
                     and folio_values.get("agency_id") != "false"
                 ):
                     vals["agency_id"] = int(folio_values.get("agency_id"))
-                    vals["channel_type_id"] = (
+                    vals["sale_channel_origin_id"] = (
                         request.env["res.partner"]
                         .browse(vals["agency_id"])
                         .sale_channel_id.id
@@ -910,8 +910,8 @@ class BookingEngine(http.Controller):
                 if not folio_values.get("email") or folio_values.get("email") == "":
                     avoid_fields.append("E-mail")
                 if (
-                    not folio_values.get("channel_type_id")
-                    or folio_values.get("channel_type_id") == ""
+                    not folio_values.get("sale_channel_origin_id")
+                    or folio_values.get("sale_channel_origin_id") == ""
                 ):
                     avoid_fields.append("Canal de venta")
             else:

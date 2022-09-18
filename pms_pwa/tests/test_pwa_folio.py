@@ -187,7 +187,7 @@ class TestPwaFolio(TestHotel):
                 "room_type_id": self.room_type_double.id,
                 "partner_id": host.id,
                 "pms_property_id": self.property.id,
-                "channel_type_id": channel_type.id,
+                "sale_channel_origin_id": channel_type.id,
                 "agency_id": agency.id,
             }
         )
@@ -330,7 +330,7 @@ class TestPwaFolio(TestHotel):
             {
                 "test_case": "Field search by reservation origin",
                 "field": "origin",
-                "value": reservation.channel_type_id.name,
+                "value": reservation.sale_channel_origin_id.name,
             },
             {
                 "test_case": "Field search by empty origin",
@@ -406,7 +406,7 @@ class TestPwaFolio(TestHotel):
                 "room_type_id": self.room_type_double.id,
                 "partner_id": host1.id,
                 "pms_property_id": self.property.id,
-                "channel_type_id": channel_type1.id,
+                "sale_channel_origin_id": channel_type1.id,
                 "agency_id": agency1.id,
             }
         )

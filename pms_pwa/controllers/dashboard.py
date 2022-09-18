@@ -406,7 +406,7 @@ class DashBoard(http.Controller):
         reservations = request.env["pms.reservation"].search(domain)
         channels_data = []
         for channel in channels:
-            channels_data.append(len(reservations.filtered(lambda r: r.channel_type_id.id == channel.id)))
+            channels_data.append(len(reservations.filtered(lambda r: r.sale_channel_origin_id.id == channel.id)))
         return ",".join(map(str, channels_data))
 
     def _get_channel_reservations_score(self, channels, date_from, date_to, pms_property_id):
@@ -415,7 +415,7 @@ class DashBoard(http.Controller):
             ("checkin", "<=", date_to),
             ("state", "!=", "cancel"),
             ("reservation_type", "!=", "out"),
-            ("channel_type_id", "in", channels.ids),
+            ("sale_channel_origin_id", "in", channels.ids),
             ("pms_property_id", "=", pms_property_id),
         ]
         return request.env["pms.reservation"].search_count(domain)

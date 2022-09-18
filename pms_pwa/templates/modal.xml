@@ -118,10 +118,10 @@
                                             <select data-select="allowed_agency_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" name="agency_id" />
                                         </div>
                                         <div class="col-sm-6">
-                                            <label class="control-label col-12" for="channel_type_id">
+                                            <label class="control-label col-12" for="sale_channel_origin_id">
                                                 Canal de Venta
                                             </label>
-                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="channel_type_id" />
+                                            <select data-select="allowed_channel_type_ids" class="form-control o_website_form_input o_domain_leaf_operator_select o_input call_booking_engine" required="required" name="sale_channel_origin_id" />
                                         </div>
                                     </div>
                                     <div class="row mt-3 not_out_type">

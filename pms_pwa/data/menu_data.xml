@@ -39,7 +39,7 @@
 
         <record id="menu_calendar" model="website.menu">
             <field name="name">Calendar</field>
-            <field name="url">/calendar</field>
+            <field name="url">/calendar/reduced</field>
             <field name="sequence" type="int">30</field>
             <field name="parent_id" ref="website.main_menu" />
             <field name="is_mega_menu">False</field>

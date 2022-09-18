@@ -16,7 +16,7 @@ odoo.define("pms_pwa.reservation_table", function (require) {
         allowed_board_service_room_ids: "board_service_room_id",
         allowed_board_services: "board_service_room_id",
         reservation_types: "reservation_type",
-        allowed_channel_type_ids: "channel_type_id",
+        allowed_channel_type_ids: "sale_channel_origin_id",
         allowed_pricelists: "pricelist_id",
         allowed_segmentations: "segmentation_ids",
         room_numbers: "preferred_room_id",
@@ -261,13 +261,13 @@ odoo.define("pms_pwa.reservation_table", function (require) {
                                         "'/>";
                                 } else {
                                     if (
-                                        updated_data.channel_type_id &&
+                                        updated_data.sale_channel_origin_id &&
                                         updated_data.user_name
                                     ) {
                                         var chan_name = "";
-                                        if (updated_data.channel_type_id.name) {
+                                        if (updated_data.sale_channel_origin_id.name) {
                                             var chan_name =
-                                                updated_data.channel_type_id.name;
+                                                updated_data.sale_channel_origin_id.name;
                                         }
                                         $(String("#reservation_" + data_id)).find(
                                             "td"
