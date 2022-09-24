@@ -816,7 +816,7 @@ class PmsReservation(models.Model):
                 "name": self.pricelist_id.name if self.pricelist_id else "",
             },
             "allowed_pricelists": self._get_allowed_pricelists(
-                [self.pms_property_id.id], self.channel_type_id.id
+                [self.pms_property_id.id], self.sale_channel_origin_id.id
             ),
             "allowed_segmentations": self._get_allowed_segmentations(),
             "allowed_channel_type_ids": self.pms_property_id._get_allowed_channel_type_ids(),
