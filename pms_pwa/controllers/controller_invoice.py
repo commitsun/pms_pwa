@@ -4,7 +4,6 @@ from odoo.tools.misc import get_lang
 from odoo.exceptions import UserError
 
 from odoo import http, _
-import datetime
 from odoo.http import request
 
 from ..utils import pwa_utils
@@ -31,7 +30,7 @@ class FolioInvoice(http.Controller):
                 .search([("id", "=", int(reservation_id))])
             )
             if reservation:
-                folio = request.env["pms.folio"].browse(reservation.folio_id.id)
+                folio = request.env["pms.folio"].sudo().browse(reservation.folio_id.id)
                 invoice_ids = []
                 new_invoice = {}
 
