@@ -86,6 +86,7 @@ class PmsCalendar(http.Controller):
             pms_property_id=pms_property_id,
             pricelist_id=select_pricelist_id,
             room_type_ids=room_types.ids,
+            select_availability_plan_id=select_availability_plan_id,
         )
         rooms_list = []
         for room_type in room_types:
@@ -320,22 +321,26 @@ class PmsCalendar(http.Controller):
             pms_property_id=int(post.get("pms_property_id")),
             pricelist_id=int(post.get("pricelist_id")),
             room_type_ids=[int(item) for item in post.get("room_type_ids")] if post.get("room_type_ids") else False,
+            select_availability_plan_id=int(post["availability_plan"]) if post.get("availability_plan") else False,
         )
 
-    def _get_rules_headers(self, dates, pms_property_id, pricelist_id, room_type_ids=False):
+    def _get_rules_headers(self, dates, pms_property_id, pricelist_id, room_type_ids=False, select_availability_plan_id=False):
         pms_property = request.env["pms.property"].browse(pms_property_id)
         pricelist = request.env["product.pricelist"].browse(pricelist_id)
         if not room_type_ids:
             room_types = pms_property.room_ids.room_type_id
         else:
             room_types = request.env["pms.room.type"].browse(room_type_ids)
-        availability_plan = pricelist.availability_plan_id
+        if select_availability_plan_id:
+            availability_plan_id = select_availability_plan_id
+        else:
+            availability_plan_id = pricelist.availability_plan_id.id
 
         # Prepare data
         dict_result = {}
-        if not availability_plan:
-            availability_plan = request.env["pms.availability.plan"].search([], limit=1)
-        if availability_plan:
+        if not availability_plan_id:
+            availability_plan_id = request.env["pms.availability.plan"].search([], limit=1).id
+        if availability_plan_id:
             request.env.cr.execute(
                 """
                 SELECT DATE(date), room_type_id, min_stay, closed, quota, max_avail, plan_avail,
@@ -350,7 +355,7 @@ class PmsCalendar(http.Controller):
                     pms_property_id,
                     tuple(dates),
                     tuple(room_types.ids),
-                    availability_plan.id,
+                    availability_plan_id,
                 )
             )
             rules_result = request.env.cr.fetchall()
