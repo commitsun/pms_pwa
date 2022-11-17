@@ -10,8 +10,8 @@ import pprint
 from odoo import SUPERUSER_ID, _, fields, http
 from odoo.exceptions import MissingError, UserError
 from odoo.http import Response, content_disposition, request
-from odoo.tools.misc import get_lang
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools.misc import get_lang
 
 from ..utils import pwa_utils
 
@@ -218,7 +218,9 @@ class PmsReservation(http.Controller):
                     journal = account_journals.browse(payment_method)
                     partner = request.env["res.partner"].browse(int(payment_partner_id))
                     if reservation.folio_payment_state != "paid":
-                        reservation.folio_id.do_payment(
+                        reservation.folio_id.with_context(
+                            cash_register=True
+                        ).do_payment(
                             journal,
                             journal.suspense_account_id,
                             request.env.user,
@@ -276,7 +278,7 @@ class PmsReservation(http.Controller):
                     )
                     journal = account_journals.browse(payment_method)
                     partner = request.env["res.partner"].browse(int(refund_partner_id))
-                    reservation.folio_id.do_refund(
+                    reservation.folio_id.with_context(cash_register=True).do_refund(
                         journal,
                         journal.suspense_account_id,
                         request.env.user,
@@ -288,7 +290,10 @@ class PmsReservation(http.Controller):
                 except Exception as e:
                     return json.dumps({"result": False, "message": str(e)})
                 return json.dumps(
-                    {"result": True, "message": _("Devolución realizada correctamente.")}
+                    {
+                        "result": True,
+                        "message": _("Devolución realizada correctamente."),
+                    }
                 )
 
             return json.dumps({"result": False, "message": _("Reservation not found")})
@@ -336,26 +341,32 @@ class PmsReservation(http.Controller):
                         partner_invoice_values["street"] = payload[0]["partner_values"][
                             0
                         ]["address"]
-                        country = request.env["res.country"].search([
-                            ("name","=",payload[0]["partner_values"][0]["country"])
-                        ])
-                        zip_code = request.env["res.city.zip"].search([
-                            ("name", "=", partner_invoice_values["zip"])
-                        ])
+                        country = request.env["res.country"].search(
+                            [("name", "=", payload[0]["partner_values"][0]["country"])]
+                        )
+                        zip_code = request.env["res.city.zip"].search(
+                            [("name", "=", partner_invoice_values["zip"])]
+                        )
                         if zip_code:
                             if country and country != zip_code.country_id:
-                                raise Exception("El código postal no pertenece al país seleccionado")
+                                raise Exception(
+                                    "El código postal no pertenece al país seleccionado"
+                                )
                             if not country:
                                 country = zip_code.country_id
                             if not partner_invoice_values["city"]:
                                 partner_invoice_values["city"] = zip_code.city_id.name
-                            partner_invoice_values["state_id"] = zip_code.state_id.id if zip_code.state_id else False
+                            partner_invoice_values["state_id"] = (
+                                zip_code.state_id.id if zip_code.state_id else False
+                            )
 
                         if not country:
                             raise UserError(
-                                _("País no encontrado: {}".format(
-                                    payload[0]["partner_values"][0]["country"]
-                                ))
+                                _(
+                                    "País no encontrado: {}".format(
+                                        payload[0]["partner_values"][0]["country"]
+                                    )
+                                )
                             )
 
                         partner_invoice_values["country_id"] = country.id
@@ -480,9 +491,7 @@ class PmsReservation(http.Controller):
             if not folio:
                 raise MissingError(_("This document does not exist."))
 
-            payment_methods = (
-                folio.pms_property_id._get_allowed_payments_journals()
-            )
+            payment_methods = folio.pms_property_id._get_allowed_payments_journals()
             payment_lines_batch = folio.payment_ids
             payment_lines = [
                 {
@@ -527,7 +536,9 @@ class PmsReservation(http.Controller):
 
             try:
                 new_journal_id = int(kw.get("journal_id", False))
-                new_journal = request.env["account.journal"].sudo().browse(new_journal_id)
+                new_journal = (
+                    request.env["account.journal"].sudo().browse(new_journal_id)
+                )
                 new_date = datetime.datetime.strptime(
                     kw.get("date", False),
                     get_lang(request.env).date_format,
@@ -548,12 +559,21 @@ class PmsReservation(http.Controller):
                 # result False actualiza la página sin devolver ningun mensaje ¿?
                 if not payment:
                     return json.dumps(
-                        {"result": True, "message": _("No se ha podido actualizar el pago, por favor, actualiza la página y vuelve a intentarlo.")}
+                        {
+                            "result": True,
+                            "message": _(
+                                "No se ha podido actualizar el pago, por favor, actualiza la página y vuelve a intentarlo."
+                            ),
+                        }
                     )
                 old_journal = payment.journal_id
                 old_pay_type = payment.payment_type
                 old_date = payment.date
-                old_amount = payment.amount if payment.payment_type == "inbound" else -payment.amount
+                old_amount = (
+                    payment.amount
+                    if payment.payment_type == "inbound"
+                    else -payment.amount
+                )
                 statement_line = False
                 if old_journal.type == "cash":
                     statement_line = folio.statement_line_ids.filtered(
@@ -568,15 +588,24 @@ class PmsReservation(http.Controller):
                     or new_date != old_date
                     or new_amount != old_amount
                 ):
-                    if payment.reconciled_statement_ids and any(payment.reconciled_statement_ids.state == "posted"):
+                    if payment.reconciled_statement_ids and any(
+                        payment.reconciled_statement_ids.state == "posted"
+                    ):
                         return json.dumps(
-                            {"result": True, "message": _("El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración.")}
+                            {
+                                "result": True,
+                                "message": _(
+                                    "El pago está registrado en un estracto ya conciliado, Para rectificarlo ponte en contacto con el responsable de administración."
+                                ),
+                            }
                         )
                     payment.sudo().action_draft()
                     payment.sudo().action_cancel()
                     payment.sudo().unlink()
                     if new_pay_type == "inbound":
-                        folio.with_user(request.env.user).do_payment(
+                        folio.with_user(request.env.user).with_context(
+                            cash_register=True
+                        ).do_payment(
                             new_journal,
                             new_journal.suspense_account_id,
                             request.env.user,
@@ -586,7 +615,9 @@ class PmsReservation(http.Controller):
                             date=new_date,
                         )
                     else:
-                        folio.with_user(request.env.user).do_refund(
+                        folio.with_user(request.env.user).with_context(
+                            cash_register=True
+                        ).do_refund(
                             new_journal,
                             new_journal.suspense_account_id,
                             request.env.user,
@@ -602,7 +633,9 @@ class PmsReservation(http.Controller):
                         "message": str(e),
                     }
                 )
-            return json.dumps({"result": True, "message": _("Pago actualizado correctamente!")})
+            return json.dumps(
+                {"result": True, "message": _("Pago actualizado correctamente!")}
+            )
         return json.dumps({"result": False, "message": _("Reservation not found")})
 
     @http.route(
@@ -750,14 +783,29 @@ class PmsReservation(http.Controller):
                         != reservation.board_service_room_id.pms_board_service_id.id
                     ):
                         board_service_room_id = (
-                            request.env["pms.board.service.room.type"]
-                            .search([
-                                ("pms_board_service_id", "=", int(params["board_service_room_id"])),
-                                ("pms_room_type_id", "=", reservation.room_type_id.id),
-                                ("pms_property_ids", "in", reservation.pms_property_id.id),
-                            ])
+                            request.env["pms.board.service.room.type"].search(
+                                [
+                                    (
+                                        "pms_board_service_id",
+                                        "=",
+                                        int(params["board_service_room_id"]),
+                                    ),
+                                    (
+                                        "pms_room_type_id",
+                                        "=",
+                                        reservation.room_type_id.id,
+                                    ),
+                                    (
+                                        "pms_property_ids",
+                                        "in",
+                                        reservation.pms_property_id.id,
+                                    ),
+                                ]
+                            )
                         ).id
-                        reservation_values["board_service_room_id"] = board_service_room_id
+                        reservation_values[
+                            "board_service_room_id"
+                        ] = board_service_room_id
 
                     # PRICELIST
                     elif (
@@ -1062,7 +1110,10 @@ class PmsReservation(http.Controller):
                 new_price = float(params["new_price"])
             if params.get("new_discount") and params.get("new_discount") != "false":
                 new_discount = float(params["new_discount"])
-            if params.get("new_board_service_id") and params.get("new_board_service_id") != "false":
+            if (
+                params.get("new_board_service_id")
+                and params.get("new_board_service_id") != "false"
+            ):
                 new_board_service_id = int(params["new_board_service_id"])
             wizard_changes = request.env["wizard.folio.changes"].create(
                 {
