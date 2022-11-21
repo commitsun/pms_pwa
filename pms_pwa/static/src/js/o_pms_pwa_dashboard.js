@@ -321,7 +321,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
                     showDropdowns: true,
                     autoUpdateInput: false,
                     minYear: 1901,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    maxYear: parseInt(moment().format("YYYY"), 10)  + 5,
                 },
                 function (start, end, label) {
                     var start_date = new Date(start);
@@ -380,7 +380,7 @@ odoo.define("pms_pwa.dashboard", function (require) {
                     showDropdowns: true,
                     autoUpdateInput: false,
                     minYear: 1901,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    maxYear: parseInt(moment().format("YYYY"), 10)  + 5,
                 },
                 function (start, end, label) {
                     var start_date = new Date(start);

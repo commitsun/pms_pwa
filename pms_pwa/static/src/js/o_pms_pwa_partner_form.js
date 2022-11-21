@@ -198,7 +198,7 @@ odoo.define("pms_pwa.partner_form", function (require) {
                     showDropdowns: true,
                     autoUpdateInput: false,
                     minYear: 1901,
-                    maxYear: parseInt(moment().format("YYYY"), 10),
+                    maxYear: parseInt(moment().format("YYYY"), 10)  + 5,
                 },
                 function (start) {
                     const start_date = new Date(start);
