@@ -1,20 +1,18 @@
 import json
 import logging
-from odoo.tools.misc import get_lang
-from odoo.exceptions import UserError
 
-from odoo import http, _
+from odoo import _, fields, http
+from odoo.exceptions import UserError
 from odoo.http import request
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
+from odoo.tools.misc import get_lang
 
 from ..utils import pwa_utils
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
-
 
 _logger = logging.getLogger(__name__)
 
 
 class FolioInvoice(http.Controller):
-
     @http.route(
         "/reservation/<int:reservation_id>/invoice",
         type="json",
@@ -44,11 +42,17 @@ class FolioInvoice(http.Controller):
                 wizard_invoice["reservation_id"] = reservation.id
                 wizard_invoice["total_amount"] = folio.amount_total
                 wizard_invoice["total_to_invoice"] = self._get_total_to_invoice(folio)
-                wizard_invoice["invoice_ids"] = self._get_invoice_ids(folio, invoice_ids)
-                wizard_invoice["new_invoice"] = self._prepare_new_invoice(folio, new_invoice)
-                if new_invoice and 'submit' in new_invoice:
+                wizard_invoice["invoice_ids"] = self._get_invoice_ids(
+                    folio, invoice_ids
+                )
+                wizard_invoice["new_invoice"] = self._prepare_new_invoice(
+                    folio, new_invoice
+                )
+                if new_invoice and "submit" in new_invoice:
                     try:
-                        partner_invoice = self._get_partner(wizard_invoice["new_invoice"]["partner"])
+                        partner_invoice = self._get_partner(
+                            wizard_invoice["new_invoice"]["partner"]
+                        )
                         if not partner_invoice._check_enought_invoice_data():
                             raise UserError(
                                 _(
@@ -69,10 +73,13 @@ class FolioInvoice(http.Controller):
                             if not line["included"]:
                                 continue
                             inv_line = next(
-                                inv_line for inv_line in invoices.invoice_line_ids if line["id"] in inv_line.folio_line_ids.ids
+                                inv_line
+                                for inv_line in invoices.invoice_line_ids
+                                if line["id"] in inv_line.folio_line_ids.ids
                             )
                             if inv_line and inv_line.name != line["description"]:
                                 inv_line.name = line["description"]
+                        invoices.date = fields.Date.today()
                         invoices.action_post()
                     except Exception as e:
                         return json.dumps({"result": False, "message": str(e)})
@@ -102,14 +109,16 @@ class FolioInvoice(http.Controller):
     def _get_invoice_ids(self, folio, invoice_ids):
         invoice_ids = []
         for invoice in folio.move_ids:
-            invoice_ids.append({
-                "id": invoice.id,
-                "name": invoice.name,
-                "amount": invoice.amount_total,
-                "partner": invoice.partner_id.name,
-                "url": invoice.get_portal_url(),
-                "state": invoice.state,
-            })
+            invoice_ids.append(
+                {
+                    "id": invoice.id,
+                    "name": invoice.name,
+                    "amount": invoice.amount_total,
+                    "partner": invoice.partner_id.name,
+                    "url": invoice.get_portal_url(),
+                    "state": invoice.state,
+                }
+            )
         if len(invoice_ids) == 0:
             invoice_ids = False
         return invoice_ids
@@ -124,14 +133,16 @@ class FolioInvoice(http.Controller):
             new_lines = []
             for sale_line in folio.sale_line_ids:
                 if sale_line.qty_to_invoice > 0:
-                    new_lines.append({
-                        "id": sale_line.id,
-                        "qty_to_invoice": sale_line.qty_to_invoice,
-                        "max_qty": sale_line.qty_to_invoice,
-                        "description": sale_line.name,
-                        "amount": sale_line.price_total,
-                        "included": True,
-                    })
+                    new_lines.append(
+                        {
+                            "id": sale_line.id,
+                            "qty_to_invoice": sale_line.qty_to_invoice,
+                            "max_qty": sale_line.qty_to_invoice,
+                            "description": sale_line.name,
+                            "amount": sale_line.price_total,
+                            "included": True,
+                        }
+                    )
                 # new_invoice["amount_to_invoice"] += line["amount"]
         else:
             new_invoice["amount_to_invoice"] = 0
@@ -142,7 +153,9 @@ class FolioInvoice(http.Controller):
                 if new_line["qty_to_invoice"] > 0 and new_line["included"]:
                     new_invoice["amount_to_invoice"] += new_line["amount"]
         new_invoice["lines"] = new_lines
-        new_invoice["partner"] = self._prepare_partner(new_invoice["partner"] if "partner" in new_invoice else False)
+        new_invoice["partner"] = self._prepare_partner(
+            new_invoice["partner"] if "partner" in new_invoice else False
+        )
         return new_invoice
 
     def _get_amount_line(self, sale_line_id, qty_to_invoice):
@@ -167,9 +180,17 @@ class FolioInvoice(http.Controller):
         }
 
     def _prepare_partner(self, partner_vals):
-        partner_name = partner_vat = partner_email = partner_mobile = \
-            partner_invoice_street = partner_zip = partner_city = \
-            partner_state_id = partner_type = partner_country_id = False
+        partner_name = (
+            partner_vat
+        ) = (
+            partner_email
+        ) = (
+            partner_mobile
+        ) = (
+            partner_invoice_street
+        ) = (
+            partner_zip
+        ) = partner_city = partner_state_id = partner_type = partner_country_id = False
         if partner_vals:
             if partner_vals.get("partner_type"):
                 partner_type = partner_vals["partner_type"]
@@ -265,7 +286,9 @@ class FolioInvoice(http.Controller):
             partner = request.env["res.partner"].browse(partner_vals["id"])
             partner_type = partner.company_type
         if partner_vals and partner_vals.get("vat"):
-            partner = request.env["res.partner"].search([("vat", "=", partner_vals.get("vat"))], limit=1)
+            partner = request.env["res.partner"].search(
+                [("vat", "=", partner_vals.get("vat"))], limit=1
+            )
             partner_type = partner.company_type
         if partner and partner.is_agency:
             partner_type = "agency"
