@@ -796,8 +796,8 @@ class PmsReservation(http.Controller):
                                         reservation.room_type_id.id,
                                     ),
                                     (
-                                        "pms_property_ids",
-                                        "in",
+                                        "pms_property_id",
+                                        "=",
                                         reservation.pms_property_id.id,
                                     ),
                                 ]

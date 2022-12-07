@@ -133,9 +133,7 @@ class PmsPWARoomType(models.Model):
         board_services = self.env["pms.board.service.room.type"].search(
             [
                 ("pms_room_type_id", "=", room_type_id),
-                "|",
-                ("pms_property_ids", "=", False),
-                ("pms_property_ids", "in", pms_property_id),
+                ("pms_property_id", "=", pms_property_id),
             ]
         )
         allowed_board_services = [
